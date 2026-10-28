@@ -4,6 +4,8 @@
 <meta charset="utf-8">
 <meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
 <meta name="theme-color" content="#0B1024">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<meta name="apple-mobile-web-app-title" content="ضبط دماغك">
 <meta name="description" content="ضبط دماغك: ألعاب تدريب الدماغ المبنية على أبحاث علمية">
 <title>ضبط دماغك</title>
 <meta name="claude:viewport-fit-sides" content="cover">
@@ -567,6 +569,10 @@ body{background-color:var(--bg);background-image:radial-gradient(50% 35% at 100%
 .cconf>div{display:grid;grid-template-columns:repeat(6,1fr);gap:5px;width:100%}
 .cconf button{background:var(--c);color:#0A0E1C;border-radius:12px;padding:12px 0;font-weight:800;font-size:14px}
 .cconf button:nth-child(1){opacity:.6}.cconf button:nth-child(2){opacity:.7}.cconf button:nth-child(3){opacity:.78}.cconf button:nth-child(4){opacity:.86}.cconf button:nth-child(5){opacity:.93}
+
+/* ===== v14 backup ===== */
+.bkb{display:flex;gap:16px}.lnk{color:#1FA9C4;font-weight:800}
+.bknote{font-size:13px;color:var(--muted);padding:2px 0 8px;line-height:1.6}
 </style>
 
 <div id="app">
@@ -607,6 +613,11 @@ const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
 let AC=null;
 function tone(f,d=.09,type='sine',v=.07,delay=0){if(S.st.mute)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();const t=AC.currentTime+delay,o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.02)}catch(e){}}
 const sfx={ok:m=>tone(660+m*110,.1,'triangle'),bad:()=>tone(150,.2,'sawtooth',.045),tick:()=>tone(520,.07,'sine',.06),go:()=>tone(990,.18,'triangle'),lit:()=>tone(440,.12,'sine',.05),win:()=>[523,659,784,1047].forEach((f,i)=>tone(f,.18,'triangle',.07,i*.11)),lvl:()=>[784,1175].forEach((f,i)=>tone(f,.12,'triangle',.06,i*.08))};
+/* iOS/Safari: audio must be unlocked inside a tap, and resumed after the app returns from background */
+function unlockAudio(){try{if(AC&&AC.state==='running')return;AC=AC||new(window.AudioContext||window.webkitAudioContext)();AC.resume();const b=AC.createBuffer(1,1,22050),src=AC.createBufferSource();src.buffer=b;src.connect(AC.destination);src.start(0)}catch(e){}}
+try{if(navigator.audioSession)navigator.audioSession.type='playback'}catch(e){}
+['pointerdown','touchend','keydown'].forEach(ev=>document.addEventListener(ev,unlockAudio,{capture:true,passive:true}));
+document.addEventListener('visibilitychange',()=>{if(!document.hidden&&AC&&AC.state!=='running')AC.resume().catch(()=>{})});
 
 /* ================= storage: per-person db, localStorage fallback ================= */
 const S={
@@ -813,7 +824,16 @@ function renderMe(){
    <div class="set"><span>استراحة الحركة بين الألعاب</span><button class="toggle ${S.st.move===false?'':'on'}" id="mvt" aria-label="استراحة الحركة"></button></div>
    <div class="set"><span>المظهر</span><div class="seg">${[['dark','ليلي'],['light','نهاري'],['auto','تلقائي']].map(([k,n])=>`<button class="${(S.st.skin||'dark')===k?'on':''}" data-sk="${k}">${n}</button>`).join('')}</div></div>
    <div class="set"><span>${S.cloud?'التقدم محفوظ في حسابك':'التقدم محفوظ على هذا الجهاز'}</span><span class="eyebrow">${S.cloud?'متزامن':'محلي'}</span></div>
+   <div class="set"><span>نسخة احتياطية</span><span class="bkb"><button class="lnk" id="bk">حفظ ملف</button><button class="lnk" id="rsr">استرجاع</button></span></div><input type="file" id="rsf" accept=".json,application/json" hidden><div class="bknote" id="bkn" hidden></div>
    <div class="set"><span>بدء من الصفر</span><button class="danger" id="rs">مسح التقدم</button></div></section>`;
+  const bkMsg=t=>{const n=$('#bkn');if(n){n.hidden=false;n.textContent=t}};
+  $('#bk').onclick=async()=>{const name='dabt-backup-'+dayKey()+'.json',blob=new Blob([JSON.stringify({app:'dabt',ver:2,at:Date.now(),st:S.st})],{type:'application/json'});
+    if(DOWN){try{await DOWN.save({filename:name,data:blob});bkMsg('حُفظت النسخة الاحتياطية.');return}catch(e){if(e&&e.code==='declined')return}}
+    try{const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);bkMsg('حُفظ الملف '+name+' في التنزيلات. احتفظ به لاسترجاع تقدمك على أي جهاز.')}catch(e){bkMsg('تعذّر حفظ الملف على هذا الجهاز.')}};
+  $('#rsr').onclick=()=>$('#rsf').click();
+  $('#rsf').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const rd=new FileReader();
+    rd.onload=()=>{try{const o=JSON.parse(rd.result),st=o&&o.st?o.st:o;if(!st||!Array.isArray(st.hist))throw 0;const before=S.st.hist.length;S.merge(st);S.prune();S.save();renderAll();tab('me');{const n=S.st.hist.length-before;bkMsg(`تم الاسترجاع: ${n?`أُضيفت ${arN(n,['جلسة واحدة','جلستان','جلسات','جلسة'])}`:'لا توجد جلسات جديدة'}، ودُمجت مستوياتك وأفضل نتائجك مع الموجود.`)}}catch(x){bkMsg('هذا الملف ليس نسخة احتياطية صالحة من «ضبط دماغك».')}};
+    rd.readAsText(f);e.target.value=''};
   $('#mt').onclick=()=>{S.st.mute=!S.st.mute;S.save();renderMe()};
   $('#mvt').onclick=()=>{S.st.move=S.st.move===false;S.save();renderMe()};
   $('#v-me').querySelectorAll('[data-sk]').forEach(b=>b.onclick=()=>{S.st.skin=b.dataset.sk;S.save();applySkin();renderMe()});
