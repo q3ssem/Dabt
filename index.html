@@ -611,7 +611,8 @@ const addDays=(d,n)=>{const x=new Date(d);x.setDate(x.getDate()+n);return x};
 
 /* ================= sound ================= */
 let AC=null;
-function tone(f,d=.09,type='sine',v=.07,delay=0){if(S.st.mute)return;try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();const t=AC.currentTime+delay,o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.02)}catch(e){}}
+function audioOK(){if(document.hidden)return false;AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume().catch(()=>{});clearTimeout(audioOK.t);audioOK.t=setTimeout(()=>{try{if(AC&&AC.state==='running')AC.suspend()}catch(e){}},5000);return true}
+function tone(f,d=.09,type='sine',v=.07,delay=0){if(S.st.mute)return;try{if(!audioOK())return;const t=AC.currentTime+delay,o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.02)}catch(e){}}
 const sfx={ok:m=>tone(660+m*110,.1,'triangle'),bad:()=>tone(150,.2,'sawtooth',.045),tick:()=>tone(520,.07,'sine',.06),go:()=>tone(990,.18,'triangle'),lit:()=>tone(440,.12,'sine',.05),win:()=>[523,659,784,1047].forEach((f,i)=>tone(f,.18,'triangle',.07,i*.11)),lvl:()=>[784,1175].forEach((f,i)=>tone(f,.12,'triangle',.06,i*.08))};
 /* iOS/Safari: sound stays inside the app — 'ambient' session (no Now Playing, mixes with other audio), suspended when the app is left, woken by the next tap */
 function unlockAudio(){try{if(AC&&AC.state==='running')return;AC=AC||new(window.AudioContext||window.webkitAudioContext)();AC.resume();const b=AC.createBuffer(1,1,22050),src=AC.createBufferSource();src.buffer=b;src.connect(AC.destination);src.start(0)}catch(e){}}
@@ -1194,7 +1195,7 @@ function genTrans(lv){const n=Math.min(6,3+Math.floor((lv-1)/2)),its=shuffle(TOK
 
 /* ================= v7: everyday memory, hearing, assessment, coach, habits ================= */
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function toneF(f,d=.3,type='triangle',v=.12){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.02)}catch(e){}}
+function toneF(f,d=.3,type='triangle',v=.12){if(S.st.mute)return;try{if(!audioOK())return;const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.02)}catch(e){}}
 function headerCustom(title,sub,cols){const p=$('#play');p.style.setProperty('--c',cols[0]);p.style.setProperty('--c2',cols[1]);$('#pt').textContent=title;$('#ps').textContent=sub;
   const wk=RUN&&RUN.wk;$('#wkd').innerHTML=wk?wk.map(id=>`<i class="${doneToday(id)?'done':''}"></i>`).join(''):''}
 const weekKey=()=>{const n=new Date();return dayKey(addDays(n,-n.getDay()))};
@@ -1701,7 +1702,7 @@ Object.assign(I,{
 });
 
 /* ---------- 5. Sound sweeps: order of two frequency glides (IMPACT auditory speed training) ---------- */
-function playSweep(up,ms,f0,delay=0){try{AC=AC||new(window.AudioContext||window.webkitAudioContext)();if(AC.state==='suspended')AC.resume();
+function playSweep(up,ms,f0,delay=0){try{if(!audioOK())return;
   const t=AC.currentTime+.04+delay,d=ms/1000,lo=f0/1.7,hi=f0*1.7,rmp=Math.min(.006,d/5),o=AC.createOscillator(),g=AC.createGain();o.type='sine';
   o.frequency.setValueAtTime(up?lo:hi,t);o.frequency.exponentialRampToValueAtTime(up?hi:lo,t+d);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.2,t+rmp);g.gain.setValueAtTime(.2,t+d-rmp);g.gain.linearRampToValueAtTime(0,t+d);
   o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.03)}catch(e){}}
