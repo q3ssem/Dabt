@@ -396,7 +396,7 @@ body{background-color:var(--bg);background-image:radial-gradient(50% 35% at 100%
 
 
 
-@keyframes pulse{0%{transform:scale(1);box-shadow:0 0 0 0 color-mix(in srgb,var(--c) 60%,transparent)}40%{transform:scale(1.08)}100%{transform:scale(1);box-shadow:0 0 0 30px transparent}}
+
 .rtf{position:relative;height:200px;border-radius:22px;background:rgba(var(--tint),.05);border:1px solid var(--line)}
 .rtf i{position:absolute;top:50%;width:76px;height:76px;margin-top:-38px;border-radius:50%;background:rgba(var(--tint),.06);border:2px dashed rgba(var(--tint),.15)}
 .rtf .dotL{left:14%}.rtf .dotR{right:14%}
@@ -498,12 +498,12 @@ body{background-color:var(--bg);background-image:radial-gradient(50% 35% at 100%
 .xkb{display:grid;grid-template-columns:repeat(10,minmax(0,1fr));gap:4px}
 .xkb button{background:rgba(var(--tint),.1);border:1px solid var(--line);border-radius:8px;padding:7px 0;font-family:var(--font-d);font-weight:800;font-size:17px;touch-action:manipulation}
 .xkb button:active{background:color-mix(in srgb,var(--c) 40%,transparent)}
-.calm{position:relative;height:200px;border-radius:24px;overflow:hidden;display:grid;place-items:center;background:linear-gradient(160deg,rgba(var(--tint),.06),rgba(var(--tint),.02));border:1px solid var(--line);color:var(--muted);font-weight:700}
-.calm .glow{position:absolute;width:140px;height:140px;border-radius:50%;background:radial-gradient(circle,color-mix(in srgb,var(--c) 45%,transparent),transparent 70%);opacity:.6}
-.calm.p .glow{animation:bpulse .9s ease-out}
-.calm span{position:relative}
-@keyframes bpulse{0%{transform:scale(.8);opacity:.9}100%{transform:scale(1.5);opacity:.4}}
-.match.nine{background:linear-gradient(120deg,var(--c2),var(--c))}
+
+
+
+
+
+
 .arrowbox{display:flex;flex-direction:column;align-items:center;gap:6px;width:120px}
 .arrowbox .ar{font-size:54px;line-height:1}
 .arrowbox .hl{display:block;width:100%;height:4px;border-radius:2px;background:var(--ink);opacity:.6}
@@ -529,15 +529,15 @@ body{background-color:var(--bg);background-image:radial-gradient(50% 35% at 100%
 .hkb svg{width:58px;height:44px}
 .hkprev p{margin:0;font-weight:800;font-size:14.5px}
 .hkprev .cta{width:auto;padding:10px 30px;font-size:16px}
-.swv{display:flex;flex-direction:column;align-items:center;gap:16px;padding:14px 0}
-.swspk{width:104px;height:104px;border-radius:50%;display:grid;place-items:center;background:rgba(var(--tint),.07);border:1px solid var(--line);color:var(--muted);transition:transform .2s,box-shadow .2s,color .2s}
-.swspk svg{width:50px;height:50px}
-.swspk.on{color:var(--c);box-shadow:0 0 0 10px color-mix(in srgb,var(--c) 16%,transparent);transform:scale(1.06)}
-.swslots{display:flex;gap:12px}
-.swslots b{width:58px;height:58px;border-radius:16px;border:2px dashed var(--line);display:grid;place-items:center;font-size:30px}
-.swslots b.ok{border-style:solid;border-color:var(--good);color:var(--good)}
-.swslots b.no{border-style:solid;border-color:var(--bad);color:var(--bad)}
-.swans .match{font-size:34px;padding:14px}
+
+
+
+
+
+
+
+
+
 .symst{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:12px;min-height:250px}
 .symg{width:min(62vw,232px);height:auto}
 .sgrid{display:grid;grid-template-columns:repeat(4,1fr);gap:7px;width:min(72vw,256px)}
@@ -591,26 +591,25 @@ html,body{touch-action:manipulation;-webkit-text-size-adjust:100%;text-size-adju
 *{-webkit-tap-highlight-color:transparent}
 button,.opt,.cell,.match,.rdt,.sgc,.xcell,.xkb button{touch-action:manipulation;-webkit-user-select:none;user-select:none}
 
-/* ===== v18 ===== */
-.idobj{font-family:var(--font-d);font-weight:900;font-size:clamp(26px,8vw,36px);color:var(--ink)}
-.idrow{display:flex;gap:8px}.idrow .ta{flex:1;resize:none;padding:10px 12px}.idrow .match{width:auto;padding:10px 18px;font-size:16px}
-.idlist{margin:0;padding:0 22px 0 0;display:flex;flex-direction:column;gap:4px;max-height:28vh;overflow:auto;font-weight:700}
-.idlist li{background:rgba(var(--tint),.06);border-radius:10px;padding:6px 10px}
+
+
+
+
 .pkeys{display:grid;grid-template-columns:repeat(7,1fr);gap:5px;direction:ltr;height:min(46vh,250px)}
 .pkey{border-radius:0 0 12px 12px;background:linear-gradient(#fff,#E9ECF8);border:1px solid #B9C0DC;display:flex;align-items:flex-end;justify-content:center;padding-bottom:10px;box-shadow:inset 0 -6px 0 var(--k);touch-action:none;transition:transform .06s}
 .pkey span{font-weight:800;font-size:13px;color:#3A4270}
 .pkey.on{background:var(--k);transform:translateY(3px)}.pkey.on span{color:#0A0E1C}.pkey.bad{background:#FF5C6C}
-.exv{border-radius:18px;overflow:hidden;border:1px solid var(--line)}
-.exctl{display:grid;grid-template-columns:1fr 1.4fr 1fr;gap:10px}.exctl .steer{font-size:26px}.exctl .match{font-size:24px;padding:14px}
-.emobox{width:min(52vw,190px);aspect-ratio:120/140;display:grid;place-items:center}.emof{width:100%;height:100%}
-.emogone{font-size:60px;color:var(--muted);font-family:var(--font-d)}
+
+
+
+
 .scst{position:relative;width:100%;aspect-ratio:4/3;border-radius:18px;overflow:hidden;background:linear-gradient(180deg,color-mix(in srgb,var(--bg) 60%,#6FA8FF) 0 55%,var(--bg) 55%);border:1px solid var(--line)}
 .scpl{position:absolute;right:6%;top:30%;font-size:clamp(40px,14vw,64px)}
 .scsky{position:absolute;top:8%;left:-15%;font-size:32px;transition:left 2.4s linear}.scsky.fly{left:110%}
 .scp{position:absolute;bottom:4%;width:20%;transition:left 1.3s ease-in-out}.scp svg{width:100%;height:auto;display:block}
 .sci{position:absolute;bottom:38%;left:62%;font-size:clamp(18px,6vw,26px)}
 .screc{font-weight:800;line-height:1.9;font-size:16px}
-.exctl .match.blk{opacity:.35}
+
 </style>
 
 <div id="app">
@@ -677,7 +676,7 @@ const S={
     const at=new Set((st.assess||[]).map(a=>a.ts));st.assess=[...(st.assess||[]),...(r.assess||[]).filter(a=>!at.has(a.ts))].sort((a,b)=>a.ts-b.ts);
     const newer=(a,b,f)=>!a?b:!b?a:(f(b)>f(a)?b:a);st.enc=newer(st.enc,r.enc,x=>x.ts||0);st.mylist=newer(st.mylist,r.mylist,x=>(x.ts||0)+(x.reviews||0));st.coach=newer(st.coach,r.coach,x=>x.d||'');st.plan=newer(st.plan,r.plan,x=>x.w||'');
     if(typeof r.mute==='boolean')st.mute=r.mute;if(r.skin)st.skin=r.skin;st.chal=st.chal||{};for(const[k,v]of Object.entries(r.chal||{}))if(v)st.chal[k]=1;st.boost=newer(st.boost,r.boost,x=>x.w||'');st.boostAt=Math.max(st.boostAt||0,r.boostAt||0)||undefined;if(typeof r.move==='boolean')st.move=r.move;if(Array.isArray(r.storyUsed)&&!st.storyUsed)st.storyUsed=r.storyUsed},
-  prune(){if(typeof GM==='undefined')return;const st=this.st;['path','corsi','set','rot','draw','mst','freeze','hawk','symbol','time','rhythm','pinball','audio','stroop'].forEach(k=>{if(!GM[k])delete st.lv[k]});
+  prune(){if(typeof GM==='undefined')return;const st=this.st;['path','corsi','set','rot','draw','explore','sweep','breath','emo','ideas','mst','freeze','hawk','symbol','time','rhythm','pinball','audio','stroop'].forEach(k=>{if(!GM[k])delete st.lv[k]});
     for(const k of Object.keys(st.best||{}))if(!GM[k])delete st.best[k];if(st.wk&&!(st.wk.ids||[]).every(id=>GM[id]))st.wk=null;if(st.plan&&!(st.plan.ids||[]).every(id=>GM[id]))st.plan=null;
     if(st.boost&&st.boost.ids)st.boost.ids=st.boost.ids.filter(id=>GM[id]);if(st.coach&&Array.isArray(st.coach.plan))st.coach.plan=st.coach.plan.filter(p=>p&&GM[p.id])},
   save(){this.st.savedAt=Date.now();try{localStorage.setItem('miran:v2',JSON.stringify(this.st))}catch(e){}
@@ -720,7 +719,6 @@ const G=[
  {id:'mylist',cat:'mem',manual:1,noIndex:1,nocd:1,col:['#9BF6C9','#2FC0A0'],name:'قصر ذاكرتك',lab:'Your List + Spaced Retrieval',why:'تطبيق «قصر الذاكرة» على قائمتك الحقيقية، ثم مراجعات متباعدة: الاختبار يثبت الذاكرة أكثر من إعادة القراءة (56% مقابل 42% بعد أسبوع).',how:['اكتب قائمتك: مقاضي، مهام، أفكار.','نوزعها على أماكن البيت وتتخيل كل شيء في مكانه.','ثم نذكّرك بمراجعتها بعد يوم، ثم 3 أيام، ثم أسبوع.'],norm:pct,run:runMyList},
  {id:'pm',cat:'mem',ev:1,col:['#FFE27A','#FFA23D'],name:'لا تنسَ!',lab:'Prospective Memory',why:'تدريب «ذاكرة المستقبل» في لعبة Virtual Week ضاعف عدد المهام التي تذكّرها كبار السن، وامتد أثره لمهام يومية مثل تعليمات الدواء.',how:['صنّف الأرقام: زوجي أم فردي.','إذا ظهر الرقم داخل إطار ذهبي: اضغط ★ بدل التصنيف.','واضغط ⏱ عند مرور 30 ثانية ثم 60. الوقت مخفي، وزر 👁 يريك ما مضى.'],norm:pct,run:runPM},
  {id:'story',cat:'mem',col:['#B9F27A','#3CC8A8'],name:'القصة',lab:'Story Recall',why:'مستوحاة من اختبار الذاكرة المنطقية: نسيان بداية القصة بعد التأخير ارتبط بتراكم الأميلويد حتى لدى أشخاص بلا أعراض.',how:['اقرأ قصة قصيرة بتركيز.','تُسأل عن تفاصيلها فورًا.','ثم بعد استراحة قصيرة تُسأل مرة أخرى.'],norm:pct,run:runStory},
- {id:'explore',cat:'spa',ev:1,col:['#8FB6FF','#7CFFB2'],name:'المستكشف',lab:'3D Maze Explorer',why:'في دراسة West 2017 لعب كبار السن لعبة ثلاثية الأبعاد ستة أشهر فزادت المادة الرمادية في الحُصين وتحسنت الذاكرة القصيرة، وفي Lövdén 2012 حمى تدريب الملاحة حجم الحُصين.',how:['احفظ الخريطة: مكان كل هدف وترتيبه.','امشِ داخل المتاهة بعينك (تقدم، لف يمين أو يسار) واجمع الأهداف بالترتيب.','ثم ارجع إلى نقطة البداية 🏁. الخريطة متاحة مقابل نقاط.'],norm:pct,run:runExplore},
  {id:'nav',cat:'spa',col:['#7AE6C8','#4C8DFF'],name:'الملّاح',lab:'Wayfinding',why:'سائقو تاكسي لندن الذين حفظوا خريطة المدينة كبُر لديهم الجزء الخلفي من الحُصين بعد 3-4 سنوات تدريب، ولم يكبر عند من فشلوا.',how:['احفظ الخريطة: بدايتك والنقاط المرقّمة.','تختفي الخريطة إلا ما مشيت فيه: تنقّل بالأسهم أو بالسحب.','زر النقاط بالترتيب بأقصر طريق. لديك نظرة واحدة للخريطة.'],norm:pct,run:runNav},
  {id:'delay',cat:'mem',hidden:1,ev:1,col:['#7AF0D2','#3FD0E8'],name:'التذكر المؤجل',lab:'Delayed Recall',why:'التذكر بعد فاصل زمني كان أقوى مؤشر عصبي نفسي لتحول ضعف الذاكرة البسيط إلى زهايمر.',how:[],norm:pct},
  {id:'fold',cat:'spa',ev:1,col:['#FFD9A0','#FF8FB1'],name:'طيّ الورق',lab:'Paper Folding',why:'تمرين «التصوّر المكاني»: في دراسة Wright 2008 تمرّن المشاركون 21 يومًا على طيّ الورق ذهنيًا، فتحسّن أيضًا الدوران الذهني الذي لم يتدربوا عليه، ومع أشكال جديدة لم يروها.',how:['تُطوى الورقة خطوة خطوة ثم تُثقب.','تخيّل فتحها، واختر شكلها بعد الفتح.','من المستوى 4 تظهر أسئلة المكعب: أي شكل يقابل الشكل المحاط بعد طيّ الشبكة؟'],norm:up(14),quiz:{dur:120,gen:genFold,max:6}},
@@ -730,19 +728,15 @@ const G=[
  {id:'series',cat:'log',ev:1,col:['#C6F36B','#2FD6A0'],name:'سلاسل الأنماط',lab:'Letter & Shape Series',why:'هذا نوع تدريب الاستدلال في دراسة ACTIVE: بقي أثره 10 سنوات، وقلّت معه صعوبة المهام اليومية.',how:['تظهر سلسلة حروف أو أشكال بينها نمط.','اكتشف القاعدة: تكرار، أو قفز في الحروف الهجائية، أو تناوب.','اختر التالي. لا حساب، منطق فقط.'],norm:up(18),quiz:{dur:75,make:makeSeries,max:6}},
  {id:'xw',cat:'log',ev:1,manual:1,col:['#F7E27A','#9BE36A'],name:'الكلمات المتقاطعة',lab:'Daily Arabic Crossword',why:'في تجربة على مصابين بضعف إدراكي بسيط تفوّقت الكلمات المتقاطعة على ألعاب Lumosity في الذاكرة والوظائف اليومية بعد 78 أسبوعًا، مع ضمور أقل في الدماغ.',how:['المس خانة لتختار كلمتها، والمسها مرة ثانية لتبديل الاتجاه.','اكتب بلوحة الحروف؛ الأفقي يُقرأ من اليمين.','«كشف حرف» يساعدك لكنه يخصم من نتيجتك.'],norm:pct,run:runXW,nocd:1},
  {id:'hawk',cat:'spd',ev:1,col:['#FFB86B','#FF5E7E'],name:'عين الصقر',lab:'Hawk Eye · Visual Speed',why:'من عائلة تدريب السرعة الإدراكية التي خفّضت خطر الخرف في ACTIVE: يدرّب دقة الرؤية في أجزاء من الثانية.',how:['قبل كل سرب نعرض لك الطائر المختلف وشبيهه.','تومض الطيور حول المنتصف لحظة: المس مكان المختلف.','العرض يقصر كلما أصبت، ويطول إذا أخطأت.'],norm:m=>Math.round(clamp(1000*(1200-m)/1100,0,1000)),run:runHawk},
- {id:'breath',cat:'foc',col:['#A8E6FF','#7A9BFF'],name:'عدّ الأنفاس',lab:'Breath Counting',why:'تحليل 30 تجربة: التأمل حسّن الانتباه لدى كبار السن الأصحاء. ودقة عدّ الأنفاس ارتبطت بشرود ذهن أقل.',how:['اجلس مرتاحًا وتنفّس طبيعيًا.','اضغط «نفَس» مع كل زفير، و«التاسع» في النفَس التاسع، ثم من جديد.','إن فقدت العدّ اضغط «فقدت العدّ» بلا لوم.'],norm:pct,run:runBreath},
- {id:'sweep',cat:'spd',ev:1,sound:1,col:['#7CF0E0','#4A8CFF'],name:'اتجاه النغمة',lab:'Sound Sweeps · Auditory Speed',why:'من تمارين دراسة IMPACT على 487 مشاركًا: 40 ساعة من تدريب سرعة السمع حسّنت الذاكرة السمعية أكثر من المجموعة الضابطة، وتحسّن معها الحفظ العكسي للأرقام واسترجاع الكلمات المؤجل.',how:['تسمع نغمتين متتاليتين: كل واحدة إما تصعد ↑ أو تنزل ↓.','حدّد اتجاه الأولى ثم الثانية.','النغمات تقصر كلما أصبت. تحتاج صوتًا أو سماعة.'],norm:m=>Math.round(clamp(1000*(400-m)/370,0,1000)),run:runSweep},
  {id:'piano',cat:'mem',ev:1,sound:1,col:['#FFE08A','#FF7AA8'],name:'العازف',lab:'Melody Memory',why:'تحليل 2025 جمع 9 تجارب على 625 شخصًا فوق الستين: التدريب الموسيقي حسّن الوظائف التنفيذية والذاكرة. هنا تتعلم ألحانًا وتعزفها من ذاكرتك، وهي أقرب تجربة لتعلّم آلة داخل لعبة.',how:['استمع إلى لحن قصير (وراقب المفاتيح في البداية).','اعزفه بنفس الترتيب على البيانو.','اللحن يطول مع كل نجاح. من المستوى 7 تعزف بالأذن فقط. تحتاج صوتًا.'],norm:m=>Math.round(clamp((m-2)/8*1000,0,1000)),run:runPiano},
  {id:'scene',cat:'mem',col:['#9FE8FF','#FFB86B'],name:'التفاصيل الدقيقة',lab:'Episodic Specificity',why:'مستوحاة من تدريب «التحديد العرضي» (SPECTRA 2023): استرجاع المشهد بتفاصيله (المكان، الأشخاص، الأفعال) حسّن التذكر، وظهر أثره في حل المشكلات والإبداع. الدراسة أولية وصغيرة.',how:['راقب مشهدًا قصيرًا: من دخل، بأي لون، ماذا يحمل، ماذا مرّ في السماء.','أغمض عينيك واسترجعه لثوانٍ.','أجب عن أسئلة التفاصيل. المشاهد تزداد ازدحامًا وسرعة مع المستوى.'],norm:pct,run:runScene},
  {id:'symspan',cat:'mem',ev:1,col:['#FF9DE2','#9B7BFF'],name:'المرآة والمواقع',lab:'Symmetry Span',why:'تدريب «المدى المعقد»: تحفظ وأنت منشغل بمهمة ثانية. في دراسة Harrison 2013 كان هذا النوع وحده الذي انتقل أثره لاختبارات ذاكرة عاملة أخرى.',how:['احكم: هل الشكل متماثل يمينًا ويسارًا؟','بعدها يضيء مربع في الشبكة: احفظ مكانه.','بعد عدة أشكال المس المربعات بنفس الترتيب.'],norm:up(24),run:runSymSpan},
  {id:'dd',cat:'spd',ev:1,col:['#FF6B5A','#FFB547'],name:'القرار المزدوج',lab:'Double Decision',why:'التمرين الوحيد الذي خفّض خطر الخرف بنحو 29% على مدى 10 سنوات في دراسة ACTIVE.',how:['ثبّت نظرك على المنتصف: ستومض مركبة ولافتة في الأطراف.','اختر المركبة: سيارة أم شاحنة.','ثم المس مكان اللافتة. العرض يتسارع كلما أصبت.'],norm:m=>Math.round(clamp(1000*(450-m)/400,0,1000)),run:runDD},
  {id:'racer',cat:'foc',ev:1,col:['#FFB347','#FF5E62'],name:'السائق اليقظ',lab:'NeuroRacer-style',why:'مستوحاة من NeuroRacer (مجلة Nature): كبار السن تفوقوا بعدها على شباب العشرينات في تعدد المهام.',how:['ابقَ على الطريق بأزرار ◀ ▶ أو بسحب إصبعك، واضغط «إشارة!» فقط عند الدائرة الخضراء.','الأولوية تتغير كل 20 ثانية: مرة الطريق ومرة الإشارات، والنقاط تتبعها.','تدريب الأولوية المتغيرة نقل أثره لمهام مزدوجة جديدة لدى من هم بين 55 و65 عامًا.'],norm:pct,run:runRacer},
- {id:'emo',cat:'foc',col:['#FFC2A8','#FF6FA0'],name:'قراءة المشاعر',lab:'Emotion Recognition',why:'تدريب الإدراك الاجتماعي لدى أصحاء (2022) حسّن التعرف على مشاعر الوجه وقلّل الخلط بين المشاعر المتشابهة كالخوف والدهشة.',how:['يظهر وجه يعبّر عن شعور.','اختر الشعور الصحيح.','مع التقدم تصبح التعابير أخف، ويختفي الوجه أسرع، وتزيد الخيارات.'],norm:up(30),quiz:{dur:75,gen:genEmo,max:6}},
  {id:'radar',cat:'foc',ev:1,col:['#7CFFB2','#FF4D6D'],name:'الرادار',lab:'Action Attention',why:'مبنية على خصائص ألعاب الأكشن: سرعة ومشتتات وتبديل بين التركيز الضيق والمسح الواسع. تحليل 22 دراسة تدريب (Bediou 2018) وجد أنها تحسّن التحكم بالانتباه والمهارات المكانية.',how:['اضغط المعيّن الأحمر بسرعة، واترك المعيّن الشبيه والدوائر الخضراء.','كل 12 ثانية يتبدل الوضع: تركيز في الدائرة الوسطى، أو مسح للشاشة كلها.','كلما أتقنت زادت السرعة والمشتتات وصار الشبيه أقرب لونًا.'],norm:pct,run:runRadar},
  {id:'mot',cat:'foc',col:['#FFC34D','#FF7A45'],name:'تتبع الكرات',lab:'Multiple Object Tracking',why:'تتبع عدة أجسام معًا يدرب الانتباه الموزع، ويستخدمه رياضيون محترفون.',how:['تضيء بعض الكرات ثم تتشابه كلها وتتحرك.','تابع الكرات المضيئة بعينك.','عند التوقف المسها.'],norm:up(40),run:runMOT},
  {id:'wcst',cat:'flx',col:['#E66CFF','#7A5CFF'],name:'فرز البطاقات',lab:'Wisconsin Card Sort',why:'اختبار ويسكونسن معيار عالمي لقياس المرونة الذهنية.',how:['ضع البطاقة مع إحدى الأربع.','الفرز باللون أو الشكل أو العدد، ولن نخبرك أيها.','بعد 6 إجابات صحيحة تتغير القاعدة.'],norm:up(30),quiz:{dur:90,make:makeWcst}},
  {id:'conf',cat:'flx',ev:1,col:['#9FF5C8','#5BA8FF'],name:'متأكد؟',lab:'Metacognition · Confidence',why:'تدريب «ما وراء المعرفة»: أن تعرف متى تكون مصيبًا. في دراسة Carpenter 2019 حسّنت 8 جلسات من تقييم الثقة دقةَ الحكم على النفس، وانتقل الأثر لمهمة ذاكرة لم يُتدرَّب عليها.',how:['قارن بسرعة: أي مربع فيه نقاط أكثر؟ أو أي خط أطول؟','حدد ثقتك من 50% إلى 100%.','الثقة الزائدة في خطأ تخصم كثيرًا، والشك في جواب صحيح يفوّت النقاط. المهم أن تطابق ثقتُك دقتَك.'],norm:pct,run:runConf},
- {id:'ideas',cat:'flx',ev:1,manual:1,col:['#FFE66B','#FF8A5B'],name:'ابتكار',lab:'Alternative Uses',why:'تحليل Haase 2023 لـ332 نتيجة: الإبداع يتحسن بالتدريب بأثر متوسط (0.53). ونماذج الذكاء الاصطناعي تقيّم أصالة الأفكار بتوافق يصل إلى 0.81 مع المحكّمين البشر.',how:['يظهر شيء يومي.','اكتب أكبر عدد من الاستخدامات الغريبة والمبتكرة له، كل فكرة لوحدها.','يقيّم Claude أصالة كل فكرة ويختار أبدعها (في نسخة Claude).'],norm:pct,run:runIdeas},
  {id:'sw',cat:'flx',col:['#FF7AC6','#FF5F6D'],name:'القاعدة المتغيرة',lab:'Task Switching',why:'تدريب التبديل بين المهام انتقل أثره للذكاء السائل والذاكرة العاملة حتى لدى كبار السن، والتنويع في القواعد زاد الانتقال لدى البالغين. لذلك تتغير مجموعة القواعد كل جلسة.',how:['يظهر شيء ومعه سؤال بلون مميز.','القواعد تتغير كل جلسة: أرقام، أو أشكال وألوان، أو أسهم.','السؤال يتبدل عشوائيًا، فانتبه للونه.'],norm:up(36),quiz:{dur:45,make:makeSwitch,max:6}},
 ];
 const GM=Object.fromEntries(G.map(g=>[g.id,g]));S.prune();
@@ -824,7 +818,6 @@ function radarSVG(){
    ${keys.map((k,i)=>{const[x,y]=pt(i,R+30);return`<text x="${x}" y="${y}" text-anchor="middle" font-family="Tajawal,sans-serif" font-size="13" font-weight="700" fill="${CATS[k].hex}">${CATS[k].n}</text><text x="${x}" y="${y+16}" text-anchor="middle" font-family="Tajawal,sans-serif" font-size="12" style="fill:var(--muted)">${catIndex(k)??'—'}</text>`}).join('')}
   </svg>`}
 const REFS=[
- ['487 مشاركًا','اتجاه النغمة','دراسة IMPACT: 40 ساعة من تمارين سرعة السمع حسّنت الذاكرة السمعية (3.9 نقطة مقابل 1.8) واسترجاع الكلمات المؤجل والحفظ العكسي للأرقام، مقارنة بمجموعة ضابطة نشطة.','https://mayoclinic.elsevierpure.com/en/publications/a-cognitive-training-program-based-on-principles-of-brain-plastic'],
  ['85%','المستويات التكيفية','Wilson وزملاؤه 2019: أسرع تعلم يحدث عند نسبة نجاح نحو 85%. لذلك ترفعك الألعاب بعد 4 إجابات صحيحة متتالية وتنزلك بعد الخطأ، فتستقر قرب هذه النسبة.','https://experts.arizona.edu/en/publications/the-eighty-five-percent-rule-for-optimal-learning/'],
  ['20 سنة','القرار المزدوج','متابعة ACTIVE بعد 20 عامًا (2026): من تدربوا على السرعة الإدراكية مع جلسات تعزيز شُخّص منهم بالخرف 40% مقابل 49% في المجموعة الضابطة. تدريب الذاكرة والاستدلال لم يفرق. لذلك في كل تمرين يومي لعبة سرعة.','https://www.hopkinsmedicine.org/news/newsroom/news-releases/2026/02/cognitive-speed-training-linked-to-lower-dementia-incidence-up-to-20-years-later'],
  ['29%','القرار المزدوج','دراسة ACTIVE تابعت 2802 شخص لعشر سنوات: تدريب السرعة الإدراكية خفّض خطر الخرف نحو 29%، بينما تدريب الذاكرة والاستدلال لم يفرق عن المجموعة الضابطة.','https://www.sciencedaily.com/releases/2017/11/171116104955.htm'],
@@ -848,12 +841,10 @@ const REFS=[
  ['78 أسبوعًا','الكلمات المتقاطعة','تجربة كولومبيا وديوك على 107 مصابين بضعف إدراكي بسيط: الكلمات المتقاطعة تفوّقت على ألعاب حاسوبية في الذاكرة والوظائف اليومية، مع ضمور أقل.','https://columbiapsychiatry.org/news/crossword-puzzles-superior-computer-video-games-slowing-memory-loss-older-adults-mild-cognitive-impairment'],
  ['3 فئات عمرية','القاعدة المتغيرة','Karbach وKray: تدريب التبديل انتقل للذكاء السائل والذاكرة العاملة لدى الأطفال والشباب وكبار السن.','https://www.gwern.net/doc/dual-n-back/2009-karbach.pdf'],
  ['217 دراسة','طيّ الورق','تحليل Uttal: المهارات المكانية تتحسن بالتدريب بنحو نصف انحراف معياري، والأثر يدوم وينتقل لمهام غير متدرَّب عليها.','https://www.gamesandlearning.org/wp-content/uploads/2013/09/metaanalysis-Uttal_Newcombe.pdf'],
- ['30 تجربة','عدّ الأنفاس','التأمل حسّن الانتباه لدى كبار السن الأصحاء، ودقة عدّ الأنفاس ارتبطت بشرود ذهن أقل ومزاج أفضل.','https://news.wisc.edu/to-practice-mindfulness-start-by-counting-your-breaths/'],
  ['25 دراسة','استراحة الحركة','التدريب الحركي-الذهني ارتبط بتحسن الانتباه وسرعة المعالجة لدى كبار السن، والأدلة متوسطة.','https://link.springer.com/article/10.1186/s11556-020-00240-y'],
  ['لماذا حذفنا','ألعاب الاندفاع وLumosity','تدريب التحكم في الاندفاع لم ينتقل أثره، وتدريب Lumosity لم يتفوق على ألعاب الفيديو العادية في تجربة على 128 شخصًا.','https://pennmedicine.org/news/news-releases/2017/july/brain-training-has-no-effect-on-decision-making-or-cognitive-function'],
  ['أدلة ضعيفة','مراجعة كوكرين','أدلة التدريب الحاسوبي للأصحاء ما زالت ضعيفة والفائدة صغيرة؛ لذلك نجمع التدريب مع العادات والتحديات اليومية.','https://www.mcmasteroptimalaging.org/full-article/6fd052ca680e640f4e816756dd53a890'],
  ['بأمانة','حدود التدريب','مراجعة Simons 2016 ودراسة 11,430 مشاركًا: التحسن يتركز غالبًا في المهارة المتدرَّب عليها. لذلك ننوّع المهارات ولا نعدك بمعجزات.','https://www.sciencedaily.com/releases/2016/10/161003113427.htm'],
- ['8 أسابيع','اتجاه النغمة','Anderson 2013: التدريب السمعي لكبار السن حسّن الانتباه والذاكرة السمعية قصيرة المدى، وحسّن فهم الكلام وسط الضجيج قليلًا لدى ضعاف السمع.','https://brainvolts.northwestern.edu/wp-content/uploads/boxtrx/Anderson_FrontSysNeuro13.pdf'],
  ['20 يومًا','المرآة والمواقع','Harrison 2013: تدريب المدى المعقد وحده انتقل أثره لمهام ذاكرة عاملة أخرى، ولم يرفع الذكاء السائل.','https://www.sciencedaily.com/releases/2013/10/131008091720.htm'],
  ['+19 ألف','الكلمات المتقاطعة','دراسة PROTECT: من يحلّون ألغاز الكلمات بانتظام كان أداؤهم كمن يصغرهم بنحو 8 إلى 10 سنوات في بعض الاختبارات. الدراسة ارتباطية ولا تثبت السبب.','https://www.sciencedaily.com/releases/2019/05/190516082349.htm'],
  ['21 يومًا','طيّ الورق','Wright وزملاؤه 2008: 21 يومًا من طيّ الورق ذهنيًا حسّنت الدوران الذهني أيضًا لا الاختبار اللفظي، وظهر التحسن مع أشكال جديدة، واختفت الفروق بين الجنسين بعد التدريب.','https://dash.harvard.edu/bitstream/1/3128711/1/Kosslyn_TrainingGeneralizedSpatial.pdf'],
@@ -861,9 +852,6 @@ const REFS=[
  ['83 مشاركًا','السائق اليقظ','Lussier وBherer 2017: تدريب المهام المزدوجة بأولوية متغيرة نقل أثره لمهام جديدة أكثر من الأولوية الثابتة، لدى من هم بين 55 و65 عامًا.','https://lead.ube.fr/publications/specific-transfer-effects-following-variable-priority-dual-task-training-in-older-adults/'],
  ['22 دراسة','الرادار','تحليل Bediou وزملائه 2018: التدريب على ألعاب الأكشن حسّن المهارات الذهنية (g=0.34)، وأقواها المهارات المكانية والتحكم بالانتباه. أغلب الدراسات على الشباب.','https://learningtransferlab.wiscweb.wisc.edu/wp-content/uploads/sites/280/2017/11/Bediou_et_al_PsychBull_2017.pdf'],
  ['625 مشاركًا','العازف','تحليل 2025 لتسع تجارب عشوائية على من هم فوق الستين: التدريب الموسيقي حسّن الإدراك العام (0.31) والذاكرة (0.36) والوظائف التنفيذية (0.43)، لا الانتباه. التجارب على آلات حقيقية.','https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2025.1632873/full'],
- ['6 أشهر','المستكشف','West 2017: لعب لعبة ثلاثية الأبعاد ستة أشهر زاد المادة الرمادية في الحُصين لدى من هم بين 55 و75 عامًا وحسّن الذاكرة القصيرة. العينة 33 شخصًا.','https://www.sciencedaily.com/releases/2017/12/171206141648.htm'],
- ['332 نتيجة','ابتكار','Haase وزملاؤه 2023: طرق تنمية الإبداع للبالغين فعّالة بأثر متوسط g=0.53، وأقواها البرامج الشاملة والتأمل.','https://edoc.hu-berlin.de/items/a8357c0b-1e41-4eff-8ad1-fe3b5355a831'],
- ['2022','قراءة المشاعر','تدريب الإدراك الاجتماعي لدى أصحاء حسّن التعرف على مشاعر الوجه وقلّل أخطاء نسبة الشعور الخاطئ.','https://www.ncbi.nlm.nih.gov/pmc/articles/PMC9680726/'],
  ['15 مشاركًا','التفاصيل الدقيقة','SPECTRA 2023: تدريب استرجاع تفاصيل المشهد حسّن التذكر وظهر أثره في حل المشكلات والإبداع. دراسة أولية بلا مجموعة ضابطة.','https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10558027/'],
  ['45 دراسة','الانتظام','تحليل 2026 لتدريب الذاكرة العاملة: التحسن انتقل لمهام لم يُتدرَّب عليها (0.36)، وكمية التدريب الكلية هي ما ارتبط بالمكاسب، والعمر لم يقلل الفائدة.','https://pmc.ncbi.nlm.nih.gov/articles/PMC13121830/'],
  ['10 أسابيع','القرار المزدوج','INHANCE 2025: ألعاب السرعة 30 دقيقة يوميًا رفعت مستوى الأسيتيل كولين في الدماغ لدى من هم فوق 65، دون مجموعة الألعاب العادية.','https://www.sciencedaily.com/releases/2025/10/251029002858.htm']];
@@ -937,7 +925,7 @@ function header(g){$('#play').style.setProperty('--c',g.col[0]);$('#play').style
 function showIntro(){stopAll();const g=curGame();header(g);const b=S.st.best[g.id],gi=gameIndex(g.id);
   const L=S.st.lv,LV={loci:()=>L.loci&&`عدد الأشياء: <b class="num">${L.loci}</b>`,racer:()=>L.racer&&`مستوى الطريق: <b class="num">${L.racer}</b>`,
     dual:()=>`مستواك الحالي: <b class="ltr">${L.dual||1}-Back</b>`,dd:()=>L.dd&&`سرعة العرض الحالية: <b class="ltr num">${L.dd} ms</b>`,hawk:()=>`سرعة العرض: <b class="ltr num">${clamp(L.hawkMs||1000,250,1500)} ms</b>`,
-    sweep:()=>`طول النغمة: <b class="ltr num">${clamp(L.sweepMs||400,40,600)} ms</b>`,symspan:()=>`طول المجموعة: <b class="num">${clamp((L.symspan||3)-1,2,7)}</b>`,xw:()=>`المستوى <b class="num">${clamp(L.xw||1,1,5)}</b> من 5`,
+    symspan:()=>`طول المجموعة: <b class="num">${clamp((L.symspan||3)-1,2,7)}</b>`,xw:()=>`المستوى <b class="num">${clamp(L.xw||1,1,5)}</b> من 5`,
     tol:()=>`مستوى الألغاز: <b class="num">${clamp(L.tol||1,1,5)}</b> من 5`,pal:()=>`تبدأ من المرحلة <b class="num">${clamp(L.palS!=null?L.palS:(L.pal||0)-2,0,3)+1}</b> من 5`,
     mot:()=>L.motK>3&&`تبدأ بتتبع <b class="num">${clamp(L.motK-1,3,6)}</b> كرات`,wcst:()=>L.wcst>1&&`مستوى القواعد: <b class="num">${L.wcst}</b>`};
   const rk=gameRank(g.id),lt=LV[g.id]?LV[g.id]():'',lvl=(rk?`<div class="bestline">مستواك: <b class="num">${rk[0]}</b>${rk[1]?` من ${rk[1]}`:''} · يصعد مع الفوز وينزل مع الخسارة</div>`:'')+(lt?`<div class="bestline">${lt}</div>`:'');
@@ -951,7 +939,7 @@ function gameRank(id){const L=S.st.lv,q=GM[id]&&GM[id].quiz,b=(v,lo,hi,st,mx)=>c
    case 'pm':return[L.pm||1,0];case 'story':return[L.story||1,4];case 'symspan':return[clamp((L.symspan||3)-1,2,7)-1,6];case 'nav':return[L.nav||1,0];case 'tol':return[L.tol||1,5];case 'xw':return[L.xw||1,5];
    case 'hawk':return[((L.hawkLv||1)-1)*11+b(L.hawkMs||1000,250,1500,125,11),44];case 'dd':return[b(L.dd||400,60,400,30,12),12];case 'sweep':return[((L.sweepLv||1)-1)*12+b(L.sweepMs||400,40,600,50,12),36];
    case 'racer':return[L.racer||1,0];case 'mot':return[((L.motK||3)-3)*4+Math.min(3,L.motS||0)+1,16];case 'conf':return[b(L.confD||10,2,16,1.5,10),10];case 'wcst':return[L.wcst||1,6];
-   case 'breath':return[L.breath||1,4];case 'ideas':return[L.ideas||1,5];case 'piano':return[clamp(L.pianoLen||3,3,12)-2,10];case 'explore':return[L.explore||1,8];case 'scene':return[L.scene||1,6];case 'radar':return[L.radar||1,10];case 'mylist':return[(S.st.mylist&&S.st.mylist.reviews||0)+1,0]}
+   case 'piano':return[clamp(L.pianoLen||3,3,12)-2,10];case 'scene':return[L.scene||1,6];case 'radar':return[L.radar||1,10];case 'mylist':return[(S.st.mylist&&S.st.mylist.reviews||0)+1,0]}
   return q&&q.max?[clamp(L[id]||1,1,q.max),q.max]:null}
 function countdown(){if(RUN){const r=gameRank(curGame().id);RUN.r0=r?r[0]:null}stopAll();const g=curGame();if(g.nocd){$('#stage').innerHTML='';g.run()(finish);return}$('#stage').innerHTML='<div class="cd" id="cd"></div>';let n=3;
   const show=()=>{if(n===0){sfx.go();$('#stage').innerHTML='';(g.quiz?runQuiz(g.quiz):g.run())(finish);return}sfx.tick();$('#cd').innerHTML=`<b class="num">${n}</b>`;n--;later(show,700)};show()}
@@ -1259,7 +1247,6 @@ function genTrans(lv){const n=Math.min(6,3+Math.floor((lv-1)/2)),its=shuffle(TOK
 
 /* ================= v7: everyday memory, hearing, assessment, coach, habits ================= */
 const esc=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
-function toneF(f,d=.3,type='triangle',v=.12){if(S.st.mute)return;try{if(!audioOK())return;const t=AC.currentTime,o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.02)}catch(e){}}
 function headerCustom(title,sub,cols){const p=$('#play');p.style.setProperty('--c',cols[0]);p.style.setProperty('--c2',cols[1]);$('#pt').textContent=title;$('#ps').textContent=sub;
   const wk=RUN&&RUN.wk;$('#wkd').innerHTML=wk?wk.map(id=>`<i class="${doneToday(id)?'done':''}"></i>`).join(''):''}
 const weekKey=()=>{const n=new Date();return dayKey(addDays(n,-n.getDay()))};
@@ -1621,7 +1608,6 @@ Object.assign(I,{
  series:'<svg viewBox="0 0 48 48" fill="#0A0E1C" font-family="Tajawal,sans-serif" font-weight="800" text-anchor="middle"><rect x="2" y="14" width="10" height="20" rx="3" opacity=".35"/><rect x="13.5" y="14" width="10" height="20" rx="3" opacity=".55"/><rect x="25" y="14" width="10" height="20" rx="3" opacity=".75"/><rect x="36.5" y="14" width="10" height="20" rx="3" fill="none" stroke="#0A0E1C" stroke-width="2.4" stroke-dasharray="3 2"/><text x="41.5" y="29" font-size="12">؟</text></svg>',
  hawk:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M4 22c6-6 12-6 16 0 4-6 10-6 16 0-6-2-10 0-16 6-6-6-10-8-16-6z" opacity=".4"/><path d="M14 36c5-5 10-5 13 0 3-5 8-5 13 0-5-1.5-8 0-13 5-5-5-8-6.5-13-5z"/><circle cx="38" cy="10" r="5" fill="none" stroke="#0A0E1C" stroke-width="3"/></svg>',
  xw:'<svg viewBox="0 0 48 48" fill="#0A0E1C" font-family="Tajawal,sans-serif" font-weight="800" text-anchor="middle"><rect x="4" y="4" width="12" height="12" rx="2" opacity=".85"/><rect x="18" y="4" width="12" height="12" rx="2" fill="none" stroke="#0A0E1C" stroke-width="2.2"/><rect x="32" y="4" width="12" height="12" rx="2" fill="none" stroke="#0A0E1C" stroke-width="2.2"/><rect x="32" y="18" width="12" height="12" rx="2" fill="none" stroke="#0A0E1C" stroke-width="2.2"/><rect x="32" y="32" width="12" height="12" rx="2" fill="none" stroke="#0A0E1C" stroke-width="2.2"/><rect x="18" y="18" width="12" height="12" rx="2" opacity=".85"/><text x="38" y="14" font-size="9">ق</text><text x="24" y="14" font-size="9">ل</text><text x="38" y="28" font-size="9">ب</text></svg>',
- breath:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3" stroke-linecap="round"><circle cx="24" cy="24" r="18" opacity=".3"/><circle cx="24" cy="24" r="11" opacity=".6"/><circle cx="24" cy="24" r="4" fill="#0A0E1C"/><path d="M6 40c6-4 10-4 14 0M28 40c6-4 10-4 14 0" opacity=".5"/></svg>'
 });
 
 /* ---------- 1. Pattern series (ACTIVE reasoning: letter series, no arithmetic) ---------- */
@@ -1708,20 +1694,6 @@ function runXW(){return done=>{
     later(()=>done({pts:Math.round(m*open*15*(1+.2*(XL-1))),metric:m,detail:`${nl>XL?`صعدت إلى المستوى ${nl}! `:nl<XL?`رجعنا إلى المستوى ${nl}. `:`المستوى ${XL}. `}حللت الكلمات المتقاطعة في ${fmtDur(secs)}${hints?`، مع ${arN(hints,['حرف مكشوف واحد','حرفين مكشوفين','أحرف مكشوفة','حرفًا مكشوفًا'])}`:' بدون أي مساعدة'}.`}),700)}
 }}
 
-/* ---------- 4. Breath counting (focused-attention meditation) ---------- */
-function runBreath(){return done=>{
-  const BL=clamp(S.st.lv.breath||1,1,4),T=[150,180,210,240][BL-1],st=$('#stage');let n=0,good=0,bad=0,lost=0,presses=0,fast=0,last=0,ended=false;
-  st.innerHTML=hudHTML(true)+`<div class="msg" id="m">تنفّس بشكل طبيعي. مع كل زفير اضغط «نفَس»، وفي النفَس التاسع اضغط «التاسع»، ثم ابدأ من جديد</div><div class="calm" id="cm"><div class="glow"></div><span id="cmt">ركّز على إحساس النفَس</span></div><div class="duo"><button class="match" id="b1">نفَس</button><button class="match nine" id="b9">التاسع</button></div><button class="cta ghost" id="bl">فقدت العدّ، أبدأ من جديد</button>`;
-  const pulse=()=>{if(BL>=3)return;const c=$('#cm');c.classList.remove('p');void c.offsetWidth;c.classList.add('p')};
-  const say=(t,ms=2500)=>{$('#cmt').textContent=t;later(()=>{const x=$('#cmt');if(x)x.textContent='ركّز على إحساس النفَس'},ms)};
-  const tooFast=()=>{const t=performance.now(),q=last&&t-last<1300;last=t;if(q){fast++;bad++;n=0;sfx.bad();say('أبطأ قليلًا: اضغط مع زفير حقيقي، ثم ابدأ العدّ من جديد',3000)}return q};
-  $('#b1').onclick=()=>{presses++;pulse();if(tooFast())return;toneF(392,.12,'sine',.025);n++;if(n>8){bad++;n=0;say('فاتك التاسع، ابدأ من جديد')}};
-  $('#b9').onclick=()=>{presses++;pulse();if(tooFast())return;toneF(523,.18,'sine',.03);if(n===8){good++;if(BL<2)say('دورة كاملة ✓',1600)}else{bad++;say('ليس التاسع بعد، ابدأ من جديد')}n=0};
-  $('#bl').onclick=()=>{lost++;n=0;say('لا بأس، عُد إلى النفَس الأول')};
-  keyH=e=>{if(e.code==='Space'){e.preventDefault();$('#b1').click()}if(e.key==='9'||e.key==='Enter')$('#b9').click()};
-  timeBar(T,()=>{if(ended)return;ended=true;stopAll();const cyc=good+bad,acc=cyc?good/cyc:0,m=acc*Math.min(1,cyc/3);let nl=BL;if(acc>=.8&&cyc>=4)nl=Math.min(4,BL+1);else if(acc<.5&&BL>1)nl=BL-1;S.st.lv.breath=nl;
-    done({pts:good*40,metric:m,detail:`${good?`أكملت ${arN(good,AW.cyc)} صحيحة من ${cyc}`:'لم تكتمل دورة صحيحة بعد'}${lost?`، وانتبهت لشرودك ${arN(lost,AW.times)}`:''}${fast?`. ضغطت أسرع من نفَس طبيعي ${arN(fast,AW.times)}؛ النفَس الكامل يأخذ ثانيتين على الأقل`:''}. ${presses<18?'كان عدد أنفاسك قليلًا؛ تأكد أنك تضغط مع كل زفير.':'ملاحظة شرود الذهن ثم العودة هي جوهر التمرين.'}`})});
-}}
 
 /* ---------- task switching with variability across sessions (Karbach & Kray) ---------- */
 const SWF=[
@@ -1761,38 +1733,9 @@ function showMove(next){stopAll();headerCustom('استراحة حركة','60 ث�
 
 /* ================= v10: two evidence-based games ================= */
 Object.assign(I,{
- sweep:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 34c5 0 7-20 14-20"/><path d="M14 12l5 2-2 5"/><path d="M29 14c7 0 9 20 14 20"/><path d="M38 36l5-2-1-5"/><circle cx="24" cy="40" r="2.6" fill="#0A0E1C" stroke="none"/></svg>',
  symspan:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><rect x="4" y="6" width="8" height="8" rx="1.5"/><rect x="36" y="6" width="8" height="8" rx="1.5"/><rect x="12" y="16" width="8" height="8" rx="1.5" opacity=".55"/><rect x="28" y="16" width="8" height="8" rx="1.5" opacity=".55"/><rect x="4" y="26" width="8" height="8" rx="1.5" opacity=".55"/><rect x="36" y="26" width="8" height="8" rx="1.5" opacity=".55"/><path d="M24 3v42" stroke="#0A0E1C" stroke-width="2" stroke-dasharray="3 3"/><rect x="12" y="36" width="8" height="8" rx="1.5"/><rect x="28" y="36" width="8" height="8" rx="1.5"/></svg>'
 });
 
-/* ---------- 5. Sound sweeps: order of two frequency glides (IMPACT auditory speed training) ---------- */
-function playSweep(up,ms,f0,delay=0){try{if(!audioOK())return;
-  const t=AC.currentTime+.04+delay,d=ms/1000,lo=f0/1.7,hi=f0*1.7,rmp=Math.min(.006,d/5),o=AC.createOscillator(),g=AC.createGain();o.type='sine';
-  o.frequency.setValueAtTime(up?lo:hi,t);o.frequency.exponentialRampToValueAtTime(up?hi:lo,t+d);g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(.2,t+rmp);g.gain.setValueAtTime(.2,t+d-rmp);g.gain.linearRampToValueAtTime(0,t+d);
-  o.connect(g);g.connect(AC.destination);o.start(t);o.stop(t+d+.03)}catch(e){}}
-function runSweep(){return done=>{
-  const lv=S.st.lv.sweepLv||1,N=20,st=$('#stage');let dur=clamp(S.st.lv.sweepMs||400,40,600),trial=0,ok=0,pts=0,seq=[],got=[],phase=0,f0=1000;const durs=[];
-  st.innerHTML=hudHTML(false)+`<div class="msg" id="m">جرّب أولًا: كيف تبدو النغمة الصاعدة والنازلة؟</div><div class="swv" id="sv"><div class="swspk" id="spk"><svg viewBox="0 0 48 48" fill="currentColor"><path d="M8 18h8l11-9v30l-11-9H8z"/><path d="M33 16c3 2.5 3 13.5 0 16M38 11c6 5 6 21 0 26" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"/></svg></div><div class="swslots"><b id="s0"></b><b id="s1"></b></div></div>
-    <div class="duo" id="demo"><button class="cta ghost" id="dup">اسمع ↑ صاعدة</button><button class="cta ghost" id="ddn">اسمع ↓ نازلة</button></div><button class="cta" id="sgo">ابدأ</button>
-    <div class="duo swans" id="ans" hidden><button class="match" id="aup" aria-label="صاعدة">↑</button><button class="match" id="adn" aria-label="نازلة">↓</button></div>`;
-  const showMs=()=>$('#ml').innerHTML=`<span class="ltr num" style="font-size:18px">${Math.round(dur)} ms</span>`;showMs();$('#tl').textContent='0/'+N;
-  $('#dup').onclick=()=>playSweep(true,450,1000);$('#ddn').onclick=()=>playSweep(false,450,1000);
-  $('#sgo').onclick=()=>{$('#demo').remove();$('#sgo').remove();$('#ans').hidden=false;next()};
-  const slots=()=>[0,1].forEach(i=>{const e=$('#s'+i);e.textContent=got[i]==null?'':got[i]?'↑':'↓';e.className=got[i]==null?'':got[i]===seq[i]?'ok':'no'});
-  function next(){if(trial>=N){end();return}trial++;$('#tl').textContent=trial+'/'+N;seq=[Math.random()<.5,Math.random()<.5];got=[];slots();phase=0;
-    f0=lv>=2?pick([600,800,1000,1300,1700]):1000;const isi=lv>=3?dur*.6:dur;$('#m').textContent='استمع…';const sp=$('#spk');sp.classList.add('on');
-    playSweep(seq[0],dur,f0,.25);playSweep(seq[1],dur,f0,.25+(dur+isi)/1000);
-    later(()=>{sp.classList.remove('on');phase=1;$('#m').textContent='اتجاه النغمة الأولى؟'},250+40+2*dur+isi+120)}
-  function answer(up){if(phase!==1&&phase!==2)return;const i=phase-1;got[i]=up;slots();
-    if(up!==seq[i]){phase=3;sfx.bad();got[1-i]=got[1-i]??null;$('#m').textContent=`الصحيح: ${seq.map(x=>x?'↑':'↓').join(' ثم ')}`;dur=Math.min(600,dur*1.25);showMs();later(next,1300);return}
-    if(i===0){phase=2;tone(700,.04);$('#m').textContent='والثانية؟';return}
-    phase=3;ok++;durs.push(dur);const g=Math.round(clamp(4000/dur,5,100));pts+=g;$('#sc').textContent=pts;sfx.ok(2);floatAt(st,...relPos($('#sv'),st),'+'+g);dur=Math.max(25,dur*.88);showMs();later(next,650)}
-  $('#aup').onclick=()=>answer(true);$('#adn').onclick=()=>answer(false);
-  keyH=e=>{if(e.key==='ArrowUp'){e.preventDefault();answer(true)}else if(e.key==='ArrowDown'){e.preventDefault();answer(false)}};
-  function end(){stopAll();const l=durs.slice(-6),thr=l.length?l.reduce((a,b)=>a+b)/l.length:dur;S.st.lv.sweepMs=Math.round(clamp(thr*1.3,40,600));
-    let nl=lv;if(thr<80&&ok>=12)nl=Math.min(3,lv+1);else if(thr>400&&lv>1)nl=lv-1;S.st.lv.sweepLv=nl;
-    done({pts,metric:thr,detail:`سرعة تمييزك للأصوات: ${Math.round(thr)} ملّي ثانية لكل نغمة. أصبت ${ok} من ${N}.${nl>lv?' المرة الجاية: طبقات صوت متنوعة وفواصل أقصر.':''}`})}
-}}
 
 /* ---------- 6. Symmetry span: complex span (Harrison et al. 2013) ---------- */
 function symPattern(sym,lv){const g=[...Array(8)].map(()=>Array(8).fill(0));for(let r=0;r<8;r++)for(let c=0;c<4;c++){g[r][c]=Math.random()<.42?1:0;g[r][7-c]=g[r][c]}
@@ -1935,35 +1878,10 @@ function runRadar(){return done=>{
 
 /* ================= v18: five research-based games ================= */
 Object.assign(I,{
- ideas:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M24 5a13 13 0 0 0-8 23c2 2 3 4 3 7h10c0-3 1-5 3-7a13 13 0 0 0-8-23z" opacity=".85"/><rect x="18" y="37" width="12" height="3.5" rx="1.5"/><rect x="19.5" y="42" width="9" height="3" rx="1.5"/><path d="M5 12l4 2M43 12l-4 2M3 24h5M45 24h-5" stroke="#0A0E1C" stroke-width="2.6" stroke-linecap="round"/></svg>',
  piano:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><rect x="4" y="10" width="40" height="30" rx="4" opacity=".3"/><rect x="7" y="13" width="7" height="24" rx="1.5" fill="#fff" fill-opacity=".85"/><rect x="15.5" y="13" width="7" height="24" rx="1.5" fill="#fff" fill-opacity=".85"/><rect x="24" y="13" width="7" height="24" rx="1.5"/><rect x="32.5" y="13" width="7" height="24" rx="1.5" fill="#fff" fill-opacity=".85"/><rect x="12" y="13" width="5" height="14" rx="1"/><rect x="29" y="13" width="5" height="14" rx="1"/></svg>',
- explore:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M4 8l12 10v22L4 30z" opacity=".55"/><path d="M44 8L32 18v22l12-10z" opacity=".55"/><path d="M16 18h16v22H16z" opacity=".25"/><path d="M24 22l5 12-5-3-5 3z"/></svg>',
- emo:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3" stroke-linecap="round"><circle cx="24" cy="24" r="19" fill="#0A0E1C" fill-opacity=".15"/><path d="M14 17l6 2M34 17l-6 2"/><circle cx="18" cy="23" r="2" fill="#0A0E1C"/><circle cx="30" cy="23" r="2" fill="#0A0E1C"/><path d="M16 33q8-7 16 0"/></svg>',
  scene:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><rect x="3" y="7" width="42" height="30" rx="4" opacity=".25"/><circle cx="14" cy="18" r="4"/><rect x="10" y="23" width="8" height="12" rx="2"/><circle cx="31" cy="20" r="3.5" opacity=".6"/><rect x="27.5" y="24.5" width="7" height="10.5" rx="2" opacity=".6"/><path d="M38 12l3-2 3 2" stroke="#0A0E1C" stroke-width="2" fill="none"/><path d="M14 41h20" stroke="#0A0E1C" stroke-width="3" stroke-linecap="round"/></svg>'
 });
 
-/* ---------- 1. Creativity: alternative uses, scored by Claude when available (Haase 2023; Organisciak 2023) ---------- */
-const AUT_OBJ=[['علبة مناديل',1],['ملعقة',1],['كوب ورقي',1],['مشبك ورق',1],['شماعة ملابس',1],['جريدة قديمة',1],['علبة كرتون',1],['قارورة ماء فارغة',1],['طوبة',2],['جورب',2],['مظلة مكسورة',2],['قلم رصاص',2],['إطار سيارة قديم',2],['ملعقة خشب',2],['شريط لاصق',2],['علبة بيض',2],['قرص مدمج قديم',3],['زر قميص',3],['ظل',3],['صوت الصدى',3],['رمل',3],['مرآة صغيرة',3],['حبل',3],['ورقة شجر',3]];
-function runIdeas(){return done=>{
-  const lv=clamp(S.st.lv.ideas||1,1,5),T=[150,130,120,100,90][lv-1],pool=AUT_OBJ.filter(o=>o[1]<=Math.min(3,1+Math.floor(lv/2))),obj=pick(pool)[0],st=$('#stage');const ideas=[];let ended=false;
-  st.innerHTML=hudHTML(true)+`<div class="qp"><div class="sub">اكتب أكبر عدد من الاستخدامات <b>الغريبة والمبتكرة</b> لـ</div><div class="idobj">${esc(obj)}</div><div class="sub">ليس الاستخدام العادي! كل فكرة لوحدها</div></div>
-   <div class="idrow"><input id="idin" class="ta" maxlength="80" placeholder="مثال: أستخدمه كـ…" autocomplete="off"><button class="match" id="idadd">أضف</button></div><ol class="idlist" id="idl"></ol><button class="cta ghost" id="iddone">انتهيت</button>`;
-  const inp=$('#idin');const add=()=>{const v=inp.value.trim();if(!v||ended)return;if(ideas.some(x=>x===v)){inp.value='';return}ideas.push(v);inp.value='';$('#idl').innerHTML=ideas.map(x=>`<li>${esc(x)}</li>`).join('');$('#sc').textContent=ideas.length;tone(620,.04);inp.focus()};
-  $('#idadd').onclick=add;inp.onkeydown=e=>{if(e.key==='Enter'){e.preventDefault();add()}};$('#iddone').onclick=()=>finishIt();setTimeout(()=>inp.focus(),100);
-  timeBar(T,()=>finishIt());
-  async function finishIt(){if(ended)return;ended=true;stopAll();const n=ideas.length;
-    if(!n){done({pts:0,metric:0,detail:'لم تكتب أي فكرة. الإبداع يبدأ بالكمية: اكتب أي شيء يخطر ببالك، حتى لو بدا سخيفًا.'});return}
-    st.innerHTML='<div class="thinking" style="margin:40px auto"><i></i><i></i><i></i><span>أقيّم أصالة أفكارك…</span></div>';
-    let sc=null,best=0,tip='';
-    if(SAMPLE){try{const r=await SAMPLE.json(`أنت محكّم إبداع في اختبار «الاستخدامات البديلة». الشيء: «${obj}». قيّم أصالة كل فكرة من 1 (عادية أو متوقعة أو غير منطقية) إلى 5 (أصيلة جدًا وممكنة). الاستخدام الأساسي المعتاد = 1. أعد JSON فقط: {"scores":[أرقام بنفس ترتيب الأفكار],"best":رقم الفكرة الأفضل من 0,"tip":"نصيحة واحدة قصيرة بالعربية لتفكير أكثر أصالة في المرة القادمة"}\nالأفكار:\n${ideas.map((x,i)=>i+': '+x).join('\n')}`,{cache:false});
-      if(r&&Array.isArray(r.scores)&&r.scores.length===n){sc=r.scores.map(v=>clamp(+v||1,1,5));best=clamp(+r.best||0,0,n-1);tip=String(r.tip||'').slice(0,200)}}catch(e){}}
-    let m,detail;
-    if(sc){const orig=sc.reduce((a,b)=>a+b,0),hi=sc.filter(v=>v>=4).length;m=clamp((orig-n*1.2)/18,0,1);
-      detail=`كتبت ${arN(n,['فكرة واحدة','فكرتين','أفكار','فكرة'])}، منها ${hi} أصيلة جدًا (4 أو 5 من 5). أبدع فكرة: «${esc(ideas[best])}».${tip?' نصيحة: '+esc(tip):''}`}
-    else{m=clamp(n/12,0,1);detail=`كتبت ${arN(n,['فكرة واحدة','فكرتين','أفكار','فكرة'])}. تقييم الأصالة بالذكاء الاصطناعي متاح في نسخة التطبيق على Claude، وهنا نحسب العدد فقط.`}
-    let nl=lv;if(m>=.7)nl=Math.min(5,lv+1);else if(m<.3&&lv>1)nl=lv-1;S.st.lv.ideas=nl;
-    done({pts:Math.round(n*10+(sc?sc.reduce((a,b)=>a+b,0)*8:0)),metric:m,detail})}
-}}
 
 /* ---------- 2. The pianist: hear a melody, play it back (music-training meta-analysis 2025) ---------- */
 const PNOTE=[262,294,330,349,392,440,494],PCOL=['#FF5F7A','#FF9A3D','#FFD45A','#8BE36A','#3FD0E8','#7A9BFF','#C17BFF'],PNAME=['دو','ري','مي','فا','صول','لا','سي'];
@@ -1988,70 +1906,7 @@ function runPiano(){return done=>{
   newRound();
 }}
 
-/* ---------- 3. The explorer: first-person maze (West 2017; Lövdén 2012) ---------- */
-function mazeGrid(n){const W=2*n+1,g=[...Array(W)].map(()=>Array(W).fill(1));const vis=new Set(),stk=[[0,0]];vis.add('0,0');g[1][1]=0;
-  while(stk.length){const[x,y]=stk[stk.length-1],nb=shuffle([[1,0],[-1,0],[0,1],[0,-1]]).map(([dx,dy])=>[x+dx,y+dy,dx,dy]).filter(([a,b])=>a>=0&&b>=0&&a<n&&b<n&&!vis.has(a+','+b));
-    if(!nb.length){stk.pop();continue}const[a,b,dx,dy]=nb[0];vis.add(a+','+b);g[2*y+1+dy][2*x+1+dx]=0;g[2*b+1][2*a+1]=0;stk.push([a,b])}
-  for(let k=0;k<Math.floor(n*n/6);k++){const x=1+rnd(W-2),y=1+rnd(W-2);if(g[y][x]===1&&((x%2===0&&y%2===1)||(x%2===1&&y%2===0)))g[y][x]=0}return g}
-function bfsDist(g,a,b){const W=g.length,q=[a],d=new Map([[a.join(),0]]);while(q.length){const[x,y]=q.shift(),k=d.get(x+','+y);if(x===b[0]&&y===b[1])return k;for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy;if(g[ny]&&g[ny][nx]===0&&!d.has(nx+','+ny)){d.set(nx+','+ny,k+1);q.push([nx,ny])}}}return 999}
-function runExplore(){return done=>{
-  const lv=clamp(S.st.lv.explore||1,1,8),n=[3,4,4,5,5,6,6,7][lv-1],nt=[2,2,3,3,4,4,5,5][lv-1],mapT=[14,12,11,10,9,8,7,6][lv-1],st=$('#stage');
-  const g=mazeGrid(n),W=g.length,cells=[];for(let y=1;y<W;y+=2)for(let x=1;x<W;x+=2)cells.push([x,y]);
-  const start=[1,1],EM=['🌴','⛲','🏰','🎈','🐪','🚩'],cols=['#FF5F7A','#3FD0E8','#FFD45A','#8BE36A','#C17BFF','#FF9A3D'];
-  const far=shuffle(cells.filter(c=>c[0]+c[1]>3)).sort((a,b)=>bfsDist(g,start,b)-bfsDist(g,start,a));let tg=[];for(const c of far){if(tg.length>=nt)break;if(tg.every(t=>Math.abs(t[0]-c[0])+Math.abs(t[1]-c[1])>=4))tg.push(c)}for(const c of far){if(tg.length>=nt)break;if(!tg.includes(c))tg.push(c)}tg=shuffle(tg);
-  let px=1.5,py=1.5,dir=0,cx=1,cy=1,next=0,steps=0,peeks=0,phase='map',anim=null,t0=0,pts=0,returning=false;
-  let shortest=bfsDist(g,start,tg[0]);for(let i=1;i<tg.length;i++)shortest+=bfsDist(g,tg[i-1],tg[i]);shortest+=bfsDist(g,tg[tg.length-1],start);const LIMIT=Math.round(90+shortest*1.6);
-  st.innerHTML=hudHTML(false)+`<div class="msg" id="m"></div><div class="exv"><canvas id="ex"></canvas></div><div class="exctl" id="ec"><button class="steer" id="eL" aria-label="لف يسار">↰</button><button class="match" id="eF" aria-label="تقدم">▲</button><button class="steer" id="eR" aria-label="لف يمين">↱</button></div><button class="cta ghost" id="epk">اطلب الخريطة (−نقاط)</button>`;
-  const cv=$('#ex'),ctx=cv.getContext('2d'),CW=cv.parentElement.clientWidth||340,CH=Math.round(CW*.72),dpr=window.devicePixelRatio||1;cv.width=CW*dpr;cv.height=CH*dpr;cv.style.cssText=`width:100%;height:${CH}px;display:block`;ctx.scale(dpr,dpr);
-  const sprites=()=>[...tg.map((c,i)=>({x:c[0]+.5,y:c[1]+.5,e:EM[i],c:cols[i],on:i>=next})),{x:1.5,y:1.5,e:'🏁',c:'#fff',on:true}];
-  function drawMap(){ctx.fillStyle='#0D1430';ctx.fillRect(0,0,CW,CH);const s=Math.min(CW,CH)/W*.94,ox=(CW-W*s)/2,oy=(CH-W*s)/2;
-    for(let y=0;y<W;y++)for(let x=0;x<W;x++)if(g[y][x]){ctx.fillStyle='#3A4580';ctx.fillRect(ox+x*s,oy+y*s,s+.5,s+.5)}
-    ctx.font=`${s*1.1}px sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';tg.forEach((c,i)=>{ctx.fillText(EM[i],ox+(c[0]+.5)*s,oy+(c[1]+.5)*s);ctx.fillStyle='#fff';ctx.font=`bold ${s*.55}px sans-serif`;ctx.fillText(i+1,ox+(c[0]+1.1)*s,oy+(c[1]-.05)*s);ctx.font=`${s*1.1}px sans-serif`});
-    ctx.save();ctx.translate(ox+px*s,oy+py*s);ctx.rotate(dir*Math.PI/2);ctx.fillStyle='#FFD45A';ctx.beginPath();ctx.moveTo(s*.45,0);ctx.lineTo(-s*.3,-s*.3);ctx.lineTo(-s*.3,s*.3);ctx.fill();ctx.restore()}
-  function render(ang){const H=CH;const sky=ctx.createLinearGradient(0,0,0,H/2);sky.addColorStop(0,'#1B2660');sky.addColorStop(1,'#3E4C8F');ctx.fillStyle=sky;ctx.fillRect(0,0,CW,H/2);ctx.fillStyle='#2A2F45';ctx.fillRect(0,H/2,CW,H/2);
-    const fov=Math.PI/3,step=2,zb=[];const dx=Math.cos(ang),dy=Math.sin(ang);
-    for(let x=0;x<CW;x+=step){const ra=ang+Math.atan((x/CW-.5)*2*Math.tan(fov/2)),rx=Math.cos(ra),ry=Math.sin(ra);let mx=Math.floor(px),my=Math.floor(py);const ddx=Math.abs(1/rx),ddy=Math.abs(1/ry);let sx,sy,sdx,sdy,side=0;
-      if(rx<0){sx=-1;sdx=(px-mx)*ddx}else{sx=1;sdx=(mx+1-px)*ddx}if(ry<0){sy=-1;sdy=(py-my)*ddy}else{sy=1;sdy=(my+1-py)*ddy}
-      for(let k=0;k<64;k++){if(sdx<sdy){sdx+=ddx;mx+=sx;side=0}else{sdy+=ddy;my+=sy;side=1}if(!g[my]||g[my][mx])break}
-      let du=side===0?sdx-ddx:sdy-ddy,d=du*Math.cos(ra-ang);zb.push(d);const wx=side===0?py+du*ry:px+du*rx,fr=wx-Math.floor(wx),h=Math.min(H*3,H/Math.max(.05,d)),sh=Math.max(.25,1-d/9)*(side?.78:1),edge=fr<.035||fr>.965,y0=(H-h)/2;
-      ctx.fillStyle=`rgb(${Math.round((edge?80:120)*sh)},${Math.round((edge?92:135)*sh)},${Math.round((edge?160:210)*sh)})`;ctx.fillRect(x,y0,step,h);ctx.fillStyle='rgba(10,14,40,.22)';[.25,.5,.75].forEach(f=>ctx.fillRect(x,y0+h*f,step,Math.max(1,h*.012)));ctx.fillRect(x,y0+h-3,step,3)}
-    sprites().filter(s=>s.on).map(s=>({...s,d:Math.hypot(s.x-px,s.y-py)})).sort((a,b)=>b.d-a.d).forEach(s=>{const vx=s.x-px,vy=s.y-py,fwd=vx*dx+vy*dy;if(fwd<.2)return;const lat=-vx*dy+vy*dx,scX=CW/2*(1+lat/fwd/Math.tan(fov/2)),col=Math.floor(scX/step);if(col<0||col>=zb.length||zb[col]<fwd-.3)return;
-      const size=Math.min(H*1.2,H/fwd*.55);ctx.font=`${size}px sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(s.e,scX,H/2+size*.35)});
-    {const v=[[1,0],[0,1],[-1,0],[0,-1]][dir],blk=!anim&&g[cy+v[1]][cx+v[0]];const fb=$('#eF');if(fb)fb.classList.toggle('blk',!!blk);if(blk){ctx.fillStyle='rgba(10,14,40,.55)';ctx.fillRect(0,H/2-18,CW,36);ctx.fillStyle='#fff';ctx.font='bold 15px Tajawal,sans-serif';ctx.textAlign='center';ctx.fillText('جدار أمامك: لف يمينًا أو يسارًا',CW/2,H/2+5)}}
-    ctx.fillStyle='rgba(255,255,255,.85)';ctx.font='bold 13px Tajawal,sans-serif';ctx.textAlign='left';ctx.fillText(returning?'ارجع إلى 🏁':`التالي: ${tg[next]?EM[next]:''} (${next+1}/${nt})`,10,18)}
-  const ang=()=>dir*Math.PI/2;
-  function showMap(sec,first){phase='map';$('#ec').style.visibility='hidden';$('#epk').hidden=true;drawMap();$('#m').textContent=first?`احفظ الخريطة: اجمع ${EM.slice(0,nt).join(' ثم ')} بالترتيب، ثم ارجع إلى البداية`:'نظرة سريعة…';
-    later(()=>{phase='walk';$('#ec').style.visibility='visible';$('#epk').hidden=false;$('#m').textContent=returning?'ارجع إلى نقطة البداية 🏁':'امشِ في المتاهة بالترتيب';render(ang());if(first)t0=performance.now()},sec*1000)}
-  function animate(fromX,fromY,fromA,toX,toY,toA,cb){const s0=performance.now(),D=170;anim=true;const f=()=>{const k=Math.min(1,(performance.now()-s0)/D),e=k<.5?2*k*k:1-Math.pow(-2*k+2,2)/2;px=fromX+(toX-fromX)*e;py=fromY+(toY-fromY)*e;render(fromA+(toA-fromA)*e);if(k<1)requestAnimationFrame(f);else{anim=null;px=toX;py=toY;cb&&cb()}};requestAnimationFrame(f)}
-  function turn(d){if(phase!=='walk'||anim)return;const a0=ang();dir=(dir+d+4)%4;animate(px,py,a0,px,py,a0+d*Math.PI/2,()=>render(ang()))}
-  function fwd(){if(phase!=='walk'||anim)return;const v=[[1,0],[0,1],[-1,0],[0,-1]][dir],nx=cx+v[0],ny=cy+v[1];if(g[ny][nx]){sfx.bad();$('#ex').classList.add('shake');setTimeout(()=>$('#ex').classList.remove('shake'),300);return}
-    cx=nx;cy=ny;steps++;tone(330,.03);animate(px,py,ang(),cx+.5,cy+.5,ang(),arrive)}
-  function arrive(){if(!returning&&tg[next]&&cx===tg[next][0]&&cy===tg[next][1]){sfx.ok(2);pts+=60;$('#sc').textContent=pts;floatAt(st,...relPos(cv,st),'+60 '+EM[next]);next++;if(next>=nt){returning=true;$('#m').textContent='جمعت الكل! ارجع الآن إلى نقطة البداية 🏁'}render(ang())}
-    else if(returning&&cx===1&&cy===1)end(true)}
-  $('#eL').onclick=()=>turn(-1);$('#eR').onclick=()=>turn(1);$('#eF').onclick=fwd;$('#epk').onclick=()=>{if(phase!=='walk'||anim)return;peeks++;pts=Math.max(0,pts-25);$('#sc').textContent=pts;showMap(3,false)};
-  keyH=e=>{if(e.key==='ArrowUp'){e.preventDefault();fwd()}else if(e.key==='ArrowLeft'){e.preventDefault();turn(-1)}else if(e.key==='ArrowRight'){e.preventDefault();turn(1)}};
-  $('#tl').textContent='الخريطة';const tick=setInterval(()=>{if(phase==='walk'&&t0){const left=Math.max(0,Math.ceil(LIMIT-(performance.now()-t0)/1000));const tl=$('#tl');if(tl)tl.textContent=left+' ث';if(left<=0)end(false)}},500);cleanup.push(()=>clearInterval(tick));
-  function end(ok){if(phase==='done')return;phase='done';stopAll();const eff=ok?Math.min(1,shortest/Math.max(1,steps)):0,got=next/nt,m=clamp((ok?.5+.5*eff:got*.45)-peeks*.08,0,1);
-    let nl=lv;if(ok&&eff>=.65&&peeks===0)nl=Math.min(8,lv+1);else if(!ok||m<.4)nl=Math.max(1,lv-1);S.st.lv.explore=nl;
-    done({pts:Math.round(pts+(ok?eff*200:0)),metric:m,detail:ok?`أنهيت المهمة في ${arN(steps,['خطوة واحدة','خطوتين','خطوات','خطوة'])}، والأقصر ممكن ${shortest}. كفاءة طريقك ${Math.round(eff*100)}%${peeks?`، وطلبت الخريطة ${arN(peeks,['مرة واحدة','مرتين','مرات','مرة'])}`:' بدون أي خريطة'}.`:`انتهى الوقت بعد جمع ${next} من ${nt}. تخيّل الخريطة كطريق: «يمين عند الجدار، ثم مستقيم…».`})}
-  if(window.__test)window.__ex={g,tg,st:()=>({cx,cy,dir,next,returning,phase}),fwd,turn};
-  showMap(mapT,true);
-}}
 
-/* ---------- 4. Reading emotions (social cognition training in healthy adults, 2022) ---------- */
-const EMO=[['فرح',{mc:11,mo:4,eo:.75,bi:0,by:1}],['حزن',{mc:-8,mo:0,eo:.8,bi:7,by:0}],['غضب',{mc:-3,mo:0,eo:.95,bi:-8,by:-3,mw:-4}],['خوف',{mc:-2,mo:7,eo:1.55,bi:6,by:5,mw:4}],['دهشة',{mc:0,mo:13,eo:1.55,bi:0,by:8,mw:-7}],['اشمئزاز',{mc:-5,mo:2,eo:.7,bi:-4,by:-1,nz:1,ul:1}]];
-const EMSKIN=['#F1C9A5','#E0AC80','#C68B5E','#8D5B3B','#F5D7BF'],EMHAIR=['#2B1D14','#5A3A22','#1B1B24','#8A6A4A','#B9B2A8'];
-function emoFace(p,t,sk,hc,var2){const q=k=>(p[k]||0)*t,eo=1+((p.eo||1)-1)*t,by=q('by'),bi=q('bi'),mc=q('mc'),mo=q('mo'),mw=q('mw');
-  const mouth=mo>1.2?`<path d="M${46-mw/2} ${96-mc*.25}Q60 ${96+mc+mo} ${74+mw/2} ${96-mc*.25}Q60 ${96+mc*.3-mo*.15} ${46-mw/2} ${96-mc*.25}z" fill="#5A1E22" stroke="#3A1416" stroke-width="1.5"/>`:`<path d="M${46-mw/2} ${96-mc*.25}Q60 ${96+mc} ${74+mw/2} ${96-mc*.25}" fill="none" stroke="#3A1416" stroke-width="3" stroke-linecap="round"/>`;
-  const eye=x=>`<ellipse cx="${x}" cy="66" rx="7" ry="${Math.max(1.2,4.6*eo)}" fill="#fff"/><circle cx="${x}" cy="66" r="${Math.min(3.4,4.6*eo)}" fill="#2A1B12"/>`;
-  const browL=`<path d="M41 ${55-by} L58 ${55-by-bi}" stroke="${hc}" stroke-width="3.6" stroke-linecap="round"/>`,browR=`<path d="M79 ${55-by} L62 ${55-by-bi}" stroke="${hc}" stroke-width="3.6" stroke-linecap="round"/>`;
-  const nz=p.nz&&t>.3?`<path d="M54 76q2-2 4 0M62 76q2-2 4 0" stroke="#7a4a30" stroke-width="1.4" fill="none" opacity="${t}"/>`:'';
-  const hair=var2?`<path d="M26 64C24 28 40 18 60 18s36 10 34 46c-4-14-12-22-34-22S30 50 26 64z" fill="${hc}"/>`:`<path d="M28 58C28 30 42 20 60 20s32 10 32 38c-6-10-14-14-32-14S34 48 28 58z" fill="${hc}"/>`;
-  return`<svg viewBox="0 0 120 140" class="emof"><rect x="38" y="112" width="44" height="30" rx="14" fill="#5B66A0"/><rect x="52" y="100" width="16" height="16" fill="${sk}"/><ellipse cx="60" cy="70" rx="33" ry="40" fill="${sk}"/>${hair}${eye(48)}${eye(72)}${browL}${browR}<path d="M60 70v12" stroke="rgba(0,0,0,.15)" stroke-width="2.4" stroke-linecap="round"/>${nz}${mouth}</svg>`}
-function genEmo(lv){const t=[1,.85,.7,.58,.47,.38][lv-1],nOpt=lv<=2?4:lv<=4?5:6,k=rnd(6),opts=shuffle([k,...shuffle([0,1,2,3,4,5].filter(i=>i!==k)).slice(0,nOpt-1)]),exp=lv<=2?0:lv<=4?1500:900;
-  const face=emoFace(EMO[k][1],t,pick(EMSKIN),pick(EMHAIR),Math.random()<.5);
-  return{prompt:`<div class="sub">${exp?'انظر جيدًا: يختفي الوجه بعد لحظة':'ماذا يشعر هذا الشخص؟'}</div><div class="emobox" id="emb">${face}</div>`,opts:opts.map(i=>({html:EMO[i][0]})),ans:opts.indexOf(k),cols:2,
-    mount(){if(exp)later(()=>{const b=$('#emb');if(b)b.innerHTML='<div class="emogone">؟</div>'},exp)}}}
 
 /* ---------- 5. Fine details: episodic specificity (SPECTRA 2023) ---------- */
 const SC_PLACE=[['السوق','#3A2E52','🏪'],['الحديقة','#1F4A35','🌳'],['الشاطئ','#1E4A6B','🏖️'],['المطار','#2E3A5C','✈️']],SC_SHIRT=[['أحمر','#FF5F7A'],['أزرق','#4C8DFF'],['أخضر','#4BE08A'],['أصفر','#FFD45A'],['بنفسجي','#B07BFF']],SC_ITEM=['🍎','☂️','📦','🎈','📚','☕','🌹','⚽'],SC_SKY=['🐦','✈️','🎈','🦋'];
