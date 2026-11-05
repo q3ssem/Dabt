@@ -1559,6 +1559,40 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 .ydlev{display:flex;justify-content:center;gap:8px;margin-top:8px}.ydlev button{display:flex;flex-direction:column;align-items:center;width:62px;padding:4px;border-radius:12px;border:1.6px solid #3A2616;background:rgba(255,248,226,.6)}.ydlev button>svg:first-child{width:36px;height:36px}
 .ydmini{width:30px;height:30px;margin-top:2px}.ydh{transform-box:view-box;transform-origin:20px 28px}.ydlev button.pull .ydh{animation:ydpull .45s ease}@keyframes ydpull{40%{transform:rotate(-50deg)}}
 
+/* ===== v32: the Seven Seas ===== */
+.zhub{margin-top:4px}.zt{font-size:22px!important}.zmapw .xmap.zmap{aspect-ratio:360/480}
+.zreg{position:absolute;transform:translate(-50%,-34%);display:flex;flex-direction:column;align-items:center;width:84px;padding:0;background:none;border:0;z-index:2}
+.zreg i{display:block;width:30px;height:30px}.zreg i svg{width:100%;height:100%;overflow:visible}.zreg span{font:700 10px/1.3 'Aref Ruqaa',Tajawal,serif;color:#3A2616;background:rgba(240,224,182,.9);padding:0 4px;border-radius:5px;margin-top:-2px;white-space:nowrap}
+.zreg.cur i{animation:xpulse 1.8s ease-in-out infinite}.zreg.cur span{background:#9B2B1F;color:#F6E3C6}.zreg.lock span{opacity:.6}
+.zfog{position:absolute;width:30%;aspect-ratio:1.3;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(closest-side,rgba(232,214,170,.92),rgba(232,214,170,.6) 55%,transparent);pointer-events:none;z-index:1}
+.za-whale{animation:zwhale 9s ease-in-out infinite}@keyframes zwhale{0%,100%{transform:translateY(18%);opacity:.35}45%,60%{transform:none;opacity:1}}
+.za-kraken{animation:xmon 4s ease-in-out infinite}.za-dragon{animation:zdrag 14s ease-in-out infinite}@keyframes zdrag{0%{transform:translate(0,0) scale(.9)}50%{transform:translate(160%,30%) scale(1)}100%{transform:translate(0,0) scale(.9)}}
+.za-ship{animation:zship 18s ease-in-out infinite}@keyframes zship{0%,100%{transform:translate(0,0)}50%{transform:translate(70%,-20%) rotate(3deg)}}.za-snake{animation:xmon 3s ease-in-out infinite}
+.ztools{display:grid;grid-template-columns:repeat(3,1fr);gap:4px;margin:4px 2px}.ztools span{display:flex;align-items:center;gap:4px;padding:3px 6px;border-radius:10px;border:1.2px dashed rgba(58,38,22,.4);font:700 10px/1.25 Tajawal;color:#3A2616}
+.ztools i{width:26px;height:26px;flex:none}.ztools i svg{width:100%;height:100%}.ztools span:not(.on) i{filter:grayscale(1) brightness(.4);opacity:.25}.ztools span.on{border-style:solid;background:rgba(255,248,226,.5)}
+.zbtns{display:flex;gap:4px}.zbtns .xvault{padding:3px 10px}
+.zcard-art{width:70%;margin:0 auto 6px}.zcard-art svg{width:100%;height:auto}.zstory{font:600 14px/1.8 Tajawal;margin:0 0 8px;text-align:center}.zwhy{font:600 13px/1.6 Tajawal;margin:0 0 4px}.zwhy b{color:#9B2B1F}.xvbox .go-btn{margin-top:10px}
+.zenc{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}.zcr{border:1.2px solid rgba(58,38,22,.4);border-radius:12px;padding:6px;background:rgba(255,248,226,.45);text-align:center;font:700 12px Tajawal;color:#3A2616}
+.zcr i{display:block;height:54px}.zcr i svg{width:100%;height:100%}.zcr small{display:block;font:500 10.5px/1.5 Tajawal;text-align:start;margin-top:3px}.zcr small em{font-style:normal;color:#9B2B1F;font-weight:800}.zcr.no{opacity:.65}
+.zlog li{margin-bottom:6px}
+/* compass */
+.zsky{display:flex;align-items:center;gap:10px;margin-top:6px;background:#1E2A44;color:#E9DFC2;border-radius:12px;padding:8px}.zsky small{font:600 11.5px/1.6 Tajawal;color:#E9DFC2;opacity:1}
+.zdial{position:relative;width:104px;height:104px;flex:none;border-radius:50%;border:1.4px solid #C9962E;background:radial-gradient(#26365A,#141D33)}.zsd{position:absolute;left:50%;top:50%;width:22px;height:22px;margin:-11px 0 0 -11px}
+.zsd svg,.zsi svg{width:100%;height:100%}.zsd svg path{stroke:#F2E3B6}.zpole{position:absolute;left:50%;top:-2px;transform:translateX(-50%);font:700 11px 'Aref Ruqaa',serif;color:#F2C553}
+.zsi{display:inline-block;width:20px;height:20px;vertical-align:middle;background:#1E2A44;border-radius:5px;padding:1px}.zsi svg path{stroke:#F2E3B6}
+.zrays{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;overflow:hidden}.zcrot{display:flex;gap:4px}.zcrot button{width:40px;height:34px;border-radius:10px;border:1.6px solid #3A2616;background:rgba(255,248,226,.6);font:800 18px Tajawal;color:#3A2616}
+/* route */
+.zrpath{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:1}.zsn{position:absolute;display:grid;place-items:center;transition:left .3s linear,top .3s linear;z-index:2}.zsn i{display:block;width:130%;transition:transform .3s}.zsn svg{width:100%;height:auto;display:block}
+.zrscope{display:flex;align-items:center;gap:8px;margin-top:8px;font:700 12px Tajawal}.zrscope i{width:30px;height:30px}.zrscope svg{width:100%;height:100%}.zrscope input{flex:1;accent-color:#9B2B1F}
+.zrw .xboat{transition:left .3s linear,top .3s linear}
+/* currents */
+.zgsea{background:repeating-linear-gradient(0deg,rgba(63,111,98,.2) 0 1px,transparent 1px 8px),rgba(126,170,160,.35)}.zg-arr svg{width:78%}
+.zgate{position:absolute;padding:2px;background:none;border:0;z-index:2}.zgate i{display:block;width:100%;height:100%;position:relative;transition:transform .3s cubic-bezier(.3,1.4,.5,1)}.zgate svg{width:100%;height:100%}
+.zgate em{position:absolute;top:-2px;right:-2px;font:800 11px/16px 'Aref Ruqaa',serif;font-style:normal;width:16px;height:16px;border-radius:50%;background:#3A2616;color:#F2C553;text-align:center}
+.zjelly{position:absolute;z-index:3;transition:left .17s linear,top .17s linear;display:grid;place-items:center}.zjelly svg{width:70%;height:auto;animation:xbob 1.2s ease-in-out infinite}.zjelly.home svg{filter:drop-shadow(0 0 8px #CFF4FF)}.zjelly.lost svg{transition:opacity .6s,transform .6s;opacity:.1;transform:scale(.4) rotate(90deg)}
+.zg-goal svg,.zg-src svg{width:80%}.zg-src{opacity:.7}
+@media (prefers-reduced-motion:reduce){.za-whale,.za-dragon,.za-ship,.za-kraken,.za-snake{animation:none}}
+
 </style>
 
 
@@ -3441,6 +3475,7 @@ function renderPuz(){const p=pzState(),solvedR=Object.keys(p.rid).length,dt=pzDa
   <section class="card pzstory"><p>وصلت إلى مدينة غريبة كل أبوابها مقفلة بألغاز. كل لغز تحله يعطيك عملات، وكل 5 ألغاز تفتح لك حيًّا جديدًا من القصة.</p></section>
   <button class="card due pzdaily${dDone?' done':''}" id="pzday" style="--c:${GM[dt].col[0]}">${icoBox(GM[dt])}<span><b>لغز اليوم: ${GM[dt].name}</b><small>${dDone?'حللته اليوم ✓ تعال بكرة للغز جديد':'عملات مضاعفة ×2'}</small></span><span class="go">‹</span></button>
   ${xHubHTML()}
+  ${zHubHTML()}
   ${pzMapHTML()}
   <section class="gsec"><div class="sec-h"><h2>ألغاز لا تنتهي</h2><span>تتولد من جديد كل مرة، وتصعب مع الفوز</span></div><div class="pzgrid">${PZ_TYPES.map(id=>{const g=GM[id],lv=id==='tol'?clamp(S.st.lv.tol||1,1,5):pzLv(id);return`<button class="pzcard" data-g="${id}" style="--c:${g.col[0]}">${icoBox(g)}<b>${g.name}</b><small>المستوى ${lv} من ${pzMax(id)}${p.n[id]?` · حللت ${p.n[id]}`:''}</small></button>`}).join('')}</div></section>`;
   $('#v-puz').querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>startRun([b.dataset.g]));
@@ -5474,6 +5509,204 @@ Object.assign(ART_FN,{
  pz_yhold:B=>{B.bg('#8A5A33',.35);B.wc(B.rect(-10,190,440,120),'#5F8E86',{a:.6});[[90,120],[180,150],[300,110]].forEach(([x,y])=>B.wc(B.ell(x,y,30,36),ARTC.wood,{a:.7}));B.wc(B.rect(180,20,60,40),'#6E4320',{a:.8});B.frame()},
  pz_ytide:B=>{B.bg(ARTC.sky,.5);B.wc(B.rect(-10,0,440,50),ARTC.sand,{a:.6});B.wc(B.rect(-10,250,440,60),ARTC.sand,{a:.6});[[90,110],[200,160],[310,100],[150,210],[280,200]].forEach(([x,y],k)=>B.wc(B.ell(x,y,34,16),'#BFB49B',{a:k%2?.35:.75,amp:5}));B.frame()},
  pz_ydoor:B=>{B.bg('#3A2E28',.4);[110,80,50].forEach((r,k)=>B.wc(B.ell(210,150,r,r),k%2?'#D8C49A':'#C9B48E',{a:.75,amp:2}));B.wc(B.ell(210,150,18,18),ARTC.gold,{a:.8});B.frame()}});
+/* ================= v32: القوس الثالث — مملكة البحار السبعة المنسية ================= */
+/* ---------- creatures, tools and the nine regions ---------- */
+Object.assign(XS_,{
+ whale:`<svg viewBox="0 0 120 60"><path d="M6 34q8-22 44-24q38-2 56 14l10-8q2 10-6 14q8 4 6 14l-10-8q-20 14-58 12Q10 52 6 34z" fill="#6F9AA8" ${XI}/><path d="M10 40q30 10 70 6q16-2 26-10" fill="none" stroke="#DCEFF0" stroke-width="5" opacity=".7"/><path d="M12 40q30 10 70 6" fill="none" ${XI2}/>
+  <g fill="none" stroke="#F7E7A8" stroke-width="1.3" opacity=".95"><circle cx="46" cy="24" r="5"/><path d="M58 20l6 8 6-8M78 22h10M83 17v10M34 22l-4 6h8z"/></g><circle cx="22" cy="31" r="2.2" fill="${XK}"/><path d="M18 36q4 2 9 0" fill="none" ${XI2}/><path d="M40 10q-2-8 4-8M44 10q2-8 8-6" fill="none" stroke="#9FD3DE" stroke-width="2" stroke-linecap="round"/></svg>`,
+ seasnake:`<svg viewBox="0 0 120 60"><defs><pattern id="xSc2" width="6" height="5" patternUnits="userSpaceOnUse"><path d="M0 1q3 4 6 0" fill="none" stroke="${XK}" stroke-width=".55" opacity=".75"/></pattern></defs>
+  <path d="M6 44q14-34 30-6q12 22 26-2q14-26 28 0q8 14 16 2q4-10 10-12l2 6q-6 2-8 10q-10 18-24 0q-12-22-22 0q-16 30-34 4q-10-16-18 0z" fill="#7FA86E" ${XI}/><path d="M6 44q14-34 30-6q12 22 26-2q14-26 28 0q8 14 16 2q4-10 10-12l2 6q-6 2-8 10q-10 18-24 0q-12-22-22 0q-16 30-34 4q-10-16-18 0z" fill="url(#xSc2)"/>
+  <path d="M112 30q6-6 6 0q-2 4-6 2z" fill="#7FA86E" ${XI2}/><circle cx="113" cy="29" r="1" fill="${XK}"/><path d="M118 31l2 1.6-2 .8" fill="none" stroke="${XR}" stroke-width=".9"/></svg>`,
+ jelly:`<svg viewBox="0 0 60 80"><defs><radialGradient id="xJg" cx="50%" cy="35%" r="60%"><stop offset="0" stop-color="#F3FBFF" stop-opacity=".95"/><stop offset=".6" stop-color="#A6D8E8" stop-opacity=".55"/><stop offset="1" stop-color="#6FB3C8" stop-opacity=".25"/></radialGradient></defs>
+  <path d="M6 32q0-26 24-26t24 26q-6 4-12 0q-6 4-12 0q-6 4-12 0q-6 4-12 0z" fill="url(#xJg)" ${XI}/><path d="M14 24q16-12 32 0" fill="none" stroke="#fff" stroke-width="1.4" opacity=".8"/>${[12,22,32,42,50].map((x,k)=>`<path d="M${x} 34q${k%2?4:-4} 10 0 20t${k%2?-4:4} 18" fill="none" stroke="#7FB8C9" stroke-width="1.4" stroke-linecap="round"/>`).join('')}<circle cx="30" cy="20" r="3" fill="#F7E7A8"/></svg>`,
+ kraken:`<svg viewBox="0 0 120 70"><g fill="#9C5A6A" ${XI}>${[[10,62,4,22,18,40],[34,64,30,18,46,30],[70,64,78,14,92,28],[100,62,112,30,118,46]].map(([a,b,c,d,e,f])=>`<path d="M${a} ${b}Q${c} ${d} ${e} ${f}q4 2 2 6Q${c+4} ${d+10} ${a+8} ${b}z"/>`).join('')}</g>
+  <g fill="#F1D8C8">${[[16,44],[40,40],[80,38],[108,48],[22,32],[86,26]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.6"/>`).join('')}</g><path d="M2 64q8-4 16 0t16 0 16 0 16 0 16 0 16 0 16 0 8 0" fill="none" stroke="${XS}" stroke-width="1.4"/></svg>`,
+ dragon:`<svg viewBox="0 0 120 70"><path d="M40 40q-26-30-36-20q16 0 22 20q-14-6-20 2q14 0 24 8z" fill="#A9563E" ${XI}/><path d="M64 38q30-34 52-26q-20 2-28 20q16-8 26 0q-16 0-26 10z" fill="#A9563E" ${XI}/><path d="M20 46q20-10 44-8q22 2 30 10q-10 6-28 4q-26-2-46-6z" fill="#C2703E" ${XI}/><path d="M92 46q8-6 16-4l4 4-6 2q-6 0-14-2z" fill="#C2703E" ${XI2}/><circle cx="106" cy="44" r="1.2" fill="${XK}"/><path d="M20 46q-10 4-18 14q8-2 12-8" fill="none" ${XI}/><path d="M40 44l3-5 3 5 3-5 3 5 3-5 3 5" fill="none" stroke="${XK}" stroke-width=".8"/></svg>`,
+ coral:`<svg viewBox="0 0 40 40"><path d="M20 38V24M20 26q-8-4-8-14M20 24q6-6 8-16M12 16q-6-2-6-8M28 12q6 0 8-6M20 30q-10 0-14-6" fill="none" stroke="#D9826E" stroke-width="3.2" stroke-linecap="round"/><path d="M20 38V24M20 26q-8-4-8-14M20 24q6-6 8-16" fill="none" stroke="${XK}" stroke-width=".7" opacity=".6"/></svg>`,
+ port:`<svg viewBox="0 0 60 40"><path d="M2 30h56" ${XI}/>${[8,18,28,38,48].map(x=>`<path d="M${x} 30v8" stroke="${XK}" stroke-width="2"/>`).join('')}<path d="M4 26h52v4H4z" fill="#8A5A33" ${XI2}/><path d="M10 26V10l8-6 8 6v16z" fill="#C9BFA6" ${XI2}/><path d="M16 26v-8h4v8z" fill="${XK}"/><path d="M36 26V14h14v12z" fill="#B3A88E" ${XI2}/><path d="M34 14l9-6 9 6z" fill="#8A5A33" ${XI2}/><path d="M18 4v-3" ${XI2}/><path d="M18 1l5 1.4-5 1.4" fill="${XR}"/></svg>`,
+ compass:`<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" fill="url(#xGold)" ${XI}/><circle cx="20" cy="20" r="13" fill="#F4ECD8" ${XI2}/><path d="M20 8l3 12-3 12-3-12z" fill="${XR}" ${XI2}/><path d="M20 20l3 0-3 12-3-12z" fill="#3A2616"/><circle cx="20" cy="20" r="2" fill="${XG}" ${XI2}/></svg>`,
+ spyglass:`<svg viewBox="0 0 40 40"><g transform="rotate(-30 20 20)"><rect x="3" y="16" width="12" height="8" rx="1" fill="#8A5A33" ${XI2}/><rect x="14" y="15" width="12" height="10" rx="1" fill="url(#xGold)" ${XI2}/><rect x="25" y="14" width="12" height="12" rx="1.4" fill="#5E3519" ${XI2}/><ellipse cx="37" cy="20" rx="1.6" ry="6" fill="#A6D8E8" ${XI2}/></g></svg>`,
+ shell:`<svg viewBox="0 0 40 40"><path d="M20 36L5 16q2-12 15-12t15 12z" fill="#F3D6C4" ${XI}/>${[-12,-6,0,6,12].map(a=>`<path d="M20 36L${20+a*1.2} 6" stroke="${XK}" stroke-width=".8"/>`).join('')}<path d="M14 36h12l-2 3h-8z" fill="#E8B8A0" ${XI2}/></svg>`});
+const XCR=[
+ {k:'whale',n:'الحوت المضيء',home:'ميناء القراصنة المفقود',beh:'يطفو ليلًا وتلمع على ظهره نقوش قديمة.',role:'صديق: النقوش على ظهره هي أول خريطة نجوم في الرحلة.',st:0},
+ {k:'seasnake',n:'أفاعي الشعاب',home:'جزيرة الأفاعي البحرية',beh:'تدور في مسارات ثابتة لا تتغير، ذهابًا وإيابًا.',role:'اختبار: من يحفظ إيقاعها يعبر بسلام.',st:1},
+ {k:'jelly',n:'قناديل المرجان الشفافة',home:'غابة المرجان المسحورة',beh:'تسبح مع التيار وتضيء حين يكون الطريق صحيحًا.',role:'مرشدة: تتبع التيار الذي تصنعه أنت.',st:2},
+ {k:'kraken',n:'الكراكن العجوز',home:'مقبرة السفن الغارقة',st:3},{k:'mermaid',n:'الحورية الصامتة',home:'مملكة حوريات البحر',st:4},{k:'abyss',n:'ساكن الخندق',home:'خندق الظلام الأبدي',st:5},
+ {k:'dragon',n:'تنين البركان',home:'جزيرة التنانين القديمة',st:6},{k:'giant',n:'العملاق الحجري',home:'معبد الملوك السبعة',st:7},{k:'guard',n:'حارس العرش',home:'عرش المحيط',st:8},
+ {k:'seadragon',n:'تنين البحر',home:'البحار السبعة',st:8},{k:'cave',n:'وحش الكهوف',home:'جزيرة التنانين القديمة',st:6},{k:'walker',n:'التنين الماشي',home:'معبد الملوك السبعة',st:7}];
+const XTOOL={compass:{n:'البوصلة الأسطورية',d:'تضعها على أي معلم فترسم خط الاتجاه على الخريطة.'},spyglass:{n:'منظار القراصنة',d:'يكشف أين ستكون المخلوقات بعد كل خطوة.'},shell:{n:'الصدفة الحافظة',d:'تحفظ الأصوات: ستعيد لك ألحان الأعماق لاحقًا.'}};
+const Z3=[
+ {id:'pz_zcomp',n:'ميناء القراصنة المفقود',x:70,y:410,tool:'compass',story:'سفينة بلا طاقم رست في الميناء، وعلى سطحها خريطة نجوم مرسومة على ظهر حوت. «من يقرأ النجوم يعرف أين دُفن السر».',log:'وجدنا أول نقش: سبعة تيجان حول بحر واحد. يبدو أن الممالك السبع كانت مملكة واحدة.'},
+ {id:'pz_zroute',n:'جزيرة الأفاعي البحرية',x:252,y:400,tool:'spyglass',story:'الأفاعي تحرس الممر بإيقاع لا يتغير. ارسم طريقك كله قبل أن تبحر، فالبحر لا يسامح.',log:'على صخرة الأفاعي: «الملوك السبعة اختلفوا على تاج واحد، فغرق البحر بينهم».'},
+ {id:'pz_zcur',n:'غابة المرجان المسحورة',x:96,y:298,tool:'shell',story:'القناديل الشفافة تسبح مع التيار. دوّر بوابات المرجان حتى يحملها التيار إلى قلب الغابة.',log:'في قلب المرجان صدفة تهمس: «التاج لم يضِع… قُسِّم إلى سبع قطع».'},
+ {n:'مقبرة السفن الغارقة',x:246,y:298},{n:'مملكة حوريات البحر',x:302,y:212},{n:'خندق الظلام الأبدي',x:160,y:214},{n:'جزيرة التنانين القديمة',x:76,y:132},{n:'معبد الملوك السبعة',x:250,y:124},{n:'عرش المحيط',x:182,y:46}];
+function zState(){const t=txState();t.a3=t.a3||{prog:0,done:{},tools:[],seen:[]};return t.a3}
+const zOpen=()=>txState().found.length>=2;
+function zStep(id,perfect){const a=zState(),i=Z3.findIndex(z=>z.id===id);if(i<0)return null;const first=!a.done[id];a.done[id]={p:(a.done[id]&&a.done[id].p)||!!perfect};
+  if(i===a.prog){a.prog++;const z=Z3[i];if(z.tool&&!a.tools.includes(z.tool))a.tools.push(z.tool);XCR.filter(c=>c.st===i).forEach(c=>{if(!a.seen.includes(c.k))a.seen.push(c.k)});S.save();return z}S.save();return first?'again':null}
+function zWin(api,id,msg,perfect){const z=zStep(id,perfect);api.win(msg+(z&&z.tool?` حصلت على «${XTOOL[z.tool].n}»، وانكشف سطر جديد في سجل القبطان.`:'')+(perfect?' حلّ مثالي!':''))}
+/* ---------- the sea chart ---------- */
+function zBlob(cx,cy,r,seed,n=11){const R=seeded(seed),pts=[...Array(n)].map((_,k)=>{const a=k/n*Math.PI*2,rr=r*(.72+R()*.5);return[cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.8]});
+  let d=`M${((pts[0][0]+pts[1][0])/2).toFixed(1)} ${((pts[0][1]+pts[1][1])/2).toFixed(1)}`;for(let k=1;k<=n;k++){const p=pts[k%n],q=pts[(k+1)%n];d+=`Q${p[0].toFixed(1)} ${p[1].toFixed(1)} ${((p[0]+q[0])/2).toFixed(1)} ${((p[1]+q[1])/2).toFixed(1)}`}return d+'Z'}
+const ZISL=[[66,404,42,3],[250,396,38,5],[92,296,34,7],[76,130,48,11],[250,122,40,13],[182,48,24,17],[330,300,16,19],[20,220,14,23]].map(([x,y,r,s])=>({x,y,d:zBlob(x,y,r,s)}));
+function zMapArt(){const isl=ZISL.map(I=>`<path d="${I.d}" fill="none" stroke="${XS}" stroke-width="26" opacity=".2"/>${[1.1,1.2].map((k,j)=>`<path d="${I.d}" transform="translate(${I.x} ${I.y}) scale(${k}) translate(${-I.x} ${-I.y})" fill="none" stroke="${XS}" stroke-width="1.1" vector-effect="non-scaling-stroke" opacity="${.8-j*.3}"/>`).join('')}<path d="${I.d}" fill="none" stroke="${XK}" stroke-width="6" stroke-dasharray=".9 2.6" opacity=".7"/><path d="${I.d}" fill="#EEDCAA" ${XI}/>`).join('');
+ const waves=[[150,20],[300,90],[20,60],[330,170],[130,250],[200,350],[320,440],[140,460],[10,330],[290,250],[200,150],[100,200]].map(([x,y])=>xNest(XS_.wave,x,y,26,10)).join('');
+ const deco=[['port',40,392,56,38],['palm',86,412,22,22],['palm',262,384,22,22],['palm',236,404,20,20],['coral',80,286,22,22],['coral',102,300,20,20],['coral',112,282,16,16],['volcano',46,96,64,46],['forest',84,134,34,22],['temple',232,104,40,34],['palm',270,132,20,20],['wreck',222,286,30,30],['wreck',258,306,28,28],['wreck',236,318,22,22],['whirl',214,382,24,24],['whirl',282,412,22,22],['whirl',300,250,20,20],['rock',326,296,14,14],['rock',16,216,12,12]].map(([k,x,y,w,h])=>xNest(XS_[k],x-w/2,y-h/2,w,h)).join('');
+ const city=`<g opacity=".5" fill="none" stroke="#4F6F6A" stroke-width="1.1">${[0,1,2,3].map(k=>`<path d="M${284+k*9} 228v-12q4-6 8 0v12"/>`).join('')}<path d="M280 228h40M290 206l10-8 10 8"/></g>`;
+ const trench=`<path d="M132 206q14-10 26 2q14 10 30-2q-12 18-30 12q-14-6-26-12z" fill="#2E3B40" opacity=".55"/><path d="M134 206q12 6 24 8q14 2 28-6" fill="none" stroke="url(#xHatch)" stroke-width="8"/>`;
+ const crown=`<path d="M172 46l2-8 4 5 4-7 4 7 4-5 2 8z" fill="url(#xGold)" ${XI2}/>`;
+ const routes=`<path d="M70 410Q160 440 252 400M252 400Q170 350 96 298M96 298Q170 320 246 298M246 298Q290 260 302 212M302 212Q230 190 160 214M160 214Q100 190 76 132M76 132Q160 150 250 124M250 124Q220 70 182 46M96 298Q60 220 76 132" fill="none" stroke="${XK}" stroke-width="1.2" stroke-dasharray="4 4" opacity=".45"/>`;
+ return`<g filter="url(#xInk)">${isl}${trench}</g>${city}${deco}${crown}${routes}${waves}
+  <rect x="5" y="5" width="350" height="470" fill="none" stroke="${XK}" stroke-width="1.3" opacity=".55"/><rect x="9" y="9" width="342" height="462" fill="none" stroke="${XK}" stroke-width=".6" stroke-dasharray="10 6" opacity=".5"/>`}
+const zAt=(x,y,w,h)=>`left:${(x/3.6).toFixed(2)}%;top:${(y/4.8).toFixed(2)}%;width:${(w/3.6).toFixed(2)}%;height:${(h/4.8).toFixed(2)}%`;
+function zHubHTML(){const a=zState(),open=zOpen();
+ const regs=Z3.map((z,i)=>{const st=!open||i>a.prog?'lock':a.done[z.id]?'done':'cur';return`<button class="zreg ${st}" data-z="${i}" style="left:${z.x/3.6}%;top:${z.y/4.8}%"><i>${xSeal(st==='done'?'done':st==='cur'?'cur':'lock',i+1)}</i><span>${z.n}</span></button>`}).join('');
+ const fog=Z3.map((z,i)=>i>a.prog||!open?`<i class="zfog" style="left:${z.x/3.6}%;top:${z.y/4.8}%"></i>`:'').join('');
+ return`<section class="xhub zhub"><div class="xpaper">${xPaperSVG(360,640,77,{hole:1})}<div class="xpin">
+  <div class="xtitle">${XRIB}<b class="zt">مملكة البحار السبعة</b></div>
+  <div class="xmapw zmapw"><img class="xmap zmap" alt="" src="${xImg('zmap',360,480,zMapArt(),'xMidYMid meet')}">
+   <svg class="xmapo" viewBox="0 0 360 480" aria-hidden="true"><g font-family="'Aref Ruqaa',Tajawal,serif" fill="${XK}" text-anchor="middle" opacity=".75"><text x="180" y="270" font-size="12" letter-spacing="3">بحر الممالك</text><text x="300" y="470" font-size="9">المياه المجهولة</text><text x="32" y="250" font-size="8" transform="rotate(-80 32 250)">ممر الضباب</text></g></svg>
+   <div class="xa za-whale" style="${zAt(150,436,70,35)}">${XS_.whale}</div><div class="xa za-kraken" style="${zAt(176,262,70,40)}">${XS_.kraken}</div><div class="xa za-dragon" style="${zAt(40,40,70,40)}">${XS_.dragon}</div>
+   <div class="xa za-ship" style="${zAt(110,330,48,42)}">${XS_.ship}</div><div class="xa za-snake" style="${zAt(270,350,70,35)}">${XS_.seasnake}</div>${fog}<div class="xstw">${regs}</div></div>
+  <div class="ztools">${Object.keys(XTOOL).map(k=>`<span class="${a.tools.includes(k)?'on':''}"><i>${XS_[k]}</i><b>${a.tools.includes(k)?XTOOL[k].n:'؟'}</b></span>`).join('')}</div>
+  <div class="xfoot"><span id="zfmsg">${open?`المحطة <b>${XAR(Math.min(a.prog+1,9))}</b> من ${XAR(9)}`:'تنفتح بعد ما تخلّص رحلتي الجزيرتين'}</span><span class="zbtns"><button class="xvault" id="zlog">سجل القبطان</button><button class="xvault" id="zenc">الموسوعة <b>${XAR(a.seen.length)}</b></button></span></div>
+ </div></div></section>`}
+function zModal(inner,seed=90){const m=document.createElement('div');m.className='xvaultm';m.innerHTML=`<div class="xpaper xvbox">${xPaperSVG(360,560,seed,{bite:2})}<div class="xpin">${inner}<button class="cta" data-close>إغلاق</button></div></div>`;
+ document.body.appendChild(m);sfx.flip();const close=()=>{m.classList.add('out');setTimeout(()=>m.remove(),250)};m.onclick=e=>{if(e.target===m||e.target.closest('[data-close]'))close()};return m}
+function zRegion(i){const z=Z3[i],a=zState(),open=zOpen(),st=!open?'locked':i>a.prog?'later':!z.id?'soon':a.done[z.id]?'done':'cur',crs=XCR.filter(c=>c.st===i);
+ const why={locked:'تنفتح المملكة بعد ما تخلّص رحلة جزيرة الكنز ورحلة جزيرة الجمجمة.',later:`تحتاج تحل «${Z3[a.prog]?Z3[a.prog].n:''}» أولًا.`,soon:'تنكشف في الدفعة القادمة من المغامرة.',done:'حللتها، وتقدر تعيدها متى ما تبي.',cur:'جاهزة: هذي محطتك الحالية.'}[st];
+ const m=zModal(`<h3 class="xvh">${z.n}</h3>${crs.length&&a.seen.includes(crs[0].k)?`<div class="zcard-art">${XS_[crs[0].k]}</div>`:''}<p class="zstory">${z.story&&(st==='cur'||st==='done')?z.story:'منطقة يغطيها الضباب…'}</p>
+  <p class="zwhy"><b>الحالة:</b> ${why}</p>${z.tool?`<p class="zwhy"><b>الأداة:</b> ${XTOOL[z.tool].n} ${a.tools.includes(z.tool)?'(معك)':''}</p>`:''}${(st==='cur'||st==='done')&&z.id?`<button class="go-btn" data-play="${z.id}" style="--c:#C9962E;--c2:#9B2B1F">ابدأ</button>`:''}`,91+i);
+ const p=m.querySelector('[data-play]');if(p)p.onclick=()=>{m.remove();startRun([p.dataset.play])}}
+function zEnc(){const a=zState();zModal(`<h3 class="xvh">موسوعة المخلوقات</h3><p class="xvp">كل مخلوق تقابله في الرحلة ينضاف هنا.</p><div class="zenc">${XCR.map(c=>{const s=a.seen.includes(c.k)&&XS_[c.k];return`<div class="zcr ${s?'':'no'}"><i>${s?XS_[c.k]:'<svg viewBox="0 0 60 40"><path d="M6 30q10-20 26-20t22 14q-4 10-24 10T6 30z" fill="#3A2616" opacity=".18"/></svg>'}</i><b>${s?c.n:'؟'}</b>${s?`<small><em>الموطن:</em> ${c.home}<br><em>السلوك:</em> ${c.beh}<br>${c.role}</small>`:`<small>${c.home}</small>`}</div>`}).join('')}</div>`,95)}
+function zLog(){const a=zState();zModal(`<h3 class="xvh">سجل القبطان</h3><ol class="xnote zlog">${Z3.map((z,i)=>z.log&&a.done[z.id]?`<li><b>${z.n}:</b> ${z.log}</li>`:i<a.prog+1?'':'').join('')||'<li>السجل فارغ… ابدأ الرحلة.</li>'}</ol>`,96)}
+{const _tb=txBind;txBind=function(){_tb();const v=$('#v-puz');if(!v)return;v.querySelectorAll('[data-z]').forEach(b=>b.onclick=()=>zRegion(+b.dataset.z));const e=v.querySelector('#zenc');if(e)e.onclick=zEnc;const l=v.querySelector('#zlog');if(l)l.onclick=zLog}}
+
+/* ---------- station 1: البوصلة والنجوم — triangulate the treasure from star bearings ---------- */
+const D8=[[0,-1],[1,-1],[1,0],[1,1],[0,1],[-1,1],[-1,0],[-1,-1]],D8N=['الشمال','الشمال الشرقي','الشرق','الجنوب الشرقي','الجنوب','الجنوب الغربي','الغرب','الشمال الغربي'];
+const ZSTAR=['M12 2l2.6 7.4H22l-6 4.6 2.3 7.6L12 17l-6.3 4.6L8 14 2 9.4h7.4z','M12 2v20M2 12h20M5 5l14 14M19 5L5 19','M12 3l3 9-3 9-3-9z M3 12l9-3 9 3-9 3z','M12 4a8 8 0 1 0 0 16a8 8 0 1 0 0-16zM12 9v6M9 12h6','M4 18L12 4l8 14z','M12 3l9 9-9 9-9-9z','M6 6h12v12H6z M12 2v4M12 18v4','M12 2l2 6 6 2-6 2-2 6-2-6-6-2 6-2z'];
+const zStar=(k,c=XK)=>`<svg viewBox="0 0 24 24"><path d="${ZSTAR[k]}" fill="${k===0?'#F2C553':'none'}" stroke="${c}" stroke-width="1.6" stroke-linejoin="round"/></svg>`;
+const ZC_LV=[[6,2,0,2],[7,2,0,2],[7,3,0,2],[7,2,1,2],[8,3,1,2],[8,3,1,1],[9,3,1,1],[9,4,1,1]];
+function zcRay(P,L,d){const n=P.n,o=[];let x=L%n,y=(L/n)|0;while(true){x+=D8[d][0];y+=D8[d][1];if(!inb(x,y,n,n))break;o.push(y*n+x)}return o}
+function zcMake(lv){const[n,k,rot,digs]=ZC_LV[lv-1];
+  for(let t=0;t<600;t++){const I=tiIsland(n,.85);if(!I)continue;const T=pick(I.cells),dirs=shuffle([0,1,2,3,4,5,6,7]),marks=[],clues=[];const names=shuffle(TI_LM.filter(l=>!l.beach));
+    for(const d of dirs){if(marks.length>=k)break;const back=(d+4)%8;const ray=zcRay({n},T,back).filter(c=>I.isl[c]);const opts=ray.filter((c,j)=>j>=1&&marks.every(m=>tiCd(m.cell,c,n)>1)&&tiCd(c,T,n)>1);if(!opts.length)continue;
+      if(clues.some(c=>c.d===d||c.d===back))continue;const c=pick(opts);marks.push({...names[marks.length],cell:c});clues.push({L:marks.length-1,d})}
+    if(marks.length<k)continue;const cand=I.cells.filter(c=>!marks.some(m=>m.cell===c)&&clues.every(q=>zcRay({n},marks[q.L].cell,q.d).includes(c)));if(cand.length!==1||cand[0]!==T)continue;
+    const decoy=lv>=6?shuffle(TI_LM.filter(l=>!marks.some(m=>m.k===l.k))).slice(0,1).map(l=>({...l,cell:pick(I.cells.filter(c=>c!==T&&marks.every(m=>tiCd(m.cell,c,n)>1)))})).filter(m=>m.cell!=null):[];
+    const R=rot?1+rnd(7):0,sym=shuffle([1,2,3,4,5,6,7]);const starAt=[0,...sym];/* star index for each true direction (0 = polar star at north) */
+    return{...I,marks:[...marks,...decoy],clues,T,R,starAt,digs}}
+  return zcMake(Math.max(1,lv-1))}
+function runZComp(){return pzPlay('pz_zcomp',api=>{
+  const P=zcMake(api.lv),n=P.n;let left=P.digs,tool='comp',sel=-1,busy=false,miss=0;const rays={};
+  const dial=[...Array(8)].map((_,pos)=>{const d=(pos-P.R+8)%8,a=pos*45;return`<div class="zsd" style="transform:rotate(${a}deg) translateY(-42px) rotate(${-a}deg)">${zStar(P.starAt[d])}</div>`}).join('');
+  const cell=xIslandPuzzle(api,P,{seed:201,h:780,top:`<div class="xnote">${xHead(XS_.whale.replace('viewBox="0 0 120 60"','viewBox="0 0 120 60" width="44"'),'خريطة النجوم على ظهر الحوت')}<ol>${P.clues.map(c=>`<li>من ${P.marks[c.L].n}: الكنز تحت النجم <i class="zsi">${zStar(P.starAt[c.d])}</i></li>`).join('')}</ol>
+    <div class="zsky"><div class="zdial">${dial}<b class="zpole">${P.R?'':'ش'}</b></div><small>${P.R?'قرص النجوم مقلوب حسب الموسم: النجم القطبي <i class="zsi">'+zStar(0)+'</i> يشير دائمًا للشمال (أعلى الخريطة). كل نجم يبقى في مكانه بالنسبة للقطبي.':'النجم القطبي <i class="zsi">'+zStar(0)+'</i> فوق = الشمال. كل نجم في القرص يدلّ على اتجاه.'}</small></div>${P.marks.length>P.clues.length?'<p class="xlie">أحد المعالم على الخريطة لا علاقة له بالأدلة.</p>':''}</div>`,
+   tools:`<div class="xtools"><span class="xshov" id="xsh"></span><div class="seg xseg"><button class="on" data-tool="comp">${XS_.compass}<span>البوصلة</span></button><button data-tool="dig">${XS_.shovel}<span>احفر</span></button></div><span class="zcrot"><button id="zl">↺</button><button id="zr">↻</button></span></div>`});
+  $('#xb .xbin').insertAdjacentHTML('beforeend',`<svg class="zrays" viewBox="0 0 ${n} ${n}" preserveAspectRatio="none" id="zrays"></svg>`);
+  const drawRays=()=>{$('#zrays').innerHTML=Object.entries(rays).map(([L,d])=>{const c=+L,x=c%n+.5,y=((c/n)|0)+.5,e=[x+D8[d][0]*n*1.5,y+D8[d][1]*n*1.5];return`<line x1="${x}" y1="${y}" x2="${e[0]}" y2="${e[1]}" stroke="#9B2B1F" stroke-width=".08" stroke-dasharray=".25 .15"/><circle cx="${x}" cy="${y}" r=".32" fill="none" stroke="#9B2B1F" stroke-width=".07"/>`}).join('')};
+  xShovels($('#xsh'),P.digs,left);api.msg('ضع البوصلة على معلم، ودوّرها نحو النجم المذكور. حيث تتقاطع الخطوط… احفر.');
+  api.body.querySelectorAll('[data-tool]').forEach(b=>b.onclick=()=>{tool=b.dataset.tool;api.body.querySelectorAll('[data-tool]').forEach(x=>x.classList.toggle('on',x===b));sfx.pop()});
+  const turn=s=>{if(sel<0)return;rays[sel]=((rays[sel]||0)+s+8)%8;drawRays();tone(600,.03)};$('#zl').onclick=()=>turn(-1);$('#zr').onclick=()=>turn(1);
+  function tap(i){if(api.ended||busy)return;const mk=P.marks.find(m=>m.cell===i);if(mk){sel=i;if(rays[sel]==null)rays[sel]=0;drawRays();sfx.pop();api.msg(`البوصلة على ${mk.n}: دوّرها بالأزرار ↺ ↻.`);return}if(tool==='comp'){api.msg('اضغط على معلم لتضع البوصلة عليه، أو اختر «احفر».');return}busy=true;
+    xDigFx(n,i,()=>{busy=false;if(i===P.T){cell(i).classList.add('found');xFoundFx(n,i);zWin(api,'pz_zcomp','قرأت النجوم ووجدت ما خبّأه الحوت.',!miss);return}
+      cell(i).classList.add('hole');left--;miss++;xShovels($('#xsh'),P.digs,left);api.wrong();if(left<=0){xFoundFx(n,P.T);P.clues.forEach(c=>rays[P.marks[c.L].cell]=c.d);drawRays();api.over('هذي خطوط النجوم الصحيحة، وتقاطعها مكان الكنز.');return}api.msg('ليس هنا. باقي حفرة واحدة.')})}
+  api.body.querySelectorAll('#xb .xc[data-i]').forEach(b=>b.onclick=()=>tap(+b.dataset.i));pzHook({P,tap,setTool:t=>tool=t});
+  return{hint:k=>{if(k===1)return P.R?'ابحث عن النجم القطبي في القرص: مكانه يعني الشمال. عدّ منه باتجاه الساعة لتعرف اتجاه كل نجم.':'كل نجم في القرص = اتجاه. ارسم خطًا من كل معلم بهذا الاتجاه.';
+    const c=P.clues[k-2]||P.clues[0];rays[P.marks[c.L].cell]=c.d;drawRays();return`رسمت لك خط ${P.marks[c.L].n}: باتجاه ${D8N[c.d]}.`},reveal:()=>{xFoundFx(n,P.T);return'الكنز عند تقاطع الخطوط.'}}})}
+
+/* ---------- station 2: الطريق الآمن — plan the whole voyage, then sail past patrolling serpents ---------- */
+const ZR_LV=[[6,8,1,1,6],[7,8,2,1,7],[7,9,2,2,8],[7,9,3,2,9],[8,9,3,2,10],[8,10,4,3,11],[8,10,4,3,12],[9,10,5,3,13]];
+const zrAt=(s,t)=>{const m=s.c.length,p=2*(m-1),i=t%p;return s.c[i<m?i:p-i]};
+function zrSafe(P,a,b,t){if(P.rock[b]||P.whirl[b])return false;return P.snakes.every(s=>{const q=zrAt(s,t+1),q0=zrAt(s,t);return q!==b&&!(q===a&&q0===b)})}
+function zrSolve(P,from=P.start,t0=0){const L=P.L,key=(p,t)=>p*L+t%L,seen=new Map([[key(from,t0),null]]);let q=[[from,t0]];
+  while(q.length&&q[0][1]<t0+80){const nq=[];for(const[p,t]of q){if(p===P.goal){const o=[];let k=key(p,t);while(seen.get(k)){o.unshift(seen.get(k)[1]);k=seen.get(k)[0]}return o}
+      for(let a=0;a<5;a++){let np=p;if(a<4){const x=p%P.w+D4[a][0],y=((p/P.w)|0)+D4[a][1];if(!inb(x,y,P.w,P.h))continue;np=y*P.w+x}if(!zrSafe(P,p,np,t))continue;const k=key(np,t+1);if(seen.has(k))continue;seen.set(k,[key(p,t),a]);nq.push([np,t+1])}}q=nq}return null}
+function zrMake(lv){const[w,h,ns,nw,minM]=ZR_LV[lv-1];let best=null;
+  for(let t=0;t<400;t++){const rock=Array(w*h).fill(false),whirl=Array(w*h).fill(false);for(let i=w;i<w*(h-1);i++)if(Math.random()<.1)rock[i]=true;
+    const start=(h-1)*w+rnd(w),goal=rnd(w);rock[start]=rock[goal]=false;const free=()=>[...Array(w*h).keys()].filter(i=>!rock[i]&&!whirl[i]&&i!==start&&i!==goal&&((i/w)|0)>0&&((i/w)|0)<h-1);
+    for(let k=0;k<nw;k++){const c=pick(free());if(c!=null)whirl[c]=true}const snakes=[];
+    for(let k=0;k<ns;k++){const c0=pick(free());if(c0==null)break;const d=pick([1,2]),len=3+rnd(3),c=[c0];for(let j=1;j<len;j++){const x=c[j-1]%w+D4[d][0],y=((c[j-1]/w)|0)+D4[d][1];if(!inb(x,y,w,h-1)||y<1)break;const ni=y*w+x;if(rock[ni]||whirl[ni])break;c.push(ni)}if(c.length<2)continue;snakes.push({c,ph:0})}
+    const gcd=(a,b)=>b?gcd(b,a%b):a;let L=1;snakes.forEach(s=>{const p=2*(s.c.length-1);L=L*p/gcd(L,p)});if(L>60)continue;const P={w,h,rock,whirl,snakes,start,goal,L};
+    const s=zrSolve(P);if(!s)continue;P.min=s.length;P.sol=s;if(P.min>=minM)return P;if(!best||P.min>best.min)best=P}return best}
+function runZRoute(){return pzPlay('pz_zroute',api=>{
+  const P=zrMake(api.lv),{w,h}=P;let plan=[],pt=0,busy=false,tries=3,miss=0;const pc=i=>`left:${(i%w)*100/w}%;top:${((i/w)|0)*100/h}%;width:${100/w}%;height:${100/h}%`;
+  const posAt=k=>{let p=P.start;for(let j=0;j<k&&j<plan.length;j++){const a=plan[j];if(a<4)p=(((p/w)|0)+D4[a][1])*w+p%w+D4[a][0]}return p};
+  let cells='';for(let i=0;i<w*h;i++){if(P.rock[i])cells+=`<div class="xrs" style="${pc(i)}">${XS_.reefc}</div>`;else if(P.whirl[i])cells+=`<div class="xrs xcur" style="${pc(i)}">${XS_.whirl}</div>`}
+  api.body.innerHTML=xSheet(`${xHead(XS_.spyglass,'الطريق الآمن')}<ol class="xnote"><li>ارسم طريق السفينة كاملًا قبل الإبحار: اضغط المربعات المتجاورة، أو «انتظر» لتبقى مكانك دقة.</li><li>الأفاعي تتحرك ذهابًا وإيابًا مع كل دقة. الدوّامات والصخور ممنوعة.</li><li>حرّك شريط المنظار لترى أين ستكون الأفاعي وسفينتك في أي لحظة. معك ${arN(3,['محاولة','محاولتان','محاولات','محاولة'])}.</li></ol>
+   <div class="xrw zrw ltr" id="zrw" style="aspect-ratio:${w}/${h}"><div class="xrsea"></div>${cells}<div class="xrs xgoal" style="${pc(P.goal)}">${XS_.port.replace('viewBox="0 0 60 40"','viewBox="0 0 60 40" preserveAspectRatio="xMidYMid meet"')}</div><svg class="zrpath" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" id="zrp"></svg><div id="zrs"></div><div class="xboat" id="zrb" style="${pc(P.start)}">${XS_.boat}</div><div class="zrc" id="zrc"></div><div class="xfx" id="xfx"></div></div>
+   <div class="zrscope"><i>${XS_.spyglass}</i><input type="range" id="zrt" min="0" max="0" value="0" aria-label="المنظار"><b id="zrtl"></b></div>
+   <div class="xkbtns"><button class="cta ghost xsm" id="zrw8">انتظر</button><button class="cta ghost xsm" id="zrun">تراجع</button><button class="cta ghost xsm" id="zrclr">امسح</button><button class="go-btn xsm" id="zrgo">أبحر</button></div><div class="xtools"><span class="xtries" id="zrtr"></span><span>الخطة: <b id="zrlen"></b></span></div>`,860,211);
+  const snakesAt=t=>{$('#zrs').innerHTML=P.snakes.map(s=>{const c=zrAt(s,t),n=zrAt(s,t+1),dx=(n%w)-(c%w),dy=((n/w)|0)-((c/w)|0);return`<div class="zsn" style="${pc(c)}"><i style="transform:rotate(${Math.atan2(dy,dx)*180/Math.PI}deg)">${XS_.seasnake}</i></div>`}).join('')};
+  const draw=()=>{const pts=[P.start];for(let j=1;j<=plan.length;j++)pts.push(posAt(j));$('#zrp').innerHTML=`<polyline points="${pts.map(p=>`${p%w+.5},${((p/w)|0)+.5}`).join(' ')}" fill="none" stroke="#9B2B1F" stroke-width=".09" stroke-dasharray=".22 .14"/>`+plan.map((a,j)=>a===4?`<circle cx="${pts[j]%w+.5}" cy="${((pts[j]/w)|0)+.5}" r=".2" fill="#C9962E"/>`:'').join('');
+    const T=$('#zrt');T.max=plan.length;if(+T.value>plan.length)T.value=plan.length;pt=+T.value;snakesAt(pt);$('#zrb').style.cssText=pc(posAt(pt));$('#zrtl').textContent=`الدقة ${XAR(pt)}`;$('#zrlen').textContent=arN(plan.length,AN.mv);
+    $('#zrtr').innerHTML=`محاولات: ${[0,1,2].map(k=>`<i class="${k<tries?'on':''}"></i>`).join('')}`};
+  const add=a=>{if(api.ended||busy)return;const p=posAt(plan.length);if(a<4){const x=p%w+D4[a][0],y=((p/w)|0)+D4[a][1];if(!inb(x,y,w,h))return;const np=y*w+x;if(P.rock[np]){tone(140,.07);return}}plan.push(a);$('#zrt').value=plan.length;draw();tone(520,.03)};
+  $('#zrw').addEventListener('click',e=>{const r=$('#zrw').getBoundingClientRect(),x=Math.floor((e.clientX-r.left)/r.width*w),y=Math.floor((e.clientY-r.top)/r.height*h),p=posAt(plan.length),dx=x-p%w,dy=y-((p/w)|0);if(Math.abs(dx)+Math.abs(dy)!==1)return;add(D4.findIndex(([a,b])=>a===dx&&b===dy))});
+  $('#zrt').oninput=draw;$('#zrw8').onclick=()=>add(4);$('#zrun').onclick=()=>{if(busy)return;plan.pop();draw()};$('#zrclr').onclick=()=>{if(busy)return;plan=[];$('#zrt').value=0;draw()};
+  function sail(){if(api.ended||busy||!plan.length)return;busy=true;let p=P.start,t=0;const b=$('#zrb');
+    const step=()=>{if(t>=plan.length){busy=false;if(p===P.goal){zWin(api,'pz_zroute',`عبرت بين الأفاعي في ${arN(plan.length,AN.mv)}${plan.length===P.min?'، أقصر طريق ممكن!':'.'}`,!miss);return}api.msg('الخطة انتهت قبل الوصول للميناء. أكملها.');return}
+      const a=plan[t],np=a<4?(((p/w)|0)+D4[a][1])*w+p%w+D4[a][0]:p;const safe=zrSafe(P,p,np,t);p=np;t++;$('#zrt').value=t;snakesAt(t);b.style.cssText=pc(p);tone(a===4?260:420,.04);
+      if(!safe){miss++;tries--;api.wrong();b.classList.add('bump');later(()=>{b.classList.remove('bump');busy=false;$('#zrt').value=0;draw();if(tries<=0){api.over(`اصطدمت. أقصر طريق آمن كان ${arN(P.min,AN.mv)}.`);return}api.msg(`اصطدمت عند الدقة ${XAR(t)}! عدّل خطتك واستعمل المنظار.`)},700);return}if(p===P.goal){t=plan.length}later(step,330)};step()}
+  $('#zrgo').onclick=sail;draw();api.msg('ارسم الطريق، ثم أبحر.');pzHook({P,add,sail,plan:()=>plan,busy:()=>busy});
+  return{hint:k=>{if(k===1)return'حرّك شريط المنظار خطوة خطوة مع خطتك: إذا شفت أفعى بتدخل مربعك، أضف «انتظر» قبلها.';const s=zrSolve(P);if(!s)return null;
+    if(k===2)return`أقصر طريق آمن فيه ${arN(s.length,AN.mv)}.`;plan=s.slice(0,Math.ceil(s.length/2));$('#zrt').value=0;draw();return'رسمت لك نصف الطريق الآمن.'},reveal:()=>{plan=P.sol.slice();draw();return'هذا طريق آمن.'}}})}
+
+/* ---------- station 3: بوابات المرجان — turn the current gates so the glowing jellies reach the heart ---------- */
+const ZG_LV=[[5,6,6,2,0],[5,6,7,3,0],[6,7,8,3,0],[6,7,9,4,0],[6,8,10,4,1],[7,8,11,5,1],[7,8,12,5,1],[7,9,13,6,1]];
+function zgFlow(P,rot){const{w,h}=P;let p=P.start,d=0;const path=[p],seen=new Set();for(let k=0;k<w*h*4;k++){const c=P.cell[p];if(c.t==='gate')d=(c.d+rot[c.g])%4;else if(c.t==='arrow')d=c.d;
+    const st=p*4+d;if(seen.has(st))return{ok:false,path,why:'loop'};seen.add(st);const x=p%w+D4[d][0],y=((p/w)|0)+D4[d][1];if(!inb(x,y,w,h))return{ok:false,path,why:'out'};p=y*w+x;path.push(p);
+    if(p===P.goal)return{ok:true,path};const t=P.cell[p].t;if(t==='rock'||t==='trap')return{ok:false,path,why:t}}return{ok:false,path,why:'loop'}}
+function zgMake(lv){const[w,h,len,ng,link]=ZG_LV[lv-1];
+  for(let t=0;t<500;t++){const start=(h-1)*w+rnd(w);let p=start;const path=[p],used=new Set([p]);let ok=true;
+    while(((p/w)|0)>0||path.length<len){const opts=shuffle([0,1,2,3]).filter(d=>{const x=p%w+D4[d][0],y=((p/w)|0)+D4[d][1];return inb(x,y,w,h)&&!used.has(y*w+x)&&!(d===2&&path.length<len)});
+      if(!opts.length){ok=false;break}const d=opts.find(d=>d===0&&path.length>=len)??opts[0];p=(((p/w)|0)+D4[d][1])*w+p%w+D4[d][0];path.push(p);used.add(p);if(path.length>w*h*.7){ok=false;break}if(((p/w)|0)===0&&path.length>=len)break}
+    if(!ok||((p/w)|0)!==0)continue;const goal=p,cell=[...Array(w*h)].map(()=>({t:'water'}));
+    for(let i=0;i<path.length-1;i++){const a=path[i],b=path[i+1],d=D4.findIndex(([x,y])=>x===(b%w)-(a%w)&&y===((b/w)|0)-((a/w)|0));cell[a]={t:'arrow',d}}
+    const turns=path.slice(0,-1).filter((c,i)=>i===0||cell[c].d!==cell[path[i-1]].d);if(turns.length<ng)continue;const gates=shuffle(turns).slice(0,ng);
+    let g=0;const groups=[];gates.forEach((c,i)=>{const gi=link&&i%2===1?groups.length-1:groups.length;if(gi===groups.length)groups.push([]);groups[gi].push(c);cell[c]={t:'gate',d:cell[c].d,g:gi}});
+    path.slice(1,-1).forEach((c,i)=>{if(cell[c].t==='arrow'&&cell[c].d===cell[path[i]].d&&Math.random()<.45)cell[c]={t:'water',keep:cell[path[i]].d}});
+    for(let i=0;i<w*h;i++)if(!used.has(i)){const r=Math.random();cell[i]=r<.18?{t:'rock'}:r<.28?{t:'trap'}:r<.55?{t:'arrow',d:rnd(4)}:{t:'water'}}
+    cell[goal]={t:'goal'};const P={w,h,cell,start,goal,groups};const zero=groups.map(()=>0);if(!zgFlow(P,zero).ok)continue;
+    let rot;for(let k=0;k<20;k++){rot=groups.map(()=>rnd(4));if(!zgFlow(P,rot).ok)break}if(zgFlow(P,rot).ok)continue;P.rot0=rot;return P}
+  return zgMake(Math.max(1,lv-1))}
+const ZGL=['أ','ب','ج'];
+function runZCur(){return pzPlay('pz_zcur',api=>{
+  const P=zgMake(api.lv),{w,h}=P;let rot=P.rot0.slice(),tries=3,busy=false,miss=0;const pc=i=>`left:${(i%w)*100/w}%;top:${((i/w)|0)*100/h}%;width:${100/w}%;height:${100/h}%`;
+  const arrow=d=>`<svg viewBox="0 0 40 40"><path d="${XARW[d]}" fill="none" stroke="#3E6F62" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round" opacity=".75"/></svg>`;
+  const cells=P.cell.map((c,i)=>c.t==='rock'?`<div class="xrs" style="${pc(i)}">${XS_.reefc}</div>`:c.t==='trap'?`<div class="xrs zg-trap" style="${pc(i)}">${XS_.whirl}</div>`:c.t==='arrow'?`<div class="xrs zg-arr" style="${pc(i)}">${arrow(c.d)}</div>`:c.t==='water'&&Math.random()<.25?`<div class="xrs" style="${pc(i)}">${XS_.coral.replace('viewBox="0 0 40 40"','viewBox="-10 -10 60 60"')}</div>`:'').join('');
+  const gates=P.cell.map((c,i)=>c.t==='gate'?`<button class="zgate" data-i="${i}" style="${pc(i)}"><i data-g="${c.g}"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="url(#xGold)" ${XI}/><circle cx="20" cy="20" r="12" fill="#F4ECD8" ${XI2}/><path d="M20 30V10M13 17l7-7 7 7" fill="none" stroke="${XR}" stroke-width="3.2" stroke-linecap="round" stroke-linejoin="round"/></svg>${P.groups[c.g].length>1?`<em>${ZGL[c.g%3]}</em>`:''}</i></button>`:'').join('');
+  api.body.innerHTML=xSheet(`${xHead(XS_.coral,'بوابات المرجان')}<ol class="xnote"><li>القنديل يطلع من الصدفة تحت ويسبح مع التيار.</li><li>الأسهم الخضراء ثابتة. البوابات الذهبية تدور إذا ضغطتها.</li><li>${P.groups.some(g=>g.length>1)?'البوابات اللي تحمل نفس الرمز تدور مع بعض!':'وجّه التيار للقلب المرجاني فوق، بعيدًا عن الصخور والدوّامات.'}</li></ol>
+   <div class="xrw zgw ltr" id="zgw" style="aspect-ratio:${w}/${h}"><div class="xrsea zgsea"></div>${cells}<div class="xrs zg-goal" style="${pc(P.goal)}">${XS_.shell}</div><div class="xrs zg-src" style="${pc(P.start)}">${XS_.shell}</div>${gates}<svg class="zrpath" viewBox="0 0 ${w} ${h}" preserveAspectRatio="none" id="zgp"></svg><div class="zjelly" id="zgj" style="${pc(P.start)}">${XS_.jelly}</div></div>
+   <div class="xkbtns"><button class="go-btn xsm" id="zggo">أطلق القنديل</button></div><div class="xtools"><span class="xtries" id="zgt"></span></div>`,820,221);
+  const paint=()=>{api.body.querySelectorAll('.zgate').forEach(b=>{const c=P.cell[+b.dataset.i];b.querySelector('i').style.transform=`rotate(${((c.d+rot[c.g])%4)*90}deg)`});$('#zgt').innerHTML=`محاولات: ${[0,1,2].map(k=>`<i class="${k<tries?'on':''}"></i>`).join('')}`};
+  const turnG=g=>{if(api.ended||busy)return;rot[g]=(rot[g]+1)%4;paint();tone(420,.05,'triangle');$('#zgp').innerHTML=''};
+  api.body.querySelectorAll('.zgate').forEach(b=>b.onclick=()=>turnG(P.cell[+b.dataset.i].g));
+  function release(){if(api.ended||busy)return;busy=true;const f=zgFlow(P,rot),j=$('#zgj');let k=0;$('#zgp').innerHTML=`<polyline points="${f.path.map(p=>`${p%w+.5},${((p/w)|0)+.5}`).join(' ')}" fill="none" stroke="#7FB8C9" stroke-width=".12" stroke-linecap="round" stroke-dasharray=".3 .2" opacity=".8"/>`;
+    const step=()=>{k++;if(k<f.path.length){j.style.cssText=pc(f.path[k]);tone(700+(k%5)*50,.03,'sine',.03);later(step,170);return}
+      if(f.ok){j.classList.add('home');sfx.ok(3);later(()=>zWin(api,'pz_zcur','القنديل وصل لقلب المرجان، والغابة كلها أضاءت.',!miss),700);return}
+      miss++;tries--;api.wrong();j.classList.add('lost');later(()=>{j.classList.remove('lost');j.style.cssText=pc(P.start);busy=false;paint();if(tries<=0){rot=P.groups.map(()=>0);paint();api.over('هذا اتجاه البوابات الصحيح.');return}
+        api.msg(f.why==='loop'?'التيار يدور في حلقة! غيّر بوابة.':f.why==='out'?'التيار طلع من الخريطة.':f.why==='rock'?'القنديل اصطدم بالصخور.':'الدوّامة ابتلعت القنديل!')},800)};step()}
+  $('#zggo').onclick=release;paint();api.msg('دوّر البوابات، ثم أطلق القنديل.');pzHook({P,turnG,release,rot:()=>rot});
+  return{hint:k=>{if(k===1)return'تتبّع الطريق من الصدفة للأعلى بإصبعك: عند كل بوابة اسأل نفسك وين لازم يروح التيار بعدها.';
+    const g=rot.findIndex(r=>r!==0);if(g<0)return'البوابات صحيحة: أطلق القنديل.';rot[g]=0;paint();return k===2?'ضبطت لك بوابة واحدة.':'ضبطت لك بوابة ثانية.'},reveal:()=>{rot=P.groups.map(()=>0);paint();return'هذا اتجاه البوابات الصحيح.'}}})}
+
+/* ---------- registry ---------- */
+const PZ_Z=[
+ {id:'pz_zcomp',maxLv:8,col:['#A6D8E8','#2F5E6E'],name:'بوصلة النجوم',lab:'Star bearings',cat:'spa',why:'تحديد موقع بتقاطع اتجاهات من معالم مختلفة، مع قرص نجوم مقلوب: تدوير ذهني واستنتاج مكاني.',how:['ضع البوصلة على معلم.','دوّرها نحو النجم المذكور.','احفر حيث تتقاطع الخطوط.'],run:runZComp},
+ {id:'pz_zroute',maxLv:8,col:['#7FA86E','#2F5E6E'],name:'الطريق الآمن',lab:'Plan the voyage',cat:'log',why:'تخطيط كامل للمستقبل قبل التنفيذ: تتوقع حركة الأفاعي وتبني خطة بلا أخطاء.',how:['ارسم الطريق كاملًا.','استعمل المنظار لترى المستقبل.','أبحر.'],run:runZRoute},
+ {id:'pz_zcur',maxLv:8,col:['#D9826E','#3E6F62'],name:'بوابات المرجان',lab:'Current gates',cat:'spa',why:'توجيه تيار عبر بوابات مترابطة: تفكير مكاني وتتبع مسار وتجنب الحلقات.',how:['دوّر البوابات الذهبية.','أطلق القنديل.','أوصله لقلب المرجان.'],run:runZCur}];
+PZ_Z.forEach(g=>{Object.assign(g,{puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g});
+TV_PUZ.unshift(...PZ_Z.map(g=>g.id));
+Object.assign(I,{
+ pz_zcomp:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><circle cx="24" cy="24" r="19" opacity=".35"/><path d="M24 6l5 18-5 18-5-18z"/><path d="M6 8l3 2M40 6l2 3" stroke="#0A0E1C" stroke-width="2"/></svg>',
+ pz_zroute:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M6 40q10-30 36-32" fill="none" stroke="#0A0E1C" stroke-width="3" stroke-dasharray="4 3"/><path d="M8 20q6-6 10 0t10 0" fill="none" stroke="#0A0E1C" stroke-width="3.4"/></svg>',
+ pz_zcur:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3.4" stroke-linecap="round"><path d="M10 40V24h14V10h14"/><circle cx="24" cy="24" r="6" fill="#0A0E1C"/></svg>'});
+pzDailyType=function(){const r=seeded(+dayKey().replace(/-/g,'')+7);const all=['pz_rid',...PZ_TYPES.filter(t=>t!=='tol'),...TX_IDS,...XSTB.map(s=>s.id),...PZ_Z.map(g=>g.id)];return all[Math.floor(r()*all.length)]};
+Object.assign(ART_FN,{
+ pz_zcomp:B=>{B.bg('#1E2A44',.5);B.wc(B.ell(210,170,110,40),'#6F9AA8',{a:.7,amp:6});[[80,60],[150,40],[260,50],[330,80],[200,90]].forEach(([x,y])=>B.wc(B.ell(x,y,4,4),ARTC.gold,{a:.9}));B.frame()},
+ pz_zroute:B=>{B.bg(ARTC.sky,.5);[[100,120],[220,180],[320,110]].forEach(([x,y])=>B.wc(B.ell(x,y,40,12),'#7FA86E',{a:.7,amp:6}));B.ink([[60,260],[150,200],[250,230],[360,60]],{w:2,a:.6,j:1.5});B.frame()},
+ pz_zcur:B=>{B.bg('#3E6F62',.4);[[90,200],[180,230],[300,210],[240,120]].forEach(([x,y])=>B.wc(B.ell(x,y,26,30),'#D9826E',{a:.7,amp:6}));B.wc(B.ell(200,120,18,22),'#A6D8E8',{a:.8});B.frame()}});
 /* ================= v29: kids — exit to main profile, owl mascot, richer animation, 4 new games ================= */
 const KSTAR='<svg viewBox="0 0 24 24" class="kst"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" stroke="#2B2520" stroke-width="1.4" stroke-linejoin="round"/></svg>';
 const OWL=`<svg viewBox="0 0 64 64" class="owl"><g class="owlb"><g class="owlw l"><path d="M14 34q-9 10-3 22q6-3 9-13z" fill="#7A5A3E" ${RK}/></g><g class="owlw r"><path d="M50 34q9 10 3 22q-6-3-9-13z" fill="#7A5A3E" ${RK}/></g>
