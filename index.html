@@ -1515,6 +1515,50 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 .xkn{font:700 13px 'Aref Ruqaa',Tajawal,serif;width:18px;opacity:.7}.xkrow i{width:28px;height:28px;display:grid;place-items:center;border:1px solid rgba(58,38,22,.4);border-radius:7px}.xkrow i svg{width:76%;height:76%}
 .xkfb{display:flex;gap:3px;margin-inline-start:8px;min-width:72px}.xkfb em{width:14px;height:14px;border-radius:50%;border:1px solid #3A2616}.xkfb em.g{background:radial-gradient(circle at 35% 35%,#FBE9A6,#C9962E)}.xkfb em.s{background:radial-gradient(circle at 35% 35%,#fff,#9C9790)}.xkfb em.z{border-style:dashed;opacity:.5}
 
+/* ===== v31: Skull Island ===== */
+.xa-smoke{animation:xsmoke 5s ease-in-out infinite;transform-origin:50% 100%}@keyframes xsmoke{0%{transform:translateY(6%) scale(.9);opacity:.5}50%{opacity:.9}100%{transform:translateY(-14%) scale(1.15);opacity:.3}}
+.xbag{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:4px;margin:4px 2px 2px}
+.xbi2{position:relative;display:flex;flex-direction:column;align-items:center;gap:1px;padding:4px 2px;border-radius:10px;border:1.2px dashed rgba(58,38,22,.4);font:700 9.5px/1.25 Tajawal,sans-serif;text-align:center;color:#3A2616}
+.xbi2 i{width:30px;height:30px;display:block}.xbi2 i svg{width:100%;height:100%}.xbi2:not(.on) i{filter:grayscale(1) brightness(.4);opacity:.25}.xbi2.on{border-style:solid;background:rgba(255,248,226,.5)}
+.xbi2 em{position:absolute;top:2px;inset-inline-start:3px;width:14px;height:14px}.xbi2 em svg{width:100%;height:100%}
+/* bells */
+.ybw{position:relative;margin-top:10px}.ybbeam{display:block;width:100%;height:30px}
+.ybrow{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:4px;margin-top:-10px}
+.ybb{position:relative;display:flex;flex-direction:column;align-items:center;padding:0;background:none;border:0}
+.ybrope{width:2px;height:22px;background:#5A3A22}.ybb i{width:min(64px,90%);display:block;transform-origin:50% 0;transition:transform .2s}.ybb i svg{width:100%;height:auto;display:block}
+.ybb.ring i{animation:ybswing .6s ease-in-out}@keyframes ybswing{20%{transform:rotate(16deg)}45%{transform:rotate(-12deg)}70%{transform:rotate(6deg)}100%{transform:rotate(0)}}
+.ybwave{position:absolute;top:40px;width:60px;height:60px;border-radius:50%;border:2px solid var(--bc);opacity:0;pointer-events:none}.ybb.ring .ybwave{animation:ybw .8s ease-out}@keyframes ybw{from{transform:scale(.4);opacity:.9}to{transform:scale(1.6);opacity:0}}
+.ybdots{display:flex;gap:6px;justify-content:center;margin-top:12px}.ybdots i{width:12px;height:12px;border-radius:50%;border:1.5px solid #3A2616}.ybdots i.ok{background:#C9962E}.ybdots i.cur{background:#9B2B1F;animation:xpulse 1.2s infinite}
+/* torn map */
+.ymleg{display:flex;flex-wrap:wrap;gap:4px 12px;justify-content:center;font:700 11.5px Tajawal;margin:6px 0}.ymleg span{display:flex;align-items:center;gap:4px}.ymleg svg{width:28px;height:10px}
+.ymg{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:3px;width:min(100%,330px);margin:6px auto 0}
+.ymt{aspect-ratio:1;padding:0;border:0;background:none;border-radius:3px;transition:transform .15s;filter:drop-shadow(0 2px 2px rgba(58,38,22,.35))}.ymt i{display:block;width:100%;height:100%;transition:transform .25s ease}.ymt svg{width:100%;height:100%;display:block}
+.ymt.sel{transform:scale(.92);outline:3px solid #9B2B1F;outline-offset:1px}.ymg.done{gap:0}.ymg.done .ymt{filter:none;animation:xpop .6s}
+/* flooded hold */
+.yhw{position:relative;width:min(100%,360px);margin:8px auto 0;border:2px solid #3A2616;overflow:hidden;background:#C49A62;background-image:repeating-linear-gradient(90deg,rgba(58,38,22,.35) 0 1px,transparent 1px 22px),repeating-linear-gradient(0deg,rgba(58,38,22,.18) 0 1px,transparent 1px 11px)}
+.yhc{position:absolute;display:grid;place-items:center}.yhc svg{width:92%;height:92%;display:block}
+.yhdoor svg{transition:transform .35s ease}.yhdoor.open svg{transform:translateY(-78%);opacity:.5}
+.yhh{transform-box:view-box;transform-origin:20px 30px;transition:transform .25s}.yhlev.on .yhh{transform:rotate(60deg)}
+.yhkey svg{animation:xbob 2s ease-in-out infinite}.yhkey.got{transition:transform .5s,opacity .5s;transform:translateY(-60%) scale(1.4);opacity:0}
+.yhwater{position:absolute;left:0;right:0;bottom:0;height:0;background:rgba(79,128,120,.62);transition:height .6s ease;z-index:3;pointer-events:none}.yhwater svg{position:absolute;left:0;top:-8px;width:200%;height:9px;animation:yhwv 3s linear infinite}@keyframes yhwv{to{transform:translateX(-50%)}}
+.yhp{transition:left .14s linear,top .14s linear;z-index:2}.yhp.sink svg{transition:transform .6s,opacity .6s;transform:translateY(40%);opacity:.2}.yhp.climb svg{transition:transform .6s,opacity .6s;transform:translateY(-80%);opacity:0}
+/* tide rocks */
+.ytw{position:relative;width:min(100%,360px);margin:8px auto 0;border:2px solid #3A2616;overflow:hidden;background:#8FB0A4}
+.ytsea{position:absolute;inset:0;background:repeating-linear-gradient(0deg,rgba(255,255,255,.12) 0 1px,transparent 1px 10px)}.ytsea svg{position:absolute;left:0;top:45%;width:200%;height:12px;animation:yhwv 6s linear infinite}
+.ytbank{position:absolute;left:0;right:0;background:#E3CC92;background-image:radial-gradient(rgba(122,74,34,.35) 1px,transparent 1.4px);background-size:8px 8px}.ytbank.top{top:0;border-bottom:2px solid #3A2616}.ytbank.bot{bottom:0;border-top:2px solid #3A2616}
+.ytbank{height:calc(100% / var(--H))}
+.ytr{position:absolute;display:grid;place-items:center}.ytr i{width:94%;height:94%;display:block;transition:transform .35s cubic-bezier(.3,1.4,.5,1),opacity .35s;transform:translateY(30%) scale(.7);opacity:.28}.ytr i svg{width:100%;height:100%}
+.ytr.up i{transform:none;opacity:1}.ytr b{position:absolute;top:4%;inset-inline-end:6%;font:700 11px/16px 'Aref Ruqaa',Tajawal,serif;min-width:16px;height:16px;border-radius:50%;background:#F1E2BE;border:1px solid #3A2616;text-align:center;color:#3A2616}.ytr b:empty{display:none}.ytr:not(.up) b{background:#9B2B1F;color:#F6E3C6}
+.ytp{transition:left .14s linear,top .14s linear;z-index:2}.ytp.sink svg{transition:transform .6s,opacity .6s;transform:translateY(40%);opacity:.15}
+.ytpad{grid-template-columns:repeat(5,1fr)}.ytwait{font:800 13px Tajawal!important}
+/* temple door */
+.ydwant{display:flex;justify-content:center;gap:8px;margin:8px 0 2px}.ydwant span{display:flex;flex-direction:column;align-items:center;gap:2px;font:700 10px Tajawal}.ydwant i{width:34px;height:34px;border-radius:8px;border:1.6px solid #9B2B1F;background:rgba(255,248,226,.6);display:grid;place-items:center}.ydwant i svg{width:74%;height:74%}
+.ydw{position:relative;width:min(86%,300px);margin:4px auto 0}.ydw>svg{width:100%;height:auto;display:block;overflow:visible}.ydr{transition:transform .55s cubic-bezier(.3,1.3,.5,1)}
+.yddoor{position:absolute;inset:6% 0 0;display:flex;pointer-events:none}.yddoor i{flex:1;background:linear-gradient(90deg,#8E8576,#B3A88E);border:1.6px solid #3A2616;transform:scaleX(0);transform-origin:left}.yddoor i:last-child{transform-origin:right;background:linear-gradient(-90deg,#8E8576,#B3A88E)}
+.ydw.open .ydr{opacity:.25;transition:opacity .8s .6s}.ydw.open::after{content:"";position:absolute;inset:-10%;background:radial-gradient(circle,rgba(255,236,160,.85),transparent 60%);animation:xfade 1s}
+.ydlev{display:flex;justify-content:center;gap:8px;margin-top:8px}.ydlev button{display:flex;flex-direction:column;align-items:center;width:62px;padding:4px;border-radius:12px;border:1.6px solid #3A2616;background:rgba(255,248,226,.6)}.ydlev button>svg:first-child{width:36px;height:36px}
+.ydmini{width:30px;height:30px;margin-top:2px}.ydh{transform-box:view-box;transform-origin:20px 28px}.ydlev button.pull .ydh{animation:ydpull .45s ease}@keyframes ydpull{40%{transform:rotate(-50deg)}}
+
 </style>
 
 
@@ -4755,15 +4799,18 @@ const XST=[
 const XAR=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
 const xNest=(svg,x,y,w,h,cls='')=>svg.replace('<svg ',`<svg x="${x}" y="${y}" width="${w}" height="${h}" ${cls?`class="${cls}" `:''}`);
 const XISL='M70 150C58 104 116 66 170 78C214 58 276 70 296 112C332 140 326 202 302 232C322 286 290 342 232 352C192 372 136 362 106 334C68 316 46 270 70 236C44 204 50 172 70 150Z';
-function txState(){const t=S.st.tx||(S.st.tx={voy:1,prog:0,found:[]});return t}
-function txStep(id){const t=txState(),st=XST[t.prog];if(!st||st.id!==id)return null;t.prog++;
-  if(t.prog>=XST.length){const tr=XT[(t.voy-1)%XT.length];t.found.push(tr.k);t.voy++;t.prog=0;S.save();return tr}S.save();return'step'}
+function txState(){const t=S.st.tx||(S.st.tx={voy:1,prog:0,found:[]});t.inv=t.inv||[];return t}
+/* the islands take turns: odd voyages on Treasure Island, even ones on Skull Island */
+const XISLES=[{n:'جزيرة الكنز',st:XST,key:'map',art:()=>xMapArt(),over:()=>xOverA()}];
+const txIsle=t=>XISLES[(t.voy-1)%XISLES.length],txList=t=>txIsle(t).st;
+function txStep(id){const t=txState(),L=txList(t),st=L[t.prog];if(!st||st.id!==id)return null;t.prog++;if(st.item)t.inv.push(st.item);
+  if(t.prog>=L.length){const tr=XT[(t.voy-1)%XT.length];t.found.push(tr.k);t.voy++;t.prog=0;t.inv=[];S.save();return tr}S.save();return'step'}
 function xSeal(st,k){
  const bumps=[...Array(14)].map((_,i)=>{const a=i/14*Math.PI*2,r=i%2?15.5:17.2;return`${(20+Math.cos(a)*r).toFixed(1)},${(20+Math.sin(a)*r).toFixed(1)}`}).join(' ');
  if(st==='lock')return`<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="13" fill="#EBD7A9" stroke="${XK}" stroke-width="1.3" stroke-dasharray="2.4 2"/><text x="20" y="25.5" text-anchor="middle" font-size="15" font-weight="700" fill="${XK}" opacity=".55" font-family="'Aref Ruqaa',Tajawal,serif">${XAR(k)}</text></svg>`;
  const c=st==='done'?'url(#xGold)':XR,ink=st==='done'?'#6E4A12':'#5E1610';
  return`<svg viewBox="0 0 40 40"><polygon points="${bumps}" fill="${c}" stroke="${ink}" stroke-width="1.1" stroke-linejoin="round"/><circle cx="20" cy="20" r="11" fill="none" stroke="${ink}" stroke-width="1" opacity=".7"/>${st==='done'?`<path d="M14 20.5l4 4 8-9" fill="none" stroke="${ink}" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"/>`:`<text x="20" y="25.8" text-anchor="middle" font-size="15.5" font-weight="700" fill="#F6E3C6" font-family="'Aref Ruqaa',Tajawal,serif">${XAR(k)}</text>`}<path d="M12 13q3-4 8-4" fill="none" stroke="#fff" stroke-width="1.3" stroke-linecap="round" opacity=".35"/></svg>`}
-function xTrail(upto=XST.length){const p=XST.map(s=>[s.x,s.y]);let d=`M${p[0][0]} ${p[0][1]}`;for(let i=1;i<Math.min(upto,p.length);i++){const[a,b]=p[i-1],[c,e]=p[i],mx=(a+c)/2+(e-b)*.18,my=(b+e)/2-(c-a)*.18;d+=` Q${mx.toFixed(1)} ${my.toFixed(1)} ${c} ${e}`}return d}
+function xTrail(L,upto=L.length){const p=L.map(s=>[s.x,s.y]);let d=`M${p[0][0]} ${p[0][1]}`;for(let i=1;i<Math.min(upto,p.length);i++){const[a,b]=p[i-1],[c,e]=p[i],mx=(a+c)/2+(e-b)*.18,my=(b+e)/2-(c-a)*.18;d+=` Q${mx.toFixed(1)} ${my.toFixed(1)} ${c} ${e}`}return d}
 let XMAP_ART=null;
 function xMapArt(){if(XMAP_ART)return XMAP_ART;
  const rose=[306,62],rh=[...Array(16)].map((_,k)=>{const a=k*Math.PI/8;return`<path d="M${rose[0]} ${rose[1]}l${(Math.cos(a)*520).toFixed(0)} ${(Math.sin(a)*520).toFixed(0)}" stroke="${k%2?XR:XK}" stroke-width=".5" opacity="${k%2?.22:.2}"/>`}).join('');
@@ -4782,24 +4829,24 @@ function xMapArt(){if(XMAP_ART)return XMAP_ART;
  return XMAP_ART}
 /* the map = one static image + a light overlay (trail, names) + small animated pieces that the GPU moves without repainting */
 const xAt=(x,y,w,h)=>`left:${(x/3.6).toFixed(2)}%;top:${(y/4.4).toFixed(2)}%;width:${(w/3.6).toFixed(2)}%;height:${(h/4.4).toFixed(2)}%`;
-function xHubMap(prog){const done=Math.max(0,Math.min(XST.length,prog));
- return`<img class="xmap" alt="" src="${xImg('map',360,440,xMapArt(),'xMidYMid meet')}">
-  <svg class="xmapo" viewBox="0 0 360 440" aria-hidden="true"><path d="${xTrail()}" fill="none" stroke="${XK}" stroke-width="1.6" stroke-dasharray="5 5" stroke-linecap="round" opacity=".55"/>
-  ${done>0?`<path d="${xTrail(done+1)}" fill="none" stroke="${XR}" stroke-width="2.4" stroke-dasharray="5 5" stroke-linecap="round"/>`:''}
-  <g font-family="'Aref Ruqaa',Tajawal,serif" fill="${XK}" text-anchor="middle" opacity=".78"><text x="172" y="48" font-size="10.5">جبال الضباب</text><text x="38" y="186" font-size="9" transform="rotate(-14 38 186)">خليج القرش</text><text x="150" y="420" font-size="13" letter-spacing="4">بحر الظلمات</text><text x="232" y="168" font-size="8.5">غابة الصدى</text><text x="206" y="246" font-size="8" transform="rotate(70 206 246)">نهر الذهب</text>
+function xHubMap(prog,I){const L=I.st,done=Math.max(0,Math.min(L.length,prog));
+ return`<img class="xmap" alt="" src="${xImg(I.key,360,440,I.art(),'xMidYMid meet')}">
+  <svg class="xmapo" viewBox="0 0 360 440" aria-hidden="true"><path d="${xTrail(L)}" fill="none" stroke="${XK}" stroke-width="1.6" stroke-dasharray="5 5" stroke-linecap="round" opacity=".55"/>
+  ${done>0?`<path d="${xTrail(L,done+1)}" fill="none" stroke="${XR}" stroke-width="2.4" stroke-dasharray="5 5" stroke-linecap="round"/>`:''}${I.over()}`}
+function xOverA(){return`<g font-family="'Aref Ruqaa',Tajawal,serif" fill="${XK}" text-anchor="middle" opacity=".78"><text x="172" y="48" font-size="10.5">جبال الضباب</text><text x="38" y="186" font-size="9" transform="rotate(-14 38 186)">خليج القرش</text><text x="150" y="420" font-size="13" letter-spacing="4">بحر الظلمات</text><text x="232" y="168" font-size="8.5">غابة الصدى</text><text x="206" y="246" font-size="8" transform="rotate(70 206 246)">نهر الذهب</text>
    <g font-size="7" transform="translate(24 404)">${[0,1,2,3,4].map(k=>`<text x="${k*16}" y="12">${XAR(k)}</text>`).join('')}<text x="32" y="-4" font-size="8">مقياس الفراسخ</text></g></g></svg>
   <div class="xa xa-ship" style="${xAt(4,22,78,70)}">${XS_.ship}</div><div class="xa xa-mon" style="${xAt(224,368,120,60)}">${XS_.monster}</div><div class="xa xa-rose" style="${xAt(268,24,76,76)}">${XS_.rose}</div>
   <div class="xa xa-birds" style="${xAt(106,8,44,18)}"><svg viewBox="106 8 44 18" fill="none" stroke="${XK}" stroke-width="1.1" stroke-linecap="round"><path d="M110 22q4-4 8 0q4-4 8 0"/><path d="M130 14q3-3 6 0q3-3 6 0"/></svg></div>`}
 const XRIB=`<svg viewBox="0 0 300 64" class="xribbon"><path d="M34 12h232q6 0 6 6v26q0 6-6 6H34q-6 0-6-6V18q0-6 6-6z" fill="#E9D3A0" ${XI}/><path d="M38 17h224v28H38z" fill="none" ${XI2} opacity=".55"/>
  <path d="M28 22q-16 0-20 10q-4 10 8 12q8 0 8-6q0-5-6-5" fill="#D9BE86" ${XI}/><path d="M272 22q16 0 20 10q4 10-8 12q-8 0-8-6q0-5 6-5" fill="#D9BE86" ${XI}/><path d="M50 50q100 10 200 0" fill="none" ${XI2} opacity=".4"/></svg>`;
-function xHubHTML(){const t=txState(),prog=t.prog;
- const st=XST.map((s,i)=>{const state=i<prog?'done':i===prog?'cur':'lock';
+function xHubHTML(){const t=txState(),prog=t.prog,I=txIsle(t),L=I.st;
+ const st=L.map((s,i)=>{const state=i<prog?'done':i===prog?'cur':'lock';
    return`<button class="xst ${state}" ${state==='lock'?`data-xl="${i}"`:`data-g="${s.id}"`} style="left:${s.x/3.6}%;top:${s.y/4.4}%"><i>${xSeal(state,i+1)}</i><span>${s.n}</span></button>`}).join('');
  const next=XT[(t.voy-1)%XT.length];
  return`<section class="xhub"><div class="xpaper">${xPaperSVG(360,560,t.voy,{hole:1})}<div class="xpin">
-   <div class="xtitle">${XRIB}<b>جزيرة الكنز</b></div>
-   <div class="xmapw">${xHubMap(prog)}<div class="xstw">${st}</div></div>
-   <div class="xfoot"><span id="xfmsg"><span>الرحلة <b>${XAR(t.voy)}</b></span> <span class="xdot">•</span> <span>المحطة <b>${XAR(Math.min(prog+1,XST.length))}</b> من ${XAR(XST.length)}</span></span><button class="xvault" id="xvault"><i>${next.s}</i>خزانة الكنوز <b>${XAR(t.found.length)}</b></button></div>
+   <div class="xtitle">${XRIB}<b>${I.n}</b></div>
+   <div class="xmapw">${xHubMap(prog,I)}<div class="xstw">${st}</div></div>${I.bag?I.bag(t):''}
+   <div class="xfoot"><span id="xfmsg"><span>الرحلة <b>${XAR(t.voy)}</b></span> <span class="xdot">•</span> <span>المحطة <b>${XAR(Math.min(prog+1,L.length))}</b> من ${XAR(L.length)}</span></span><button class="xvault" id="xvault"><i>${next.s}</i>خزانة الكنوز <b>${XAR(t.found.length)}</b></button></div>
   </div></div></section>`}
 function xVault(){const t=txState(),cur=XT[(t.voy-1)%XT.length];const m=document.createElement('div');m.className='xvaultm';
  m.innerHTML=`<div class="xpaper xvbox">${xPaperSVG(360,520,t.voy+50,{bite:2})}<div class="xpin"><h3 class="xvh">خزانة الكنوز</h3><p class="xvp">كل رحلة تكملها تفتح صندوقًا فيه قطعة فريدة. الرحلة القادمة تخبّئ: <b>${cur.n}</b></p>
@@ -4807,7 +4854,7 @@ function xVault(){const t=txState(),cur=XT[(t.voy-1)%XT.length];const m=document
   <button class="cta" id="xvc">إغلاق</button></div></div>`;
  document.body.appendChild(m);sfx.flip();const close=()=>{m.classList.add('out');setTimeout(()=>m.remove(),250)};m.onclick=e=>{if(e.target===m)close()};m.querySelector('#xvc').onclick=close}
 function txBind(){const v=$('#v-puz');if(!v)return;const vb=v.querySelector('#xvault');if(vb)vb.onclick=xVault;
- v.querySelectorAll('[data-xl]').forEach(b=>b.onclick=()=>{const m=$('#xfmsg'),p=txState().prog;if(!m)return;m.classList.add('warn');m.textContent=`حلّ المحطة ${XAR(p+1)} «${XST[p].n}» أولًا.`;b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),400)})}
+ v.querySelectorAll('[data-xl]').forEach(b=>b.onclick=()=>{const m=$('#xfmsg'),t=txState(),p=t.prog;if(!m)return;m.classList.add('warn');m.textContent=`حلّ المحطة ${XAR(p+1)} «${txList(t)[p].n}» أولًا.`;b.classList.add('shake');setTimeout(()=>b.classList.remove('shake'),400)})}
 /* ================= v30: the nine stations ================= */
 const XAL='ابتثجحخدذرزسشصضطظعغفقكلمنهوي';
 const TI_LM=[{k:'palm',n:'النخلة'},{k:'well',n:'البئر'},{k:'hut',n:'الكوخ'},{k:'skull',n:'صخرة الجمجمة'},{k:'cave',n:'الكهف'},{k:'wreck',n:'حطام السفينة',beach:1}];
@@ -4831,7 +4878,7 @@ function tiPlace(I,k){const kinds=shuffle(TI_LM.slice()).slice(0,k),marks=[];
 /* ---------- shared: paper sheet, station win, board effects ---------- */
 const xSheet=(inner,h=520,seed=3,o={})=>`<div class="xpaper xsheet">${xPaperSVG(360,h,seed,{bite:0,...o})}<div class="xpin">${inner}</div></div>`;
 const xHead=(ic,t)=>`<h3>${ic}${t}</h3>`;
-function xWin(api,id,msg){const r=txStep(id);api.win(msg+(r==='step'?' وانفتحت المحطة التالية على الخريطة.':''))}
+function xWin(api,id,msg){const t=txState(),st=txList(t)[t.prog],r=txStep(id);api.win(msg+(r==='step'?(st&&st.item?` وحصلت على «${XITEM[st.item].n}» ورونًا جديدًا لباب المعبد، وانفتحت المحطة التالية.`:' وانفتحت المحطة التالية على الخريطة.'):''))}
 const xRect=(n,c)=>({l:(c%n)*100/n,t:((c/n)|0)*100/n,s:100/n});
 function xDigFx(n,c,cb){const fx=$('#xfx');if(!fx){cb&&cb();return}const r=xRect(n,c),sh=document.createElement('div');sh.className='xshovel';sh.style.cssText=`left:${r.l-r.s*.1}%;top:${r.t-r.s*.75}%;width:${r.s*1.3}%;height:${r.s*1.3}%`;sh.innerHTML=XS_.shovel;fx.appendChild(sh);tone(160,.12,'triangle',.06);later(()=>tone(150,.12,'triangle',.06),260);
   later(()=>{for(let k=0;k<9;k++){const p=document.createElement('i');p.className='xsand';p.style.cssText=`left:${r.l+r.s/2}%;top:${r.t+r.s*.6}%`;fx.appendChild(p);const a=Math.random()*Math.PI,v=18+Math.random()*26;p.animate([{transform:'translate(-50%,-50%)',opacity:1},{transform:`translate(${Math.cos(a)*v*(Math.random()<.5?-1:1)}px,${-Math.sin(a)*v-10}px) scale(.6)`,opacity:0}],{duration:520,easing:'cubic-bezier(.2,.7,.4,1)'});setTimeout(()=>p.remove(),540)}},420);
@@ -5212,6 +5259,221 @@ Object.assign(ART_FN,{
    B.wc(B.rect(250,150,70,44),ARTC.wood,{a:.5});B.wc(B.ell(285,150,38,16),ARTC.gold,{a:.35});B.ink([[250,150],[320,150],[320,194],[250,194]],{close:true,w:1.6});B.frame()},
  pz_xlock:B=>{B.bg('#E9DDBE',.3);B.wc(B.rect(110,140,200,110),ARTC.wood,{a:.7});B.wc(B.ell(210,140,100,50),'#9A6230',{a:.7});B.wc(B.rect(190,160,40,50),ARTC.gold,{a:.8});B.ink([[110,140],[310,140],[310,250],[110,250]],{close:true,w:1.8});B.frame()}});
 {const _rp=renderPuz;renderPuz=function(){_rp();txBind()}}
+/* ================= v31: جزيرة الجمجمة — the second voyage; every station hands you what opens the next ================= */
+const XITEM={bell:{n:'جرس السفينة'},mapp:{n:'الخريطة الكاملة'},oldkey:{n:'المفتاح العتيق'},lantern:{n:'فانوس المدّ'}};
+const XSTB=[
+ {id:'pz_ybell',n:'أجراس الحطام',x:96,y:344,item:'bell'},
+ {id:'pz_ymap',n:'الخريطة الممزقة',x:136,y:266,item:'mapp'},
+ {id:'pz_yhold',n:'السفينة الغارقة',x:58,y:196,item:'oldkey'},
+ {id:'pz_ytide',n:'صخور المدّ',x:276,y:150,item:'lantern'},
+ {id:'pz_ydoor',n:'باب المعبد',x:226,y:306}];
+const XRUNES=['M12 3v18M12 9l6-5M12 9L6 4','M7 3v18M7 5l9 6-9 6','M6 3v18M18 3v18M6 8l12 8','M12 3l7 9-7 9-7-9z','M6 21L12 3l6 18M8.4 14h7.2','M5 6h14M12 6v15M8 21h8'];
+const xRune=(k,col=XK)=>`<svg viewBox="0 0 24 24"><path d="${XRUNES[k]}" fill="none" stroke="${col}" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+const txRunes=voy=>{const r=seeded(voy*7919+3),a=[0,1,2,3,4,5];for(let i=5;i>0;i--){const j=Math.floor(r()*(i+1));[a[i],a[j]]=[a[j],a[i]]}return a.slice(0,4)};
+Object.assign(XS_,{
+ bell:`<svg viewBox="0 0 40 40"><path d="M20 3v5" ${XI}/><circle cx="20" cy="4" r="2" fill="none" ${XI2}/><path d="M9 29q0-17 11-20q11 3 11 20l3 3H6z" fill="url(#xGold)" ${XI}/><path d="M12 25q8 2.4 16 0M14 16q2-4 5-5" fill="none" stroke="${XK}" stroke-width=".8" opacity=".7"/><circle cx="20" cy="34.6" r="2.6" fill="#8A5A12" ${XI2}/></svg>`,
+ mapp:`<svg viewBox="0 0 40 40"><path d="M6 8l9 2 2-3 17 1-1 9 2 4-2 12-11-1-3 2-12-1 1-10-3-4z" fill="#F1E3BF" ${XI}/><path d="M11 28q6-4 9-12t12-6" fill="none" stroke="${XK}" stroke-width="1" stroke-dasharray="2 2"/><path d="M28 9l5 5M33 9l-5 5" stroke="${XR}" stroke-width="2.2" stroke-linecap="round"/></svg>`,
+ oldkey:`<svg viewBox="0 0 40 40"><g transform="rotate(-35 20 20)"><circle cx="11" cy="20" r="6" fill="url(#xGold)" ${XI}/><circle cx="11" cy="20" r="2.2" fill="#F1E3BF" ${XI2}/><path d="M17 18.6h19v2.8H17z" fill="url(#xGold)" ${XI}/><path d="M30 21v5h3v-3h2v4h2v-6" fill="url(#xGold)" ${XI2}/></g></svg>`,
+ lantern:`<svg viewBox="0 0 40 40"><path d="M15 6q5-4 10 0" fill="none" ${XI}/><path d="M13 9h14l-2 3H15z" fill="#5E3519" ${XI2}/><path d="M14 12h12l1 16H13z" fill="#F2C553" fill-opacity=".55" ${XI}/><path d="M17 12v16M23 12v16" stroke="${XK}" stroke-width=".8"/><path class="xflame" d="M20 26q-4-3-1-8q1 3 2 3q2 3-1 5z" fill="#F08A2A" ${XI2}/><path d="M12 28h16v3H12z" fill="#5E3519" ${XI2}/></svg>`,
+ barrel:`<svg viewBox="0 0 40 40"><path d="M11 5h18q5 15 0 30H11q-5-15 0-30z" fill="#A0703F" ${XI}/><path d="M9 12h22M8.4 28h23.2" stroke="#3B3836" stroke-width="2.4"/><path d="M16 5q-2 15 0 30M24 5q2 15 0 30" fill="none" stroke="${XK}" stroke-width=".7" opacity=".7"/></svg>`,
+ crate:`<svg viewBox="0 0 40 40"><rect x="5" y="5" width="30" height="30" fill="#B8874E" ${XI}/><path d="M5 5l30 30M35 5L5 35" stroke="#7A4A22" stroke-width="2.4"/><rect x="5" y="5" width="30" height="30" fill="none" stroke="#6E4320" stroke-width="3"/></svg>`,
+ hatch:`<svg viewBox="0 0 40 40"><rect x="4" y="4" width="32" height="32" rx="2" fill="#6E4320" ${XI}/><path d="M4 13h32M4 22h32M4 31h32" stroke="${XK}" stroke-width=".9"/><path d="M12 8v28M28 8v28" stroke="#F1E3BF" stroke-width="2"/><path d="M12 12h16M12 20h16M12 28h16" stroke="#F1E3BF" stroke-width="1.6"/></svg>`,
+ volcano:`<svg viewBox="0 0 80 56"><path d="M2 54L28 14q12-5 24 0l26 40z" fill="#C9B48E" ${XI}/><ellipse cx="40" cy="15" rx="12" ry="3.4" fill="#3A1E12" ${XI}/><path d="M36 16q-4 12-10 20q-4 6-9 10M44 16q2 10 8 16q4 6 3 14" fill="none" stroke="#C2452A" stroke-width="2.6" stroke-linecap="round"/><path d="M36 16q-4 12-10 20M44 16q2 10 8 16" fill="none" stroke="#F2A23A" stroke-width="1" stroke-linecap="round"/>
+  ${[...Array(12)].map((_,k)=>`<path d="M${52+k*2} ${18+k*3}l${-3-k*.2} ${10+k*.6}" stroke="${XK}" stroke-width=".5" opacity=".7"/>`).join('')}<path d="M2 54h76" ${XI2}/></svg>`,
+ temple:`<svg viewBox="0 0 60 50"><path d="M4 48h52v-8H4zM9 40h42v-8H9zM14 32h32v-8H14zM19 24h22v-8H19z" fill="#C9BFA6" ${XI}/><path d="M24 16h12l-2-6h-8z" fill="#B3A88E" ${XI}/><path d="M26 48V36q4-5 8 0v12z" fill="#2A1C12" ${XI2}/>${[44,36,28,20].map((y,k)=>`<path d="M${46-k*5} ${y}l${-2} ${-8}" stroke="url(#xHatch)" stroke-width="6"/>`).join('')}<circle cx="30" cy="20" r="2" fill="${XR}"/></svg>`});
+/* ---------- the map of Skull Island ---------- */
+const XISLB='M60 182C42 126 100 76 160 86C204 62 266 66 292 104C334 124 338 184 314 216C334 262 302 324 252 338C214 362 168 354 138 332C94 346 50 318 58 272C34 242 40 208 60 182Z';
+function xMapArtB(){const rose=[54,62],rh=[...Array(16)].map((_,k)=>{const a=k*Math.PI/8;return`<path d="M${rose[0]} ${rose[1]}l${(Math.cos(a)*520).toFixed(0)} ${(Math.sin(a)*520).toFixed(0)}" stroke="${k%2?XR:XK}" stroke-width=".5" opacity="${k%2?.22:.2}"/>`}).join('');
+ const waves=[[150,30],[240,36],[20,130],[320,250],[16,300],[40,388],[120,404],[214,392],[300,350],[180,420],[264,416],[330,96]].map(([x,y])=>xNest(XS_.wave,x,y,26,10)).join('');
+ const decor=[['palm',86,300,28],['palm',112,322,24],['palm',300,262,26],['palm',186,330,24],['palm',74,236,22],['palm',300,120,24],['skull',290,192,32],['rock',150,300,16],['rock',260,236,18],['well',196,250,22]].map(([k,x,y,s])=>xNest(XS_[k],x-s/2,y-s/2,s,s)).join('');
+ const forest=[[120,170,48],[236,120,44],[170,224,44],[256,216,40],[96,250,34]].map(([x,y,w])=>xNest(XS_.forest,x-w/2,y-w/3,w,w*2/3)).join('');
+ const echo=`<path d="${XISLB}" fill="none" stroke="${XS}" stroke-width="44" opacity=".2" stroke-linejoin="round"/>`+[[1.055,.85],[1.11,.6],[1.17,.38]].map(([k,o])=>`<path d="${XISLB}" transform="translate(186 214) scale(${k}) translate(-186 -214)" fill="none" stroke="${XS}" stroke-width="1.2" vector-effect="non-scaling-stroke" opacity="${o}"/>`).join('')+`<path d="${XISLB}" fill="none" stroke="${XK}" stroke-width="7" stroke-dasharray=".9 2.6" opacity=".7"/>`;
+ const lagoon='M150 270q10-14 30-10q18 6 12 20q-8 12-26 10q-20-4-16-20z',lava='M178 128q-6 18 4 30q10 14-2 30';
+ const scale=`<g transform="translate(270 404)">${[0,1,2,3].map(k=>`<rect x="${k*16}" y="0" width="16" height="4" fill="${k%2?'#EBD7A9':XK}" stroke="${XK}" stroke-width=".7"/>`).join('')}</g>`;
+ return`<defs><clipPath id="xMapClipB"><rect x="10" y="10" width="340" height="420"/></clipPath></defs><g clip-path="url(#xMapClipB)">${rh}</g>
+  <g filter="url(#xInk)">${echo}<path d="${XISLB}" fill="#EBD7A6" ${XI}/><path d="M80 186C68 142 112 104 162 110C200 92 252 96 272 126C304 144 306 186 290 210C304 250 282 304 244 314C212 332 172 328 146 310C110 320 76 300 80 266C64 242 66 212 80 186Z" fill="#DCC48E" opacity=".45"/>
+   <path d="${lagoon}" fill="#B7CBBE" ${XI}/><path d="M160 276q6-3 12 0M168 284q6-3 12 0" fill="none" stroke="${XS}" stroke-width="1"/><path d="${lava}" fill="none" stroke="#C2452A" stroke-width="2.2" stroke-linecap="round" opacity=".8"/></g>
+  ${xNest(XS_.volcano,130,74,100,70)}${forest}${decor}${xNest(XS_.temple,224,262,52,44)}${xNest(XS_.wreck,14,214,40,40)}${xNest(XS_.reefc,320,140,28,28)}${xNest(XS_.reefc,316,176,22,22)}${xNest(XS_.reefc,330,204,18,18)}${waves}
+  ${scale}<rect x="5" y="5" width="350" height="430" fill="none" stroke="${XK}" stroke-width="1.3" opacity=".55"/><rect x="9" y="9" width="342" height="422" fill="none" stroke="${XK}" stroke-width=".6" stroke-dasharray="10 6" opacity=".5"/>`}
+function xOverB(){return`<g font-family="'Aref Ruqaa',Tajawal,serif" fill="${XK}" text-anchor="middle" opacity=".78"><text x="180" y="66" font-size="10.5">بركان الرماد</text><text x="34" y="268" font-size="9" transform="rotate(-10 34 268)">خليج الحطام</text><text x="318" y="236" font-size="9" transform="rotate(80 318 236)">صخور المدّ</text><text x="252" y="354" font-size="9">معبد الأرواح</text><text x="150" y="420" font-size="13" letter-spacing="4">بحر العواصف</text>
+   <g font-size="7" transform="translate(270 404)">${[0,1,2,3,4].map(k=>`<text x="${k*16}" y="12">${XAR(k)}</text>`).join('')}<text x="32" y="-4" font-size="8">مقياس الفراسخ</text></g></g></svg>
+  <div class="xa xa-ship" style="${xAt(276,22,78,70)}">${XS_.ship.replace('<svg ','<svg style="transform:scaleX(-1)" ')}</div><div class="xa xa-rose" style="${xAt(16,24,76,76)}">${XS_.rose}</div>
+  <div class="xa xa-smoke" style="${xAt(166,34,30,40)}"><svg viewBox="0 0 30 40"><circle cx="15" cy="30" r="6" fill="#8E8576" opacity=".55"/><circle cx="11" cy="20" r="7" fill="#9C9384" opacity=".45"/><circle cx="17" cy="9" r="8" fill="#ABA394" opacity=".35"/></svg></div>
+  <div class="xa xa-mon" style="${xAt(20,372,110,55)}">${XS_.monster.replace('<svg ','<svg style="transform:scaleX(-1)" ')}</div>`}
+function xBagB(t){const runes=txRunes(t.voy),n=t.prog;
+ return`<div class="xbag">${XSTB.slice(0,4).map((s,i)=>`<span class="xbi2 ${i<n?'on':''}"><i>${XS_[s.item]}</i><b>${i<n?XITEM[s.item].n:'؟'}</b><em>${i<n?xRune(runes[i]):''}</em></span>`).join('')}</div>`}
+XISLES.push({n:'جزيرة الجمجمة',st:XSTB,key:'mapB',art:xMapArtB,over:xOverB,bag:xBagB});
+const txRunesNow=()=>{const t=txState();return txIsle(t).st===XSTB?txRunes(t.voy):null};
+
+/* ---------- 1) أجراس الحطام: listen, then ring the bells back (forwards, then backwards) ---------- */
+const YB_LV=[[3,4,0],[4,5,0],[4,6,0],[4,6,1],[5,6,1],[5,7,1],[6,7,1],[6,8,1]],YB_F=[523,587,659,784,880,1047],YB_C=['#E2B04B','#C98A4A','#B9B2A0','#D27A4E','#9FB38A','#C9962E'];
+function runYBell(){return pzPlay('pz_ybell',api=>{
+  const[nb,tgt,rev]=YB_LV[api.lv-1],all=[...Array(tgt)].map(()=>rnd(nb));let len=2,inp=[],busy=true,miss=0;
+  const back=()=>rev&&len%2===1,want=()=>{const s=all.slice(0,len);return back()?s.reverse():s};
+  api.body.innerHTML=xSheet(`${xHead(XS_.bell,'أجراس الحطام')}<ol class="xnote"><li>الأجراس ترن بلحن، وأنت تعيده.</li><li>كل مرة يطول اللحن جرسًا واحدًا حتى ${arN(tgt,['جرس','جرسين','أجراس','جرسًا'])}.</li>${rev?'<li>في الجولات الفردية الطويلة: أعد اللحن <b>بالمقلوب</b> من آخر جرس لأوله.</li>':''}<li>غلطة واحدة نسامحك عليها، والثانية تغرق الحطام.</li></ol>
+   <div class="ybw" id="ybw"><svg class="ybbeam" viewBox="0 0 300 40" preserveAspectRatio="none"><path d="M4 14h292v12H4z" fill="#8A5A33" ${XI}/><path d="M4 20h292" stroke="${XK}" stroke-width=".6" opacity=".6"/><path d="M0 14l14-12h8L8 14M300 14L286 2h-8l14 12" fill="#6E4320" ${XI2}/></svg>
+   <div class="ybrow" style="--n:${nb}">${[...Array(nb)].map((_,i)=>`<button class="ybb" data-b="${i}" style="--bc:${YB_C[i]}"><span class="ybrope"></span><i>${XS_.bell.replace('url(#xGold)','var(--bc)')}</i><em class="ybwave"></em></button>`).join('')}</div></div>
+   <div class="ybdots" id="ybd"></div>`,640,111);
+  const dots=()=>{$('#ybd').innerHTML=[...Array(tgt-1)].map((_,k)=>`<i class="${k<len-2?'ok':k===len-2?'cur':''}"></i>`).join('')};
+  const ring=b=>{const e=api.body.querySelector(`.ybb[data-b="${b}"]`);if(!e)return;e.classList.remove('ring');void e.offsetWidth;e.classList.add('ring');tone(YB_F[b],.45,'sine',.09);tone(YB_F[b]*2,.25,'sine',.025)};
+  function play(){busy=true;inp=[];dots();api.msg('اسمع جيدًا…');all.slice(0,len).forEach((b,k)=>later(()=>ring(b),500+k*620));
+    later(()=>{busy=false;api.msg(back()?'أعده <b>بالمقلوب</b>: من آخر جرس لأوله.':'أعده بنفس الترتيب.')},500+len*620)}
+  function tap(b){if(api.ended||busy)return;ring(b);inp.push(b);const w=want();
+    if(w[inp.length-1]!==b){miss++;api.wrong();busy=true;if(miss>=2){later(()=>api.over(`اللحن كان: ${w.map(x=>XAR(x+1)).join(' ← ')}.`),500);return}api.msg('نشاز! اسمعه مرة ثانية.');later(play,1100);return}
+    if(inp.length<w.length)return;busy=true;if(len>=tgt){sfx.ok(3);later(()=>xWin(api,'pz_ybell',`أعدت لحنًا من ${arN(tgt,['جرس','جرسين','أجراس','جرسًا'])}${miss?'':' بدون نشاز'}.`),500);return}
+    len++;sfx.ok(1);later(play,800)}
+  api.body.querySelectorAll('.ybb').forEach(b=>b.onclick=()=>tap(+b.dataset.b));later(play,300);
+  pzHook({P:{all,tgt,nb,rev},tap,want,busy:()=>busy});
+  return{hint:k=>{if(k===1)return'قسّم اللحن في ذهنك لمجموعات من جرسين أو ثلاثة، وسمِّ كل جرس برقمه.';if(k===2){if(!busy)play();return'أعدت لك اللحن.'}const w=want();return`أول جرس الآن: رقم ${XAR(w[inp.length]+1)} من اليمين.`},
+   reveal:()=>`اللحن الكامل: ${all.map(x=>XAR(x+1)).join(' ← ')}.`}})}
+
+/* ---------- 2) الخريطة الممزقة: put the pieces back so every road, river and cliff joins ---------- */
+const YM_LV=[[3,0,3],[3,0,4],[3,1,3],[3,1,4],[4,0,4],[4,1,4],[4,1,5],[4,1,5]];
+const ymEdges=(T,r)=>[0,1,2,3].map(i=>T[(i-r+4)%4]);
+function ymMake(lv){const[n,rot,K]=YM_LV[lv-1];
+  for(let t=0;t<100;t++){const h=[...Array(n)].map(()=>[...Array(n-1)].map(()=>1+rnd(K))),v=[...Array(n-1)].map(()=>[...Array(n)].map(()=>1+rnd(K)));
+    const tiles=[];for(let r=0;r<n;r++)for(let c=0;c<n;c++)tiles.push([r?v[r-1][c]:0,c<n-1?h[r][c]:0,r<n-1?v[r][c]:0,c?h[r][c-1]:0]);
+    if(new Set(tiles.map(x=>x.join())).size<tiles.length)continue;const order=shuffle(tiles.map((_,i)=>i));if(order.every((x,i)=>x===i))continue;
+    return{n,rot:!!rot,K,tiles,cur:order.map(i=>({t:i,r:rot?rnd(4):0}))}}return ymMake(Math.max(1,lv-1))}
+function ymOk(P,cur){const n=P.n,E=i=>ymEdges(P.tiles[cur[i].t],cur[i].r);let bad=0;
+  for(let r=0;r<n;r++)for(let c=0;c<n;c++){const e=E(r*n+c);if(r===0&&e[0])bad++;if(c===n-1&&e[1])bad++;if(r===n-1&&e[2])bad++;if(c===0&&e[3])bad++;if(c<n-1&&e[1]!==E(r*n+c+1)[3])bad++;if(r<n-1&&e[2]!==E((r+1)*n+c)[0])bad++}return bad}
+const YM_STY=[null,['#7A4A22',3,'4 3'],['#4F8FA8',4.4,''],['#3A2616',3.4,'1 2.2'],['#5E8A3E',3,'.5 3.4'],['#9B2B1F',2.6,'7 3']];
+function ymTile(T){const pts=[[20,0],[40,20],[20,40],[0,20]];let f='',fr='';T.forEach((k,i)=>{if(!k){fr+=['<path d="M1.5 1.5h37"/>','<path d="M38.5 1.5v37"/>','<path d="M1.5 38.5h37"/>','<path d="M1.5 1.5v37"/>'][i];return}const[c,w,d]=YM_STY[k],[x,y]=pts[i];
+  f+=k===2?`<path d="M${x} ${y}Q${(x+20)/2+(i%2?0:4)} ${(y+20)/2+(i%2?4:0)} 20 20" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round"/>`:`<path d="M${x} ${y}L20 20" stroke="${c}" stroke-width="${w}" stroke-dasharray="${d}" stroke-linecap="${k===4?'round':'butt'}"/>`});
+  return`<svg viewBox="0 0 40 40"><rect width="40" height="40" fill="#EFDDB0"/><path d="M0 0h40v40H0z" fill="none" stroke="rgba(58,38,22,.35)" stroke-width=".6"/>${f}<circle cx="20" cy="20" r="3.4" fill="#EFDDB0" ${XI2}/><g fill="none" stroke="${XK}" stroke-width="2.6">${fr}</g></svg>`}
+function runYMap(){return pzPlay('pz_ymap',api=>{
+  const P=ymMake(api.lv),n=P.n,lim=n*n*(P.rot?4:2)+6;let cur=P.cur.map(x=>({...x})),sel=-1,moves=0,busy=false;
+  api.body.innerHTML=xSheet(`${xHead(XS_.mapp,'الخريطة الممزقة')}<ol class="xnote"><li>رجّع القطع لمكانها: كل طريق ونهر وجرف لازم يكمل في القطعة اللي جنبه.</li><li>الإطار الأسود حافة الخريطة: لازم يكون على الطرف.</li><li>اضغط قطعتين لتبدّلهما${P.rot?'، واضغط القطعة المختارة مرة ثانية لتدويرها':''}.</li></ol>
+   <div class="ymleg">${[1,2,3,4,5].slice(0,P.K).map(k=>`<span><svg viewBox="0 0 30 10"><path d="M2 5h26" stroke="${YM_STY[k][0]}" stroke-width="${YM_STY[k][1]}" stroke-dasharray="${YM_STY[k][2]}"/></svg>${['طريق','نهر','جرف','درب الغابة','أثر القرصان'][k-1]}</span>`).join('')}</div>
+   <div class="ymg ltr" id="ymg" style="--n:${n}"></div><div class="xtools"><span>الحركات: <b id="ymv"></b> من ${XAR(lim)}</span><span id="ymok"></span></div>`,700,121);
+  const draw=()=>{$('#ymg').innerHTML=cur.map((x,i)=>`<button class="ymt${sel===i?' sel':''}" data-i="${i}"><i style="transform:rotate(${x.r*90}deg)">${ymTile(P.tiles[x.t])}</i></button>`).join('');$('#ymv').textContent=XAR(moves);
+    const b=ymOk(P,cur);$('#ymok').textContent=b?`وصلات ناقصة: ${XAR(b)}`:'';api.body.querySelectorAll('.ymt').forEach(e=>e.onclick=()=>tap(+e.dataset.i))};
+  function tap(i){if(api.ended||busy)return;if(sel<0){sel=i;sfx.pop();draw();return}
+    if(sel===i){if(!P.rot){sel=-1;draw();return}cur[i].r=(cur[i].r+1)%4;moves++;tone(500,.04)}else{[cur[sel],cur[i]]=[cur[i],cur[sel]];sel=-1;moves++;tone(380,.05,'triangle')}
+    draw();if(!ymOk(P,cur)){busy=true;$('#ymg').classList.add('done');sfx.ok(3);later(()=>xWin(api,'pz_ymap',`رجعت الخريطة كاملة في ${arN(moves,AN.mv)}.`),900);return}
+    if(moves>=lim){busy=true;api.over('خلصت الحركات قبل ما تكتمل الخريطة.')}}
+  draw();api.msg('رتّب قطع الخريطة.');pzHook({P,set:c=>{cur=c;sel=-1;draw();if(!ymOk(P,cur)){busy=true;xWin(api,'pz_ymap','رجعت الخريطة كاملة.')}},cur:()=>cur});
+  return{hint:k=>{if(k===1)return'ابدأ بالزوايا: القطعة اللي فيها إطاران متجاوران مكانها زاوية. بعدها الأطراف.';
+    const w=cur.findIndex((x,i)=>x.t!==i);if(w<0)return null;const j=cur.findIndex(x=>x.t===w);[cur[w],cur[j]]=[cur[j],cur[w]];cur[w].r=0;moves++;draw();return k===2?'رجعت لك قطعة واحدة لمكانها الصحيح.':'رجعت لك قطعة ثانية.'},
+   reveal:()=>{cur=P.tiles.map((_,i)=>({t:i,r:0}));draw();return'هذه الخريطة كاملة.'}}})}
+
+/* ---------- 3) السفينة الغارقة: get the key and climb out before the water reaches you ---------- */
+const YH_LV=[[5,7,5,1,8],[6,7,5,1,9],[6,8,4,1,10],[6,8,4,2,11],[7,8,4,2,12],[7,9,4,2,13],[7,9,3,3,14],[8,9,3,3,15]];
+function yhSolve(P,from={pos:P.start,key:0,mask:0},t0=0){const{w,h,k}=P,key=s=>s.pos+'|'+s.key+'|'+s.mask,seen=new Map([[key(from),null]]);let q=[{...from,t:t0}];
+  while(q.length){const nq=[];for(const s of q){if(s.pos===P.hatch&&s.key){const o=[];let kk=key(s);while(seen.get(kk)){o.unshift(seen.get(kk)[1]);kk=seen.get(kk)[0]}return o}
+      for(let d=0;d<4;d++){const r=yhMove(P,s,d);if(!r)continue;const lvl=Math.floor((s.t+1)/k);if(((r.pos/w)|0)>=h-lvl)continue;const kk=key(r);if(seen.has(kk))continue;seen.set(kk,[key(s),d]);nq.push({...r,t:s.t+1})}}q=nq}return null}
+function yhMove(P,s,d){const{w,h,cell}=P,x=s.pos%w+D4[d][0],y=((s.pos/w)|0)+D4[d][1];if(!inb(x,y,w,h))return null;const i=y*w+x,c=cell[i];if(c.t==='wall')return null;if(c.t==='door'&&!((s.mask>>c.c)&1))return null;
+  let mask=s.mask;if(c.t==='lever')mask^=1<<c.c;return{pos:i,key:s.key||(i===P.keyAt?1:0),mask}}
+function yhMake(lv){const[w,h,k,nc,minM]=YH_LV[lv-1];let best=null;
+  for(let t=0;t<400;t++){const cell=[...Array(w*h)].map(()=>({t:Math.random()<.24?'wall':'floor'})),free=()=>[...Array(w*h).keys()].filter(i=>cell[i].t==='floor');
+    const start=pick(free().filter(i=>((i/w)|0)===h-1)),hatch=pick(free().filter(i=>((i/w)|0)===0));if(start==null||hatch==null)continue;
+    const used=new Set([start,hatch]),take=f=>{const c=pick(free().filter(i=>!used.has(i)&&f(i)));if(c!=null)used.add(c);return c};
+    const keyAt=take(i=>{const y=(i/w)|0;return y>0&&y<h-2});if(keyAt==null)continue;let ok=true;
+    for(let c=0;c<nc;c++){for(let j=0;j<1+rnd(2);j++){const d=take(i=>((i/w)|0)<h-1);if(d==null){ok=false;break}cell[d]={t:'door',c}}const l=take(()=>true);if(l==null){ok=false;break}cell[l]={t:'lever',c}}if(!ok)continue;
+    const P={w,h,k,nc,cell,start,hatch,keyAt};const s=yhSolve(P);if(!s)continue;if(nc&&yhSolve({...P,cell:cell.map(c=>c.t==='lever'?{t:'floor'}:c)}))continue;P.min=s.length;P.sol=s;
+    if(P.min>=minM)return P;if(!best||P.min>best.min)best=P}return best||yhMake(Math.max(1,lv-1))}
+const YH_COL=['#C2452A','#3E6FC2','#2E9A6A'];
+function runYHold(){return pzPlay('pz_yhold',api=>{
+  const P=yhMake(api.lv),{w,h}=P;let s={pos:P.start,key:0,mask:0},t=0,busy=false;
+  const pc=i=>`left:${(i%w)*100/w}%;top:${((i/w)|0)*100/h}%;width:${100/w}%;height:${100/h}%`;
+  const cells=P.cell.map((c,i)=>c.t==='wall'?`<div class="yhc" style="${pc(i)}">${Math.random()<.5?XS_.barrel:XS_.crate}</div>`:c.t==='door'?`<div class="yhc yhdoor" data-c="${c.c}" style="${pc(i)};--dc:${YH_COL[c.c]}"><svg viewBox="0 0 40 40"><rect x="3" y="3" width="34" height="34" fill="none" stroke="${XK}" stroke-width="2"/>${[9,16,24,31].map(x=>`<path d="M${x} 3v34" stroke="#3B3836" stroke-width="3"/>`).join('')}<circle cx="20" cy="20" r="5" fill="var(--dc)" ${XI2}/></svg></div>`:c.t==='lever'?`<div class="yhc yhlev" data-c="${c.c}" style="${pc(i)};--dc:${YH_COL[c.c]}"><svg viewBox="0 0 40 40"><rect x="10" y="28" width="20" height="7" rx="2" fill="#5E5754" ${XI2}/><g class="yhh"><path d="M20 30L12 10" stroke="${XK}" stroke-width="2.6" stroke-linecap="round"/><circle cx="12" cy="10" r="4.4" fill="var(--dc)" ${XI2}/></g></svg></div>`:'').join('');
+  api.body.innerHTML=xSheet(`${xHead(XS_.wreck,'السفينة الغارقة')}<ol class="xnote"><li>خذ المفتاح العتيق واطلع من الفتحة فوق.</li><li>الماء يرتفع صفًا كل ${arN(P.k,AN.mv)}. لا تخلّيه يوصلك!</li>${P.nc?'<li>كل ذراع يفتح ويقفل الأبواب اللي بلونه.</li>':''}</ol>
+   <div class="yhw ltr" id="yhw" style="aspect-ratio:${w}/${h}">${cells}<div class="yhc yhkey" id="yhk" style="${pc(P.keyAt)}">${XS_.oldkey}</div><div class="yhc" style="${pc(P.hatch)}">${XS_.hatch}</div><div class="yhwater" id="yhwa"><svg viewBox="0 0 80 8" preserveAspectRatio="none"><path d="M0 4q5-4 10 0t10 0 10 0 10 0 10 0 10 0 10 0 10 0V8H0z" fill="#5F8E86"/></svg></div><div class="xpirate yhp" id="yhp" style="${pc(P.start)}">${XS_.pirate}</div></div>
+   <div class="xpad ltr">${[0,3,1,2].map(d=>`<button data-d="${d}" aria-label="${TI_DIR[d]}"><svg viewBox="0 0 40 40"><path d="${XARW[d]}" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`).join('')}<span class="xmv" id="yhm"></span></div>`,760,131);
+  const paint=()=>{const lvl=Math.floor(t/P.k);$('#yhwa').style.height=`${lvl*100/h}%`;api.body.querySelectorAll('.yhdoor').forEach(e=>e.classList.toggle('open',!!((s.mask>>+e.dataset.c)&1)));api.body.querySelectorAll('.yhlev').forEach(e=>e.classList.toggle('on',!!((s.mask>>+e.dataset.c)&1)));
+    $('#yhk').classList.toggle('got',!!s.key);$('#yhp').style.cssText=pc(s.pos);const nx=P.k-(t%P.k);$('#yhm').innerHTML=`الحركات <b>${XAR(t)}</b> · الماء يرتفع بعد ${arN(nx,AN.mv)}${s.key?' · <b>معك المفتاح</b>':''}`};
+  paint();api.msg('اجمع المفتاح واطلع قبل ما يغمرك الماء.');
+  function go(d){if(api.ended||busy)return;const r=yhMove(P,s,d);if(!r){tone(140,.07);return}const hadK=s.key;s=r;t++;paint();tone(330+((t*37)%200),.04);
+    if(s.key&&!hadK){sfx.ok(2);api.msg('حصلت المفتاح! الحين للفتحة.')}if(P.cell[s.pos].t==='lever')tone(220,.12,'square',.04);
+    const lvl=Math.floor(t/P.k);if(((s.pos/w)|0)>=h-lvl){busy=true;$('#yhp').classList.add('sink');later(()=>api.over(`الماء غمرك. أقصر طريق كان ${arN(P.min,AN.mv)}.`),600);return}
+    if(s.pos===P.hatch&&s.key){busy=true;$('#yhp').classList.add('climb');later(()=>xWin(api,'pz_yhold',`طلعت من السفينة في ${arN(t,AN.mv)}${t===P.min?'، أقصر طريق ممكن!':'.'}`),700);return}
+    if(s.pos===P.hatch)api.msg('الفتحة مقفلة: تحتاج المفتاح العتيق.');if(!yhSolve(P,s,t))api.msg('انتبه: ما عاد فيه طريق ينجّيك من هنا. جرّب «إعادة».')}
+  api.body.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>go(+b.dataset.d));keyH=e=>{const m={ArrowUp:0,ArrowRight:1,ArrowDown:2,ArrowLeft:3}[e.key];if(m!=null)go(m)};
+  let sx=0,sy=0;const W2=$('#yhw');W2.addEventListener('touchstart',e=>{sx=e.touches[0].clientX;sy=e.touches[0].clientY},{passive:true});W2.addEventListener('touchend',e=>{const dx=e.changedTouches[0].clientX-sx,dy=e.changedTouches[0].clientY-sy;if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;go(Math.abs(dx)>Math.abs(dy)?(dx>0?1:3):(dy>0?2:0))});
+  pzHook({P,go,st:()=>({...s,t})});
+  return{hint:k=>{if(k===1)return'خطط الطريق كله قبل أول خطوة: المفتاح، ثم الأذرع اللي تفتح طريقك، ثم الفتحة. كل خطوة زايدة ترفع الماء.';const sol=yhSolve(P,s,t);if(!sol)return'ما فيه طريق من هنا: اضغط «إعادة».';
+    if(k===2)return`من مكانك يكفيك ${arN(sol.length,AN.mv)}.`;return`الخطوات الثلاث الجاية: ${sol.slice(0,3).map(d=>TI_DIRT[d]).join('، ')}.`},reveal:()=>`أقصر طريق: ${P.sol.map(d=>TI_DIRT[d]).join('، ')}.`}})}
+
+/* ---------- 4) صخور المدّ: rocks rise and sink in rhythm; cross without getting wet ---------- */
+const YT_LV=[[5,3,5],[5,4,6],[6,4,7],[6,5,8],[6,5,9],[7,5,10],[7,6,11],[7,6,12]];
+const YT_TY=[{p:1,up:1},{p:2,up:1},{p:3,up:2},{p:4,up:2},{p:4,up:3},{p:3,up:1}];
+const ytUp=(r,t)=>((t+r.ph)%r.p)<r.up;
+function ytSafe(P,pos,t){if(pos<0)return true;const y=(pos/P.w)|0;if(y===0||y===P.h+1)return true;const r=P.rock[pos];return!!r&&ytUp(r,t)}
+function ytSolve(P,pos,t){const L=12,key=(p,tt)=>p*L+tt%L,seen=new Map([[key(pos,t),null]]);let q=[[pos,t]];
+  while(q.length){const nq=[];for(const[p,tt]of q){if(((p/P.w)|0)===0){const o=[];let k=key(p,tt);while(seen.get(k)){o.unshift(seen.get(k)[1]);k=seen.get(k)[0]}return o}
+      for(let a=0;a<5;a++){let np=p;if(a<4){const x=p%P.w+D4[a][0],y=((p/P.w)|0)+D4[a][1];if(!inb(x,y,P.w,P.h+2))continue;np=y*P.w+x}if(!ytSafe(P,np,tt+1))continue;const k=key(np,tt+1);if(seen.has(k))continue;seen.set(k,[key(p,tt),a]);nq.push([np,tt+1])}}q=nq}return null}
+function ytMake(lv){const[w,h,minM]=YT_LV[lv-1];let best=null;
+  for(let t=0;t<500;t++){const rock=[];for(let y=1;y<=h;y++)for(let x=0;x<w;x++)if(Math.random()<.5){const ty=lv<=2?pick(YT_TY.slice(0,4)):pick(YT_TY.slice(lv>=6?1:0));rock[y*w+x]={...ty,ph:rnd(ty.p)}}
+    const start=(h+1)*w+rnd(w),P={w,h,rock,start};const s=ytSolve(P,start,0);if(!s)continue;P.min=s.length;P.sol=s;if(P.min>=minM)return P;if(!best||P.min>best.min)best=P}return best}
+function runYTide(){return pzPlay('pz_ytide',api=>{
+  const P=ytMake(api.lv),{w,h}=P,H=h+2,lim=P.min+3;let pos=P.start,t=0,busy=false;
+  const pc=i=>`left:${(i%w)*100/w}%;top:${((i/w)|0)*100/H}%;width:${100/w}%;height:${100/H}%`;
+  const rocks=P.rock.map((r,i)=>r?`<div class="ytr" data-i="${i}" style="${pc(i)}"><i>${XS_.reefc}</i><b></b></div>`:'').join('');
+  api.body.innerHTML=xSheet(`${xHead(XS_.lantern,'صخور المدّ')}<ol class="xnote"><li>اعبر من الشاطئ تحت للشاطئ فوق.</li><li>الصخور تطلع وتغطس بإيقاع ثابت، وكل حركة أو انتظار = دقة من الإيقاع.</li><li>الرقم على الصخرة: بعد كم دقة يتغير حالها. لا تقف على صخرة بتغطس!</li><li>معك ${arN(lim,AN.mv)} على الأكثر.</li></ol>
+   <div class="ytw ltr" id="ytw" style="aspect-ratio:${w}/${H};--H:${H}"><div class="ytsea"><svg viewBox="0 0 80 8" preserveAspectRatio="none"><path d="M0 4q5-4 10 0t10 0 10 0 10 0 10 0 10 0 10 0 10 0" fill="none" stroke="#fff" stroke-opacity=".5"/></svg></div><div class="ytbank top"></div><div class="ytbank bot"></div>${rocks}<div class="xpirate ytp" id="ytp" style="${pc(pos)}">${XS_.pirate}</div></div>
+   <div class="xpad ltr ytpad">${[0,3,1,2].map(d=>`<button data-a="${d}" aria-label="${TI_DIR[d]}"><svg viewBox="0 0 40 40"><path d="${XARW[d]}" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`).join('')}<button data-a="4" class="ytwait">انتظر</button><span class="xmv" id="ytm"></span></div>`,780,141);
+  const paint=()=>{api.body.querySelectorAll('.ytr').forEach(e=>{const r=P.rock[+e.dataset.i],up=ytUp(r,t);e.classList.toggle('up',up);let k=1;while(k<12&&ytUp(r,t+k)===up)k++;e.querySelector('b').textContent=r.p===1?'':XAR(k)});
+    $('#ytp').style.cssText=pc(pos);$('#ytm').innerHTML=`<b>${XAR(t)}</b>/${XAR(lim)}`};
+  paint();api.msg('راقب الإيقاع واعبر.');
+  function act(a){if(api.ended||busy)return;let np=pos;if(a<4){const x=pos%w+D4[a][0],y=((pos/w)|0)+D4[a][1];if(!inb(x,y,w,H)){tone(140,.07);return}np=y*w+x}
+    t++;pos=np;paint();tone(a===4?260:420,.05);
+    if(!ytSafe(P,pos,t)){busy=true;$('#ytp').classList.add('sink');later(()=>api.over(`غرقت! أقصر عبور كان ${arN(P.min,AN.mv)}.`),600);return}
+    if(((pos/w)|0)===0){busy=true;xWin(api,'pz_ytide',`عبرت في ${arN(t,AN.mv)}${t===P.min?'، بأقل عدد ممكن!':'.'}`);return}
+    if(t>=lim){busy=true;api.over(`المدّ رجع وسدّ الطريق. أقصر عبور كان ${arN(P.min,AN.mv)}.`)}}
+  api.body.querySelectorAll('[data-a]').forEach(b=>b.onclick=()=>act(+b.dataset.a));keyH=e=>{const m={ArrowUp:0,ArrowRight:1,ArrowDown:2,ArrowLeft:3,' ':4}[e.key];if(m!=null)act(m)};
+  pzHook({P,act,st:()=>({pos,t})});
+  return{hint:k=>{if(k===1)return'الانتظار سلاحك: أحيانًا أسرع طريق يبدأ بوقفة حتى تطلع الصخرة اللي قدامك.';const s=ytSolve(P,pos,t);if(!s)return'ما فيه طريق آمن من هنا: اضغط «إعادة».';
+    if(k===2)return`من مكانك يكفيك ${arN(s.length,AN.mv)}.`;return`الحركات الثلاث الجاية: ${s.slice(0,3).map(a=>a===4?'انتظر':TI_DIRT[a]).join('، ')}.`},reveal:()=>`أقصر عبور: ${P.sol.map(a=>a===4?'انتظر':TI_DIRT[a]).join('، ')}.`}})}
+
+/* ---------- 5) باب المعبد: geared rune rings; line up the runes you earned ---------- */
+const YD_LV=[[3,'a',3],[3,'b',4],[4,'a',4],[4,'b',5],[4,'b',6],[4,'c',6],[4,'c',7],[4,'d',8]];
+function ydLevers(R,kind){return[...Array(R)].map((_,i)=>{const v=Array(R).fill(0);v[i]=1;if(i+1<R)v[i+1]=1;else if(kind!=='a')v[0]=kind==='d'?2:1;if((kind==='c'||kind==='d')&&i>0)v[i-1]=5;return v})}
+function ydBFS(P,from){const R=P.R,enc=a=>a.reduce((s,x)=>s*6+x,0),seen=new Map([[enc(from),null]]);let q=[from];
+  while(q.length){const nq=[];for(const a of q){if(a.every((x,i)=>x===P.goal[i])){const o=[];let k=enc(a);while(seen.get(k)){o.unshift(seen.get(k)[1]);k=seen.get(k)[0]}return o}
+      P.lev.forEach((v,j)=>{const b=a.map((x,i)=>(x+v[i])%6),k=enc(b);if(!seen.has(k)){seen.set(k,[enc(a),j]);nq.push(b)}})}q=nq}return null}
+function ydMake(lv,want){const[R,kind,minM]=YD_LV[lv-1],lev=ydLevers(R,kind);let best=null;
+  for(let t=0;t<200;t++){const rings=[...Array(R)].map(()=>shuffle([0,1,2,3,4,5])),runes=want&&want.length>=R?want.slice(0,R):shuffle([0,1,2,3,4,5]).slice(0,R);
+    const goal=runes.map((r,i)=>(6-rings[i].indexOf(r))%6),start=goal.map(()=>rnd(6)),P={R,lev,rings,runes,goal,start};const s=ydBFS(P,start);if(!s)continue;P.min=s.length;P.sol=s;
+    if(P.min>=minM)return P;if(!best||P.min>best.min)best=P}return best}
+function runYDoor(){return pzPlay('pz_ydoor',api=>{
+  const P=ydMake(api.lv,txRunesNow()),R=P.R,lim=P.min+2;let st=P.start.slice(),pulls=0,busy=false;const RN=R===3?['الخارجية','الوسطى','الداخلية']:['الخارجية','الثانية','الثالثة','الداخلية'];
+  const ringSvg=P.rings.map((ring,i)=>{const r=[94,74,54,34][i];return`<g class="ydr" id="ydr${i}" style="transform:rotate(${st[i]*60}deg)"><circle r="${r}" fill="${i%2?'#D8C49A':'#C9B48E'}" ${XI}/>${ring.map((k,j)=>`<g transform="rotate(${j*60}) translate(0 ${-(r-10)})"><g transform="rotate(${-j*60}) translate(-7 -7) scale(.58)">${xRune(k).replace('<svg viewBox="0 0 24 24">','').replace('</svg>','')}</g></g>`).join('')}${[...Array(24)].map((_,k)=>`<path transform="rotate(${k*15})" d="M0 ${-r}v4" stroke="${XK}" stroke-width=".7"/>`).join('')}</g>`}).join('');
+  api.body.innerHTML=xSheet(`${xHead(XS_.temple.replace('viewBox="0 0 60 50"','viewBox="0 0 60 50" width="34"'),'باب المعبد')}<ol class="xnote"><li>الحلقات مربوطة بتروس: كل ذراع يدوّر أكثر من حلقة.</li><li>رتّب الحلقات بحيث يظهر تحت السهم الرون المطلوب لكل حلقة (من الخارج للداخل).</li><li>معك ${arN(lim,['سحبة واحدة','سحبتان','سحبات','سحبة'])}.</li></ol>
+   <div class="ydwant">${P.runes.map((k,i)=>`<span><small>${RN[i]}</small><i>${xRune(k,XR)}</i></span>`).join('')}</div>
+   <div class="ydw" id="ydw"><svg viewBox="-110 -118 220 228"><path d="M0-114l-7-10h14z" fill="${XR}" ${XI2}/><path d="M0-104v14" stroke="${XR}" stroke-width="2" opacity=".6"/>${ringSvg}<circle r="14" fill="url(#xGold)" ${XI}/><path d="M-6 0h12M0-6v12" stroke="${XK}" stroke-width="1.4"/></svg><div class="yddoor"><i></i><i></i></div></div>
+   <div class="ydlev">${P.lev.map((v,j)=>`<button data-j="${j}"><svg viewBox="0 0 40 40"><rect x="14" y="26" width="12" height="10" rx="2" fill="#5E5754" ${XI2}/><g class="ydh"><path d="M20 28V8" stroke="${XK}" stroke-width="3" stroke-linecap="round"/><circle cx="20" cy="8" r="5" fill="url(#xGold)" ${XI2}/></g></svg><svg class="ydmini" viewBox="-16 -16 32 32">${v.map((x,i)=>`<circle r="${14-i*3.4}" fill="none" stroke="${x===0?'rgba(58,38,22,.25)':x===5?XR:'#B8860B'}" stroke-width="${x?2.2:.8}" ${x===2?'stroke-dasharray="3 1.6"':''}/>`).join('')}</svg></button>`).join('')}</div>
+   <div class="xtools"><span>السحبات: <b id="ydp"></b> من ${XAR(lim)}</span></div>`,800,151);
+  const paint=()=>{st.forEach((x,i)=>{$('#ydr'+i).style.transform=`rotate(${x*60}deg)`});$('#ydp').textContent=XAR(pulls)};paint();api.msg('اسحب الأذرع لتدوير الحلقات.');
+  function pull(j){if(api.ended||busy)return;const v=P.lev[j];st=st.map((x,i)=>(x+v[i])%6);pulls++;const b=api.body.querySelector(`[data-j="${j}"]`);b.classList.remove('pull');void b.offsetWidth;b.classList.add('pull');paint();tone(200+j*40,.12,'triangle',.05);
+    if(st.every((x,i)=>x===P.goal[i])){busy=true;later(()=>{$('#ydw').classList.add('open');sfx.lvl();const tr=txStep('pz_ydoor'),T=tr&&tr!=='step'?tr:null;
+        later(()=>api.win(T?`انفتح باب المعبد! وجدت «${T.n}» وانضم لخزانة الكنوز، وبدأت رحلة جديدة.`:`انفتح باب المعبد في ${arN(pulls,['سحبة واحدة','سحبتين','سحبات','سحبة'])}.`),1400)},400);return}
+    if(pulls>=lim){busy=true;api.over('علقت التروس. فكّر: أي ذراع يغيّر حلقة واحدة فقط؟ ابدأ منه.')}}
+  api.body.querySelectorAll('[data-j]').forEach(b=>b.onclick=()=>pull(+b.dataset.j));pzHook({P,pull,st:()=>st});
+  return{hint:k=>{if(k===1)return'ابدأ بالذراع اللي يحرك أقل عدد حلقات، واضبط الحلقة اللي ما يحركها غيره، ثم تقدّم للباقي.';const s=ydBFS(P,st);if(!s)return null;
+    if(k===2)return`يكفيك ${arN(s.length,['سحبة واحدة','سحبتين','سحبات','سحبة'])} من هنا.`;return`اسحب الذراع رقم ${XAR(s[0]+1)} من اليمين.`},reveal:()=>`الحل: ${P.sol.map(j=>XAR(j+1)).join(' ← ')}.`}})}
+
+/* ---------- registry ---------- */
+const PZ_Y=[
+ {id:'pz_ybell',maxLv:8,col:['#E2B04B','#8A5A12'],name:'أجراس الحطام',lab:'Bell melody',cat:'mem',why:'ذاكرة عاملة سمعية وبصرية: تحفظ لحنًا يطول، وفي المستويات العالية تعيده بالمقلوب.',how:['اسمع الأجراس.','أعد اللحن بالترتيب.','وأحيانًا بالمقلوب!'],run:runYBell},
+ {id:'pz_ymap',maxLv:8,col:['#EFDDB0','#7A4A22'],name:'الخريطة الممزقة',lab:'Edge matching',cat:'spa',why:'تركيب قطع بحيث تتطابق الأطراف: تفكير مكاني وتدوير ذهني وتجربة منظمة.',how:['بدّل القطع.','دوّرها لو لزم.','كل خط لازم يكمل.'],run:runYMap},
+ {id:'pz_yhold',maxLv:8,col:['#5F8E86','#2F5E6E'],name:'السفينة الغارقة',lab:'Rising water',cat:'log',why:'تخطيط طريق كامل تحت ضغط الوقت: أذرع تفتح أبوابًا وماء يرتفع مع كل خطوة.',how:['خذ المفتاح.','استعمل الأذرع لتفتح الأبواب.','اطلع قبل ما يغمرك الماء.'],run:runYHold},
+ {id:'pz_ytide',maxLv:8,col:['#7E9C8E','#3A2616'],name:'صخور المدّ',lab:'Tide timing',cat:'spa',why:'تخطيط في الزمان والمكان معًا: كل صخرة لها إيقاع، والانتظار جزء من الحل.',how:['راقب إيقاع الصخور.','تحرك أو انتظر.','اعبر بدون ما تغرق.'],run:runYTide},
+ {id:'pz_ydoor',maxLv:8,col:['#C9B48E','#9B2B1F'],name:'باب المعبد',lab:'Geared rings',cat:'log',why:'حلقات مربوطة بتروس: كل حركة تؤثر على أكثر من شيء، فتحتاج تفكيرًا عكسيًا وترتيبًا ذكيًا للخطوات.',how:['اسحب الأذرع.','كل ذراع يدوّر أكثر من حلقة.','رتّب الرونات تحت السهم.'],run:runYDoor}];
+PZ_Y.forEach(g=>{Object.assign(g,{puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g});
+TV_PUZ.unshift(...XSTB.map(s=>s.id));
+Object.assign(I,{
+ pz_ybell:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M12 34q0-20 12-22q12 2 12 22l3 3H9z"/><circle cx="24" cy="40" r="3"/><path d="M24 6v6" stroke="#0A0E1C" stroke-width="3"/></svg>',
+ pz_ymap:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M6 8h16v16H6z" opacity=".55"/><path d="M26 8h16v16H26zM6 28h16v16H6z"/><path d="M26 28h16v16H26z" opacity=".55"/></svg>',
+ pz_yhold:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M6 30h36l-6 10H12z"/><path d="M4 36q5-3 10 0t10 0 10 0 10 0v8H4z" opacity=".5"/><path d="M22 30V8l12 16H22z" opacity=".6"/></svg>',
+ pz_ytide:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><ellipse cx="12" cy="30" rx="8" ry="5"/><ellipse cx="26" cy="22" rx="7" ry="4" opacity=".5"/><ellipse cx="38" cy="32" rx="7" ry="4"/><path d="M2 40q6-4 11 0t11 0 11 0 11 0" stroke="#0A0E1C" stroke-width="2.4" fill="none"/></svg>',
+ pz_ydoor:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><circle cx="24" cy="24" r="19"/><circle cx="24" cy="24" r="12"/><circle cx="24" cy="24" r="5" fill="#0A0E1C"/><path d="M24 2v8"/></svg>'});
+pzDailyType=function(){const r=seeded(+dayKey().replace(/-/g,'')+7);const all=['pz_rid',...PZ_TYPES.filter(t=>t!=='tol'),...TX_IDS,...XSTB.map(s=>s.id)];return all[Math.floor(r()*all.length)]};
+Object.assign(ART_FN,{
+ pz_ybell:B=>{B.bg('#E9DDBE',.3);B.wc(B.rect(40,60,340,18),ARTC.wood,{a:.7});[[110,140],[210,150],[310,140]].forEach(([x,y])=>{B.ink([[x,78],[x,y-40]],{w:1.4});B.wc(B.ell(x,y,30,40),ARTC.gold,{a:.7,amp:4})});B.frame()},
+ pz_ymap:B=>{B.bg('#E9DDBE',.3);[[60,40],[220,50],[70,170],[230,160]].forEach(([x,y],k)=>{B.wc(B.rect(x,y,130,110),'#F3E2BC',{a:.75,amp:4});B.ink([[x,y],[x+130,y],[x+130,y+110],[x,y+110]],{close:true,w:1.4,a:.6})});B.ink([[125,95],[285,105],[135,225],[295,215]],{w:2.4,a:.6});B.frame()},
+ pz_yhold:B=>{B.bg('#8A5A33',.35);B.wc(B.rect(-10,190,440,120),'#5F8E86',{a:.6});[[90,120],[180,150],[300,110]].forEach(([x,y])=>B.wc(B.ell(x,y,30,36),ARTC.wood,{a:.7}));B.wc(B.rect(180,20,60,40),'#6E4320',{a:.8});B.frame()},
+ pz_ytide:B=>{B.bg(ARTC.sky,.5);B.wc(B.rect(-10,0,440,50),ARTC.sand,{a:.6});B.wc(B.rect(-10,250,440,60),ARTC.sand,{a:.6});[[90,110],[200,160],[310,100],[150,210],[280,200]].forEach(([x,y],k)=>B.wc(B.ell(x,y,34,16),'#BFB49B',{a:k%2?.35:.75,amp:5}));B.frame()},
+ pz_ydoor:B=>{B.bg('#3A2E28',.4);[110,80,50].forEach((r,k)=>B.wc(B.ell(210,150,r,r),k%2?'#D8C49A':'#C9B48E',{a:.75,amp:2}));B.wc(B.ell(210,150,18,18),ARTC.gold,{a:.8});B.frame()}});
 /* ================= v29: kids — exit to main profile, owl mascot, richer animation, 4 new games ================= */
 const KSTAR='<svg viewBox="0 0 24 24" class="kst"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" stroke="#2B2520" stroke-width="1.4" stroke-linejoin="round"/></svg>';
 const OWL=`<svg viewBox="0 0 64 64" class="owl"><g class="owlb"><g class="owlw l"><path d="M14 34q-9 10-3 22q6-3 9-13z" fill="#7A5A3E" ${RK}/></g><g class="owlw r"><path d="M50 34q9 10 3 22q-6-3-9-13z" fill="#7A5A3E" ${RK}/></g>
