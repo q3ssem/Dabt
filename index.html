@@ -958,6 +958,48 @@ img.art[data-pending]{background:linear-gradient(100deg,#EFE6D2 30%,#F8F1E3 50%,
 .rv2 .rvbank{min-width:0;flex-wrap:wrap;flex-direction:row;align-content:center}
 @media (prefers-reduced-motion:reduce){.rv2 .rvit,.rv2 .rvboat>*,.rvwaves,.kdkey,.kdexit,.tnc .sway,.akb .glow,.ppc.on .pp2{animation:none!important}}
 
+/* ===== v26: games tab fits the screen; solid tab bar ===== */
+.ggrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(138px,1fr));gap:10px}
+.ggrid .rcard{width:auto;min-width:0}
+.tabs{background:var(--bg)!important;box-shadow:0 -8px 20px -14px rgba(0,0,0,.45)}
+/* ===== v26: new puzzle boards ===== */
+.log,.big2,.knb{grid-template-columns:repeat(var(--n),minmax(0,1fr))!important}.pgb,.icb{grid-template-columns:repeat(var(--w),minmax(0,1fr))!important}.loc,.bic,.knc,.pgc,.icc{min-width:0;min-height:0;overflow:hidden}.ictok svg{width:96%;height:96%}
+.drrule{background:var(--surface2);border:1px solid var(--line);border-radius:14px;padding:10px 12px;font-weight:700;line-height:1.7}.drrule small{color:var(--muted)}
+.drsigns{margin:0;padding:0 22px 0 0;display:grid;gap:6px;font-size:14.5px;line-height:1.7;font-weight:600}
+.drs{display:flex;gap:8px;justify-content:center}
+.drd{flex:1;max-width:96px;display:flex;flex-direction:column;align-items:center;gap:4px;padding:0;background:none;position:relative}
+.drd .drdoor{width:100%;aspect-ratio:64/64;display:block}.drd .drdoor svg{width:100%;height:100%}.drd small{font-weight:800;color:var(--muted)}
+.drd .drin{position:absolute;top:8%;left:22%;width:56%;aspect-ratio:1;opacity:0;transition:opacity .3s .2s,transform .4s .2s;transform:scale(.5)}
+.drd .drin svg{width:100%;height:100%}.drd.open .drin{opacity:1;transform:scale(1)}.drd.open .leaf{transform:scaleX(.15)}.drd .leaf{transition:transform .45s ease;transform-origin:14px 35px}
+.drd.trap .drin{animation:shake2 .4s .5s 2}.drd.win .drin .spark{animation:spark .8s infinite;transform-origin:50px 14px}.drd.no{opacity:.35;filter:grayscale(1)}
+.log{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:6px;width:min(84vw,360px);margin:0 auto;max-width:100%}
+.loc{aspect-ratio:1;border-radius:14px;background:color-mix(in srgb,var(--ink) 8%,transparent);padding:8%;transition:background .25s}.loc svg{width:100%;height:100%;transition:filter .25s,opacity .25s}
+.loc:not(.on) svg{filter:grayscale(1) brightness(.55);opacity:.55}.loc:not(.on) .glow{opacity:0}.loc.on{background:color-mix(in srgb,#FFD45A 26%,transparent)}.loc.on .glow{animation:glowp 1.8s infinite}
+.loc.flip{animation:pitch .25s ease-out}.loc.hint{animation:pzglow 1s infinite}
+.unb{width:min(88vw,400px);aspect-ratio:1;margin:0 auto;max-width:100%;background:var(--panel1);border-radius:10px}.unb svg{width:100%;height:100%;touch-action:none;display:block}
+.unb line{stroke-width:1.3;stroke-linecap:round;transition:stroke .2s}.unb line.ok{stroke:#3FBF6A}.unb line.bad{stroke:#E0524A}
+.unhit{fill:transparent}.undot{fill:#FFD45A;stroke:#2F2A24;stroke-width:1;transition:r .15s}.unode{cursor:grab}.unode.drag .undot{r:4.6}.unode.lock .undot{fill:#B48CFF}
+#unsv.done line{stroke:#3FBF6A;stroke-width:2;filter:drop-shadow(0 0 1.5px #8BE36A)}
+.pgb{display:grid;grid-template-columns:repeat(var(--w),1fr);gap:4px;width:min(84vw,360px);margin:0 auto;max-width:100%;padding:8px;background:#8A5A33;border-radius:16px}
+.pgc{aspect-ratio:1;border-radius:50%;background:radial-gradient(circle at 50% 40%,#3A2616,#5A3A22);padding:0;position:relative}.pgc.off{background:none}
+.pgc b{position:absolute;inset:-6%;display:grid}.pgc b svg{width:100%;height:100%}.pgc.sel b{transform:translateY(-12%) scale(1.08);transition:transform .15s}.pgc.tgt{box-shadow:0 0 0 3px #FFD45A inset}.pgc.hint{box-shadow:0 0 0 3px #8BE36A inset;animation:pzglow 1s infinite}
+.pgpeg.land{animation:drop .3s cubic-bezier(.3,1.6,.5,1)}.pgpeg.gone{animation:eaten .3s forwards}
+.knw{position:relative;width:min(86vw,380px);margin:0 auto;max-width:100%}.knb{display:grid;grid-template-columns:repeat(var(--n),1fr);aspect-ratio:1;border:3px solid #3A2E28;border-radius:6px;overflow:hidden}
+.knc{background:#EADBC0;padding:0;font:800 min(3.6vw,15px) var(--font-b);color:#3A2E28;position:relative}.knc.dk{background:#B9925E}.knc.off{background:repeating-linear-gradient(45deg,#3A4256 0 5px,#2C3344 5px 10px)}
+.knc.seen{background:color-mix(in srgb,#8BE36A 55%,#EADBC0)}.knc.dk.seen{background:color-mix(in srgb,#5E9550 60%,#B9925E)}.knc.can::after{content:'';position:absolute;inset:36%;border-radius:50%;background:#B48CFF;opacity:.8}.knc.hint{animation:pzglow 1s infinite}
+.kntok{position:absolute;display:grid;place-items:center;pointer-events:none;transition:left .22s ease-out,top .22s ease-out;z-index:2}.kntok svg{width:86%;height:86%}.kntok.hop svg{animation:drop .3s ease-out}
+.osb{position:relative;width:min(84vw,360px);aspect-ratio:1;margin:0 auto;max-width:100%}.osb svg{position:absolute;inset:0;width:100%;height:100%}
+.ose{stroke:color-mix(in srgb,var(--ink) 25%,transparent);stroke-width:3.2;stroke-linecap:round}.ose.on{stroke:#3FBF6A}.ose.anim{stroke-dasharray:1;animation:beam2 .35s ease-out}
+@keyframes beam2{from{stroke-dashoffset:1}}
+.osn{position:absolute;width:12%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;background:var(--panel1);border:3px solid var(--ink);padding:0}.osn.cur{background:#FFD45A;transform:translate(-50%,-50%) scale(1.15)}.osn.hint{animation:pzglow 1s infinite}
+.big2{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:3px;width:min(88vw,380px);margin:0 auto;max-width:100%}
+.bic{aspect-ratio:1;border-radius:8px;background:color-mix(in srgb,var(--ink) 8%,transparent);padding:10%;display:grid}.bic b{display:grid}.bic svg{width:100%;height:100%}.bic.giv{background:color-mix(in srgb,var(--ink) 18%,transparent)}
+.bic.bad{background:rgba(224,82,74,.3)}.bic.flip b{animation:flipY .3s ease-out}.bic.lock{box-shadow:inset 0 0 0 3px #FFD45A}
+@keyframes flipY{from{transform:rotateY(90deg)}}
+.icw{position:relative;width:min(86vw,380px);margin:0 auto;max-width:100%}.icb{display:grid;grid-template-columns:repeat(var(--w),1fr);aspect-ratio:var(--w)/var(--h);border-radius:10px;overflow:hidden;background:linear-gradient(135deg,#DDF1FA,#B5DCEF)}
+.icc{position:relative;display:grid;place-items:center;border:1px solid rgba(255,255,255,.5)}.icc svg{width:88%;height:88%}.icc.goal .wave{animation:sway 1.2s ease-in-out infinite;transform-origin:24px 18px}
+.ictok{position:absolute;display:grid;place-items:center;pointer-events:none;transition-property:left,top;transition-timing-function:cubic-bezier(.25,.1,.25,1);z-index:2}.ictok svg{width:84%;height:84%}.ictok.flipx svg{transform:scaleX(-1)}
+
 </style>
 
 <div id="app">
@@ -1183,7 +1225,7 @@ function renderHome(){
 }
 function renderGames(){
   $('#v-games').innerHTML=`<div class="top"><div class="hello"><span class="eyebrow">${G.filter(g=>!g.hidden).length} لعبة · كلها من اختبارات ودراسات علمية</span><h1>الألعاب</h1></div></div>
-  ${Object.entries(CATS).map(([k,c])=>`<section class="gsec"><div class="sec-h"><h2 style="${catTxt(c.hex)}">${c.n}</h2><span>${c.d}</span></div><div class="rail">${G.filter(g=>g.cat===k&&!g.hidden).map(railCard).join('')}</div></section>`).join('')}`;
+  ${Object.entries(CATS).map(([k,c])=>`<section class="gsec"><div class="sec-h"><h2 style="${catTxt(c.hex)}">${c.n}</h2><span>${c.d}</span></div><div class="ggrid">${G.filter(g=>g.cat===k&&!g.hidden).map(railCard).join('')}</div></section>`).join('')}`;
   $('#v-games').querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>startRun([b.dataset.g]));
 }
 function radarSVG(){
@@ -3627,6 +3669,305 @@ const SPR={
  door:c=>`<svg viewBox="0 0 64 64"><rect x="10" y="6" width="44" height="54" rx="3" fill="#6B4A32" ${SK}/><g class="leaf"><rect x="14" y="10" width="36" height="50" rx="2" fill="${c}" ${SK}/><circle cx="42" cy="36" r="3" fill="#FFD45A" ${SK}/><path d="M20 18h24M20 26h24" stroke="#2F2A24" stroke-width="1.4" opacity=".5"/></g></svg>`,
  exitDoor:`<svg viewBox="0 0 64 64"><path d="M14 60V18q18-16 36 0v42z" fill="#8A5A33" ${SK}/><path d="M20 60V22q12-10 24 0v38z" fill="#FFE08A" ${SK}/><path d="M44 46l6-4" ${SK}/></svg>`};
 const RVK={wolf:'wolf',sheep:'sheep',grass:'grass',cat:'cat',mouse:'mouse',cheese:'cheese',dog:'dog',hen:'hen',corn:'corn',fox:'fox'};
+
+
+/* ================= v26: generators for 8 more puzzle types ================= */
+/* ---- doors: signs, a rule about how many signs tell the truth, one safe door ---- */
+const DR_RULES=[{id:'one',t:'لافتة واحدة فقط صادقة.',ok:v=>v.filter(Boolean).length===1},{id:'onef',t:'لافتة واحدة فقط كاذبة.',ok:v=>v.filter(x=>!x).length===1},{id:'two',t:'لافتتان فقط صادقتان.',ok:v=>v.filter(Boolean).length===2},
+ {id:'lady',t:'لافتة باب الكنز صادقة، ولافتات أبواب الفخ كلها كاذبة.',ok:(v,t)=>v.every((x,i)=>x===(i===t))},{id:'none',t:'كل اللافتات كاذبة.',ok:v=>v.every(x=>!x)},{id:'mix',t:'لافتة باب الكنز صادقة، وعلى الأقل لافتة فخ واحدة كاذبة.',ok:(v,t)=>v[t]&&v.some((x,i)=>i!==t&&!x)}];
+const DRN=['الأول','الثاني','الثالث','الرابع','الخامس'];
+function drEval(st,t,vals){switch(st.k){case 'here':return t===st.d;case 'nothere':return t!==st.d;case 'at':return t===st.x;case 'notat':return t!==st.x;case 'side':return st.x<st.d?t<st.d:t>st.d;case 'either':return t===st.x||t===st.y;case 'liar':return!vals[st.x];case 'true':return!!vals[st.x]}}
+function drText(st){switch(st.k){case 'here':return'الكنز خلف هذا الباب.';case 'nothere':return'الكنز ليس خلف هذا الباب.';case 'at':return`الكنز خلف الباب ${DRN[st.x]}.`;case 'notat':return`الكنز ليس خلف الباب ${DRN[st.x]}.`;case 'side':return st.x<st.d?'الكنز خلف باب قبل هذا الباب.':'الكنز خلف باب بعد هذا الباب.';case 'either':return`الكنز خلف الباب ${DRN[st.x]} أو ${DRN[st.y]}.`;case 'liar':return`لافتة الباب ${DRN[st.x]} كاذبة.`;case 'true':return`لافتة الباب ${DRN[st.x]} صادقة.`}}
+function drVals(P,t){const v=P.st.map(s=>s.k==='liar'||s.k==='true'?null:drEval(s,t));P.st.forEach((s,i)=>{if(v[i]===null)v[i]=drEval(s,t,v)});return v}
+function drMake(lv){const n=[3,3,3,4,4,4,5,5][lv-1],rules=lv<=2?['one','onef']:lv<=4?['one','onef','two','lady']:['two','lady','none','mix','one'],meta=lv>=4;
+  for(let tr=0;tr<3000;tr++){const rid=pick(rules),rule=DR_RULES.find(r=>r.id===rid),st=[];
+    for(let d=0;d<n;d++){const kinds=['here','nothere','at','notat','side','either'];if(meta&&d>0)kinds.push('liar','true');let k=pick(kinds),s={k,d};
+      if(k==='at'||k==='notat'||k==='side'){let x=rnd(n);if(x===d)x=(x+1)%n;s.x=x}if(k==='either'){const o=shuffle([...Array(n).keys()].filter(i=>i!==d));s.x=o[0];s.y=o[1]}if(k==='liar'||k==='true'){const o=[...Array(d).keys()].filter(i=>st[i].k!=='liar'&&st[i].k!=='true');if(!o.length){s={k:'here',d}}else s.x=pick(o)}st.push(s)}
+    const P={n,st,rule};const ok=[...Array(n).keys()].filter(t=>rule.ok(drVals(P,t),t));if(ok.length!==1)continue;P.t=ok[0];
+    if(lv>=3&&st.filter(s=>s.k==='here'||s.k==='nothere').length===n)continue;return P}
+  return drMake(Math.max(1,lv-1))}
+
+/* ---- lights out: GF(2) solver gives the fewest presses ---- */
+function loSolve(n,on){const N=n*n,rows=[];for(let i=0;i<N;i++){let m=0n;const x=i%n,y=i/n|0;[[0,0],[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy])=>{const a=x+dx,b=y+dy;if(inb(a,b,n,n))m|=1n<<BigInt(b*n+a)});rows.push({m,r:on[i]?1:0})}
+  /* columns = press variables; row i: sum over presses j that affect i (symmetric) */
+  const A=rows.map(r=>({m:r.m,r:r.r}));let piv=[],row=0;for(let c=0;c<N&&row<N;c++){const bit=1n<<BigInt(c);let p=-1;for(let r=row;r<N;r++)if(A[r].m&bit){p=r;break}if(p<0)continue;[A[row],A[p]]=[A[p],A[row]];for(let r=0;r<N;r++)if(r!==row&&A[r].m&bit){A[r]={m:A[r].m^A[row].m,r:A[r].r^A[row].r}}piv.push(c);row++}
+  for(let r=row;r<N;r++)if(A[r].r)return null;const free=[...Array(N).keys()].filter(c=>!piv.includes(c));let best=null;
+  for(let mask=0;mask<1<<Math.min(free.length,12);mask++){const x=new Array(N).fill(0);free.forEach((c,k)=>x[c]=mask>>k&1);for(let k=piv.length-1;k>=0;k--){const c=piv[k],R=A[k];let v=R.r;for(let j=0;j<N;j++)if(j!==c&&R.m>>BigInt(j)&1n)v^=x[j];x[c]=v}const w=x.reduce((a,b)=>a+b,0);if(!best||w<best.w)best={x,w}}return best}
+function loMake(lv){const n=[3,4,4,5,5,5,6,6][lv-1],k=[3,3,5,5,7,9,9,12][lv-1];for(let t=0;t<50;t++){const on=new Array(n*n).fill(0);const ps=shuffle([...Array(n*n).keys()]).slice(0,k);ps.forEach(i=>{const x=i%n,y=i/n|0;[[0,0],[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy])=>{if(inb(x+dx,y+dy,n,n))on[(y+dy)*n+x+dx]^=1})});if(!on.some(Boolean))continue;const s=loSolve(n,on);if(!s||s.w<Math.min(k,3))continue;return{n,on,min:s.w}}return loMake(1)}
+
+/* ---- untangle: a planar graph (greedy non-crossing edges), then scrambled ---- */
+const segX=(a,b,c,d)=>{if(a===c||a===d||b===c||b===d)return false;const o=(p,q,r)=>Math.sign((q[0]-p[0])*(r[1]-p[1])-(q[1]-p[1])*(r[0]-p[0]));return o(a,b,c)*o(a,b,d)<0&&o(c,d,a)*o(c,d,b)<0};
+function unCross(P,pos){let c=0;const bad=new Set();for(let i=0;i<P.e.length;i++)for(let j=i+1;j<P.e.length;j++){const[a,b]=P.e[i],[x,y]=P.e[j];if(a===x||a===y||b===x||b===y)continue;if(segX(pos[a],pos[b],pos[x],pos[y])){c++;bad.add(i);bad.add(j)}}return{c,bad}}
+function unMake(lv){const n=[6,7,8,9,10,12,14,16][lv-1];for(let t=0;t<60;t++){const pts=[];while(pts.length<n){const p=[10+Math.random()*80,10+Math.random()*80];if(pts.every(q=>Math.hypot(q[0]-p[0],q[1]-p[1])>14))pts.push(p)}
+    const cand=[];for(let i=0;i<n;i++)for(let j=i+1;j<n;j++)cand.push([i,j,Math.hypot(pts[i][0]-pts[j][0],pts[i][1]-pts[j][1])]);cand.sort((a,b)=>a[2]-b[2]);const e=[],deg=new Array(n).fill(0);
+    for(const[i,j]of cand){if(deg[i]>=4||deg[j]>=4)continue;if(e.some(([a,b])=>segX(pts[i],pts[j],pts[a],pts[b])))continue;e.push([i,j]);deg[i]++;deg[j]++}if(deg.some(d=>d<2))continue;
+    const P={n,e,sol:pts};const ord=shuffle([...Array(n).keys()]),pos=[];ord.forEach((v,k)=>{const a=k/n*6.283;pos[v]=[50+38*Math.cos(a),50+38*Math.sin(a)]});const c=unCross(P,pos).c;if(c<Math.max(2,lv))continue;P.pos=pos;return P}return unMake(Math.max(1,lv-1))}
+
+/* ---- peg solitaire: built backwards from a single peg ---- */
+const PG_SHAPES=[[4,4,null],[5,5,null],[5,5,'plus'],[6,6,null],[7,7,'cross'],[6,6,'plus'],[7,7,'cross'],[7,7,'cross']];
+function pgMake(lv){const[w,h,sh]=PG_SHAPES[lv-1],pegsN=[4,5,6,7,8,9,11,13][lv-1];const hole=new Array(w*h).fill(true);if(sh==='cross'){for(let y=0;y<h;y++)for(let x=0;x<w;x++)if((x<2||x>4)&&(y<2||y>4))hole[y*w+x]=false}if(sh==='plus'){const c=Math.floor(w/2);for(let y=0;y<h;y++)for(let x=0;x<w;x++)if(Math.abs(x-c)>1&&Math.abs(y-c)>1)hole[y*w+x]=false}
+  const D=[[1,0],[-1,0],[0,1],[0,-1]];
+  for(let t=0;t<400;t++){const cells=[...Array(w*h).keys()].filter(i=>hole[i]);const peg=new Set([pick(cells)]);let ok=true;
+    while(peg.size<pegsN){const opts=[];peg.forEach(c=>{const x=c%w,y=c/w|0;D.forEach(([dx,dy])=>{const b=(y+dy)*w+x+dx,a=(y+2*dy)*w+x+2*dx;if(inb(x+2*dx,y+2*dy,w,h)&&hole[a]&&hole[b]&&!peg.has(a)&&!peg.has(b))opts.push([c,b,a])})});if(!opts.length){ok=false;break}const[c,b,a]=pick(opts);peg.delete(c);peg.add(b);peg.add(a)}
+    if(ok)return{w,h,hole,peg:[...peg]}}return pgMake(Math.max(1,lv-1))}
+function pgSolve(P,pegs,cap=150000){const{w,h,hole}=P,D=[[1,0],[-1,0],[0,1],[0,-1]],seen=new Set();let nodes=0;const path=[];
+  const rec=S=>{if(S.size===1)return true;if(++nodes>cap)return false;const k=[...S].sort((a,b)=>a-b).join();if(seen.has(k))return false;seen.add(k);for(const c of [...S]){if(!S.has(c))continue;const x=c%w,y=c/w|0;for(const[dx,dy]of D){const b=(y+dy)*w+x+dx,a=(y+2*dy)*w+x+2*dx;if(!inb(x+2*dx,y+2*dy,w,h)||!hole[a]||!S.has(b)||S.has(a))continue;S.delete(c);S.delete(b);S.add(a);path.push([c,a]);if(rec(S))return true;path.pop();S.delete(a);S.add(b);S.add(c)}}return false};
+  return rec(new Set(pegs))?path:null}
+
+/* ---- knight's tour on a board with holes (the holes come from a random tour) ---- */
+const KN=[[1,2],[2,1],[2,-1],[1,-2],[-1,-2],[-2,-1],[-2,1],[-1,2]];
+function knMake(lv){const n=[4,5,5,6,6,7,7,8][lv-1],frac=[.7,.6,.75,.65,.8,.7,.85,.8][lv-1];
+  for(let t=0;t<400;t++){const start=rnd(n*n),walk=[start],used=new Set([start]);while(true){const c=walk[walk.length-1],x=c%n,y=c/n|0,nb=KN.map(([dx,dy])=>[x+dx,y+dy]).filter(([a,b])=>inb(a,b,n,n)&&!used.has(b*n+a)).map(([a,b])=>b*n+a);if(!nb.length)break;
+      const deg=v=>KN.filter(([dx,dy])=>{const a=v%n+dx,b=(v/n|0)+dy;return inb(a,b,n,n)&&!used.has(b*n+a)}).length;nb.sort((p,q)=>deg(p)-deg(q)+(Math.random()-.5)*1.2);const m=nb[0];walk.push(m);used.add(m)}
+    if(walk.length<n*n*frac)continue;const open=new Array(n*n).fill(false);walk.forEach(c=>open[c]=true);return{n,open,start,len:walk.length,sol:walk}}return knMake(Math.max(1,lv-1))}
+function knSolve(P,path,cap=200000){const{n,open}=P,used=new Set(path);let nodes=0;const p=path.slice();const deg=v=>KN.filter(([dx,dy])=>{const a=v%n+dx,b=(v/n|0)+dy;return inb(a,b,n,n)&&open[b*n+a]&&!used.has(b*n+a)}).length;
+  const rec=()=>{if(p.length===P.len)return true;if(++nodes>cap)return false;const c=p[p.length-1],x=c%n,y=c/n|0;const nb=KN.map(([dx,dy])=>[x+dx,y+dy]).filter(([a,b])=>inb(a,b,n,n)&&open[b*n+a]&&!used.has(b*n+a)).map(([a,b])=>b*n+a).sort((a,b)=>deg(a)-deg(b));for(const m of nb){used.add(m);p.push(m);if(rec())return true;p.pop();used.delete(m)}return false};return rec()?p:null}
+
+/* ---- one stroke: the figure is a random trail on a dot lattice, so an Euler path exists ---- */
+function osMake(lv){const[c,r,L]=[[3,3,6],[3,3,8],[4,3,10],[4,4,12],[4,4,15],[5,4,17],[5,5,20],[5,5,24]][lv-1];
+  for(let t=0;t<500;t++){let v=rnd(c*r);const used=new Set(),trail=[v],ek=(a,b)=>a<b?a+'-'+b:b+'-'+a;
+    for(let k=0;k<L*3&&used.size<L;k++){const x=v%c,y=v/c|0,nb=[];for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++){if(!dx&&!dy)continue;const a=x+dx,b=y+dy;if(!inb(a,b,c,r))continue;const m=b*c+a;if(used.has(ek(v,m)))continue;if(dx&&dy){const o1=y*c+a,o2=b*c+x;if(used.has(ek(o1,o2)))continue}nb.push(m)}if(!nb.length)break;const m=pick(nb);used.add(ek(v,m));trail.push(m);v=m}
+    if(used.size<L)continue;const deg={};[...used].forEach(e=>e.split('-').forEach(q=>deg[q]=(deg[q]||0)+1));const odd=Object.keys(deg).filter(q=>deg[q]%2).length;if(odd===0&&lv>2)continue;
+    return{c,r,edges:[...used].map(e=>e.split('-').map(Number)),start:trail[0],trail}}return osMake(Math.max(1,lv-1))}
+function osNext(P,usedSet,cur){const left=P.edges.filter(([a,b])=>!usedSet.has(a+'-'+b));if(!left.length)return null;const adj=v=>left.filter(([a,b])=>a===v||b===v);
+  const conn=(edges,from)=>{const seen=new Set([from]),q=[from];while(q.length){const v=q.pop();edges.forEach(([a,b])=>{const o=a===v?b:b===v?a:-1;if(o>=0&&!seen.has(o)){seen.add(o);q.push(o)}})}return seen};
+  const cand=adj(cur);for(const e of cand){const o=e[0]===cur?e[1]:e[0];const rest=left.filter(x=>x!==e);if(!rest.length)return o;const touched=new Set(rest.flat());if(conn(rest,o).size>=touched.size&&touched.has(o)||cand.length===1)return o}return cand.length?(cand[0][0]===cur?cand[0][1]:cand[0][0]):null}
+
+/* ---- binary (Unruly/Takuzu): no three in a row, equal counts, unique by search ---- */
+function biOK(g,n,i){const r=i/n|0,c=i%n,v=g[i];if(v<0)return true;const at=(y,x)=>g[y*n+x];
+  for(let k=-2;k<=0;k++){if(c+k>=0&&c+k+2<n&&at(r,c+k)===v&&at(r,c+k+1)===v&&at(r,c+k+2)===v)return false;if(r+k>=0&&r+k+2<n&&at(r+k,c)===v&&at(r+k+1,c)===v&&at(r+k+2,c)===v)return false}
+  let rc=0,cc=0;for(let k=0;k<n;k++){if(at(r,k)===v)rc++;if(at(k,c)===v)cc++}return rc<=n/2&&cc<=n/2}
+function biCount(g0,n,lim=2){const g=g0.slice();let cnt=0,nodes=0;const rec=()=>{if(cnt>=lim||++nodes>200000)return;const i=g.indexOf(-1);if(i<0){cnt++;return}for(const v of[0,1]){g[i]=v;if(biOK(g,n,i))rec();g[i]=-1}};rec();return nodes>200000?99:cnt}
+function biMake(lv){const n=[6,6,6,8,8,8,10,10][lv-1],keep=[16,13,11,24,20,18,34,30][lv-1];
+  for(let t=0;t<30;t++){const g=new Array(n*n).fill(-1);const fill=i=>{if(i===n*n)return true;for(const v of shuffle([0,1])){g[i]=v;if(biOK(g,n,i)&&fill(i+1))return true}g[i]=-1;return false};if(!fill(0))continue;const sol=g.slice(),puz=sol.slice();
+    for(const i of shuffle([...Array(n*n).keys()])){if(puz.filter(v=>v>=0).length<=keep)break;const v=puz[i];puz[i]=-1;if(biCount(puz,n)!==1)puz[i]=v}return{n,sol,puz}}return biMake(Math.max(1,lv-1))}
+
+/* ---- ice: slide until you hit a rock; reach the exit ---- */
+function icSlide(P,p,d){const{w,h,rock}=P;let x=p%w,y=p/w|0;const[dx,dy]=D4[d];while(inb(x+dx,y+dy,w,h)&&!rock[(y+dy)*w+x+dx]){x+=dx;y+=dy;if(y*w+x===P.goal)break}return y*w+x}
+function icSolve(P,from){const par=new Map([[from,null]]),q=[from];while(q.length){const p=q.shift();if(p===P.goal){const o=[];let k=p;while(par.get(k)){o.unshift(par.get(k)[1]);k=par.get(k)[0]}return o}for(let d=0;d<4;d++){const m=icSlide(P,p,d);if(m!==p&&!par.has(m)){par.set(m,[p,d]);q.push(m)}}}return null}
+function icMake(lv){const[w,h,minM]=[[6,6,3],[7,7,4],[7,7,5],[8,8,6],[8,8,7],[9,9,8],[9,9,9],[10,10,10]][lv-1];let best=null;
+  for(let t=0;t<300;t++){const rock=new Array(w*h).fill(false);for(let i=0;i<w*h;i++)if(Math.random()<.13)rock[i]=true;const start=pick([...Array(w*h).keys()].filter(i=>!rock[i]));const P={w,h,rock,goal:-1};
+    const dist=new Map([[start,0]]),q=[start];while(q.length){const p=q.shift();for(let d=0;d<4;d++){const m=icSlide(P,p,d);if(!dist.has(m)){dist.set(m,dist.get(p)+1);q.push(m)}}}
+    let g=start;dist.forEach((v,k)=>{if(v>dist.get(g))g=k});P.goal=g;P.start=start;const s=icSolve(P,start);if(!s)continue;P.min=s.length;if(P.min>=minM)return P;if(!best||P.min>best.min)best=P}return best}
+
+/* ---------- v26: 40 more riddles, 5 chapters (doors first) ---------- */
+RID_CH.push('الأبواب','السيرك','الصحراء','المتحف','الحديقة');
+CH_EMO.push('🚪🗝️🛡️','🎪🤡🐘','🐪🌵☀️','🏛️🖼️🏺','🌷🌳🐝');CH_COL.push('#C9A06A','#FF5F7A','#E2A93B','#9C9C94','#8BE36A');
+RIDDLES.push(
+ /* الأبواب */
+ ['على باب مكتوب: «هذه اللافتة كاذبة، أو الكنز خلف هذا الباب». ماذا تستنتج؟','الكنز خلف الباب بالتأكيد',['لا كنز خلف الباب','اللافتة كاذبة','لا يمكن المعرفة'],['جرّب أن اللافتة كاذبة.','لو كانت كاذبة فجزؤها الأول «هذه اللافتة كاذبة» صحيح… فتصير صادقة!','إذن اللافتة صادقة، وجزؤها الأول خطأ.'],'اللافتة لا يمكن أن تكون كاذبة (لأن جزأها الأول سيصبح صحيحًا). فهي صادقة، وبما أن «هذه اللافتة كاذبة» خطأ، فالكنز خلف الباب.'],
+ ['غرفتان، في كل غرفة كنز أو فخ. على الأولى: «هنا كنز، وفي الثانية فخ». على الثانية: «في إحدى الغرفتين كنز وفي الأخرى فخ». لافتة واحدة صادقة والأخرى كاذبة. أين الكنز؟','في الغرفة الثانية',['في الغرفة الأولى','في الغرفتين','لا كنز في أي منهما'],['لو كانت لافتة الأولى صادقة، ماذا عن الثانية؟','ستكون صادقة أيضًا، وهذا ممنوع.','إذن الأولى كاذبة والثانية صادقة.'],'لو صدقت الأولى لصدقت الثانية معها. فالأولى كاذبة والثانية صادقة: في غرفة كنز وفي الأخرى فخ، وبما أن الأولى كاذبة فالكنز ليس فيها.'],
+ ['غرفتان، في كل غرفة كنز أو فخ. على الأولى: «في غرفة واحدة على الأقل كنز». على الثانية: «في الغرفة الأولى فخ». اللافتتان إما صادقتان معًا أو كاذبتان معًا. أين الكنز؟','في الغرفة الثانية',['في الغرفة الأولى','في الغرفتين','لا يوجد كنز'],['جرّب أنهما كاذبتان معًا.','كذب الأولى يعني لا كنز أبدًا، وكذب الثانية يعني كنز في الأولى: تناقض.','إذن هما صادقتان معًا.'],'لو كذبتا معًا لكان «لا كنز في أي غرفة» و«كنز في الأولى» معًا: مستحيل. فهما صادقتان: الأولى فيها فخ، وفي غرفة كنز، فهو في الثانية.'],
+ ['ثلاثة حراس عند ثلاثة أبواب، باب واحد فقط آمن، وحارس واحد فقط صادق. قال (أ): «بابي آمن». قال (ب): «باب (أ) ليس آمنًا». قال (ج): «بابي ليس آمنًا». أي باب آمن؟','باب (ج)',['باب (أ)','باب (ب)','لا يوجد باب آمن'],['جرّب كل باب وعدّ الجمل الصادقة.','لو كان باب (أ): يصدق (أ) و(ج).','ابحث عن الحالة التي فيها صادق واحد فقط.'],'لو كان الآمن باب (ج): جملة (أ) كاذبة، و(ب) صادقة، و(ج) كاذبة، أي صادق واحد فقط.'],
+ ['حارس واحد عند بابين، ولا تعرف هل يصدق دائمًا أم يكذب دائمًا. أي سؤال واحد يكشف لك باب الخروج؟','«لو سألتك: هل هذا باب الخروج؟ هل ستقول نعم؟»',['«هل هذا باب الخروج؟»','«هل أنت صادق؟»','«ما لون الباب؟»'],['السؤال العادي لا ينفع مع الكاذب.','اجعل الكاذب يكذب مرتين.','الكذب على الكذب يصير صدقًا.'],'الصادق يجيب بالحقيقة مباشرة، والكاذب يكذب في جوابه عن جوابه فيرجع للحقيقة. فـ«نعم» تعني أنه باب الخروج في الحالتين.'],
+ ['دخلت القصر من البوابة الشمالية متجهًا للداخل، ثم لففت يمينًا، ثم يمينًا، ثم يسارًا. إلى أي جهة تتجه الآن؟','الغرب',['الشرق','الشمال','الجنوب'],['من البوابة الشمالية للداخل يعني أنك تمشي جنوبًا.','يمين من يتجه جنوبًا هو الغرب.','ثم يمين يرجعك للشمال، ثم يسار…'],'تبدأ متجهًا جنوبًا، يمينًا إلى الغرب، يمينًا إلى الشمال، يسارًا إلى الغرب.'],
+ ['قفل له 3 أزرار تُضغط بالترتيب: الأحمر ليس أولًا، والأزرق قبل الأخضر مباشرة. ما الترتيب الصحيح؟','الأزرق ثم الأخضر ثم الأحمر',['الأحمر ثم الأزرق ثم الأخضر','الأخضر ثم الأزرق ثم الأحمر','الأزرق ثم الأحمر ثم الأخضر'],['الأزرق والأخضر متلاصقان بهذا الترتيب.','إما في البداية أو في النهاية.','لو كانا في النهاية لصار الأحمر أولًا.'],'الأزرق والأخضر متتاليان؛ لو كانا آخرًا لكان الأحمر أولًا وهذا ممنوع، فهما أولًا والأحمر أخيرًا.'],
+ ['بابان والكنز خلف أحدهما. على الأول: «اللافتتان كلتاهما كاذبتان». على الثاني: «الكنز خلف الباب الأول». خلف أي باب الكنز؟','الباب الأول',['الباب الثاني','لا يوجد كنز','لا يمكن المعرفة'],['هل يمكن أن تكون لافتة الأول صادقة؟','لو صدقت لكانت هي نفسها كاذبة: تناقض.','إذن ليست الاثنتان كاذبتين، فالثانية صادقة.'],'لافتة الأول لا تصدق أبدًا (تكذّب نفسها)، فهي كاذبة، أي ليست اللافتتان كاذبتين، فلافتة الثاني صادقة: الكنز خلف الأول.'],
+ /* السيرك */
+ ['أربعة مهرجين في صف من اليسار: الأصفر في أقصى اليسار، والأحمر بين الأزرق والأخضر، والأزرق ليس بجانب الأصفر. من في أقصى اليمين؟','الأزرق',['الأخضر','الأحمر','الأصفر'],['الأصفر ثابت في المكان الأول.','الأحمر في وسط الثلاثة الباقين.','الأزرق لا يجاور الأصفر، فلا يكون الثاني.'],'الأصفر 1، الأحمر 3، والأزرق لا يجاور الأصفر فهو 4، والأخضر 2.'],
+ ['في طابور السيرك: أمام شخصٍ شخصان، وخلف شخصٍ شخصان، وشخصٌ في المنتصف. ما أقل عدد ممكن في الطابور؟','ثلاثة',['خمسة','ستة','أربعة'],['لا تفترض أنهم أشخاص مختلفون.','الأخير أمامه اثنان.','الأول خلفه اثنان.'],'ثلاثة يكفون: الأخير أمامه شخصان، والأول خلفه شخصان، والثاني في المنتصف.'],
+ ['على الأرجوحة: الفيل أثقل من الحصان، والحصان أخف من الدب، والدب أخف من الفيل. من الأثقل؟','الفيل',['الدب','الحصان','لا يمكن المعرفة'],['رتّب من الأثقل.','الدب أخف من الفيل.','والحصان أخف من الاثنين.'],'الترتيب: الفيل، ثم الدب، ثم الحصان.'],
+ ['مكعب السيرك: الأحمر مقابل الأزرق، والأخضر مقابل الأصفر، والأبيض مقابل الأسود. الأحمر للأعلى والأخضر للأمام. ما اللون للأسفل؟','الأزرق',['الأصفر','الأسود','الأبيض'],['الأسفل مقابل الأعلى.','ما المقابل للأحمر؟','المقابل للأحمر هو…'],'الأسفل يقابل الأعلى، والمقابل للأحمر هو الأزرق.'],
+ ['المكعب نفسه: الأحمر للأعلى والأخضر للأمام. دحرجته للأمام مرة واحدة (الأعلى ينقلب نحوك). ما اللون الذي صار للأعلى؟','الأصفر',['الأخضر','الأزرق','الأحمر'],['عند الدحرجة للأمام، الوجه الخلفي يصعد للأعلى.','ما الوجه الخلفي؟','الخلف يقابل الأمام الأخضر.'],'الوجه الخلفي يصير للأعلى، والخلفي هو المقابل للأخضر: الأصفر.'],
+ ['ثلاثة بهلوانات فوق بعض: سامي ليس في الأعلى، ورامي فوق سامي، وهاني ليس في الأسفل. من في الأسفل؟','سامي',['رامي','هاني','لا يمكن المعرفة'],['جرّب سامي في الوسط.','عندها رامي في الأعلى وهاني في الأسفل، وهذا ممنوع.','إذن سامي في…'],'لو كان سامي في الوسط لكان هاني في الأسفل وهذا ممنوع، فسامي في الأسفل.'],
+ ['عروض السيرك الليلة: الأسود بعد الفيلة، والبهلوانات قبل الفيلة، والمهرجون آخر عرض. ما العرض الأول؟','البهلوانات',['الفيلة','الأسود','المهرجون'],['المهرجون ثابتون آخرًا.','البهلوانات قبل الفيلة، والفيلة قبل الأسود.','رتّب الثلاثة.'],'الترتيب: البهلوانات، الفيلة، الأسود، المهرجون.'],
+ ['قال الساحر: «كل ما أقوله الآن كذب». هل جملته صادقة أم كاذبة؟','لا يمكن أن تكون صادقة ولا كاذبة',['صادقة','كاذبة','صادقة نصفها'],['افترض أنها صادقة.','إذن كل ما يقوله كذب، فهي كذب…','وإن كانت كذبًا فهي صادقة.'],'هذه «مفارقة الكذاب»: صدقها يجعلها كاذبة، وكذبها يجعلها صادقة، فلا يمكن الحكم عليها.'],
+ /* الصحراء */
+ ['سباق جمال غريب: الفائز من يصل جمله آخرًا. ظل أخوان يمشيان ببطء أيامًا، فهمس لهما حكيم بكلمتين، فانطلقا بأقصى سرعة. ماذا قال؟','«تبادلا الجملين»',['«الجائزة كبيرة»','«الشمس حارقة»','«انتهى السباق»'],['كل واحد يريد أن يتأخر جمله هو.','ماذا لو ركب كل واحد جمل أخيه؟','عندها يريد أن يسبق الجمل الذي يركبه.'],'بعد التبادل، كل واحد يركب جمل أخيه ويريد أن يصل به أولًا ليصل جمله هو آخرًا.'],
+ ['انطلقت من الواحة شمالًا مسافة ما، ثم شرقًا بالمسافة نفسها، ثم جنوبًا بالمسافة نفسها. أين أنت من الواحة؟','شرق الواحة',['في الواحة نفسها','شمال الواحة','غرب الواحة'],['ارسمها على ورقة.','الشمال ثم الجنوب يلغي بعضه.','يبقى الشرق.'],'الذهاب شمالًا ثم جنوبًا بالمسافة نفسها يلغي بعضه، فتبقى شرق الواحة.'],
+ ['ثلاثة مسافرين: واحد على جمل، وواحد على حصان، وواحد يمشي. سالم لا يركب، وفيصل لا يركب الجمل، وناصر ليس الماشي. من يركب الجمل؟','ناصر',['فيصل','سالم','لا يمكن المعرفة'],['سالم لا يركب، فهو…','فيصل لا يركب الجمل، والمشي أُخذ.','يبقى الجمل لمن؟'],'سالم يمشي، وفيصل على الحصان، فالجمل لناصر.'],
+ ['في بئر دلوان مربوطان بحبل واحد على بكرة؛ كلما نزل واحد صعد الآخر. الدلو الأيمن في الأعلى، فأنزلته إلى الماء. أين الدلو الأيسر الآن؟','في الأعلى',['في الماء','في المنتصف','سقط في البئر'],['الحبل واحد.','نزول أحدهما يرفع الآخر.','الأيمن نزل…'],'نزول الدلو الأيمن رفع الأيسر إلى الأعلى.'],
+ ['مرشدان، أحدهما صادق دائمًا والآخر كاذب دائمًا. قال (أ): «طريق الشمال يؤدي إلى الواحة». وقال (ب): «أنا و(أ) كلانا صادقان». أي طريق تسلك؟','طريق الشمال',['الطريق المعاكس للشمال','لا يمكن المعرفة','لا طريق يؤدي'],['واحد فقط منهما صادق.','لو كان (ب) صادقًا لكانا صادقين معًا: ممنوع.','إذن (ب) الكاذب و(أ) الصادق.'],'(ب) لا يمكن أن يصدق لأن جملته تجعلهما صادقين معًا، فهو الكاذب، و(أ) الصادق: طريق الشمال يؤدي للواحة.'],
+ ['وجدت آثار أقدام في الرمل تتجه نحو خيمة ولا تخرج منها، ومع ذلك الخيمة فارغة ولا مخرج آخر. كيف؟','خرج صاحبها ماشيًا إلى الخلف',['طار من الخيمة','الريح مسحت الآثار','دخل ولم يخرج'],['الآثار تُقرأ من اتجاه الأصابع.','ماذا لو مشى بطريقة غير عادية؟','للخلف!'],'مشى إلى الخلف وهو يخرج، فبدت آثاره كأنها داخلة.'],
+ ['أربعة جمال في قافلة: الأبيض أمام البني، والأسود خلف الأبيض مباشرة، والبني ليس الأخير، والذهبي ليس الأول. ما ترتيب القافلة من الأمام؟','الأبيض، الأسود، البني، الذهبي',['الأبيض، البني، الأسود، الذهبي','الذهبي، الأبيض، الأسود، البني','الأسود، الأبيض، البني، الذهبي'],['من يمكن أن يكون الأول؟','البني والأسود بعد الأبيض، والذهبي ليس الأول.','الأبيض أولًا، والأسود بعده مباشرة.'],'الأبيض أولًا، الأسود ثانيًا، والبني ليس الأخير فهو الثالث، والذهبي الأخير.'],
+ ['في منتصف النهار تمامًا، والشمس فوق رأسك مباشرة، أين يكون ظلك؟','تحت قدميك تقريبًا',['أمامك طويلًا','خلفك طويلًا','على يمينك'],['الظل في الجهة المقابلة للشمس.','الشمس فوقك تمامًا.','فالظل…'],'عندما تكون الشمس فوق الرأس تمامًا يقع الظل تحت القدمين تقريبًا.'],
+ /* المتحف */
+ ['سُرقت لوحة. قال الحارس: «لم يسرقها المرمم». وقال المرمم: «سرقها الزائر». وقال الزائر: «المرمم يكذب». واحد فقط صادق. من السارق؟','المرمم',['الحارس','الزائر','لا أحد'],['جرّب كل متهم وعدّ الصادقين.','لو كان الحارس: يصدق الحارس والزائر.','ابحث عن صادق واحد فقط.'],'لو كان المرمم السارق: الحارس كاذب، والمرمم كاذب، والزائر صادق، أي صادق واحد.'],
+ ['أربعة تماثيل في قاعة: الصيني قبل الفرعوني مباشرة، والفرعوني قبل الروماني، والإغريقي آخرًا. ما التمثال الثاني؟','الفرعوني',['الصيني','الروماني','الإغريقي'],['الإغريقي في الرابع.','الصيني والفرعوني متتاليان وقبل الروماني.','فالروماني الثالث.'],'الترتيب: الصيني، الفرعوني، الروماني، الإغريقي.'],
+ ['تقف أمام تمثال وجهه نحوك، وهو يرفع يده اليمنى. في أي جهة من جهتك ترى يده المرفوعة؟','على يساري',['على يميني','فوق رأسه','لا يمكن المعرفة'],['التمثال يقابلك.','يمينه يقع مقابل يسارك.','تخيّل نفسك تصافح شخصًا.'],'من يقابلك تكون يمناه في الجهة اليسرى منك.'],
+ ['صورة في إطار مربع. أدرتها ربع لفة مع عقارب الساعة، فصار رأس الشخص في جهة اليمين. أين كان رأسه قبل التدوير؟','في الأعلى',['في الأسفل','في اليسار','في اليمين'],['ربع لفة مع العقارب تنقل الأعلى إلى…','الأعلى يصير يمينًا.','فالرأس كان…'],'التدوير ربع لفة مع العقارب ينقل الأعلى إلى اليمين، فالرأس كان في الأعلى.'],
+ ['قال حارس الليل لمدير المتحف صباحًا: «حلمت البارحة أن اللوحة ستُسرق». فشكره المدير ثم فصله من العمل. لماذا؟','لأنه نام أثناء نوبة الحراسة',['لأن الحلم كان كاذبًا','لأنه سرق اللوحة','لأنه تأخر صباحًا'],['متى يحلم الإنسان؟','الحارس كان في نوبة ليلية.','الحلم يعني أنه…'],'ليحلم لا بد أن ينام، وهو حارس ليل، فقد نام أثناء عمله.'],
+ ['ثلاث خزائن زجاجية، في واحدة جوهرة. على الحمراء: «الجوهرة ليست في الزرقاء». على الزرقاء: «الجوهرة ليست هنا». على الخضراء: «الجوهرة هنا». ملصق واحد فقط كاذب. أين الجوهرة؟','في الحمراء',['في الزرقاء','في الخضراء','ليست في أي منها'],['جرّب كل خزانة وعدّ الكاذب.','لو كانت في الخضراء: كل الملصقات صادقة.','ابحث عن كاذب واحد بالضبط.'],'لو كانت في الحمراء: ملصق الحمراء صادق، والزرقاء صادق، والخضراء كاذب، أي كاذب واحد.'],
+ ['دخل المتحف أربعة: ميار أولًا، وهالة قبل جود، ولين بعد جود مباشرة. من الأخير؟','لين',['جود','هالة','ميار'],['ميار ثابتة أولًا.','جود ولين متتاليان.','وهالة قبل جود.'],'الترتيب: ميار، هالة، جود، لين.'],
+ ['قطعة نقدية في المتحف مكتوب عليها «سنة 200 قبل الميلاد». قال الخبير فورًا إنها مزوّرة. كيف عرف؟','من صنعها لم يكن يعرف أنه «قبل الميلاد»',['لأن المعدن جديد','لأن الرقم خاطئ','لأنها لامعة'],['فكّر في من كتب التاريخ على العملة.','هل كان الناس وقتها يعرفون ما سيحدث بعد 200 سنة؟','«قبل الميلاد» تسمية جاءت لاحقًا.'],'لا أحد في ذلك الزمن يكتب «قبل الميلاد»؛ هذه التسمية وُضعت بعد قرون.'],
+ /* الحديقة */
+ ['الوردة أطول من الزنبقة، والياسمين أقصر من الزنبقة. أي زهرة الأقصر؟','الياسمين',['الزنبقة','الوردة','لا يمكن المعرفة'],['رتّبها من الأطول.','الوردة > الزنبقة.','والياسمين أقصر من الزنبقة.'],'الترتيب: الوردة، الزنبقة، الياسمين.'],
+ ['بستانيان، واحد فقط منهما صادق. قال الأول: «سقيت الشجرة». وقال الثاني: «الأول لم يسقها». هل سُقيت الشجرة؟','لا يمكن معرفة ذلك',['نعم سُقيت','لا لم تُسقَ','سقاها الثاني'],['جرّب أن الأول صادق.','ثم جرّب أن الثاني صادق.','الحالتان ممكنتان!'],'الجملتان متناقضتان دائمًا، فواحد منهما صادق مهما حدث؛ لذلك الشرط لا يخبرنا شيئًا.'],
+ ['على شجرة ثلاثة عصافير: الأحمر فوق الأزرق، والأصفر تحت الأزرق. من في الأعلى؟','الأحمر',['الأزرق','الأصفر','لا يمكن المعرفة'],['الأزرق في الوسط.','الأحمر فوقه.','والأصفر تحته.'],'الترتيب من الأعلى: الأحمر، الأزرق، الأصفر.'],
+ ['ممر الحديقة على شكل حرف L: تمشي نحو الأسفل أولًا ثم تلف مرة واحدة لتكمل نحو اليمين. هل لففت يمينًا أم يسارًا؟','يسارًا',['يمينًا','لم ألف','نصف لفة'],['تخيّل أنك تمشي جنوبًا.','الآن تريد أن تتجه شرقًا.','من يتجه جنوبًا، الشرق على يساره.'],'من يمشي نحو الأسفل (الجنوب) يكون الشرق (يمين الخريطة) على يساره، فلفّ يسارًا.'],
+ ['ظل الشجرة يمتد نحو الغرب. في أي جهة الشمس؟','الشرق',['الغرب','الشمال','فوق الشجرة تمامًا'],['الظل يمتد عكس الشمس.','الظل غربًا.','فالشمس…'],'الظل يكون في الجهة المقابلة للشمس، فالشمس في الشرق (وقت الصباح).'],
+ ['أربعة أحواض في صف: الطماطم في أحد الطرفين، والخس ليس بجانب الطماطم، والريحان ليس في طرف، والنعناع بجانب الريحان. أين الخس؟','في الطرف المقابل للطماطم',['بجانب الطماطم','في الوسط','بجانب النعناع دائمًا'],['ضع الطماطم في المكان الأول.','الخس في 3 أو 4.','لو كان في 3، أين يذهب الريحان والنعناع؟'],'لو كان الخس ثالثًا لصار الريحان ثانيًا والنعناع رابعًا لا يجاوره. إذن الخس في الطرف الآخر دائمًا.'],
+ ['خرج رجل في المطر بلا مظلة ولا قبعة، فعاد مبتلًا كله، ومع ذلك لم تبتل شعرة واحدة من رأسه. كيف؟','لأنه أصلع',['لأنه ركض بسرعة','لأن المطر خفيف','لأنه غطى رأسه بيده'],['ليس هناك ما يغطي رأسه.','لم تبتل «شعرة».','ماذا لو لم يكن هناك شعر أصلًا؟'],'لا شعر على رأسه أصلًا، فلا شعرة تبتل.'],
+ ['نحلة زارت ثلاث زهور: الحمراء قبل البيضاء، والصفراء بين الحمراء والبيضاء. ما الزهرة الثانية؟','الصفراء',['الحمراء','البيضاء','لا يمكن المعرفة'],['الحمراء قبل البيضاء.','الصفراء بينهما.','فالترتيب…'],'الترتيب: الحمراء، الصفراء، البيضاء.']);
+
+/* ================= v26: UIs for 8 more puzzle types, with drawn animated pieces ================= */
+Object.assign(SPR,{
+ chest:`<svg viewBox="0 0 64 64"><path d="M10 30h44v24H10z" fill="#B07C4A" ${SK}/><path d="M10 30q0-14 22-14t22 14z" fill="#C98E58" ${SK}/><rect x="28" y="28" width="8" height="10" rx="2" fill="#FFD45A" ${SK}/><path class="spark" d="M50 10v8M46 14h8" stroke="#FFD45A" stroke-width="3" stroke-linecap="round"/><circle cx="18" cy="24" r="3" fill="#FFD45A"/><circle cx="44" cy="22" r="3" fill="#FFD45A"/></svg>`,
+ ghost:`<svg viewBox="0 0 64 64"><path d="M14 58V28q0-18 18-18t18 18v30l-6-5-6 5-6-5-6 5-6-5z" fill="#E8ECF4" ${SK}/><ellipse cx="25" cy="30" rx="3.5" ry="5" fill="#2F2A24"/><ellipse cx="39" cy="30" rx="3.5" ry="5" fill="#2F2A24"/><ellipse cx="32" cy="42" rx="5" ry="4" fill="#2F2A24"/></svg>`,
+ lampOff:`<svg viewBox="0 0 64 64"><path d="M32 8a16 16 0 0 0-9 29v7h18v-7A16 16 0 0 0 32 8z" fill="#5D6694" ${SK}/><path d="M24 50h16M26 56h12" ${SK}/></svg>`,
+ peg:`<svg viewBox="0 0 64 64"><ellipse cx="32" cy="52" rx="16" ry="5" fill="rgba(0,0,0,.25)"/><circle cx="32" cy="30" r="18" fill="#D2694B" ${SK}/><circle cx="25" cy="23" r="6" fill="#fff" opacity=".45"/></svg>`,
+ knight:`<svg viewBox="0 0 64 64"><path d="M16 58h34v-6H16z" fill="#8E6BD6" ${SK}/><path d="M20 52q-2-14 8-22l-6-4q2-12 14-16l4-6 3 8q10 8 8 24l-2 16z" fill="#B48CFF" ${SK}/><circle cx="34" cy="20" r="2.4" fill="#2F2A24"/><path d="M22 26l6 4" ${SK}/></svg>`,
+ penguin:`<svg viewBox="0 0 64 64"><ellipse cx="32" cy="36" rx="18" ry="22" fill="#2F3A56" ${SK}/><ellipse cx="32" cy="40" rx="12" ry="16" fill="#FBF7EE"/><circle cx="26" cy="26" r="2.6" fill="#2F2A24"/><circle cx="38" cy="26" r="2.6" fill="#2F2A24"/><path d="M28 32l4 4 4-4z" fill="#F0B43C" ${SK}/><path d="M22 58h8M34 58h8" stroke="#F0B43C" stroke-width="4" stroke-linecap="round"/></svg>`,
+ rock:`<svg viewBox="0 0 64 64"><path d="M8 50q-2-16 10-24q6-16 20-12q16 0 18 16q8 10 0 20z" fill="#9C9C94" ${SK}/><path d="M20 30q6-4 12 0M36 22q6 2 8 8" fill="none" stroke="#fff" stroke-width="2" opacity=".5"/></svg>`,
+ flag:`<svg viewBox="0 0 64 64"><ellipse cx="32" cy="54" rx="20" ry="6" fill="#2F2A24" opacity=".35"/><path d="M24 54V10" ${SK}/><path class="wave" d="M24 10l24 8-24 8z" fill="#D94A3B" ${SK}/></svg>`,
+ sun:`<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="14" fill="#F2B03C" ${SK}/><path d="M32 6v8M32 50v8M6 32h8M50 32h8M13 13l6 6M45 45l6 6M13 51l6-6M45 19l6-6" stroke="#F2B03C" stroke-width="4" stroke-linecap="round"/></svg>`,
+ moon:`<svg viewBox="0 0 64 64"><path d="M40 10a22 22 0 1 0 14 34A18 18 0 0 1 40 10z" fill="#5B6FB8" ${SK}/><circle cx="30" cy="40" r="3" fill="#8FA0E0"/></svg>`});
+
+/* ---------- أبواب القصر ---------- */
+function runDoors(){return pzPlay('pz_door',api=>{
+  const P=drMake(api.lv),n=P.n,elim=new Set(),DC=['#C9493B','#3F7CC0','#5E9550','#D99A1E','#8E5F8E'];
+  api.body.innerHTML=`<div class="drrule"><b>القاعدة:</b> ${P.rule.t}<br><small>خلف باب واحد كنز، والباقي فخاخ.</small></div><ol class="drsigns">${P.st.map((s,i)=>`<li><b>لافتة الباب ${DRN[i]}:</b> «${drText(s)}»</li>`).join('')}</ol><div class="drs">${P.st.map((_,i)=>`<button class="drd" data-d="${i}" aria-label="الباب ${DRN[i]}"><span class="drin"></span><span class="drdoor">${SPR.door(DC[i])}</span><small>${DRN[i]}</small></button>`).join('')}</div>`;
+  api.msg('فكّر في كل احتمال: لو كان الكنز خلف هذا الباب، كم لافتة تصير صادقة؟ ثم افتح بابًا واحدًا.');
+  const why=t=>{const v=drVals(P,t);return P.st.map((_,i)=>`لافتة ${DRN[i]} ${v[i]?'صادقة':'كاذبة'}`).join('، ')};
+  api.body.querySelectorAll('.drd').forEach(b=>b.onclick=()=>{if(api.ended)return;const d=+b.dataset.d;b.querySelector('.drin').innerHTML=d===P.t?SPR.chest:SPR.ghost;b.classList.add('open',d===P.t?'win':'trap');sfx[d===P.t?'lvl':'bad']();
+    later(()=>d===P.t?api.win(`الكنز خلف الباب ${DRN[d]}. لو كان هناك: ${why(d)}، وهذا يطابق القاعدة.`):api.over(`خلف الباب ${DRN[d]} فخ! الكنز كان خلف الباب ${DRN[P.t]}: ${why(P.t)}.`),650)});
+  pzHook({P});
+  return{hint:k=>{if(k===1)return'جرّب الأبواب واحدًا واحدًا: افترض أن الكنز خلفه، ثم حدد كل لافتة صادقة أو كاذبة، وقارن بالقاعدة.';const c=[...Array(n).keys()].filter(i=>i!==P.t&&!elim.has(i));if(!c.length)return null;const i=pick(c);elim.add(i);api.body.querySelector(`.drd[data-d="${i}"]`).classList.add('no');return`الكنز ليس خلف الباب ${DRN[i]}: لو كان هناك تصير اللافتات (${why(i)}) وهذا لا يطابق القاعدة.`},
+   reveal:()=>`الكنز كان خلف الباب ${DRN[P.t]}.`}})}
+
+/* ---------- أطفئ الأنوار ---------- */
+function runLights(){return pzPlay('pz_lights',api=>{
+  const P=loMake(api.lv),n=P.n,on=P.on.slice();let presses=0;
+  api.body.innerHTML=`<div class="log ltr" id="log" style="--n:${n}">${on.map((_,i)=>`<button class="loc" data-i="${i}" aria-label="مصباح">${SPR.bulb}</button>`).join('')}</div>`;
+  api.msg(`أطفئ كل المصابيح. الضغط يقلب المصباح وجيرانه الأربعة. أقل حل: <b class="num">${P.min}</b>`);const cells=[...$('#log').children];
+  function draw(){cells.forEach((b,i)=>b.classList.toggle('on',!!on[i]))}
+  function press(i){if(api.ended)return;const x=i%n,y=i/n|0;[[0,0],[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy],k)=>{if(!inb(x+dx,y+dy,n,n))return;const j=(y+dy)*n+x+dx;on[j]^=1;const c=cells[j];c.classList.remove('flip');void c.offsetWidth;c.classList.add('flip')});presses++;tone(on[i]?700:420,.05);cells.forEach(c=>c.classList.remove('hint'));draw();
+    if(!on.some(Boolean))api.win(`أطفأت كل المصابيح في ${arN(presses,AN.press)}، والأقل ${arN(P.min,AN.press)}.`);else api.msg(`الضغطات: <b class="num">${presses}</b> · أقل حل: <b class="num">${P.min}</b>`)}
+  cells.forEach((b,i)=>b.onclick=()=>press(i));draw();pzHook({P,press,on});
+  return{hint:k=>{if(k===1)return'ترتيب الضغطات لا يهم، وضغط نفس المصباح مرتين يلغي نفسه. جرّب «مطاردة الأنوار»: أطفئ كل صف بضغط الصف الذي تحته.';const s=loSolve(n,on);if(!s)return null;const i=s.x.findIndex(Boolean);if(i<0)return null;cells[i].classList.add('hint');return`اضغط المصباح المضيء. باقي ${arN(s.w,AN.press)} في أقصر حل.`},
+   reveal:()=>`كان أقل حل ${arN(P.min,AN.press)}.`}})}
+
+/* ---------- فك التشابك ---------- */
+function runUntangle(){return pzPlay('pz_untangle',api=>{
+  const P=unMake(api.lv),pos=P.pos.map(p=>p.slice()),lock=new Set();let drag=-1,moves=0;
+  api.body.innerHTML=`<div class="unb"><svg id="unsv" viewBox="0 0 100 100"><g id="une"></g><g id="unn">${pos.map((_,i)=>`<g class="unode" data-i="${i}"><circle r="5.2" class="unhit"/><circle r="3.4" class="undot"/></g>`).join('')}</g></svg></div>`;
+  api.msg('اسحب النقاط حتى لا يتقاطع أي خطين.');const sv=$('#unsv');
+  function draw(){const{c,bad}=unCross(P,pos);$('#une').innerHTML=P.e.map(([a,b],k)=>`<line x1="${pos[a][0]}" y1="${pos[a][1]}" x2="${pos[b][0]}" y2="${pos[b][1]}" class="${bad.has(k)?'bad':'ok'}"/>`).join('');
+    sv.querySelectorAll('.unode').forEach(g=>{const i=+g.dataset.i;g.setAttribute('transform',`translate(${pos[i][0]} ${pos[i][1]})`);g.classList.toggle('lock',lock.has(i))});api.msg(c?`تقاطعات باقية: <b class="num">${c}</b>`:'لا يوجد أي تقاطع!');return c}
+  const pt=e=>{const r=sv.getBoundingClientRect();return[clamp((e.clientX-r.left)/r.width*100,4,96),clamp((e.clientY-r.top)/r.height*100,4,96)]};
+  sv.addEventListener('pointerdown',e=>{const g=e.target.closest('.unode');if(!g||api.ended)return;const i=+g.dataset.i;if(lock.has(i))return;e.preventDefault();drag=i;sv.setPointerCapture(e.pointerId);g.classList.add('drag')});
+  sv.addEventListener('pointermove',e=>{if(drag<0)return;pos[drag]=pt(e);draw()});
+  const up=()=>{if(drag<0)return;sv.querySelectorAll('.drag').forEach(g=>g.classList.remove('drag'));drag=-1;moves++;tone(500,.04);if(!draw())win()};sv.addEventListener('pointerup',up);sv.addEventListener('pointercancel',up);
+  function win(){$('#unsv').classList.add('done');api.win(moves?`فككت التشابك بعد ${arN(moves,['سحبة واحدة','سحبتين','سحبات','سحبة'])}.`:'فككت التشابك.')}
+  draw();pzHook({P,pos,draw,win});
+  return{hint:k=>{if(k===1)return'ابدأ بالنقاط التي تتصل بخطوط كثيرة، وضع النقاط التي تتصل بنقطتين فقط في الأطراف.';const c=[...Array(P.n).keys()].filter(i=>!lock.has(i));if(!c.length)return null;const{bad}=unCross(P,pos),inBad=c.filter(i=>P.e.some(([a,b],k)=>bad.has(k)&&(a===i||b===i)));const i=pick(inBad.length?inBad:c);pos[i]=P.sol[i].slice();lock.add(i);if(!draw())win();return'ثبّتُّ لك نقطة في مكانها الصحيح (بإطار ذهبي).'},
+   reveal:()=>{P.sol.forEach((p,i)=>pos[i]=p.slice());draw();return'هذا شكل بلا تقاطعات.'}}})}
+
+/* ---------- القفز ---------- */
+function runPegs(){return pzPlay('pz_peg',api=>{
+  const P=pgMake(api.lv),{w,h,hole}=P;let S=new Set(P.peg),sel=-1,hist=[],moves=0;const D=[[1,0],[-1,0],[0,1],[0,-1]];
+  api.body.innerHTML=`<div class="pgb ltr" id="pgb" style="--w:${w};--h:${h}">${gridBtns(w,h,i=>hole[i]?`<button class="pgc" data-i="${i}" aria-label="حفرة"></button>`:'<span class="pgc off"></span>')}</div><div class="row skbtns"><button class="pzgive" id="pgun">↶ تراجع</button><button class="pzgive" id="pgre">↺ من جديد</button></div>`;
+  api.msg('اقفز بكرة فوق جارتها إلى حفرة فارغة، فتُزال الكرة التي قفزت فوقها. اترك كرة واحدة فقط.');
+  const jumps=c=>{const x=c%w,y=c/w|0;return D.map(([dx,dy])=>[(y+dy)*w+x+dx,(y+2*dy)*w+x+2*dx,inb(x+2*dx,y+2*dy,w,h)]).filter(([b,a,ok])=>ok&&hole[a]&&S.has(b)&&!S.has(a))};
+  function draw(land,gone){$('#pgb').querySelectorAll('.pgc[data-i]').forEach(e=>{const i=+e.dataset.i,has=S.has(i);e.innerHTML=has||i===gone?`<b class="pgpeg${i===land?' land':''}${i===gone?' gone':''}">${SPR.peg}</b>`:'';e.classList.toggle('sel',i===sel);e.classList.toggle('tgt',sel>=0&&jumps(sel).some(([,a])=>a===i))})}
+  function tap(i){if(api.ended||!hole[i])return;if(S.has(i)){sel=sel===i?-1:i;tone(600,.03);draw();return}if(sel<0)return;const j=jumps(sel).find(([,a])=>a===i);if(!j){sfx.bad();return}
+    hist.push([...S]);S.delete(sel);S.delete(j[0]);S.add(i);moves++;const g=j[0];sel=-1;sfx.pop();draw(i,g);later(()=>draw(),320);
+    if(S.size===1)later(()=>api.win(`بقيت كرة واحدة بعد ${arN(moves,['قفزة واحدة','قفزتين','قفزات','قفزة'])}.`),350);else if(![...S].some(c=>jumps(c).length))api.msg('ما فيه قفزات ممكنة. اضغط «تراجع» وجرّب طريقًا آخر.')}
+  $('#pgb').querySelectorAll('.pgc[data-i]').forEach(e=>e.onclick=()=>tap(+e.dataset.i));
+  $('#pgun').onclick=()=>{if(!hist.length||api.ended)return;S=new Set(hist.pop());sel=-1;draw()};$('#pgre').onclick=()=>{if(api.ended)return;S=new Set(P.peg);hist=[];sel=-1;draw()};
+  draw();pzHook({P,tap,S:()=>S});
+  return{hint:k=>{if(k===1)return'لا تترك كرة وحيدة بعيدة عن البقية؛ القفزات تحتاج كرتين متجاورتين وحفرة بعدهما.';const s=pgSolve(P,[...S]);if(!s)return'هذا الوضع لا يكتمل. تراجع خطوة أو ابدأ من جديد.';const[c,a]=s[0];sel=c;draw();$('#pgb').querySelector(`[data-i="${a}"]`).classList.add('hint');return'حرّك الكرة المختارة إلى الحفرة المضيئة.'},
+   reveal:()=>'جرّب المرة الجاية أن تجمع الكرات نحو المنتصف.'}})}
+
+/* ---------- رحلة الحصان ---------- */
+function runKnight(){return pzPlay('pz_knight',api=>{
+  const P=knMake(api.lv),n=P.n;let path=[P.start];
+  api.body.innerHTML=`<div class="knw ltr"><div class="knb" id="knb" style="--n:${n}">${gridBtns(n,n,i=>P.open[i]?`<button class="knc${((i%n)+(i/n|0))%2?' dk':''}" data-i="${i}" aria-label="مربع"></button>`:'<span class="knc off"></span>')}</div><div class="kntok" id="knt">${SPR.knight}</div></div><div class="row skbtns"><button class="pzgive" id="knun">↶ تراجع</button></div>`;
+  api.msg(`حرّك الحصان (حركة L) ليمرّ على كل المربعات مرة واحدة فقط. المربعات: <b class="num">${P.len}</b>`);
+  const nexts=()=>{const c=path[path.length-1],x=c%n,y=c/n|0;return KN.map(([dx,dy])=>[x+dx,y+dy]).filter(([a,b])=>inb(a,b,n,n)&&P.open[b*n+a]&&!path.includes(b*n+a)).map(([a,b])=>b*n+a)};
+  function draw(){const nx=new Set(nexts()),c=path[path.length-1],t=$('#knt');t.style.left=(c%n)*100/n+'%';t.style.top=(c/n|0)*100/n+'%';t.style.width=t.style.height=100/n+'%';
+    $('#knb').querySelectorAll('.knc[data-i]').forEach(e=>{const i=+e.dataset.i,k=path.indexOf(i);e.classList.toggle('seen',k>=0);e.classList.toggle('can',nx.has(i));e.textContent=k>=0&&k<path.length-1?k+1:''});
+    api.msg(`زرت <b class="num">${path.length}</b> من <b class="num">${P.len}</b>`+(nx.size||path.length===P.len?'':' · ما فيه حركة! تراجع'))}
+  function go(i){if(api.ended)return;if(!nexts().includes(i)){sfx.bad();return}path.push(i);tone(400+path.length*8,.05);$('#knt').classList.remove('hop');void $('#knt').offsetWidth;$('#knt').classList.add('hop');$('#knb').querySelectorAll('.hint').forEach(e=>e.classList.remove('hint'));draw();if(path.length===P.len)api.win(`أكمل الحصان رحلته على ${P.len} مربعًا.`)}
+  $('#knb').querySelectorAll('.knc[data-i]').forEach(e=>e.onclick=()=>go(+e.dataset.i));$('#knun').onclick=()=>{if(path.length>1&&!api.ended){path.pop();draw()}};
+  draw();pzHook({P,go,path:()=>path});
+  return{hint:k=>{if(k===1)return'قاعدة «وارنسدورف»: اذهب دائمًا للمربع الذي له أقل عدد من الحركات التالية، واترك المربعات الواسعة للأخير.';const s=knSolve(P,path);if(!s){return'من هنا ما تكتمل الرحلة. تراجع خطوات.'}$('#knb').querySelector(`[data-i="${s[path.length]}"]`).classList.add('hint');return'اقفز إلى المربع المضيء.'},
+   reveal:()=>'جرّب المرة الجاية البدء من الزوايا والأطراف.'}})}
+
+/* ---------- بخط واحد ---------- */
+function runStroke(){return pzPlay('pz_stroke',api=>{
+  const P=osMake(api.lv),{c,r}=P,used=new Set(),X=i=>8+(i%c)*84/(c-1),Y=i=>8+(i/c|0)*84/(r-1),K=([a,b])=>a+'-'+b;let cur=null,trail=[];
+  api.body.innerHTML=`<div class="osb"><svg viewBox="0 0 100 100"><g id="ose">${P.edges.map((e,k)=>`<line class="ose" data-k="${k}" x1="${X(e[0])}" y1="${Y(e[0])}" x2="${X(e[1])}" y2="${Y(e[1])}" pathLength="1"/>`).join('')}</g></svg>${[...new Set(P.edges.flat())].map(v=>`<button class="osn" data-v="${v}" style="left:${X(v)}%;top:${Y(v)}%" aria-label="نقطة"></button>`).join('')}</div><div class="row skbtns"><button class="pzgive" id="osre">↺ من جديد</button></div>`;
+  api.msg('ارسم الشكل كله بخط واحد بدون أن ترفع القلم أو تمر على خط مرتين. اضغط نقطة البداية ثم النقاط واحدة واحدة.');
+  function draw(){$('#ose').querySelectorAll('.ose').forEach(l=>{const e=P.edges[+l.dataset.k];l.classList.toggle('on',used.has(K(e)))});document.querySelectorAll('.osn').forEach(b=>{const v=+b.dataset.v;b.classList.toggle('cur',v===cur);b.classList.remove('hint')});api.msg(`الخطوط: <b class="num">${used.size}</b> من <b class="num">${P.edges.length}</b>`)}
+  function tap(v){if(api.ended)return;if(cur==null){cur=v;sfx.pop();draw();return}const e=P.edges.find(([a,b])=>!used.has(a+'-'+b)&&((a===cur&&b===v)||(b===cur&&a===v)));if(!e){if(!used.size){cur=v;draw();return}sfx.bad();return}
+    used.add(K(e));trail.push(v);const ln=$(`#ose [data-k="${P.edges.indexOf(e)}"]`);ln.classList.add('anim');cur=v;tone(380+used.size*20,.05);draw();
+    if(used.size===P.edges.length)api.win(`رسمت الشكل كاملًا بخط واحد (${arN(P.edges.length,['خط واحد','خطين','خطوط','خطًا'])}).`);else if(!P.edges.some(([a,b])=>!used.has(a+'-'+b)&&(a===cur||b===cur)))api.msg('توقف القلم! اضغط «من جديد» وجرّب نقطة بداية أخرى.')}
+  document.querySelectorAll('.osn').forEach(b=>b.onclick=()=>tap(+b.dataset.v));$('#osre').onclick=()=>{if(api.ended)return;used.clear();cur=null;trail=[];$('#ose').querySelectorAll('.anim').forEach(l=>l.classList.remove('anim'));draw()};
+  const odd=()=>{const d={};P.edges.forEach(([a,b])=>{d[a]=(d[a]||0)+1;d[b]=(d[b]||0)+1});return Object.keys(d).filter(v=>d[v]%2).map(Number)};
+  draw();pzHook({P,tap,used});
+  return{hint:k=>{if(k===1)return'عدّ الخطوط الخارجة من كل نقطة: إذا وُجدت نقطتان بعدد فردي، فابدأ من إحداهما وانتهِ عند الأخرى.';if(k===2||cur==null){const o=odd(),s=o.length?o[0]:P.start;$('#osre').click();document.querySelector(`.osn[data-v="${s}"]`).classList.add('hint');return'ابدأ من النقطة المضيئة.'}
+    const nx=osNext(P,used,cur);if(nx==null)return null;document.querySelector(`.osn[data-v="${nx}"]`).classList.add('hint');return'اذهب إلى النقطة المضيئة.'},
+   reveal:()=>'السر في نقاط البداية والنهاية: النقاط ذات الخطوط الفردية.'}})}
+
+/* ---------- شمس وقمر (Takuzu) ---------- */
+function runBinary(){return pzPlay('pz_binary',api=>{
+  const P=biMake(api.lv),n=P.n,g=P.puz.slice(),giv=new Set(P.puz.map((v,i)=>v>=0?i:-1).filter(i=>i>=0)),lock=new Set();
+  api.body.innerHTML=`<div class="big2 ltr" id="big" style="--n:${n}">${g.map((_,i)=>`<button class="bic${giv.has(i)?' giv':''}" data-i="${i}" aria-label="خانة"></button>`).join('')}</div>`;
+  api.msg(`في كل صف وعمود: عدد الشموس = عدد الأقمار، ولا يتجاور ثلاثة متشابهة. اضغط لتبدّل: شمس ← قمر ← فارغ.`);const cells=[...$('#big').children];
+  function bad(){const b=new Set();for(let i=0;i<n*n;i++)if(g[i]>=0&&!biOK(g,n,i))b.add(i);return b}
+  function cell(i,anim){const e=cells[i];e.innerHTML=g[i]===0?`<b>${SPR.sun}</b>`:g[i]===1?`<b>${SPR.moon}</b>`:'';if(anim){e.classList.remove('flip');void e.offsetWidth;e.classList.add('flip')}e.classList.toggle('lock',lock.has(i))}
+  function marks(){const b=bad();cells.forEach((e,i)=>e.classList.toggle('bad',b.has(i)))}
+  function tap(i){if(api.ended||giv.has(i)||lock.has(i))return;g[i]=g[i]===-1?0:g[i]===0?1:-1;tone(g[i]===0?680:g[i]===1?460:320,.04);cell(i,true);marks();if(g.every((v,k)=>v===P.sol[k]))api.win(`أكملت لوحة ${n}×${n}.`)}
+  cells.forEach((e,i)=>{cell(i);e.onclick=()=>tap(i)});marks();pzHook({P,tap,g});
+  return{hint:k=>{if(k===1)return'إذا رأيت شيئين متجاورين متشابهين، فالخانتان على طرفيهما من النوع الآخر. وإذا اكتمل نصف الصف من نوع، فالباقي من النوع الآخر.';const c=[...Array(n*n).keys()].filter(i=>!giv.has(i)&&!lock.has(i)&&g[i]!==P.sol[i]);if(!c.length)return null;const i=pick(c);g[i]=P.sol[i];lock.add(i);cell(i,true);marks();if(g.every((v,k)=>v===P.sol[k]))api.win('اكتملت اللوحة.');return'وضعت لك خانة صحيحة (بإطار ذهبي).'},
+   reveal:()=>{P.sol.forEach((v,i)=>{g[i]=v;cell(i)});marks();return'هذا هو الحل.'}}})}
+
+/* ---------- الجليد المنزلق ---------- */
+function runIce(){return pzPlay('pz_ice',api=>{
+  const P=icMake(api.lv),{w,h}=P;let pos=P.start,moves=0,busy=false;
+  api.body.innerHTML=`<div class="icw ltr"><div class="icb" id="icb" style="--w:${w};--h:${h}">${gridBtns(w,h,i=>P.rock[i]?`<span class="icc rock">${SPR.rock}</span>`:i===P.goal?`<span class="icc goal">${SPR.flag}</span>`:'<span class="icc"></span>')}</div><div class="ictok" id="ict">${SPR.penguin}</div></div>${arrowPad()}<div class="row skbtns"><button class="pzgive" id="icre">↺ من جديد</button></div>`;
+  api.msg(`البطريق ينزلق حتى يصطدم بصخرة أو بالحافة. أوصله إلى العلم. أقل حل: <b class="num">${P.min}</b>`);
+  const put=(p,ms)=>{const t=$('#ict');t.style.transitionDuration=(ms||0)+'ms';t.style.left=(p%w)*100/w+'%';t.style.top=(p/w|0)*100/h+'%';t.style.width=100/w+'%';t.style.height=100/h+'%'};
+  function step(d){if(api.ended||busy)return;const m=icSlide(P,pos,d);if(m===pos){sfx.bad();return}const dist=Math.abs(m%w-pos%w)+Math.abs((m/w|0)-(pos/w|0));busy=true;moves++;pos=m;const t=$('#ict');t.classList.toggle('flipx',d===3);put(m,70*dist+60);tone(300,.12,'triangle');
+    later(()=>{busy=false;tone(520,.04);if(pos===P.goal)api.win(`وصل البطريق في ${arN(moves,AN.mv)}، والأقل ${arN(P.min,AN.mv)}.`);else api.msg(`الحركات: <b class="num">${moves}</b> · أقل حل: <b class="num">${P.min}</b>`)},70*dist+80)}
+  $('#icre').onclick=()=>{if(api.ended)return;pos=P.start;moves=0;put(pos,200)};
+  let sw=null;$('#icb').addEventListener('pointerdown',e=>{sw=[e.clientX,e.clientY]});$('#icb').addEventListener('pointerup',e=>{if(!sw)return;const dx=e.clientX-sw[0],dy=e.clientY-sw[1];sw=null;if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;step(Math.abs(dx)>Math.abs(dy)?(dx>0?1:3):(dy>0?2:0))});
+  put(pos);bindArrows(step);pzHook({P,step,pos:()=>pos});
+  return{hint:k=>{if(k===1)return'فكّر بالعكس: من أي اتجاه يمكن أن تصل إلى العلم وتتوقف عنده؟ وما الصخرة التي توقفك هناك؟';const s=icSolve(P,pos);if(!s||!s.length)return null;return`الحركة التالية: ${['للأعلى','لليمين','للأسفل','لليسار'][s[0]]}. باقي ${arN(s.length,AN.mv)}.`},
+   reveal:()=>`أقل حل كان ${arN(P.min,AN.mv)}.`}})}
+
+/* ---------- registry ---------- */
+const PZ_NEW2=[
+ {id:'pz_door',maxLv:8,col:['#C9A06A','#8A5A33'],name:'أبواب القصر',lab:'Door signs',why:'ألغاز الأبواب واللافتات على طريقة سمولين ولايتون: استدلال بالافتراض والتناقض.',how:['اقرأ القاعدة: كم لافتة صادقة.','افترض الكنز خلف كل باب واختبر اللافتات.','افتح بابًا واحدًا فقط.'],run:runDoors},
+ {id:'pz_lights',maxLv:8,col:['#FFD45A','#F2A65A'],name:'أطفئ الأنوار',lab:'Lights Out',why:'لغز كلاسيكي: كل ضغطة تقلب الجيران، فتتعلم التفكير في الأثر المتسلسل.',how:['الضغط يقلب المصباح وجيرانه.','أطفئ كل المصابيح.','بأقل عدد ضغطات.'],run:runLights},
+ {id:'pz_untangle',maxLv:8,col:['#7FE3F0','#3F7CC0'],name:'فك التشابك',lab:'Untangle',why:'تصوّر مكاني: تعيد ترتيب الشبكة ذهنيًا حتى تختفي التقاطعات.',how:['اسحب النقاط.','الخطوط الحمراء متقاطعة.','اجعلها كلها خضراء.'],run:runUntangle},
+ {id:'pz_peg',maxLv:8,col:['#E48C8C','#D2694B'],name:'القفز',lab:'Peg solitaire',why:'لغز الكرات القافزة القديم: تخطيط للأمام وإلا تبقى كرات معزولة.',how:['اختر كرة ثم حفرة بعد جارتها.','الكرة المقفوز فوقها تُزال.','اترك كرة واحدة.'],run:runPegs},
+ {id:'pz_knight',maxLv:8,col:['#B48CFF','#6A5CFF'],name:'رحلة الحصان',lab:"Knight's tour",why:'لغز شطرنج عمره قرون: تخطيط مسار طويل بحركة غير مألوفة.',how:['الحصان يتحرك على شكل L.','زر كل مربع مرة واحدة.','عندك زر تراجع.'],run:runKnight},
+ {id:'pz_stroke',maxLv:8,col:['#8BE36A','#3FBF6A'],name:'بخط واحد',lab:'One stroke',why:'من أشهر ألغاز لايتون: ارسم الشكل دون رفع القلم، وسره في نقاط البداية.',how:['اضغط نقطة البداية.','ثم النقاط المتصلة واحدة واحدة.','لا تمر على خط مرتين.'],run:runStroke},
+ {id:'pz_binary',maxLv:8,col:['#F2B03C','#5B6FB8'],name:'شمس وقمر',lab:'Takuzu',why:'لغز منطق ثنائي: استنتاجات صغيرة متتالية حتى تمتلئ اللوحة.',how:['شموس وأقمار بالتساوي في كل صف وعمود.','لا ثلاثة متشابهة متجاورة.','اضغط للتبديل.'],run:runBinary},
+ {id:'pz_ice',maxLv:8,col:['#BFE3F2','#3F7CC0'],name:'الجليد المنزلق',lab:'Ice slide',why:'لغز الانزلاق على الجليد: تخطط بالعكس من الهدف لأنك لا تستطيع التوقف أينما تريد.',how:['اسحب أو استخدم الأسهم.','البطريق ينزلق حتى يصطدم.','أوصله إلى العلم.'],run:runIce}];
+PZ_NEW2.forEach(g=>{Object.assign(g,{cat:'log',puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g});
+PZ_TYPES.splice(PZ_TYPES.indexOf('tol'),0,...PZ_NEW2.map(g=>g.id));
+TV_PUZ.push('pz_door','pz_lights','pz_peg','pz_knight','pz_stroke','pz_binary','pz_ice');
+Object.assign(I,{
+ pz_door:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M10 44V12q14-12 28 0v32z" opacity=".35"/><path d="M15 44V15q9-8 18 0v29z"/><circle cx="29" cy="30" r="2.2" fill="#fff"/></svg>',
+ pz_lights:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><circle cx="14" cy="14" r="7"/><circle cx="34" cy="14" r="7" opacity=".3"/><circle cx="14" cy="34" r="7" opacity=".3"/><circle cx="34" cy="34" r="7"/></svg>',
+ pz_untangle:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><path d="M8 10L40 38M8 38L40 10M24 6v36" opacity=".55"/><circle cx="8" cy="10" r="4" fill="#0A0E1C"/><circle cx="40" cy="38" r="4" fill="#0A0E1C"/><circle cx="24" cy="6" r="4" fill="#0A0E1C"/><circle cx="8" cy="38" r="4" fill="#0A0E1C"/></svg>',
+ pz_peg:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><circle cx="10" cy="24" r="6"/><circle cx="24" cy="24" r="6"/><circle cx="38" cy="24" r="6" fill="none" stroke="#0A0E1C" stroke-width="3"/><path d="M10 14q14-12 28 0" fill="none" stroke="#0A0E1C" stroke-width="3"/></svg>',
+ pz_knight:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M12 42h24v-4H12zM15 38q-1-10 6-16l-4-3q1-9 10-12l3-4 2 6q8 6 6 18l-2 11z"/></svg>',
+ pz_stroke:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3.5" stroke-linejoin="round"><path d="M8 40L24 8l16 32H8l16-14 16 14"/><circle cx="8" cy="40" r="3.5" fill="#0A0E1C"/></svg>',
+ pz_binary:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><circle cx="14" cy="14" r="7"/><path d="M38 8a8 8 0 1 0 4 12a6 6 0 0 1-4-12z"/><path d="M14 30a8 8 0 1 0 4 12a6 6 0 0 1-4-12z"/><circle cx="34" cy="34" r="7"/></svg>',
+ pz_ice:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M6 36h36" stroke="#0A0E1C" stroke-width="3" opacity=".4"/><ellipse cx="18" cy="26" rx="8" ry="10"/><path d="M28 26h14M32 20h10" stroke="#0A0E1C" stroke-width="3" stroke-linecap="round" opacity=".5"/></svg>'});
+
+/* ---------- v26: paintings for the new puzzles and chapters ---------- */
+Object.assign(ART_FN,{
+ pz_door:B=>{B.bg('#BFA581',.25);[[80,ARTC.red],[210,ARTC.indigo],[340,ARTC.sage]].forEach(([x,c],k)=>{B.wc([[x-45,270],[x-45,110],[x,70],[x+45,110],[x+45,270]],c,{a:.3});B.ink([[x-45,270],[x-45,110],[x,70],[x+45,110],[x+45,270]],{w:1.8});B.wc(B.ell(x+28,190,5,5),ARTC.gold,{a:.5});B.wc(B.rect(x-30,35,60,22),ARTC.cream,{a:.6,amp:1.5});B.ink([[x-30,35],[x+30,35],[x+30,57],[x-30,57]],{close:true,w:1});B.ink([[x-20,46],[x+20,46]],{w:1,a:.4})});B.wc(B.rect(-10,270,440,40),ARTC.stone,{a:.3});B.frame()},
+ pz_lights:B=>{B.bg(ARTC.night,.5);const s=56;for(let r=0;r<4;r++)for(let c=0;c<5;c++){const x=70+c*s,y=50+r*s,on=(r*5+c*3)%4<2;if(on)B.wc(B.ell(x,y,24,24),ARTC.gold,{a:.12,layers:4,edge:0});B.wc(B.ell(x,y,13,15),on?ARTC.gold:'#5D6694',{a:on?.45:.3});B.ink(B.ell(x,y,13,15,14),{close:true,w:1.2,a:.6})}B.frame()},
+ pz_untangle:B=>{B.bg('#E9E1CF',.22);const p=[[80,70],[210,40],[340,80],[360,210],[220,260],[70,220],[200,150]];[[0,3],[1,4],[2,5],[0,6],[6,3],[1,6],[5,4]].forEach(([a,b],k)=>{B.ctx.save();B.ctx.globalAlpha=.75;B.ctx.strokeStyle=k<3?ARTC.red:ARTC.moss;B.ctx.lineWidth=4;B.ctx.beginPath();B.ctx.moveTo(...p[a]);B.ctx.lineTo(...p[b]);B.ctx.stroke();B.ctx.restore()});p.forEach(([x,y])=>{B.wc(B.ell(x,y,14,14),ARTC.gold,{a:.5});B.ink(B.ell(x,y,14,14,14),{close:true,w:1.4})});B.frame()},
+ pz_peg:B=>{B.bg(ARTC.wood,.3);B.wc(B.ell(210,150,170,120),'#7A5233',{a:.35});for(let r=0;r<5;r++)for(let c=0;c<5;c++){if(Math.abs(r-2)+Math.abs(c-2)>3)continue;const x=110+c*50,y=50+r*50;B.wc(B.ell(x,y,13,13),'#3A2616',{a:.45});if((r+c)%3)B.wc(B.ell(x,y-4,15,15),ARTC.terra,{a:.45})}B.frame()},
+ pz_knight:B=>{B.bg('#E2D2B2',.2);const s=50;for(let r=0;r<6;r++)for(let c=0;c<8;c++)if((r+c)%2)B.wc(B.rect(c*s+10,r*s,s,s),ARTC.wood,{amp:1.5,layers:2,a:.25});
+   const x=230,y=250;B.wc([[x-50,y],[x-55,y-60],[x-30,y-110],[x+10,y-150],[x+30,y-170],[x+40,y-150],[x+55,y-110],[x+50,y]],ARTC.plum,{a:.35});B.ink([[x-50,y],[x-55,y-60],[x-30,y-110],[x+10,y-150],[x+30,y-170],[x+40,y-150],[x+55,y-110],[x+50,y]],{close:true,w:1.8});B.wc(B.ell(x+18,y-125,6,6),INKC,{a:.6});B.frame()},
+ pz_stroke:B=>{B.bg('#EFE6D2',.2);const p=[[90,230],[210,60],[330,230],[90,120],[330,120]];const path=[3,0,2,4,3,1,4];B.ctx.save();B.ctx.strokeStyle=ARTC.teal;B.ctx.lineCap=B.ctx.lineJoin='round';B.ctx.globalAlpha=.6;B.ctx.lineWidth=9;B.ctx.beginPath();path.forEach((k,i)=>i?B.ctx.lineTo(...p[k]):B.ctx.moveTo(...p[k]));B.ctx.stroke();B.ctx.restore();p.forEach(([x,y])=>{B.wc(B.ell(x,y,11,11),ARTC.cream,{a:.8});B.ink(B.ell(x,y,11,11,12),{close:true,w:1.6})});B.wc([[300,280],[380,250],[386,258],[306,288]],ARTC.ochre,{amp:1,a:.5});B.frame()},
+ pz_binary:B=>{B.bg('#EFE3CC',.2);const s=46;for(let r=0;r<5;r++)for(let c=0;c<7;c++){const x=50+c*s,y=40+r*s,k=(r*3+c*2+(c>>1))%3;B.wc(B.rect(x-20,y-20,40,40),ARTC.white,{amp:1,layers:2,a:.4});if(k===0)B.wc(B.ell(x,y,12,12),ARTC.gold,{a:.5});else if(k===1)B.wc([[x+6,y-14],[x-12,y-6],[x-6,y+14],[x+10,y+8]],ARTC.indigo,{a:.45})}B.frame()},
+ pz_ice:B=>{B.sky('#CFE6F2','#EEF6FA');B.wc(B.rect(-10,150,440,160),'#B5DCEF',{a:.45});B.ctx.save();B.ctx.globalAlpha=.6;B.ctx.strokeStyle='#fff';B.ctx.lineWidth=3;for(let i=0;i<8;i++){B.ctx.beginPath();B.ctx.moveTo(30+i*50,180+i%3*30);B.ctx.lineTo(70+i*50,170+i%3*30);B.ctx.stroke()}B.ctx.restore();
+   B.wc(B.ell(140,220,22,28),'#2F3A56',{a:.6});B.wc(B.ell(140,226,14,20),ARTC.white,{a:.8});B.wc([[134,206],[146,206],[140,214]],ARTC.ochre,{a:.7});[[300,200],[80,270],[360,270]].forEach(([x,y])=>B.wc(B.ell(x,y,24,16),ARTC.stone,{a:.45}));B.ink([[330,140],[330,190]],{w:2});B.wc([[330,140],[360,150],[330,160]],ARTC.red,{a:.6});B.frame()}});
+CH_SCENE.push(
+ B=>{B.bg('#BFA581',.25);[90,210,330].forEach((x,k)=>{B.wc([[x-35,240],[x-35,110],[x,80],[x+35,110],[x+35,240]],[ARTC.red,ARTC.indigo,ARTC.sage][k],{a:.25});B.ink([[x-35,240],[x-35,110],[x,80],[x+35,110],[x+35,240]],{w:1.2,a:.5})})},
+ B=>{B.bg('#F3E4C8',.2);B.wc([[60,240],[210,40],[360,240]],ARTC.red,{a:.25});B.wc([[110,240],[210,40],[310,240]],ARTC.white,{a:.35});B.ink([[60,240],[210,40],[360,240]],{w:1.5,a:.6});B.wc(B.ell(210,30,8,8),ARTC.gold,{a:.5})},
+ B=>{B.sky('#F2D6A0','#F6E8C8');B.sun(330,60,26);B.hills(170,ARTC.sand,40);B.hills(220,'#E2BE7E',30);B.palm(80,230,1)},
+ B=>{B.bg('#D8D0C0',.25);[60,140,280,360].forEach(x=>{B.wc(B.rect(x-14,60,28,190),'#E8E2D4',{a:.4});B.ink([[x-14,250],[x-14,60],[x+14,60],[x+14,250]],{w:1,a:.4})});B.wc(B.rect(170,100,80,70),ARTC.ochre,{a:.3});B.ink([[170,100],[250,100],[250,170],[170,170]],{close:true,w:1.6})},
+ B=>{B.bg(ARTC.sage,.24);[[80,90,ARTC.rose],[150,200,ARTC.gold],[300,100,ARTC.plum],[340,230,ARTC.rose],[220,140,ARTC.white]].forEach(([x,y,c])=>{for(let k=0;k<5;k++){const a=k/5*6.283;B.wc(B.ell(x+Math.cos(a)*9,y+Math.sin(a)*9,8,8),c,{a:.35,layers:3})}B.wc(B.ell(x,y,5,5),ARTC.gold,{a:.6})});B.tree(380,120,.8)});
 
 
 applyMode();if(!MODE)showModePick();
