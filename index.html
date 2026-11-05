@@ -610,6 +610,41 @@ button,.opt,.cell,.match,.rdt,.sgc,.xcell,.xkb button{touch-action:manipulation;
 .sci{position:absolute;bottom:38%;left:62%;font-size:clamp(18px,6vw,26px)}
 .screc{font-weight:800;line-height:1.9;font-size:16px}
 
+
+/* ===== v20 ===== */
+.ddslot.pk{background:color-mix(in srgb,var(--c) 40%,transparent);border-style:solid}
+.crf{position:relative;width:100%;aspect-ratio:1;border-radius:22px;background:rgba(var(--tint),.05);border:1px solid var(--line);overflow:hidden}
+.cri{position:absolute;transform:translate(-50%,-50%);font-size:clamp(26px,8.5vw,38px);line-height:1;padding:4px;border-radius:12px;background:none}
+button.cri:active{background:rgba(var(--tint),.12)}.cri.right{box-shadow:0 0 0 3px var(--good);background:color-mix(in srgb,var(--good) 25%,transparent)}.cri.wrong{box-shadow:0 0 0 3px var(--bad)}
+.crnoise{position:absolute;inset:0;background:repeating-radial-gradient(circle at 30% 40%,rgba(var(--tint),.25) 0 2px,transparent 2px 6px),repeating-linear-gradient(45deg,rgba(var(--tint),.15) 0 3px,transparent 3px 7px)}
+.mmg{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:6px;width:min(100%,320px);margin:0 auto;direction:ltr}
+.mmc{aspect-ratio:1;border-radius:12px;background:rgba(var(--tint),.08);border:1px solid var(--line);font-size:clamp(22px,7vw,32px)}.mmc:disabled{opacity:1}
+.mmc.anc{background:color-mix(in srgb,var(--c) 28%,transparent);box-shadow:inset 0 0 0 2px var(--c)}.mmc.pl{background:rgba(var(--tint),.16)}
+.mmc.okc{background:color-mix(in srgb,var(--good) 35%,transparent)}.mmc.noc{background:color-mix(in srgb,var(--bad) 30%,transparent)}.mmc.miss{box-shadow:inset 0 0 0 3px var(--good)}
+.mmtray{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;margin-top:14px}.mmt{font-size:28px;padding:6px 10px;border-radius:12px;background:rgba(var(--tint),.08);border:1px solid var(--line)}.mmt.on{box-shadow:0 0 0 3px var(--c);background:color-mix(in srgb,var(--c) 22%,transparent)}
+.cins{display:flex;flex-direction:column;gap:6px;font-weight:800;font-size:19px}
+.cst{position:relative;width:min(100%,300px);aspect-ratio:1;margin:0 auto;border-radius:50%;background:rgba(var(--tint),.05);border:1px solid var(--line)}
+.cneedle{position:absolute;left:50%;top:50%;width:64px;height:64px;margin:-32px 0 0 -32px;border-radius:50%;background:rgba(var(--tint),.1);display:flex;flex-direction:column;align-items:center;justify-content:center;font-size:24px;font-weight:900;color:var(--c)}
+.cneedle b{font-size:13px;line-height:1}.cneedle.off{color:var(--muted)}
+.ctrain{position:absolute;width:28%;aspect-ratio:1;border-radius:18px;background:rgba(var(--tint),.1);border:1px solid var(--line);font-size:26px;display:flex;flex-direction:column;align-items:center;justify-content:center;transform:translate(-50%,-50%)}
+.ctrain i{font-style:normal;font-weight:900;font-size:20px;color:var(--c)}
+.ctrain.p0{left:50%;top:14%}.ctrain.p1{left:86%;top:50%}.ctrain.p2{left:50%;top:86%}.ctrain.p3{left:14%;top:50%}
+.ctrain.okb{background:color-mix(in srgb,var(--good) 35%,transparent)}.ctrain.nob{background:color-mix(in srgb,var(--bad) 35%,transparent)}
+.cstep{display:flex;gap:6px;justify-content:center;margin-top:10px}.cstep i{width:22px;height:6px;border-radius:3px;background:rgba(var(--tint),.15)}.cstep i.on{background:var(--c)}
+.cardadd{display:flex;flex-direction:column;gap:8px}.cardadd .ta{resize:none;padding:10px 12px}
+.clist{display:flex;flex-direction:column;gap:6px;max-height:34vh;overflow:auto}.citem{display:flex;justify-content:space-between;align-items:center;gap:8px;background:rgba(var(--tint),.06);border-radius:12px;padding:8px 12px}
+.citem span{display:flex;flex-direction:column}.citem small{color:var(--muted);font-size:12px}
+.cq{font-family:var(--font-d);font-weight:900;font-size:clamp(22px,7vw,30px);line-height:1.4}.cans{font-weight:800;font-size:20px;color:var(--good);padding-top:8px;border-top:1px dashed var(--line)}
+.stnum{font-family:var(--font-d);font-weight:900;font-size:clamp(70px,26vw,120px);text-align:center;line-height:1.2;color:var(--muted);transition:transform .1s}
+.stnum.on{color:var(--ink);transform:scale(1.05)}.stnum.good{color:var(--good)}.stnum.bad{color:var(--bad)}
+.stpads{display:grid;grid-template-columns:1fr 1fr;gap:12px;direction:ltr}.stpad{min-height:150px;border-radius:22px;background:color-mix(in srgb,var(--c) 22%,transparent);border:2px solid var(--c);font-size:46px;font-weight:900;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;touch-action:none}
+.stpad small{font-size:14px;font-weight:800}.stpad:active{background:color-mix(in srgb,var(--c) 45%,transparent)}
+.streak{display:inline-flex;align-items:center;gap:3px;background:rgba(var(--tint),.08);border:1px solid var(--line);border-radius:999px;padding:3px 10px;font-size:14px;font-weight:800}.streak svg{width:16px;height:16px}
+.wsum .wsrow{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}.wsum .wsrow b{font-size:24px;display:block}.wsum .wsrow span{font-size:12.5px;color:var(--muted);font-weight:700}
+.wsum em{font-style:normal;font-weight:800;margin-inline-start:3px}.wsum em.up{color:var(--good)}.wsum em.dn{color:var(--bad)}
+.badgewin{font-weight:900;font-size:16px;padding:8px 16px;border-radius:999px;background:linear-gradient(110deg,#FFD45A,#FF9A3D);color:#0A0E1C;display:inline-block;animation:prioF .6s ease 2}
+.chres{font-weight:800;padding:6px 14px;border-radius:12px;background:rgba(var(--tint),.08)}
+.shlink{font-size:13px;direction:ltr;text-align:left}
 </style>
 
 <div id="app">
@@ -679,6 +714,8 @@ const S={
   prune(){if(typeof GM==='undefined')return;const st=this.st;['path','corsi','set','rot','draw','explore','sweep','breath','emo','ideas','mst','freeze','hawk','symbol','time','rhythm','pinball','audio','stroop'].forEach(k=>{if(!GM[k])delete st.lv[k]});
     for(const k of Object.keys(st.best||{}))if(!GM[k])delete st.best[k];if(st.wk&&!(st.wk.ids||[]).every(id=>GM[id]))st.wk=null;if(st.plan&&!(st.plan.ids||[]).every(id=>GM[id]))st.plan=null;
     if(st.boost&&st.boost.ids)st.boost.ids=st.boost.ids.filter(id=>GM[id]);if(st.coach&&Array.isArray(st.coach.plan))st.coach.plan=st.coach.plan.filter(p=>p&&GM[p.id])},
+  mergeX(r){const st=this.st,del=new Set([...(st.cardsDel||[]),...(r.cardsDel||[])]);st.cardsDel=[...del].slice(-300);const m=new Map();[...(st.cards||[]),...(r.cards||[])].forEach(c=>{if(!c||del.has(c.id))return;const o=m.get(c.id);if(!o||(c.ts||0)>(o.ts||0))m.set(c.id,c)});st.cards=[...m.values()];
+    st.badges=[...new Set([...(st.badges||[]),...(r.badges||[])])];if(r.challenge&&(!st.challenge||r.challenge.at>st.challenge.at))st.challenge=r.challenge},
   save(){this.st.savedAt=Date.now();try{localStorage.setItem('miran:v2',JSON.stringify(this.st))}catch(e){}
     if(this.ref){clearTimeout(this.timer);this.timer=setTimeout(()=>{this.ref.set(JSON.parse(JSON.stringify(this.st))).catch(()=>{})},600)}},
   async connect(){
@@ -687,7 +724,7 @@ const S={
     try{const[db,user]=await Promise.all([claude.use('db'),claude.use('user')]);if(!db||!user)return;
       const id=await user.id();if(!id)return;
       this.ref=db.doc('data/users/'+id+'/progress/main');
-      const snap=await this.ref.get();if(snap.exists)this.merge(snap.data());this.prune();
+      const snap=await this.ref.get();if(snap.exists){this.merge(snap.data());this.mergeX(snap.data())}this.prune();
       this.cloud=true;this.save();applySkin();renderAll()}catch(e){this.ref=null}
   }
 };
@@ -713,12 +750,17 @@ const up=x=>m=>Math.round(clamp(1000*m/x,0,1000));
 const pct=m=>Math.round(clamp(m,0,1)*1000);
 const G=[
  {id:'dual',cat:'mem',ev:1,col:['#00E0B8','#2F9BFF'],name:'الثنائي N-Back',lab:'Dual N-Back',why:'في تجربة جونز هوبكنز تحسنت الذاكرة العاملة 30% مع هذا التمرين، أي ضعف التمرين المنافس.',how:['يظهر حرف في مربع كل ثانيتين ونصف.','«الموقع» إذا تكرر المكان قبل N خطوات، و«الحرف» إذا تكرر الحرف.','قد يتكرر الاثنان، فاضغط الزرين.'],norm:up(3.5),run:runDual},
+ {id:'juggle',cat:'mem',ev:1,col:['#7FE7FF','#B07BFF'],name:'الأرقام الطائرة',lab:'Juggle Factor',why:'تتبّع دوائر متحركة وتحفظ أين ظهر كل رقم في الوقت نفسه: هذا «مدى معقد»، وهو النوع الذي انتقل أثره لمهام ذاكرة أخرى في دراسة Harrison 2013.',how:['تظهر الأرقام داخل الدوائر المتحركة واحدًا تلو الآخر.','عندما تتوقف الدوائر، المسها بترتيب الأرقام.','مع التقدم: دوائر أكثر وأسرع، ثم ترتيب عكسي، ثم أرقام عشوائية.'],norm:up(9),run:runJuggle},
+ {id:'crash',cat:'mem',col:['#FFB3D9','#7A9BFF'],name:'الدخيل',lab:'Scene Crasher',why:'يدرّب الذاكرة البصرية العاملة: الاحتفاظ بتفاصيل مشهد كامل ثم اكتشاف ما تغيّر فيه.',how:['احفظ الأشياء المعروضة.','يغطيها تشويش لحظة.','تعود ومعها شيء جديد: المسه. عدد الأشياء يزيد كلما أصبت.'],norm:m=>Math.round(clamp((m-3)/9*1000,0,1000)),run:runCrash},
  {id:'pal',cat:'mem',ev:1,col:['#4FD8FF','#4A6CFF'],name:'أين المختبئ؟',lab:'Paired Associates (CANTAB)',why:'اختبار PAL من جامعة كامبريدج، ورصد علامات الزهايمر قبل التشخيص الرسمي بنحو 32 شهرًا.',how:['تُفتح الصناديق واحدًا تلو الآخر، وبعضها فيه أشكال.','يظهر شكل في المنتصف: المس صندوقه.','الأشكال تزيد من 2 إلى 8، ولكل مرحلة محاولتان.'],norm:up(20),run:runPAL},
  {id:'loci',cat:'mem',ev:1,col:['#7AF0D2','#22B6C9'],name:'قصر الذاكرة',lab:'Method of Loci',why:'طريقة أبطال الذاكرة: بعد 40 يومًا قفز التذكر من 26 كلمة إلى 62، وبقي الأثر بعد 4 أشهر.',how:['تمشي في بيت من 9 أماكن، وفي كل مكان شيء.','تخيّل كل شيء في مكانه بصورة غريبة ومبالغ فيها.','ثم امشِ نفس الطريق وتذكر ما وضعته.'],norm:up(9),run:runLoci},
  {id:'faces',cat:'mem',ev:1,col:['#FFB3C7','#FF6FA0'],name:'الأسماء والوجوه',lab:'Face-Name Association',why:'ربط الاسم بميزة لافتة في الوجه تفوّق في تجربة عشوائية على كبار السن، وبقي أثره بعد شهر.',how:['تتعرف على أشخاص: اسم ومهنة وميزة لافتة.','اربط الاسم بالميزة بصورة ذهنية.','ثم تذكّر الأسماء مرتين بترتيب مختلف.'],norm:pct,run:runFaces},
+ {id:'cards',cat:'mem',ev:1,manual:1,col:['#9BF6C9','#4FA8FF'],name:'بطاقاتي',lab:'Spaced Cards',why:'المراجعة المتباعدة من أقوى طرق الحفظ: في دراسة 2024 حسّن تطبيق مراجعة متباعدة حفظ المعلومات حتى لدى كبار السن ومرضى الضعف الإدراكي البسيط، ولم تُنسَ بعد أسبوع.',how:['اكتب بطاقات لما تريد حفظه فعلًا: آيات، أرقام، أسماء، معلومات عمل.','راجعها: حاول التذكر ثم اكشف الجواب.','ما تذكرته يتباعد (1، 2، 4، 7، 15، 30، 60 يومًا)، وما نسيته يعود قريبًا.'],norm:pct,run:runCards,nocd:1},
  {id:'mylist',cat:'mem',manual:1,noIndex:1,nocd:1,col:['#9BF6C9','#2FC0A0'],name:'قصر ذاكرتك',lab:'Your List + Spaced Retrieval',why:'تطبيق «قصر الذاكرة» على قائمتك الحقيقية، ثم مراجعات متباعدة: الاختبار يثبت الذاكرة أكثر من إعادة القراءة (56% مقابل 42% بعد أسبوع).',how:['اكتب قائمتك: مقاضي، مهام، أفكار.','نوزعها على أماكن البيت وتتخيل كل شيء في مكانه.','ثم نذكّرك بمراجعتها بعد يوم، ثم 3 أيام، ثم أسبوع.'],norm:pct,run:runMyList},
  {id:'pm',cat:'mem',ev:1,col:['#FFE27A','#FFA23D'],name:'لا تنسَ!',lab:'Prospective Memory',why:'تدريب «ذاكرة المستقبل» في لعبة Virtual Week ضاعف عدد المهام التي تذكّرها كبار السن، وامتد أثره لمهام يومية مثل تعليمات الدواء.',how:['صنّف الأرقام: زوجي أم فردي.','إذا ظهر الرقم داخل إطار ذهبي: اضغط ★ بدل التصنيف.','واضغط ⏱ عند مرور 30 ثانية ثم 60. الوقت مخفي، وزر 👁 يريك ما مضى.'],norm:pct,run:runPM},
  {id:'story',cat:'mem',col:['#B9F27A','#3CC8A8'],name:'القصة',lab:'Story Recall',why:'مستوحاة من اختبار الذاكرة المنطقية: نسيان بداية القصة بعد التأخير ارتبط بتراكم الأميلويد حتى لدى أشخاص بلا أعراض.',how:['اقرأ قصة قصيرة بتركيز.','تُسأل عن تفاصيلها فورًا.','ثم بعد استراحة قصيرة تُسأل مرة أخرى.'],norm:pct,run:runStory},
+ {id:'mmap',cat:'spa',col:['#B9A6FF','#5FE3C0'],name:'الخريطة المقلوبة',lab:'Mental Map',why:'تحفظ مواقع الأشياء ثم تبنيها بعد أن تدور الشبكة أو تنقلب أو تنزاح: ذاكرة مكانية مع تدوير ذهني، كما في تمارين الملاحة لدى BrainHQ.',how:['احفظ مكان كل شيء في الشبكة.','تتحرك الشبكة (دوران، مرآة، أو إزاحة) ويبقى شيء ثابت كمرجع.','ضع الباقي في أماكنه الجديدة. من المستوى 6 لا نخبرك بالحركة.'],norm:up(7),run:runMMap},
+ {id:'compass',cat:'spa',col:['#9FD6FF','#FFC75A'],name:'البوصلة',lab:'True North',why:'تحفظ مسارًا من الاتجاهات ثم تنفّذه، وتعيد توجيه نفسك في كل محطة دون بوصلة: تدريب على تحويل الاتجاه المطلق (شمال/شرق) إلى اتجاه بالنسبة لك.',how:['احفظ التعليمات: قطار شمالًا ثم شرقًا…','في كل محطة اختر القطار المتجه للاتجاه المطلوب.','بعد المحطة الأولى تختفي البوصلة: اتجاه وصولك هو أعلى الشاشة.'],norm:up(7),run:runCompass},
  {id:'nav',cat:'spa',col:['#7AE6C8','#4C8DFF'],name:'الملّاح',lab:'Wayfinding',why:'سائقو تاكسي لندن الذين حفظوا خريطة المدينة كبُر لديهم الجزء الخلفي من الحُصين بعد 3-4 سنوات تدريب، ولم يكبر عند من فشلوا.',how:['احفظ الخريطة: بدايتك والنقاط المرقّمة.','تختفي الخريطة إلا ما مشيت فيه: تنقّل بالأسهم أو بالسحب.','زر النقاط بالترتيب بأقصر طريق. لديك نظرة واحدة للخريطة.'],norm:pct,run:runNav},
  {id:'delay',cat:'mem',hidden:1,ev:1,col:['#7AF0D2','#3FD0E8'],name:'التذكر المؤجل',lab:'Delayed Recall',why:'التذكر بعد فاصل زمني كان أقوى مؤشر عصبي نفسي لتحول ضعف الذاكرة البسيط إلى زهايمر.',how:[],norm:pct},
  {id:'fold',cat:'spa',ev:1,col:['#FFD9A0','#FF8FB1'],name:'طيّ الورق',lab:'Paper Folding',why:'تمرين «التصوّر المكاني»: في دراسة Wright 2008 تمرّن المشاركون 21 يومًا على طيّ الورق ذهنيًا، فتحسّن أيضًا الدوران الذهني الذي لم يتدربوا عليه، ومع أشكال جديدة لم يروها.',how:['تُطوى الورقة خطوة خطوة ثم تُثقب.','تخيّل فتحها، واختر شكلها بعد الفتح.','من المستوى 4 تظهر أسئلة المكعب: أي شكل يقابل الشكل المحاط بعد طيّ الشبكة؟'],norm:up(14),quiz:{dur:120,gen:genFold,max:6}},
@@ -731,15 +773,17 @@ const G=[
  {id:'piano',cat:'mem',ev:1,sound:1,col:['#FFE08A','#FF7AA8'],name:'العازف',lab:'Melody Memory',why:'تحليل 2025 جمع 9 تجارب على 625 شخصًا فوق الستين: التدريب الموسيقي حسّن الوظائف التنفيذية والذاكرة. هنا تتعلم ألحانًا وتعزفها من ذاكرتك، وهي أقرب تجربة لتعلّم آلة داخل لعبة.',how:['استمع إلى لحن قصير (وراقب المفاتيح في البداية).','اعزفه بنفس الترتيب على البيانو.','اللحن يطول مع كل نجاح. من المستوى 7 تعزف بالأذن فقط. تحتاج صوتًا.'],norm:m=>Math.round(clamp((m-2)/8*1000,0,1000)),run:runPiano},
  {id:'scene',cat:'mem',col:['#9FE8FF','#FFB86B'],name:'التفاصيل الدقيقة',lab:'Episodic Specificity',why:'مستوحاة من تدريب «التحديد العرضي» (SPECTRA 2023): استرجاع المشهد بتفاصيله (المكان، الأشخاص، الأفعال) حسّن التذكر، وظهر أثره في حل المشكلات والإبداع. الدراسة أولية وصغيرة.',how:['راقب مشهدًا قصيرًا: من دخل، بأي لون، ماذا يحمل، ماذا مرّ في السماء.','أغمض عينيك واسترجعه لثوانٍ.','أجب عن أسئلة التفاصيل. المشاهد تزداد ازدحامًا وسرعة مع المستوى.'],norm:pct,run:runScene},
  {id:'symspan',cat:'mem',ev:1,col:['#FF9DE2','#9B7BFF'],name:'المرآة والمواقع',lab:'Symmetry Span',why:'تدريب «المدى المعقد»: تحفظ وأنت منشغل بمهمة ثانية. في دراسة Harrison 2013 كان هذا النوع وحده الذي انتقل أثره لاختبارات ذاكرة عاملة أخرى.',how:['احكم: هل الشكل متماثل يمينًا ويسارًا؟','بعدها يضيء مربع في الشبكة: احفظ مكانه.','بعد عدة أشكال المس المربعات بنفس الترتيب.'],norm:up(24),run:runSymSpan},
+ {id:'glance',cat:'spd',ev:1,col:['#FFE27A','#FF6B5A'],name:'لمحة العين',lab:'Eye for Detail',why:'من ألعاب السرعة الإدراكية المستخدمة في دراسة US POINTER (مجلة JAMA 2025): تدرّب سرعة حركة العين والبحث البصري في أطراف المجال.',how:['ثبّت نظرك على المنتصف.','تومض أشكال في الأطراف واحدًا تلو الآخر.','المس الموضعين اللذين ظهر فيهما الشكلان المتطابقان. الومضات تقصر كلما أصبت.'],norm:m=>Math.round(clamp(1000*(700-m)/620,0,1000)),run:runGlance},
  {id:'dd',cat:'spd',ev:1,col:['#FF6B5A','#FFB547'],name:'القرار المزدوج',lab:'Double Decision',why:'التمرين الوحيد الذي خفّض خطر الخرف بنحو 29% على مدى 10 سنوات في دراسة ACTIVE.',how:['ثبّت نظرك على المنتصف: ستومض مركبة ولافتة في الأطراف.','اختر المركبة: سيارة أم شاحنة.','ثم المس مكان اللافتة. العرض يتسارع كلما أصبت.'],norm:m=>Math.round(clamp(1000*(450-m)/400,0,1000)),run:runDD},
  {id:'racer',cat:'foc',ev:1,col:['#FFB347','#FF5E62'],name:'السائق اليقظ',lab:'NeuroRacer-style',why:'مستوحاة من NeuroRacer (مجلة Nature): كبار السن تفوقوا بعدها على شباب العشرينات في تعدد المهام.',how:['ابقَ على الطريق بأزرار ◀ ▶ أو بسحب إصبعك، واضغط «إشارة!» فقط عند الدائرة الخضراء.','الأولوية تتغير كل 20 ثانية: مرة الطريق ومرة الإشارات، والنقاط تتبعها.','تدريب الأولوية المتغيرة نقل أثره لمهام مزدوجة جديدة لدى من هم بين 55 و65 عامًا.'],norm:pct,run:runRacer},
+ {id:'steps',cat:'foc',manual:1,col:['#A8FFCF','#FFB547'],name:'الخطوات الذكية',lab:'Step & Think',why:'تدريب يجمع الخطوات مع التفكير (Schoene 2015) حسّن لدى كبار السن الانتباه والوظائف التنفيذية المرتبطة بخطر السقوط. هنا تقف وتخطو مع كل قرار.',how:['قف والجوال بيدك.','مع كل رقم: اخطُ بقدمك ثم المس الجهة (القاعدة في الأعلى).','الرقم 5: اثبت مكانك. القاعدة تنقلب كل 25 ثانية.'],norm:pct,run:runSteps},
  {id:'radar',cat:'foc',ev:1,col:['#7CFFB2','#FF4D6D'],name:'الرادار',lab:'Action Attention',why:'مبنية على خصائص ألعاب الأكشن: سرعة ومشتتات وتبديل بين التركيز الضيق والمسح الواسع. تحليل 22 دراسة تدريب (Bediou 2018) وجد أنها تحسّن التحكم بالانتباه والمهارات المكانية.',how:['اضغط المعيّن الأحمر بسرعة، واترك المعيّن الشبيه والدوائر الخضراء.','كل 12 ثانية يتبدل الوضع: تركيز في الدائرة الوسطى، أو مسح للشاشة كلها.','كلما أتقنت زادت السرعة والمشتتات وصار الشبيه أقرب لونًا.'],norm:pct,run:runRadar},
  {id:'mot',cat:'foc',col:['#FFC34D','#FF7A45'],name:'تتبع الكرات',lab:'Multiple Object Tracking',why:'تتبع عدة أجسام معًا يدرب الانتباه الموزع، ويستخدمه رياضيون محترفون.',how:['تضيء بعض الكرات ثم تتشابه كلها وتتحرك.','تابع الكرات المضيئة بعينك.','عند التوقف المسها.'],norm:up(40),run:runMOT},
  {id:'wcst',cat:'flx',col:['#E66CFF','#7A5CFF'],name:'فرز البطاقات',lab:'Wisconsin Card Sort',why:'اختبار ويسكونسن معيار عالمي لقياس المرونة الذهنية.',how:['ضع البطاقة مع إحدى الأربع.','الفرز باللون أو الشكل أو العدد، ولن نخبرك أيها.','بعد 6 إجابات صحيحة تتغير القاعدة.'],norm:up(30),quiz:{dur:90,make:makeWcst}},
  {id:'conf',cat:'flx',ev:1,col:['#9FF5C8','#5BA8FF'],name:'متأكد؟',lab:'Metacognition · Confidence',why:'تدريب «ما وراء المعرفة»: أن تعرف متى تكون مصيبًا. في دراسة Carpenter 2019 حسّنت 8 جلسات من تقييم الثقة دقةَ الحكم على النفس، وانتقل الأثر لمهمة ذاكرة لم يُتدرَّب عليها.',how:['قارن بسرعة: أي مربع فيه نقاط أكثر؟ أو أي خط أطول؟','حدد ثقتك من 50% إلى 100%.','الثقة الزائدة في خطأ تخصم كثيرًا، والشك في جواب صحيح يفوّت النقاط. المهم أن تطابق ثقتُك دقتَك.'],norm:pct,run:runConf},
  {id:'sw',cat:'flx',col:['#FF7AC6','#FF5F6D'],name:'القاعدة المتغيرة',lab:'Task Switching',why:'تدريب التبديل بين المهام انتقل أثره للذكاء السائل والذاكرة العاملة حتى لدى كبار السن، والتنويع في القواعد زاد الانتقال لدى البالغين. لذلك تتغير مجموعة القواعد كل جلسة.',how:['يظهر شيء ومعه سؤال بلون مميز.','القواعد تتغير كل جلسة: أرقام، أو أشكال وألوان، أو أسهم.','السؤال يتبدل عشوائيًا، فانتبه للونه.'],norm:up(36),quiz:{dur:45,make:makeSwitch,max:6}},
 ];
-const GM=Object.fromEntries(G.map(g=>[g.id,g]));S.prune();
+const GM=Object.fromEntries(G.map(g=>[g.id,g]));S.prune();readChallenge();
 
 /* ================= derived stats ================= */
 function gameIndex(id){const xs=S.st.hist.filter(h=>h.g===id).slice(-10).map(h=>h.idx).sort((a,b)=>b-a).slice(0,3);return xs.length?Math.round(xs.reduce((a,b)=>a+b)/xs.length):null}
@@ -751,7 +795,7 @@ function seeded(seed){let a=seed;return()=>{a|=0;a=a+0x6D2B79F5|0;let t=Math.imu
 function workout(){const k=dayKey();if(boostActive()){if(!S.st.wk||S.st.wk.d!==k||S.st.wk.ids.join()!==S.st.boost.ids.join()){S.st.wk={d:k,ids:S.st.boost.ids.slice()};S.save()}return S.st.wk.ids}if(planActive()){if(!S.st.wk||S.st.wk.d!==k||S.st.wk.ids.join()!==S.st.plan.ids.join()){S.st.wk={d:k,ids:S.st.plan.ids.slice()};S.save()}return S.st.wk.ids}if(S.st.wk&&S.st.wk.d===k&&S.st.wk.ids.every(id=>GM[id]))return S.st.wk.ids;
   let h=0;for(const ch of k)h=(h*31+ch.charCodeAt(0))|0;const r=seeded(h);const others=['spa','log','foc','flx'];for(let i=others.length-1;i>0;i--){const j=Math.floor(r()*(i+1));[others[i],others[j]]=[others[j],others[i]]}
   const plays=id=>S.st.hist.filter(x=>x.g===id).length;
-  const ids=['mem','spd',...others.slice(0,2)].map(c=>{const gs=G.filter(g=>g.cat===c&&(c!=='spd'||g.id==='dd'||g.id==='hawk')&&!g.hidden&&!g.manual&&!(g.sound&&S.st.mute)),m=Math.min(...gs.map(g=>plays(g.id))),f=gs.filter(g=>plays(g.id)===m);return f[Math.floor(r()*f.length)].id});
+  const ids=['mem','spd',...others.slice(0,2)].map(c=>{const gs=G.filter(g=>g.cat===c&&(c!=='spd'||['dd','hawk','glance'].includes(g.id))&&!g.hidden&&!g.manual&&!(g.sound&&S.st.mute)),m=Math.min(...gs.map(g=>plays(g.id))),f=gs.filter(g=>plays(g.id)===m);return f[Math.floor(r()*f.length)].id});
   S.st.wk={d:k,ids};S.save();return ids}
 function doneToday(id){const k=dayKey();return S.st.hist.some(h=>h.g===id&&h.d===k)}
 
@@ -779,7 +823,7 @@ function railCard(g){const gi=gameIndex(g.id);return`<button class="rcard" data-
 function renderHome(){
   const wk=workout(),done=wk.filter(doneToday).length,w=weekInfo(),fresh=G.filter(g=>!g.hidden&&!S.st.hist.some(h=>h.g===g.id)),allDone=wk.every(doneToday);
   $('#v-home').innerHTML=`
-  <div class="top"><div class="hello"><span class="eyebrow">${hijri()}</span><h1>${greet()}</h1></div>
+  <div class="top"><div class="hello"><span class="eyebrow">${hijri()}</span><h1>${greet()} ${streakChip()}</h1></div>
    <div class="wkgoal" title="هدف الأسبوع"><span class="dots3">${[0,1,2].map(i=>`<i class="${i<w.done?'on':''}"></i>`).join('')}</span><span><b class="num">${Math.min(w.done,3)}/3</b> هذا الأسبوع</span></div></div>
   <section class="hero-card"><div class="bring-wrap">${brainRing()}</div>
    <div class="legend">${Object.entries(CATS).map(([k,c])=>`<span><i style="background:${c.hex}"></i>${c.n}<b class="num">${catIndex(k)??'—'}</b></span>`).join('')}</div></section>
@@ -789,7 +833,10 @@ function renderHome(){
   ${encPending()&&allDone?`<button class="card due" id="recallgo" style="--c:#7AF0D2">${icoBox(GM.delay)}<span><b>التذكر المؤجل بانتظارك</b><small>ماذا حفظت في بداية التمرين؟</small></span><span class="go">‹</span></button>`:''}
   ${listDue()?`<button class="card due" id="reviewgo" style="--c:#9BF6C9">${icoBox(GM.mylist)}<span><b>حان وقت مراجعة قائمتك</b><small>اختبار سريع يثبّتها في ذاكرتك (المراجعة المتباعدة)</small></span><span class="go">‹</span></button>`:''}
   ${!lastAssess()?`<button class="card due" data-assess="1" style="--c:#C9CFF0"><span class="ico" style="background:linear-gradient(140deg,#EEF1FF,#8E97C4)"><svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3" stroke-linecap="round"><path d="M8 34l8-10 7 6 9-14 8 8"/><path d="M6 42h36"/></svg></span><span><b>ابدأ بفحص الأساس</b><small>5 دقائق لتعرف لاحقًا هل تحسّن دماغك فعلًا</small></span><span class="go">‹</span></button>`:assessDue()?`<button class="card due" data-assess="1" style="--c:#C9CFF0"><span class="ico" style="background:linear-gradient(140deg,#EEF1FF,#8E97C4)"><svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3" stroke-linecap="round"><path d="M8 34l8-10 7 6 9-14 8 8"/><path d="M6 42h36"/></svg></span><span><b>حان موعد فحص المتابعة</b><small>مرّت 4 أسابيع على فحصك الأخير</small></span><span class="go">‹</span></button>`:''}
+  ${challengeCard()}
+  ${cardsDue()?`<button class="card due" id="cardsgo" style="--c:#9BF6C9">${icoBox(GM.cards)}<span><b>${arN(cardsDue(),['بطاقة واحدة','بطاقتان','بطاقات','بطاقة'])} للمراجعة اليوم</b><small>المراجعة المتباعدة تثبّت ما تريد حفظه</small></span><span class="go">‹</span></button>`:''}
   ${boostCard()}
+  ${weekCard()}
   ${habitsCard()}
   ${chalCard()}
   ${S.st.hist.some(h=>h.g==='xw'&&h.d===dayKey())?'':`<button class="card due" id="xwgo" style="--c:#F7E27A">${icoBox(GM.xw)}<span><b>الكلمات المتقاطعة اليومية</b><small>أقوى لعبة في تجربة حديثة على الذاكرة</small></span><span class="go">‹</span></button>`}
@@ -800,7 +847,7 @@ function renderHome(){
   const bg=$('#boostgo');if(bg)bg.onclick=startBoost;const cg2=$('#chalgo');if(cg2)cg2.onclick=toggleChal;const xg=$('#xwgo');if(xg)xg.onclick=()=>startRun(['xw']);
   $('#v-home').querySelectorAll('[data-assess]').forEach(b=>b.onclick=startAssess);
   const rg=$('#recallgo');if(rg)rg.onclick=()=>{RUN={queue:[],wk:workout(),pos:0};$('#play').hidden=false;document.body.style.overflow='hidden';showRecall()};
-  const rv=$('#reviewgo');if(rv)rv.onclick=()=>startRun(['mylist'],null,{review:true});
+  const rv=$('#reviewgo');if(rv)rv.onclick=()=>startRun(['mylist'],null,{review:true});const cg=$('#cardsgo');if(cg)cg.onclick=()=>startRun(['cards']);const chg=$('#chgo');if(chg)chg.onclick=()=>startRun([S.st.challenge.g]);
 }
 function renderGames(){
   $('#v-games').innerHTML=`<div class="top"><div class="hello"><span class="eyebrow">${G.filter(g=>!g.hidden).length} لعبة · كلها من اختبارات ودراسات علمية</span><h1>الألعاب</h1></div></div>
@@ -854,7 +901,11 @@ const REFS=[
  ['625 مشاركًا','العازف','تحليل 2025 لتسع تجارب عشوائية على من هم فوق الستين: التدريب الموسيقي حسّن الإدراك العام (0.31) والذاكرة (0.36) والوظائف التنفيذية (0.43)، لا الانتباه. التجارب على آلات حقيقية.','https://www.frontiersin.org/journals/psychology/articles/10.3389/fpsyg.2025.1632873/full'],
  ['15 مشاركًا','التفاصيل الدقيقة','SPECTRA 2023: تدريب استرجاع تفاصيل المشهد حسّن التذكر وظهر أثره في حل المشكلات والإبداع. دراسة أولية بلا مجموعة ضابطة.','https://www.ncbi.nlm.nih.gov/pmc/articles/PMC10558027/'],
  ['45 دراسة','الانتظام','تحليل 2026 لتدريب الذاكرة العاملة: التحسن انتقل لمهام لم يُتدرَّب عليها (0.36)، وكمية التدريب الكلية هي ما ارتبط بالمكاسب، والعمر لم يقلل الفائدة.','https://pmc.ncbi.nlm.nih.gov/articles/PMC13121830/'],
- ['10 أسابيع','القرار المزدوج','INHANCE 2025: ألعاب السرعة 30 دقيقة يوميًا رفعت مستوى الأسيتيل كولين في الدماغ لدى من هم فوق 65، دون مجموعة الألعاب العادية.','https://www.sciencedaily.com/releases/2025/10/251029002858.htm']];
+ ['10 أسابيع','القرار المزدوج','INHANCE 2025: ألعاب السرعة 30 دقيقة يوميًا رفعت مستوى الأسيتيل كولين في الدماغ لدى من هم فوق 65، دون مجموعة الألعاب العادية.','https://www.sciencedaily.com/releases/2025/10/251029002858.htm'],
+ ['JAMA 2025','لمحة العين','US POINTER: برنامج منظم لعامين شمل ألعاب سرعة إدراكية (ومنها Eye for Detail) مع الرياضة والغذاء، وحسّن الإدراك لدى كبار السن المعرضين للتراجع.','https://alz.org/us-pointer/study-results.asp'],
+ ['61 مشاركًا','بطاقاتي','JMIR 2024: تطبيق مراجعة متباعدة 4 أسابيع حسّن حفظ المعلومات الجديدة لدى الشباب وكبار السن ومرضى الضعف الإدراكي البسيط، دون نسيان بعد أسبوع.','https://formative.jmir.org/2024/1/e51943'],
+ ['خطر السقوط','الخطوات الذكية','Schoene 2015: تدريب الخطوات التفاعلي مع مهام ذهنية حسّن الانتباه والوظائف التنفيذية المرتبطة بخطر السقوط لدى كبار السن.','https://www.ncbi.nlm.nih.gov/pmc/articles/PMC4682965/'],
+ ['ما يريدونه','ملخص الأسبوع','دراسة 2020: كبار السن طلبوا رؤية تقدمهم بوضوح كأهم ما يبقيهم ملتزمين بالتدريب الذهني، والانتظام هو ما يصنع الفائدة.','https://www.ncbi.nlm.nih.gov/pmc/articles/PMC7742787/']];
 let REFS_ALL=false;
 function renderMe(){
   const bi=brainIndex(),w=weekInfo();
@@ -879,7 +930,7 @@ function renderMe(){
     try{const u=URL.createObjectURL(blob),a=document.createElement('a');a.href=u;a.download=name;document.body.appendChild(a);a.click();a.remove();setTimeout(()=>URL.revokeObjectURL(u),4000);bkMsg('حُفظ الملف '+name+' في التنزيلات. احتفظ به لاسترجاع تقدمك على أي جهاز.')}catch(e){bkMsg('تعذّر حفظ الملف على هذا الجهاز.')}};
   $('#rsr').onclick=()=>$('#rsf').click();
   $('#rsf').onchange=e=>{const f=e.target.files&&e.target.files[0];if(!f)return;const rd=new FileReader();
-    rd.onload=()=>{try{const o=JSON.parse(rd.result),st=o&&o.st?o.st:o;if(!st||!Array.isArray(st.hist))throw 0;const before=S.st.hist.length;S.merge(st);S.prune();S.save();renderAll();tab('me');{const n=S.st.hist.length-before;bkMsg(`تم الاسترجاع: ${n?`أُضيفت ${arN(n,['جلسة واحدة','جلستان','جلسات','جلسة'])}`:'لا توجد جلسات جديدة'}، ودُمجت مستوياتك وأفضل نتائجك مع الموجود.`)}}catch(x){bkMsg('هذا الملف ليس نسخة احتياطية صالحة من «ضبط دماغك».')}};
+    rd.onload=()=>{try{const o=JSON.parse(rd.result),st=o&&o.st?o.st:o;if(!st||!Array.isArray(st.hist))throw 0;const before=S.st.hist.length;S.merge(st);S.mergeX(st);S.prune();S.save();renderAll();tab('me');{const n=S.st.hist.length-before;bkMsg(`تم الاسترجاع: ${n?`أُضيفت ${arN(n,['جلسة واحدة','جلستان','جلسات','جلسة'])}`:'لا توجد جلسات جديدة'}، ودُمجت مستوياتك وأفضل نتائجك مع الموجود.`)}}catch(x){bkMsg('هذا الملف ليس نسخة احتياطية صالحة من «ضبط دماغك».')}};
     rd.readAsText(f);e.target.value=''};
   $('#mt').onclick=()=>{S.st.mute=!S.st.mute;S.save();renderMe()};
   $('#mvt').onclick=()=>{S.st.move=S.st.move===false;S.save();renderMe()};
@@ -939,7 +990,7 @@ function gameRank(id){const L=S.st.lv,q=GM[id]&&GM[id].quiz,b=(v,lo,hi,st,mx)=>c
    case 'pm':return[L.pm||1,0];case 'story':return[L.story||1,4];case 'symspan':return[clamp((L.symspan||3)-1,2,7)-1,6];case 'nav':return[L.nav||1,0];case 'tol':return[L.tol||1,5];case 'xw':return[L.xw||1,5];
    case 'hawk':return[((L.hawkLv||1)-1)*11+b(L.hawkMs||1000,250,1500,125,11),44];case 'dd':return[b(L.dd||400,60,400,30,12),12];case 'sweep':return[((L.sweepLv||1)-1)*12+b(L.sweepMs||400,40,600,50,12),36];
    case 'racer':return[L.racer||1,0];case 'mot':return[((L.motK||3)-3)*4+Math.min(3,L.motS||0)+1,16];case 'conf':return[b(L.confD||10,2,16,1.5,10),10];case 'wcst':return[L.wcst||1,6];
-   case 'piano':return[clamp(L.pianoLen||3,3,12)-2,10];case 'scene':return[L.scene||1,6];case 'radar':return[L.radar||1,10];case 'mylist':return[(S.st.mylist&&S.st.mylist.reviews||0)+1,0]}
+   case 'piano':return[clamp(L.pianoLen||3,3,12)-2,10];case 'scene':return[L.scene||1,6];case 'radar':return[L.radar||1,10];case 'glance':return[((L.glanceLv||1)-1)*10+b(L.glanceMs||450,80,700,62,10),40];case 'juggle':return[L.juggle||1,10];case 'crash':return[clamp(L.crash||4,3,14)-2,12];case 'mmap':return[L.mmap||1,8];case 'compass':return[L.compass||1,8];case 'cards':return[(S.st.cards||[]).filter(c=>c.box>=4).length,0];case 'steps':return[b(L.stepsMs||1800,700,2400,170,10),10];case 'mylist':return[(S.st.mylist&&S.st.mylist.reviews||0)+1,0]}
   return q&&q.max?[clamp(L[id]||1,1,q.max),q.max]:null}
 function countdown(){if(RUN){const r=gameRank(curGame().id);RUN.r0=r?r[0]:null}stopAll();const g=curGame();if(g.nocd){$('#stage').innerHTML='';g.run()(finish);return}$('#stage').innerHTML='<div class="cd" id="cd"></div>';let n=3;
   const show=()=>{if(n===0){sfx.go();$('#stage').innerHTML='';(g.quiz?runQuiz(g.quiz):g.run())(finish);return}sfx.tick();$('#cd').innerHTML=`<b class="num">${n}</b>`;n--;later(show,700)};show()}
@@ -1942,6 +1993,184 @@ function runScene(){return done=>{
     done({pts:Math.round(pts*(1+.12*(lv-1))),metric:m*(1+.06*(lv-1)),detail:`أجبت عن ${ok} من ${qs.length} تفاصيل بشكل صحيح. ${m<.7?'المرة الجاية: سمِّ التفاصيل في رأسك أثناء المشاهدة («قميص أحمر، يحمل تفاحة، دخل من اليمين»).':'ذاكرتك للتفاصيل الدقيقة قوية.'}`})}
 }}
 
+/* ================= v20: five BrainHQ-style games + spaced cards + smart steps ================= */
+Object.assign(I,{
+ glance:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M4 24c6-10 14-15 20-15s14 5 20 15c-6 10-14 15-20 15S10 34 4 24z" opacity=".3"/><circle cx="24" cy="24" r="8"/><path d="M8 8l5 5M40 8l-5 5M8 40l5-5M40 40l-5-5" stroke="#0A0E1C" stroke-width="3" stroke-linecap="round"/></svg>',
+ juggle:'<svg viewBox="0 0 48 48" fill="#0A0E1C" font-family="Tajawal,sans-serif" font-weight="900" text-anchor="middle"><circle cx="14" cy="16" r="9" opacity=".85"/><circle cx="34" cy="14" r="8" opacity=".5"/><circle cx="26" cy="34" r="10" opacity=".7"/><text x="14" y="20" font-size="11" fill="#fff">1</text><text x="26" y="38.5" font-size="12" fill="#fff">2</text><path d="M4 30q4-6 8-2M40 26q4 4 2 8" stroke="#0A0E1C" stroke-width="2.4" fill="none" stroke-linecap="round"/></svg>',
+ crash:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><rect x="5" y="6" width="10" height="10" rx="2" opacity=".45"/><circle cx="36" cy="11" r="5.5" opacity=".45"/><path d="M8 38l6-10 6 10z" opacity=".45"/><rect x="28" y="28" width="14" height="14" rx="3"/><path d="M35 31v8M31 35h8" stroke="#fff" stroke-width="2.6" stroke-linecap="round"/></svg>',
+ mmap:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="2.4"><rect x="5" y="5" width="22" height="22" rx="3" opacity=".45"/><path d="M12.3 5v22M19.6 5v22M5 12.3h22M5 19.6h22" opacity=".45"/><rect x="21" y="21" width="22" height="22" rx="3" transform="rotate(20 32 32)"/><circle cx="9" cy="9" r="2.4" fill="#0A0E1C"/><path d="M30 6a10 10 0 0 1 10 10" stroke-linecap="round"/><path d="M40 11l0 5-5 0" stroke-linecap="round"/></svg>',
+ compass:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><circle cx="24" cy="24" r="19" opacity=".25"/><path d="M24 8l5 16h-10z"/><path d="M24 40l-5-16h10z" opacity=".45"/><text x="24" y="7" font-size="7" text-anchor="middle" font-family="Tajawal" font-weight="900">ش</text></svg>',
+ cards:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><rect x="6" y="12" width="26" height="30" rx="4" opacity=".45" transform="rotate(-8 19 27)"/><rect x="16" y="8" width="26" height="30" rx="4"/><path d="M23 18h12M23 24h12M23 30h7" stroke="#fff" stroke-width="2.4" stroke-linecap="round"/></svg>',
+ steps:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M14 6c4 0 6 4 6 9s-2 9-6 9-5-4-5-9 1-9 5-9z"/><ellipse cx="14" cy="29" rx="4" ry="3"/><path d="M34 18c4 0 6 4 6 9s-2 9-6 9-5-4-5-9 1-9 5-9z" opacity=".55"/><ellipse cx="34" cy="41" rx="4" ry="3" opacity=".55"/></svg>'
+});
+
+/* ---------- 1. Glance (Eye for Detail: saccadic speed; part of US POINTER's speed training) ---------- */
+const GLCOL=['#FF5F7A','#3FD0E8','#FFD45A','#8BE36A','#B07BFF','#FF9A3D'],GLSHP=['c','s','t','d','h','x'];
+function runGlance(){return done=>{
+  const L=S.st.lv,lv=clamp(L.glanceLv||1,1,4),N=14,st=$('#stage');let dur=clamp(L.glanceMs||450,80,700),trial=0,ok=0,pts=0,phase=0,slots=[],pair=[],picks=[];const durs=[];
+  st.innerHTML=hudHTML(false)+'<div class="msg" id="m"></div><div class="ddf" id="f"></div>';const f=$('#f');
+  const k=[3,4,4,5][lv-1],P=[...Array(8)].map((_,i)=>{const a=i*Math.PI/4-Math.PI/2;return[50+37*Math.cos(a),50+37*Math.sin(a)]});
+  const showMs=()=>$('#ml').innerHTML=`<span class="ltr num" style="font-size:18px">${Math.round(dur)} ms</span>`;showMs();
+  const item=o=>`<svg viewBox="-12 -12 24 24">${SHP[o.s](0,0,9,o.c)}</svg>`;
+  function next(){if(trial>=N){end();return}trial++;$('#tl').textContent=trial+'/'+N;phase=0;picks=[];f.innerHTML='<div class="fix">+</div>';$('#m').textContent='ثبّت نظرك على المنتصف: ستومض أشياء في الأطراف';
+    slots=shuffle([...Array(8).keys()]).slice(0,k);const base={s:pick(GLSHP),c:pick(GLCOL)},objs=[];objs.push(base,base);
+    while(objs.length<k){const o=lv>=3&&Math.random()<.6?(Math.random()<.5?{s:base.s,c:pick(GLCOL.filter(c=>c!==base.c))}:{s:pick(GLSHP.filter(s=>s!==base.s)),c:base.c}):{s:pick(GLSHP),c:pick(GLCOL)};if(!objs.some(x=>x.s===o.s&&x.c===o.c))objs.push(o)}
+    const ord=shuffle(objs.map((o,i)=>({o,slot:slots[i]})));pair=ord.filter(x=>x.o===base).map(x=>x.slot);
+    let t=700;ord.forEach(x=>{later(()=>{f.innerHTML=`<div class="hb" style="left:${P[x.slot][0]}%;top:${P[x.slot][1]}%">${item(x.o)}</div>`},t);later(()=>{f.innerHTML='<div class="fix">+</div>'},t+dur);t+=dur+120});
+    later(()=>{phase=1;$('#m').textContent='أين ظهر الشكلان المتطابقان؟ المس الموضعين';f.innerHTML=P.map(([x,y],i)=>`<button class="ddslot" style="left:${x}%;top:${y}%" data-i="${i}" aria-label="موضع ${i+1}"></button>`).join('');f.querySelectorAll('.ddslot').forEach(b=>b.onclick=()=>tap(+b.dataset.i,b))},t+150)}
+  function tap(i,b){if(phase!==1||picks.includes(i))return;picks.push(i);b.classList.add('pk');tone(600,.04);if(picks.length<2)return;phase=2;
+    const good=pair.every(p=>picks.includes(p));pair.forEach(p=>f.querySelector(`[data-i="${p}"]`).classList.add('right'));
+    if(good){ok++;durs.push(dur);const g=Math.round(clamp(8000/dur,5,120));pts+=g;$('#sc').textContent=pts;sfx.ok(2);floatAt(st,...relPos(b,st),'+'+g);dur=Math.max(60,dur*.88)}else{picks.filter(p=>!pair.includes(p)).forEach(p=>f.querySelector(`[data-i="${p}"]`).classList.add('wrong'));sfx.bad();dur=Math.min(900,dur*1.22)}
+    showMs();later(next,good?600:1200)}
+  function end(){stopAll();const l=durs.slice(-6),thr=l.length?l.reduce((a,b)=>a+b)/l.length:dur;L.glanceMs=Math.round(clamp(thr*1.2,80,700));let nl=lv;if(thr<150&&ok>=10)nl=Math.min(4,lv+1);else if(thr>500&&lv>1)nl=lv-1;L.glanceLv=nl;
+    done({pts,metric:thr,detail:`سرعة لمحتك: ${Math.round(thr)} ملّي ثانية لكل شكل. أصبت ${ok} من ${N}.${nl>lv?' المرة الجاية: أشكال أكثر وأشبه ببعض.':''}`})}
+  next();
+}}
+
+/* ---------- 2. Flying numbers (Juggle Factor: tracking + ordered recall, a complex span) ---------- */
+function runJuggle(){return done=>{
+  const st=$('#stage');let L=clamp(S.st.lv.juggle||1,1,10),round=0,ok=0,pts=0,peak=L,lives=3,balls=[],phase='',order=[],tapI=0,mode='f';const R=8;
+  st.innerHTML=hudHTML(false)+'<div class="msg" id="m"></div><div class="field"><canvas id="cv"></canvas></div>';
+  const cv=$('#cv'),ctx=cv.getContext('2d'),W=cv.parentElement.clientWidth||340,dpr=window.devicePixelRatio||1;cv.width=W*dpr;cv.height=W*dpr;cv.style.cssText='width:100%;height:100%;display:block;touch-action:none';ctx.scale(dpr,dpr);const r=W*.06;
+  $('#ml').innerHTML=hearts(3);
+  function draw(){ctx.clearRect(0,0,W,W);balls.forEach(b=>{ctx.beginPath();ctx.arc(b.x,b.y,r,0,6.283);ctx.fillStyle=b.hit?'#4BE08A':b.bad?'#FF5C6C':b.lit?'#FFD45A':'#5B66A0';ctx.fill();
+    if(b.show!=null){ctx.fillStyle='#0A0E1C';ctx.font=`900 ${r*1.1}px Tajawal,sans-serif`;ctx.textAlign='center';ctx.textBaseline='middle';ctx.fillText(b.show,b.x,b.y+1)}})}
+  if(window.__test)window.__jg={balls:()=>balls,mode:()=>mode,phase:()=>phase,W,cv};
+  function setup(){if(round>=R||lives<=0){end();return}round++;const k=3+Math.floor((L-1)/2);mode=L>=8?'r':L>=5?'b':'f';const sp=W*(.00018+L*.00003);
+    $('#tl').textContent=`جولة ${round}/${R}`;balls=[];while(balls.length<Math.min(k,7)){const b={x:r+Math.random()*(W-2*r),y:r+Math.random()*(W-2*r)};if(balls.every(o=>Math.hypot(o.x-b.x,o.y-b.y)>2.6*r)){const a=Math.random()*6.283;b.vx=Math.cos(a)*sp;b.vy=Math.sin(a)*sp;balls.push(b)}}
+    const seq=shuffle(balls.map((_,i)=>i));order=seq;phase='show';tapI=0;
+    $('#m').textContent=mode==='b'?'احفظ الأرقام، ثم المس الدوائر من الرقم الأكبر إلى الأصغر':'احفظ أين ظهر كل رقم، ثم المس الدوائر بالترتيب 1، 2، 3…';
+    const nums=mode==='r'?shuffle(seq.map((_,i)=>i)):seq.map((_,i)=>i);seq.forEach((bi,j)=>balls[bi].num=nums[j]+1);
+    const shownOrder=mode==='r'?seq:seq;let t=600;const step=Math.max(500,900-L*35);
+    shownOrder.forEach(bi=>{later(()=>{balls.forEach(b=>{b.show=null;b.lit=false});balls[bi].show=balls[bi].num;balls[bi].lit=true},t);t+=step});
+    later(()=>{balls.forEach(b=>{b.show=null;b.lit=false})},t);later(()=>{phase='pick';$('#m').textContent=mode==='b'?`المس من ${balls.length} إلى 1`:`المس من 1 إلى ${balls.length}`},t+1600);
+    const t0=performance.now();let last=t0,raf;const tick=now=>{const dt=Math.min(40,now-last);last=now;
+      if(phase!=='pick'&&phase!=='done'){balls.forEach(b=>{b.x+=b.vx*dt;b.y+=b.vy*dt;if(b.x<r){b.x=r;b.vx=Math.abs(b.vx)}if(b.x>W-r){b.x=W-r;b.vx=-Math.abs(b.vx)}if(b.y<r){b.y=r;b.vy=Math.abs(b.vy)}if(b.y>W-r){b.y=W-r;b.vy=-Math.abs(b.vy)}});
+        for(let i=0;i<balls.length;i++)for(let j=i+1;j<balls.length;j++){const a=balls[i],c=balls[j],dx=c.x-a.x,dy=c.y-a.y,d=Math.hypot(dx,dy);if(d<2*r&&d>0){[a.vx,c.vx]=[c.vx,a.vx];[a.vy,c.vy]=[c.vy,a.vy];const o=(2*r-d)/2,ux=dx/d,uy=dy/d;a.x-=ux*o;a.y-=uy*o;c.x+=ux*o;c.y+=uy*o}}}
+      draw();if(phase!=='done')raf=requestAnimationFrame(tick)};raf=requestAnimationFrame(tick);cleanup.push(()=>cancelAnimationFrame(raf))}
+  cv.onpointerdown=e=>{if(phase!=='pick')return;e.preventDefault();const rc=cv.getBoundingClientRect(),x=(e.clientX-rc.left)*W/rc.width,y=(e.clientY-rc.top)*W/rc.height;let b=null,bd=r*1.5;balls.forEach(o=>{const d=Math.hypot(o.x-x,o.y-y);if(d<bd&&!o.hit){bd=d;b=o}});if(!b)return;
+    const want=mode==='b'?balls.length-tapI:tapI+1;if(b.num===want){b.hit=true;b.show=b.num;tapI++;tone(500+tapI*70,.06);
+      if(tapI===balls.length){phase='done';ok++;const g=balls.length*25+L*5;pts+=g;$('#sc').textContent=pts;sfx.lvl();floatAt(st,...relPos(cv,st),'+'+g);$('#m').textContent='ممتاز!';L=Math.min(10,L+1);peak=Math.max(peak,L);draw();later(setup,1100)}}
+    else{phase='done';b.bad=true;balls.forEach(o=>o.show=o.num);lives--;$('#ml').innerHTML=hearts(lives);sfx.bad();$('#m').textContent=`الدائرة الصحيحة كانت رقم ${want}`;L=Math.max(1,L-1);draw();later(setup,1600)}};
+  function end(){stopAll();S.st.lv.juggle=L;done({pts,metric:ok*(1+.1*(peak-1)),detail:`أكملت ${ok} من ${round} جولات، وأعلى مستوى وصلته ${peak} من 10.${peak>=5?' في المستويات العالية تختبر الترتيب العكسي والعشوائي.':''}`})}
+  setup();
+}}
+
+/* ---------- 3. The intruder (Scene Crasher: visual working memory, change detection) ---------- */
+function runCrash(){return done=>{
+  const st=$('#stage');let k=clamp(S.st.lv.crash||4,3,14),trial=0,ok=0,pts=0,best=0,live=false,items=[],newIdx=-1;const N=12,k0=k;
+  st.innerHTML=hudHTML(false)+'<div class="msg" id="m"></div><div class="crf" id="cf"></div>';const cf=$('#cf');
+  const place=n=>{const ps=[];let t=0;while(ps.length<n&&t++<3000){const x=8+Math.random()*84,y=8+Math.random()*84;if(ps.every(([a,b])=>Math.hypot(a-x,b-y)>15))ps.push([x,y])}return ps};
+  function next(){if(trial>=N){end();return}trial++;$('#tl').textContent=trial+'/'+N;$('#ml').innerHTML=`<span class="num" style="font-size:16px">${k} أشياء</span>`;
+    const pos=place(k+1),em=shuffle(ITEMS.slice()).slice(0,k+1);items=em.slice(0,k).map((e,i)=>({e,p:pos[i]}));const extra={e:em[k],p:pos[k]};
+    cf.innerHTML=items.map(o=>`<span class="cri" style="left:${o.p[0]}%;top:${o.p[1]}%">${o.e}</span>`).join('');$('#m').textContent='احفظ المشهد';
+    const show=Math.max(1200,2400+k*250-trial*40);later(()=>{cf.innerHTML='<div class="crnoise"></div>';$('#m').textContent='…'},show);
+    later(()=>{const all=shuffle([...items,extra]);newIdx=all.indexOf(extra);cf.innerHTML=all.map((o,i)=>`<button class="cri" style="left:${o.p[0]}%;top:${o.p[1]}%" data-i="${i}">${o.e}</button>`).join('');live=true;$('#m').textContent='ما الشيء الجديد الذي ظهر؟';
+      cf.querySelectorAll('button').forEach(b=>b.onclick=()=>pickIt(+b.dataset.i,b))},show+900)}
+  function pickIt(i,b){if(!live)return;live=false;const good=i===newIdx;cf.querySelector(`[data-i="${newIdx}"]`).classList.add('right');
+    if(good){ok++;best=Math.max(best,k);const g=k*10;pts+=g;$('#sc').textContent=pts;sfx.ok(2);floatAt(st,...relPos(b,st),'+'+g);k=Math.min(14,k+1)}else{b.classList.add('wrong');sfx.bad();k=Math.max(3,k-1)}later(next,good?700:1300)}
+  function end(){stopAll();S.st.lv.crash=best>k0?best:best===k0?k0:Math.max(3,k0-1);done({pts,metric:best,detail:`اكتشفت الدخيل ${ok} من ${N} مرات، وأكبر مشهد أتقنته فيه ${arN(best||0,['شيء واحد','شيئان','أشياء','شيئًا'])}.`})}
+  next();
+}}
+
+/* ---------- 4. Flipped map (Mental Map: spatial memory under rotation, mirroring and shifts) ---------- */
+function runMMap(){return done=>{
+  const st=$('#stage');let L=clamp(S.st.lv.mmap||1,1,8),round=0,ok=0,pts=0,peak=L;const R=6;
+  st.innerHTML=hudHTML(false)+'<div class="msg" id="m"></div><div id="mmw"></div>';
+  const TX={id:['كما هي',(r,c,n)=>[r,c]],r90:['دارت ربع دورة باتجاه عقارب الساعة',(r,c,n)=>[c,n-1-r]],r180:['دارت نصف دورة',(r,c,n)=>[n-1-r,n-1-c]],r270:['دارت ربع دورة عكس عقارب الساعة',(r,c,n)=>[n-1-c,r]],mir:['انقلبت كالمرآة يمينًا ويسارًا',(r,c,n)=>[r,n-1-c]],sh:['انزاحت كل الأشياء خانة واحدة يمينًا',(r,c,n)=>[r,(c+1)%n]]};
+  function setup(){if(round>=R){end();return}round++;const n=L<=2?3:L<=5?4:5,m=Math.min(n*n-2,2+Math.ceil(L/2)),pool=L<=1?['sh','r180']:L<=2?['sh','r180','mir']:L<=4?['r90','r270','r180','mir']:['r90','r270','r180','mir','sh'],tx=pick(pool),anchors=L>=6?2:1,hideText=L>=6;
+    $('#tl').textContent=`شبكة ${round}/${R}`;const cells=shuffle([...Array(n*n).keys()]).slice(0,m),em=shuffle(ITEMS.slice()).slice(0,m),objs=cells.map((c,i)=>({e:em[i],r:Math.floor(c/n),c:c%n}));
+    const grid=(fill,click)=>`<div class="mmg" style="--n:${n}">${[...Array(n*n).keys()].map(i=>{const o=fill(Math.floor(i/n),i%n);return`<button class="mmc${o&&o.cls?' '+o.cls:''}" data-i="${i}" ${click?'':'disabled'}>${o?o.e:''}</button>`}).join('')}</div>`;
+    $('#m').textContent='احفظ مكان كل شيء';$('#mmw').innerHTML=grid((r,c)=>objs.find(o=>o.r===r&&o.c===c));
+    later(()=>{const f=TX[tx][1],moved=objs.map(o=>{const[r2,c2]=f(o.r,o.c,n);return{...o,r:r2,c:c2}}),anc=moved.slice(0,anchors),rest=moved.slice(anchors);let placed=[],sel=null;if(window.__test)window.__mm={rest,n};
+      $('#m').innerHTML=hideText?'الشبكة تحركت: استدل من الشيء الثابت وأكمل الباقي':`الشبكة <b>${TX[tx][0]}</b>. أعد بناءها`;
+      const draw=()=>{$('#mmw').innerHTML=grid((r,c)=>{const a=anc.find(o=>o.r===r&&o.c===c);if(a)return{e:a.e,cls:'anc'};const p=placed.find(o=>o.r===r&&o.c===c);return p?{e:p.e,cls:'pl'}:null},true)+`<div class="mmtray">${rest.filter(o=>!placed.some(p=>p.e===o.e)).map(o=>`<button class="mmt${sel===o.e?' on':''}" data-e="${o.e}">${o.e}</button>`).join('')}</div>`;
+        $('#mmw').querySelectorAll('.mmt').forEach(b=>b.onclick=()=>{sel=b.dataset.e;tone(560,.03);draw()});
+        $('#mmw').querySelectorAll('.mmc').forEach(b=>b.onclick=()=>{const i=+b.dataset.i,r=Math.floor(i/n),c=i%n;if(anc.some(o=>o.r===r&&o.c===c))return;const ex=placed.findIndex(o=>o.r===r&&o.c===c);if(ex>=0){placed.splice(ex,1);draw();return}if(!sel)return;placed.push({e:sel,r,c});sel=null;tone(640,.04);if(placed.length===rest.length)check();else draw()})};
+      const check=()=>{const right=placed.filter(p=>rest.some(o=>o.e===p.e&&o.r===p.r&&o.c===p.c)).length,all=right===rest.length;
+        $('#mmw').innerHTML=grid((r,c)=>{const a=anc.find(o=>o.r===r&&o.c===c);if(a)return{e:a.e,cls:'anc'};const t=rest.find(o=>o.r===r&&o.c===c),p=placed.find(o=>o.r===r&&o.c===c);if(t&&p&&p.e===t.e)return{e:t.e,cls:'okc'};if(t)return{e:t.e,cls:'miss'};return p?{e:p.e,cls:'noc'}:null},false);
+        if(all){ok++;const g=rest.length*25+L*5;pts+=g;$('#sc').textContent=pts;sfx.lvl();$('#m').textContent='بنيتها بالضبط!';L=Math.min(8,L+1);peak=Math.max(peak,L)}else{sfx.bad();$('#m').textContent=`${right} من ${rest.length} في مكانها الصحيح (الأخضر المحاط هو الصحيح)`;L=Math.max(1,L-1)}later(setup,all?1300:2300)};
+      draw()},Math.max(3500,5500+m*500-L*250))}
+  function end(){stopAll();S.st.lv.mmap=L;done({pts,metric:ok*(1+.12*(peak-1)),detail:`بنيت ${ok} من ${R} شبكات بدقة، وأعلى مستوى ${peak} من 8.${peak>=6?' الآن لا نخبرك بالحركة: تستدل عليها من الأشياء الثابتة.':''}`})}
+  setup();
+}}
+
+/* ---------- 5. The compass (True North: remember directions, reorient at each station) ---------- */
+const CDIR=['شمالًا','شرقًا','جنوبًا','غربًا'],CARR=['↑','→','↓','←'];
+function runCompass(){return done=>{
+  const st=$('#stage');let L=clamp(S.st.lv.compass||1,1,8),round=0,ok=0,pts=0,peak=L;const R=6;
+  st.innerHTML=hudHTML(false)+'<div class="msg" id="m"></div><div id="cw"></div>';
+  function setup(){if(round>=R){end();return}round++;const n=Math.min(6,2+Math.ceil(L/2)),route=[];let h=rnd(4);for(let i=0;i<n;i++){let d;do d=rnd(4);while(i&&d===(route[i-1]+2)%4);route.push(d)}
+    $('#tl').textContent=`رحلة ${round}/${R}`;$('#m').textContent='احفظ التعليمات';
+    $('#cw').innerHTML=`<div class="qp"><div class="cins">${route.map((d,i)=>`<span>${i?'ثم ':''}قطار ${CDIR[d]}</span>`).join('')}</div></div><button class="cta" id="cgo">حفظتها</button>`;
+    const rt=Math.max(2500,(n*1600)-(L-1)*120);let started=false;const go=()=>{if(started)return;started=true;station(0,route[0])};$('#cgo').onclick=go;later(go,rt+2500);
+    function station(i,arrHeading){const head=i===0?0:route[i-1],showN=L<=1||i===0,need=route[i];
+      const rel=d=>(d-head+4)%4;$('#m').innerHTML=i===0?'المحطة الأولى: البوصلة أمامك. اختر القطار':`وصلت المحطة ${i+1}. ${showN?'':'لا توجد بوصلة: اتجاه وصولك هو الأعلى في الشاشة'}`;
+      $('#cw').innerHTML=`<div class="cst">${showN?`<div class="cneedle" style="transform:rotate(${-head*90}deg)"><b>ش</b>↑</div>`:`<div class="cneedle off">؟</div>`}${[0,1,2,3].map(sd=>`<button class="ctrain p${sd}" data-sd="${sd}">🚆<i>${CARR[sd]}</i></button>`).join('')}</div><div class="cstep">${route.map((_,j)=>`<i class="${j<i?'on':''}"></i>`).join('')}</div>`;
+      $('#cw').querySelectorAll('.ctrain').forEach(b=>b.onclick=()=>{const sd=+b.dataset.sd,abs=(sd+head)%4;if(abs===need){tone(600+i*60,.06);b.classList.add('okb');if(i+1<route.length)later(()=>station(i+1),450);else{ok++;const g=n*25+L*5;pts+=g;$('#sc').textContent=pts;sfx.lvl();floatAt(st,...relPos(b,st),'+'+g);$('#m').textContent='وصلت إلى وجهتك!';L=Math.min(8,L+1);peak=Math.max(peak,L);later(setup,1100)}}
+        else{sfx.bad();b.classList.add('nob');const rb=$('#cw').querySelector(`[data-sd="${rel(need)}"]`);if(rb)rb.classList.add('okb');$('#m').textContent=`كان المطلوب قطار ${CDIR[need]}`;L=Math.max(1,L-1);later(setup,1700)}})}
+  }
+  function end(){stopAll();S.st.lv.compass=L;done({pts,metric:ok*(1+.12*(peak-1)),detail:`وصلت إلى وجهتك في ${ok} من ${R} رحلات، وأعلى مستوى ${peak} من 8.${peak>=2?' بعد المحطة الأولى تختفي البوصلة، فتستدل على الشمال من اتجاه وصولك.':''}`})}
+  setup();
+}}
+
+/* ---------- 6. My cards: spaced retrieval of real things you want to remember (JMIR 2024) ---------- */
+const CARD_GAP=[0,1,2,4,7,15,30,60];
+const cardsDue=()=>(S.st.cards||[]).filter(c=>c.due<=Date.now()).length;
+function runCards(){return done=>{
+  const st=$('#stage');S.st.cards=S.st.cards||[];let ok=0,seen=0;
+  function home(){const cs=S.st.cards,due=cs.filter(c=>c.due<=Date.now());
+    st.innerHTML=`<div class="intro" style="padding-top:0"><h2>بطاقاتي</h2><p class="rdetail">اكتب ما تريد حفظه فعلًا: آية، رقم، اسم، معلومة عمل. سأعرضها عليك في أوقات تتباعد كلما ثبتت.</p></div>
+     <div class="cardadd"><input id="cq" class="ta" maxlength="120" placeholder="الوجه: سؤال أو تلميح (مثال: رقم جوال أبو فهد)"><input id="ca" class="ta" maxlength="200" placeholder="الظهر: الجواب"><button class="match" id="cadd">أضف البطاقة</button></div><p class="msg" id="cerr"></p>
+     <button class="go-btn" id="crev" ${due.length?'':'disabled'}>${due.length?`راجع الآن (${due.length})`:'لا توجد بطاقات مستحقة اليوم'}</button>
+     <div class="clist">${cs.slice().sort((a,b)=>a.due-b.due).map(c=>`<div class="citem"><span><b>${esc(c.q)}</b><small>الصندوق ${c.box+1} · ${c.due<=Date.now()?'مستحقة':'بعد '+arN(Math.ceil((c.due-Date.now())/864e5),['يوم','يومين','أيام','يومًا'])}</small></span><button class="lnk" data-del="${c.id}">حذف</button></div>`).join('')||'<p class="muted" style="text-align:center">لا توجد بطاقات بعد</p>'}</div>
+     <button class="cta ghost" id="cend">إنهاء</button>`;
+    $('#cadd').onclick=()=>{const q=$('#cq').value.trim(),a=$('#ca').value.trim();if(!q||!a){$('#cerr').textContent='اكتب الوجه والظهر.';return}S.st.cards.push({id:Date.now().toString(36)+rnd(1e5),q,a,box:0,due:Date.now(),ts:Date.now()});S.save();tone(620,.04);home()};
+    st.querySelectorAll('[data-del]').forEach(b=>b.onclick=()=>{S.st.cards=S.st.cards.filter(c=>c.id!==b.dataset.del);S.st.cardsDel=[...(S.st.cardsDel||[]),b.dataset.del].slice(-300);S.save();home()});
+    $('#crev').onclick=()=>review(shuffle(due.slice()));$('#cend').onclick=()=>fin()}
+  function review(q){let i=0;const show=()=>{if(i>=q.length){fin();return}const c=q[i];
+      st.innerHTML=hudHTML(false).replace('id="sc">0','id="sc">'+ok)+`<div class="qp flip"><div class="sub">تذكّر الجواب قبل أن تكشفه</div><div class="cq">${esc(c.q)}</div><div class="cans" id="cans" hidden>${esc(c.a)}</div></div><button class="go-btn" id="crv">اكشف الجواب</button><div class="duo" id="cgr" hidden><button class="match" id="cno" style="--c:#FF8A8A">ما تذكرتها</button><button class="match" id="cyes" style="--c:#4BE08A">تذكرتها ✓</button></div>`;$('#tl').textContent=`${i+1}/${q.length}`;
+      $('#crv').onclick=()=>{$('#cans').hidden=false;$('#crv').remove();$('#cgr').hidden=false};
+      const grade=good=>{seen++;if(good){ok++;c.box=Math.min(CARD_GAP.length-1,c.box+1);sfx.ok(1)}else{c.box=Math.max(0,c.box-2);sfx.bad()}c.due=Date.now()+CARD_GAP[c.box]*864e5-36e5;c.ts=Date.now();S.save();i++;later(show,250)};
+      $('#cyes').onclick=()=>grade(true);$('#cno').onclick=()=>grade(false)};show()}
+  function fin(){stopAll();const n=(S.st.cards||[]).length,mast=(S.st.cards||[]).filter(c=>c.box>=4).length;
+    done({pts:ok*20,metric:seen?ok/seen:0,detail:seen?`راجعت ${arN(seen,['بطاقة واحدة','بطاقتين','بطاقات','بطاقة'])} وتذكرت ${ok}. عندك ${arN(n,['بطاقة واحدة','بطاقتان','بطاقات','بطاقة'])}، ${mast} منها ثابتة (أسبوع فأكثر). ما نسيته سيعود قريبًا، وما تذكرته يتباعد.`:`عندك ${arN(n,['بطاقة واحدة','بطاقتان','بطاقات','بطاقة'])}. ستظهر لك في الرئيسية عندما يحين موعد مراجعتها.`})}
+  home();
+}}
+
+/* ---------- 7. Smart steps: step and think (cognitive-motor step training, Schoene 2015) ---------- */
+function runSteps(){return done=>{
+  const st=$('#stage');let win=clamp(S.st.lv.stepsMs||1800,700,2400),ok=0,bad=0,miss=0,nogoOk=0,pts=0,rule=0,cur=null,live=false,ended=false;const T=75;
+  const RULES=[['زوجي','فردي'],['فردي','زوجي']];
+  st.innerHTML=hudHTML(true)+`<div class="prio" id="sr"></div><div class="stnum" id="sn">قف</div><div class="stpads"><button class="stpad" id="sl">⟵<small>خطوة يسار</small></button><button class="stpad" id="srt">⟶<small>خطوة يمين</small></button></div><div class="msg">قف والجوال بيدك: مع كل رقم اخطُ بقدمك ثم المس الجهة. الرقم 5: لا تتحرك.</div>`;
+  const setRule=k=>{rule=k;const e=$('#sr');e.textContent=`يمين = ${RULES[k][0]} · يسار = ${RULES[k][1]} · 5 = اثبت`;e.classList.remove('flash');void e.offsetWidth;e.classList.add('flash');sfx.go()};setRule(0);later(()=>setRule(1),25000);later(()=>setRule(0),50000);
+  function next(){if(ended)return;const n=Math.random()<.18?5:pick([1,2,3,4,6,7,8,9]);cur={n,t:performance.now(),done:false};$('#sn').textContent=n;$('#sn').className='stnum on';live=true;
+    later(()=>{if(cur&&!cur.done){cur.done=true;if(n===5){nogoOk++;pts+=10;$('#sc').textContent=pts}else{miss++;win=Math.min(2400,win*1.12)}}$('#sn').className='stnum';later(next,500+rnd(400))},win)}
+  const tap=side=>{if(!live||!cur||cur.done)return;cur.done=true;const n=cur.n,even=n%2===0,want=n===5?null:(even===(RULES[rule][0]==='زوجي'))?'r':'l';
+    if(want===side){ok++;const g=Math.round(clamp(30-(performance.now()-cur.t)/80,8,25));pts+=g;$('#sc').textContent=pts;sfx.ok(1);win=Math.max(700,win*.93)}else{bad++;sfx.bad();win=Math.min(2400,win*1.12)}$('#sn').className='stnum '+(want===side?'good':'bad')};
+  $('#sl').onpointerdown=e=>{e.preventDefault();tap('l')};$('#srt').onpointerdown=e=>{e.preventDefault();tap('r')};
+  keyH=e=>{if(e.key==='ArrowLeft')tap('l');if(e.key==='ArrowRight')tap('r')};
+  later(next,1500);
+  timeBar(T,()=>{ended=true;stopAll();const tot=ok+bad+miss,acc=tot?ok/tot:0;S.st.lv.stepsMs=Math.round(clamp(win*1.1,700,2400));
+    done({pts,metric:acc*(2400-win)/1700,detail:`أصبت ${ok}، وأخطأت ${bad}، وفاتك ${miss}، وثبتّ عند الرقم 5 بنجاح ${arN(nogoOk,['مرة واحدة','مرتين','مرات','مرة'])}. زمن الاستجابة المسموح الآن ${(win/1000).toFixed(1)} ث.`})});
+}}
+
+/* ---------- engagement: streak badges, weekly summary, friend challenge ---------- */
+const APP_URL='https://q3ssem.github.io/Dabt/';
+function weekStats(off){const now=new Date(),s=addDays(now,-now.getDay()-7*off),e=addDays(s,7),ks=new Set([...Array(7)].map((_,i)=>dayKey(addDays(s,i))));const h=S.st.hist.filter(x=>ks.has(x.d));
+  const by={};h.forEach(x=>{(by[x.g]=by[x.g]||[]).push(x.idx)});return{n:h.length,days:new Set(h.map(x=>x.d)).size,avg:h.length?Math.round(h.reduce((a,b)=>a+b.idx,0)/h.length):null,by}}
+function weekCard(){const a=weekStats(0),b=weekStats(1);if(!a.n&&!b.n)return'';let best=null;for(const g of Object.keys(a.by))if(b.by[g]&&GM[g]){const d=Math.max(...a.by[g])-Math.max(...b.by[g]);if(!best||d>best.d)best={g,d}}
+  const dv=a.avg!=null&&b.avg!=null?a.avg-b.avg:null;
+  return`<section class="card wsum"><div class="sec-h"><h2>ملخص الأسبوع</h2><span>مقارنة بالأسبوع الماضي</span></div><div class="wsrow"><div><b class="num">${a.n}</b><span>جلسة <em class="${a.n>=b.n?'up':'dn'}">${b.n?(a.n>=b.n?'▲':'▼')+Math.abs(a.n-b.n):''}</em></span></div><div><b class="num">${a.days}</b><span>أيام تمرين</span></div><div><b class="num">${a.avg??'—'}</b><span>متوسط الأداء ${dv!=null&&dv!==0?`<em class="${dv>0?'up':'dn'}">${dv>0?'▲':'▼'}${Math.abs(dv)}</em>`:''}</span></div></div>${best&&best.d>0?`<p class="muted">أكبر تحسن: <b>${GM[best.g].name}</b> (+${best.d})</p>`:''}</section>`}
+const STREAK_BADGES=[7,14,30,60,100];
+function streakChip(){const n=streak();return n>=2?`<span class="streak" title="أيام متتالية">${FLAME}<b class="num">${n}</b></span>`:''}
+function checkStreakBadge(){const n=streak(),got=S.st.badges||[];const b=STREAK_BADGES.find(x=>n>=x&&!got.includes(x));if(!b)return'';S.st.badges=[...got,b];S.save();return`<div class="badgewin">🏅 وسام ${arN(b,['يوم','يومين','أيام','يومًا'])} متتالية!</div>`}
+function readChallenge(){try{const q=new URLSearchParams(location.search).get('ch');if(!q)return;const[g,p,n]=q.split('.');if(GM[g]&&+p>0)S.st.challenge={g,pts:+p,name:(n?decodeURIComponent(n):'صديقك').slice(0,20),at:Date.now()}}catch(e){}}
+function challengeCard(){const c=S.st.challenge;if(!c||!GM[c.g]||Date.now()-c.at>14*864e5)return'';return`<button class="card due chal2" id="chgo" style="--c:${GM[c.g].col[0]}">${icoBox(GM[c.g])}<span><b>${esc(c.name)} يتحداك في «${GM[c.g].name}»</b><small>سجّل ${c.pts} نقطة. تقدر تتفوق عليه؟</small></span><span class="go">‹</span></button>`}
+async function shareChallenge(g,pts){const url=`${APP_URL}?ch=${g.id}.${pts}`,text=`سجّلت ${pts} نقطة في «${g.name}» في تطبيق ضبط دماغك 🧠 تقدر تتفوق علي؟`;
+  try{if(navigator.share){await navigator.share({title:'تحدي ضبط دماغك',text,url});return 'shared'}}catch(e){if(e&&e.name==='AbortError')return''}
+  try{await navigator.clipboard.writeText(text+'\n'+url);return 'copied'}catch(e){return 'fail'}}
+
 /* ================= results ================= */
 function record(g,r){const prevGI=gameIndex(g.id),idx=Math.round(clamp(+g.norm(r.metric)||0,0,1000)),k=dayKey(),prevBest=S.st.best[g.id],pts=Math.max(0,Math.round(+r.pts||0)),rec=prevBest==null||pts>prevBest;if(rec)S.st.best[g.id]=pts;
   S.st.hist.push({id:Date.now().toString(36)+rnd(1e6).toString(36),g:g.id,d:k,ts:Date.now(),pts,idx});if(S.st.hist.length>400)S.st.hist.shift();
@@ -1957,13 +2186,14 @@ function finish(r){
    ${rec&&prevBest!=null?'<span class="rec">رقم قياسي جديد!</span>':''}
    <div class="rline">أداء الجولة <b class="num">${idx}</b> · مؤشرك في اللعبة <b class="num">${gi}</b> ${delta!=null&&delta!==0?`<span class="delta ${delta>0?'up':'dn'} ltr">${delta>0?'+':''}${delta}</span>`:''}</div>
    ${(()=>{const rk=gameRank(g.id);if(!rk||RUN.r0==null)return'';const d=rk[0]-RUN.r0,mx=rk[1]?` من ${rk[1]}`:'';return`<div class="rank ${d>0?'up':d<0?'dn':''}">${d>0?`⬆ صعدت إلى المستوى ${rk[0]}${mx}`:d<0?`⬇ رجعت إلى المستوى ${rk[0]}${mx}`:`المستوى ${rk[0]}${mx}: ثابت`}</div>`})()}
+   ${checkStreakBadge()}${(()=>{const c=S.st.challenge;if(!c||c.g!==g.id)return'';const win=r.pts>c.pts;if(win){S.st.challenge=null;S.save()}return`<div class="chres">${win?`🏆 تفوقت على ${esc(c.name)} (${c.pts})!`:`باقي ${c.pts-r.pts+1} نقطة لتتفوق على ${esc(c.name)}`}</div>`})()}
    ${sparkHTML(g.id)}<p class="rdetail">${r.detail}</p>
    <div class="rbtns">${!last?`<button class="go-btn" id="nx">اللعبة التالية</button>`:wkDone&&RUN.wk?`<button class="go-btn" id="fin">${encPending()?'التذكر المؤجل: ماذا حفظت؟':'إنهاء تمرين اليوم'}</button>`:''}
-    <button class="cta ghost" id="ag">العب مرة أخرى</button>${last&&!(wkDone&&RUN.wk)?'<button class="cta ghost" id="hm">الرئيسية</button>':''}</div></div>`;
+    <button class="cta ghost" id="ag">العب مرة أخرى</button><button class="cta ghost" id="shch">تحدَّ صديقًا بنتيجتك</button>${last&&!(wkDone&&RUN.wk)?'<button class="cta ghost" id="hm">الرئيسية</button>':''}</div></div>`;
   let c=0;const tgt=r.pts,step=Math.max(1,Math.ceil(tgt/40));const ct=setInterval(()=>{c=Math.min(tgt,c+step);const e=$('#cnt');if(e)e.textContent=c;if(c>=tgt||!e)clearInterval(ct)},25);
   const nx=$('#nx');if(nx)nx.onclick=()=>{const go=()=>{RUN.pos++;showIntro()};if(RUN.wk&&RUN.pos===1&&S.st.move!==false)showMove(go);else go()};
   const fin=$('#fin');if(fin)fin.onclick=()=>encPending()?showRecall():celebrate();
-  $('#ag').onclick=countdown;const hm=$('#hm');if(hm)hm.onclick=closePlay;
+  $('#ag').onclick=countdown;$('#shch').onclick=async()=>{const b=$('#shch'),x=await shareChallenge(g,r.pts);if(b&&x==='copied')b.textContent='نُسخ رابط التحدي: أرسله لصديقك';else if(b&&x==='fail'){const u=`${APP_URL}?ch=${g.id}.${r.pts}`;b.outerHTML=`<input class="ta shlink" readonly value="${u}" onclick="this.select()"><small class="muted">انسخ الرابط وأرسله لصديقك</small>`}};const hm=$('#hm');if(hm)hm.onclick=closePlay;
 }
 function celebrate(){stopAll();sfx.win();const w=weekInfo(),wd=Math.min(w.done,3);
   $('#stage').innerHTML=`<div class="res" style="margin:auto 0"><div class="intro"><div class="hero" style="background:var(--good);--c:var(--good)">${FLAME.replace('var(--spd)','#06240F')}</div></div>
