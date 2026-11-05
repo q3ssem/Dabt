@@ -1593,6 +1593,18 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 .zg-goal svg,.zg-src svg{width:80%}.zg-src{opacity:.7}
 @media (prefers-reduced-motion:reduce){.za-whale,.za-dragon,.za-ship,.za-kraken,.za-snake{animation:none}}
 
+.zkmsg{display:flex;flex-wrap:wrap;gap:10px 14px;justify-content:center;direction:rtl;margin:8px 0}.zkw{display:flex;gap:2px}
+.zkc{display:flex;flex-direction:column;align-items:center;width:30px;padding:2px 0;border-radius:6px;border:1.2px solid rgba(58,38,22,.35);background:rgba(255,248,226,.5)}.zkc i{width:22px;height:22px}.zkc i svg{width:100%;height:100%}
+.zkc b{font:800 15px/18px Tajawal;min-height:18px;color:#9B2B1F}.zkc.kn{background:#E9D49E}.zkc.kn b{color:#3A2616}.zkc.sel{outline:2.4px solid #9B2B1F}
+.zkkb{direction:rtl}.zkkb button{color:#3A2616;background:rgba(255,248,226,.6);border-color:rgba(58,38,22,.4)}.zkdel{grid-column:span 2;font-size:13px!important}
+.zhshell{display:flex;gap:6px;justify-content:center;margin:10px 0}.zhshell i{width:30px;height:30px;border-radius:50%;border:1.5px solid #3A2616;background:#F3D6C4;font:700 15px/28px 'Aref Ruqaa',serif;font-style:normal;text-align:center;transition:background .2s}.zhshell i.on{background:#8FD6E6;box-shadow:0 0 10px #8FD6E6}.zhshell i.ok{background:#C9962E}
+.zhharp{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:4px;height:190px;padding:8px 10px;border:2px solid #3A2616;border-radius:60px 60px 10px 10px;background:linear-gradient(#D9C49A,#B3A88E)}
+.zhharp button{position:relative;padding:0;background:none;border:0;display:flex;flex-direction:column;align-items:center}.zhharp span{flex:1;width:3px;background:linear-gradient(#F6E3B6,#C9962E);border-radius:2px}.zhharp b{font:700 13px 'Aref Ruqaa',serif;color:#3A2616}
+.zhharp button.pl span{animation:zhpl .5s}@keyframes zhpl{25%{transform:translateX(3px)}50%{transform:translateX(-3px)}75%{transform:translateX(1px)}}
+.zswall{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:2px;width:min(80%,260px);margin:8px auto;padding:6px;background:#8E8576;border:2px solid #3A2616}.zswall i{aspect-ratio:1;background:#C9BFA6;transition:background .25s}.zswall i.t{box-shadow:inset 0 0 0 2px #9B2B1F}.zswall i.s{background:#2E3B40}.zswall.done i.s{background:#1E4A55;box-shadow:inset 0 0 0 2px #8FD6E6}
+.zsst{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}.zss{display:flex;flex-direction:column;align-items:center;gap:4px}.zss button{font:700 11px Tajawal;padding:4px 8px;border-radius:8px;border:1.4px solid #3A2616;background:rgba(255,248,226,.6);color:#3A2616}
+.zsmini{position:relative;width:64px;height:64px;border:1.2px dashed rgba(58,38,22,.4);border-radius:8px}.zsmini i{position:absolute;width:22%;height:22%;margin:24% 0 0 24%;background:#8E8576;border:1px solid #3A2616}.zslamp{position:absolute;width:20px;height:20px;transform:translate(-50%,-50%);transition:left .25s,top .25s}.zslamp svg{width:100%;height:100%}
+
 </style>
 
 
@@ -5707,6 +5719,90 @@ Object.assign(ART_FN,{
  pz_zcomp:B=>{B.bg('#1E2A44',.5);B.wc(B.ell(210,170,110,40),'#6F9AA8',{a:.7,amp:6});[[80,60],[150,40],[260,50],[330,80],[200,90]].forEach(([x,y])=>B.wc(B.ell(x,y,4,4),ARTC.gold,{a:.9}));B.frame()},
  pz_zroute:B=>{B.bg(ARTC.sky,.5);[[100,120],[220,180],[320,110]].forEach(([x,y])=>B.wc(B.ell(x,y,40,12),'#7FA86E',{a:.7,amp:6}));B.ink([[60,260],[150,200],[250,230],[360,60]],{w:2,a:.6,j:1.5});B.frame()},
  pz_zcur:B=>{B.bg('#3E6F62',.4);[[90,200],[180,230],[300,210],[240,120]].forEach(([x,y])=>B.wc(B.ell(x,y,26,30),'#D9826E',{a:.7,amp:6}));B.wc(B.ell(200,120,18,22),'#A6D8E8',{a:.8});B.frame()}});
+/* ================= v33: البحار السبعة — المحطات ٤ إلى ٦ ================= */
+Object.assign(XTOOL,{lens:{n:'عدسة الرموز',d:'تكشف رمزًا مخفيًا في الشيفرات القديمة.'},deepkey:{n:'مفتاح الأعماق',d:'يفتح بوابات المدن الغارقة.'},glowstone:{n:'الحجر المضيء',d:'ينير الخنادق المظلمة ويصنع الظلال.'}});
+Object.assign(Z3[3],{id:'pz_zcode',tool:'lens',story:'في مقبرة السفن، سجلات قبطان مكتوبة برموز غريبة. الكراكن العجوز يحرسها، لكنه يترك لك بعض الحروف في كل سجل.',log:'سجل القبطان السابع: «القطع السبع للتاج خُبّئت في سبع ممالك، وآخرها في قاع الخندق».'});
+Object.assign(Z3[4],{id:'pz_zharp',tool:'deepkey',story:'الحورية الصامتة لا تتكلم، لكن صدفتها تعيد الألحان أعلى أو أخفض. اعزف اللحن الأصلي على القيثارة لتنفتح بوابة المدينة.',log:'نقش في المدينة الغارقة: «القبطان الأول لم يمت… صار جزءًا من القصر».'});
+Object.assign(Z3[5],{id:'pz_zshadow',tool:'glowstone',story:'في خندق الظلام لا يرى أحد شيئًا. حرّك المصابيح حول التماثيل حتى ترسم ظلالها الرمز المنقوش على الجدار.',log:'على جدار الخندق، ظل يرسم قصرًا بسبعة أبراج فوق البحر…'});
+Object.assign(XCR[3],{beh:'يلف أذرعه حول السفن الغارقة ويحرس سجلاتها، لكنه يحب الألغاز.',role:'اختبار: يكشف لك حروفًا إذا أثبت ذكاءك.'});
+Object.assign(XCR[4],{beh:'لا تتكلم أبدًا؛ صدفتها تعيد الألحان بنغمة مختلفة.',role:'مرشدة: من يفهم لحنها يدخل المدينة.'});
+Object.assign(XCR[5],{beh:'كائن من الظل يتحرك حيث لا يصل الضوء.',role:'لغز بحد ذاته: يظهر شكله الحقيقي فقط في الظل الصحيح.'});
+Object.assign(XS_,{
+ mermaid:`<svg viewBox="0 0 80 70"><path d="M40 34q-6 14 4 24q8 8 22 4q-8 6-6 8q-14 2-22-8q-10-12-6-28z" fill="#5FA89A" ${XI}/><path d="M60 62q8-6 16-2q-6 2-6 8q-4-6-10-6z" fill="#5FA89A" ${XI2}/><path d="M42 44q6 4 12 2M44 52q6 3 12 1" fill="none" stroke="${XK}" stroke-width=".6" opacity=".7"/>
+  <path d="M32 34q0-10 8-12q8 2 8 12q-8 4-16 0z" fill="#E9C9A0" ${XI2}/><circle cx="40" cy="16" r="7" fill="#E9C9A0" ${XI}/><path d="M33 14q-4 14-8 22q6-2 8-8M47 14q4 14 8 22q-6-2-8-8M33 12q7-8 14 0" fill="#7B4A8C" ${XI2}/><circle cx="38" cy="16" r=".9" fill="${XK}"/><circle cx="42" cy="16" r=".9" fill="${XK}"/><path d="M30 30l-8-6" stroke="#E9C9A0" stroke-width="3" stroke-linecap="round"/>${XS_.shell.replace('<svg viewBox="0 0 40 40">','<g transform="translate(12 16) scale(.3)">').replace('</svg>','</g>')}</svg>`,
+ abyss:`<svg viewBox="0 0 80 60"><path d="M10 50q4-34 30-36q26 2 30 36q-6-8-10 0q-4-8-10 0q-4-8-10 0q-4-8-10 0q-4-8-10 0z" fill="#2E3B40" ${XI}/><circle cx="32" cy="30" r="4" fill="#CFF4FF"/><circle cx="48" cy="30" r="4" fill="#CFF4FF"/><circle cx="32" cy="30" r="1.6" fill="${XK}"/><circle cx="48" cy="30" r="1.6" fill="${XK}"/><path d="M34 40q6 4 12 0" fill="none" stroke="#CFF4FF" stroke-width="1.2"/></svg>`,
+ lens:`<svg viewBox="0 0 40 40"><circle cx="17" cy="17" r="11" fill="#CFE8EE" fill-opacity=".6" ${XI}/><circle cx="17" cy="17" r="11" fill="none" stroke="url(#xGold)" stroke-width="3"/><path d="M25 25l10 10" stroke="#5E3519" stroke-width="5" stroke-linecap="round"/><path d="M12 12q3-3 7-3" fill="none" stroke="#fff" stroke-width="1.6"/></svg>`,
+ deepkey:`<svg viewBox="0 0 40 40"><g transform="rotate(-35 20 20)"><circle cx="11" cy="20" r="6.5" fill="#5FA89A" ${XI}/><path d="M7 20q4-6 8 0q-4 6-8 0z" fill="#F4ECD8" ${XI2}/><path d="M17 18.6h19v2.8H17z" fill="#5FA89A" ${XI}/><path d="M30 21v6h3v-4h2v5h2v-7" fill="#5FA89A" ${XI2}/></g></svg>`,
+ glowstone:`<svg viewBox="0 0 40 40"><circle cx="20" cy="22" r="16" fill="#CFF4FF" opacity=".35"/><path d="M20 6l9 8-3 16-6 4-6-4-3-16z" fill="#8FD6E6" ${XI}/><path d="M20 6v28M11 14l9 6 9-6" fill="none" stroke="${XK}" stroke-width=".7" opacity=".7"/></svg>`});
+XCR[4].k='mermaid';
+
+/* ---------- station 4: سجلات القبطان — a symbol cryptogram solved by deduction ---------- */
+const ZK_LV=[[4,0],[3,0],[3,1],[2,1],[2,1],[1,1],[1,2],[0,2]];
+const ZK_SYM=[...Array(28)].map((_,k)=>{const r=seeded(k*31+5),p=[];for(let j=0;j<3;j++){const x=4+r()*16,y=4+r()*16;p.push(`${j?'L':'M'}${x.toFixed(1)} ${y.toFixed(1)}`)}return p.join('')+(k%3?'Z':'')+(k%4===0?'M12 2v20':'')+(k%5===1?'M4 12h16':'')});
+const zkSym=(k)=>`<svg viewBox="0 0 24 24"><path d="${ZK_SYM[k]}" fill="none" stroke="#3A2616" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"/></svg>`;
+function zkMake(lv){const[give,extra]=ZK_LV[lv-1];
+  for(let t=0;t<200;t++){const place=pick(XB_PL);let words=pick(XB_T).replace('{P}',place).split(' ');if(extra)words=pick(['يا رفاقي','اسمعوا جيدا','سر القبطان']).split(' ').concat(words);
+    const letters=[...new Set(words.join(''))];if(letters.some(c=>!XAL.includes(c))||letters.length>16)continue;const perm=shuffle([...Array(28).keys()]),key={};letters.forEach((c,i)=>key[c]=perm[i]);
+    const freq={};words.join('').split('').forEach(c=>freq[c]=(freq[c]||0)+1);const known=shuffle(letters.filter(c=>c!=='ا'&&c!=='ل')).slice(0,give+Math.floor(letters.length/4));
+    return{words,place,letters,key,known,opts:shuffle([place,...shuffle(XB_PL.filter(p=>p!==place)).slice(0,3)])}}return zkMake(1)}
+function runZCode(){return pzPlay('pz_zcode',api=>{
+  const P=zkMake(api.lv),inv={};P.letters.forEach(c=>inv[P.key[c]]=c);const guess={};P.known.forEach(c=>guess[P.key[c]]=c);let sel=null,miss=0,busy=false;
+  api.body.innerHTML=xSheet(`${xHead(XS_.kraken.replace('viewBox="0 0 120 70"','viewBox="0 0 120 70" width="46"'),'سجلات القبطان')}<ol class="xnote"><li>كل رمز = حرف واحد، ونفس الرمز = نفس الحرف دائمًا.</li><li>الكراكن كشف لك بعض الحروف. اضغط رمزًا ثم اختر حرفه من اللوحة.</li><li>الرسائل تحتوي كلمات مثل «الكنز» و«احفر» وأسماء أماكن الجزيرة.</li></ol>
+   <div class="zkmsg" id="zkm"></div><div class="xkb zkkb" id="zkb">${[...XAL].map(c=>`<button data-c="${c}">${c}</button>`).join('')}<button data-c="" class="zkdel">مسح</button></div>
+   <div class="xbq" id="zkq" hidden><b>وين تحفر حسب السجل؟</b><div class="xbopts">${P.opts.map(p=>`<button class="xbo2" data-p="${p}">${p}</button>`).join('')}</div></div>`,820,231);
+  const draw=()=>{$('#zkm').innerHTML=P.words.map(w=>`<span class="zkw">${[...w].map(c=>{const s=P.key[c],g=guess[s];return`<button class="zkc${sel===s?' sel':''}${P.known.includes(c)?' kn':''}" data-s="${s}"><i>${zkSym(s)}</i><b>${g||''}</b></button>`}).join('')}</span>`).join('');
+    $('#zkm').querySelectorAll('.zkc').forEach(b=>b.onclick=()=>{const s=+b.dataset.s;if(Object.entries(P.key).some(([c,v])=>v===s&&P.known.includes(c)))return;sel=s;sfx.pop();draw()});
+    const done=P.letters.every(c=>guess[P.key[c]]===c);$('#zkq').hidden=!done;if(done&&!busy){api.msg('السجل صار مقروءًا! اختر المكان.')}};
+  api.body.querySelectorAll('#zkb [data-c]').forEach(b=>b.onclick=()=>{if(api.ended||sel==null)return;const c=b.dataset.c;Object.keys(guess).forEach(s=>{if(guess[s]===c&&c)delete guess[s]});if(c)guess[sel]=c;else delete guess[sel];tone(520,.03);draw()});
+  function answer(p,b){if(api.ended)return;if(p===P.place){busy=true;b.classList.add('ok');sfx.ok(2);later(()=>zWin(api,'pz_zcode',`فككت السجل: «${P.words.join(' ')}».`,!miss),600);return}miss++;b.classList.add('no');b.disabled=true;api.wrong();if(miss>=2)api.over(`السجل يقول: «${P.words.join(' ')}».`)}
+  api.body.querySelectorAll('.xbo2').forEach(b=>b.onclick=()=>answer(b.dataset.p,b));draw();api.msg('فك رموز السجل.');
+  pzHook({P,solve:()=>{P.letters.forEach(c=>guess[P.key[c]]=c);draw()},answer:p=>answer(p,api.body.querySelector(`.xbo2[data-p="${p}"]`))});
+  return{hint:k=>{if(k===1)return'ابدأ بالكلمات القصيرة والأحرف المتكررة: «ال» تتكرر في أول كلمات كثيرة.';const c=P.letters.find(c=>guess[P.key[c]]!==c);if(!c)return null;guess[P.key[c]]=c;draw();return`العدسة كشفت لك حرف «${c}».`},
+   reveal:()=>{P.letters.forEach(c=>guess[P.key[c]]=c);draw();return`السجل: «${P.words.join(' ')}».`}}})}
+
+/* ---------- station 5: قيثارة الحورية — the shell repeats the melody shifted; play the original ---------- */
+const ZH_LV=[[5,4,1,0],[5,5,1,0],[6,5,2,0],[6,6,-1,0],[7,6,2,1],[7,7,-2,1],[7,7,3,1],[7,8,-3,1]],ZH_F=[392,440,494,523,587,659,698,784,880,988];
+function runZHarp(){return pzPlay('pz_zharp',api=>{
+  const[ns,len,sh,rev]=ZH_LV[api.lv-1],lo=Math.max(0,-sh),hi=ns-1-Math.max(0,sh),mel=[...Array(len)].map(()=>lo+rnd(hi-lo+1)),heard=mel.map(m=>m+sh),want=rev?mel.slice().reverse():mel;let inp=[],busy=true,miss=0;
+  api.body.innerHTML=xSheet(`${xHead(XS_.mermaid.replace('viewBox="0 0 80 70"','viewBox="0 0 80 70" width="44"'),'قيثارة الحورية')}<ol class="xnote"><li>الصدفة تعيد لحن الحورية لكن <b>${sh>0?'أعلى':'أخفض'} بـ${arN(Math.abs(sh),['وتر واحد','وترين','أوتار','وترًا'])}</b>.</li><li>اعزف اللحن الأصلي على القيثارة${rev?'، <b>بالمقلوب</b> من آخر نغمة':''}.</li><li>الصدفة تعرض اللحن بالضوء والصوت، فما تحتاج تسمع إذا الصوت مغلق.</li></ol>
+   <div class="zhshell" id="zhs">${heard.map(()=>'<i></i>').join('')}</div><div class="zhharp ltr" id="zhh" style="--n:${ns}">${[...Array(ns)].map((_,i)=>`<button data-s="${i}"><span></span><b>${XAR(i+1)}</b></button>`).join('')}</div>
+   <div class="xkbtns"><button class="cta ghost xsm" id="zhre">أعد سماع الصدفة</button></div>`,760,241);
+  const pluck=s=>{const b=api.body.querySelector(`#zhh [data-s="${s}"]`);if(b){b.classList.remove('pl');void b.offsetWidth;b.classList.add('pl')}tone(ZH_F[s],.5,'triangle',.07)};
+  function play(){busy=true;inp=[];const dots=[...$('#zhs').children];dots.forEach(d=>d.className='');heard.forEach((s,k)=>later(()=>{dots[k].className='on';dots[k].textContent=XAR(s+1);pluck(s)},400+k*700));later(()=>{dots.forEach(d=>{d.className='';d.textContent=''});busy=false;api.msg(`اعزف الأصل${rev?' بالمقلوب':''}.`)},600+heard.length*700+900)}
+  function tap(s){if(api.ended||busy)return;pluck(s);inp.push(s);if(want[inp.length-1]!==s){miss++;api.wrong();busy=true;if(miss>=2){later(()=>api.over(`اللحن الأصلي: ${want.map(x=>XAR(x+1)).join(' ← ')}.`),400);return}api.msg('نغمة خاطئة! اسمع الصدفة مرة ثانية.');later(play,900);return}
+    $('#zhs').children[inp.length-1].className='ok';if(inp.length===want.length){busy=true;sfx.ok(3);later(()=>zWin(api,'pz_zharp','انفتحت بوابة المدينة الغارقة على لحن الحورية.',!miss),600)}}
+  api.body.querySelectorAll('#zhh [data-s]').forEach(b=>b.onclick=()=>tap(+b.dataset.s));$('#zhre').onclick=()=>{if(!busy)play()};later(play,300);
+  pzHook({want,tap,busy:()=>busy});
+  return{hint:k=>{if(k===1)return`${sh>0?'اطرح':'أضف'} ${XAR(Math.abs(sh))} ${sh>0?'من':'إلى'} كل رقم يظهر في الصدفة${rev?'، ثم اقلب الترتيب':''}.`;return`أول نغمة تعزفها: الوتر ${XAR(want[inp.length]+1)}.`},reveal:()=>`اللحن الأصلي: ${want.map(x=>XAR(x+1)).join(' ← ')}.`}})}
+
+/* ---------- station 6: ظلال الخندق — move the lamps so the statues' shadows draw the carved sign ---------- */
+const ZS_LV=[[5,2,3],[5,2,4],[6,3,3],[6,3,4],[6,3,5],[7,4,4],[7,4,5],[7,4,5]];
+const ZS_SH=[[[0,0],[1,0],[0,1]],[[0,0],[0,1],[0,2]],[[0,0],[1,0],[1,1]],[[0,0],[1,0]],[[0,0],[1,1],[0,1],[1,0]],[[1,0],[0,1],[1,1],[2,1]],[[0,0],[2,0],[1,1]]];
+function zsShadow(P,pos){const s=new Set();P.st.forEach((st,i)=>{const[dx,dy]=P.offs[pos[i]];st.cells.forEach(([x,y])=>{const X=st.x+x+dx,Y=st.y+y+dy;if(inb(X,Y,P.n,P.n))s.add(Y*P.n+X)})});return s}
+function zsMake(lv){const[n,k,np]=ZS_LV[lv-1],offs=[[0,0],[1,0],[-1,0],[0,1],[0,-1],[1,1],[-1,-1]].slice(0,np);
+  for(let t=0;t<300;t++){const st=[...Array(k)].map(()=>({cells:pick(ZS_SH),x:1+rnd(n-3),y:1+rnd(n-3)}));const sol=st.map(()=>rnd(np)),P={n,st,offs};const T=zsShadow(P,sol);
+    const all=[];const rec=(i,a)=>{if(all.length>5)return;if(i===k){const s=zsShadow(P,a);if(s.size===T.size&&[...s].every(c=>T.has(c)))all.push(a.slice());return}for(let p=0;p<np;p++){a.push(p);rec(i+1,a);a.pop()}};rec(0,[]);
+    const start=st.map(()=>rnd(np));const S0=zsShadow(P,start);if(all.length!==1||(S0.size===T.size&&[...S0].every(c=>T.has(c))))continue;return{...P,T,sol,start}}return zsMake(Math.max(1,lv-1))}
+function runZShadow(){return pzPlay('pz_zshadow',api=>{
+  const P=zsMake(api.lv),n=P.n;let pos=P.start.slice(),moves=0;const lim=P.st.length*3+4;
+  const lampPos=d=>{const[dx,dy]=P.offs[d];return`left:${50-dx*36}%;top:${50-dy*36}%`};
+  api.body.innerHTML=xSheet(`${xHead(XS_.glowstone,'ظلال الخندق')}<ol class="xnote"><li>كل تمثال له مصباح. المصباح يرمي ظل التمثال على الجدار في الاتجاه المعاكس له.</li><li>حرّك المصابيح حتى يطابق الظل الرمز المنقوش (الإطار الأحمر).</li><li>معك ${arN(lim,AN.mv)}.</li></ol>
+   <div class="zswall ltr" id="zsw" style="--n:${n}">${[...Array(n*n)].map((_,i)=>`<i class="${P.T.has(i)?'t':''}"></i>`).join('')}</div>
+   <div class="zsst">${P.st.map((s,i)=>`<div class="zss" data-i="${i}"><div class="zsmini">${s.cells.map(([x,y])=>`<i style="left:${x*33}%;top:${y*33}%"></i>`).join('')}<b class="zslamp" style="${lampPos(pos[i])}">${XS_.glowstone}</b></div><button data-i="${i}">حرّك المصباح</button></div>`).join('')}</div>
+   <div class="xtools"><span>الحركات: <b id="zsm"></b> من ${XAR(lim)}</span></div>`,820,251);
+  const draw=()=>{const S=zsShadow(P,pos);[...$('#zsw').children].forEach((e,i)=>e.classList.toggle('s',S.has(i)));api.body.querySelectorAll('.zss').forEach(e=>{e.querySelector('.zslamp').style.cssText=lampPos(pos[+e.dataset.i])});$('#zsm').textContent=XAR(moves);return S.size===P.T.size&&[...S].every(c=>P.T.has(c))};
+  function move(i){if(api.ended)return;pos[i]=(pos[i]+1)%P.offs.length;moves++;tone(330+i*60,.05);if(draw()){$('#zsw').classList.add('done');sfx.ok(3);later(()=>zWin(api,'pz_zshadow','الظلال رسمت الرمز، وظهر ساكن الخندق على الجدار.',moves<=P.st.length*2),800);return}
+    if(moves>=lim)api.over('انتهت الحركات. فكّر بكل تمثال على حدة: أي جزء من الرمز يقدر يغطيه؟')}
+  api.body.querySelectorAll('.zss button').forEach(b=>b.onclick=()=>move(+b.dataset.i));draw();api.msg('حرّك المصابيح.');pzHook({P,move,pos:()=>pos});
+  return{hint:k=>{if(k===1)return'كل تمثال يترك ظلًا بنفس شكله. ابحث في الرمز عن شكل كل تمثال، وحرّك مصباحه حتى ينطبق.';const i=pos.findIndex((p,j)=>p!==P.sol[j]);if(i<0)return null;pos[i]=P.sol[i];moves++;draw();return`ضبطت لك مصباح التمثال رقم ${XAR(i+1)}.`},reveal:()=>{pos=P.sol.slice();draw();return'هذا وضع المصابيح الصحيح.'}}})}
+
+const PZ_Z2=[
+ {id:'pz_zcode',maxLv:8,col:['#9C5A6A','#3A2616'],name:'سجلات القبطان',lab:'Cryptogram',cat:'flx',why:'فك شيفرة استبدال بالرموز: استنتاج لغوي من تكرار الحروف وشكل الكلمات.',how:['اضغط رمزًا.','اختر حرفه.','اقرأ السجل واختر المكان.'],run:runZCode},
+ {id:'pz_zharp',maxLv:8,col:['#5FA89A','#7B4A8C'],name:'قيثارة الحورية',lab:'Transposed melody',cat:'mem',why:'ذاكرة عاملة مع تحويل ذهني: تحفظ اللحن وتنقله لأعلى أو أسفل، وأحيانًا تقلبه.',how:['شاهد الصدفة واسمع.','انقل كل نغمة.','اعزف الأصل.'],run:runZHarp},
+ {id:'pz_zshadow',maxLv:8,col:['#2E3B40','#8FD6E6'],name:'ظلال الخندق',lab:'Shadow casting',cat:'spa',why:'تخيل الإسقاط المكاني: كيف يتحرك الظل حين يتحرك الضوء، وتركيب أشكال لتكوين رمز.',how:['حرّك المصابيح.','راقب الظل على الجدار.','طابق الرمز.'],run:runZShadow}];
+PZ_Z2.forEach(g=>{Object.assign(g,{puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g;PZ_Z.push(g)});TV_PUZ.unshift(...PZ_Z2.map(g=>g.id));
+Object.assign(I,{pz_zcode:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><path d="M8 10h32v28H8z"/><path d="M14 18l6 6-6 6M24 30h10"/></svg>',pz_zharp:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><path d="M10 40Q8 10 38 8"/><path d="M16 38V20M22 38V15M28 38V12M34 38V10M10 40h28"/></svg>',pz_zshadow:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><circle cx="10" cy="12" r="5"/><path d="M18 20h8v18h-8z"/><path d="M26 22l16 6v16H26z" opacity=".4"/></svg>'});
+Object.assign(ART_FN,{pz_zcode:B=>{B.bg('#E9DDBE',.3);B.wc(B.rect(80,60,260,180),'#F3E2BC',{a:.8});B.wc(B.ell(330,250,60,30),'#9C5A6A',{a:.6});B.frame()},pz_zharp:B=>{B.bg('#3E6F62',.4);B.wc(B.ell(210,170,90,100),'#5FA89A',{a:.6});B.wc(B.ell(210,120,24,24),'#F3D6C4',{a:.8});B.frame()},pz_zshadow:B=>{B.bg('#1E2A30',.6);B.wc(B.rect(150,90,60,140),'#8E8576',{a:.7});B.wc(B.rect(210,110,120,120),'#000',{a:.4});B.wc(B.ell(90,80,20,20),'#8FD6E6',{a:.8});B.frame()}});
 /* ================= v29: kids — exit to main profile, owl mascot, richer animation, 4 new games ================= */
 const KSTAR='<svg viewBox="0 0 24 24" class="kst"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" stroke="#2B2520" stroke-width="1.4" stroke-linejoin="round"/></svg>';
 const OWL=`<svg viewBox="0 0 64 64" class="owl"><g class="owlb"><g class="owlw l"><path d="M14 34q-9 10-3 22q6-3 9-13z" fill="#7A5A3E" ${RK}/></g><g class="owlw r"><path d="M50 34q9 10 3 22q-6-3-9-13z" fill="#7A5A3E" ${RK}/></g>
