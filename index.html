@@ -1367,11 +1367,12 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 
 /* ===== v30: جزيرة الكنز — parchment & ink ===== */
 .xpaper{position:relative;color:#3A2616;--ink:#3A2616}
-.xpbg{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;will-change:transform;overflow:visible}
+.xpbg{position:absolute;inset:0;width:100%;height:100%;display:block;pointer-events:none;user-select:none}
 .xpin{position:relative;padding:20px 20px 22px}
 .xtitle{position:relative;width:80%;margin:0 auto -2px}.xribbon{display:block;width:100%;height:auto}
 .xtitle b{position:absolute;inset:0 0 8% 0;display:grid;place-items:center;font:700 25px/1 'Aref Ruqaa','Reem Kufi Fun',Tajawal,serif;color:var(--ink);letter-spacing:.5px}
-.xmapw{position:relative}.xmap{display:block;width:100%;height:auto}
+.xmapw{position:relative}.xmap{display:block;width:100%;height:auto;aspect-ratio:360/440;user-select:none;-webkit-user-drag:none}.xmapo{position:absolute;inset:0;width:100%;height:100%;pointer-events:none}
+.xa{position:absolute;pointer-events:none}.xa>svg{width:100%;height:100%;display:block;overflow:visible}.xa .xship,.xa .xmon,.xa .xwake{animation:none}
 .xst{position:absolute;transform:translate(-50%,-34%);display:flex;flex-direction:column;align-items:center;gap:0;width:76px;padding:0}
 .xst i{display:block;width:34px;height:34px;transition:transform .2s}.xst i svg{width:100%;height:100%;display:block;overflow:visible}
 .xst span{font:700 11px/1.35 'Aref Ruqaa',Tajawal,serif;color:var(--ink);background:rgba(240,224,182,.88);padding:0 5px;border-radius:5px;white-space:nowrap;margin-top:-3px;box-shadow:0 0 0 .6px rgba(58,38,22,.35)}
@@ -1387,9 +1388,7 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 .xfoot b{font-family:'Aref Ruqaa',Tajawal,serif;font-size:16px}
 .xvault{display:flex;align-items:center;gap:6px;background:#3A2616;color:#F1E2BE;border-radius:999px;padding:3px 12px 3px 5px;font:700 12.5px Tajawal,sans-serif}
 .xvault i{width:26px;height:26px;display:block;background:#F1E2BE;border-radius:50%;padding:2px}.xvault i svg{width:100%;height:100%;display:block}.xvault b{color:#F2C553}
-.xshipw .xship{animation:xbob 4s ease-in-out infinite;transform-box:fill-box;transform-origin:50% 90%}
-.xmonw .xmon{animation:xmon 3.2s ease-in-out infinite}.xrosew{animation:xspin 60s linear infinite;transform-box:fill-box;transform-origin:center}
-.xbirds{animation:xbird 9s ease-in-out infinite}.xwake{animation:xwake 2.4s linear infinite}.xfire,.xflame{animation:xfl .5s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
+.xa-ship{animation:xbob 4s ease-in-out infinite;transform-origin:50% 90%}.xa-mon{animation:xmon 3.2s ease-in-out infinite}.xa-rose{animation:xspin 90s linear infinite}.xa-birds{animation:xbird 9s ease-in-out infinite}.xfire,.xflame{animation:xfl .5s ease-in-out infinite alternate;transform-box:fill-box;transform-origin:50% 100%}
 @keyframes xbob{50%{transform:translateY(2px) rotate(2deg)}}@keyframes xmon{50%{transform:translateY(-2.5px)}}@keyframes xspin{to{transform:rotate(360deg)}}
 @keyframes xbird{50%{transform:translate(-10px,4px)}}@keyframes xwake{to{stroke-dashoffset:-20}}.xwake{stroke-dasharray:6 4}@keyframes xfl{to{transform:scale(.85,1.12)}}
 /* chest */
@@ -1398,7 +1397,7 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 .xc-glow,.xc-lidopen,.xc-in{opacity:0;transition:opacity .5s}
 .xc-lidopen{transform-box:fill-box;transform-origin:50% 100%;transform:scaleY(.25);transition:transform .7s cubic-bezier(.3,1.5,.5,1),opacity .2s}
 .xc-lid{transform-box:fill-box;transform-origin:50% 100%;transition:transform .35s ease-in,opacity .2s .25s}
-.xc-rays{transform-box:view-box;transform-origin:100px 74px;animation:xspin 14s linear infinite}
+.xc-rays{transform-box:view-box;transform-origin:100px 74px}.xchestw.s3 .xc-rays{animation:xspin 14s linear infinite}
 .xc-key{transform:translate(-40px,98px);opacity:0;transition:transform .8s cubic-bezier(.3,.8,.3,1),opacity .3s}
 .xc-lock{transform-box:fill-box;transform-origin:50% 0;transition:transform .7s cubic-bezier(.5,0,.8,.4),opacity .6s}
 .xchestw.s1 .xc-key{transform:translate(54px,98px);opacity:1}
@@ -1433,7 +1432,7 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 .xc{position:relative;padding:0;border:0;background:none;border-radius:2px}
 .xc.xo::before{content:"";position:absolute;inset:24%;background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 20 20'%3E%3Cpath d='M4 4q6 5 12 12M16 3q-5 7-12 13' fill='none' stroke='%233A2616' stroke-width='2.2' stroke-linecap='round' opacity='.7'/%3E%3C/svg%3E") center/contain no-repeat}
 .xc.hl{box-shadow:inset 0 0 0 2px #9B2B1F;background:rgba(155,43,31,.12)}
-@media (prefers-reduced-motion:reduce){.xst.cur i,.xst.cur::before,.xrosew,.xshipw .xship,.xmonw .xmon,.xbirds,.xc-rays{animation:none}}
+@media (prefers-reduced-motion:reduce){.xst.cur i,.xst.cur::before,.xa,.xc-rays,.xcur svg,.xboat svg{animation:none!important}}
 /* ===== v30 stations ===== */
 .xsheet .xpin{padding:24px 18px 24px}
 .xnote{font:600 14px/1.75 Tajawal,sans-serif}.xnote ol,ol.xnote{margin:0;padding-inline-start:20px}.xnote small{display:block;font-size:12px;opacity:.8;margin-top:4px;line-height:1.6}
@@ -4599,23 +4598,14 @@ const RV_DECOR={
 const XK='#3A2616',XR='#9B2B1F',XG='#C9962E',XS='#7E9C8E',XP='#EBD7A9';
 const XI=`stroke="${XK}" stroke-width="1.5" stroke-linejoin="round" stroke-linecap="round"`;
 const XI2=`stroke="${XK}" stroke-width="1.1" stroke-linejoin="round" stroke-linecap="round"`;
-(()=>{const d=document.createElement('div');d.innerHTML=`<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
- <filter id="xInk" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="2.6" xChannelSelector="R" yChannelSelector="G"/></filter>
+let XDEFS=` <filter id="xInk" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="2" seed="7" result="t"/><feDisplacementMap in="SourceGraphic" in2="t" scale="2.6" xChannelSelector="R" yChannelSelector="G"/></filter>
  <radialGradient id="xGlow"><stop offset="0" stop-color="#FFF4C4" stop-opacity=".95"/><stop offset=".5" stop-color="#F2C553" stop-opacity=".45"/><stop offset="1" stop-color="#F2C553" stop-opacity="0"/></radialGradient>
  <linearGradient id="xWood" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#9A6230"/><stop offset="1" stop-color="#6E4320"/></linearGradient>
  <linearGradient id="xGold" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#F6DA7A"/><stop offset=".5" stop-color="#D9A93E"/><stop offset="1" stop-color="#A9772A"/></linearGradient>
  <linearGradient id="xIron" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#3B3836"/><stop offset=".5" stop-color="#5C5754"/><stop offset="1" stop-color="#3B3836"/></linearGradient>
- <filter id="xCoast" x="-15%" y="-15%" width="130%" height="130%" color-interpolation-filters="sRGB">
-  <feMorphology in="SourceAlpha" operator="dilate" radius="4.4" result="w"/><feFlood flood-color="#7E9C8E" flood-opacity=".2"/><feComposite in2="w" operator="in" result="wash"/>
-  <feMorphology in="SourceAlpha" operator="dilate" radius="1.5" result="a1"/><feMorphology in="SourceAlpha" operator="dilate" radius="1.25" result="b1"/><feComposite in="a1" in2="b1" operator="out" result="r1"/>
-  <feMorphology in="SourceAlpha" operator="dilate" radius="2.7" result="a2"/><feMorphology in="SourceAlpha" operator="dilate" radius="2.48" result="b2"/><feComposite in="a2" in2="b2" operator="out" result="r2"/>
-  <feMorphology in="SourceAlpha" operator="dilate" radius="3.9" result="a3"/><feMorphology in="SourceAlpha" operator="dilate" radius="3.7" result="b3"/><feComposite in="a3" in2="b3" operator="out" result="r3"/>
-  <feMerge result="rr"><feMergeNode in="r1"/><feMergeNode in="r2"/><feMergeNode in="r3"/></feMerge><feFlood flood-color="#5F8475" flood-opacity=".8"/><feComposite in2="rr" operator="in" result="rings"/>
-  <feMorphology in="SourceAlpha" operator="erode" radius="1.6" result="e"/><feComposite in="SourceAlpha" in2="e" operator="out" result="bb"/><feFlood flood-color="#D9BF84"/><feComposite in2="bb" operator="in" result="beach"/>
-  <feMorphology in="SourceAlpha" operator="dilate" radius=".45" result="c"/><feComposite in="c" in2="SourceAlpha" operator="out" result="cl"/><feFlood flood-color="#3A2616"/><feComposite in2="cl" operator="in" result="coast"/>
-  <feMerge><feMergeNode in="wash"/><feMergeNode in="rings"/><feMergeNode in="SourceGraphic"/><feMergeNode in="beach"/><feMergeNode in="coast"/></feMerge></filter>
  <pattern id="xHatch" width="4" height="4" patternUnits="userSpaceOnUse" patternTransform="rotate(40)"><path d="M0 0v4" stroke="${XK}" stroke-width=".7" opacity=".55"/></pattern>
-</defs></svg>`;document.body.appendChild(d.firstChild)})();
+`;
+
 /* ---------- ink sprites (40×40) ---------- */
 const XS_={
  well:`<svg viewBox="0 0 40 40"><path d="M11 15v14M29 15v14" ${XI}/><path d="M6 16l14-8 14 8z" fill="#B65A3E" ${XI}/><path d="M20 16v6" ${XI2}/><path d="M17 22h6l-1 4h-4z" fill="#8A5A33" ${XI2}/><path d="M8 28h24v6q-12 5-24 0z" fill="#CDBF9F" ${XI}/><ellipse cx="20" cy="28" rx="12" ry="3.4" fill="#5E7F86" ${XI}/><path d="M11 31h3M18 32.5h4M26 31h3" ${XI2}/></svg>`,
@@ -4668,32 +4658,39 @@ function xChestSVG(){const rivets=(x,y0,y1)=>{let s='';for(let y=y0;y<=y1;y+=11)
 function xTorn(seed=3,n=64){const r=seeded(seed),pts=[];const j=()=>(r()*1.6).toFixed(2);
  for(let k=0;k<n;k++){const t=k/n,p=t*4,s=p%1;let x,y;if(p<1){x=s*100;y=+j()}else if(p<2){x=100-+j();y=s*100}else if(p<3){x=100-s*100;y=100-+j()}else{x=+j();y=100-s*100}pts.push(`${(+x).toFixed(2)}% ${(+y).toFixed(2)}%`)}
  return`polygon(${pts.join(',')})`}
-/* ---------- puzzle board: parchment chart with straight squares ---------- */
-function xBoard(P,o={}){const n=P.n,U=10,W=n*U;let land='',grid='',waves='';const r=seeded(n*97+(P.cells?P.cells.length:0));
- for(let i=0;i<n*n;i++){const x=(i%n)*U,y=((i/n)|0)*U;if(P.isl[i]){land+=`<rect x="${x}" y="${y}" width="${U}" height="${U}"/>`;grid+=`<rect x="${x+.5}" y="${y+.5}" width="${U-1}" height="${U-1}"/>`}
-  else if(r()<.45){const wx=x+2+r()*3,wy=y+4+r()*3;waves+=`<path d="M${wx.toFixed(1)} ${wy.toFixed(1)}q1.2-1.4 2.4 0t2.4 0"/>`}}
+/* ---------- puzzle board: parchment chart with straight squares (pure geometry, no filters) ---------- */
+function xCoastPath(P,U=10){const n=P.n,L=(r,c)=>r>=0&&c>=0&&r<n&&c<n&&P.isl[r*n+c],E=new Map(),add=(a,b)=>{const k=a.join();(E.get(k)||E.set(k,[]).get(k)).push(b)};
+ for(let r=0;r<n;r++)for(let c=0;c<n;c++)if(L(r,c)){if(!L(r-1,c))add([c,r],[c+1,r]);if(!L(r,c+1))add([c+1,r],[c+1,r+1]);if(!L(r+1,c))add([c+1,r+1],[c,r+1]);if(!L(r,c-1))add([c,r+1],[c,r])}
+ let d='';for(const[k0,l0]of E){while(l0.length){let pt=k0.split(',').map(Number),nx=l0.pop();const pts=[pt];while(true){pts.push(nx);const l=E.get(nx.join());if(!l||!l.length)break;nx=l.pop()}
+   const q=pts.filter((p,i)=>{if(i===0||i===pts.length-1)return true;const a=pts[i-1],b=pts[i+1];return!((a[0]===p[0]&&p[0]===b[0])||(a[1]===p[1]&&p[1]===b[1]))});d+='M'+q.map(p=>`${p[0]*U} ${p[1]*U}`).join('L')+'Z'}}return d}
+let XBID=0;
+function xBoard(P,o={}){const n=P.n,U=10,W=n*U,id='xbm'+(++XBID),coast=xCoastPath(P,U);let grid='',waves='';const r=seeded(n*97+(P.cells?P.cells.length:0));
+ for(let i=0;i<n*n;i++){const x=(i%n)*U,y=((i/n)|0)*U;if(P.isl[i])grid+=`M${x+.5} ${y+.5}h${U-1}v${U-1}h${1-U}z`;else if(r()<.45){const wx=x+2+r()*3,wy=y+4+r()*3;waves+=`M${wx.toFixed(1)} ${wy.toFixed(1)}q1.2-1.4 2.4 0t2.4 0`}}
+ const rings=[3.9,2.7,1.5].map(dd=>`<path d="${coast}" stroke="#fff" stroke-width="${2*dd+.4}"/><path d="${coast}" stroke="#000" stroke-width="${2*dd-.4}"/>`).join('');
  const pos=c=>`left:${(c%n)*100/n}%;top:${((c/n)|0)*100/n}%;width:${100/n}%;height:${100/n}%`;let spr='';
  (P.marks||[]).forEach(m=>{spr+=`<div class="xspr" style="${pos(m.cell)}">${XS_[m.k]||''}</div>`});if(P.obst)P.obst.forEach((k,c)=>{spr+=`<div class="xspr" style="${pos(c)}">${XS_[k]||''}</div>`});
- return`<div class="xb ltr" id="xb" style="--n:${n}"><svg class="xbsv" viewBox="-6 -6 ${W+12} ${W+12}" preserveAspectRatio="none"><g fill="none" stroke="#7E9C8E" stroke-width=".55" stroke-linecap="round">${waves}</g>
-  <g filter="url(#xCoast)" fill="${o.dig?'#EAD49C':'#F1E2B8'}">${land}</g><g fill="none" stroke="#3A2616" stroke-width=".22" stroke-dasharray=".8 .7" opacity=".55">${grid}</g>
+ return`<div class="xb ltr" id="xb" style="--n:${n}"><svg class="xbsv" viewBox="-6 -6 ${W+12} ${W+12}" preserveAspectRatio="none"><defs><mask id="${id}" maskUnits="userSpaceOnUse" x="-6" y="-6" width="${W+12}" height="${W+12}"><rect x="-6" y="-6" width="${W+12}" height="${W+12}" fill="#000"/><g fill="none" stroke-linejoin="miter">${rings}</g></mask><clipPath id="${id}c"><path d="${coast}"/></clipPath></defs>
+  <path d="${waves}" fill="none" stroke="#7E9C8E" stroke-width=".55" stroke-linecap="round"/><path d="${coast}" fill="none" stroke="#7E9C8E" stroke-width="8.8" stroke-linejoin="miter" opacity=".2"/><rect x="-6" y="-6" width="${W+12}" height="${W+12}" fill="#5F8475" opacity=".8" mask="url(#${id})"/>
+  <path d="${coast}" fill="${o.dig?'#EAD49C':'#F1E2B8'}"/><path d="${coast}" fill="none" stroke="#D9BF84" stroke-width="3.2" clip-path="url(#${id}c)"/><path d="${grid}" fill="none" stroke="#3A2616" stroke-width=".22" stroke-dasharray=".8 .7" opacity=".55"/><path d="${coast}" fill="none" stroke="#3A2616" stroke-width=".9" stroke-linejoin="miter"/>
   <rect x="-5.5" y="-5.5" width="${W+11}" height="${W+11}" fill="none" stroke="#3A2616" stroke-width=".5"/><rect x="-4.6" y="-4.6" width="${W+9.2}" height="${W+9.2}" fill="none" stroke="#3A2616" stroke-width=".2"/></svg>
   <div class="xbin"><div class="xsprs">${spr}</div><div class="xbg">${[...Array(n*n).keys()].map(i=>P.isl[i]?`<button class="xc" data-i="${i}" aria-label="مربع"></button>`:'<span class="xc sea"></span>').join('')}</div><div class="xfx" id="xfx"></div></div></div>`}
 /* ---------- aged paper: torn, scorched edge, stains, folds ---------- */
-(()=>{const d=document.createElement('div');d.innerHTML=`<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
- <filter id="xPaperF" x="-6%" y="-4%" width="112%" height="114%" color-interpolation-filters="sRGB">
-  <feTurbulence type="fractalNoise" baseFrequency=".028" numOctaves="3" seed="4" result="n"/>
-  <feDisplacementMap in="SourceGraphic" in2="n" scale="12" xChannelSelector="R" yChannelSelector="G" result="p"/>
-  <feMorphology in="p" operator="erode" radius="13" result="e3"/><feGaussianBlur in="e3" stdDeviation="12" result="e3b"/><feComposite in="p" in2="e3b" operator="out" result="toastA"/><feFlood flood-color="#8A5A25" flood-opacity=".42"/><feComposite in2="toastA" operator="in" result="toast"/>
-  <feMorphology in="p" operator="erode" radius="4" result="e1"/><feGaussianBlur in="e1" stdDeviation="4.5" result="e1b"/><feComposite in="p" in2="e1b" operator="out" result="rimA"/><feFlood flood-color="#4E260A" flood-opacity=".92"/><feComposite in2="rimA" operator="in" result="burn"/>
-  <feMorphology in="p" operator="erode" radius="1.3" result="e2"/><feComposite in="p" in2="e2" operator="out" result="edgeA"/><feFlood flood-color="#1E0E05"/><feComposite in2="edgeA" operator="in" result="char"/>
+XDEFS+=`<filter id="xPaperF" x="-6%" y="-4%" width="112%" height="114%" color-interpolation-filters="sRGB">
+  <feTurbulence type="fractalNoise" baseFrequency=".028" numOctaves="2" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="12" xChannelSelector="R" yChannelSelector="G" result="p"/>
+  <feGaussianBlur in="p" stdDeviation="14" result="b1"/><feComposite in="p" in2="b1" operator="out" result="t1"/><feColorMatrix in="t1" values="0 0 0 0 .54  0 0 0 0 .35  0 0 0 0 .14  0 0 0 .9 0" result="toast"/>
+  <feGaussianBlur in="p" stdDeviation="3.2" result="b2"/><feComposite in="p" in2="b2" operator="out" result="t2"/><feColorMatrix in="t2" values="0 0 0 0 .3  0 0 0 0 .15  0 0 0 0 .04  0 0 0 2.4 0" result="burn"/>
+  <feGaussianBlur in="p" stdDeviation=".8" result="b3"/><feComposite in="p" in2="b3" operator="out" result="t3"/><feColorMatrix in="t3" values="0 0 0 0 .12  0 0 0 0 .05  0 0 0 0 .02  0 0 0 4 0" result="char"/>
   <feTurbulence type="fractalNoise" baseFrequency=".009" numOctaves="2" seed="9" result="st"/><feColorMatrix in="st" values="0 0 0 0 .42  0 0 0 0 .26  0 0 0 0 .09  .95 0 0 0 -.5" result="stc"/><feComposite in="stc" in2="p" operator="in" result="stains"/>
-  <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="2" seed="2" result="g"/><feColorMatrix in="g" values="0 0 0 0 .3  0 0 0 0 .18  0 0 0 0 .06  .42 0 0 0 -.12" result="gc"/><feComposite in="gc" in2="p" operator="in" result="grain"/>
+  <feTurbulence type="fractalNoise" baseFrequency=".8" numOctaves="1" seed="2" result="g"/><feColorMatrix in="g" values="0 0 0 0 .3  0 0 0 0 .18  0 0 0 0 .06  .42 0 0 0 -.12" result="gc"/><feComposite in="gc" in2="p" operator="in" result="grain"/>
   <feGaussianBlur in="p" stdDeviation="7" result="sb"/><feOffset in="sb" dy="9" result="so"/><feColorMatrix in="so" values="0 0 0 0 0  0 0 0 0 0  0 0 0 0 0  0 0 0 .55 0" result="shadow"/>
   <feMerge><feMergeNode in="shadow"/><feMergeNode in="p"/><feMergeNode in="stains"/><feMergeNode in="toast"/><feMergeNode in="grain"/><feMergeNode in="burn"/><feMergeNode in="char"/></feMerge></filter>
- <radialGradient id="xPaperG" cx="50%" cy="46%" r="70%"><stop offset="0" stop-color="#F3E4BB"/><stop offset=".6" stop-color="#EAD5A2"/><stop offset="1" stop-color="#D8B97E"/></radialGradient>
-</defs></svg>`;document.body.appendChild(d.firstChild)})();
-let XPID=0;
-function xPaperSVG(W,H,seed=1,o={}){const r=seeded(seed*131+7),m=12,pts=[],id='xpm'+(++XPID);
+ <radialGradient id="xPaperG" cx="50%" cy="46%" r="70%"><stop offset="0" stop-color="#F3E4BB"/><stop offset=".6" stop-color="#EAD5A2"/><stop offset="1" stop-color="#D8B97E"/></radialGradient>`;
+(()=>{const d=document.createElement('div');d.innerHTML=`<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>${XDEFS}</defs></svg>`;document.body.appendChild(d.firstChild)})();
+/* static art is drawn once into an image: filters run a single time and never repaint under animations */
+const XIMG=new Map();
+function xImg(key,W,H,body,par='none'){let u=XIMG.get(key);if(!u){u='data:image/svg+xml;charset=utf-8,'+encodeURIComponent(`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="${par}"><defs>${XDEFS}</defs>${body}</svg>`);XIMG.set(key,u)}return u}
+function xPaperSVG(W,H,seed=1,o={}){return`<img class="xpbg" alt="" aria-hidden="true" src="${xImg('p'+[W,H,seed,o.bite,o.hole,o.tearTop].join(),W,H,xPaperBody(W,H,seed,o))}">`}
+function xPaperBody(W,H,seed,o){const r=seeded(seed*131+7),m=12,pts=[],id='xpm';
   const edges=[[m,m,W-m,m],[W-m,m,W-m,H-m],[W-m,H-m,m,H-m],[m,H-m,m,m]],tears=[o.tearTop??.32+r()*.3,o.tearRight??(r()<.6?.2+r()*.6:-1),-1,o.tearLeft??(r()<.5?.3+r()*.5:-1)];
   edges.forEach(([x0,y0,x1,y1],e)=>{const len=Math.hypot(x1-x0,y1-y0),n=Math.max(6,Math.round(len/12)),nx=-(y1-y0)/len,ny=(x1-x0)/len;
     for(let k=0;k<n;k++){const t=k/n,j=(r()-.5)*5+(r()<.12?r()*5:0);pts.push([x0+(x1-x0)*t+nx*j,y0+(y1-y0)*t+ny*j]);
@@ -4702,8 +4699,8 @@ function xPaperSVG(W,H,seed=1,o={}){const r=seeded(seed*131+7),m=12,pts=[],id='x
   const bite=o.bite===0?'':`<circle cx="${o.bite===2?W-m:m}" cy="${H-m}" r="${22+r()*16}" fill="#000"/>`,hole=o.hole?`<ellipse cx="${(W*(.07+r()*.04)).toFixed(0)}" cy="${(H*(.05+r()*.02)).toFixed(0)}" rx="${5+r()*4}" ry="${4+r()*3}" fill="#000"/>`:'';
   const fold=[[W/3,0,W/3,H],[2*W/3,0,2*W/3,H],[0,H/2,W,H/2]].map(([a,b,c,e2],k)=>`<path d="M${a} ${b}L${c} ${e2}" stroke="rgba(110,70,25,.28)" stroke-width="1.3"/><path d="M${a+(k<2?1.4:0)} ${b+(k<2?0:1.4)}L${c+(k<2?1.4:0)} ${e2+(k<2?0:1.4)}" stroke="rgba(255,248,226,.55)" stroke-width="1.1"/>`).join('');
   const ring=`<circle cx="${(W*(.2+r()*.6)).toFixed(0)}" cy="${(H*(.55+r()*.3)).toFixed(0)}" r="${26+r()*12}" fill="none" stroke="rgba(120,78,28,.14)" stroke-width="3.2" stroke-dasharray="${60+r()*60} 14 30 8"/>`;
-  return`<svg class="xpbg" viewBox="0 0 ${W} ${H}" preserveAspectRatio="none" aria-hidden="true"><mask id="${id}"><rect width="${W}" height="${H}" fill="#fff"/>${bite}${hole}</mask>
-   <clipPath id="${id}c"><path d="${d}"/></clipPath><g filter="url(#xPaperF)"><g mask="url(#${id})"><path d="${d}" fill="url(#xPaperG)"/><g clip-path="url(#${id}c)">${fold}${ring}</g></g></g></svg>`}
+  return`<mask id="${id}"><rect width="${W}" height="${H}" fill="#fff"/>${bite}${hole}</mask>
+   <clipPath id="${id}c"><path d="${d}"/></clipPath><g filter="url(#xPaperF)"><g mask="url(#${id})"><path d="${d}" fill="url(#xPaperG)"/><g clip-path="url(#${id}c)">${fold}${ring}</g></g></g>`}
 /* ---------- engraving helpers ---------- */
 function xFrond(sx,sy,cx,cy,ex,ey,w=2.4){let d=`M${sx} ${sy}Q${cx} ${cy} ${ex} ${ey}`,t2='';
   for(let k=1;k<=8;k++){const t=k/9,x=(1-t)*(1-t)*sx+2*(1-t)*t*cx+t*t*ex,y=(1-t)*(1-t)*sy+2*(1-t)*t*cy+t*t*ey,tx=2*(1-t)*(cx-sx)+2*t*(ex-cx),ty=2*(1-t)*(cy-sy)+2*t*(ey-cy),L=Math.hypot(tx,ty),nx=-ty/L,ny=tx/L,s=w*(1-t*.55);
@@ -4775,21 +4772,24 @@ function xMapArt(){if(XMAP_ART)return XMAP_ART;
  const forest=[[232,138,52],[96,150,40],[178,262,40],[250,300,34]].map(([x,y,w])=>xNest(XS_.forest,x-w/2,y-w/3,w,w*2/3)).join('');
  const echo=`<path d="${XISL}" fill="none" stroke="${XS}" stroke-width="44" opacity=".2" stroke-linejoin="round"/>`+[[1.055,.85],[1.11,.6],[1.17,.38]].map(([k,o])=>`<path d="${XISL}" transform="translate(186 214) scale(${k}) translate(-186 -214)" fill="none" stroke="${XS}" stroke-width="1.2" vector-effect="non-scaling-stroke" opacity="${o}"/>`).join('')+`<path d="${XISL}" fill="none" stroke="${XK}" stroke-width="7" stroke-dasharray=".9 2.6" opacity=".7"/>`;
  const river='M188 116q8 22-4 40q-14 18 2 36q12 16-2 34q-10 14-2 30q8 16 0 36';
- const scale=`<g transform="translate(24 404)">${[0,1,2,3].map(k=>`<rect x="${k*16}" y="0" width="16" height="4" fill="${k%2?'#EBD7A9':XK}" stroke="${XK}" stroke-width=".7"/>`).join('')}<g font-size="7" font-family="'Aref Ruqaa',Tajawal,serif" fill="${XK}" text-anchor="middle">${[0,1,2,3,4].map(k=>`<text x="${k*16}" y="12">${XAR(k)}</text>`).join('')}<text x="32" y="-4" font-size="8">مقياس الفراسخ</text></g></g>`;
+ const scale=`<g transform="translate(24 404)">${[0,1,2,3].map(k=>`<rect x="${k*16}" y="0" width="16" height="4" fill="${k%2?'#EBD7A9':XK}" stroke="${XK}" stroke-width=".7"/>`).join('')}</g>`;
  XMAP_ART=`<defs><clipPath id="xMapClip"><rect x="10" y="10" width="340" height="420"/></clipPath></defs><g clip-path="url(#xMapClip)">${rh}</g>
   <g filter="url(#xInk)">${echo}<path d="${XISL}" fill="#F0DFB2" ${XI}/><path d="M86 160C80 128 120 100 160 104C200 90 258 100 274 132C298 156 292 200 276 226C290 270 266 316 222 326C190 340 146 334 122 312C94 298 80 266 96 240C78 214 76 182 86 160Z" fill="#E1D09A" opacity=".5"/>
    <path d="${river}" fill="none" stroke="${XS}" stroke-width="3.4" stroke-linecap="round"/><path d="${river}" fill="none" stroke="${XK}" stroke-width=".7" opacity=".7"/>
    <path d="M118 172q-6 10 4 20q8 8-2 18M130 170q-6 10 4 20q8 8-2 18" fill="none" stroke="${XK}" stroke-width="1.3"/><path d="M120 176l9-2M122 184l9-1M126 193l9 0M127 202l8 2" stroke="${XK}" stroke-width=".6" opacity=".6"/></g>
   ${xNest(XS_.mount,104,56,150,84)}${forest}${decor}${xNest(XS_.reef,26,234,32,32)}${xNest(XS_.reef,56,250,24,24)}${xNest(XS_.rock,20,196,18,18)}${waves}
-  <g font-family="'Aref Ruqaa',Tajawal,serif" fill="${XK}" text-anchor="middle" opacity=".78"><text x="172" y="48" font-size="10.5">جبال الضباب</text><text x="38" y="186" font-size="9" transform="rotate(-14 38 186)">خليج القرش</text><text x="150" y="420" font-size="13" letter-spacing="4">بحر الظلمات</text><text x="232" y="168" font-size="8.5">غابة الصدى</text><text x="206" y="246" font-size="8" transform="rotate(70 206 246)">نهر الذهب</text></g>
   ${scale}<rect x="5" y="5" width="350" height="430" fill="none" stroke="${XK}" stroke-width="1.3" opacity=".55"/><rect x="9" y="9" width="342" height="422" fill="none" stroke="${XK}" stroke-width=".6" stroke-dasharray="10 6" opacity=".5"/>`;
  return XMAP_ART}
-function xHubMap(prog){const done=Math.max(0,Math.min(XST.length,prog)),trail=xTrail();
- return`<svg class="xmap" viewBox="0 0 360 440" preserveAspectRatio="xMidYMid meet">${xMapArt()}
-  <path d="${trail}" fill="none" stroke="${XK}" stroke-width="1.6" stroke-dasharray="5 5" stroke-linecap="round" opacity=".55"/>
-  ${done>0?`<path class="xtrail" d="${xTrail(done+1)}" fill="none" stroke="${XR}" stroke-width="2.4" stroke-dasharray="5 5" stroke-linecap="round"/>`:''}
-  ${xNest(XS_.ship,4,22,78,70,'xshipw')}${xNest(XS_.monster,224,368,120,60,'xmonw')}<g transform="translate(306 62)">${xNest(XS_.rose,-38,-38,76,76,'xrosew')}</g>
-  <g class="xbirds" fill="none" stroke="${XK}" stroke-width="1.1" stroke-linecap="round"><path d="M110 22q4-4 8 0q4-4 8 0"/><path d="M130 14q3-3 6 0q3-3 6 0"/></g></svg>`}
+/* the map = one static image + a light overlay (trail, names) + small animated pieces that the GPU moves without repainting */
+const xAt=(x,y,w,h)=>`left:${(x/3.6).toFixed(2)}%;top:${(y/4.4).toFixed(2)}%;width:${(w/3.6).toFixed(2)}%;height:${(h/4.4).toFixed(2)}%`;
+function xHubMap(prog){const done=Math.max(0,Math.min(XST.length,prog));
+ return`<img class="xmap" alt="" src="${xImg('map',360,440,xMapArt(),'xMidYMid meet')}">
+  <svg class="xmapo" viewBox="0 0 360 440" aria-hidden="true"><path d="${xTrail()}" fill="none" stroke="${XK}" stroke-width="1.6" stroke-dasharray="5 5" stroke-linecap="round" opacity=".55"/>
+  ${done>0?`<path d="${xTrail(done+1)}" fill="none" stroke="${XR}" stroke-width="2.4" stroke-dasharray="5 5" stroke-linecap="round"/>`:''}
+  <g font-family="'Aref Ruqaa',Tajawal,serif" fill="${XK}" text-anchor="middle" opacity=".78"><text x="172" y="48" font-size="10.5">جبال الضباب</text><text x="38" y="186" font-size="9" transform="rotate(-14 38 186)">خليج القرش</text><text x="150" y="420" font-size="13" letter-spacing="4">بحر الظلمات</text><text x="232" y="168" font-size="8.5">غابة الصدى</text><text x="206" y="246" font-size="8" transform="rotate(70 206 246)">نهر الذهب</text>
+   <g font-size="7" transform="translate(24 404)">${[0,1,2,3,4].map(k=>`<text x="${k*16}" y="12">${XAR(k)}</text>`).join('')}<text x="32" y="-4" font-size="8">مقياس الفراسخ</text></g></g></svg>
+  <div class="xa xa-ship" style="${xAt(4,22,78,70)}">${XS_.ship}</div><div class="xa xa-mon" style="${xAt(224,368,120,60)}">${XS_.monster}</div><div class="xa xa-rose" style="${xAt(268,24,76,76)}">${XS_.rose}</div>
+  <div class="xa xa-birds" style="${xAt(106,8,44,18)}"><svg viewBox="106 8 44 18" fill="none" stroke="${XK}" stroke-width="1.1" stroke-linecap="round"><path d="M110 22q4-4 8 0q4-4 8 0"/><path d="M130 14q3-3 6 0q3-3 6 0"/></svg></div>`}
 const XRIB=`<svg viewBox="0 0 300 64" class="xribbon"><path d="M34 12h232q6 0 6 6v26q0 6-6 6H34q-6 0-6-6V18q0-6 6-6z" fill="#E9D3A0" ${XI}/><path d="M38 17h224v28H38z" fill="none" ${XI2} opacity=".55"/>
  <path d="M28 22q-16 0-20 10q-4 10 8 12q8 0 8-6q0-5-6-5" fill="#D9BE86" ${XI}/><path d="M272 22q16 0 20 10q4 10-8 12q-8 0-8-6q0-5 6-5" fill="#D9BE86" ${XI}/><path d="M50 50q100 10 200 0" fill="none" ${XI2} opacity=".4"/></svg>`;
 function xHubHTML(){const t=txState(),prog=t.prog;
