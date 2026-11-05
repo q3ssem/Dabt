@@ -1000,6 +1000,101 @@ img.art[data-pending]{background:linear-gradient(100deg,#EFE6D2 30%,#F8F1E3 50%,
 .icc{position:relative;display:grid;place-items:center;border:1px solid rgba(255,255,255,.5)}.icc svg{width:88%;height:88%}.icc.goal .wave{animation:sway 1.2s ease-in-out infinite;transform-origin:24px 18px}
 .ictok{position:absolute;display:grid;place-items:center;pointer-events:none;transition-property:left,top;transition-timing-function:cubic-bezier(.25,.1,.25,1);z-index:2}.ictok svg{width:84%;height:84%}.ictok.flipx svg{transform:scaleX(-1)}
 
+/* ===== v27: arrows as drawn icons ===== */
+.mzpad button svg{width:26px;height:26px;display:block;margin:auto}
+/* ===== v27: temple guardians ===== */
+.stb2{position:relative;width:min(88vw,380px);aspect-ratio:1;margin:0 auto;max-width:100%;border-radius:50%;background:radial-gradient(circle at 50% 50%,#6E675B 0 18%,#4A453D 19% 21%,#5B554B 22% 58%,#3E3A33 59% 61%,#514B42 62% 100%);box-shadow:inset 0 0 0 6px #2B2520,inset 0 0 40px rgba(0,0,0,.5),0 18px 36px -18px rgba(0,0,0,.7)}
+.stlinks{position:absolute;inset:0;width:100%;height:100%}
+.stlinks line{stroke:#C9A86A;stroke-width:1.1;stroke-dasharray:1.6 1.6;stroke-linecap:round;opacity:.55}
+.stlinks line.zap{animation:stzap .6s ease-out}@keyframes stzap{0%{stroke:#FFE08A;stroke-width:2.4;opacity:1;filter:drop-shadow(0 0 2px #FFD45A)}100%{opacity:.55}}
+.stcore{fill:#2B2520;stroke:#C9A86A;stroke-width:1.2}.stb2.all .stcore{fill:#FFD45A;animation:glowp 1.4s infinite}
+.stbtn2{position:absolute;aspect-ratio:1;transform:translate(-50%,-50%);padding:0;background:none;border-radius:50%;transition:transform .15s}
+.stbtn2:active{transform:translate(-50%,-50%) scale(.95)}.stbtn2 .stsv{width:100%;height:100%;display:block;overflow:visible;filter:drop-shadow(0 6px 6px rgba(0,0,0,.45))}
+.sthead2{transition:transform .6s cubic-bezier(.3,1.35,.5,1)}
+.strune{fill:#4E8A86;opacity:.85;transition:fill .4s}.stbtn2.ok .strune{fill:#FFD45A;filter:drop-shadow(0 0 3px #FFD45A)}
+.steye{fill:#2B2520;transition:fill .4s}.stbtn2.ok .steye{fill:#FFD45A}
+.stpulse{fill:none;stroke:#FFD45A;stroke-width:3;opacity:0;transform-box:fill-box;transform-origin:center}.stbtn2.press .stpulse{animation:stpulse .6s ease-out}
+@keyframes stpulse{from{opacity:.9;transform:scale(.75)}to{opacity:0;transform:scale(1.12)}}
+.stbtn2.hint{animation:pzglow 1s infinite}
+/* ===== v27: balance ===== */
+.scl2{position:relative;height:200px;max-width:380px;margin:0 auto;width:100%}
+.sclpost{position:absolute;left:50%;bottom:0;width:14px;height:150px;transform:translateX(-50%);background:linear-gradient(90deg,#8A5A33,#C98E58,#8A5A33);border:2px solid #2B2520;border-radius:7px 7px 0 0}
+.sclpost i{position:absolute;bottom:-2px;left:50%;width:120px;height:16px;transform:translateX(-50%);background:linear-gradient(#C98E58,#8A5A33);border:2px solid #2B2520;border-radius:10px 10px 4px 4px}
+.sclbeam{--a:0deg;position:absolute;left:6%;right:6%;top:46px;height:12px;background:linear-gradient(#E8C27A,#B88A3E);border:2px solid #2B2520;border-radius:8px;transform:rotate(var(--a));transition:transform .34s cubic-bezier(.35,1.4,.55,1)}
+.sclbeam.nudge{animation:shake2 .35s}
+.sclpin{position:absolute;left:50%;top:50%;width:18px;height:18px;transform:translate(-50%,-50%);border-radius:50%;background:radial-gradient(circle at 35% 30%,#FFF3B8,#C99A2E);border:2px solid #2B2520}
+.sclpan{position:absolute;top:4px;width:38%;height:120px;transform-origin:50% 0;transform:rotate(calc(var(--a) * -1));transition:transform .34s cubic-bezier(.35,1.4,.55,1)}
+.sclpan.l{left:-12%}.sclpan.r{right:-12%}
+.sclstr{position:absolute;left:12%;right:12%;top:0;height:78px;clip-path:polygon(50% 0,100% 100%,98% 100%,50% 3%,2% 100%,0 100%);background:#2B2520}
+.sclplate{position:absolute;left:0;right:0;top:76px;min-height:36px;display:flex;flex-wrap:wrap-reverse;align-content:flex-start;justify-content:center;gap:2px;padding:4px 6px;border-bottom:7px solid #B88A3E;border-radius:0 0 40% 40%/0 0 100% 100%;background:linear-gradient(180deg,transparent 60%,rgba(232,194,122,.35))}
+.scoins2{display:flex;flex-wrap:wrap;gap:8px;justify-content:center;min-height:48px;padding:8px;border-radius:14px;background:color-mix(in srgb,var(--ink) 6%,transparent)}
+.coin2{width:40px;height:40px;border-radius:50%;padding:0;background:radial-gradient(circle at 35% 30%,#FFF3B8,#F2C24C 45%,#B9851A);border:2px solid #7A5A12;box-shadow:inset 0 -3px 0 rgba(0,0,0,.2),0 3px 0 #7A5A12;display:grid;place-items:center;transition:transform .15s,filter .3s,opacity .3s}
+.coin2 span{font:900 14px var(--font-d);color:#5A3E08;width:28px;height:28px;border-radius:50%;border:1.5px dashed rgba(90,62,8,.5);display:grid;place-items:center}
+.sclplate .coin2{width:30px;height:30px}.sclplate .coin2 span{width:21px;height:21px;font-size:11px}
+.coin2:active{transform:scale(.9)}.coin2.drop{animation:cdrop .35s cubic-bezier(.3,1.6,.5,1)}@keyframes cdrop{from{transform:translateY(-40px) scale(.6);opacity:0}}
+.coin2.safe{filter:grayscale(1);opacity:.35}.coin2.acc{animation:pzglow 1.2s infinite}.coin2.pick{transform:scale(1.25);box-shadow:0 0 0 4px #FFD45A}
+/* ===== v27: laser ===== */
+.lzbeam2{position:absolute;inset:0;width:100%;height:100%;pointer-events:none;z-index:2;overflow:visible}
+.lzbeam2 polyline{fill:none;stroke-linecap:round;stroke-linejoin:round}
+#lzg{stroke:#FF4D6D;stroke-width:.42;opacity:.22;animation:lzpulse 1.4s ease-in-out infinite}#lzc{stroke:#FF6B6B;stroke-width:.13}
+#lzf{stroke:#FFF1F1;stroke-width:.09;stroke-dasharray:2.5 5;animation:lzflow .8s linear infinite}
+@keyframes lzflow{to{stroke-dashoffset:-7.5}}@keyframes lzpulse{50%{opacity:.4;stroke-width:.55}}
+#lzhit{fill:#FFE0E0;filter:drop-shadow(0 0 .3px #FF4D6D);animation:lzpulse 1s ease-in-out infinite}
+.lzb.reach #lzhit{opacity:0}.lzb.won #lzc{stroke:#FFB0B0}.lzb.won #lzg{opacity:.5}
+.lzc.mir i{position:absolute;width:128%;height:16%;min-height:4px;border-radius:3px;background:linear-gradient(180deg,#F4F7FB,#AEB8C6 55%,#6E7A8C);border:1.5px solid #2B2520;box-shadow:0 2px 0 rgba(0,0,0,.35)}
+/* ===== v27: warehouse ===== */
+.skw2{position:relative;width:min(88vw,380px);margin:0 auto;max-width:100%;touch-action:none}
+.skb2{display:grid;grid-template-columns:repeat(var(--w),minmax(0,1fr));aspect-ratio:var(--w)/var(--h);border-radius:8px;overflow:hidden;background:repeating-linear-gradient(90deg,#C9A06A 0 24px,#BF955E 24px 25px),#C9A06A}
+.skc2{position:relative;display:grid;place-items:center;box-shadow:inset 0 -1px 0 rgba(90,60,30,.25),inset -1px 0 0 rgba(90,60,30,.18)}
+.skc2.wall{background:linear-gradient(#8F4E3A,#6E3A2B);box-shadow:inset 0 3px 0 #B86A50,inset 0 -4px 0 rgba(0,0,0,.35);background-image:linear-gradient(#0000 47%,rgba(0,0,0,.35) 47% 53%,#0000 53%),linear-gradient(90deg,#0000 47%,rgba(0,0,0,.3) 47% 53%,#0000 53%),linear-gradient(#9C5640,#6E3A2B);background-size:100% 50%,50% 50%,100% 100%}
+.skc2 .pad{width:62%;height:62%;border-radius:50%;border:3px dashed #3FBF6A;background:radial-gradient(circle,rgba(139,227,106,.7),rgba(139,227,106,.15) 70%);animation:padglow 1.8s ease-in-out infinite}@keyframes padglow{50%{opacity:.6;transform:scale(.9)}}.skc2.goal.full .pad{border-style:solid;animation:none;opacity:.4}
+.sksp2{position:absolute;display:grid;place-items:center;pointer-events:none;transition:left .16s cubic-bezier(.3,.9,.4,1),top .16s cubic-bezier(.3,.9,.4,1);z-index:2}.sksp2 svg{width:92%;height:92%;overflow:visible}
+.skbox2 .ccheck{opacity:0;transform-box:fill-box;transform-origin:center;transform:scale(.3);transition:opacity .25s,transform .35s cubic-bezier(.3,1.6,.5,1)}
+.skbox2.ok .cbody{fill:url(#gWoodOk)}.skbox2.ok .ccheck{opacity:1;transform:scale(1)}.skbox2.ok svg{filter:drop-shadow(0 0 6px rgba(139,227,106,.9))}
+.skbox2.lock2 svg{animation:pitch .35s cubic-bezier(.3,1.6,.5,1)}.skbox2.stuck svg{animation:shake2 .3s}.skbox2.hint{animation:pzglow 1s infinite;border-radius:10px}
+.skme2{z-index:3}.skme2 .wbody{transform-box:fill-box;transform-origin:50% 100%}.skme2.walk .wbody{animation:wwalk .16s ease-in-out}.skme2.push .wbody{animation:wpush .2s ease-out}.skme2.bump svg{animation:shake2 .25s}
+.skme2[data-f="3"] svg{transform:scaleX(-1)}.skme2[data-f="0"] .weye{transform:translateY(-1.5px)}
+@keyframes wwalk{50%{transform:translateY(-8%) scaleY(1.04)}}@keyframes wpush{50%{transform:scaleX(1.12) scaleY(.92)}}
+.skdust{position:absolute;pointer-events:none;z-index:1;background:radial-gradient(circle,rgba(240,225,200,.9) 0 18%,transparent 19%) 20% 70%/45% 45% no-repeat,radial-gradient(circle,rgba(240,225,200,.8) 0 18%,transparent 19%) 70% 60%/40% 40% no-repeat,radial-gradient(circle,rgba(240,225,200,.7) 0 18%,transparent 19%) 45% 85%/35% 35% no-repeat;animation:dust .5s ease-out forwards}
+@keyframes dust{from{opacity:1;transform:scale(.6)}to{opacity:0;transform:scale(1.6) translateY(-10%)}}
+.skw2.done .skb2{animation:pzwin .8s ease}
+/* ===== v27: camp meadow ===== */
+.tnw{position:relative;width:min(90vw,400px);margin:0 auto;max-width:100%;padding:8px;border-radius:14px;background:linear-gradient(160deg,#8CC46E,#5E9C49);box-shadow:inset 0 0 0 3px #3C6E30;transition:background 1s}
+.tnclue{display:grid;font:900 14px var(--font-d);color:#1F3A18}.tnclue b{display:grid;place-items:center;border-radius:8px;transition:background .3s,color .3s}
+.tnclue.top{grid-template-columns:repeat(var(--n,1),1fr);margin-inline-start:28px;margin-bottom:4px;grid-auto-flow:column;grid-auto-columns:1fr}.tnclue.side{grid-template-rows:repeat(var(--n,1),1fr);width:24px;gap:3px}
+.tnclue b.done{background:rgba(255,255,255,.55);color:#2E6B22}.tnclue b.over{background:#E0524A;color:#fff}.tnclue b.pop{animation:pitch .35s cubic-bezier(.3,1.6,.5,1)}
+.tnmid{display:flex;gap:4px}
+.tng2{flex:1;display:grid;grid-template-columns:repeat(var(--n),minmax(0,1fr));gap:3px}
+.tnc2{aspect-ratio:1;border-radius:7px;padding:0;display:grid;place-items:center;background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.22),transparent 60%),#7DB862;box-shadow:inset 0 -2px 0 rgba(0,0,0,.15);overflow:visible;min-width:0}
+.tnc2 svg{width:96%;height:96%;overflow:visible}.tnc2.tree{background:radial-gradient(circle at 30% 25%,rgba(255,255,255,.2),transparent 60%),#6FAF55}
+.tnc2.tree .sway{animation:sway 3.2s ease-in-out infinite;animation-delay:var(--d);transform-box:fill-box;transform-origin:50% 100%}
+.tnc2.grass{background:#A8D48E}.tnc2.anim.grass svg{animation:drop .3s ease-out}
+.tnc2.tent{background:radial-gradient(circle,#F2D9A0 0 30%,#9FCC82 70%)}.tnc2.tent .tbody{transform-box:fill-box;transform-origin:50% 100%}.tnc2.anim.tent .tbody{animation:tunfold .5s cubic-bezier(.3,1.5,.5,1)}
+.tnc2.tent .tflag{animation:sway 1.2s ease-in-out infinite;transform-box:fill-box;transform-origin:0 50%}
+@keyframes tunfold{0%{transform:scaleY(0) scaleX(.4)}60%{transform:scaleY(1.12) scaleX(1.04)}100%{transform:none}}
+.tnc2.bad{background:#E0897F}.tnc2.bad .tbody{animation:shake2 .4s}.tnc2.lock{box-shadow:inset 0 0 0 3px #FFD45A}
+.tnfx{position:absolute;inset:0;pointer-events:none;border-radius:14px;overflow:hidden}.tnfx i{position:absolute;width:6px;height:6px;border-radius:50%;background:#FFF3A0;box-shadow:0 0 8px 3px #FFE066;animation:firefly 2.4s ease-in-out infinite alternate}
+@keyframes firefly{0%{opacity:0;transform:translate(0,0)}50%{opacity:1}100%{opacity:.2;transform:translate(14px,-18px)}}
+.tnw.night{background:linear-gradient(160deg,#3E5A44,#24382A)}
+/* ===== v27: ice ===== */
+.icw2{position:relative;width:min(88vw,380px);margin:0 auto;max-width:100%;touch-action:none}
+.icb2{display:grid;grid-template-columns:repeat(var(--w),minmax(0,1fr));aspect-ratio:var(--w)/var(--h);border-radius:12px;overflow:hidden;background:linear-gradient(135deg,#E8F6FC 0%,#BFE3F2 45%,#D9F0F9 55%,#A9D6EA 100%);box-shadow:inset 0 0 0 3px #7FB7D3}
+.icc2{position:relative;display:grid;place-items:center;border-right:1px solid rgba(255,255,255,.55);border-bottom:1px solid rgba(255,255,255,.55);min-width:0}.icc2 svg{width:96%;height:96%;overflow:visible}
+.icc2.glint::after{content:'';position:absolute;width:30%;height:30%;background:linear-gradient(45deg,transparent 40%,#fff 50%,transparent 60%);animation:glint 3.4s ease-in-out infinite;opacity:.9}
+@keyframes glint{0%,70%{opacity:0;transform:translate(-40%,40%)}80%{opacity:1}100%{opacity:0;transform:translate(40%,-40%)}}
+.icc2.goal .tflag{animation:sway 1.2s ease-in-out infinite;transform-box:fill-box;transform-origin:0 0}
+.ictok2{position:absolute;display:grid;place-items:center;pointer-events:none;transition-property:left,top;transition-timing-function:cubic-bezier(.2,.7,.3,1);z-index:3}.ictok2 svg{width:96%;height:96%;overflow:visible}
+.ictok2 .pbody{transform-box:fill-box;transform-origin:50% 100%;transition:transform .15s}
+.ictok2.slide[data-d="1"] .pbody{transform:rotate(14deg) translateY(4%)}.ictok2.slide[data-d="3"] .pbody{transform:rotate(-14deg) translateY(4%)}.ictok2.slide[data-d="0"] .pbody,.ictok2.slide[data-d="2"] .pbody{transform:scaleY(.9)}
+.ictok2.slide .pwing{transform-box:fill-box;transform-origin:100% 0;animation:flap .18s linear infinite alternate}.ictok2.slide .pwing.r{transform-origin:0 0}
+@keyframes flap{to{transform:rotate(-22deg)}}
+.ictok2.stop svg{animation:pstop .3s cubic-bezier(.3,1.6,.5,1)}@keyframes pstop{40%{transform:scaleX(1.15) scaleY(.85)}}
+.ictok2.bump svg{animation:shake2 .3s}
+.icspray{position:absolute;width:12px;height:12px;margin:-6px 0 0 -6px;border-radius:50%;background:radial-gradient(circle,#fff 0 30%,rgba(255,255,255,0) 70%);pointer-events:none;z-index:2;animation:spray .6s ease-out forwards}
+@keyframes spray{from{opacity:1;transform:scale(.5)}to{opacity:0;transform:scale(2.2) translateY(-10px)}}
+.icw2.done .ictok2 svg{animation:pjump .5s ease-in-out 2}@keyframes pjump{50%{transform:translateY(-30%)}}
+@media (prefers-reduced-motion:reduce){.icc2.glint::after,.tnfx i,.tnc2.tree .sway,#lzf,#lzg,.skc2 .pad{animation:none!important}}
+
 </style>
 
 <div id="app">
@@ -1087,7 +1182,7 @@ const S={
     if(typeof r.mute==='boolean')st.mute=r.mute;if(r.skin)st.skin=r.skin;if(r.look)st.look=r.look;st.chal=st.chal||{};for(const[k,v]of Object.entries(r.chal||{}))if(v)st.chal[k]=1;st.boost=newer(st.boost,r.boost,x=>x.w||'');st.boostAt=Math.max(st.boostAt||0,r.boostAt||0)||undefined;if(typeof r.move==='boolean')st.move=r.move;
     if(r.puz){const p=st.puz=st.puz||{};p.pts=Math.max(p.pts||0,r.puz.pts||0);p.rid={...(r.puz.rid||{}),...(p.rid||{})};p.n=p.n||{};for(const[k,v]of Object.entries(r.puz.n||{}))p.n[k]=Math.max(p.n[k]||0,v);if((r.puz.daily||'')>(p.daily||''))p.daily=r.puz.daily}
     if(r.kids&&(!st.kids||(r.kids.ts||0)>(st.kids.ts||0)))st.kids=r.kids;},
-  prune(){if(typeof GM==='undefined')return;const st=this.st;['path','corsi','set','rot','draw','wcst','story','pal','trans','explore','sweep','breath','emo','ideas','mst','freeze','hawk','symbol','time','rhythm','pinball','audio','stroop'].forEach(k=>{if(!GM[k])delete st.lv[k]});
+  prune(){if(typeof GM==='undefined')return;const st=this.st;['path','corsi','set','rot','draw','wcst','story','pal','trans','explore','pz_pic','pz_keys','pz_slide','pz_akari','sweep','breath','emo','ideas','mst','freeze','hawk','symbol','time','rhythm','pinball','audio','stroop'].forEach(k=>{if(!GM[k])delete st.lv[k]});
     for(const k of Object.keys(st.best||{}))if(!GM[k])delete st.best[k];if(st.wk&&!(st.wk.ids||[]).every(id=>GM[id]))st.wk=null;if(st.plan&&!(st.plan.ids||[]).every(GOK))st.plan=null;
     if(st.boost&&st.boost.ids)st.boost.ids=st.boost.ids.filter(id=>GM[id]);if(st.coach&&Array.isArray(st.coach.plan))st.coach.plan=st.coach.plan.filter(p=>p&&GOK(p.id))},
   mergeX(r){const st=this.st,del=new Set([...(st.cardsDel||[]),...(r.cardsDel||[])]);st.cardsDel=[...del].slice(-300);const m=new Map();[...(st.cards||[]),...(r.cards||[])].forEach(c=>{if(!c||del.has(c.id))return;const o=m.get(c.id);if(!o||(c.ts||0)>(o.ts||0))m.set(c.id,c)});st.cards=[...m.values()];
@@ -2690,16 +2785,21 @@ function stMake(lv){const n=[3,4,4,5,5,6,6][lv-1],ring=lv>=4,twist=lv>=6;
   const want=Math.min(Math.max(...dist),[3,4,5,6,7,8,9][lv-1]);let cand=[];for(let x=0;x<N;x++)if(dist[x]===want)cand.push(x);if(!cand.length)for(let x=1;x<N;x++)if(dist[x]>0)cand.push(x);
   const s=dec(pick(cand)),tgt=[...Array(n)].map(()=>rnd(4));return{n,R,s,tgt,ring,twist,dist,nxt,enc,min:dist[enc(s)]}}
 function runStatues(){return pzPlay('pz_stat',api=>{
-  const P=stMake(api.lv);let s=P.s.slice(),presses=0;const ang=P.s.map((d,i)=>(P.tgt[i]+d)*90),ARW=['⬆','➡','⬇','⬅'];
-  const rule=P.twist?'الضغط يدير التمثال يمينًا وجيرانه يسارًا':P.R.some(v=>v.includes(2))?'الضغط يديره ربع لفة، وجاره الأيمن نصف لفة':'الضغط يدير التمثال وجيرانه ربع لفة';
-  api.body.innerHTML=`<div class="strule">${rule}${P.ring?' · الطرفان جيران (دائرة)':''}</div><div class="stats ltr${P.ring?' ring':''}" id="stb">${s.map((_,i)=>`<button class="stbtn" data-i="${i}" aria-label="تمثال ${i+1}"><svg viewBox="-20 -20 40 40"><circle r="15" fill="#B9B4A8" stroke="#2F2A24" stroke-width="1.6"/><g class="sthead" style="transform:rotate(${ang[i]}deg)"><circle r="11" fill="#D8D2C4" stroke="#2F2A24" stroke-width="1.6"/><path d="M0-19l6 8h-12z" fill="#FFD45A" stroke="#2F2A24" stroke-width="1.4" stroke-linejoin="round"/><circle cx="-4" cy="-3" r="1.8" fill="#2F2A24"/><circle cx="4" cy="-3" r="1.8" fill="#2F2A24"/></g></svg><span class="sttg">${ARW[P.tgt[i]]}</span></button>`).join('')}</div>`;
-  api.msg(`وجّه كل تمثال نحو السهم الذهبي تحته. أقل حل: <b class="num">${P.min}</b>`);
-  const btns=[...$('#stb').children];
-  function draw(){btns.forEach((b,i)=>{b.querySelector('.sthead').style.transform=`rotate(${ang[i]}deg)`;b.classList.toggle('ok',s[i]===0)})}
-  function press(i){if(api.ended)return;P.R[i].forEach((r,j)=>{if(r){s[j]=(s[j]+r)%4;ang[j]+=r*90}});presses++;tone(380+i*60,.08,'triangle');btns.forEach(b=>b.classList.remove('hint'));draw();
-    if(s.every(d=>d===0))api.win(`وجّهت التماثيل في ${arN(presses,AN.press)}، والأقل ${arN(P.min,AN.press)}.`);else api.msg(`الضغطات: <b class="num">${presses}</b> · أقل حل: <b class="num">${P.min}</b>`)}
+  const P=stMake(api.lv),n=P.n;let s=P.s.slice(),presses=0;const ang=P.s.map((d,i)=>(P.tgt[i]+d)*90);
+  const rule=P.twist?'الضغط يدير الحارس يمينًا وجيرانه يسارًا':P.R.some(v=>v.includes(2))?'الضغط يديره ربع لفة، وجاره نصف لفة':'الضغط يدير الحارس وجيرانه ربع لفة';
+  const R=36,pos=[...Array(n)].map((_,i)=>{const a=-Math.PI/2+i*2*Math.PI/n;return[50+R*Math.cos(a),50+R*Math.sin(a)]}),sz=n<=4?27:n<=5?24:21;
+  const links=[];for(let i=0;i<n;i++)for(let j=0;j<n;j++)if(i!==j&&P.R[i][j])links.push([i,j,P.R[i][j]]);
+  const pairs=[];links.forEach(([i,j])=>{const k=i<j?i+'-'+j:j+'-'+i;if(!pairs.includes(k))pairs.push(k)});
+  api.body.innerHTML=`<div class="strule">${rule}${P.ring?' · الحراس في دائرة مغلقة':''}</div><div class="stb2" id="stb"><svg class="stlinks" viewBox="0 0 100 100">${pairs.map(k=>{const[a,b]=k.split('-').map(Number);return`<line data-a="${a}" data-b="${b}" x1="${pos[a][0]}" y1="${pos[a][1]}" x2="${pos[b][0]}" y2="${pos[b][1]}"/>`}).join('')}<circle cx="50" cy="50" r="9" class="stcore"/></svg>${pos.map(([x,y],i)=>`<button class="stbtn2" data-i="${i}" style="left:${x}%;top:${y}%;width:${sz}%" aria-label="حارس">${stGuardian(P.tgt[i])}</button>`).join('')}</div>`;
+  api.msg(`وجّه كل حارس نحو الماسة المنقوشة على قاعدته. أقل حل: <b class="num">${P.min}</b>`);
+  const btns=[...$('#stb').querySelectorAll('.stbtn2')],lines=[...$('#stb').querySelectorAll('.stlinks line')];
+  function draw(){btns.forEach((b,i)=>{b.querySelector('.sthead2').style.transform=`rotate(${ang[i]}deg)`;b.classList.toggle('ok',s[i]===0)});$('#stb').classList.toggle('all',s.every(d=>d===0))}
+  function press(i){if(api.ended)return;P.R[i].forEach((r,j)=>{if(r){s[j]=(s[j]+r)%4;ang[j]+=r*90}});presses++;
+    btns.forEach((b,j)=>{b.classList.remove('hint');if(P.R[i][j]){b.classList.remove('press');void b.offsetWidth;b.classList.add('press')}});lines.forEach(l=>{const on=+l.dataset.a===i||+l.dataset.b===i;l.classList.remove('zap');if(on){void l.getBoundingClientRect();l.classList.add('zap')}});
+    tone(180+i*30,.22,'triangle',.06);draw();
+    if(s.every(d=>d===0))api.win(`وجّهت الحراس في ${arN(presses,AN.press)}، والأقل ${arN(P.min,AN.press)}.`);else api.msg(`الضغطات: <b class="num">${presses}</b> · أقل حل: <b class="num">${P.min}</b>`)}
   btns.forEach((b,i)=>b.onclick=()=>press(i));draw();pzHook({P,press,s:()=>s});
-  return{hint:k=>{if(k===1)return`أقل حل ${arN(P.min,AN.press)}. ترتيب الضغطات لا يهم، المهم عدد مرات ضغط كل تمثال.`;const i=P.nxt[P.enc(s)];if(i<0)return null;btns[i].classList.add('hint');return`اضغط التمثال المضيء (رقم ${i+1} من اليسار).`},
+  return{hint:k=>{if(k===1)return`أقل حل ${arN(P.min,AN.press)}. ترتيب الضغطات لا يهم، المهم عدد مرات ضغط كل حارس. الخطوط بينهم تريك من يحرّك من.`;const i=P.nxt[P.enc(s)];if(i<0)return null;btns[i].classList.add('hint');return'اضغط الحارس المضيء.'},
    reveal:()=>`كان أقل حل ${arN(P.min,AN.press)}.`}})}
 
 /* ---------- 6. pipes (water to every house) ---------- */
@@ -2726,34 +2826,6 @@ function runPipes(){return pzPlay('pz_pipe',api=>{
    reveal:()=>'المرة الجاية ابدأ من البيوت في الأطراف.'}})}
 
 /* ---------- 7. picross / nonogram (unique by line logic) ---------- */
-const PC_SZ=[5,5,6,7,8,8,10,10];
-const pcClue=line=>{const o=[];let r=0;line.forEach(v=>{if(v)r++;else if(r){o.push(r);r=0}});if(r)o.push(r);return o.length?o:[0]};
-function pcLine(clue,known){const L=known.length,cl=clue[0]===0?[]:clue,res=Array(L).fill(null);let any=false;
-  const rec=(ci,pos,cur)=>{if(ci===cl.length){for(let i=pos;i<L;i++){if(known[i]===1)return}const full=cur.concat(Array(L-cur.length).fill(0));for(let i=0;i<L;i++)if(known[i]===0&&full[i]===1)return;any=true;full.forEach((v,i)=>{res[i]=res[i]==null?v:res[i]===v?v:-1});return}
-    const rem=cl.slice(ci+1).reduce((a,b)=>a+b+1,0);for(let s=pos;s+cl[ci]+rem<=L;s++){let ok=true;for(let i=pos;i<s;i++)if(known[i]===1){ok=false;break}if(!ok)break;for(let i=s;i<s+cl[ci];i++)if(known[i]===0){ok=false;break}if(!ok)continue;const e=s+cl[ci];if(e<L&&known[e]===1)continue;
-      const nc=cur.concat(Array(s-pos).fill(0),Array(cl[ci]).fill(1));if(e<L)nc.push(0);rec(ci+1,e<L?e+1:e,nc)}};rec(0,0,[]);return any?res:null}
-function pcUnique(n,rows,cols){const g=[...Array(n)].map(()=>Array(n).fill(-1));let ch=true;while(ch){ch=false;for(let a=0;a<2;a++)for(let i=0;i<n;i++){const known=a?g.map(r=>r[i]):g[i].slice(),r=pcLine(a?cols[i]:rows[i],known);if(!r)return false;r.forEach((v,j)=>{if(v>=0&&known[j]===-1){if(a)g[j][i]=v;else g[i][j]=v;ch=true}})}}return g.every(r=>r.every(v=>v>=0))}
-function pcMake(lv){const n=PC_SZ[lv-1];for(let t=0;t<300;t++){const d=.52+Math.random()*.12,sol=[...Array(n)].map(()=>[...Array(n)].map(()=>Math.random()<d?1:0));const rows=sol.map(pcClue),cols=sol[0].map((_,i)=>pcClue(sol.map(r=>r[i])));if(rows.some(r=>r[0]===0)&&n<7)continue;if(pcUnique(n,rows,cols))return{n,sol,rows,cols}}const sol=[...Array(n)].map((_,i)=>[...Array(n)].map((_,j)=>(i+j)%2?1:i%3?1:0));return{n,sol,rows:sol.map(pcClue),cols:sol[0].map((_,i)=>pcClue(sol.map(r=>r[i])))}}
-function runPicross(){return pzPlay('pz_pic',api=>{
-  const P=pcMake(api.lv),n=P.n,g=[...Array(n)].map(()=>Array(n).fill(0)),lockC=new Set();let mode=1,paint=null;
-  api.body.innerHTML=`<div class="pcmode"><button class="on" data-m="1">⬛ ملء</button><button data-m="2">✕ علامة</button></div><div class="pcwrap ltr"><table class="pct n${n}" id="pct"></table></div>`;
-  api.msg('الأرقام تقول كم مربعًا متتاليًا ملوّنًا في كل صف وعمود، وبالترتيب.');
-  api.body.querySelectorAll('.pcmode button').forEach(b=>b.onclick=()=>{mode=+b.dataset.m;api.body.querySelectorAll('.pcmode button').forEach(x=>x.classList.toggle('on',x===b))});
-  const lineOK=(a,i)=>{const line=a?g.map(r=>r[i]===1?1:0):g[i].map(v=>v===1?1:0);return pcClue(line).join()===(a?P.cols[i]:P.rows[i]).join()};
-  function build(){$('#pct').innerHTML=`<tr><th></th>${P.cols.map((c,j)=>`<th class="cc" data-c="${j}">${c.map(x=>`<span>${x}</span>`).join('')}</th>`).join('')}</tr>`+g.map((r,i)=>`<tr><th class="rc" data-r="${i}">${P.rows[i].map(x=>`<span>${x}</span>`).join('')}</th>${r.map((_,j)=>`<td><button class="pcc" data-i="${i}" data-j="${j}" aria-label="مربع ${i+1}، ${j+1}"></button></td>`).join('')}</tr>`).join('');
-    const T=$('#pct');T.addEventListener('pointerdown',e=>{const b=e.target.closest('.pcc');if(!b||api.ended)return;e.preventDefault();const i=+b.dataset.i,j=+b.dataset.j;if(lockC.has(i*n+j))return;paint=g[i][j]===mode?0:mode;set(i,j)});
-    T.addEventListener('pointermove',e=>{if(paint==null)return;const el=document.elementFromPoint(e.clientX,e.clientY),b=el&&el.closest&&el.closest('.pcc');if(b)set(+b.dataset.i,+b.dataset.j)});
-    const up=()=>{if(paint!=null){paint=null;check()}};T.addEventListener('pointerup',up);T.addEventListener('pointerleave',up);document.addEventListener('pointerup',up);cleanup.push(()=>document.removeEventListener('pointerup',up));
-    T.addEventListener('click',e=>{if(e.detail!==0)return;const b=e.target.closest('.pcc');if(!b||api.ended)return;const i=+b.dataset.i,j=+b.dataset.j;if(lockC.has(i*n+j))return;paint=g[i][j]===mode?0:mode;set(i,j);paint=null;check()});draw()}
-  function set(i,j){if(lockC.has(i*n+j)||g[i][j]===paint)return;g[i][j]=paint;tone(paint===1?620:paint===2?380:300,.03);draw()}
-  function draw(){$('#pct').querySelectorAll('.pcc').forEach(b=>{const v=g[+b.dataset.i][+b.dataset.j];b.className='pcc'+(v===1?' f':v===2?' x':'')+(lockC.has(+b.dataset.i*n+ +b.dataset.j)?' lock':'')});
-    $('#pct').querySelectorAll('.rc').forEach(e=>e.classList.toggle('done',lineOK(0,+e.dataset.r)));$('#pct').querySelectorAll('.cc').forEach(e=>e.classList.toggle('done',lineOK(1,+e.dataset.c)))}
-  function check(){if(api.ended)return;if(g.every((r,i)=>r.every((v,j)=>(v===1)===(P.sol[i][j]===1))))api.win(`رسمت اللوحة ${n}×${n} كاملة.`)}
-  build();pzHook({P,g,put:(i,j,v)=>{paint=v;set(i,j);paint=null;check()}});
-  return{hint:k=>{if(k===1)return'ابدأ بالصفوف ذات الأرقام الكبيرة: إن كان الرقم أكبر من نصف الصف فالمربعات في المنتصف مضمونة.';const c=[];for(let i=0;i<n;i++)for(let j=0;j<n;j++){const want=P.sol[i][j]?1:2;if(!lockC.has(i*n+j)&&(g[i][j]===1)!==(P.sol[i][j]===1))c.push([i,j,want])}if(!c.length)return null;
-    const f=c.filter(x=>x[2]===1),pk=f.length?pick(f):pick(c),cnt=Math.min(n>=8?3:2,c.length);let picks=[pk];for(const x of shuffle(c))if(picks.length<cnt&&x!==pk)picks.push(x);picks.forEach(([i,j,w])=>{g[i][j]=w;lockC.add(i*n+j)});draw();check();return`كشفت لك ${arN(picks.length,['مربعًا واحدًا','مربعين','مربعات','مربعًا'])} بإطار ذهبي.`},
-   reveal:()=>{for(let i=0;i<n;i++)for(let j=0;j<n;j++)g[i][j]=P.sol[i][j]?1:0;draw();return'هذه كانت اللوحة.'}}})}
-
 /* ---------- 8. logic grid (Einstein mini, brute-force unique) ---------- */
 const LG_P=['سعد','فهد','ماجد','خالد'];
 const LG_C=[{n:'المشروب',v:'يشرب',it:['الشاي','القهوة','العصير','الحليب'],ic:['🍵','☕','🧃','🥛']},{n:'الحيوان',v:'يربّي',it:['القطة','الببغاء','السمكة','الأرنب'],ic:['🐱','🦜','🐟','🐰']},{n:'اللون',v:'يحب',it:['الأحمر','الأزرق','الأخضر','الأصفر'],ic:['🟥','🟦','🟩','🟨']},{n:'المدينة',v:'من',it:['الرياض','جدة','أبها','الدمام'],ic:['🏙️','🌊','⛰️','🏖️']}];
@@ -2787,24 +2859,27 @@ function runGrid(){return pzPlay('pz_grid',api=>{
 const SC_LV=[[3,'h',1],[9,'h',2],[4,'u',2],[27,'h',3],[9,'u',3],[12,'u',3],[13,'u',3]];
 function runScale(){return pzPlay('pz_scale',api=>{
   const[n,mode,W]=SC_LV[api.lv-1];let cand=[];for(let c=0;c<n;c++){cand.push([c,1]);if(mode==='u')cand.push([c,-1])}
-  const pos=Array(n).fill(0);let used=0,accuse=false,showSafe=false,log=[];
-  api.body.innerHTML=`<div class="scale" id="scl"><div class="sbeam" id="sbm"><div class="span l" id="spl"></div><div class="span r" id="spr"></div></div><div class="spost"></div></div>
-   <div class="scoins ltr" id="sco"></div><div class="sbtns"><button class="go-btn" id="sgo">⚖ زِن</button><button class="cta ghost" id="sac">أعرف المزيفة!</button></div><ol class="slog" id="slg"></ol>`;
-  api.msg(`بين ${n} قطع واحدة مزيفة ${mode==='h'?'<b>أثقل</b> من الباقي':'<b>تختلف في الوزن</b> (لا نعرف أثقل أم أخف)'}. عندك ${arN(W,AN.weigh)}. اضغط القطعة لتنقلها: الصينية ← اليسار ← اليمين.`);
-  const coins=()=>cand.map(x=>x[0]),sus=()=>new Set(coins());
-  function draw(){const sset=sus();const btn=(c)=>`<button class="coinb${showSafe&&!sset.has(c)?' safe':''}${accuse?' acc':''}" data-c="${c}">${c+1}</button>`;
+  const pos=Array(n).fill(0);let used=0,accuse=false,showSafe=false,log=[],last=-1,ang=0;
+  api.body.innerHTML=`<div class="scl2"><div class="sclpost"><i></i></div><div class="sclbeam" id="sbm"><div class="sclpan l"><span class="sclstr"></span><div class="sclplate" id="spl"></div></div><div class="sclpan r"><span class="sclstr"></span><div class="sclplate" id="spr"></div></div><b class="sclpin"></b></div></div>
+   <div class="scoins2 ltr" id="sco"></div><div class="sbtns"><button class="go-btn" id="sgo">زِن</button><button class="cta ghost" id="sac">أعرف المزيفة!</button></div><ol class="slog" id="slg"></ol>`;
+  api.msg(`بين ${n} قطع واحدة مزيفة ${mode==='h'?'<b>أثقل</b> من الباقي':'<b>تختلف في الوزن</b> (لا نعرف أثقل أم أخف)'}. عندك ${arN(W,AN.weigh)}. اضغط القطعة لتنقلها: الصينية ← الكفة اليسرى ← اليمنى.`);
+  const sus=()=>new Set(cand.map(x=>x[0]));
+  const setA=a=>{ang=a;$('#sbm').style.setProperty('--a',a+'deg')};
+  function draw(){const ss=sus(),btn=c=>`<button class="coin2${showSafe&&!ss.has(c)?' safe':''}${accuse?' acc':''}${c===last?' drop':''}" data-c="${c}" aria-label="قطعة ${c+1}"><span>${c+1}</span></button>`;
     $('#sco').innerHTML=[...Array(n).keys()].filter(c=>!pos[c]).map(btn).join('');$('#spl').innerHTML=[...Array(n).keys()].filter(c=>pos[c]===1).map(btn).join('');$('#spr').innerHTML=[...Array(n).keys()].filter(c=>pos[c]===2).map(btn).join('');
-    api.body.querySelectorAll('.coinb').forEach(b=>b.onclick=()=>tap(+b.dataset.c));$('#sgo').textContent=used>=W?'انتهت الوزنات':`⚖ زِن (باقي ${W-used})`;$('#sgo').disabled=used>=W;$('#sac').classList.toggle('on',accuse);$('#sac').textContent=accuse?'اختر القطعة المزيفة…':'أعرف المزيفة!'}
-  function tap(c){if(api.ended)return;if(accuse){judge(c);return}pos[c]=(pos[c]+1)%3;tone(640,.04);draw()}
-  function weigh(){if(api.ended||used>=W)return;const L=pos.filter(p=>p===1).length,R=pos.filter(p=>p===2).length;if(!L||L!==R){api.msg('ضع عددًا متساويًا من القطع في الكفتين.');sfx.bad();return}
-    const out=x=>{const[c,d]=x;return pos[c]===1?(d>0?'L':'R'):pos[c]===2?(d>0?'R':'L'):'E'};const grp={L:[],R:[],E:[]};cand.forEach(x=>grp[out(x)].push(x));
-    const mx=Math.max(grp.L.length,grp.R.length,grp.E.length),res=shuffle(['L','R','E']).find(k=>grp[k].length===mx);cand=grp[res];used++;sfx.tick();
-    $('#sbm').className='sbeam '+(res==='L'?'tl':res==='R'?'tr':'');const l=[...Array(n).keys()].filter(c=>pos[c]===1).map(c=>c+1).join('،'),r=[...Array(n).keys()].filter(c=>pos[c]===2).map(c=>c+1).join('،');
-    log.push(`<li><span class="ltr">${l}</span> ⚖ <span class="ltr">${r}</span>: ${res==='E'?'متعادلتان':res==='L'?'اليسار أثقل':'اليمين أثقل'}</li>`);$('#slg').innerHTML=log.join('');draw();
-    if(used>=W){accuse=true;draw();api.msg('انتهت الوزنات. اختر القطعة المزيفة.')}}
-  function judge(c){const cs=sus();if(cs.size===1&&cs.has(c)){api.win(`وجدت القطعة المزيفة (${c+1}) في ${arN(used,AN.weigh)}.`);return}
+    api.body.querySelectorAll('.coin2').forEach(b=>b.onclick=()=>tap(+b.dataset.c));last=-1;
+    $('#sgo').textContent=used>=W?'انتهت الوزنات':`زِن (باقي ${W-used})`;$('#sgo').disabled=used>=W;$('#sac').classList.toggle('on',accuse);$('#sac').textContent=accuse?'اختر القطعة المزيفة…':'أعرف المزيفة!'}
+  function tap(c){if(api.ended)return;if(accuse){judge(c);return}pos[c]=(pos[c]+1)%3;last=c;if(ang)setA(0);tone(900-pos[c]*120,.05,'triangle');draw()}
+  function swing(t){setA(t*1.5);later(()=>setA(t*.7),330);later(()=>setA(t*1.12),560);later(()=>setA(t),760)}
+  function weigh(){if(api.ended||used>=W)return;const L=pos.filter(p=>p===1).length,Rn=pos.filter(p=>p===2).length;if(!L||L!==Rn){api.msg('ضع عددًا متساويًا من القطع في الكفتين.');sfx.bad();$('#sbm').classList.remove('nudge');void $('#sbm').offsetWidth;$('#sbm').classList.add('nudge');return}
+    const out=([c,d])=>pos[c]===1?(d>0?'L':'R'):pos[c]===2?(d>0?'R':'L'):'E';const grp={L:[],R:[],E:[]};cand.forEach(x=>grp[out(x)].push(x));
+    const mx=Math.max(grp.L.length,grp.R.length,grp.E.length),res=shuffle(['L','R','E']).find(k=>grp[k].length===mx);cand=grp[res];used++;
+    tone(140,.35,'triangle',.08);swing(res==='L'?-11:res==='R'?11:0);if(res==='E'){setA(5);later(()=>setA(-3),260);later(()=>setA(0),480)}
+    const l=[...Array(n).keys()].filter(c=>pos[c]===1).map(c=>c+1).join('،'),r=[...Array(n).keys()].filter(c=>pos[c]===2).map(c=>c+1).join('،');
+    later(()=>{log.push(`<li><span class="ltr">${l}</span> مقابل <span class="ltr">${r}</span>: ${res==='E'?'متعادلتان':res==='L'?'اليسرى أثقل':'اليمنى أثقل'}</li>`);$('#slg').innerHTML=log.join('');if(used>=W){accuse=true;api.msg('انتهت الوزنات. اختر القطعة المزيفة.')}draw();sfx.tick()},800)}
+  function judge(c){const cs=sus();api.body.querySelectorAll(`.coin2[data-c="${c}"]`).forEach(b=>b.classList.add('pick'));if(cs.size===1&&cs.has(c)){api.win(`وجدت القطعة المزيفة (${c+1}) في ${arN(used,AN.weigh)}.`);return}
     const alt=[...cs].filter(x=>x!==c);api.over(cs.has(c)?`${alt.length>3?`كان فيه ${alt.length} قطع أخرى ممكنة`:`كانت ممكن تكون القطعة ${alt.map(x=>x+1).join(' أو ')} أيضًا`}، فاختيارك كان تخمينًا لا استنتاجًا.`:`القطعة ${c+1} مستحيل تكون المزيفة حسب الوزنات. المشكوك فيها كانت: ${[...cs].map(x=>x+1).join('، ')}.`)}
-  $('#sgo').onclick=weigh;$('#sac').onclick=()=>{if(api.ended)return;accuse=!accuse;draw()};draw();
+  $('#sgo').onclick=weigh;$('#sac').onclick=()=>{if(api.ended)return;accuse=!accuse;draw()};setA(0);draw();pzHook({P:{n,mode,W},tap,weigh,pos,sus});
   return{hint:k=>{if(k===1)return mode==='h'?'الميزان له 3 نتائج: يسار، يمين، تعادل. قسّم المشكوك فيها إلى 3 مجموعات متساوية وزن مجموعتين.':'استخدم القطع التي ثبت أنها سليمة كمرجع. وفي الوزنة التالية بدّل بعض القطع بين الكفتين وأخرج بعضها.';
     if(k===2){showSafe=true;draw();return'القطع الباهتة ثبت أنها سليمة. ركّز على البقية فقط.'}
     const s=[...sus()],m=Math.ceil(s.length/3);return mode==='h'?`ضع ${m} من المشكوك فيها في كل كفة واترك ${s.length-2*m} خارجًا.`:n>=12&&used===0?'ابدأ بوزن 4 مقابل 4.':n===9&&used===0?'ابدأ بوزن 3 مقابل 3.':n===4&&used===0?'ابدأ بوزن قطعة مقابل قطعة.':`المشكوك فيها الآن: ${s.map(x=>x+1).join('، ')}. وزّعها بحيث تبقى كل نتيجة ممكنة بنفس الحجم تقريبًا.`},
@@ -2818,7 +2893,6 @@ const PZ_GAMES=[
  {id:'pz_lock',maxLv:7,col:['#B48CFF','#6A5CFF'],name:'القفل السري',lab:'Code lock',why:'استنتاج على طريقة ألغاز ريزدنت إيفل: تجمع أدلة جزئية وتشطب الاحتمالات حتى يبقى رمز واحد.',how:['كل دليل يقول كم رقمًا صحيحًا وهل هو في مكانه.','الرمز وحيد ويمكن استنتاجه دائمًا.','أدخل الرمز واضغط افتح.'],run:runLock},
  {id:'pz_stat',maxLv:7,col:['#C9CFF0','#7A86C4'],name:'التماثيل الدوّارة',lab:'Rotating statues',why:'لغز على طريقة غرف ريزدنت إيفل: كل ضغطة تؤثر على الجيران، فتتعلم التفكير في الأثر الجانبي.',how:['اضغط التمثال ليدور هو وجيرانه.','وجّه كل تمثال نحو السهم الذهبي تحته.','في المستويات العليا: دائرة ودوران معاكس.'],run:runStatues},
  {id:'pz_pipe',maxLv:8,col:['#5EE6C0','#3FD0E8'],name:'الأنابيب',lab:'Pipes',why:'لغز مكاني: تدوير القطع ذهنيًا وتتبع المسارات يدرّب التصور المكاني.',how:['اضغط القطعة لتدورها ربع لفة.','أوصل الماء من النبع إلى كل البيوت.','بدون أطراف مفتوحة.'],run:runPipes},
- {id:'pz_pic',maxLv:8,col:['#FF8FD1','#B48CFF'],name:'الرسم بالأرقام',lab:'Picross',why:'لغز منطق بصري ياباني: كل صف وعمود معادلة صغيرة، وحلها كلها معًا يكشف صورة.',how:['الأرقام = أطوال المربعات الملونة المتتالية بالترتيب.','ضع ✕ على المربعات المؤكد فراغها.','كل لغز له حل وحيد بالمنطق بدون تخمين.'],run:runPicross},
  {id:'pz_grid',maxLv:7,col:['#8BE36A','#3FBF6A'],name:'شبكة المنطق',lab:'Logic grid',why:'لغز «أينشتاين» المصغر: استنتاج متعدد الخطوات من أدلة «لا» و«نعم».',how:['اقرأ الأدلة كلها.','لكل شخص شيء واحد من كل عمود.','اضغط الخانة لتغيّرها ثم تحقق.'],run:runGrid},
  {id:'pz_scale',maxLv:7,col:['#F2A65A','#FFD45A'],name:'الميزان والقطعة المزيفة',lab:'Balance puzzle',why:'لغز معلومات شهير: كل وزنة لها 3 نتائج، والحل يحتاج أن تستخرج أقصى معلومة من كل وزنة.',how:['ضع عددًا متساويًا من القطع في الكفتين وزن.','الميزان ذكي: لا يسمح بالحظ، فقط الاستنتاج الكامل يفوز.','حدد المزيفة قبل أن تنتهي الوزنات.'],run:runScale}];
 PZ_GAMES.forEach(g=>{Object.assign(g,{cat:'log',puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g});
@@ -2830,12 +2904,11 @@ Object.assign(I,{
  pz_lock:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M15 21v-6a9 9 0 0 1 18 0v6" fill="none" stroke="#0A0E1C" stroke-width="4"/><rect x="9" y="21" width="30" height="21" rx="5"/><circle cx="18" cy="31.5" r="2.5" fill="#fff" opacity=".8"/><circle cx="24" cy="31.5" r="2.5" fill="#fff" opacity=".8"/><circle cx="30" cy="31.5" r="2.5" fill="#fff" opacity=".8"/></svg>',
  pz_stat:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><circle cx="24" cy="20" r="9"/><path d="M24 4l5 6h-10z"/><rect x="14" y="34" width="20" height="8" rx="2" opacity=".6"/><path d="M8 24a16 16 0 0 1 4-10M40 24a16 16 0 0 0-4-10" fill="none" stroke="#0A0E1C" stroke-width="3" stroke-linecap="round" opacity=".45"/></svg>',
  pz_pipe:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="6" stroke-linecap="round"><path d="M6 14h14v20h22"/><path d="M34 34V8" opacity=".5"/><circle cx="6" cy="14" r="2" fill="#0A0E1C"/></svg>',
- pz_pic:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><rect x="8" y="8" width="9" height="9" rx="1.5"/><rect x="19.5" y="8" width="9" height="9" rx="1.5" opacity=".25"/><rect x="31" y="8" width="9" height="9" rx="1.5"/><rect x="8" y="19.5" width="9" height="9" rx="1.5"/><rect x="19.5" y="19.5" width="9" height="9" rx="1.5"/><rect x="31" y="19.5" width="9" height="9" rx="1.5"/><rect x="8" y="31" width="9" height="9" rx="1.5" opacity=".25"/><rect x="19.5" y="31" width="9" height="9" rx="1.5"/><rect x="31" y="31" width="9" height="9" rx="1.5" opacity=".25"/></svg>',
  pz_grid:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><rect x="6" y="6" width="36" height="36" rx="4"/><path d="M18 6v36M30 6v36M6 18h36M6 30h36" opacity=".45"/><path d="M9 12l3 3 4-6M21 24l3 3 4-6" stroke-width="3.5" stroke-linecap="round"/><path d="M33 33l6 6M39 33l-6 6" stroke-linecap="round"/></svg>',
  pz_scale:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3.5" stroke-linecap="round"><path d="M24 6v34M14 42h20M8 14l32-4"/><path d="M8 14l-5 12h10zM40 10l-5 12h10z" fill="#0A0E1C" stroke-linejoin="round"/></svg>'});
 
 /* ---------- puzzle city tab ---------- */
-const PZ_TYPES=['pz_river','pz_rush','pz_lock','pz_stat','pz_pipe','pz_pic','pz_grid','pz_scale','tol'];
+const PZ_TYPES=['pz_river','pz_rush','pz_lock','pz_stat','pz_pipe','pz_grid','pz_scale','tol'];
 function pzDailyType(){const r=seeded(+dayKey().replace(/-/g,'')+7);const all=['pz_rid',...PZ_TYPES.filter(t=>t!=='tol')];return all[Math.floor(r()*all.length)]}
 function renderPuz(){const p=pzState(),solvedR=Object.keys(p.rid).length,dt=pzDailyType(),dDone=p.daily===dayKey();
   $('#v-puz').innerHTML=`<div class="top"><div class="hello"><span class="eyebrow">مدينة الألغاز</span><h1>الألغاز</h1></div><div class="pzwallet">${COIN}<b class="num">${p.pts}</b><small>${pzRank(p.pts)}</small></div></div>
@@ -2885,7 +2958,7 @@ document.addEventListener('keydown',e=>{if(!tvActive())return;const k=e.key,ae=d
 
 /* ================= TV home + TV games ================= */
 const TV_GAMES=['tv_simon','tv_maze','matrix','series','fold','sw','conf','dual','symspan','hawk','glance','dd','mmap','compass','crash','xw'];
-const TV_PUZ=['pz_rid','pz_lock','pz_stat','pz_grid','pz_pipe','pz_pic','pz_scale','pz_river','pz_rush','tol'];
+const TV_PUZ=['pz_rid','pz_lock','pz_stat','pz_grid','pz_pipe','pz_scale','pz_river','pz_rush','tol'];
 function tvTile(id){const g=GM[id];if(!g)return'';const rk=gameRank(id);return`<button class="tvt" data-g="${id}" style="--c:${g.col[0]}">${g.puz?`<div class="tvart">${artImg(id)}</div>`:icoBox(g)}<b>${g.name}</b><small>${rk?`المستوى ${rk[0]}${rk[1]?' من '+rk[1]:''}`:CATS[g.cat].n}</small></button>`}
 function renderTV(){const p=pzState();
   $('#v-tv').innerHTML=`<div class="tvtop"><div class="tvlogo">${BRAIN_LOGO}<div><h1>ضبط دماغك</h1><span class="eyebrow">وضع التلفزيون · الأسهم للتنقل · OK للاختيار · رجوع للخروج</span></div></div><div class="pzwallet">${COIN}<b class="num">${p.pts}</b></div></div>
@@ -3166,26 +3239,6 @@ function lzMake(lv){const w=[5,5,6,6,7,7,8,8][lv-1],h=w,turnsMin=[2,3,3,4,5,5,6,
 function lzWin(P,ori){const r=lzTrace(P,ori);if(!r.out||r.out[0]!==P.out[0]||r.out[1]!==P.out[1])return false;return P.gems.every(g=>r.path.some(([a,b])=>a===g.x&&b===g.y))}
 
 /* ---- keys & doors in a maze ---- */
-function kdMake(lv){const n=[5,5,6,6,7,7,8,8][lv-1],nd=[1,1,2,2,2,3,3,3][lv-1];
-  for(let t=0;t<300;t++){const W=[...Array(n*n)].map(()=>15),seen=new Set([0]),st=[0];const bit=[1,2,4,8],opp=[4,8,1,2];
-    while(st.length){const c=st[st.length-1],x=c%n,y=c/n|0,nb=[0,1,2,3].filter(d=>{const a=x+D4[d][0],b=y+D4[d][1];return inb(a,b,n,n)&&!seen.has(b*n+a)});if(!nb.length){st.pop();continue}const d=pick(nb),m=(y+D4[d][1])*n+x+D4[d][0];W[c]&=~bit[d];W[m]&=~opp[d];seen.add(m);st.push(m)}
-    const bfs=(from,block)=>{const dist=new Map([[from,0]]),par=new Map(),q=[from];while(q.length){const c=q.shift(),x=c%n,y=c/n|0;for(let d=0;d<4;d++){if(W[c]&bit[d])continue;const m=(y+D4[d][1])*n+x+D4[d][0];if(block&&block(c,m))continue;if(!dist.has(m)){dist.set(m,dist.get(c)+1);par.set(m,c);q.push(m)}}}return{dist,par}};
-    const b0=bfs(0);let exit=0;b0.dist.forEach((v,k)=>{if(v>b0.dist.get(exit))exit=k});if(b0.dist.get(exit)<n*1.5)continue;
-    const path=[exit];while(path[0]!==0)path.unshift(b0.par.get(path[0]));
-    /* doors on path edges, at increasing positions */
-    const L=path.length,idx=[];for(let i=1;i<=nd;i++)idx.push(Math.floor(L*i/(nd+1)));if(new Set(idx).size<nd||idx[0]<2)continue;
-    const doors=idx.map((i,k)=>({p:path[i],c:k}));const isDoor=(c,m,from)=>doors.slice(from).some(d=>d.p===m);
-    const keys=[];let bad=false;
-    for(let k=0;k<nd;k++){const reach=bfs(0,(c,m)=>isDoor(c,m,k)).dist,prev=k?bfs(0,(c,m)=>isDoor(c,m,k-1)).dist:new Map();const cand=[...reach.keys()].filter(c=>!prev.has(c)&&c!==0&&!path.includes(c)&&!keys.some(q=>q.p===c)&&!doors.some(d=>d.p===c));
-      const cand2=cand.length?cand:[...reach.keys()].filter(c=>c!==0&&!keys.some(q=>q.p===c)&&!doors.some(d=>d.p===c));if(!cand2.length){bad=true;break}
-      const far=cand2.sort((p,q)=>b0.dist.get(q)-b0.dist.get(p)).slice(0,3);keys.push({p:pick(far),c:k})}
-    if(bad)continue;
-    const P={n,W,exit,doors,keys};const s=kdSolve(P,0,0);if(!s)continue;P.min=s.length;if(P.min<n*2)continue;return P}
-  return kdMake(Math.max(1,lv-1))}
-function kdMoves(P,c,have){const{n,W}=P,x=c%n,y=c/n|0,o=[];for(let d=0;d<4;d++){if(W[c]&[1,2,4,8][d])continue;const m=(y+D4[d][1])*n+x+D4[d][0];const dr=P.doors.find(q=>q.p===m);if(dr&&!(have>>dr.c&1))continue;o.push([d,m])}return o}
-function kdSolve(P,start,have0){const pick1=(c,h)=>{let x=h;P.keys.forEach(k=>{if(k.p===c)x|=1<<k.c});return x};const s0=[start,pick1(start,have0)],K=s=>s[0]+'|'+s[1],par=new Map([[K(s0),null]]),q=[s0];
-  while(q.length){const s=q.shift();if(s[0]===P.exit){const out=[];let k=K(s);while(par.get(k)){const e=par.get(k);out.unshift(e.d);k=e.from}return out}for(const[d,m]of kdMoves(P,s[0],s[1])){const ns=[m,pick1(m,s[1])],k=K(ns);if(!par.has(k)){par.set(k,{from:K(s),d});q.push(ns)}}}return null}
-
 /* ---- sokoban: built by pulling boxes backwards from the goals, then solved forwards ---- */
 function skReach(P,boxes,p){const{w,h,wall}=P,seen=new Set([p]),q=[p],B=new Set(boxes);while(q.length){const c=q.shift(),x=c%w,y=c/w|0;for(const[dx,dy]of D4){const a=x+dx,b=y+dy,m=b*w+a;if(!inb(a,b,w,h)||wall[m]||B.has(m)||seen.has(m))continue;seen.add(m);q.push(m)}}return seen}
 function skSolve(P,boxes0,p0,cap=60000){const{w,h,wall,goals}=P,G=new Set(goals),key=(bx,pp)=>{const r=skReach(P,bx,pp);return bx.slice().sort((a,b)=>a-b).join(',')+'|'+Math.min(...r)};
@@ -3225,12 +3278,6 @@ function flMake(lv){const n=[5,5,6,6,7,7,8,8][lv-1],k=[4,5,5,6,6,7,8,9][lv-1];
   return flMake(Math.max(1,lv-1))}
 
 /* ---- sliding picture ---- */
-function slMake(lv){const n=[3,3,4,4,4,5][lv-1],steps=[25,60,60,120,200,300][lv-1],t=[...Array(n*n).keys()];let b=n*n-1,prev=-1;
-  for(let k=0;k<steps;k++){const x=b%n,y=b/n|0,nb=D4.map(([dx,dy])=>[x+dx,y+dy]).filter(([a,c])=>inb(a,c,n,n)).map(([a,c])=>c*n+a).filter(v=>v!==prev);const m=pick(nb);[t[b],t[m]]=[t[m],t[b]];prev=b;b=m}
-  if(t.every((v,i)=>v===i))return slMake(lv);return{n,t}}
-function slSolve3(t){const goal='012345678',K=a=>a.join(''),s=K(t);if(s===goal)return[];const par=new Map([[s,null]]),q=[s];let h=0;
-  while(h<q.length){const c=q[h++];if(c===goal){const out=[];let k=c;while(par.get(k)){out.unshift(par.get(k)[1]);k=par.get(k)[0]}return out}const b=c.indexOf('8'),x=b%3,y=b/3|0;for(const[dx,dy]of D4){const a=x+dx,e=y+dy;if(!inb(a,e,3,3))continue;const m=e*3+a,arr=c.split('');[arr[b],arr[m]]=[arr[m],arr[b]];const nk=arr.join('');if(!par.has(nk)){par.set(nk,[c,m]);q.push(nk)}}}return null}
-
 /* ---- block tangram: fill the outline with polyomino pieces ---- */
 const tgNorm=cells=>{const mx=Math.min(...cells.map(c=>c[0])),my=Math.min(...cells.map(c=>c[1]));return cells.map(([x,y])=>[x-mx,y-my]).sort((a,b)=>a[1]-b[1]||a[0]-b[0])};
 const tgRot=cells=>tgNorm(cells.map(([x,y])=>[-y,x]));const tgFlip=cells=>tgNorm(cells.map(([x,y])=>[-x,y]));
@@ -3259,28 +3306,9 @@ function tnMake(lv){const n=[5,6,6,7,7,8,8,9][lv-1];
   return tnMake(Math.max(1,lv-1))}
 
 /* ---- light up (akari): -1 white, 5 plain wall, 0..4 numbered wall ---- */
-function akSee(n,g,c){const x=c%n,y=c/n|0,o=[];for(const[dx,dy]of D4){let a=x+dx,b=y+dy;while(inb(a,b,n,n)&&g[b*n+a]<0){o.push(b*n+a);a+=dx;b+=dy}}return o}
-function akSolve(n,g,lim=2){const W=[];for(let c=0;c<n*n;c++)if(g[c]<0)W.push(c);const see=new Map(W.map(c=>[c,akSee(n,g,c)]));const bulb=new Set(),no=new Set(),lit=new Map(W.map(c=>[c,0]));let cnt=0,nodes=0,first=null;
-  const nbW=c=>{const x=c%n,y=c/n|0;return D4.map(([dx,dy])=>[x+dx,y+dy]).filter(([a,b])=>inb(a,b,n,n)).map(([a,b])=>b*n+a)};const nums=[];for(let c=0;c<n*n;c++)if(g[c]>=0&&g[c]<=4)nums.push(c);
-  const canPlace=c=>!bulb.has(c)&&!no.has(c)&&lit.get(c)===0;
-  const numOK=()=>nums.every(w=>{const nb=nbW(w).filter(c=>g[c]<0),b=nb.filter(c=>bulb.has(c)).length,pos=nb.filter(c=>canPlace(c)).length;return b<=g[w]&&b+pos>=g[w]});
-  const place=c=>{bulb.add(c);lit.set(c,lit.get(c)+1);see.get(c).forEach(s=>lit.set(s,lit.get(s)+1))},unplace=c=>{bulb.delete(c);lit.set(c,lit.get(c)-1);see.get(c).forEach(s=>lit.set(s,lit.get(s)-1))};
-  const rec=()=>{if(cnt>=lim||++nodes>300000)return;if(!numOK())return;let best=null,bc=null;for(const c of W){if(lit.get(c))continue;const cand=[c,...see.get(c)].filter(canPlace);if(!cand.length)return;if(!bc||cand.length<bc.length){best=c;bc=cand}}
-    if(best==null){if(nums.every(w=>nbW(w).filter(c=>bulb.has(c)).length===g[w])){cnt++;if(!first)first=[...bulb]}return}
-    const tried=[];for(const c of bc){place(c);rec();unplace(c);no.add(c);tried.push(c)}tried.forEach(c=>no.delete(c))};rec();return{cnt:nodes>300000?99:cnt,first}}
-function akMake(lv){const n=[5,6,6,7,7,8,8,8][lv-1];
-  for(let t=0;t<200;t++){const g=new Array(n*n).fill(-1);for(let c=0;c<n*n;c++)if(Math.random()<.2)g[c]=5;
-    const lit=new Set(),bulbs=[];for(const c of shuffle([...Array(n*n).keys()])){if(g[c]>=0||lit.has(c))continue;bulbs.push(c);lit.add(c);akSee(n,g,c).forEach(s=>lit.add(s))}
-    const B=new Set(bulbs),walls=[];for(let c=0;c<n*n;c++)if(g[c]>=0){const x=c%n,y=c/n|0;g[c]=D4.filter(([dx,dy])=>inb(x+dx,y+dy,n,n)&&B.has((y+dy)*n+x+dx)).length;walls.push(c)}
-    if(akSolve(n,g).cnt!==1)continue;
-    for(const w of shuffle(walls)){const v=g[w];g[w]=5;if(akSolve(n,g).cnt!==1)g[w]=v}
-    return{n,g,sol:bulbs}}
-  return akMake(Math.max(1,lv-1))}
-
 /* ================= v23: UIs for the 10 new puzzle types ================= */
 const QCOL=['#F2A7A0','#9EC5F0','#B5DE9B','#F3D488','#CDB2EE','#F6B985','#97D9CF','#E9A6CF','#C9C79A'];
 const gridBtns=(n,m,fn)=>[...Array(n*m)].map((_,i)=>fn(i)).join('');
-function arrowPad(){return`<div class="mzpad ltr pzpad"><button data-d="ArrowUp" aria-label="أعلى">⬆</button><button data-d="ArrowLeft" aria-label="يسار">⬅</button><button data-d="ArrowDown" aria-label="أسفل">⬇</button><button data-d="ArrowRight" aria-label="يمين">➡</button></div>`}
 const DK={ArrowUp:0,ArrowRight:1,ArrowDown:2,ArrowLeft:3};
 function bindArrows(step){api0Pad(step);keyH=e=>{const d=DK[e.key];if(d!=null){e.preventDefault();step(d)}};window.TVGRAB=e=>DK[e.key]!=null;cleanup.push(()=>{window.TVGRAB=null})}
 function api0Pad(step){document.querySelectorAll('.pzpad button').forEach(b=>b.onclick=()=>step(DK[b.dataset.d]))}
@@ -3306,48 +3334,36 @@ function runLaser(){return pzPlay('pz_laser',api=>{
   const P=lzMake(api.lv),{w,h}=P,ori=P.ori.slice(),lock=new Set(),W=w+2,H=h+2,mang=ori.map(o=>o?45:-45);
   let cells='';for(let y=-1;y<=h;y++)for(let x=-1;x<=w;x++){const mi=P.mir.findIndex(m=>m.x===x&&m.y===y),gi=P.gems.findIndex(g=>g.x===x&&g.y===y),src=x===-1&&y===P.sy,tgt=x===P.out[0]&&y===P.out[1],edge=!inb(x,y,w,h);
     cells+=mi>=0?`<button class="lzc mir" data-m="${mi}" aria-label="مرآة"><i style="transform:rotate(${mang[mi]}deg)"></i></button>`:`<span class="lzc${edge?' edge':''}${gi>=0?' gem':''}" ${gi>=0?`data-g="${gi}"`:''}>${src?`<b class="lzspr">${SPR.torch}</b>`:tgt?`<b class="lzspr tgt">${SPR.target}</b>`:gi>=0?`<b class="lzspr">${SPR.gem}</b>`:''}</span>`}
-  api.body.innerHTML=`<div class="lzb ltr" id="lzb" style="--w:${W};--h:${H}">${cells}<svg class="lzbeam" viewBox="0 0 100 100" preserveAspectRatio="none"><polyline id="lzp" pathLength="100" fill="none" stroke="#FF4D6D" stroke-linecap="round" stroke-linejoin="round" vector-effect="non-scaling-stroke"/></svg></div>`;
+  api.body.innerHTML=`<div class="lzb ltr" id="lzb" style="--w:${W};--h:${H}">${cells}<svg class="lzbeam2" viewBox="0 0 ${W} ${H}"><polyline id="lzg" pathLength="100"/><polyline id="lzc" pathLength="100"/><polyline id="lzf" pathLength="100"/><circle id="lzhit" r=".28"/></svg></div>`;
   api.msg(`دوّر المرايا ليصل الشعاع إلى الهدف ويمر على ${P.gems.length>1?'كل الجواهر':'الجوهرة'}.`);
-  function draw(){const r=lzTrace(P,ori),hit=new Set(r.path.map(([a,b])=>a+','+b)),pl=$('#lzp');pl.setAttribute('points',r.path.map(([a,b])=>`${(a+1.5)*100/W},${(b+1.5)*100/H}`).join(' '));pl.classList.remove('draw');void pl.getBoundingClientRect();pl.classList.add('draw');
+  function draw(){const r=lzTrace(P,ori),hit=new Set(r.path.map(([a,b])=>a+','+b)),pts=r.path.map(([a,b])=>`${a+1.5},${b+1.5}`).join(' ');['lzg','lzc','lzf'].forEach(id=>$('#'+id).setAttribute('points',pts));
+    const end=r.path[r.path.length-1],hc=$('#lzhit');hc.setAttribute('cx',end[0]+1.5);hc.setAttribute('cy',end[1]+1.5);
     $('#lzb').querySelectorAll('.lzc.mir').forEach(e=>{const i=+e.dataset.m;e.firstChild.style.transform=`rotate(${mang[i]}deg)`;e.classList.toggle('lock',lock.has(i))});
-    $('#lzb').querySelectorAll('.lzc.gem').forEach(e=>{const g=P.gems[+e.dataset.g];e.classList.toggle('on',hit.has(g.x+','+g.y))});const t=$('#lzb .tgt');if(t)t.classList.toggle('on',!!r.out&&r.out[0]===P.out[0]&&r.out[1]===P.out[1])}
-  function flip(i){if(api.ended||lock.has(i))return;ori[i]^=1;mang[i]+=90;tone(560,.04);draw();if(lzWin(P,ori))api.win('وصل الشعاع للهدف ومرّ على كل الجواهر.')}
+    $('#lzb').querySelectorAll('.lzc.gem').forEach(e=>{const g=P.gems[+e.dataset.g];e.classList.toggle('on',hit.has(g.x+','+g.y))});const t=$('#lzb .tgt'),on=!!r.out&&r.out[0]===P.out[0]&&r.out[1]===P.out[1];if(t)t.classList.toggle('on',on);$('#lzb').classList.toggle('reach',on)}
+  function flip(i){if(api.ended||lock.has(i))return;ori[i]^=1;mang[i]+=90;tone(620,.05,'triangle');draw();if(lzWin(P,ori)){$('#lzb').classList.add('won');api.win('وصل الشعاع للهدف ومرّ على كل الجواهر.')}}
   $('#lzb').querySelectorAll('.lzc.mir').forEach(e=>e.onclick=()=>flip(+e.dataset.m));draw();pzHook({P,ori,flip});
   return{hint:k=>{if(k===1)return'تتبّع الشعاع من المصباح خطوة خطوة، وبعض المرايا خدعة لا يمر عليها الحل أبدًا.';const c=P.mir.map((m,i)=>i).filter(i=>!P.mir[i].decoy&&ori[i]!==P.sol[i]&&!lock.has(i));if(!c.length)return null;const i=c[0];ori[i]=P.sol[i];mang[i]+=90;lock.add(i);draw();if(lzWin(P,ori))api.win('وصل الشعاع.');return'صحّحت لك أول مرآة خاطئة في طريق الشعاع (بإطار ذهبي).'},
    reveal:()=>{P.sol.forEach((v,i)=>{if(ori[i]!==v){ori[i]=v;mang[i]+=90}});draw();return'هذا هو الطريق الصحيح.'}}})}
 
 /* ---------- المفتاح والأبواب ---------- */
-const KCOLS=['#FF5F7A','#3FD0E8','#FFD45A'];
-function runKeys(){return pzPlay('pz_keys',api=>{
-  const P=kdMake(api.lv),n=P.n;let pos=0,have=0,moves=0;
-  api.body.innerHTML=`<div class="kdinv" id="kdi"></div><div class="kdw ltr"><div class="mz kd" id="kdm" style="--n:${n}">${P.W.map((w,i)=>{const k=P.keys.find(q=>q.p===i),d=P.doors.find(q=>q.p===i);return`<i data-i="${i}" class="${w&1?'wn ':''}${w&2?'we ':''}${w&4?'ws ':''}${w&8?'ww ':''}">${d?`<b class="kddoor" data-c="${d.c}">${SPR.door(KCOLS[d.c])}</b>`:k?`<b class="kdkey" data-c="${k.c}">${SPR.key(KCOLS[k.c])}</b>`:i===P.exit?`<b class="kdexit">${SPR.exitDoor}</b>`:''}</i>`}).join('')}</div><div class="kdtok" id="kdt">${SPR.hero}</div></div>${arrowPad()}`;
-  api.msg('اجمع المفاتيح لتفتح الأبواب بنفس اللون، ثم اخرج من الباب المضيء.');
-  const cells=[...$('#kdm').children];
-  function draw(){const t=$('#kdt');t.style.left=(pos%n)*100/n+'%';t.style.top=(pos/n|0)*100/n+'%';t.style.width=t.style.height=100/n+'%';
-    $('#kdm').querySelectorAll('.kdkey').forEach(e=>e.classList.toggle('taken',!!(have>>+e.dataset.c&1)));$('#kdm').querySelectorAll('.kddoor').forEach(e=>e.classList.toggle('open',!!(have>>+e.dataset.c&1)));
-    $('#kdi').innerHTML='المفاتيح: '+P.keys.map(k=>`<span class="kdki${have>>k.c&1?' on':''}">${SPR.key(KCOLS[k.c])}</span>`).join('')}
-  function step(d){if(api.ended)return;const m=kdMoves(P,pos,have).find(([dd])=>dd===d);if(!m){const x=pos%n,y=pos/n|0,t=(y+D4[d][1])*n+x+D4[d][0];if(P.doors.some(q=>q.p===t))api.msg('الباب مقفل. ابحث عن مفتاحه.');sfx.bad();$('#kdt').classList.remove('bump');void $('#kdt').offsetWidth;$('#kdt').classList.add('bump');return}
-    pos=m[1];moves++;tone(500,.04);P.keys.forEach(k=>{if(k.p===pos&&!(have>>k.c&1)){have|=1<<k.c;sfx.lvl();api.msg(`أخذت المفتاح ${['الأحمر','الأزرق','الأصفر'][k.c]}!`)}});draw();
-    if(pos===P.exit)api.win(`خرجت في ${arN(moves,AN.mv)}، وأقل طريق ${arN(P.min,AN.mv)}.`)}
-  cells.forEach((e,t)=>e.onclick=()=>{const x=pos%n,y=pos/n|0,tx=t%n,ty=t/n|0;const d=D4.findIndex(([dx,dy])=>x+dx===tx&&y+dy===ty);if(d>=0)step(d)});
-  draw();bindArrows(step);pzHook({P,step,pos:()=>pos,have:()=>have});
-  return{hint:k=>{if(k===1)return'قبل أي حركة، تتبّع بعينك الطريق للمخرج وانظر أي باب يسدّه، ثم ابحث عن مفتاح ذلك الباب.';const s=kdSolve(P,pos,have);if(!s||!s.length)return null;const nm=['للأعلى','لليمين','للأسفل','لليسار'];return`الخطوة التالية: ${nm[s[0]]}، وبعدها ${s.length>1?nm[s[1]]:'وصلت'}.`},
-   reveal:()=>`أقل طريق كان ${arN(P.min,AN.mv)}.`}})}
-
 /* ---------- صناديق المخزن ---------- */
 function runSoko(){return pzPlay('pz_soko',api=>{
-  const P=skMake(api.lv),{w,h}=P;let bx=P.boxes.slice(),pl=P.player,pushes=0,steps=0,hist=[],hl=-1;const G=new Set(P.goals);
-  api.body.innerHTML=`<div class="skw ltr"><div class="skb" id="skb" style="--w:${w};--h:${h}">${gridBtns(w,h,i=>P.wall[i]?'<span class="skc wall"></span>':`<span class="skc${G.has(i)?' goal':''}" data-i="${i}"></span>`)}</div>${bx.map((_,k)=>`<div class="sksp skbox" id="skx${k}">${SPR.crate}</div>`).join('')}<div class="sksp skme" id="skme">${SPR.hero}</div></div>${arrowPad()}<div class="row skbtns"><button class="pzgive" id="skun">↶ تراجع</button><button class="pzgive" id="skre">↺ من جديد</button></div>`;
-  api.msg(`ادفع كل الصناديق إلى العلامات. لا تستطيع سحب الصندوق. أقل حل: <b class="num">${P.min}</b> دفعات.`);
+  const P=skMake(api.lv),{w,h}=P;let bx=P.boxes.slice(),pl=P.player,pushes=0,steps=0,hist=[],hl=-1,face=2;const G=new Set(P.goals);
+  api.body.innerHTML=`<div class="skw2 ltr" id="skw"><div class="skb2" id="skb" style="--w:${w};--h:${h}">${gridBtns(w,h,i=>P.wall[i]?`<span class="skc2 wall${P.wall[i-w]===false||i<w?'':' top'}"></span>`:`<span class="skc2${G.has(i)?' goal':''}" data-i="${i}">${G.has(i)?'<i class="pad"></i>':''}</span>`)}</div>${bx.map((_,k)=>`<div class="sksp2 skbox2" id="skx${k}">${SPR.crate2}</div>`).join('')}<div class="sksp2 skme2" id="skme">${SPR.worker}</div></div>${arrowPad()}<div class="row skbtns"><button class="pzgive" id="skun">↶ تراجع</button><button class="pzgive" id="skre">↺ من جديد</button></div>`;
+  api.msg(`ادفع كل الصناديق إلى الدوائر المضيئة. لا تستطيع سحب الصندوق. أقل حل: <b class="num">${P.min}</b> دفعات.`);
   const put=(e,c)=>{e.style.left=(c%w)*100/w+'%';e.style.top=(c/w|0)*100/h+'%';e.style.width=100/w+'%';e.style.height=100/h+'%'};
-  function draw(){bx.forEach((b,k)=>{const e=$('#skx'+k);put(e,b);e.classList.toggle('ok',G.has(b));e.classList.toggle('hint',b===hl)});put($('#skme'),pl)}
-  function step(d){if(api.ended)return;const[dx,dy]=D4[d],x=pl%w,y=pl/w|0,m=(y+dy)*w+x+dx;if(P.wall[m])return sfx.bad();const bi=bx.indexOf(m);
-    if(bi>=0){const m2=(y+2*dy)*w+x+2*dx;if(!inb(x+2*dx,y+2*dy,w,h)||P.wall[m2]||bx.includes(m2))return sfx.bad();hist.push([bx.slice(),pl,pushes,steps]);bx[bi]=m2;pushes++;tone(380,.06,'triangle')}else{hist.push([bx.slice(),pl,pushes,steps]);tone(520,.03)}
-    pl=m;steps++;hl=-1;draw();api.msg(`الدفعات: <b class="num">${pushes}</b> · أقل حل: <b class="num">${P.min}</b>`);if(bx.every(b=>G.has(b)))api.win(`رتّبت المخزن بـ ${arN(pushes,['دفعة واحدة','دفعتين','دفعات','دفعة'])}، والأقل ${P.min}.`)}
-  $('#skb').querySelectorAll('.skc[data-i]').forEach(e=>e.onclick=()=>{const t=+e.dataset.i,x=pl%w,y=pl/w|0,tx=t%w,ty=t/w|0;const d=D4.findIndex(([dx,dy])=>x+dx===tx&&y+dy===ty);if(d>=0)step(d)});
+  function dust(c,d){const e=document.createElement('i');e.className='skdust d'+d;put(e,c);$('#skw').appendChild(e);setTimeout(()=>e.remove(),520)}
+  function draw(){bx.forEach((b,k)=>{const e=$('#skx'+k),was=e.classList.contains('ok');put(e,b);e.classList.toggle('ok',G.has(b));if(G.has(b)&&!was&&steps){e.classList.remove('lock2');void e.offsetWidth;e.classList.add('lock2');sfx.ok(3)}e.classList.toggle('hint',b===hl)});const me=$('#skme');put(me,pl);me.dataset.f=face;
+    $('#skb').querySelectorAll('.skc2.goal').forEach(g=>g.classList.toggle('full',bx.includes(+g.dataset.i)))}
+  function step(d){if(api.ended)return;const[dx,dy]=D4[d],x=pl%w,y=pl/w|0,m=(y+dy)*w+x+dx;face=d;const me=$('#skme');if(P.wall[m]){sfx.bad();me.classList.remove('bump');void me.offsetWidth;me.classList.add('bump');draw();return}const bi=bx.indexOf(m);
+    if(bi>=0){const m2=(y+2*dy)*w+x+2*dx;if(!inb(x+2*dx,y+2*dy,w,h)||P.wall[m2]||bx.includes(m2)){sfx.bad();const e=$('#skx'+bi);e.classList.remove('stuck');void e.offsetWidth;e.classList.add('stuck');return}hist.push([bx.slice(),pl,pushes,steps]);bx[bi]=m2;pushes++;tone(150,.12,'triangle',.07);dust(m,d);me.classList.remove('push');void me.offsetWidth;me.classList.add('push')}
+    else{hist.push([bx.slice(),pl,pushes,steps]);tone(520,.03)}
+    pl=m;steps++;hl=-1;me.classList.remove('walk');void me.offsetWidth;me.classList.add('walk');draw();api.msg(`الدفعات: <b class="num">${pushes}</b> · أقل حل: <b class="num">${P.min}</b>`);if(bx.every(b=>G.has(b))){$('#skw').classList.add('done');api.win(`رتّبت المخزن بـ ${arN(pushes,['دفعة واحدة','دفعتين','دفعات','دفعة'])}، والأقل ${P.min}.`)}}
+  $('#skb').querySelectorAll('.skc2[data-i]').forEach(e=>e.onclick=()=>{const t=+e.dataset.i,x=pl%w,y=pl/w|0,tx=t%w,ty=t/w|0;const d=D4.findIndex(([dx,dy])=>x+dx===tx&&y+dy===ty);if(d>=0)step(d)});
+  let sw=null;$('#skw').addEventListener('pointerdown',e=>{sw=[e.clientX,e.clientY]});$('#skw').addEventListener('pointerup',e=>{if(!sw)return;const dx=e.clientX-sw[0],dy=e.clientY-sw[1];sw=null;if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;step(Math.abs(dx)>Math.abs(dy)?(dx>0?1:3):(dy>0?2:0))});
   $('#skun').onclick=()=>{if(!hist.length||api.ended)return;[bx,pl,pushes,steps]=hist.pop();draw()};$('#skre').onclick=()=>{if(api.ended)return;bx=P.boxes.slice();pl=P.player;pushes=steps=0;hist=[];draw()};
   draw();bindArrows(step);pzHook({P,step,bx:()=>bx,pl:()=>pl});
-  return{hint:k=>{if(k===1)return'لا تدفع صندوقًا إلى زاوية ليست علامة: لن يخرج منها أبدًا. فكّر من أين يجب أن تقف لتدفعه.';const s=skSolve(P,bx,pl,80000);if(!s||!s.length)return'هذا الوضع مسدود. اضغط «تراجع» أو «من جديد».';const[b,d]=s[0];hl=b;draw();return`ادفع الصندوق المضيء ${['للأعلى','لليمين','للأسفل','لليسار'][d]}.`},
+  return{hint:k=>{if(k===1)return'لا تدفع صندوقًا إلى زاوية ليست دائرة: لن يخرج منها أبدًا. فكّر من أين يجب أن تقف لتدفعه.';const s=skSolve(P,bx,pl,80000);if(!s||!s.length)return'هذا الوضع مسدود. اضغط «تراجع» أو «من جديد».';const[b,d]=s[0];hl=b;draw();return`ادفع الصندوق المضيء ${['للأعلى','لليمين','للأسفل','لليسار'][d]}.`},
    reveal:()=>`كان أقل حل ${P.min} دفعات.`}})}
 
 /* ---------- سودوكو الأشكال ---------- */
@@ -3389,29 +3405,6 @@ function runFlow(){return pzPlay('pz_flow',api=>{
    reveal:()=>{P.segs.forEach((s,k)=>paths[k]=s.slice());draw();return'هذا أحد الحلول.'}}})}
 
 /* ---------- الصورة المنزلقة ---------- */
-function slPicture(){const c=document.createElement('canvas');c.width=c.height=300;const x=c.getContext('2d'),r=()=>Math.random();const wob=(pts,close)=>{x.beginPath();pts.forEach(([a,b],i)=>i?x.lineTo(a+(r()-.5)*2,b+(r()-.5)*2):x.moveTo(a,b));if(close)x.closePath()};
-  const sc=rnd(3);x.fillStyle=['#BFE3F2','#F6D6A8','#C9C2EC'][sc];x.fillRect(0,0,300,300);
-  x.fillStyle='#FFD45A';x.beginPath();x.arc(235,62,30,0,7);x.fill();x.strokeStyle='#2F2A24';x.lineWidth=3;x.stroke();
-  x.fillStyle=['#8CCB72','#E2B25B','#7FB7A8'][sc];wob([[0,210],[70,165],[140,200],[220,150],[300,190],[300,300],[0,300]],1);x.fill();x.stroke();
-  x.fillStyle='#F2A7A0';wob([[60,240],[60,180],[110,140],[160,180],[160,240]],1);x.fill();x.stroke();x.fillStyle='#8A5A33';x.fillRect(98,205,24,35);x.strokeRect(98,205,24,35);
-  x.fillStyle='#9EC5F0';x.fillRect(70,190,20,18);x.strokeRect(70,190,20,18);x.fillStyle='#5E9550';x.beginPath();x.arc(228,200,32,0,7);x.fill();x.stroke();x.fillStyle='#8A5A33';x.fillRect(222,228,12,40);x.strokeRect(222,228,12,40);
-  for(let i=0;i<3;i++){x.beginPath();x.moveTo(30+i*40,70+i*12);x.quadraticCurveTo(40+i*40,60+i*12,50+i*40,70+i*12);x.stroke()}
-  x.strokeStyle='rgba(47,42,36,.25)';x.lineWidth=1;for(let k=0;k<300;k+=6){x.beginPath();x.moveTo(k,300);x.lineTo(k+40,260);x.stroke()}return c.toDataURL()}
-function runSlide(){return pzPlay('pz_slide',api=>{
-  const P=slMake(api.lv),n=P.n,t=P.t.slice(),img=slPicture();let moves=0;const B=n*n-1;
-  api.body.innerHTML=`<div class="slb2 ltr" id="slb">${[...Array(n*n).keys()].filter(v=>v!==B).map(v=>`<button class="slt2" data-v="${v}" style="width:${100/n}%;height:${100/n}%;background-image:url(${img});background-size:${n*100}% ${n*100}%;background-position:${(v%n)*100/(n-1)}% ${(v/n|0)*100/(n-1)}%" aria-label="قطعة ${v+1}">${api.lv<=2?`<small>${v+1}</small>`:''}</button>`).join('')}</div><div class="slprev" id="slp" hidden><img src="${img}" alt="الصورة كاملة"></div>`;
-  api.msg('حرّك القطع المجاورة للفراغ حتى تكتمل الصورة.');const tiles=[...$('#slb').children];
-  const blank=()=>t.indexOf(B);
-  function draw(){tiles.forEach(e=>{const p=t.indexOf(+e.dataset.v);e.style.left=(p%n)*100/n+'%';e.style.top=(p/n|0)*100/n+'%'})}
-  function move(i){if(api.ended)return;const b=blank();if(Math.abs(i%n-b%n)+Math.abs((i/n|0)-(b/n|0))!==1)return;[t[i],t[b]]=[t[b],t[i]];moves++;tone(460,.04);draw();tiles.forEach(e=>e.classList.remove('hint'));if(t.every((v,k)=>v===k)){$('#slb').classList.add('full');api.win(`ركّبت الصورة في ${arN(moves,AN.mv)}.`)}}
-  tiles.forEach(e=>e.onclick=()=>move(t.indexOf(+e.dataset.v)));draw();
-  keyH=e=>{const d=DK[e.key];if(d==null)return;e.preventDefault();const b=blank(),x=b%n,y=b/n|0,[dx,dy]=D4[d],a=x-dx,c=y-dy;if(inb(a,c,n,n))move(c*n+a)};window.TVGRAB=e=>DK[e.key]!=null;cleanup.push(()=>{window.TVGRAB=null});pzHook({P,t,move});
-  const tileAt=i=>tiles.find(e=>+e.dataset.v===t[i]);
-  return{hint:k=>{if(k===1){$('#slp').hidden=false;later(()=>{const p=$('#slp');if(p)p.hidden=true},2500);return'هذه الصورة كاملة لثانيتين. رتّب الصف العلوي أولًا ثم العمود الأيسر.'}
-    if(n===3){const s=slSolve3(t);if(!s||!s.length)return null;const e=tileAt(s[0]);if(e)e.classList.add('hint');return`حرّك القطعة المضيئة. باقي ${arN(s.length,AN.mv)} في أقصر حل.`}
-    const want=[...Array(n*n).keys()].find(v=>t[v]!==v&&v!==B);if(want==null)return null;const e=tiles.find(x=>+x.dataset.v===want);if(e)e.classList.add('hint');return`القطعة المضيئة مكانها الخانة ${want+1}. ركّز عليها الآن.`},
-   reveal:()=>{t.forEach((_,i)=>t[i]=i);draw();return'هذه هي الصورة.'}}})}
-
 /* ---------- تانغرام المربعات ---------- */
 function runTangram(){return pzPlay('pz_tan',api=>{
   const P=tgMake(api.lv),n=P.n,R=new Set(P.reg),pcs=P.pieces.map((p,i)=>({i,shape:shuffle([p.shape,tgRot(p.shape),tgRot(tgRot(p.shape)),tgFlip(p.shape)])[0],at:null,lock:false}));let sel=0;
@@ -3432,60 +3425,42 @@ function runTangram(){return pzPlay('pz_tan',api=>{
 /* ---------- الخيام والأشجار ---------- */
 function runTents(){return pzPlay('pz_tent',api=>{
   const P=tnMake(api.lv),n=P.n,T=new Set(P.trees),S=new Set(P.sol),st=Array(n*n).fill(0),lock=new Set();
-  api.body.innerHTML=`<div class="pcwrap ltr"><table class="pct tnt n${n}" id="tnt"><tr><th></th>${P.cols.map((v,j)=>`<th class="cc" data-c="${j}">${v}</th>`).join('')}</tr>${[...Array(n).keys()].map(r=>`<tr><th class="rc" data-r="${r}">${P.rows[r]}</th>${[...Array(n).keys()].map(c=>{const i=r*n+c;return`<td>${T.has(i)?`<span class="tnc tree" style="animation-delay:-${(i*.43)%3}s">${SPR.tree}</span>`:`<button class="tnc" data-i="${i}" aria-label="خانة"></button>`}</td>`}).join('')}</tr>`).join('')}</table></div>`;
-  api.msg('ضع خيمة بجانب كل شجرة (فوق أو تحت أو جانب). الخيام لا تتلامس ولو قطريًا، والأرقام عدد الخيام في كل صف وعمود.');
+  api.body.innerHTML=`<div class="tnw ltr" id="tnw" style="--n:${n}"><div class="tnclue top">${P.cols.map((v,j)=>`<b data-c="${j}">${v}</b>`).join('')}</div><div class="tnmid"><div class="tnclue side">${P.rows.map((v,r)=>`<b data-r="${r}">${v}</b>`).join('')}</div><div class="tng2" id="tng" style="--n:${n}">${[...Array(n*n).keys()].map(i=>T.has(i)?`<span class="tnc2 tree" style="--d:-${(i*.53)%3}s">${SPR.tree2}</span>`:`<button class="tnc2" data-i="${i}" aria-label="خانة"></button>`).join('')}</div></div><div class="tnfx" id="tnfx"></div></div>`;
+  api.msg('ضع خيمة بجانب كل شجرة (فوق أو تحت أو جانب). الخيام لا تتلامس ولو قطريًا، والأرقام عدد الخيام في كل صف وعمود. اضغط مرة للعشب ومرتين للخيمة.');
   const cnt=(a,i)=>[...Array(n).keys()].filter(j=>st[a?j*n+i:i*n+j]===2).length;
-  function cell(i){const b=$(`#tnt [data-i="${i}"]`);if(!b)return;b.className='tnc'+(st[i]===2?' tent':st[i]===1?' grass':'')+(lock.has(i)?' lock':'');b.innerHTML=st[i]===2?SPR.tent:st[i]===1?'<i class="tng"></i>':''}
-  function marks(){const tent=new Set(st.map((v,i)=>v===2?i:-1).filter(i=>i>=0));$('#tnt').querySelectorAll('button.tnc').forEach(b=>{const c=+b.dataset.i,x=c%n,y=c/n|0;let bad=false;if(tent.has(c))for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)if((dx||dy)&&inb(x+dx,y+dy,n,n)&&tent.has((y+dy)*n+x+dx))bad=true;b.classList.toggle('bad',bad)});
-    $('#tnt').querySelectorAll('th.cc').forEach(e=>{const j=+e.dataset.c,k=cnt(1,j);e.classList.toggle('done',k===P.cols[j]);e.classList.toggle('over',k>P.cols[j])});$('#tnt').querySelectorAll('th.rc').forEach(e=>{const r=+e.dataset.r,k=cnt(0,r);e.classList.toggle('done',k===P.rows[r]);e.classList.toggle('over',k>P.rows[r])})}
+  function cell(i,anim){const b=$(`#tng [data-i="${i}"]`);if(!b)return;b.className='tnc2'+(st[i]===2?' tent':st[i]===1?' grass':'')+(lock.has(i)?' lock':'')+(anim?' anim':'');b.innerHTML=st[i]===2?SPR.tent2:st[i]===1?SPR.tuft:''}
+  function marks(){const tent=new Set(st.map((v,i)=>v===2?i:-1).filter(i=>i>=0));$('#tng').querySelectorAll('button.tnc2').forEach(b=>{const c=+b.dataset.i,x=c%n,y=c/n|0;let bad=false;if(tent.has(c))for(let dy=-1;dy<=1;dy++)for(let dx=-1;dx<=1;dx++)if((dx||dy)&&inb(x+dx,y+dy,n,n)&&tent.has((y+dy)*n+x+dx))bad=true;b.classList.toggle('bad',bad)});
+    $('#tnw').querySelectorAll('.tnclue.top b').forEach(e=>{const j=+e.dataset.c,k=cnt(1,j),was=e.classList.contains('done');e.classList.toggle('done',k===P.cols[j]);e.classList.toggle('over',k>P.cols[j]);if(!was&&k===P.cols[j]&&P.cols[j])pop(e)});
+    $('#tnw').querySelectorAll('.tnclue.side b').forEach(e=>{const r=+e.dataset.r,k=cnt(0,r),was=e.classList.contains('done');e.classList.toggle('done',k===P.rows[r]);e.classList.toggle('over',k>P.rows[r]);if(!was&&k===P.rows[r]&&P.rows[r])pop(e)})}
+  const pop=e=>{e.classList.remove('pop');void e.offsetWidth;e.classList.add('pop')};
   const won=()=>{const tent=st.map((v,k)=>v===2?k:-1).filter(k=>k>=0);return tent.length===S.size&&tent.every(k=>S.has(k))};
-  function tap(i){if(api.ended||lock.has(i))return;st[i]=(st[i]+1)%3;tone(st[i]===2?640:400,.04);cell(i);marks();if(won())api.win(`نصبت ${S.size} خيمة في أماكنها.`)}
-  $('#tnt').querySelectorAll('button.tnc').forEach(b=>b.onclick=()=>tap(+b.dataset.i));marks();pzHook({P,tap,st});
-  return{hint:k=>{if(k===1)return'الصف أو العمود الذي رقمه 0 كله عشب. والشجرة التي لها جار واحد فاضي فقط، خيمتها هناك.';const c=P.sol.filter(i=>st[i]!==2);if(!c.length)return null;const i=pick(c);st[i]=2;lock.add(i);cell(i);marks();if(won())api.win('اكتملت الخيام.');return'نصبت لك خيمة صحيحة (بإطار ذهبي).'},
+  function finish(){const fx=$('#tnfx');fx.innerHTML=[...Array(18)].map((_,k)=>`<i style="left:${Math.random()*100}%;top:${Math.random()*100}%;animation-delay:${(k*.13).toFixed(2)}s"></i>`).join('');$('#tnw').classList.add('night');api.win(`نصبت ${S.size} خيمة في أماكنها.`)}
+  function tap(i){if(api.ended||lock.has(i))return;st[i]=(st[i]+1)%3;tone(st[i]===2?520:340,.06,st[i]===2?'triangle':'sine');cell(i,true);marks();if(won())finish()}
+  $('#tng').querySelectorAll('button.tnc2').forEach(b=>b.onclick=()=>tap(+b.dataset.i));marks();pzHook({P,tap,st});
+  return{hint:k=>{if(k===1)return'الصف أو العمود الذي رقمه 0 كله عشب. والشجرة التي لها جار واحد فاضي فقط، خيمتها هناك.';const c=P.sol.filter(i=>st[i]!==2);if(!c.length)return null;const i=pick(c);st[i]=2;lock.add(i);cell(i,true);marks();if(won())finish();return'نصبت لك خيمة صحيحة (بإطار ذهبي).'},
    reveal:()=>{st.fill(0);P.sol.forEach(i=>st[i]=2);for(let i=0;i<n*n;i++)if(!T.has(i))cell(i);marks();return'هذا هو الحل.'}}})}
 
 /* ---------- أنوار القصر ---------- */
-function runAkari(){return pzPlay('pz_akari',api=>{
-  const P=akMake(api.lv),n=P.n,g=P.g,st=Array(n*n).fill(0),lock=new Set();
-  api.body.innerHTML=`<div class="akg ltr" id="akg" style="--n:${n}">${gridBtns(n,n,i=>g[i]>=0?`<span class="akc wall" data-w="${i}">${g[i]<=4?g[i]:''}</span>`:`<button class="akc" data-i="${i}" aria-label="غرفة"></button>`)}</div>`;
-  api.msg('ضع مصابيح لتنير كل الغرف. المصباح ينير صفه وعموده حتى الجدار، ولا يضيء مصباح على مصباح. الرقم = عدد المصابيح الملاصقة له.');
-  const near=c=>{const x=c%n,y=c/n|0;return D4.filter(([dx,dy])=>inb(x+dx,y+dy,n,n)&&st[(y+dy)*n+x+dx]===1).length};
-  function draw(){const lit=new Set(),bad=new Set();for(let b=0;b<n*n;b++)if(st[b]===1){lit.add(b);akSee(n,g,b).forEach(s=>{lit.add(s);if(st[s]===1){bad.add(b);bad.add(s)}})}
-    $('#akg').querySelectorAll('button.akc').forEach(e=>{const i=+e.dataset.i;e.classList.toggle('lit',lit.has(i));e.classList.toggle('bad',bad.has(i));e.classList.toggle('lock',lock.has(i))});
-    $('#akg').querySelectorAll('.akc.wall').forEach(e=>{const c=+e.dataset.w;if(g[c]>4)return;const k=near(c);e.classList.toggle('ok',k===g[c]);e.classList.toggle('over',k>g[c])});return{lit,bad}}
-  function cell(i){const e=$(`#akg [data-i="${i}"]`);e.innerHTML=st[i]===1?`<b class="akb">${SPR.bulb}</b>`:st[i]===2?'<i>✕</i>':''}
-  function solved(){const s=draw();if(s.bad.size)return false;for(let c=0;c<n*n;c++){if(g[c]<0&&!s.lit.has(c))return false;if(g[c]>=0&&g[c]<=4&&near(c)!==g[c])return false}return true}
-  function tap(i){if(api.ended||lock.has(i))return;st[i]=(st[i]+1)%3;tone(st[i]===1?720:400,.04);cell(i);if(solved())api.win('أنرت كل غرف القصر.')}
-  $('#akg').querySelectorAll('button.akc').forEach(e=>e.onclick=()=>tap(+e.dataset.i));draw();pzHook({P,tap,st});
-  return{hint:k=>{if(k===1)return'ابدأ بالأرقام: الرقم 4 تحيطه المصابيح من كل جهة، والرقم 0 لا مصباح بجانبه أبدًا (ضع ✕).';const c=P.sol.filter(i=>st[i]!==1);if(!c.length)return null;const i=pick(c);st[i]=1;lock.add(i);cell(i);if(solved())api.win('أنرت القصر.');return'وضعت لك مصباحًا صحيحًا (بإطار ذهبي).'},
-   reveal:()=>{st.fill(0);P.sol.forEach(i=>st[i]=1);for(let i=0;i<n*n;i++)if(g[i]<0)cell(i);draw();return'هذا هو الحل.'}}})}
-
 /* ---------- registry ---------- */
 const PZ_NEW=[
  {id:'pz_queen',maxLv:8,col:['#CDB2EE','#7B5EA7'],name:'الملكات',lab:'Queens',why:'لغز منطق مكاني رائج: كل ملكة تشطب صفًا وعمودًا ومنطقة وما حولها، فتدرّب الاستبعاد المنظم.',how:['ملكة واحدة في كل صف وعمود ومنطقة لون.','الملكات لا تتلامس ولو قطريًا.','اضغط مرة ✕ ومرتين ♛.'],run:runQueens},
  {id:'pz_laser',maxLv:8,col:['#FF8A8A','#FF4D6D'],name:'الليزر والمرايا',lab:'Laser mirrors',why:'تتبّع مسار الشعاع ذهنيًا قبل كل تدوير: تخطيط مكاني على طريقة غرف ريزدنت إيفل.',how:['اضغط المرآة لتقلبها.','أوصل الشعاع للهدف 🎯.','لازم يمر على كل الجواهر 💎.'],run:runLaser},
- {id:'pz_keys',maxLv:8,col:['#FFD45A','#F2A65A'],name:'المفتاح والأبواب',lab:'Keys & doors',why:'تخطيط متسلسل: أي مفتاح أولًا، وأي باب يفتح أي طريق.',how:['امشِ بالأسهم أو بالضغط على الخانة المجاورة.','المفتاح يفتح الباب الذي بلونه.','اخرج من الباب 🚪.'],run:runKeys},
  {id:'pz_soko',maxLv:8,col:['#D9A066','#8A5A33'],name:'صناديق المخزن',lab:'Sokoban',why:'من أشهر ألغاز التخطيط: الدفع لا رجعة فيه، فلازم تفكر خطوات للأمام.',how:['ادفع الصناديق للعلامات ✕.','لا تستطيع سحب صندوق.','عندك زر تراجع.'],run:runSoko},
  {id:'pz_sudo',maxLv:8,col:['#9EC5F0','#3F7CC0'],name:'سودوكو الأشكال',lab:'Shape sudoku',why:'استنتاج السودوكو كاملًا لكن بأشكال وألوان بدل الأرقام.',how:['اختر شكلًا من الأسفل.','اضغط الخانة لتضعه.','لا يتكرر شكل في صف أو عمود أو مربع.'],run:runSudo},
  {id:'pz_flow',maxLv:8,col:['#5EE6C0','#3FD0E8'],name:'وصّل الألوان',lab:'Flow',why:'تخطيط مسارات متعددة تتنافس على نفس المساحة.',how:['وصّل كل نقطتين بنفس اللون.','الخطوط لا تتقاطع.','املأ اللوحة كلها.'],run:runFlow},
- {id:'pz_slide',maxLv:6,col:['#F6B985','#FF8A3D'],name:'الصورة المنزلقة',lab:'Sliding puzzle',why:'لغز الـ15 الكلاسيكي: ترتيب بخطة، لأن تحريك قطعة يخرّب غيرها.',how:['اضغط قطعة بجانب الفراغ لتحريكها.','ركّب الصورة.','الصف العلوي أولًا.'],run:runSlide},
  {id:'pz_tan',maxLv:8,col:['#B5DE9B','#5E9550'],name:'تانغرام المربعات',lab:'Block tangram',why:'تدوير القطع وقلبها ذهنيًا لتملأ شكلًا: تصوّر مكاني مباشر.',how:['اختر قطعة ودوّرها أو اقلبها.','اضغط الخانة التي تبدأ عندها النقطة.','غطِّ الشكل كله.'],run:runTangram},
- {id:'pz_tent',maxLv:8,col:['#97D9CF','#5E9550'],name:'الخيام والأشجار',lab:'Tents',why:'منطق شبكي بقواعد بسيطة واستنتاجات متسلسلة.',how:['خيمة بجانب كل شجرة.','الخيام لا تتلامس.','الأرقام عدد الخيام في الصف والعمود.'],run:runTents},
- {id:'pz_akari',maxLv:8,col:['#F3D488','#D99A1E'],name:'أنوار القصر',lab:'Light Up',why:'لغز أكاري الياباني: تخطيط إنارة بقيود متداخلة.',how:['ضع مصابيح لتنير كل الغرف.','لا يضيء مصباح على مصباح.','الرقم = عدد المصابيح الملاصقة.'],run:runAkari}];
+ {id:'pz_tent',maxLv:8,col:['#97D9CF','#5E9550'],name:'الخيام والأشجار',lab:'Tents',why:'منطق شبكي بقواعد بسيطة واستنتاجات متسلسلة.',how:['خيمة بجانب كل شجرة.','الخيام لا تتلامس.','الأرقام عدد الخيام في الصف والعمود.'],run:runTents}];
 PZ_NEW.forEach(g=>{Object.assign(g,{cat:'log',puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g});
 PZ_TYPES.splice(PZ_TYPES.indexOf('tol'),0,...PZ_NEW.map(g=>g.id));
-TV_PUZ.push('pz_queen','pz_laser','pz_keys','pz_soko','pz_sudo','pz_slide','pz_tan','pz_tent','pz_akari','pz_flow');
+TV_PUZ.push('pz_queen','pz_laser','pz_soko','pz_sudo','pz_tan','pz_tent','pz_flow');
 Object.assign(I,{
  pz_queen:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M10 36l-3-20 9 8 8-14 8 14 9-8-3 20z"/><rect x="9" y="38" width="30" height="5" rx="2"/></svg>',
  pz_laser:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="4" stroke-linecap="round"><path d="M4 30h18l12-18"/><path d="M28 8l12 8" stroke-width="5"/><circle cx="40" cy="38" r="5" fill="#0A0E1C"/></svg>',
- pz_keys:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="4.5" stroke-linecap="round"><circle cx="16" cy="24" r="8"/><path d="M24 24h18M36 24v7M42 24v5"/></svg>',
  pz_soko:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><rect x="16" y="14" width="24" height="24" rx="3"/><path d="M16 14l24 24M40 14L16 38" stroke="#fff" stroke-width="2.5" opacity=".5"/><circle cx="9" cy="26" r="5"/></svg>',
  pz_sudo:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M6 6h36v36H6z" fill="none" stroke="#0A0E1C" stroke-width="3"/><path d="M24 6v36M6 24h36" stroke="#0A0E1C" stroke-width="2.5"/><circle cx="15" cy="15" r="5"/><rect x="28" y="28" width="10" height="10"/><path d="M33 10l5 9h-10z"/></svg>',
  pz_flow:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"><path d="M10 38V18h20v-8"/><circle cx="10" cy="38" r="4" fill="#0A0E1C"/><circle cx="30" cy="10" r="4" fill="#0A0E1C"/><path d="M38 38V26" opacity=".5"/></svg>',
- pz_slide:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><rect x="6" y="6" width="11" height="11" rx="2"/><rect x="19" y="6" width="11" height="11" rx="2"/><rect x="32" y="6" width="11" height="11" rx="2"/><rect x="6" y="19" width="11" height="11" rx="2"/><rect x="19" y="19" width="11" height="11" rx="2"/><rect x="6" y="32" width="11" height="11" rx="2"/><rect x="32" y="32" width="11" height="11" rx="2" opacity=".35"/></svg>',
  pz_tan:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M6 6h24v12H18v12H6z"/><path d="M32 6h10v24H32z" opacity=".55"/><path d="M6 32h36v10H6z" opacity=".8"/></svg>',
- pz_tent:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M4 40L18 14l14 26z"/><circle cx="38" cy="18" r="7" opacity=".6"/><rect x="36" y="24" width="4" height="16" opacity=".6"/></svg>',
- pz_akari:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M24 6a12 12 0 0 0-7 21.7V32h14v-4.3A12 12 0 0 0 24 6z"/><rect x="18" y="35" width="12" height="4" rx="2"/><rect x="20" y="41" width="8" height="3" rx="1.5"/></svg>'});
+ pz_tent:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M4 40L18 14l14 26z"/><circle cx="38" cy="18" r="7" opacity=".6"/><rect x="36" y="24" width="4" height="16" opacity=".6"/></svg>'});
 
 /* ================= v23: hand-drawn look + drawn chapter maps ================= */
 const applyLook=()=>{const l=S.st.look||'classic',r=document.documentElement;if(l!=='sketch'){delete r.dataset.look;return}r.dataset.look='sketch';if(!document.getElementById('skfonts')){const k=document.createElement('link');k.id='skfonts';k.rel='stylesheet';k.href='https://fonts.googleapis.com/css2?family=Marhey:wght@400;600;700&family=Aref+Ruqaa:wght@700&display=swap';document.head.appendChild(k)}};
@@ -3581,9 +3556,6 @@ const ART_FN={
  pz_pipe:B=>{B.sky('#CFE3EC','#F2EAD6');B.hills(210,ARTC.sage,18);B.wc(B.rect(50,60,40,60),ARTC.stone,{a:.3});B.wc(B.ell(70,58,30,14),ARTC.teal,{a:.3});B.ink([[40,120],[40,60],[100,60],[100,120]],{w:1.3});
    const p=[[70,120],[70,170],[200,170],[200,230],[330,230]],q=[[200,170],[330,170],[330,140]];B.ink(p,{w:9,a:.45});B.ink(q,{w:9,a:.45});B.ctx.save();B.ctx.globalAlpha=.6;B.ctx.strokeStyle=ARTC.sky;B.ctx.lineWidth=5;B.ctx.beginPath();p.forEach(([x,y],i)=>i?B.ctx.lineTo(x,y):B.ctx.moveTo(x,y));B.ctx.stroke();B.ctx.beginPath();q.forEach(([x,y],i)=>i?B.ctx.lineTo(x,y):B.ctx.moveTo(x,y));B.ctx.stroke();B.ctx.restore();
    B.house(330,138,.9);B.house(355,262,.9,ARTC.ochre);B.frame()},
- pz_pic:B=>{B.sky('#E7D7BE','#F4ECDA');B.ink([[140,280],[210,60],[280,280]],{w:3,a:.7});B.ink([[210,60],[210,290]],{w:2.4,a:.6});
-   const cols=[ARTC.terra,ARTC.ochre,ARTC.sage,ARTC.sky,ARTC.plum];const s=22;for(let r=0;r<6;r++)for(let c=0;c<7;c++){if(((r*7+c)*7)%5<2)continue;B.wc(B.rect(133+c*s,72+r*s,s-2,s-2),cols[(r+c)%5],{amp:1.2,layers:3,a:.3})}
-   B.ink([[128,66],[292,66],[292,206],[128,206]],{close:true,w:2});B.wc(B.ell(330,250,28,10),ARTC.wood,{a:.25});[[310,246,ARTC.red],[330,242,ARTC.sky],[350,248,ARTC.gold]].forEach(([x,y,c])=>B.wc(B.ell(x,y,6,5),c,{a:.4}));B.frame()},
  pz_grid:B=>{B.bg(ARTC.wood,.2);B.wc([[60,30],[360,40],[350,280],[70,270]],ARTC.white,{a:.55});B.ink([[60,30],[360,40],[350,280],[70,270]],{close:true,w:1.5});
    for(let i=1;i<5;i++){B.ink([[60+i*58,32+i*2],[70+i*56,270+i*2]],{w:.9,a:.4});B.ink([[62+i*2,30+i*48],[358-i*2,40+i*48]],{w:.9,a:.4})}
    [[100,85],[215,135],[270,190]].forEach(([x,y])=>B.ink([[x-8,y],[x-2,y+8],[x+10,y-8]],{w:2.4,a:.8}));[[160,80],[150,195],[300,90]].forEach(([x,y])=>{B.ink([[x-7,y-7],[x+7,y+7]],{w:2,a:.7});B.ink([[x+7,y-7],[x-7,y+7]],{w:2,a:.7})});
@@ -3600,9 +3572,6 @@ const ART_FN={
  pz_laser:B=>{B.bg(ARTC.night,.55);B.bg(ARTC.indigo,.2);B.stars(25,300);
    const pts=[[0,80],[150,80],[150,220],[300,220],[300,60],[420,60]];B.ctx.save();B.ctx.strokeStyle='#FF6B6B';B.ctx.lineCap='round';[[14,.08],[7,.18],[3,.9]].forEach(([w,a])=>{B.ctx.globalAlpha=a;B.ctx.lineWidth=w;B.ctx.beginPath();pts.forEach(([x,y],i)=>i?B.ctx.lineTo(x,y):B.ctx.moveTo(x,y));B.ctx.stroke()});B.ctx.restore();
    [[150,80,1],[150,220,-1],[300,220,1],[300,60,-1]].forEach(([x,y,d])=>{B.wc([[x-18,y+18*d],[x-14,y+22*d],[x+18,y-14*d],[x+14,y-18*d]],'#DDE6F5',{amp:1,a:.5})});B.wc(B.ell(230,220,10,12),'#7FE3F0',{a:.45});B.frame()},
- pz_keys:B=>{B.bg('#BFA581',.25);for(let y=0;y<300;y+=30)for(let x=(y/30%2)*30;x<420;x+=60)B.ink([[x,y],[x+60,y],[x+60,y+30]],{w:.7,a:.2});
-   B.wc([[150,280],[150,90],[210,50],[270,90],[270,280]],ARTC.wood,{a:.32});B.ink([[150,280],[150,90],[210,50],[270,90],[270,280]],{w:2});B.ink([[210,60],[210,280]],{w:1,a:.4});B.wc(B.ell(250,180,7,7),ARTC.gold,{a:.5});
-   B.ink([[40,60],[110,60]],{w:2});B.key(55,90,1.1,ARTC.red);B.key(320,120,1.2,ARTC.sky);B.key(330,200,1,ARTC.gold);B.frame()},
  pz_soko:B=>{B.bg('#C9B48F',.25);for(let x=0;x<420;x+=52)B.ink([[x,0],[x,300]],{w:.7,a:.18});
    B.crate(60,170,80,80);B.crate(150,190,60,60,'#B07C4A');B.crate(90,100,60,62,'#A87244');B.crate(300,190,62,62);B.figure(250,252,1.3,ARTC.teal);
    [[330,90],[360,60]].forEach(([x,y])=>{B.ink([[x-10,y-10],[x+10,y+10]],{w:3,a:.6});B.ink([[x+10,y-10],[x-10,y+10]],{w:3,a:.6})});B.frame()},
@@ -3611,17 +3580,11 @@ const ART_FN={
    B.ink([[ox,oy],[ox+6*s,oy],[ox+6*s,oy+6*s],[ox,oy+6*s]],{close:true,w:2.2});B.ink([[ox+3*s,oy],[ox+3*s,oy+6*s]],{w:1.8});[2,4].forEach(r=>B.ink([[ox,oy+r*s],[ox+6*s,oy+r*s]],{w:1.8}));B.frame()},
  pz_flow:B=>{B.sky('#EFE3CC','#F7F0E2');const lines=[[[30,60],[150,60],[150,160],[60,160],[60,250]],[[380,40],[260,40],[260,130],[340,130],[340,260]],[[200,280],[200,200],[110,200],[110,110],[220,110]]],cols=[ARTC.red,ARTC.teal,ARTC.ochre];
    lines.forEach((p,k)=>{B.ctx.save();B.ctx.strokeStyle=cols[k];B.ctx.lineCap=B.ctx.lineJoin='round';[[18,.18],[11,.4]].forEach(([w,a])=>{B.ctx.globalAlpha=a;B.ctx.lineWidth=w;B.ctx.beginPath();p.forEach(([x,y],i)=>i?B.ctx.lineTo(x,y):B.ctx.moveTo(x,y));B.ctx.stroke()});B.ctx.restore();[p[0],p[p.length-1]].forEach(([x,y])=>{B.wc(B.ell(x,y,13,13),cols[k],{a:.45});B.ink(B.ell(x,y,13,13,14),{close:true,w:1.3})})});B.frame()},
- pz_slide:B=>{B.sky('#BFD7E8','#F2E6CF');B.sun(320,60,24);B.hills(170,ARTC.sage,30);B.house(150,215,1.2);B.tree(300,220,1.2);
-   B.ctx.save();B.ctx.globalAlpha=.9;B.ctx.strokeStyle='#F6EEDC';B.ctx.lineWidth=6;for(let k=1;k<3;k++){B.ctx.beginPath();B.ctx.moveTo(k*140,0);B.ctx.lineTo(k*140,300);B.ctx.stroke();B.ctx.beginPath();B.ctx.moveTo(0,k*100);B.ctx.lineTo(420,k*100);B.ctx.stroke()}B.ctx.restore();
-   B.wc(B.rect(283,203,134,94),'#E9DFC9',{a:.75,amp:1});B.ink([[283,203],[417,203],[417,297],[283,297]],{close:true,w:1.5});B.frame()},
  pz_tan:B=>{B.sky('#E9DDC4','#F5EDDD');const s=34,cells=[[0,0,ARTC.red],[1,0,ARTC.red],[1,1,ARTC.red],[2,0,ARTC.sky],[3,0,ARTC.sky],[3,1,ARTC.sky],[0,1,ARTC.ochre],[0,2,ARTC.ochre],[1,2,ARTC.ochre],[2,1,ARTC.sage],[2,2,ARTC.sage],[3,2,ARTC.sage],[2,3,ARTC.plum],[3,3,ARTC.plum],[1,3,ARTC.plum]];
    cells.forEach(([c,r,col])=>B.wc(B.rect(120+c*s,60+r*s,s-2,s-2),col,{amp:1.5,layers:3,a:.33}));cells.forEach(([c,r])=>B.ink([[120+c*s,60+r*s],[120+c*s+s-2,60+r*s],[120+c*s+s-2,60+r*s+s-2],[120+c*s,60+r*s+s-2]],{close:true,w:1,a:.55}));
    [[300,200,ARTC.teal],[334,200,ARTC.teal],[334,234,ARTC.teal]].forEach(([x,y,c])=>{B.wc(B.rect(x,y,s-2,s-2),c,{amp:1.5,layers:3,a:.33});B.ink([[x,y],[x+s-2,y],[x+s-2,y+s-2],[x,y+s-2]],{close:true,w:1,a:.55})});B.ink([[250,230],[290,222]],{w:1.4,a:.5});B.frame()},
  pz_tent:B=>{B.sky(ARTC.night,'#6B6F95');B.stars(60,170);B.moon(340,60,22);B.hills(200,'#3E5A44',26);B.wc(B.rect(-10,240,440,70),'#4B6A48',{a:.35});
-   B.tree(70,250,1.3,'#4F7A4A');B.tree(380,245,1.1,'#4F7A4A');B.tent(180,262,1.4,ARTC.ochre);B.tent(300,258,1,ARTC.terra);B.wc(B.ell(240,272,16,8),ARTC.gold,{a:.12,layers:6});B.wc([[232,272],[240,250],[248,272]],ARTC.gold,{amp:2,a:.4});B.frame()},
- pz_akari:B=>{B.bg('#4A3B52',.45);B.wc(B.rect(-10,200,440,110),'#6E5A60',{a:.35});
-   [70,210,350].forEach(x=>{B.wc([[x-45,200],[x-45,90],[x,40],[x+45,90],[x+45,200]],'#2E2638',{a:.4});B.ink([[x-45,200],[x-45,90],[x,40],[x+45,90],[x+45,200]],{w:1.3,a:.5})});
-   [[140,110],[280,110]].forEach(([x,y])=>{B.ink([[x,0],[x,y-26]],{w:1,a:.6});B.lamp(x,y,1.2)});B.ctx.save();B.ctx.globalAlpha=.18;B.ctx.fillStyle=ARTC.gold;B.ctx.beginPath();B.ctx.moveTo(110,130);B.ctx.lineTo(60,300);B.ctx.lineTo(220,300);B.ctx.lineTo(170,130);B.ctx.fill();B.ctx.beginPath();B.ctx.moveTo(250,130);B.ctx.lineTo(200,300);B.ctx.lineTo(360,300);B.ctx.lineTo(310,130);B.ctx.fill();B.ctx.restore();B.frame()}};
+   B.tree(70,250,1.3,'#4F7A4A');B.tree(380,245,1.1,'#4F7A4A');B.tent(180,262,1.4,ARTC.ochre);B.tent(300,258,1,ARTC.terra);B.wc(B.ell(240,272,16,8),ARTC.gold,{a:.12,layers:6});B.wc([[232,272],[240,250],[248,272]],ARTC.gold,{amp:2,a:.4});B.frame()}};
 /* chapter landscapes: painted maps for the story */
 const CH_SCENE=[
  B=>{B.bg(ARTC.sage,.22);for(let r=0;r<4;r++)B.wc(B.rect(150+r*8,170+r*22,120,14),r%2?ARTC.ochre:ARTC.moss,{a:.18,amp:3});B.wc(B.ell(90,230,90,50),ARTC.moss,{a:.15});B.house(250,60,.6,ARTC.sand);B.house(330,90,.8);B.house(70,70,.7,ARTC.ochre);B.palm(360,250,1);B.palm(30,200,.9);B.tree(250,30,.6)},
@@ -3665,9 +3628,7 @@ const SPR={
  torch:`<svg viewBox="0 0 64 64"><rect x="6" y="24" width="34" height="16" rx="4" fill="#7C8796" ${SK}/><path d="M40 20l12-6v36l-12-6z" fill="#B9C2CE" ${SK}/><circle class="glow" cx="54" cy="32" r="8" fill="#FF6B6B" opacity=".7"/></svg>`,
  target:`<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="24" fill="#FBF7EE" ${SK}/><circle cx="32" cy="32" r="16" fill="#E48C8C" ${SK}/><circle cx="32" cy="32" r="8" fill="#FBF7EE" ${SK}/><circle cx="32" cy="32" r="3" fill="#C9493B"/></svg>`,
  gem:`<svg viewBox="0 0 64 64"><path d="M14 24l10-12h16l10 12-18 28z" fill="#7FE3F0" ${SK}/><path d="M14 24h36M24 12l8 40 8-40" fill="none" stroke="#2F2A24" stroke-width="1.4"/><path class="spark" d="M48 8v8M44 12h8" stroke="#fff" stroke-width="2.5" stroke-linecap="round"/></svg>`,
- key:c=>`<svg viewBox="0 0 64 64"><circle cx="18" cy="32" r="11" fill="${c}" ${SK}/><circle cx="18" cy="32" r="4" fill="#FBF7EE" ${SK}/><path d="M29 29h28v6H29zM47 35v8M54 35v6" fill="${c}" ${SK}/></svg>`,
- door:c=>`<svg viewBox="0 0 64 64"><rect x="10" y="6" width="44" height="54" rx="3" fill="#6B4A32" ${SK}/><g class="leaf"><rect x="14" y="10" width="36" height="50" rx="2" fill="${c}" ${SK}/><circle cx="42" cy="36" r="3" fill="#FFD45A" ${SK}/><path d="M20 18h24M20 26h24" stroke="#2F2A24" stroke-width="1.4" opacity=".5"/></g></svg>`,
- exitDoor:`<svg viewBox="0 0 64 64"><path d="M14 60V18q18-16 36 0v42z" fill="#8A5A33" ${SK}/><path d="M20 60V22q12-10 24 0v38z" fill="#FFE08A" ${SK}/><path d="M44 46l6-4" ${SK}/></svg>`};
+ door:c=>`<svg viewBox="0 0 64 64"><rect x="10" y="6" width="44" height="54" rx="3" fill="#6B4A32" ${SK}/><g class="leaf"><rect x="14" y="10" width="36" height="50" rx="2" fill="${c}" ${SK}/><circle cx="42" cy="36" r="3" fill="#FFD45A" ${SK}/><path d="M20 18h24M20 26h24" stroke="#2F2A24" stroke-width="1.4" opacity=".5"/></g></svg>`};
 const RVK={wolf:'wolf',sheep:'sheep',grass:'grass',cat:'cat',mouse:'mouse',cheese:'cheese',dog:'dog',hen:'hen',corn:'corn',fox:'fox'};
 
 
@@ -3916,15 +3877,17 @@ function runBinary(){return pzPlay('pz_binary',api=>{
 /* ---------- الجليد المنزلق ---------- */
 function runIce(){return pzPlay('pz_ice',api=>{
   const P=icMake(api.lv),{w,h}=P;let pos=P.start,moves=0,busy=false;
-  api.body.innerHTML=`<div class="icw ltr"><div class="icb" id="icb" style="--w:${w};--h:${h}">${gridBtns(w,h,i=>P.rock[i]?`<span class="icc rock">${SPR.rock}</span>`:i===P.goal?`<span class="icc goal">${SPR.flag}</span>`:'<span class="icc"></span>')}</div><div class="ictok" id="ict">${SPR.penguin}</div></div>${arrowPad()}<div class="row skbtns"><button class="pzgive" id="icre">↺ من جديد</button></div>`;
-  api.msg(`البطريق ينزلق حتى يصطدم بصخرة أو بالحافة. أوصله إلى العلم. أقل حل: <b class="num">${P.min}</b>`);
+  api.body.innerHTML=`<div class="icw2 ltr" id="icw"><div class="icb2" id="icb" style="--w:${w};--h:${h}">${gridBtns(w,h,i=>P.rock[i]?`<span class="icc2 rock">${SPR.boulder}</span>`:i===P.goal?`<span class="icc2 goal">${SPR.igloo}</span>`:`<span class="icc2${(i*7)%11===0?' glint':''}"></span>`)}</div><div class="ictok2" id="ict">${SPR.penguin2}</div></div>${arrowPad()}<div class="row skbtns"><button class="pzgive" id="icre">↺ من جديد</button></div>`;
+  api.msg(`البطريق ينزلق حتى يصطدم بصخرة أو بالحافة. أوصله إلى الكوخ الجليدي. أقل حل: <b class="num">${P.min}</b>`);
   const put=(p,ms)=>{const t=$('#ict');t.style.transitionDuration=(ms||0)+'ms';t.style.left=(p%w)*100/w+'%';t.style.top=(p/w|0)*100/h+'%';t.style.width=100/w+'%';t.style.height=100/h+'%'};
-  function step(d){if(api.ended||busy)return;const m=icSlide(P,pos,d);if(m===pos){sfx.bad();return}const dist=Math.abs(m%w-pos%w)+Math.abs((m/w|0)-(pos/w|0));busy=true;moves++;pos=m;const t=$('#ict');t.classList.toggle('flipx',d===3);put(m,70*dist+60);tone(300,.12,'triangle');
-    later(()=>{busy=false;tone(520,.04);if(pos===P.goal)api.win(`وصل البطريق في ${arN(moves,AN.mv)}، والأقل ${arN(P.min,AN.mv)}.`);else api.msg(`الحركات: <b class="num">${moves}</b> · أقل حل: <b class="num">${P.min}</b>`)},70*dist+80)}
-  $('#icre').onclick=()=>{if(api.ended)return;pos=P.start;moves=0;put(pos,200)};
+  function spray(from,to,d,ms){const n=Math.abs(to%w-from%w)+Math.abs((to/w|0)-(from/w|0));for(let k=1;k<=n;k++){const c=from+k*(D4[d][1]*w+D4[d][0]);setTimeout(()=>{const e=document.createElement('i');e.className='icspray';e.style.left=(c%w+.5)*100/w+'%';e.style.top=(((c/w|0)+.8))*100/h+'%';$('#icw')&&$('#icw').appendChild(e);setTimeout(()=>e.remove(),600)},k*ms/n)}}
+  function step(d){if(api.ended||busy)return;const m=icSlide(P,pos,d);const t=$('#ict');if(m===pos){sfx.bad();t.classList.remove('bump');void t.offsetWidth;t.classList.add('bump');return}const dist=Math.abs(m%w-pos%w)+Math.abs((m/w|0)-(pos/w|0)),ms=75*dist+80;busy=true;moves++;
+    t.dataset.d=d;t.classList.add('slide');spray(pos,m,d,ms);put(m,ms);tone(240,ms/1000,'sine',.04);const from=pos;pos=m;
+    later(()=>{busy=false;t.classList.remove('slide');t.classList.remove('stop');void t.offsetWidth;t.classList.add('stop');tone(520,.05,'triangle');if(pos===P.goal){$('#icw').classList.add('done');api.win(`وصل البطريق في ${arN(moves,AN.mv)}، والأقل ${arN(P.min,AN.mv)}.`)}else api.msg(`الحركات: <b class="num">${moves}</b> · أقل حل: <b class="num">${P.min}</b>`)},ms)}
+  $('#icre').onclick=()=>{if(api.ended||busy)return;pos=P.start;moves=0;put(pos,260)};
   let sw=null;$('#icb').addEventListener('pointerdown',e=>{sw=[e.clientX,e.clientY]});$('#icb').addEventListener('pointerup',e=>{if(!sw)return;const dx=e.clientX-sw[0],dy=e.clientY-sw[1];sw=null;if(Math.max(Math.abs(dx),Math.abs(dy))<24)return;step(Math.abs(dx)>Math.abs(dy)?(dx>0?1:3):(dy>0?2:0))});
   put(pos);bindArrows(step);pzHook({P,step,pos:()=>pos});
-  return{hint:k=>{if(k===1)return'فكّر بالعكس: من أي اتجاه يمكن أن تصل إلى العلم وتتوقف عنده؟ وما الصخرة التي توقفك هناك؟';const s=icSolve(P,pos);if(!s||!s.length)return null;return`الحركة التالية: ${['للأعلى','لليمين','للأسفل','لليسار'][s[0]]}. باقي ${arN(s.length,AN.mv)}.`},
+  return{hint:k=>{if(k===1)return'فكّر بالعكس: من أي اتجاه يمكن أن تصل إلى الكوخ وتتوقف عنده؟ وما الصخرة التي توقفك هناك؟';const s=icSolve(P,pos);if(!s||!s.length)return null;return`الحركة التالية: ${['للأعلى','لليمين','للأسفل','لليسار'][s[0]]}. باقي ${arN(s.length,AN.mv)}.`},
    reveal:()=>`أقل حل كان ${arN(P.min,AN.mv)}.`}})}
 
 /* ---------- registry ---------- */
@@ -3969,6 +3932,42 @@ CH_SCENE.push(
  B=>{B.bg('#D8D0C0',.25);[60,140,280,360].forEach(x=>{B.wc(B.rect(x-14,60,28,190),'#E8E2D4',{a:.4});B.ink([[x-14,250],[x-14,60],[x+14,60],[x+14,250]],{w:1,a:.4})});B.wc(B.rect(170,100,80,70),ARTC.ochre,{a:.3});B.ink([[170,100],[250,100],[250,170],[170,170]],{close:true,w:1.6})},
  B=>{B.bg(ARTC.sage,.24);[[80,90,ARTC.rose],[150,200,ARTC.gold],[300,100,ARTC.plum],[340,230,ARTC.rose],[220,140,ARTC.white]].forEach(([x,y,c])=>{for(let k=0;k<5;k++){const a=k/5*6.283;B.wc(B.ell(x+Math.cos(a)*9,y+Math.sin(a)*9,8,8),c,{a:.35,layers:3})}B.wc(B.ell(x,y,5,5),ARTC.gold,{a:.6})});B.tree(380,120,.8)});
 
+
+/* ================= v27: redesigned statues, scale, laser, warehouse, tents, ice ================= */
+const ARW_SVG=d=>`<svg viewBox="0 0 24 24" style="transform:rotate(${d*90}deg)"><path d="M12 4l7.5 8.5H15V20H9v-7.5H4.5z" fill="currentColor"/></svg>`;
+function arrowPad(){return`<div class="mzpad ltr pzpad"><button data-d="ArrowUp" aria-label="أعلى">${ARW_SVG(0)}</button><button data-d="ArrowLeft" aria-label="يسار">${ARW_SVG(3)}</button><button data-d="ArrowDown" aria-label="أسفل">${ARW_SVG(2)}</button><button data-d="ArrowRight" aria-label="يمين">${ARW_SVG(1)}</button></div>`}
+const GDEFS=`<svg width="0" height="0" style="position:absolute" aria-hidden="true"><defs>
+ <radialGradient id="gStone" cx="38%" cy="32%" r="75%"><stop offset="0" stop-color="#E9E4D8"/><stop offset=".55" stop-color="#B9B2A3"/><stop offset="1" stop-color="#7D776B"/></radialGradient>
+ <radialGradient id="gDais" cx="50%" cy="40%" r="70%"><stop offset="0" stop-color="#8C8679"/><stop offset=".7" stop-color="#5E594F"/><stop offset="1" stop-color="#3F3B34"/></radialGradient>
+ <linearGradient id="gWood" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#E0A869"/><stop offset=".5" stop-color="#C08447"/><stop offset="1" stop-color="#93602E"/></linearGradient>
+ <linearGradient id="gWoodOk" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#B9E39A"/><stop offset=".5" stop-color="#7FBF5E"/><stop offset="1" stop-color="#4E8A3A"/></linearGradient>
+ <linearGradient id="gMetal" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#E8ECF2"/><stop offset="1" stop-color="#8A93A3"/></linearGradient>
+ <radialGradient id="gLeaf" cx="40%" cy="35%" r="70%"><stop offset="0" stop-color="#9FD27F"/><stop offset=".6" stop-color="#5E9C49"/><stop offset="1" stop-color="#3C6E30"/></radialGradient>
+ <linearGradient id="gCanvas" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F2B24C"/><stop offset=".5" stop-color="#E9963A"/><stop offset=".5" stop-color="#C9742A"/><stop offset="1" stop-color="#B8662A"/></linearGradient>
+ <radialGradient id="gSnow" cx="40%" cy="30%" r="80%"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".6" stop-color="#C9D6E2"/><stop offset="1" stop-color="#8797A8"/></radialGradient>
+ <linearGradient id="gBelly" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#DCE6EF"/></linearGradient>
+ <radialGradient id="gGold" cx="35%" cy="30%" r="75%"><stop offset="0" stop-color="#FFF3B8"/><stop offset=".5" stop-color="#F2C24C"/><stop offset="1" stop-color="#B9851A"/></radialGradient>
+</defs></svg>`;
+(()=>{const d=document.createElement('div');d.innerHTML=GDEFS;document.body.appendChild(d.firstChild)})();
+const INK2='stroke="#2B2520" stroke-width="2.2" stroke-linejoin="round" stroke-linecap="round"';
+Object.assign(SPR,{
+ crate2:`<svg viewBox="0 0 64 64"><rect x="5" y="7" width="54" height="54" rx="5" fill="rgba(0,0,0,.25)"/><rect class="cbody" x="4" y="4" width="54" height="54" rx="5" fill="url(#gWood)" ${INK2}/><path d="M12 12h38v38H12z" fill="none" stroke="#7A4E25" stroke-width="2.5"/><path d="M12 12l38 38M50 12L12 50" stroke="#7A4E25" stroke-width="4" stroke-linecap="round"/><path d="M4 18h54M4 44h54" stroke="#A36D38" stroke-width="1.5" opacity=".6"/>${[[8,8],[54,8],[8,54],[54,54]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="3" fill="url(#gMetal)" stroke="#2B2520" stroke-width="1.2"/>`).join('')}<path class="ccheck" d="M20 32l8 8 16-17" fill="none" stroke="#fff" stroke-width="5" stroke-linecap="round" stroke-linejoin="round"/></svg>`,
+ worker:`<svg viewBox="0 0 64 64"><ellipse cx="32" cy="58" rx="16" ry="4" fill="rgba(0,0,0,.25)"/><g class="wbody"><path d="M18 58V40q14-10 28 0v18z" fill="#E07A3A" ${INK2}/><path d="M22 44h20" stroke="#FFD45A" stroke-width="3"/><circle cx="32" cy="27" r="12" fill="#F0C9A0" ${INK2}/><path d="M19 24q2-12 13-12t13 12z" fill="#F2B03C" ${INK2}/><path d="M17 24h30" ${INK2}/><circle class="weye" cx="28" cy="28" r="1.8" fill="#2B2520"/><circle class="weye" cx="36" cy="28" r="1.8" fill="#2B2520"/><path d="M29 33q3 2 6 0" fill="none" ${INK2}/></g></svg>`,
+ tree2:`<svg viewBox="0 0 64 64"><ellipse cx="34" cy="57" rx="16" ry="4" fill="rgba(0,0,0,.28)"/><path d="M29 58l1-16h4l1 16z" fill="#7A4E25" ${INK2}/><g class="sway"><circle cx="32" cy="30" r="18" fill="url(#gLeaf)" ${INK2}/><circle cx="21" cy="34" r="10" fill="url(#gLeaf)" ${INK2}/><circle cx="43" cy="34" r="10" fill="url(#gLeaf)" ${INK2}/><circle cx="26" cy="23" r="4" fill="#B8E39A" opacity=".7"/><circle cx="38" cy="38" r="2.4" fill="#D94A3B"/><circle cx="24" cy="38" r="2.4" fill="#D94A3B"/></g></svg>`,
+ tent2:`<svg viewBox="0 0 64 64"><ellipse cx="32" cy="57" rx="26" ry="4" fill="rgba(0,0,0,.28)"/><g class="tbody"><path d="M4 56L32 10l28 46z" fill="url(#gCanvas)" ${INK2}/><path class="tflap" d="M32 26l-11 30h22z" fill="#5A3A22" ${INK2}/><path d="M32 10v46" stroke="#2B2520" stroke-width="1.6" opacity=".5"/><path d="M32 10l-5-7M32 10l5-7" ${INK2}/><path class="tflag" d="M32 3l9 3-9 3z" fill="#D94A3B"/></g></svg>`,
+ tuft:`<svg viewBox="0 0 64 64"><path d="M20 46q2-14 6-18q-1 10 2 18M30 46q0-18 4-24q1 14-1 24M38 46q3-12 8-16q-3 8-3 16" fill="#6FA35C" stroke="#3C6E30" stroke-width="1.6" stroke-linejoin="round"/></svg>`,
+ penguin2:`<svg viewBox="0 0 64 64"><ellipse cx="32" cy="58" rx="15" ry="3.5" fill="rgba(0,0,0,.22)"/><g class="pbody"><path d="M14 40q0-26 18-30q18 4 18 30q-2 16-18 18q-16-2-18-18z" fill="#2E3A57" ${INK2}/><path d="M20 42q0-18 12-22q12 4 12 22q-2 12-12 13q-10-1-12-13z" fill="url(#gBelly)"/><path class="pwing" d="M14 34q-8 8-6 16q6-2 9-8" fill="#2E3A57" ${INK2}/><path class="pwing r" d="M50 34q8 8 6 16q-6-2-9-8" fill="#2E3A57" ${INK2}/><circle cx="26" cy="24" r="3.2" fill="#fff"/><circle cx="38" cy="24" r="3.2" fill="#fff"/><circle cx="26.8" cy="24.6" r="1.8" fill="#2B2520"/><circle cx="38.8" cy="24.6" r="1.8" fill="#2B2520"/><path d="M28 30l4 5 4-5z" fill="#F2A23C" ${INK2}/><circle cx="21" cy="31" r="2.6" fill="#F4A3A3" opacity=".7"/><circle cx="43" cy="31" r="2.6" fill="#F4A3A3" opacity=".7"/><path d="M22 57q4 3 8 0M34 57q4 3 8 0" fill="#F2A23C" ${INK2}/></g></svg>`,
+ boulder:`<svg viewBox="0 0 64 64"><ellipse cx="34" cy="55" rx="24" ry="5" fill="rgba(0,0,0,.25)"/><path d="M8 50q-4-18 10-28q8-14 24-10q16 4 16 20q6 10-2 18z" fill="#8E96A3" ${INK2}/><path d="M14 30q6-10 18-10q-4 6-14 12zM32 18q12-2 18 8q-8-3-18-2z" fill="url(#gSnow)" stroke="#2B2520" stroke-width="1.4"/><path d="M22 42q8-4 14 2M40 34q6 2 8 8" fill="none" stroke="#5E6672" stroke-width="2" stroke-linecap="round"/></svg>`,
+ igloo:`<svg viewBox="0 0 64 64"><ellipse cx="32" cy="56" rx="26" ry="4" fill="rgba(0,0,0,.2)"/><path d="M6 54q0-36 26-36t26 36z" fill="url(#gSnow)" ${INK2}/><path d="M12 42h40M9 50h46M20 30h24M24 18v12M40 18v12M18 42v8M32 30v12M46 42v8" stroke="#8797A8" stroke-width="1.6"/><path d="M24 54q0-12 8-12t8 12z" fill="#2E3A57" ${INK2}/><path class="tflag" d="M32 6v12M32 6l10 3-10 3" fill="#D94A3B" ${INK2}/></svg>`});
+
+
+function stGuardian(tgt){return`<svg viewBox="-50 -50 100 100" class="stsv"><circle r="47" fill="url(#gDais)" stroke="#2B2520" stroke-width="2"/><circle r="40" fill="none" stroke="#2B2520" stroke-opacity=".35" stroke-width="1.5" stroke-dasharray="3 5"/>
+  ${[0,1,2,3].map(k=>`<path transform="rotate(${k*90})" d="M0-46v6" stroke="#C9C2B2" stroke-width="2" stroke-linecap="round" opacity=".6"/>`).join('')}
+  <g transform="rotate(${tgt*90})"><path class="strune" d="M0-47l5.5 7-5.5 7-5.5-7z" stroke="#2B2520" stroke-width="1.2"/></g>
+  <g class="sthead2"><ellipse cx="3" cy="5" rx="25" ry="24" fill="rgba(0,0,0,.3)"/><path d="M-24 6q0-30 24-34q24 4 24 34q-4 20-24 22q-20-2-24-22z" fill="url(#gStone)" ${INK2}/>
+   <path d="M-17-9q17-12 34 0" fill="none" stroke="#6E685D" stroke-width="2.2" stroke-linecap="round"/><path d="M0-36l7 11h-14z" fill="#C9C2B2" ${INK2}/>
+   <circle class="steye" cx="-8.5" cy="-4" r="3.6"/><circle class="steye" cx="8.5" cy="-4" r="3.6"/><path d="M-15 10q15 10 30 0M-11 17q11 6 22 0" fill="none" stroke="#6E685D" stroke-width="2" stroke-linecap="round"/></g>
+  <circle class="stpulse" r="44"/></svg>`}
 
 applyMode();if(!MODE)showModePick();
 S.connect();
