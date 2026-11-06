@@ -1660,6 +1660,30 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 .pjev{display:flex;flex-wrap:wrap;gap:6px;justify-content:center;margin-top:10px}.pje{position:relative;padding:6px 10px;border-radius:999px;border:1.4px solid #3A2616;background:rgba(255,248,226,.6);font:700 12px Tajawal;color:#3A2616}.pje em{position:absolute;top:-8px;right:-6px;font-style:normal;font:700 11px/18px 'Aref Ruqaa',serif;width:18px;height:18px;border-radius:50%;background:#9B2B1F;color:#fff}.pje em:empty{display:none}.pje.on{background:#E9D49E}
 .pob{width:min(86%,300px);margin:8px auto 0;border:2px solid #3A2616}.pob svg{width:100%;height:auto;display:block}.pob.done{box-shadow:0 0 18px #F2C553}
 
+/* v39: المتاهة، السراديب، الأساسات */
+.pzmw{position:relative;width:min(84%,300px);aspect-ratio:1;margin:10px auto;background:#3A2616;border:3px solid #3A2616;border-radius:4px}
+.pzmr{position:absolute;padding:1px}.pzmr svg{width:100%;height:100%;display:block;transition:transform .25s ease}
+.pzmr.rot{box-shadow:inset 0 0 0 2px #C8A24A;z-index:1}.pzmr.rot svg rect:first-child{fill:#E3C98E}
+.pzmexit{position:absolute;pointer-events:none;box-shadow:inset 0 0 0 3px #9B2B1F;border-radius:3px;z-index:1}
+.pzmp{padding:1.5%;transition:left .16s linear,top .16s linear;z-index:3}
+.pzmp.bump{animation:pzmb .25s}@keyframes pzmb{25%{transform:translateX(-6%)}75%{transform:translateX(6%)}}
+.pcrw{display:grid;grid-template-columns:auto 1fr;grid-template-rows:auto 1fr;width:min(92%,330px);margin:10px auto;font:700 11px/1.15 Tajawal;color:#3A2616}
+.pcrtop{display:grid;grid-template-columns:repeat(var(--n),1fr);align-items:end;text-align:center;padding-bottom:3px}
+.pcrleft{display:grid;grid-template-rows:repeat(var(--n),1fr);align-items:center;text-align:end;padding-inline-end:5px;white-space:nowrap}
+.pcrg{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:2px;padding:3px;background:#8E8576;border:2px solid #3A2616;aspect-ratio:1}
+.pcrg button{padding:0;border:0;border-radius:2px;background:#E9DDBE;aspect-ratio:1;position:relative}
+.pcrg button.f{background:#3A2616}.pcrg button.x::after{content:'';position:absolute;inset:30%;background:linear-gradient(45deg,transparent 44%,#9B2B1F 44% 56%,transparent 56%),linear-gradient(-45deg,transparent 44%,#9B2B1F 44% 56%,transparent 56%)}
+.pcrg.done button.f{background:#9B6A2A;transition:background .6s}
+.pvw{display:flex;align-items:flex-end;justify-content:center;gap:2px;margin:12px auto;flex-wrap:nowrap}
+.pvc{display:flex;flex-direction:column;align-items:center;gap:3px;width:48px}
+.pvt{position:relative;width:40px;height:120px;border:2px solid #3A2616;border-top:0;background:rgba(255,248,226,.5);overflow:hidden;border-radius:0 0 6px 6px}
+.pvt i{position:absolute;bottom:0;left:0;right:0;background:linear-gradient(#7FAFC0,#3D6E80);transition:height .4s ease}
+.pvt b{position:absolute;inset:auto 0 4px;text-align:center;font:700 14px 'Aref Ruqaa',serif;color:#FFF8E2;text-shadow:0 1px 2px #000}
+.pvc small{font:700 10.5px Tajawal;color:#3A2616}.pvc.ok .pvt{border-color:#4D7A3A;box-shadow:0 0 0 2px rgba(77,122,58,.4)}
+.pvv{width:30px;height:30px;padding:0;margin-bottom:40px;border:0;background:none}.pvv svg{width:100%;height:100%}
+@media(max-width:380px){.pvc{width:40px}.pvt{width:34px;height:100px}.pvv{width:24px;height:24px}}
+.pcrleft i{font-style:normal;display:inline-block;min-width:1.2em;text-align:center}
+
 </style>
 
 
@@ -6258,6 +6282,95 @@ const PZ_P4=[
 PZ_P4.forEach(g=>{Object.assign(g,{puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g});TV_PUZ.unshift(...PZ_P4.map(g=>g.id));
 Object.assign(I,{pz_parm:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M6 6h14v14H6zM22 6h20v8H22zM6 22h8v20H6zM16 22h26v20H16z" opacity=".8"/></svg>',pz_pjail:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><path d="M8 6v36M18 6v36M28 6v36M38 6v36M4 6h40M4 42h40"/></svg>',pz_pobs:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><circle cx="12" cy="14" r="3"/><circle cx="30" cy="10" r="3"/><circle cx="22" cy="28" r="3"/><circle cx="38" cy="34" r="3"/><circle cx="24" cy="24" r="20" fill="none" stroke="#0A0E1C" stroke-width="2.4"/></svg>',pz_peng:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><circle cx="18" cy="20" r="12" opacity=".6"/><circle cx="34" cy="32" r="9"/></svg>'});
 Object.assign(ART_FN,Object.fromEntries(PZ_P4.map((g,k)=>[g.id,B=>{B.bg('#E9DDBE',.35);B.wc(B.rect(60+k*15,50,300-k*30,200),g.col[0],{a:.5});B.wc(B.ell(210,150,46,46),g.col[1],{a:.7});B.frame()}])));
+/* ================= v39: القصر — الدفعة الرابعة: المتاهة، السراديب، الأساسات، السجين الأخير ================= */
+{const at=PW.findIndex(w=>w.n==='الأساسات الغارقة');PW.splice(at+1,0,{id:'pz_plast',n:'تحدي السجين الأخير',x:180,y:112,boss:1,art:'skullk'})}
+Object.assign(PW.find(w=>w.n==='متاهة الملوك'),{id:'pz_pmaze',art:'mkey',story:'غرف المتاهة تدور كلما خطوت خطوة. الغرف ذات النقش الذهبي تدور ربع دورة مع كل خطوة… خطط قبل أن تتحرك.'});
+Object.assign(PW.find(w=>w.n==='سراديب العرش'),{id:'pz_pcrypt',art:'tablet',story:'جدار السرداب مغطى بالغبار. الأرقام على الأطراف تقول كم مربعًا منقوشًا متتاليًا في كل صف وعمود. اكشف النقش.'});
+Object.assign(PW.find(w=>w.n==='الأساسات الغارقة'),{id:'pz_pvalve',art:'valve',story:'أسفل القصر غرف ماء متصلة بصمامات. فتح الصمام بين غرفتين يساوي الماء بينهما. افتح باب الأعماق بالمستويات الصحيحة.'});
+Object.assign(XS_,{
+ mkey:`<svg viewBox="0 0 40 40"><rect x="6" y="6" width="28" height="28" fill="none" stroke="url(#xGold)" stroke-width="3"/><path d="M6 20h10v-8h8v16h10" fill="none" stroke="${XK}" stroke-width="2"/></svg>`,
+ tablet:`<svg viewBox="0 0 40 40"><path d="M8 36V12q0-8 12-8t12 8v24z" fill="#B3A88E" ${XI}/><path d="M14 16h12M14 22h12M14 28h8" stroke="${XK}" stroke-width="1.4"/></svg>`,
+ valve:`<svg viewBox="0 0 40 40"><path d="M4 22h32" stroke="#5E5754" stroke-width="8"/><circle cx="20" cy="22" r="7" fill="#5F8E86" ${XI}/><path d="M20 8v7M13 8h14" stroke="#9B2B1F" stroke-width="3" stroke-linecap="round"/></svg>`,
+ skullk:`<svg viewBox="0 0 40 40">${XS_.skull.replace('<svg viewBox="0 0 40 40">','<g transform="translate(2 0) scale(.9)">').replace('</svg>','</g>')}<path d="M26 30l10 6" stroke="url(#xGold)" stroke-width="3"/></svg>`});
+Object.assign(PART,{mkey:{n:'مفتاح المتاهة',d:'يدور في يدك كما تدور الغرف.',s:'mkey'},tablet:{n:'لوح السرداب',d:'نقش قديم: «الملك السابع لم يكن ملكًا… كان قبطانًا».',s:'tablet'},valve:{n:'صمام الأعماق',d:'من الأساسات الغارقة: يربط القصر بالبحار السبعة.',s:'valve'},skullk:{n:'مفتاح السجين الأخير',d:'السجين كان يعرف الحقيقة طوال الوقت.',s:'skullk'}});
+/* ---------- wing 11: المتاهة الدوّارة ---------- */
+const PZM_LV=[[4,3,5],[4,4,6],[5,4,7],[5,5,8],[5,6,9],[6,6,10],[6,7,11],[6,8,12]];
+const pzmRot=(m,k)=>{let r=m;for(let i=0;i<k;i++)r=((r<<1)|(r>>3))&15;return r};/* bits: 1=N 2=E 4=S 8=W */
+function pzmOpen(P,i,t){return P.rot[i]?pzmRot(P.mask[i],t%4):P.mask[i]}
+function pzmSolve(P,from=P.start,t0=0){const key=(p,t)=>p*4+t%4,seen=new Map([[key(from,t0),null]]);let q=[[from,t0]];
+  while(q.length){const nq=[];for(const[p,t]of q){if(p===P.goal){const o=[];let k=key(p,t);while(seen.get(k)){o.unshift(seen.get(k)[1]);k=seen.get(k)[0]}return o}
+      for(let d=0;d<4;d++){const x=p%P.n+D4[d][0],y=((p/P.n)|0)+D4[d][1];if(!inb(x,y,P.n,P.n))continue;const np=y*P.n+x;if(!(pzmOpen(P,p,t)&(1<<d))||!(pzmOpen(P,np,t)&(1<<((d+2)%4))))continue;const k=key(np,t+1);if(seen.has(k))continue;seen.set(k,[key(p,t),d]);nq.push([np,t+1])}}q=nq}return null}
+function pzmMake(lv){const[n,nr,minM]=PZM_LV[lv-1];let best=null;for(let t=0;t<400;t++){const mask=[...Array(n*n)].map(()=>pick([3,5,6,9,10,12,7,11,13,14])),rot=Array(n*n).fill(0);shuffle([...Array(n*n).keys()]).slice(0,nr).forEach(i=>rot[i]=1);
+  const P={n,mask,rot,start:(n-1)*n,goal:n-1};const s=pzmSolve(P);if(!s)continue;P.min=s.length;P.sol=s;if(P.min>=minM)return P;if(!best||P.min>best.min)best=P}return best||pzmMake(Math.max(1,lv-1))}
+function runPMaze(){return pzPlay('pz_pmaze',api=>{
+  const P=pzmMake(api.lv),n=P.n,lim=P.min+4;let pos=P.start,t=0,busy=false;const pc=i=>`left:${(i%n)*100/n}%;top:${((i/n)|0)*100/n}%;width:${100/n}%;height:${100/n}%`;
+  const room=m=>`<svg viewBox="0 0 40 40"><rect x="2" y="2" width="36" height="36" fill="#D8C49A" stroke="${PBL}" stroke-width="1.4"/>${[[1,'M14 2h12v18H14z'],[2,'M20 14h18v12H20z'],[4,'M14 20h12v18H14z'],[8,'M2 14h18v12H2z']].map(([b,d])=>m&b?`<path d="${d}" fill="#F1E2BE"/>`:'').join('')}<rect x="14" y="14" width="12" height="12" fill="#F1E2BE"/></svg>`;
+  api.body.innerHTML=xSheet(`${xHead(XS_.mkey,'المتاهة الدوّارة')}<ol class="xnote"><li>اخرج من الباب في الزاوية العليا. تمشي من غرفة لغرفة إذا كان الممر مفتوحًا في الغرفتين.</li><li>الغرف ذات الإطار الذهبي تدور ربع دورة مع كل خطوة تخطيها.</li><li>معك ${arN(lim,AN.mv)}.</li></ol>
+   <div class="pzmw ltr" id="pzmw" style="--n:${n}">${P.mask.map((m,i)=>`<div class="pzmr ${P.rot[i]?'rot':''}" id="pzr${i}" style="${pc(i)}">${room(m)}</div>`).join('')}<div class="pzmexit" style="${pc(P.goal)}"></div><div class="xpirate pzmp" id="pzmp" style="${pc(pos)}">${XS_.pirate}</div></div>
+   <div class="xpad ltr">${[0,3,1,2].map(d=>`<button data-d="${d}"><svg viewBox="0 0 40 40"><path d="${XARW[d]}" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"/></svg></button>`).join('')}<span class="xmv" id="pzmm"></span></div>`,820,581);
+  const draw=()=>{P.mask.forEach((m,i)=>{if(P.rot[i])$('#pzr'+i).firstElementChild.style.transform=`rotate(${t*90}deg)`});$('#pzmp').style.cssText=pc(pos);$('#pzmm').innerHTML=`<b>${XAR(t)}</b>/${XAR(lim)}`};
+  function go(d){if(api.ended||busy)return;const x=pos%n+D4[d][0],y=((pos/n)|0)+D4[d][1];if(!inb(x,y,n,n))return;const np=y*n+x;if(!(pzmOpen(P,pos,t)&(1<<d))||!(pzmOpen(P,np,t)&(1<<((d+2)%4)))){tone(140,.07);$('#pzmp').classList.remove('bump');void $('#pzmp').offsetWidth;$('#pzmp').classList.add('bump');return}
+    pos=np;t++;tone(330,.05);draw();if(pos===P.goal){busy=true;sfx.lvl();later(()=>pWin(api,'pz_pmaze',`خرجت من المتاهة في ${arN(t,AN.mv)}${t===P.min?'، أقصر طريق!':'.'}`),500);return}if(t>=lim)api.over(`المتاهة ابتلعتك. أقصر طريق كان ${arN(P.min,AN.mv)}.`)}
+  api.body.querySelectorAll('[data-d]').forEach(b=>b.onclick=()=>go(+b.dataset.d));keyH=e=>{const m={ArrowUp:0,ArrowRight:1,ArrowDown:2,ArrowLeft:3}[e.key];if(m!=null)go(m)};draw();api.msg('اخرج من المتاهة.');
+  pzHook({P,go});return{hint:k=>{if(k===1)return'قبل كل خطوة: كيف بتصير الغرف الذهبية بعد ما تخطو؟ أحيانًا الممر ينفتح بعد خطوة جانبية.';const s=pzmSolve(P,pos,t);if(!s)return'ما فيه طريق من هنا: اضغط «إعادة».';return k===2?`يكفيك ${arN(s.length,AN.mv)}.`:`الخطوة الجاية: ${TI_DIRT[s[0]]}.`},reveal:()=>`الطريق: ${P.sol.map(d=>TI_DIRT[d]).join('، ')}.`}})}
+
+/* ---------- wing 12: النقش المخفي — a logic picture (row and column runs) ---------- */
+const PCR_LV=[[5,.55],[5,.6],[6,.55],[6,.6],[7,.55],[7,.6],[8,.55],[8,.6]];
+const pcrRuns=a=>{const r=[];let c=0;a.forEach(v=>{if(v)c++;else if(c){r.push(c);c=0}});if(c)r.push(c);return r.length?r:[0]};
+function pcrLine(cl,line){const n=line.length,opts=[];const rec=(i,k,a)=>{if(k===cl.length){if(a.length<=n){const b=a.concat(Array(n-a.length).fill(0));if(b.every((v,j)=>line[j]<0||line[j]===v))opts.push(b)}return}const L=cl[k];for(let s=i;s+L<=n;s++){const b=a.concat(Array(s-a.length).fill(0),Array(L).fill(1));if(k<cl.length-1)b.push(0);if(b.slice(0,Math.min(b.length,n)).every((v,j)=>line[j]<0||line[j]===v))rec(b.length,k+1,b)}};
+  if(cl[0]===0){const z=Array(n).fill(0);return z.every((v,j)=>line[j]<0||line[j]===v)?[z]:[]}rec(0,0,[]);return opts}
+function pcrSolve(R,C,n){const g=Array(n*n).fill(-1);let ch=true;while(ch){ch=false;for(let r=0;r<n;r++){const line=g.slice(r*n,r*n+n),o=pcrLine(R[r],line);if(!o.length)return null;for(let j=0;j<n;j++)if(line[j]<0&&o.every(x=>x[j]===o[0][j])){g[r*n+j]=o[0][j];ch=true}}
+    for(let c=0;c<n;c++){const line=[...Array(n)].map((_,i)=>g[i*n+c]),o=pcrLine(C[c],line);if(!o.length)return null;for(let i=0;i<n;i++)if(line[i]<0&&o.every(x=>x[i]===o[0][i])){g[i*n+c]=o[0][i];ch=true}}}return g.includes(-1)?null:g}
+function pcrMake(lv){const[n,d]=PCR_LV[lv-1];for(let t=0;t<300;t++){const a=[...Array(n*n)].map(()=>Math.random()<d?1:0),R=[...Array(n)].map((_,r)=>pcrRuns(a.slice(r*n,r*n+n))),C=[...Array(n)].map((_,c)=>pcrRuns([...Array(n)].map((_,i)=>a[i*n+c])));
+  const s=pcrSolve(R,C,n);if(s&&s.every((v,i)=>v===a[i]))return{n,a,R,C}}return pcrMake(Math.max(1,lv-1))}
+function runPCrypt(){return pzPlay('pz_pcrypt',api=>{
+  const P=pcrMake(api.lv),n=P.n;const g=Array(n*n).fill(0);let mode=1,miss=0,busy=false;
+  api.body.innerHTML=xSheet(`${xHead(XS_.tablet,'النقش المخفي')}<ol class="xnote"><li>الأرقام عند كل صف وعمود = أطوال مجموعات المربعات المنقوشة بالترتيب، وبينها فراغ واحد على الأقل.</li><li>اختر «انقش» أو «علّم فراغ» ثم اضغط المربعات.</li></ol>
+   <div class="pcrw ltr" style="--n:${n}"><div class="pcrc"></div><div class="pcrtop">${P.C.map(c=>`<span>${c.map(XAR).join('<br>')}</span>`).join('')}</div><div class="pcrleft">${P.R.map(r=>`<span>${r.map(v=>`<i>${XAR(v)}</i>`).join('')}</span>`).join('')}</div><div class="pcrg" id="pcrg">${g.map((_,i)=>`<button data-i="${i}"></button>`).join('')}</div></div>
+   <div class="xkbtns"><div class="seg xseg"><button class="on" data-m="1">انقش</button><button data-m="2">علّم فراغ</button></div><button class="go-btn xsm" id="pcrgo">اكشف النقش</button></div>`,860,591);
+  const draw=()=>api.body.querySelectorAll('#pcrg button').forEach(b=>{const v=g[+b.dataset.i];b.className=v===1?'f':v===2?'x':''});
+  api.body.querySelectorAll('#pcrg button').forEach(b=>b.onclick=()=>{if(api.ended||busy)return;const i=+b.dataset.i;g[i]=g[i]===mode?0:mode;tone(500,.02);draw()});
+  api.body.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{mode=+b.dataset.m;api.body.querySelectorAll('[data-m]').forEach(x=>x.classList.toggle('on',x===b))});
+  function check(){if(api.ended||busy)return;const ok=P.a.every((v,i)=>v===(g[i]===1?1:0));if(ok){busy=true;$('#pcrg').classList.add('done');sfx.lvl();later(()=>pWin(api,'pz_pcrypt','انكشف النقش على جدار السرداب.'),800);return}miss++;api.wrong();if(miss>=3){busy=true;P.a.forEach((v,i)=>g[i]=v);draw();api.over('هذا هو النقش.');return}api.msg('النقش غير مكتمل أو فيه خطأ.')}
+  $('#pcrgo').onclick=check;pzHook({P,set:()=>{P.a.forEach((v,i)=>g[i]=v);draw()},check});
+  return{hint:k=>{if(k===1)return'ابدأ بالصفوف ذات الأرقام الكبيرة: مجموعة بطول قريب من عرض الصف تفرض مربعات في الوسط مهما كان مكانها.';const i=P.a.findIndex((v,j)=>v!==(g[j]===1?1:0));if(i<0)return null;g[i]=P.a[i]?1:2;draw();return'كشفت لك مربعًا.'},reveal:()=>{P.a.forEach((v,i)=>g[i]=v);draw();return'هذا النقش.'}}})}
+
+/* ---------- wing 13: صمامات الأعماق — equalise water between linked chambers ---------- */
+const PV_LV=[[3,6,3],[3,8,4],[4,8,4],[4,8,5],[4,10,6],[5,10,6],[5,12,7],[5,12,8]];
+const pvOp=(s,i)=>{const a=s.slice(),t=a[i]+a[i+1];a[i]=Math.floor(t/2);a[i+1]=t-a[i];return a};
+function pvMake(lv){const[k,mx,minM]=PV_LV[lv-1];let best=null;for(let t=0;t<300;t++){const s=[...Array(k)].map(()=>rnd(mx+1)),seen=new Map([[s.join(),0]]);let q=[s],d=0;const far=[];
+  while(q.length&&d<12){const nq=[];for(const a of q)for(let i=0;i<k-1;i++){const b=pvOp(a,i),key=b.join();if(!seen.has(key)){seen.set(key,d+1);nq.push(b);far.push([b,d+1])}}q=nq;d++}
+  const pool=far.filter(([b,dd])=>dd>=minM);const c=(pool.length?pick(pool):far.sort((x,y)=>y[1]-x[1])[0]);if(!c)continue;const P={k,mx,start:s,goal:c[0],min:c[1]};if(P.min>=minM)return P;if(!best||P.min>best.min)best=P}return best}
+function runPValve(){return pzPlay('pz_pvalve',api=>{
+  const P=pvMake(api.lv),lim=P.min+3;let s=P.start.slice(),moves=0,busy=false;
+  api.body.innerHTML=xSheet(`${xHead(XS_.valve,'صمامات الأعماق')}<ol class="xnote"><li>فتح الصمام بين غرفتين يقسم ماءهما بالتساوي (والزيادة تروح لليسار).</li><li>اجعل كل غرفة بالمستوى المحفور تحتها، ليفتح باب الأعماق.</li><li>معك ${arN(lim,AN.mv)}.</li></ol>
+   <div class="pvw ltr" id="pvw"></div><div class="xtools"><span>الحركات: <b id="pvm"></b> من ${XAR(lim)}</span></div>`,760,601);
+  const draw=()=>{$('#pvw').innerHTML=s.map((v,i)=>`<div class="pvc ${v===P.goal[i]?'ok':''}"><div class="pvt"><i style="height:${v*100/(P.mx||1)}%"></i><b>${XAR(v)}</b></div><small>الهدف ${XAR(P.goal[i])}</small></div>${i<P.k-1?`<button class="pvv" data-i="${i}">${XS_.valve}</button>`:''}`).join('');$('#pvm').textContent=XAR(moves);
+    $('#pvw').querySelectorAll('.pvv').forEach(b=>b.onclick=()=>op(+b.dataset.i))};
+  function op(i){if(api.ended||busy)return;s=pvOp(s,i);moves++;tone(260,.12,'sine',.05);draw();if(s.every((v,j)=>v===P.goal[j])){busy=true;sfx.lvl();later(()=>pWin(api,'pz_pvalve',`باب الأعماق انفتح بعد ${arN(moves,AN.mv)}.`),600);return}if(moves>=lim)api.over(`أقل عدد كان ${arN(P.min,AN.mv)}.`)}
+  draw();api.msg('افتح الصمامات بالترتيب الصحيح.');pzHook({P,op,st:()=>s});
+  return{hint:k=>{if(k===1)return'المجموع الكلي ثابت. ابدأ بالطرف اللي هدفه أبعد عن حاله الحالي.';return'فكّر من الهدف للخلف: أي صمام كان آخر واحد انفتح؟'},reveal:()=>`الهدف: ${P.goal.map(XAR).join('، ')}.`}})}
+
+/* ---------- the last prisoner ---------- */
+function runPLast(){return pzPlay('pz_plast',api=>{
+  const lv=Math.min(8,api.lv+2),A=pjMake(Math.min(6,lv)),V=pvMake(Math.min(5,lv)),M=pcrMake(Math.min(3,lv));let st=0,miss=0,busy=false;const say=t=>{$('#plq').textContent=t};const H={};
+  api.body.innerHTML=xSheet(`<div class="pbk"><i>${XS_.prisoner}</i><div><b>السجين الأخير</b><p id="plq"></p></div></div><div class="pbstages">${['الشهادة','الماء','النقش'].map((s,i)=>`<span id="pls${i}" class="${i?'':'cur'}">${s}</span>`).join('')}</div><div id="plb"></div>`,820,611);
+  function next(){$('#pls'+st).className='ok';st++;sfx.ok(2);if(st>2){busy=true;say('«أنت تستحق الحقيقة: القبطان الأول لم يختفِ… لقد بقي في القلب الأخير ينتظر وريثه».');later(()=>pWin(api,'pz_plast','حررت السجين الأخير، وعرفت أين ينتظر القبطان.'),1200);return}$('#pls'+st).className='cur';render()}
+  function fail(t){miss++;api.wrong();say(t);if(miss>=3){busy=true;api.over('«ليس بعد…»، وعاد السجين إلى صمته.')}}
+  function render(){const b=$('#plb');if(st===0){say('«قصتي مع رفاقي… من منا الكاذب؟»');b.innerHTML=`<ol class="xnote">${A.sts.map((s,i)=>`<li><b>${PJ_N[i]}:</b> ${pjText(s)}</li>`).join('')}</ol><div class="pqdoors">${A.sts.map((_,i)=>`<button class="pqd" data-i="${i}"><small>${PJ_N[i]}</small></button>`).join('')}</div>`;b.querySelectorAll('[data-i]').forEach(e=>e.onclick=()=>{if(api.ended||busy)return;+e.dataset.i===A.liar?next():fail('«بريء…»')});H.a=()=>b.querySelector(`[data-i="${A.liar}"]`).click()}
+    else if(st===1){say(`«كم صمامًا على الأقل تفتح لتصل إلى ${V.goal.map(XAR).join('، ')} من ${V.start.map(XAR).join('، ')}؟»`);const opts=shuffle([V.min,V.min+1,Math.max(1,V.min-1),V.min+2].filter((v,i,a)=>a.indexOf(v)===i));b.innerHTML=`<div class="pqdoors">${opts.map(o=>`<button class="pqd" data-o="${o}"><small>${XAR(o)}</small></button>`).join('')}</div>`;b.querySelectorAll('[data-o]').forEach(e=>e.onclick=()=>{if(api.ended||busy)return;+e.dataset.o===V.min?next():fail('«احسبها مرة ثانية»')});H.a=()=>b.querySelector(`[data-o="${V.min}"]`).click()}
+    else{say('«اكشف نقش زنزانتي».');const g=Array(M.n*M.n).fill(0);b.innerHTML=`<div class="pcrw ltr" style="--n:${M.n}"><div class="pcrc"></div><div class="pcrtop">${M.C.map(c=>`<span>${c.map(XAR).join('<br>')}</span>`).join('')}</div><div class="pcrleft">${M.R.map(r=>`<span>${r.map(v=>`<i>${XAR(v)}</i>`).join('')}</span>`).join('')}</div><div class="pcrg">${g.map((_,i)=>`<button data-i="${i}"></button>`).join('')}</div></div><div class="xkbtns"><button class="go-btn xsm" id="plgo">اكشف</button></div>`;
+      b.querySelectorAll('.pcrg button').forEach(e=>e.onclick=()=>{const i=+e.dataset.i;g[i]=g[i]?0:1;e.className=g[i]?'f':''});$('#plgo').onclick=()=>{if(api.ended||busy)return;M.a.every((v,i)=>v===g[i])?next():fail('«النقش ناقص»')};H.a=()=>{M.a.forEach((v,i)=>g[i]=v);$('#plgo').click()}}}
+  render();api.msg('تحدي السجين.');pzHook({st:()=>st,answer:()=>H.a()});return{hint:()=>['افترض كل شاهد كاذبًا وتابع.','جرّب في ذهنك أي صمام يقرّبك من الهدف.','ابدأ بالصفوف ذات الأرقام الكبيرة.'][st],reveal:()=>'السجين يحفظ أسراره.'}})}
+
+const PZ_P5=[
+ {id:'pz_pmaze',maxLv:8,col:['#2D4A7A','#D8C49A'],name:'المتاهة الدوّارة',lab:'Rotating maze',cat:'spa',why:'متاهة تتغير مع كل خطوة: تخطيط في الزمان والمكان وتوقّع شكل الغرف.',how:['امشِ بين الغرف.','الغرف الذهبية تدور.','اخرج من الزاوية.'],run:runPMaze},
+ {id:'pz_pcrypt',maxLv:8,col:['#B3A88E','#2D4A7A'],name:'النقش المخفي',lab:'Logic picture',cat:'log',why:'لغز الصورة المخفية: استنتاج خلية بخلية من أطوال المجموعات في الصفوف والأعمدة.',how:['اقرأ أرقام الصفوف والأعمدة.','انقش أو علّم فراغًا.','اكشف النقش.'],run:runPCrypt},
+ {id:'pz_pvalve',maxLv:8,col:['#5F8E86','#5E5754'],name:'صمامات الأعماق',lab:'Equalising chambers',cat:'log',why:'تحويلات تحافظ على المجموع: تخطيط تسلسل عمليات للوصول لهدف دقيق.',how:['افتح صمامًا.','الماء يتساوى.','طابق المستويات.'],run:runPValve},
+ {id:'pz_plast',maxLv:8,col:['#8E8576','#9B2B1F'],name:'تحدي السجين الأخير',lab:'Last prisoner',cat:'log',why:'مواجهة بثلاث مراحل: الشهادة، والماء، والنقش.',how:['اكشف الكاذب.','احسب الصمامات.','اكشف النقش.'],run:runPLast}];
+PZ_P5.forEach(g=>{Object.assign(g,{puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g});TV_PUZ.unshift(...PZ_P5.map(g=>g.id));
+Object.assign(I,{pz_pmaze:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><path d="M6 6h36v36H6zM6 18h24M18 30h24M18 18v12"/></svg>',pz_pcrypt:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M8 8h8v8H8zM24 8h8v8h-8zM16 16h8v8h-8zM8 24h8v8H8zM32 24h8v8h-8zM16 32h16v8H16z"/></svg>',pz_pvalve:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><rect x="6" y="20" width="10" height="20"/><rect x="20" y="12" width="10" height="28" opacity=".6"/><rect x="34" y="26" width="10" height="14"/></svg>',pz_plast:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><circle cx="24" cy="16" r="9"/><path d="M10 44q0-18 14-18t14 18z"/><path d="M6 10v34M42 10v34" stroke="#0A0E1C" stroke-width="2.4"/></svg>'});
+Object.assign(ART_FN,Object.fromEntries(PZ_P5.map((g,k)=>[g.id,B=>{B.bg('#E6E9EE',.35);B.wc(B.rect(70+k*10,50,280-k*20,200),g.col[0],{a:.45});B.wc(B.ell(210,150,44,44),g.col[1],{a:.7});B.frame()}])));
 /* ================= v36: القصر — الدفعة الخامسة: التنانين، قاعة الملوك، القلب الأخير ================= */
 Object.assign(XS_,{
  ghost:`<svg viewBox="0 0 70 90"><defs><radialGradient id="xGh" cx="50%" cy="40%" r="60%"><stop offset="0" stop-color="#E8F6FF" stop-opacity=".95"/><stop offset="1" stop-color="#8FB8D6" stop-opacity=".35"/></radialGradient></defs><path d="M12 88q0-40 6-56q6-18 17-18t17 18q6 16 6 56q-6-6-11 0q-5-6-12 0q-7-6-12 0q-5-6-11 0z" fill="url(#xGh)" ${XI2}/><path d="M18 22q17-20 34 0q-17-6-34 0z" fill="#2B1C12" opacity=".8"/><circle cx="29" cy="34" r="2" fill="#2D4A7A"/><circle cx="41" cy="34" r="2" fill="#2D4A7A"/><path d="M29 46q6 4 12 0" fill="none" stroke="#2D4A7A" stroke-width="1.2"/><path d="M14 56q-8 6-6 14M56 56q8 6 6 14" fill="none" stroke="#8FB8D6" stroke-width="2"/></svg>`,
