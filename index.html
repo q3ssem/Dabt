@@ -1838,6 +1838,22 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 @keyframes asin{to{opacity:1;transform:translateY(-6%)}}@keyframes asout{from{opacity:1}to{opacity:0;transform:translateY(-14%)}}
 .asiq{min-height:80px;text-align:center}.asiq p{font:700 15px 'Aref Ruqaa',Tajawal,serif;color:#3A2616;margin:8px 0}.asio{display:flex;flex-wrap:wrap;justify-content:center;gap:6px}.asio button{padding:8px 12px;border-radius:10px;border:1.4px solid #3A2616;background:rgba(255,248,226,.7);font:700 12.5px Tajawal;color:#3A2616}
 
+/* v46 */
+.achoice{margin:10px 0;padding:10px;border-radius:12px;border:1.8px solid #9B2B1F;background:rgba(255,240,220,.85);text-align:center;color:#3A2616}.achoice b{font:700 14px 'Aref Ruqaa',serif;color:#9B2B1F}.achoice p{font:600 13px/1.7 Tajawal;margin:6px 0}
+.achoice div{display:flex;gap:8px;justify-content:center}.achoice button{padding:9px 14px;border-radius:10px;border:1.6px solid #3A2616;background:#F6E9C6;font:700 13px Tajawal;color:#3A2616}
+.ares{display:grid;gap:6px;margin:8px 0}.ares div{padding:6px 8px;border-radius:10px;border:1.4px solid rgba(58,38,22,.4);background:rgba(255,248,226,.6);text-align:start;color:#3A2616}.ares b{display:block;font:700 13px 'Aref Ruqaa',serif}.ares small{font:600 11.5px/1.5 Tajawal}.ares .no{opacity:.45;border-style:dashed}
+.alys{display:block;width:100%;height:auto;margin:6px 0;border-radius:6px;border:1.4px solid #3A2616}
+.alyt{display:flex;flex-wrap:wrap;justify-content:center;gap:5px;margin:6px 0}.alyt button{padding:7px 10px;border-radius:9px;border:1.4px solid #3A2616;background:#F6E9C6;font:700 12px Tajawal;color:#3A2616}.alyt button.used{opacity:.35}
+.alyo{display:flex;flex-wrap:wrap;gap:4px 10px;justify-content:center;min-height:24px;font:700 11.5px Tajawal;color:#9B2B1F}.alyo small{color:#8E7B60}
+.actg{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:6px;margin:8px 0}
+.actg button{display:flex;flex-direction:column;align-items:center;gap:3px;padding:6px 2px;border-radius:12px;border:1.4px solid #3A2616;background:#2A2420;color:#F4E9CC;font:700 10.5px/1.3 Tajawal}
+.actg i{width:26px;height:26px;border-radius:50%;background:var(--c);box-shadow:0 0 12px var(--c)}.actg .dark i{background:#1E1712;box-shadow:none;border:1px dashed #6E6357}.actg .dark{color:#8E8576}.actg .relit i{background:var(--c);box-shadow:0 0 12px var(--c);transition:all .4s}
+.actg button.sel{outline:2.6px solid #F2C553;outline-offset:1px}
+.asol{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:5px;margin:8px 0}.asol button{display:flex;flex-direction:column;gap:2px;padding:4px;border-radius:10px;border:1.4px solid #14303E;background:#1E3A4A;color:#BFF0F0;font:700 11px Tajawal}.asol button svg{width:100%;height:36px}.asol button.sel{outline:2.6px solid #F2C553}
+.asor{display:block;width:100%;padding:4px;border-radius:10px;border:1.4px solid #14303E;background:#1E3A4A;margin-bottom:4px}.asor svg{width:100%;height:46px;display:block}
+.aflw{position:relative;width:min(100%,300px);margin:8px auto}.aflg{display:block;width:100%;height:auto}
+.aflb{display:flex;justify-content:space-around;margin-top:-26px;position:relative}.aflb button{width:44px;height:30px;border-radius:0 0 18px 18px;border:1.6px solid #F4E9CC;background:#2F6E8A;color:#F4E9CC;font:700 12px Tajawal}.aflb button.obs{background:#8A6AA0}.aflb button.sel{outline:2.6px solid #F2C553}
+
 </style>
 
 
@@ -7332,6 +7348,146 @@ const PZ_A3=[
 PZ_A3.forEach(g=>{Object.assign(g,{puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g});TV_PUZ.unshift(...PZ_A3.map(g=>g.id));
 Object.assign(I,{pz_aecho:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><path d="M8 40l10-20 8 12 6-16 10 24"/><path d="M24 8a8 8 0 0 1 8 8M24 2a14 14 0 0 1 14 14"/></svg>',pz_avsong:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><ellipse cx="14" cy="34" rx="6" ry="4.5"/><ellipse cx="34" cy="28" rx="6" ry="4.5"/><path d="M19 34V10l21-6v24" fill="none" stroke="#0A0E1C" stroke-width="3"/></svg>',pz_agiant:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M4 36q8-24 20-24t20 24z"/><path d="M10 36v6M38 36v6" stroke="#0A0E1C" stroke-width="3"/></svg>',pz_aherd:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><path d="M6 42L42 6" stroke-dasharray="4 4"/><circle cx="18" cy="18" r="6" fill="#0A0E1C"/><circle cx="32" cy="34" r="6" fill="#0A0E1C"/></svg>',pz_abridge:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><rect x="6" y="20" width="8" height="22"/><rect x="34" y="12" width="8" height="30"/><path d="M14 22h20" stroke="#0A0E1C" stroke-width="3"/></svg>',pz_asilent:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><path d="M4 30q10-8 20 0t20 0"/><path d="M4 38q10-8 20 0t20 0" opacity=".5"/></svg>'});
 Object.assign(ART_FN,Object.fromEntries(PZ_A3.map((g,k)=>[g.id,B=>{B.bg('#EFE2C2',.35);B.wc(B.ell(200,160,110,70),g.col[0],{a:.42});B.wc(B.ell(150,120,50,40),g.col[1],{a:.5});B.frame()}])));
+/* ================= v46: أثران — الدفعة الرابعة: الغابة المتحجرة، المدينة الحية، بحر المخلوقات، الموارد والقرارات ================= */
+ATR.push(
+ {m:0,t:'دفتر يعقوب في جذع متحجر: «عددت ٤١٢٠٣ شجرة… ثم توقفت. هنا شعرت لأول مرة أن الأشجار هي التي تعدّني».'},
+ {m:2,t:'بين فوانيس الجذور أربعة أماكن نوم مرتبة، وقدر حمدان معلق فوق نار قديمة. لم يكونوا مخيمين هنا؛ كانوا يسكنون.'},
+ {m:3,t:'على الشاطئ الداخلي أثر قارب صغير سُحب إلى الماء. محفور على خشبة بقيت: «عيسى — إلى البيت».'});
+AENC.push(
+ {k:'hollow',n:'سكان التجاويف',ty:'مخلوقات صغيرة',s:ASK('<path d="M24 54V10h32v44z" fill="#8A6F5A" stroke="#K" stroke-width="1.4"/><ellipse cx="40" cy="30" rx="8" ry="10" fill="#2B2B33"/><circle cx="37" cy="29" r="1.6" fill="#F2C553"/><circle cx="43" cy="29" r="1.6" fill="#F2C553"/>'),d:'كائنات بحجم الإصبع تسكن تجاويف الجذوع المتحجرة، وتنقش جدرانها بأسنانها نقوشًا تشبه الحروف. هي من نقش ما ظنناه آثارًا بشرية.'},
+ {k:'lightfung',n:'فطر النور',ty:'نبات',s:ASK('<path d="M30 54v-14M50 54v-18" stroke="#K" stroke-width="2"/><path d="M18 40q12-18 24 0zM38 36q12-18 24 0z" fill="#C9E28E" stroke="#K" stroke-width="1.2"/><circle cx="30" cy="34" r="8" fill="#C9E28E" opacity=".3"/>'),d:'ينمو على الخشب المتحجر ويضيء حين تمر به الخنافس. يغذي الفوانيس، ويعيش على ما تتركه الخنافس.'},
+ {k:'livingcity',n:'المدينة الحية',ty:'نظام لا يُصنَّف',s:ASK('<path d="M8 54V24h10v30M24 54V14h10v40M42 54V20h10v34M60 54V28h10v26" fill="#8A6F5A" stroke="#K" stroke-width="1.2"/>'+[[13,30],[29,20],[47,26],[65,34],[29,40],[47,44]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.2" fill="#F2C553"/>`).join('')),d:'ليست مدينة بناها أحد. هي أنواع كثيرة تتبادل الضوء والماء والغذاء والتنظيف، حتى صار لها شوارع وأحياء ومخازن. لا ملك فيها ولا قصر.'},
+ {k:'glowwhale',n:'الحيتان المضيئة',ty:'مخلوقات عميقة',s:ASK('<path d="M4 34q12-20 40-16q20 2 28 14l6-6v16l-6-6q-22 12-48 6q-16-4-20-8z" fill="#2F6E8A" stroke="#K" stroke-width="1.3"/>'+[[20,30],[32,26],[44,28],[56,32]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.8" fill="#BFF0F0"/>`).join('')),d:'تهاجر في دائرة طويلة كل سنة. لكل قطيع أغنية بشكل ثابت، وتغنيها أعلى أو أخفض حسب العمق، لكن شكلها لا يتغير.'},
+ {k:'mirrorswarm',n:'أسراب المرايا',ty:'ظاهرة',s:ASK([...Array(14)].map((_,i)=>`<path d="M${8+(i*29)%64} ${10+(i*17)%40}l4-3 4 3-4 3z" fill="#DCE8EC" stroke="#5E7F8E" stroke-width=".6"/>`).join('')),d:'أسماك شفافة صغيرة تتحرك معًا وتعكس ما حولها، فتصنع صورًا متحركة للسماء والشاطئ. البحارة القدامى ظنوها جزرًا تظهر وتختفي.'},
+ {k:'deepjelly',n:'قناديل العمق',ty:'مخلوقات عميقة',s:ASK('<path d="M24 30q0-18 16-18t16 18q-8 4-16 0q-8 4-16 0z" fill="#8A6AA0" opacity=".8" stroke="#K" stroke-width="1"/>'+[28,36,44,52].map(x=>`<path d="M${x} 32q-3 8 1 14t-1 10" fill="none" stroke="#8A6AA0" stroke-width="1"/>`).join('')),d:'تنقسم أسرابها عند كل مفترق تيار إلى نصفين بالضبط. من يعرف المفترقات يعرف أين تجتمع، وأين يبقى الماء هادئًا.'});
+const ARES=[{k:'shell',n:'أصداف الصوت',d:'تحفظ الأصوات. معنا منها ما يكفي لنسمع أغنية سلمى متى أردنا.',from:'pz_ashell'},{k:'crystal',n:'بلورة الاهتزاز',d:'ترتجف حين يقترب شيء ضخم. تنبهنا قبل أن نرى العمالقة.',from:'pz_aecho'},{k:'fiber',n:'ألياف الضباب',d:'خيوط نباتية تصير شفافة في الرطوبة. صنع منها بدر شراعًا لا يراه الطوّاف.',from:'pz_abridge'},{k:'lightstone',n:'حجر الضوء',d:'يخزن ضوء النهار ويطلقه في الليل.',choice:'city'}];
+const ACHO={city:{q:'في قلب المدينة حجر يخزن الضوء. لو أخذناه أضأنا سفينتنا كل ليلة، لكن حيًّا كاملًا من الفوانيس سيبقى بلا ضوء.',a:[['take','نأخذه','أخذنا حجر الضوء. أضاءت السفينة… وانطفأ حي صغير خلفنا.'],['leave','نتركه','تركنا الحجر في مكانه. في تلك الليلة، أضاءت الفوانيس الطريق لنا حتى الشاطئ.']]},
+ sea:{q:'أقصر طريق للعبور يمر بخليج تضع فيه القناديل صغارها. الطريق الطويل يأخذ يومين أكثر.',a:[['short','الطريق القصير','عبرنا الخليج ببطء شديد. لم نؤذِ أحدًا… لكن القناديل تفرقت ولم تعد إليه تلك الليلة.'],['long','الطريق الطويل','أخذنا الطريق الطويل. في الليلة الثانية رأينا الحيتان المضيئة تمر تحتنا كلها.']]}};
+const ASC_CITY=`<svg viewBox="0 0 360 160"><rect width="360" height="160" fill="#2A2420"/>${[30,80,140,200,260,320].map((x,i)=>`<path d="M${x-14} 160V${40+i%3*18}h28V160z" fill="#5E4A3A" stroke="#1E1712"/>`).join('')}${[...Array(30)].map((_,i)=>`<circle cx="${(i*53)%350+5}" cy="${60+(i*37)%90}" r="${1.5+i%3}" fill="#F2C553" opacity="${.5+(i%4)*.12}"/>`).join('')}<path d="M0 140q90-10 180 0t180 0" stroke="#F2C553" stroke-width="1.4" stroke-dasharray="2 6" fill="none" opacity=".7"/></svg>`;
+const ASC_SEA=`<svg viewBox="0 0 360 160"><rect width="360" height="160" fill="#1E3A4A"/><path d="M0 50h360" stroke="#5E7F8E"/><rect y="50" width="360" height="110" fill="#14303E"/>${[...Array(26)].map((_,i)=>`<circle cx="${(i*67)%350+5}" cy="${70+(i*29)%80}" r="1.6" fill="#BFF0F0" opacity=".8"/>`).join('')}<circle cx="300" cy="24" r="10" fill="#EDE6D6"/></svg>`;
+ASTN.push(
+ {id:'pz_alayer',n:'طبقات الزمن',ch:'navigator',reg:6,x:270,y:284,story:'جذع متحجر مقطوع يكشف طبقات من المعادن الحية، وعروقًا شقّت طريقها عبرها، وشقوقًا أزاحتها. رتّب ما حدث من الأقدم إلى الأحدث.',
+  fx:{atlas:{6:3},tr:[9],enc:['hollow','lightfung']},sc:[['navigator','«الطبقة اللي تحت أقدم من اللي فوق… والعرق اللي يشقها أحدث منها. البحر علّمني نفس الشيء عن الحطام».'],['mapgirl','«والنقوش داخل التجاويف؟ ظننتها كتابة بشر».'],['navigator','«انظري إلى عمقها. ما نحتها إزميل، نحتتها أسنان».']]},
+ {id:'pz_acity',n:'المدينة الحية',ch:'mapgirl',reg:6,x:314,y:322,story:'حي من الغابة المتحجرة انطفأ فجأة. كل نوع هنا يعيش على أنواع أخرى. واحد منها فقط اختفى، والباقي انطفأ بسببه. اعرف من اختفى أولًا.',
+  fx:{tr:[10],enc:['livingcity']},pic:ASC_CITY,choice:'city',
+  sc:[['mapgirl','«الأضواء ليست عشوائية… هذه شوارع. وهذه مخازن. وهذا… سوق؟»'],['shipwright','«مدينة! بدون ملك ولا جدار»'],['navigator','«كل الأقواس التي رأيناها في الطريق… ما بناها أحد. نمت»']]},
+ {id:'pz_asong',n:'أغاني الأعماق',ch:'navigator',reg:7,x:176,y:368,story:'كل قطيع من الحيتان المضيئة يغني أغنية بشكل ثابت، ويغنيها أعلى أو أخفض حسب العمق. قارن تسجيل الأصداف القديم بما نسمعه الآن.',
+  fx:{atlas:{7:3},tr:[11],enc:['glowwhale','mirrorswarm']},sc:[['navigator','«قطيع واحد سكت هذا العام. وين راح؟»'],['mapgirl','«ربما هاجر أبعد… أو ربما عرف شيئًا ما نعرفه»']]},
+ {id:'pz_aflow',n:'مفترقات التيار',ch:'shipwright',reg:7,x:244,y:388,story:'أسراب قناديل العمق تنقسم عند كل مفترق تيار إلى نصفين. اعرف أي خليج سيبقى أهدأ لنعبر منه.',
+  fx:{enc:['deepjelly']},pic:ASC_SEA,mov:'glowwhale',choice:'sea',
+  sc:[['shipwright','«الحسبة بسيطة… لكن البحر مو بسيط»'],['navigator','وقف العجوز طويلًا عند الحافة. «هنا… هنا تركني القبطان أول مرة. قال: ارجع يا نوّار، وأخبرهم أن الطريق موجود»'],['mapgirl','لم يسأله أحد شيئًا بعدها.']]});
+/* resources gathered by solving, and decisions with consequences */
+{const _aw=aWin;aWin=function(api,id,msg){const a=aState();a.res=a.res||[];ARES.forEach(r=>{if(r.from===id&&!a.res.includes(r.k))a.res.push(r.k)});return _aw(api,id,msg)}}
+function aChoice(key,m){const a=aState();a.ch=a.ch||{};const C=ACHO[key];if(!C||a.ch[key])return;const box=document.createElement('div');box.className='achoice';box.innerHTML=`<b>قرار</b><p>${C.q}</p><div>${C.a.map(([k,t])=>`<button data-c="${k}">${t}</button>`).join('')}</div>`;
+  (m.querySelector('.xpin')||m).insertBefore(box,(m.querySelector('.xpin')||m).querySelector('[data-close]'));const cl=m.querySelector('[data-close]');if(cl)cl.style.display='none';const oc=m.onclick;m.onclick=null;
+  box.querySelectorAll('[data-c]').forEach(b=>b.onclick=()=>{a.ch[key]=b.dataset.c;if(key==='city'&&b.dataset.c==='take'){a.res=a.res||[];if(!a.res.includes('lightstone'))a.res.push('lightstone')}S.save();const r=C.a.find(x=>x[0]===b.dataset.c);box.innerHTML=`<b>قرار</b><p>${r[2]}</p>`;if(cl)cl.style.display='';m.onclick=oc;sfx.ok(1)})}
+{const _sc=aScene;aScene=function(i){_sc(i);const s=ASTN[i];if(s.choice){const m=document.querySelector('.xvaultm:last-child');if(m)aChoice(s.choice,m)}}}
+function aRes(){const a=aState(),r=a.res||[],ch=a.ch||{};zModal(`<h3 class="xvh">الموارد والقرارات</h3><div class="ares">${ARES.map(x=>`<div class="${r.includes(x.k)?'':'no'}"><b>${r.includes(x.k)?x.n:'؟'}</b><small>${r.includes(x.k)?x.d:'لم نجده… أو لم نأخذه'}</small></div>`).join('')}</div>${Object.keys(ACHO).filter(k=>ch[k]).map(k=>`<p class="zwhy"><b>قرارنا:</b> ${ACHO[k].a.find(x=>x[0]===ch[k])[2]}</p>`).join('')}`,310)}
+{const _ah=aHubHTML;aHubHTML=function(){const a=aState();return _ah().replace('<div class="abtns">',`<div class="abtns"><button class="xvault" id="ares">الموارد <b>${XAR((a.res||[]).length)}</b></button>`)}}
+{const _tb=txBind;txBind=function(){_tb();const e=document.querySelector('#ares');if(e)e.onclick=aRes}}
+
+/* ================= petrified 1: طبقات الزمن — order layers, veins and faults from oldest to newest ================= */
+const ALY_LV=[[3,1,0],[4,1,0],[4,2,0],[5,2,0],[5,2,1],[5,3,1],[6,3,1],[6,3,2]];
+const ALY_C=['#C9A86A','#9C978E','#B87850','#D9C08A','#7A6A5A','#A8B88A'],ALY_V=['#E8B04A','#9CC8DC','#C0392B'];
+function alyMake(lv){const[k,nv,nf]=ALY_LV[lv-1];const tops=shuffle([...Array(k).keys()]).slice(0,nv+nf);const ev=[];for(let i=0;i<k;i++)ev.push({t:'L',i});
+  tops.forEach((tp,j)=>{const it=j<nv?{t:'V',i:j,top:tp,x:.2+.6*Math.random()}:{t:'F',i:j-nv,top:tp,x:.25+.5*Math.random()};ev.splice(ev.findIndex(e=>e.t==='L'&&e.i===tp)+1,0,it)});
+  return{k,ev,items:shuffle(ev.slice())}}
+const alyName=e=>e.t==='L'?`الطبقة ${'أبجدهوز'[e.i]}`:e.t==='V'?`العرق ${XAR(e.i+1)}`:`الشق ${XAR(e.i+1)}`;
+function runALayer(){return pzPlay('pz_alayer',api=>{
+  const P=alyMake(api.lv),k=P.k,W=300,Hh=40,H=k*Hh,u=[];let miss=0,busy=false;
+  const lay=P.ev.filter(e=>e.t==='L'),fs=P.ev.filter(e=>e.t==='F');
+  const off=(li,x)=>fs.reduce((s,f)=>s+(li<=f.top&&x>f.x*W?10:0),0);
+  let svg=`<svg viewBox="0 0 ${W} ${H+8}" class="alys">`;lay.forEach(e=>{const y=H-(e.i+1)*Hh;const pts=[0,W*.25,W*.5,W*.75,W].map(x=>[x,y-off(e.i,x)]);const pb=[0,W*.25,W*.5,W*.75,W].map(x=>[x,y+Hh-off(e.i,x)]);
+    svg+=`<path d="M${pts.map(p=>p.join(' ')).join('L')}L${pb.reverse().map(p=>p.join(' ')).join('L')}Z" fill="${ALY_C[e.i]}" stroke="#3A2616" stroke-width="1"/>${[...Array(5)].map((_,q)=>`<path d="M${20+q*60} ${y+12+(q%2)*10}h14" stroke="#3A2616" stroke-width=".6" opacity=".4"/>`).join('')}<text x="10" y="${y+Hh/2+5}" font-size="14" fill="#3A2616" font-family="'Aref Ruqaa',serif">${'أبجدهوز'[e.i]}</text>`});
+  P.ev.filter(e=>e.t==='V').forEach(v=>{const x=v.x*W,top=H-(v.top+1)*Hh;svg+=`<path d="M${x-6} ${H}q8-${(H-top)/3} -2 -${(H-top)*.6}t6 -${(H-top)*.4}h8q-8 ${(H-top)*.4} 2 ${(H-top)*.6}t-2 ${(H-top)*.4}z" fill="${ALY_V[v.i]}" stroke="#3A2616" stroke-width=".8" opacity=".9"/><circle cx="${x+4}" cy="${top+10}" r="9" fill="#F4E9CC" stroke="#3A2616"/><text x="${x+4}" y="${top+14}" font-size="11" text-anchor="middle" fill="#3A2616">${XAR(v.i+1)}</text>`});
+  fs.forEach(f=>{const x=f.x*W,top=H-(f.top+1)*Hh;svg+=`<path d="M${x} ${H}L${x-6} ${top}" stroke="#1E1712" stroke-width="2.4" stroke-dasharray="6 3"/><rect x="${x-20}" y="${top-4}" width="26" height="14" rx="3" fill="#F4E9CC" stroke="#3A2616"/><text x="${x-7}" y="${top+7}" font-size="9.5" text-anchor="middle" fill="#3A2616">شق ${XAR(f.i+1)}</text>`});svg+='</svg>';
+  api.body.innerHTML=xSheet(`${xHead('','طبقات الزمن')}<ol class="xnote"><li>الطبقة السفلى ترسبت قبل التي فوقها.</li><li>العرق أحدث من كل طبقة يشقها، وأقدم من أول طبقة لم يصلها.</li>${fs.length?'<li>الشق يزيح ما تحته من طبقات، فهو أحدث منها، وأقدم من الطبقة التي فوقه ولم تُزَح.</li>':''}<li>اضغط الأحداث من الأقدم إلى الأحدث.</li></ol>${svg}
+   <div class="alyt" id="alyt">${P.items.map((e,j)=>`<button data-j="${j}">${alyName(e)}</button>`).join('')}</div><div class="alyo" id="alyo"></div>
+   <div class="xkbtns"><button class="go-btn xsm alt2" id="alyz">امسح</button><button class="go-btn xsm" id="alygo">ثبّت الترتيب</button></div>`,900,661);
+  const draw=()=>{api.body.querySelectorAll('[data-j]').forEach(b=>b.classList.toggle('used',u.includes(+b.dataset.j)));$('#alyo').innerHTML=u.length?u.map((j,q)=>`<span>${XAR(q+1)}. ${alyName(P.items[j])}</span>`).join(''):'<small>الأقدم أولًا…</small>'};
+  api.body.querySelectorAll('[data-j]').forEach(b=>b.onclick=()=>{if(api.ended||busy)return;const j=+b.dataset.j;if(u.includes(j))u.splice(u.indexOf(j),1);else u.push(j);tone(360+u.length*30,.04);draw()});
+  $('#alyz').onclick=()=>{if(api.ended||busy)return;u.length=0;draw()};
+  function check(){if(api.ended||busy)return;if(u.length<P.items.length){api.msg('رتّب كل الأحداث.');return}const ok=u.every((j,q)=>P.items[j]===P.ev[q]);if(ok){busy=true;sfx.lvl();later(()=>aWin(api,'pz_alayer','قرأت تاريخ الجذع من أوله.'),500);return}
+    miss++;api.wrong();const f=u.findIndex((j,q)=>P.items[j]!==P.ev[q]);if(miss>=3){busy=true;u.length=0;P.ev.forEach(e=>u.push(P.items.indexOf(e)));draw();api.over('هذا الترتيب الصحيح.');return}api.msg(`أول خطأ عند الحدث رقم ${XAR(f+1)}.`)}
+  $('#alygo').onclick=check;draw();api.msg('رتّب الأحداث.');pzHook({P,set:()=>{u.length=0;P.ev.forEach(e=>u.push(P.items.indexOf(e)));draw()},check});
+  return{hint:k=>{if(k===1)return'ابدأ بالطبقات من الأسفل إلى الأعلى، ثم أدخل كل عرق أو شق بعد آخر طبقة وصل إليها.';const q=u.findIndex((j,i)=>P.items[j]!==P.ev[i]);const n=q<0?u.length:q;if(n>=P.ev.length)return null;u.length=n;u.push(P.items.indexOf(P.ev[n]));draw();return'وضعت لك الحدث التالي.'},reveal:()=>{u.length=0;P.ev.forEach(e=>u.push(P.items.indexOf(e)));draw();return'هذا الترتيب.'}}})}
+
+/* ================= petrified 2: المدينة الحية — which species vanished first, given who went dark ================= */
+const ACT_SP=[['نسغ الجذور','#6E4320'],['الماء الحي','#5F8E86'],['فطر النور','#C9E28E'],['خنافس الحجر','#2B2B33'],['فوانيس الجذور','#F2C553'],['سكان التجاويف','#8A6F5A'],['طحلب الندى','#7FA34F'],['نحل الضباب','#DCE8EC']];
+const ACT_LV=[[5,0],[5,0],[6,0],[6,0],[7,1],[7,1],[8,1],[8,1]];
+function actAlive(P,gone){const al=Array(P.n).fill(true);al[gone]=false;let ch=true;while(ch){ch=false;for(let i=0;i<P.n;i++){if(!al[i])continue;const R=P.req[i];const ok=R.length===0||(R.or?R.some(r=>al[r]):R.every(r=>al[r]));if(!ok){al[i]=false;ch=true}}}return al}
+function actMake(lv){const[n,or]=ACT_LV[lv-1];for(let t=0;t<400;t++){const ord=shuffle([...Array(8).keys()]).slice(0,n);const req=ord.map((_,i)=>{if(i<2)return[];const c=shuffle([...Array(i).keys()]).slice(0,1+rnd(Math.min(2,i)));if(or&&c.length===2&&Math.random()<.5)c.or=1;return c});
+  const P={n,ord,req};const gone=rnd(n),al=actAlive(P,gone);const dark=al.map((v,i)=>!v?i:-1).filter(i=>i>=0);if(dark.length<2||dark.length>n-2)continue;
+  const cands=dark.filter(x=>{const a2=actAlive(P,x);return a2.every((v,i)=>v===al[i])});if(cands.length!==1)continue;return{...P,gone,al}}return actMake(Math.max(1,lv-1))}
+function runACity(){return pzPlay('pz_acity',api=>{
+  const P=actMake(api.lv),n=P.n,nm=i=>ACT_SP[P.ord[i]][0],col=i=>ACT_SP[P.ord[i]][1];let sel=-1,miss=0,busy=false;
+  const rule=i=>{const R=P.req[i];if(!R.length)return`<b>${nm(i)}</b> لا يحتاج أحدًا.`;return`<b>${nm(i)}</b> يعيش على ${R.map(nm).join(R.or?' أو ':' و')}.`};
+  api.body.innerHTML=xSheet(`${xHead('','المدينة الحية')}<ol class="xnote"><li>كل نوع يبقى مضيئًا ما دام ما يعيش عليه موجودًا.</li><li>نوع واحد اختفى أولًا، وانطفأ بسببه غيره. الأنواع المنطفئة لا تُرى، فلا تعرف أيها اختفى وأيها انطفأ فقط.</li><li>اضغط النوع الذي اختفى أولًا.</li></ol>
+   <div class="aclues"><b>ملاحظات ليان عن المدينة</b><ol>${[...Array(n).keys()].map(i=>`<li>${rule(i)}</li>`).join('')}</ol></div>
+   <div class="actg">${[...Array(n).keys()].map(i=>`<button data-i="${i}" class="${P.al[i]?'lit':'dark'}" style="--c:${col(i)}"><i></i><span>${nm(i)}</span></button>`).join('')}</div>
+   <div class="xkbtns"><button class="go-btn xsm" id="actgo">هذا اختفى أولًا</button></div>`,900,671);
+  const draw=()=>api.body.querySelectorAll('[data-i]').forEach(b=>b.classList.toggle('sel',+b.dataset.i===sel));
+  api.body.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{if(api.ended||busy)return;const i=+b.dataset.i;if(P.al[i]){api.msg(`${nm(i)} ما زال مضيئًا.`);return}sel=i;tone(240,.05);draw()});
+  function check(){if(api.ended||busy||sel<0)return;if(sel===P.gone){busy=true;sfx.lvl();api.body.querySelectorAll('.dark').forEach((b,q)=>later(()=>{if(+b.dataset.i!==P.gone)b.classList.add('relit')},300+q*250));later(()=>aWin(api,'pz_acity','عرفت ما اختفى. وحين أعادت الفوانيس توزيع الضوء، فهمت: هذه ليست غابة… هذه مدينة.'),1200);return}
+    miss++;api.wrong();const a2=actAlive(P,sel),ex=a2.map((v,i)=>v!==P.al[i]).filter(Boolean).length;if(miss>=3){busy=true;sel=P.gone;draw();api.over(`اختفى أولًا: ${nm(P.gone)}.`);return}api.msg(`لو اختفى ${nm(sel)} أولًا، لما انطفأ كل ما انطفأ.`)}
+  $('#actgo').onclick=check;draw();api.msg('من اختفى أولًا؟');pzHook({P,pick:i=>{sel=i;draw()},check});
+  return{hint:k=>{if(k===1)return'جرّب كل نوع منطفئ: لو اختفى هو وحده، هل ينطفئ بسببه بالضبط كل المنطفئين، ولا ينطفئ أحد من المضيئين؟';const ex=[...Array(n).keys()].filter(i=>!P.al[i]&&i!==P.gone);const x=pick(ex);return`${nm(x)} لم يختفِ؛ انطفأ فقط.`},reveal:()=>{sel=P.gone;draw();return`اختفى ${nm(P.gone)}.`}}})}
+
+/* ================= migrating sea 1: أغاني الأعماق — recognise songs by shape, whatever the depth (transposition) ================= */
+const ASO_N=['قطيع الشمال','قطيع الملح','قطيع الضوء','قطيع العمق','قطيع الصدى','قطيع الغروب'];
+const ASO_LV=[[4,3,0,0],[4,3,1,0],[5,3,1,0],[5,4,1,1],[5,4,1,1],[6,4,1,1],[6,5,1,1],[6,5,1,1]];
+function asoMake(lv){const[ns,len,tr,abs]=ASO_LV[lv-1];for(let t=0;t<300;t++){const sp=[...Array(ns)].map(()=>{const a=[2+rnd(3)];while(a.length<len)a.push(clamp(a[a.length-1]+pick([-2,-1,1,2,3]),0,8));return a});
+  const sig=a=>a.slice(1).map((v,i)=>v-a[i]).join();if(new Set(sp.map(sig)).size<ns)continue;const tp=a=>{const d=tr?rnd(5)-2:0;const b=a.map(v=>v+d);return b.every(v=>v>=0&&v<=9)?b:a};
+  if(!abs){const pres=shuffle([...Array(ns).keys()]).slice(0,2+rnd(ns-2));const rec=shuffle(pres.slice()).map(i=>tp(sp[i]));return{ns,sp,abs,pres:pres.sort(),rec}}
+  const old=shuffle([...Array(ns).keys()]).slice(0,Math.max(3,ns-1));const gone=pick(old);const now=old.filter(i=>i!==gone);return{ns,sp,abs,gone,old,recO:shuffle(old.slice()).map(i=>tp(sp[i])),recN:shuffle(now.slice()).map(i=>tp(sp[i]))}}return asoMake(Math.max(1,lv-1))}
+function runASong(){return pzPlay('pz_asong',api=>{
+  const P=asoMake(api.lv);const sel=new Set();let miss=0,busy=false;
+  const staff=(ms,gap=1)=>{let x=4,s='';ms.forEach((m,q)=>{if(q)s+=`<path d="M${x+2} 6v40" stroke="#9B2B1F" stroke-width=".8" stroke-dasharray="2 2"/>`,x+=8;m.forEach(v=>{s+=`<ellipse cx="${x+6}" cy="${46-v*4.4}" rx="4.6" ry="3.4" fill="#BFF0F0" stroke="#14303E"/>`;x+=13})});return`<svg viewBox="0 0 ${x+6} 52" preserveAspectRatio="xMinYMid meet">${[10,19,28,37,46].map(y=>`<path d="M0 ${y}h${x+6}" stroke="#5E7F8E" stroke-width=".4"/>`).join('')}${s}</svg>`};
+  const playR=ms=>{let t=0;ms.forEach(m=>{m.forEach(v=>{tone(110*2**([0,2,3,5,7,8,10,12,14,15][v]/12),.35,'sine',.05,t);t+=.28});t+=.35})};
+  api.body.innerHTML=xSheet(`${xHead('','أغاني الأعماق')}<ol class="xnote"><li>لكل قطيع أغنية بشكل ثابت. في الأعماق قد يغنيها أعلى أو أخفض، لكن المسافات بين نغماتها لا تتغير.</li><li>${P.abs?'قارن تسجيل الصدفة القديمة بتسجيل اليوم. أي قطيع سكت هذا العام؟':'أي القطعان تغني في هذا التسجيل؟ اختر كل الموجود.'}</li></ol>
+   <div class="asol">${P.sp.map((m,i)=>`<button data-i="${i}"><b>${ASO_N[i]}</b>${staff([m])}</button>`).join('')}</div>
+   ${P.abs?`<b class="abrt">تسجيل الصدفة القديمة</b><button class="asor" data-r="o">${staff(P.recO)}</button><b class="abrt">تسجيل اليوم</b><button class="asor" data-r="n">${staff(P.recN)}</button>`:`<b class="abrt">التسجيل</b><button class="asor" data-r="r">${staff(P.rec)}</button>`}
+   <div class="xkbtns"><button class="go-btn xsm" id="asogo">${P.abs?'هذا الذي سكت':'هذه القطعان'}</button></div>`,900,681);
+  const draw=()=>api.body.querySelectorAll('[data-i]').forEach(b=>b.classList.toggle('sel',sel.has(+b.dataset.i)));
+  api.body.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{if(api.ended||busy)return;const i=+b.dataset.i;playR([P.sp[i]]);if(P.abs){sel.clear();sel.add(i)}else sel.has(i)?sel.delete(i):sel.add(i);draw()});
+  api.body.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>playR({o:P.recO,n:P.recN,r:P.rec}[b.dataset.r]));
+  function check(){if(api.ended||busy||!sel.size)return;const ok=P.abs?sel.has(P.gone)&&sel.size===1:P.pres.length===sel.size&&P.pres.every(i=>sel.has(i));
+    if(ok){busy=true;sfx.lvl();later(()=>aWin(api,'pz_asong',P.abs?`سكت ${ASO_N[P.gone]} هذا العام.`:'عرفت كل قطيع من شكل أغنيته.'),500);return}
+    miss++;api.wrong();if(miss>=3){busy=true;sel.clear();(P.abs?[P.gone]:P.pres).forEach(i=>sel.add(i));draw();api.over('هذا هو الجواب.');return}api.msg('ليس بالضبط. قارن المسافات بين النغمات، لا ارتفاعها.')}
+  $('#asogo').onclick=check;draw();api.msg('اسمع وقارن.');pzHook({P,set:()=>{sel.clear();(P.abs?[P.gone]:P.pres).forEach(i=>sel.add(i));draw()},check});
+  return{hint:k=>{if(k===1)return'لكل أغنية «بصمة»: كم تصعد أو تنزل من نغمة لنغمة. قارن البصمات، وتجاهل الارتفاع.';const i=P.abs?P.gone:pick(P.pres);return P.abs?`ابحث عن ${ASO_N[i]} في التسجيل القديم.`:`${ASO_N[i]} موجود في التسجيل.`},reveal:()=>{sel.clear();(P.abs?[P.gone]:P.pres).forEach(i=>sel.add(i));draw();return'هذا الجواب.'}}})}
+
+/* ================= migrating sea 2: مفترقات التيار — swarms halve at every fork; find the calmest bay ================= */
+const AFL_LV=[[2,3,0],[2,3,0],[3,4,0],[3,4,0],[3,4,1],[4,5,1],[4,5,1],[4,6,1]];
+function aflMake(lv){const[depth,bays,hid]=AFL_LV[lv-1];for(let t=0;t<400;t++){const levels=[[{id:0}]];let id=1;for(let d=1;d<depth;d++){const w=Math.min(bays,d+1+rnd(2));levels.push([...Array(w)].map(()=>({id:id++})))}levels.push([...Array(bays)].map(()=>({id:id++,bay:1})));
+  const nodes=levels.flat();const out={};for(let d=0;d<levels.length-1;d++){const nx=levels[d+1];levels[d].forEach((nd,j)=>{const a=Math.min(nx.length-1,Math.floor(j*nx.length/levels[d].length)),b=Math.min(nx.length-1,a+1+rnd(2));out[nd.id]=[...new Set([nx[a].id,nx[b].id])]});nx.forEach(c=>{if(!levels[d].some(p=>(out[p.id]||[]).includes(c.id))){const p=pick(levels[d]);out[p.id].push(c.id)}})}
+  const src=8*(2+rnd(lv>4?6:3));const flow=a=>{const f={};nodes.forEach(n=>f[n.id]=0);f[0]=a;levels.forEach(L=>L.forEach(nd=>{const o=out[nd.id];if(!o||!o.length)return;const k=o.length,base=Math.floor(f[nd.id]/k),rem=f[nd.id]-base*k;o.forEach((c,q)=>f[c]+=base+(q<rem?1:0))}));return f};
+  const f=flow(src);const bv=levels[levels.length-1].map(b=>f[b.id]);const mn=Math.min(...bv);if(bv.filter(v=>v===mn).length!==1)continue;if(nodes.some(n=>!n.bay&&!(out[n.id]||[]).length))continue;
+  let obs=-1;if(hid){obs=levels[levels.length-1].findIndex(b=>f[b.id]!==mn);const cands=[...Array(200).keys()].map(a=>a+1).filter(a=>flow(a)[levels[levels.length-1][obs].id]===bv[obs]);const mins=new Set(cands.map(a=>{const g=flow(a),v=levels[levels.length-1].map(b=>g[b.id]),m=Math.min(...v);return v.filter(x=>x===m).length===1?v.indexOf(m):-1}));if(mins.size!==1||[...mins][0]<0)continue}
+  return{levels,out,src,hid,obs,bv,ans:bv.indexOf(mn)}}return aflMake(Math.max(1,lv-1))}
+function runAFlow(){return pzPlay('pz_aflow',api=>{
+  const P=aflMake(api.lv),L=P.levels,W=300,Hh=60*(L.length-1)+40;let sel=-1,miss=0,busy=false;const pos={};L.forEach((lv,d)=>lv.forEach((nd,j)=>pos[nd.id]=[(j+.5)*W/lv.length,20+d*60]));
+  let svg=`<svg viewBox="0 0 ${W} ${Hh}" class="aflg"><rect width="${W}" height="${Hh}" fill="#14303E" rx="8"/>`;Object.entries(P.out).forEach(([a,o])=>o.forEach(c=>{const[x1,y1]=pos[a],[x2,y2]=pos[c];svg+=`<path d="M${x1} ${y1}C${x1} ${(y1+y2)/2} ${x2} ${(y1+y2)/2} ${x2} ${y2}" stroke="#5F8E86" stroke-width="3" fill="none"/>`}));
+  L.flat().forEach(nd=>{const[x,y]=pos[nd.id];if(nd.bay)return;svg+=`<circle cx="${x}" cy="${y}" r="${nd.id===0?13:6}" fill="${nd.id===0?'#8A6AA0':'#BFF0F0'}" stroke="#F4E9CC" stroke-width="1"/>${nd.id===0?`<text x="${x}" y="${y+4}" font-size="11" text-anchor="middle" fill="#F4E9CC">${P.hid?'؟':XAR(P.src)}</text>`:''}`});svg+='</svg>';
+  api.body.innerHTML=xSheet(`${xHead('','مفترقات التيار')}<ol class="xnote"><li>السرب يبدأ من الأعلى. عند كل مفترق ينقسم بالتساوي على الفروع، والزيادة تذهب للفروع من اليسار أولًا.</li><li>اختر الخليج الذي سيصله أقل عدد من القناديل.</li>${P.hid?`<li>عدد السرب في البداية مجهول، لكن ليان عدّت ${XAR(P.bv[P.obs])} قنديلًا في الخليج المعلَّم.</li>`:''}</ol>
+   <div class="aflw ltr">${svg}<div class="aflb">${L[L.length-1].map((b,j)=>`<button data-b="${j}" class="${j===P.obs?'obs':''}">${j===P.obs?XAR(P.bv[j]):'⌒'.replace('⌒','')}<i></i></button>`).join('')}</div></div>
+   <div class="xkbtns"><button class="go-btn xsm" id="aflgo">نعبر من هنا</button></div>`,900,691);
+  const draw=()=>api.body.querySelectorAll('[data-b]').forEach(b=>b.classList.toggle('sel',+b.dataset.b===sel));
+  api.body.querySelectorAll('[data-b]').forEach(b=>b.onclick=()=>{if(api.ended||busy)return;sel=+b.dataset.b;tone(300,.05);draw()});
+  function check(){if(api.ended||busy||sel<0)return;if(sel===P.ans){busy=true;sfx.lvl();later(()=>aWin(api,'pz_aflow',`الخليج الأهدأ وصله ${arN(P.bv[P.ans],AN.jelly||['قنديل واحد','قنديلان','قناديل','قنديلًا'])}${P.bv[P.ans]?'':' (لا شيء)'}.`),500);return}
+    miss++;api.wrong();if(miss>=3){busy=true;sel=P.ans;draw();api.over(`الأهدأ هنا. الأعداد كانت: ${P.bv.map(XAR).join('، ')}.`);return}api.msg(`هذا الخليج يصله ${XAR(P.bv[sel])}. يوجد أهدأ منه.`)}
+  $('#aflgo').onclick=check;draw();api.msg('احسب الانقسامات.');pzHook({P,pick:j=>{sel=j;draw()},check});
+  return{hint:k=>{if(k===1)return P.hid?'جرّب عددًا للسرب واحسب الخليج المعلَّم؛ عدّل حتى يطابق ما عدّته ليان.':'اكتب العدد عند كل مفترق من الأعلى إلى الأسفل.';return k===2?`السرب في البداية ${XAR(P.src)}.`:`الأعداد في الخلجان من اليسار: ${P.bv.map((v,j)=>j===P.ans?'؟':XAR(v)).join('، ')}.`},reveal:()=>{sel=P.ans;draw();return'هنا.'}}})}
+Object.assign(AN,{jelly:['قنديل واحد','قنديلان','قناديل','قنديلًا']});
+
+const PZ_A4=[
+ {id:'pz_alayer',maxLv:8,col:['#8A6F5A','#E8B04A'],name:'طبقات الزمن',lab:'Rock strata',cat:'log',why:'استنتاج تاريخي من آثار مادية: الأسفل أقدم، وما يشق شيئًا أحدث منه.',how:['اقرأ المقطع.','رتّب الأحداث.','ثبّت.'],run:runALayer},
+ {id:'pz_acity',maxLv:8,col:['#2A2420','#F2C553'],name:'المدينة الحية',lab:'Living city',cat:'log',why:'لغز نظام بيئي وغياب: تتبع الاعتمادات بين الأنواع لمعرفة السبب الأول لانطفاء حي كامل.',how:['اقرأ من يعيش على من.','لاحظ المنطفئ.','اكتشف المختفي.'],run:runACity},
+ {id:'pz_asong',maxLv:8,col:['#14303E','#BFF0F0'],name:'أغاني الأعماق',lab:'Deep songs',cat:'mem',why:'التعرف على نمط بعد تحويله: الشكل ثابت والارتفاع يتغير. وفي المستويات العليا: اكتشاف الغائب.',how:['اسمع البصمات.','قارن التسجيلات.','حدد القطعان.'],run:runASong},
+ {id:'pz_aflow',maxLv:8,col:['#14303E','#8A6AA0'],name:'مفترقات التيار',lab:'Current forks',cat:'log',why:'انتشار كميات في شبكة متفرعة، وحساب عكسي للمجهول من ملاحظة واحدة.',how:['تتبع التيار.','قسّم.','اختر الأهدأ.'],run:runAFlow}];
+PZ_A4.forEach(g=>{Object.assign(g,{puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g});TV_PUZ.unshift(...PZ_A4.map(g=>g.id));
+Object.assign(I,{pz_alayer:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><rect x="4" y="8" width="40" height="8" opacity=".4"/><rect x="4" y="20" width="40" height="8" opacity=".7"/><rect x="4" y="32" width="40" height="8"/><path d="M22 40V8" stroke="#0A0E1C" stroke-width="3"/></svg>',pz_acity:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><rect x="6" y="18" width="8" height="26"/><rect x="20" y="8" width="8" height="36"/><rect x="34" y="14" width="8" height="30"/></svg>',pz_asong:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><path d="M4 30q8-14 16 0t16 0 8-6"/><circle cx="12" cy="18" r="3" fill="#0A0E1C"/></svg>',pz_aflow:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><path d="M24 4v12M24 16L12 30M24 16l12 14M12 30l-6 14M12 30l8 14M36 30l6 14"/></svg>'});
+Object.assign(ART_FN,Object.fromEntries(PZ_A4.map((g,k)=>[g.id,B=>{B.bg('#EFE2C2',.35);B.wc(B.ell(200,160,110,70),g.col[0],{a:.42});B.wc(B.ell(150,120,50,40),g.col[1],{a:.5});B.frame()}])));
 /* ================= v29: kids — exit to main profile, owl mascot, richer animation, 4 new games ================= */
 const KSTAR='<svg viewBox="0 0 24 24" class="kst"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" stroke="#2B2520" stroke-width="1.4" stroke-linejoin="round"/></svg>';
 const OWL=`<svg viewBox="0 0 64 64" class="owl"><g class="owlb"><g class="owlw l"><path d="M14 34q-9 10-3 22q6-3 9-13z" fill="#7A5A3E" ${RK}/></g><g class="owlw r"><path d="M50 34q9 10 3 22q-6-3-9-13z" fill="#7A5A3E" ${RK}/></g>
