@@ -1605,6 +1605,15 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 .zsst{display:flex;flex-wrap:wrap;gap:8px;justify-content:center}.zss{display:flex;flex-direction:column;align-items:center;gap:4px}.zss button{font:700 11px Tajawal;padding:4px 8px;border-radius:8px;border:1.4px solid #3A2616;background:rgba(255,248,226,.6);color:#3A2616}
 .zsmini{position:relative;width:64px;height:64px;border:1.2px dashed rgba(58,38,22,.4);border-radius:8px}.zsmini i{position:absolute;width:22%;height:22%;margin:24% 0 0 24%;background:#8E8576;border:1px solid #3A2616}.zslamp{position:absolute;width:20px;height:20px;transform:translate(-50%,-50%);transition:left .25s,top .25s}.zslamp svg{width:100%;height:100%}
 
+.znpiles{display:flex;gap:8px;justify-content:center;align-items:flex-end;min-height:150px;margin:8px 0}.znpile{display:flex;flex-direction:column;align-items:center;gap:4px;padding:6px;border-radius:12px;border:1.6px dashed rgba(58,38,22,.4);background:rgba(255,248,226,.4)}
+.znpile span{display:flex;flex-direction:column-reverse;gap:1px}.znpile i{width:26px;height:20px;display:block;transition:transform .2s,opacity .2s}.znpile i svg{width:100%;height:100%}.znpile i.take{transform:translateX(8px);opacity:.45}.znpile.sel{border-style:solid;border-color:#9B2B1F}.znpile b{font:700 16px 'Aref Ruqaa',serif}
+.zntake{display:flex;gap:8px;justify-content:center;align-items:center}.zntake>button:not(.go-btn){width:40px;height:36px;border-radius:10px;border:1.6px solid #3A2616;background:rgba(255,248,226,.6);font:800 20px Tajawal;color:#3A2616}.zntake b{font:700 22px 'Aref Ruqaa',serif;min-width:24px;text-align:center}
+.zndr{text-align:center;font:700 13px Tajawal;color:#9B2B1F;min-height:1.4em;margin:6px 0 0}
+.ztw{display:grid;grid-template-columns:1fr 1.6fr;gap:8px;align-items:center;margin-top:8px}.zttab small{display:block;text-align:center;font:700 11px Tajawal}.zttab svg,.ztsky svg{width:100%;height:auto;display:block}.ztst{cursor:pointer}#zts.done{filter:drop-shadow(0 0 6px #F2C553)}
+.zow{position:relative;width:min(80%,280px);aspect-ratio:1;margin:8px auto}.zothr{position:absolute;inset:0;width:100%;height:100%}.zoslot{position:absolute;width:20%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;border:2px dashed #3A2616;background:rgba(255,248,226,.6);padding:4px}.zoslot.full{border-style:solid;background:#E9D49E}.zoslot svg{width:100%;height:100%}
+.zow.nope{animation:shake .4s}.zoend{position:absolute;left:50%;top:50%;width:30%;transform:translate(-50%,-50%) scale(0);transition:transform 1s cubic-bezier(.3,1.5,.5,1) .4s}.zoend svg{width:100%;height:auto}.zow.open .zoend{transform:translate(-50%,-50%) scale(1.3)}.zow.open .zothr{opacity:.3;transition:opacity .6s}
+.zotools{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}.zotool{display:flex;flex-direction:column;align-items:center;width:72px;padding:4px;border-radius:10px;border:1.4px solid rgba(58,38,22,.45);background:rgba(255,248,226,.5)}.zotool i{width:30px;height:30px}.zotool i svg{width:100%;height:100%}.zotool small{font:700 9.5px/1.2 Tajawal;text-align:center}.zotool.sel{outline:2.4px solid #9B2B1F}
+
 </style>
 
 
@@ -5803,6 +5812,93 @@ const PZ_Z2=[
 PZ_Z2.forEach(g=>{Object.assign(g,{puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g;PZ_Z.push(g)});TV_PUZ.unshift(...PZ_Z2.map(g=>g.id));
 Object.assign(I,{pz_zcode:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><path d="M8 10h32v28H8z"/><path d="M14 18l6 6-6 6M24 30h10"/></svg>',pz_zharp:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><path d="M10 40Q8 10 38 8"/><path d="M16 38V20M22 38V15M28 38V12M34 38V10M10 40h28"/></svg>',pz_zshadow:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><circle cx="10" cy="12" r="5"/><path d="M18 20h8v18h-8z"/><path d="M26 22l16 6v16H26z" opacity=".4"/></svg>'});
 Object.assign(ART_FN,{pz_zcode:B=>{B.bg('#E9DDBE',.3);B.wc(B.rect(80,60,260,180),'#F3E2BC',{a:.8});B.wc(B.ell(330,250,60,30),'#9C5A6A',{a:.6});B.frame()},pz_zharp:B=>{B.bg('#3E6F62',.4);B.wc(B.ell(210,170,90,100),'#5FA89A',{a:.6});B.wc(B.ell(210,120,24,24),'#F3D6C4',{a:.8});B.frame()},pz_zshadow:B=>{B.bg('#1E2A30',.6);B.wc(B.rect(150,90,60,140),'#8E8576',{a:.7});B.wc(B.rect(210,110,120,120),'#000',{a:.4});B.wc(B.ell(90,80,20,20),'#8FD6E6',{a:.8});B.frame()}});
+/* ================= v34: البحار السبعة — المحطات ٧ إلى ٩ والنهاية ================= */
+Object.assign(XTOOL,{dragonkey:{n:'مفتاح التنين',d:'حراشف تنين البركان: تفتح أقفال العروش.'},astroclock:{n:'الساعة الفلكية',d:'تقرأ الكوكبات وتحسب مواقع النجوم.'},palacemap:{n:'خريطة القصر',d:'آخر سر في البحار السبعة: الطريق إلى قصر الملوك.'}});
+Object.assign(Z3[6],{id:'pz_znim',tool:'dragonkey',story:'تنين البركان العجوز لا يقاتل أحدًا. يتحداك في لعبة الحراشف: من يأخذ الحرشفة الأخيرة يفوز. والتنين لا يخطئ أبدًا.',log:'التنين قال: «القبطان الأول هزمني مرة واحدة… ثم بنى قصرًا من حراشفي».'});
+Object.assign(Z3[7],{id:'pz_zstars',tool:'astroclock',story:'في معبد الملوك السبعة، لوح حجري عليه كوكبة. ارسم الكوكبة نفسها بين نجوم السقف، ولو كانت مقلوبة أو مدوّرة.',log:'سقف المعبد يرسم سبعة أبراج… نفس أبراج قصر رأيناه في ظل الخندق.'});
+Object.assign(Z3[8],{id:'pz_zthrone',tool:'palacemap',story:'عرش المحيط له ست فتحات حوله، لكل أداة جمعتها فتحة. ضعها حسب نقوش العرش، وينكشف آخر سر.',log:'العرش انفتح عن خريطة… ليست لكنز، بل لقصر الملوك السبعة. القبطان الأول ينتظر هناك.'});
+Object.assign(XCR[6],{beh:'عجوز حكيم يتحدى الزوار في ألعاب العقل، ولا يخطئ.',role:'اختبار: لا يُهزم إلا بالتفكير.'});
+Object.assign(XCR[7],{beh:'تماثيل حية تحرس المعبد وتتحرك مع النجوم.',role:'مرشد: يدلك على الكوكبات.'});Object.assign(XCR[8],{beh:'حارس العرش لا يرى إلا الأدوات الصادقة.',role:'البوابة الأخيرة: يطلب كل ما جمعته.'});
+XCR[7].k='giant';XCR[8].k='guard';
+Object.assign(XS_,{
+ giant:`<svg viewBox="0 0 60 70"><path d="M18 68V40l-8 6V30q6-10 20-10t20 10v16l-8-6v28z" fill="#B3A88E" ${XI}/><rect x="20" y="4" width="20" height="18" rx="3" fill="#C9BFA6" ${XI}/><path d="M24 12h4M32 12h4" stroke="#8FD6E6" stroke-width="2.4"/><path d="M26 18h8" ${XI2}/><path d="M22 34h16M22 44h16M22 54h16" stroke="${XK}" stroke-width=".7" opacity=".6"/></svg>`,
+ guard:`<svg viewBox="0 0 60 70"><path d="M14 68V36q0-14 16-14t16 14v32z" fill="#3E6F62" ${XI}/><circle cx="30" cy="16" r="9" fill="#9FB3A8" ${XI}/><path d="M20 10l10-8 10 8" fill="url(#xGold)" ${XI2}/><circle cx="27" cy="16" r="1.4" fill="#F2C553"/><circle cx="33" cy="16" r="1.4" fill="#F2C553"/><path d="M46 30v38" stroke="url(#xGold)" stroke-width="3"/><path d="M42 26l4-8 4 8z" fill="url(#xGold)" ${XI2}/></svg>`,
+ dragonkey:`<svg viewBox="0 0 40 40"><path d="M8 20q10-14 24-6q-6 4-6 6t6 6q-14 8-24-6z" fill="#C2703E" ${XI}/><path d="M14 20h18M26 20v6M30 20v4" stroke="${XK}" stroke-width="1.6"/></svg>`,
+ astroclock:`<svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="16" fill="url(#xGold)" ${XI}/><circle cx="20" cy="20" r="11" fill="#1E2A44" ${XI2}/><path d="M20 20l6-5M20 20v-8" stroke="#F2C553" stroke-width="1.6" stroke-linecap="round"/>${[[14,14],[26,24],[15,26]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1" fill="#F2E3B6"/>`).join('')}</svg>`,
+ palacemap:`<svg viewBox="0 0 40 40"><path d="M5 8h30v26H5z" fill="#E9DDBE" ${XI}/><path d="M10 30V18l3-3 3 3v12M18 30V14l3-4 3 4v16M26 30V18l3-3 3 3v12M8 30h26" fill="none" stroke="#3E5A8C" stroke-width="1.3"/><path d="M8 33q6-2 12 0t12 0" fill="none" stroke="${XS}"/></svg>`,
+ scale1:`<svg viewBox="0 0 30 30"><path d="M15 3q11 4 11 14q0 8-11 10Q4 25 4 17Q4 7 15 3z" fill="#C2703E" ${XI}/><path d="M15 6v18M9 12q6 4 12 0" fill="none" stroke="#F2A23A" stroke-width="1"/></svg>`});
+/* ---------- 7) لعبة التنين: a take-away game against a perfect opponent ---------- */
+const ZN_LV=[[2,[3,5],2],[2,[4,7],2],[3,[3,6],2],[3,[4,7],3],[3,[5,8],3],[4,[3,7],3],[4,[4,9],3],[4,[5,10],4]];
+const znG=(h,m)=>h.reduce((x,v)=>x^(v%(m+1)),0);
+function znMake(lv){const[k,[a,b],m]=ZN_LV[lv-1];for(let t=0;t<200;t++){const h=[...Array(k)].map(()=>a+rnd(b-a+1));if(znG(h,m)!==0)return{h,m}}return{h:[2,3],m:2}}
+function znBest(h,m){for(let i=0;i<h.length;i++)for(let c=1;c<=Math.min(m,h[i]);c++){const n=h.slice();n[i]-=c;if(znG(n,m)===0)return[i,c]}const i=h.findIndex(v=>v>0);return i<0?null:[i,1]}
+function runZNim(){return pzPlay('pz_znim',api=>{
+  const P=znMake(api.lv),m=P.m;let h=P.h.slice(),sel=-1,cnt=1,busy=false,first=true,perfect=true;
+  api.body.innerHTML=xSheet(`${xHead(XS_.dragon.replace('viewBox="0 0 120 70"','viewBox="0 0 120 70" width="50"'),'لعبة التنين')}<ol class="xnote"><li>في كل دور: اختر كومة وخذ منها من ١ إلى ${XAR(m)} حراشف.</li><li>بعدك يلعب التنين. <b>من يأخذ آخر حرشفة يفوز.</b></li><li>التنين لا يخطئ أبدًا: لازم تكتشف الاستراتيجية.</li></ol>
+   <div class="znpiles" id="znp"></div><div class="zntake"><button id="znm">−</button><b id="znc"></b><button id="znpl">+</button><button class="go-btn xsm" id="zngo">خذ</button></div><p class="zndr" id="znd"></p>`,720,261);
+  const draw=()=>{$('#znp').innerHTML=h.map((v,i)=>`<button class="znpile${sel===i?' sel':''}" data-i="${i}"><span>${[...Array(v)].map((_,j)=>`<i class="${sel===i&&j>=v-cnt?'take':''}">${XS_.scale1}</i>`).join('')}</span><b>${XAR(v)}</b></button>`).join('');$('#znc').textContent=XAR(cnt);
+    $('#znp').querySelectorAll('.znpile').forEach(b=>b.onclick=()=>{if(busy||api.ended||!h[+b.dataset.i])return;sel=+b.dataset.i;cnt=Math.min(cnt,h[sel]);draw()})};
+  const setC=d=>{if(sel<0)return;cnt=Math.max(1,Math.min(m,h[sel],cnt+d));draw()};$('#znm').onclick=()=>setC(-1);$('#znpl').onclick=()=>setC(1);
+  function take(i,c){if(api.ended||busy||i<0||c<1||c>m||c>h[i])return;const before=h.slice();h[i]-=c;sel=-1;cnt=1;tone(500,.05);if(znG(h,m)!==0)perfect=false;draw();
+    if(h.every(v=>!v)){busy=true;sfx.ok(3);later(()=>zWin(api,'pz_znim','أخذت آخر حرشفة! التنين انحنى وأعطاك مفتاحه.',perfect),500);return}
+    busy=true;$('#znd').textContent='التنين يفكر…';later(()=>{const[j,d]=znBest(h,m);h[j]-=d;$('#znd').textContent=`التنين أخذ ${XAR(d)} من الكومة ${XAR(j+1)}.`;tone(200,.1,'sawtooth',.04);draw();busy=false;
+      if(h.every(v=>!v)){busy=true;api.over('التنين أخذ آخر حرشفة. السر: اترك للتنين دائمًا وضعًا «متوازنًا».')}},800)}
+  $('#zngo').onclick=()=>take(sel,cnt);draw();api.msg('أنت تبدأ.');pzHook({P,take,h:()=>h,best:()=>znBest(h,m)});
+  return{hint:k=>{if(k===1)return`في كومة واحدة: إذا تركت للتنين عددًا يقبل القسمة على ${XAR(m+1)} لا يقدر يفوز. ومع أكثر من كومة: احسب باقي كل كومة على ${XAR(m+1)}.`;
+    if(k===2)return'الوضع المتوازن: بواقي القسمة إذا كتبتها بالثنائي وجمعتها بدون حمل تعطي صفرًا.';const b=znBest(h,m);return b?`خذ ${XAR(b[1])} من الكومة ${XAR(b[0]+1)}.`:null},reveal:()=>'السر: اجعل مجموع بواقي الكومات «متوازنًا» بعد كل حركة.'}})}
+
+/* ---------- 8) كوكبة المعبد: draw the carved constellation among the ceiling stars ---------- */
+const ZT_LV=[[7,4,0,0],[8,5,0,0],[8,5,1,0],[9,6,1,0],[10,6,1,1],[10,7,1,1],[11,7,1,1],[12,8,1,1]];
+function ztMake(lv){const[ns,k,rot,mir]=ZT_LV[lv-1];
+  for(let t=0;t<200;t++){const pts=[];while(pts.length<ns){const p=[10+rnd(9)*10,10+rnd(9)*10];if(pts.every(q=>Math.hypot(q[0]-p[0],q[1]-p[1])>14))pts.push(p)}
+    const sub=shuffle([...Array(ns).keys()]).slice(0,k),edges=[];for(let i=1;i<k;i++)edges.push([sub[rnd(i)],sub[i]]);if(k>4)edges.push([sub[k-1],sub[rnd(k-2)]]);
+    const key=e=>e[0]<e[1]?e[0]+'-'+e[1]:e[1]+'-'+e[0];if(new Set(edges.map(key)).size<edges.length)continue;
+    const R=rot?pick([1,2,3]):0,M=mir&&Math.random()<.6;const tr=([x,y])=>{let a=[x-55,y-55];if(M)a=[-a[0],a[1]];for(let r=0;r<R;r++)a=[-a[1],a[0]];return[a[0]+55,a[1]+55]};
+    return{pts,sub,edges:edges.map(key),tab:pts.map(tr),R,M,eKey:key}}return ztMake(Math.max(1,lv-1))}
+function runZStars(){return pzPlay('pz_zstars',api=>{
+  const P=ztMake(api.lv);let drawn=new Set(),sel=-1,miss=0,busy=false;const tabEdges=P.edges.map(e=>e.split('-').map(Number));
+  api.body.innerHTML=xSheet(`${xHead(XS_.giant.replace('viewBox="0 0 60 70"','viewBox="0 0 60 70" width="34"'),'كوكبة المعبد')}<ol class="xnote"><li>اللوح الحجري يرسم كوكبة. ارسم نفس الكوكبة بين نجوم السقف: اضغط نجمتين لتصل بينهما.</li>${P.R?'<li>انتبه: اللوح مدوَّر'+(P.M?' ومقلوب كالمرآة':'')+'، والسقف بوضعه الصحيح.</li>':''}<li>بعض نجوم السقف ليست من الكوكبة.</li></ol>
+   <div class="ztw"><div class="zttab"><small>اللوح الحجري</small><svg viewBox="0 0 110 110"><rect x="2" y="2" width="106" height="106" rx="8" fill="#B3A88E" ${XI}/>${tabEdges.map(([a,b])=>`<line x1="${P.tab[a][0]}" y1="${P.tab[a][1]}" x2="${P.tab[b][0]}" y2="${P.tab[b][1]}" stroke="#3A2616" stroke-width="2"/>`).join('')}${P.sub.map(i=>`<circle cx="${P.tab[i][0]}" cy="${P.tab[i][1]}" r="3.4" fill="#F2C553" ${XI2}/>`).join('')}</svg></div>
+   <div class="ztsky"><svg viewBox="0 0 110 110" id="zts"></svg></div></div><div class="xkbtns"><button class="cta ghost xsm" id="ztclr">امسح الخطوط</button><button class="go-btn xsm" id="ztgo">طابق</button></div>`,780,271);
+  const draw=()=>{$('#zts').innerHTML=`<rect width="110" height="110" rx="8" fill="#1E2A44"/>${[...drawn].map(k=>{const[a,b]=k.split('-').map(Number);return`<line x1="${P.pts[a][0]}" y1="${P.pts[a][1]}" x2="${P.pts[b][0]}" y2="${P.pts[b][1]}" stroke="#F2C553" stroke-width="1.6" stroke-linecap="round"/>`}).join('')}${P.pts.map((p,i)=>`<g data-i="${i}" class="ztst"><circle cx="${p[0]}" cy="${p[1]}" r="8" fill="transparent"/><circle cx="${p[0]}" cy="${p[1]}" r="${sel===i?4:2.6}" fill="${sel===i?'#9B2B1F':'#F2E3B6'}"/></g>`).join('')}`;
+    $('#zts').querySelectorAll('.ztst').forEach(g=>g.onclick=()=>tap(+g.dataset.i))};
+  function tap(i){if(api.ended||busy)return;if(sel<0){sel=i;draw();return}if(sel===i){sel=-1;draw();return}const k=P.eKey([sel,i]);drawn.has(k)?drawn.delete(k):drawn.add(k);sel=-1;tone(700,.04);draw()}
+  function check(){if(api.ended||busy)return;const ok=drawn.size===P.edges.length&&P.edges.every(e=>drawn.has(e));if(ok){busy=true;sfx.ok(3);$('#zts').classList.add('done');later(()=>zWin(api,'pz_zstars','الكوكبة اكتملت، والسقف أضاء فوق التماثيل.',!miss),700);return}
+    miss++;api.wrong();if(miss>=3){busy=true;drawn=new Set(P.edges);draw();api.over('هذي الكوكبة الصحيحة.');return}api.msg(`ليست مطابقة. ${miss===2?'باقي محاولة واحدة.':''}`)}
+  $('#ztgo').onclick=check;$('#ztclr').onclick=()=>{drawn=new Set();draw()};draw();api.msg('ارسم الكوكبة.');pzHook({P,set:e=>{drawn=new Set(e);draw()},check});
+  return{hint:k=>{if(k===1)return'ابدأ بالنجمة اللي يخرج منها أكثر خطوط في اللوح، ثم طابق أطوال الخطوط وزواياها.';const e=P.edges.find(e=>!drawn.has(e));if(!e)return null;drawn.add(e);draw();return'رسمت لك خطًا من الكوكبة.'},reveal:()=>{drawn=new Set(P.edges);draw();return'هذي الكوكبة.'}}})}
+
+/* ---------- 9) عرش المحيط: seat the six tools around the throne by its carvings ---------- */
+const ZO_T=['compass','spyglass','shell','lens','deepkey','glowstone'];
+function zoSat(c,pos,n){const d=(a,b)=>{const x=Math.abs(pos[a]-pos[b])%n;return Math.min(x,n-x)};switch(c.t){case'opp':return d(c.a,c.b)===n/2;case'adj':return d(c.a,c.b)===1;case'nadj':return d(c.a,c.b)>1;case'cw':return(pos[c.a]+1)%n===pos[c.b];case'at':return pos[c.a]===c.k}return false}
+function zoMake(lv){const n=6,perms=xcPerms(n).map(p=>{const q=[];p.forEach((s,i)=>q[s]=i);return q});
+  for(let t=0;t<200;t++){const ord=shuffle([...Array(n).keys()]),pos=[];ord.forEach((s,i)=>pos[s]=i);const pool=[{t:'at',a:ord[0],k:0}];
+    for(let a=0;a<n;a++)for(let b=0;b<n;b++)if(a!==b){['opp','adj','cw','nadj'].forEach(tt=>{if(zoSat({t:tt,a,b},pos,n))pool.push({t:tt,a,b})})}
+    let cand=perms.filter(q=>zoSat(pool[0],q,n)),cl=[pool[0]];for(const c of shuffle(pool.slice(1))){const nc=cand.filter(q=>zoSat(c,q,n));if(nc.length<cand.length){cl.push(c);cand=nc;if(cand.length===1)break}}
+    if(cand.length!==1)continue;return{n,ord,pos,clues:cl}}return null}
+function zoText(c){const N=i=>`«${XTOOL[ZO_T[i]].n}»`;switch(c.t){case'at':return`${N(c.a)} في الفتحة العليا فوق العرش.`;case'opp':return`${N(c.a)} يقابل ${N(c.b)} عبر العرش.`;case'adj':return`${N(c.a)} و${N(c.b)} متجاوران.`;case'nadj':return`${N(c.a)} لا يجاور ${N(c.b)}.`;case'cw':return`${N(c.b)} يلي ${N(c.a)} مباشرة باتجاه عقارب الساعة.`}}
+function runZThrone(){return pzPlay('pz_zthrone',api=>{
+  const P=zoMake(api.lv),n=6;let seat=Array(n).fill(-1),sel=-1,miss=0,busy=false;const ang=i=>i*60-90;
+  api.body.innerHTML=xSheet(`${xHead(XS_.guard.replace('viewBox="0 0 60 70"','viewBox="0 0 60 70" width="34"'),'عرش المحيط')}<div class="xnote"><b class="xcarv">نقوش العرش</b><ol>${P.clues.map(c=>`<li>${zoText(c)}</li>`).join('')}</ol></div>
+   <div class="zow" id="zow"><svg class="zothr" viewBox="0 0 100 100"><circle cx="50" cy="50" r="46" fill="#3E6F62" opacity=".25" ${XI2}/><path d="M38 66V40q0-12 12-12t12 12v26z" fill="url(#xGold)" ${XI}/><path d="M42 40q8-8 16 0" fill="none" ${XI2}/><path d="M34 70h32" stroke="${XK}" stroke-width="3"/></svg>${[...Array(n)].map((_,i)=>`<button class="zoslot" data-s="${i}" style="left:${50+Math.cos(ang(i)*Math.PI/180)*40}%;top:${50+Math.sin(ang(i)*Math.PI/180)*40}%"></button>`).join('')}<div class="zoend" id="zoe">${XS_.palacemap}</div></div>
+   <div class="zotools" id="zot"></div><div class="xkbtns"><button class="go-btn xsm" id="zogo">افتح العرش</button></div>`,820,281);
+  const draw=()=>{api.body.querySelectorAll('.zoslot').forEach(b=>{const s=+b.dataset.s;b.innerHTML=seat[s]>=0?XS_[ZO_T[seat[s]]]:'';b.classList.toggle('full',seat[s]>=0)});
+    $('#zot').innerHTML=ZO_T.map((k,i)=>seat.includes(i)?'':`<button class="zotool${sel===i?' sel':''}" data-t="${i}"><i>${XS_[k]}</i><small>${XTOOL[k].n}</small></button>`).join('');
+    $('#zot').querySelectorAll('[data-t]').forEach(b=>b.onclick=()=>{sel=+b.dataset.t;sfx.pop();draw()})};
+  api.body.querySelectorAll('.zoslot').forEach(b=>b.onclick=()=>{if(api.ended||busy)return;const s=+b.dataset.s;if(seat[s]>=0){seat[s]=-1;draw();return}if(sel<0)return;seat[s]=sel;sel=-1;tone(440,.05);draw()});
+  function open(){if(api.ended||busy||seat.includes(-1))return;const ok=seat.every((t,s)=>P.ord[s]===t);if(ok){busy=true;$('#zow').classList.add('open');sfx.lvl();
+      later(()=>zWin(api,'pz_zthrone','انفتح عرش المحيط! تحته خريطة قديمة لقصر بسبعة أبراج… قصر الملوك السبعة. أكملت مملكة البحار السبعة.',!miss),1600);return}
+    miss++;api.wrong();$('#zow').classList.remove('nope');void $('#zow').offsetWidth;$('#zow').classList.add('nope');if(miss>=3){busy=true;seat=P.ord.slice();draw();api.over('هذا ترتيب الأدوات الصحيح حول العرش.');return}api.msg(`العرش ما تحرك. ${miss===2?'باقي محاولة واحدة.':'راجع النقوش.'}`)}
+  $('#zogo').onclick=open;draw();api.msg('ضع كل أداة في فتحتها.');pzHook({P,set:a=>{seat=a.slice();draw()},open});
+  return{hint:k=>{if(k===1)return'ابدأ بالأداة اللي مكانها محدد (الفتحة العليا)، ثم «يقابل» لأنها تحدد مكانًا واحدًا بالضبط.';const s=seat.findIndex((t,i)=>t!==P.ord[i]);if(s<0)return null;const j=seat.indexOf(P.ord[s]);if(j>=0)seat[j]=-1;seat[s]=P.ord[s];draw();return`وضعت لك «${XTOOL[ZO_T[P.ord[s]]].n}» في فتحته.`},reveal:()=>{seat=P.ord.slice();draw();return'هذا الترتيب الصحيح.'}}})}
+
+const PZ_Z3=[
+ {id:'pz_znim',maxLv:8,col:['#C2703E','#5E3519'],name:'لعبة التنين',lab:'Take-away game',cat:'log',why:'لعبة استراتيجية ضد خصم مثالي: تكتشف القاعدة الرياضية الخفية (الأوضاع المتوازنة).',how:['اختر كومة.','خذ حراشف.','اترك للتنين وضعًا خاسرًا.'],run:runZNim},
+ {id:'pz_zstars',maxLv:8,col:['#1E2A44','#F2C553'],name:'كوكبة المعبد',lab:'Constellation',cat:'spa',why:'مطابقة شكل مدوّر أو مقلوب بين نجوم كثيرة: تدوير ذهني وإدراك بصري.',how:['اقرأ اللوح.','صِل النجوم.','طابق الكوكبة.'],run:runZStars},
+ {id:'pz_zthrone',maxLv:8,col:['#3E6F62','#C9962E'],name:'عرش المحيط',lab:'Circular seating',cat:'log',why:'ترتيب دائري بأدلة (يقابل، يجاور، يلي): استنتاج منطقي في الحلقة.',how:['اقرأ نقوش العرش.','ضع الأدوات في الفتحات.','افتح العرش.'],run:runZThrone}];
+PZ_Z3.forEach(g=>{Object.assign(g,{puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g;PZ_Z.push(g)});TV_PUZ.unshift(...PZ_Z3.map(g=>g.id));
+Object.assign(I,{pz_znim:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M8 40h8V24H8zM20 40h8V14h-8zM32 40h8V30h-8z"/></svg>',pz_zstars:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M8 34L20 14l14 10 8-14" fill="none" stroke="#0A0E1C" stroke-width="2.4"/><circle cx="8" cy="34" r="3.4"/><circle cx="20" cy="14" r="3.4"/><circle cx="34" cy="24" r="3.4"/><circle cx="42" cy="10" r="3.4"/></svg>',pz_zthrone:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M16 40V20q0-10 8-10t8 10v20z"/><circle cx="24" cy="24" r="20" fill="none" stroke="#0A0E1C" stroke-width="2.4" stroke-dasharray="4 5"/></svg>'});
+Object.assign(ART_FN,{pz_znim:B=>{B.bg('#3A2E28',.4);[[120,200],[210,190],[300,205]].forEach(([x,y])=>B.wc(B.ell(x,y,34,20),'#C2703E',{a:.7}));B.wc(B.ell(210,90,70,30),'#A9563E',{a:.6});B.frame()},pz_zstars:B=>{B.bg('#1E2A44',.6);[[80,80],[150,60],[230,110],[300,70],[200,200]].forEach(([x,y])=>B.wc(B.ell(x,y,5,5),ARTC.gold,{a:.9}));B.ink([[80,80],[150,60],[230,110],[300,70]],{w:1.4,a:.6});B.frame()},pz_zthrone:B=>{B.bg('#3E6F62',.4);B.wc(B.rect(170,90,80,140),ARTC.gold,{a:.7});B.wc(B.ell(210,160,140,120),'#5FA89A',{a:.25});B.frame()}});
 /* ================= v29: kids — exit to main profile, owl mascot, richer animation, 4 new games ================= */
 const KSTAR='<svg viewBox="0 0 24 24" class="kst"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" stroke="#2B2520" stroke-width="1.4" stroke-linejoin="round"/></svg>';
 const OWL=`<svg viewBox="0 0 64 64" class="owl"><g class="owlb"><g class="owlw l"><path d="M14 34q-9 10-3 22q6-3 9-13z" fill="#7A5A3E" ${RK}/></g><g class="owlw r"><path d="M50 34q9 10 3 22q-6-3-9-13z" fill="#7A5A3E" ${RK}/></g>
