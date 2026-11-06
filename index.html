@@ -1866,6 +1866,23 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 .arlt{overflow:visible}.arlt table{table-layout:fixed;font-size:9.5px}.arlt th,.arlt td{padding:3px 1px;word-break:break-word}.arlt tbody th{white-space:normal;font-size:9.5px}.arlt thead th{font-size:10px}.arlu button{font-size:9.5px;min-height:40px}
 #afin .go-btn{--c:#9B6A2A;--c2:#C8A24A;color:#FFF8E2}
 
+/* v48: العوالم السرية */
+.afx{z-index:3}.atwaf{cursor:pointer}
+.aswm{position:absolute;width:20px;height:20px;padding:0;border:0;background:none;z-index:5;transform:translate(-50%,-50%)}.aswm svg{width:100%;height:100%;display:block;filter:drop-shadow(0 0 4px rgba(242,197,83,.9))}.aswm.new{animation:aswp 1.6s ease-in-out infinite}
+@keyframes aswp{50%{transform:translate(-50%,-50%) scale(1.25)}}
+.wbch{display:flex;align-items:center;gap:4px;margin:8px 0;padding:6px;border-radius:10px;background:rgba(58,38,22,.08)}.wbend{display:flex;flex-direction:column;align-items:center;font:700 10px Tajawal;color:#3A2616;flex:none}.wbend svg{width:20px;height:20px}
+.wbc{flex:1;display:flex;flex-wrap:wrap;gap:2px;min-height:30px;align-items:center;justify-content:center}.wbc small{font:600 10.5px Tajawal;color:#8E7B60}
+.wbb{display:inline-flex;align-items:center}.wbb i{width:18px;height:18px;display:block}.wbb i svg{width:100%;height:100%}.wbb em{width:18px;height:7px;background:#EDE6D6;border:1.2px solid #3A2616;border-radius:3px;margin:0 -2px}
+.wbt{display:flex;flex-wrap:wrap;justify-content:center;gap:6px;margin:6px 0}.wbt button{padding:5px 6px;border-radius:10px;border:1.4px solid #3A2616;background:#F6E9C6}.wbt button.used{opacity:.3}
+.wspr{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:3px;margin:4px 0;padding:4px;border-radius:8px;background:#1E2A20}.wspr i,.wspr button{aspect-ratio:1;border-radius:50%;background:#2E3A2A;border:1px solid #4D5A40;padding:0}.wspr .on{background:#C9E28E;box-shadow:0 0 8px #C9E28E}
+.wspr.tg{outline:2px dashed #C8A24A}.wspr.last{outline:2px solid #9B2B1F}
+.wlgp{display:grid;gap:6px;margin:8px 0}.wlgp button{position:relative;text-align:start;padding:8px 10px 8px 36px;border-radius:10px;border:1.4px solid rgba(58,38,22,.45);background:#F6EBD0;color:#3A2616}.wlgp p{margin:0;font:700 12.5px Tajawal}.wlgp small{display:block;margin-top:3px;font:600 11px/1.5 Tajawal;opacity:.8}
+.wlgp b{position:absolute;left:8px;top:50%;transform:translateY(-50%);width:22px;height:22px;border-radius:50%;font:700 12px/22px Tajawal;text-align:center;background:rgba(58,38,22,.12)}.wlgp button.set b{background:#9B2B1F;color:#FFF8E2}
+.wlkw{display:flex;justify-content:center}.wlkr{width:150px;height:auto;border-radius:8px;border:1.4px solid #3A2616}
+.wlkc{display:grid;grid-template-columns:repeat(auto-fill,minmax(88px,1fr));gap:8px;margin:6px 0}.wlkc button{padding:3px;border-radius:9px;border:1.4px solid #3A2616;background:none}.wlks{width:100%;height:auto;display:block;border-radius:6px}.wlkc button.sel{outline:2.6px solid #F2C553}
+.wfiwrap{width:min(80%,260px);margin:6px auto}.wfiw{width:100%;height:auto;display:block}
+.wfib{display:flex;flex-wrap:wrap;justify-content:center;gap:6px 12px;font:700 12px Tajawal;color:#3A2616}.wfib button{width:34px;height:34px;margin:0 2px;border-radius:9px;border:1.4px solid #3A2616;background:#3A2616;color:#F4E9CC;font:700 18px Tajawal}
+
 </style>
 
 
@@ -7584,6 +7601,158 @@ const PZ_A5=[
 PZ_A5.forEach(g=>{Object.assign(g,{puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g});TV_PUZ.unshift(...PZ_A5.map(g=>g.id));
 Object.assign(I,{pz_arelic:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><rect x="6" y="6" width="36" height="36"/><path d="M6 18h36M6 30h36M18 6v36"/></svg>',pz_aheart:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M24 44L6 22l8-12h20l8 12z"/></svg>'});
 Object.assign(ART_FN,Object.fromEntries(PZ_A5.map((g,k)=>[g.id,B=>{B.bg('#EFE2C2',.35);B.wc(B.ell(200,160,110,70),g.col[0],{a:.42});B.wc(B.ell(150,120,50,40),g.col[1],{a:.5});B.frame()}])));
+/* ================= v48: أثران — الدفعة السادسة: العوالم الخمسة السرية ================= */
+let aHour=()=>new Date().getHours();
+const ASW=[
+ {k:'bones',id:'pz_wbone',n:'وادي الهياكل العملاقة',x:232,y:150,how:'تبعت آثار الطوّاف على الخريطة.',
+  cond:a=>a.done.pz_agiant,trig:'twaf',story:'تبعنا آثار الطوّاف حتى وادٍ لا يظهر في أي خريطة. هياكل عظمية بحجم الجبال، مبعثرة كأن أحدًا رتبها ثم نسي. عظامها مفاصل محفورة بأشكال؛ كل مفصل يدخل في مثله.',
+  end:'حين اكتمل الهيكل عرفنا شكله: طوّاف. لكنه أكبر بمرتين. هذا الوادي مقبرة أجداده، يأتي إليها كل طوّاف حين يشيخ.',enc:'oldtwaf'},
+ {k:'spores',id:'pz_wspore',n:'حديقة الأبواغ المضيئة',x:300,y:336,how:'نظرت إلى الأطلس في الليل.',
+  cond:a=>a.done.pz_acity&&(aHour()>=19||aHour()<5),trig:'mark',story:'في الليل فقط يظهر توهج خلف المدينة الحية. حديقة كاملة من الأبواغ تتكلم بالضوء: كل بوغة تضيء إذا أضاء جار واحد فقط من جاريها.',
+  end:'ردّت الحديقة على رسالتنا بموجة ضوء عبرتها كلها، ثم سكتت. ليان قالت إنها أجمل جملة سمعتها في حياتها، ولم تفهم منها كلمة.',enc:'spore'},
+ {k:'ship',id:'pz_wlog',n:'السفينة التي لم تُبحر',x:44,y:168,how:'جمعت كل آثار بعثة الجذر.',
+  cond:a=>(a.tr||[]).length>=ATR.length,trig:'mark',story:'في تجويف صخري قرب الساحل سفينة كاملة، لم تلمس الماء أبدًا. بنتها بعثة الجذر لترجع إلى البيت. صفحات سجلها مبعثرة، وكل صفحة مؤرخة بطريقة مختلفة.',
+  end:'آخر صفحة بخط سلمى: «أكملنا السفينة اليوم. وقفنا حولها طويلًا… ثم قررنا أن نتركها هنا. البيت صار هنا». تحتها توقيع الأربعة، واسم عيسى مشطوب بلطف، ومكتوب جنبه: «هو سيبحر عنا».'},
+ {k:'lake',id:'pz_wlake',n:'بحيرة السماء الصافية',x:322,y:82,how:'راقبت الماء الصافي حتى النهاية بلا أي خطأ.',
+  cond:a=>(a.stars||{}).pz_asilent===3,trig:'mark',story:'بحيرة أصفى من الهواء. النجوم فيها مقلوبة، والريح تزيح صورتها قليلًا، وبعض النجوم لا تنعكس. أي كوكبة في السماء هي هذه في الماء؟',
+  end:'كل كوكبة في البحيرة تشير إلى مكان في القارة. أهل الأثر الأول لم يرسموا خرائط على الورق؛ رسموها في الماء، حيث تتغير مع الفصول مثل الأرض.',enc:'reflbird'},
+ {k:'first',id:'pz_wfirst',n:'موطن الأثر الأول',x:282,y:244,how:'وجدت العوالم السرية الأربعة الأخرى.',
+  cond:a=>['bones','spores','ship','lake'].every(k=>(a.swd||{})[k]),trig:'mark',story:'في أعمق نقطة من القلب، عجلة حجرية بحلقات تدور. على كل حلقة رموز من العوالم التي زرناها. أهل الأثر الأول تركوها لمن يفهم الدورات.',
+  end:'حين استقرت الحلقات انفتح تحت العجلة كتاب حجري واحد. لم يكن فيه تاريخ ولا أسماء ملوك. كان فيه رسم واحد: ملوك سبعة يجلسون حول هذه العجلة يتعلمون. الملوك لم يحكموا القارة؛ كانوا تلاميذها. وبنوا القصر ليحفظوا ما تعلموه، لا ليمتلكوه.'}];
+AENC.push(
+ {k:'oldtwaf',n:'الطوّاف القديم',ty:'أثر',s:ASK('<path d="M6 50l8-26M20 50l2-28M58 50l-2-28M72 50l-8-26M10 26q14-20 30-20t30 20" fill="none" stroke="#K" stroke-width="1.4"/>'+[16,26,36,46,56,64].map(x=>`<path d="M${x} 24v-6" stroke="#K" stroke-width="1"/>`).join('')),d:'أجداد الطوّاف كانوا أكبر منه بمرتين. هياكلهم في وادٍ واحد، وكل طوّاف يعود إليه حين يشيخ. ربما لهذا يمشي دائمًا في الطريق نفسه.'},
+ {k:'spore',n:'الأبواغ المضيئة',ty:'نظام حي',s:ASK([...Array(12)].map((_,i)=>`<circle cx="${10+i*5.5}" cy="${30+Math.sin(i)*10}" r="2.6" fill="${i%3?'#C9E28E':'#5E8A4E'}"/>`).join('')),d:'تتكلم بالضوء بقاعدة بسيطة: تضيء البوغة إذا أضاء جار واحد فقط من جاريها. بهذه القاعدة وحدها تصنع موجات وأشكالًا لا تتكرر.'},
+ {k:'reflbird',n:'طائر الانعكاس',ty:'مخلوق طائر',s:ASK('<path d="M10 24q14-12 30 0q16-12 30 0" fill="none" stroke="#K" stroke-width="1.6"/><path d="M10 40q14 12 30 0q16 12 30 0" fill="none" stroke="#9CC8DC" stroke-width="1.6"/><path d="M0 32h80" stroke="#5E7F8E" stroke-width=".6"/>'),d:'لا يطير إلا فوق البحيرة الصافية، ولا يُرى إلا انعكاسه. يقول البحارة إن من يرى الطائر نفسه لا ينعكس في الماء.'});
+function aSwState(){const a=aState();a.sw=a.sw||{};a.swd=a.swd||{};return a}
+function aSwOpen(k){const W=ASW.find(w=>w.k===k),a=aSwState();if(!a.sw[k]){a.sw[k]=1;S.save()}const m=zModal(`<h3 class="xvh">${W.n}</h3><p class="zwhy"><b>كيف وجدته:</b> ${W.how}</p><p class="zstory">${W.story}</p>${a.swd[k]?`<p class="zstory"><b>ما عرفناه:</b> ${W.end}</p>`:''}<button class="go-btn" data-play="${W.id}" style="--c:#5E8A4E;--c2:#C8A24A">${a.swd[k]?'العب مرة أخرى':'ادخل'}</button>`,340+ASW.indexOf(W));
+ m.querySelector('[data-play]').onclick=()=>{m.remove();startRun([W.id])}}
+function aSwWin(api,k,msg){const a=aSwState(),W=ASW.find(w=>w.k===k);const first=!a.swd[k];a.swd[k]=1;if(W.enc){a.enc=a.enc||[];if(!a.enc.includes(W.enc))a.enc.push(W.enc)}S.save();api.win(msg+(first?' '+W.end:''))}
+function aSwList(){const a=aSwState();zModal(`<h3 class="xvh">العوالم السرية</h3><p class="zwhy">لا تظهر في الخريطة. تجدها بالملاحظة والفضول.</p><div class="ares">${ASW.map(W=>`<div class="${a.sw[W.k]?'':'no'}" ${a.sw[W.k]?`data-sw="${W.k}"`:''}><b>${a.sw[W.k]?W.n+(a.swd[W.k]?' (حُلّ)':''):'عالم لم يُكتشف'}</b><small>${a.sw[W.k]?W.how:'…'}</small></div>`).join('')}</div>`,350).querySelectorAll('[data-sw]').forEach(e=>e.onclick=()=>{e.closest('.xvaultm').remove();aSwOpen(e.dataset.sw)})}
+{const _ah=aHubHTML;aHubHTML=function(){const a=aSwState(),open=aOpen();let h=_ah();if(!open)return h;
+  const marks=ASW.map(W=>{const vis=a.sw[W.k]||(W.trig==='mark'&&W.cond(a));return vis?`<button class="aswm ${a.swd[W.k]?'done':''} ${a.sw[W.k]?'':'new'}" data-swm="${W.k}" style="left:${W.x/3.6}%;top:${W.y/4.3}%" aria-label="${W.n}"><svg viewBox="0 0 20 20"><path d="M10 1l2.4 6.2 6.6.4-5.1 4.2 1.7 6.4L10 14.6 4.4 18.2l1.7-6.4L1 7.6l6.6-.4z" fill="${a.swd[W.k]?'#C8A24A':'#F4E9CC'}" stroke="#3A2616" stroke-width="1"/></svg></button>`:''}).join('');
+  const n=Object.keys(a.sw).length;h=h.replace('<div class="afx">',`${marks}<div class="afx">`);
+  return h.replace('<div class="abtns">',`<div class="abtns"><button class="xvault" id="aswl">العوالم السرية <b>${XAR(n)}</b>/${XAR(ASW.length)}</button>`)}}
+{const _tb=txBind;txBind=function(){_tb();const v=$('#v-puz');if(!v)return;v.querySelectorAll('[data-swm]').forEach(b=>b.onclick=e=>{e.stopPropagation();aSwOpen(b.dataset.swm)});const l=v.querySelector('#aswl');if(l)l.onclick=aSwList;
+  const tw=v.querySelector('.atwaf');if(tw){tw.style.pointerEvents='auto';tw.onclick=e=>{e.stopPropagation();const a=aSwState(),W=ASW[0];if(W.cond(a))aSwOpen('bones');else zModal('<h3 class="xvh">الطوّاف</h3><p class="zstory">يمشي ببطء، ولا يلتفت. آثاره تمتد إلى مكان لا نعرفه بعد… ربما حين نفهم عادات العمالقة نفهم طريقه.</p>',360)}}}}
+
+/* ================= secret 1: وادي الهياكل — rebuild the skeleton: every joint fits only its own shape ================= */
+const WBO_J=['M10 4a6 6 0 1 1 0 12a6 6 0 1 1 0-12z','M4 4h12v12H4z','M10 3l7 13H3z','M10 2l2.4 5.4 5.6.4-4.3 3.6 1.4 5.6L10 14l-5.1 3 1.4-5.6L2 7.8l5.6-.4z','M10 2l8 8-8 8-8-8z','M3 10h14M10 3v14'];
+const WBO_LV=[[4,0],[5,0],[5,0],[6,1],[6,1],[7,1],[8,1],[9,1]];
+function wboMake(lv){const[nb,extra]=WBO_LV[lv-1];for(let t=0;t<400;t++){const J=[...Array(nb+1)].map(()=>rnd(6));const bones=[...Array(nb)].map((_,i)=>[J[i],J[i+1]]);if(new Set(bones.map(b=>b.slice().sort().join())).size<nb)continue;
+  const all=bones.slice();if(extra){let e;let k=0;do e=[rnd(6),rnd(6)];while((bones.some(b=>b.slice().sort().join()===e.slice().sort().join()))&&k++<20);all.push(e)}
+  let cnt=0;const used=Array(all.length).fill(0);const rec=(j,d)=>{if(cnt>1)return;if(d===nb){if(j===J[nb])cnt++;return}for(let i=0;i<all.length;i++){if(used[i])continue;const b=all[i];let nx=-1;if(b[0]===j)nx=b[1];else if(b[1]===j)nx=b[0];if(nx<0)continue;used[i]=1;rec(nx,d+1);used[i]=0;if(b[0]===j&&b[1]===j)break}};rec(J[0],0);
+  if(cnt!==1)continue;const order=shuffle([...Array(all.length).keys()]);return{nb,J,all,order,extra:extra?nb:-1}}return wboMake(Math.max(1,lv-1))}
+function runWBone(){return pzPlay('pz_wbone',api=>{
+  const P=wboMake(api.lv),u=[];let miss=0,busy=false;const jg=k=>`<svg viewBox="0 0 20 20"><path d="${WBO_J[k]}" fill="#EDE6D6" stroke="#3A2616" stroke-width="1.4" stroke-linejoin="round"/></svg>`;
+  const bone=(i,fl)=>{const b=P.all[i],[l,r]=fl?[b[1],b[0]]:b;return`<span class="wbb"><i>${jg(l)}</i><em></em><i>${jg(r)}</i></span>`};
+  api.body.innerHTML=xSheet(`${xHead('','وادي الهياكل')}<ol class="xnote"><li>كل عظمة لها مفصلان. العظمة التالية تبدأ بالمفصل الذي انتهت به السابقة.</li><li>ابدأ من الجمجمة وانتهِ بالذيل، واستعمل كل العظام${P.extra>=0?'، إلا عظمة واحدة غريبة ليست من هذا الهيكل':''}.</li></ol>
+   <div class="wbch ltr"><span class="wbend">الجمجمة ${jg(P.J[0])}</span><div id="wbc" class="wbc"></div><span class="wbend">${jg(P.J[P.nb])} الذيل</span></div>
+   <div class="wbt" id="wbt">${P.order.map(i=>`<button data-i="${i}">${bone(i)}</button>`).join('')}</div>
+   <div class="xkbtns"><button class="go-btn xsm alt2" id="wbz">فك الهيكل</button><button class="go-btn xsm" id="wbgo">ركّب</button></div>`,900,721);
+  const chain=()=>{let j=P.J[0];return u.map(i=>{const b=P.all[i],fl=b[0]!==j&&b[1]===j;j=fl?b[0]:b[1];return[i,fl]})};
+  const draw=()=>{$('#wbc').innerHTML=chain().map(([i,fl])=>bone(i,fl)).join('')||'<small>اضغط العظام بالترتيب…</small>';api.body.querySelectorAll('[data-i]').forEach(b=>b.classList.toggle('used',u.includes(+b.dataset.i)))};
+  api.body.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{if(api.ended||busy)return;const i=+b.dataset.i;if(u.includes(i)){u.splice(u.indexOf(i));draw();return}let j=P.J[0];chain().forEach(([q,fl])=>{const bb=P.all[q];j=fl?bb[0]:bb[1]});const bb=P.all[i];if(bb[0]!==j&&bb[1]!==j){tone(140,.06);api.msg('هذا المفصل لا يدخل في السابق.');return}u.push(i);tone(260+u.length*30,.06);draw()});
+  $('#wbz').onclick=()=>{if(api.ended||busy)return;u.length=0;draw()};
+  function check(){if(api.ended||busy)return;let j=P.J[0];chain().forEach(([q,fl])=>{const bb=P.all[q];j=fl?bb[0]:bb[1]});if(u.length===P.nb&&j===P.J[P.nb]){busy=true;sfx.lvl();later(()=>aSwWin(api,'bones','اكتمل الهيكل.'),600);return}
+    miss++;api.wrong();if(miss>=3){busy=true;api.over('الهيكل بقي ناقصًا.');return}api.msg(u.length<P.nb?'الهيكل ناقص.':'الذيل لا يدخل في آخر مفصل.')}
+  $('#wbgo').onclick=check;draw();api.msg('ركّب الهيكل.');
+  const solve=()=>{const used=Array(P.all.length).fill(0),out=[];const rec=(j,d)=>{if(d===P.nb)return j===P.J[P.nb];for(let i=0;i<P.all.length;i++){if(used[i])continue;const b=P.all[i];const nx=b[0]===j?b[1]:b[1]===j?b[0]:-1;if(nx<0)continue;used[i]=1;out.push(i);if(rec(nx,d+1))return true;out.pop();used[i]=0}return false};rec(P.J[0],0);return out};
+  pzHook({P,set:()=>{u.length=0;u.push(...solve());draw()},check});
+  return{hint:k=>{if(k===1)return'ابحث عن المفاصل التي تظهر مرة واحدة فقط: هي غالبًا عند الطرفين أو في العظمة الغريبة.';const s=solve();if(u.length<s.length&&u.every((v,q)=>v===s[q])){u.push(s[u.length]);draw();return'أضفت لك العظمة التالية.'}u.length=0;u.push(s[0]);draw();return'بدأت لك من الجمجمة.'},reveal:()=>{u.length=0;u.push(...solve());draw();return'هذا الهيكل.'}}})}
+
+/* ================= secret 2: حديقة الأبواغ — light spreads by a one-neighbour rule; which spores to touch? ================= */
+const WSP_LV=[[7,1,1],[7,2,1],[9,2,1],[9,2,2],[9,3,2],[11,3,2],[11,3,2],[13,3,2]];
+const wspStep=a=>a.map((_,i)=>((a[i-1]||0)^(a[i+1]||0)));
+const wspRun=(a,s)=>{const rows=[a];for(let k=0;k<s;k++)rows.push(wspStep(rows[rows.length-1]));return rows};
+function wspMake(lv){const[n,s,nt]=WSP_LV[lv-1];for(let t=0;t<300;t++){const pick_=shuffle([...Array(n).keys()]).slice(0,nt);const a0=Array(n).fill(0);pick_.forEach(i=>a0[i]=1);const tg=wspRun(a0,s)[s];if(tg.every(v=>!v))continue;
+  let cnt=0;const combos=[];const rec=(st,arr)=>{if(arr.length===nt){const b=Array(n).fill(0);arr.forEach(i=>b[i]=1);if(wspRun(b,s)[s].join()===tg.join())cnt++;return}for(let i=st;i<n;i++){arr.push(i);rec(i+1,arr);arr.pop()}};rec(0,[]);if(cnt!==1)continue;return{n,s,nt,a0,tg}}return wspMake(Math.max(1,lv-1))}
+function runWSpore(){return pzPlay('pz_wspore',api=>{
+  const P=wspMake(api.lv),n=P.n,u=Array(n).fill(0);let miss=0,busy=false;
+  const row=(a,cls='')=>`<div class="wspr ${cls}" style="--n:${n}">${a.map(v=>`<i class="${v?'on':''}"></i>`).join('')}</div>`;
+  api.body.innerHTML=xSheet(`${xHead('','حديقة الأبواغ')}<ol class="xnote"><li>في كل نبضة: تضيء البوغة إذا كان جار واحد فقط من جاريها مضيئًا، وتنطفئ في غير ذلك.</li><li>المس ${arN(P.nt,AN.spore||['بوغة واحدة','بوغتين','بوغات','بوغة'])} حتى يصير شكل الحديقة بعد ${arN(P.s,AN.pulse||['نبضة واحدة','نبضتين','نبضات','نبضة'])} مثل رسالتهم.</li></ol>
+   <b class="abrt">رسالة الحديقة</b>${row(P.tg,'tg')}<b class="abrt">ما تلمسه الآن</b><div class="wspr ltr in" style="--n:${n}">${u.map((_,i)=>`<button data-i="${i}"></button>`).join('')}</div><div id="wspo"></div>
+   <div class="xkbtns"><button class="go-btn xsm" id="wspgo">أرسل الضوء</button></div>`,880,731);
+  const draw=()=>api.body.querySelectorAll('[data-i]').forEach(b=>b.classList.toggle('on',!!u[+b.dataset.i]));
+  api.body.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{if(api.ended||busy)return;const i=+b.dataset.i;if(!u[i]&&u.filter(Boolean).length>=P.nt){api.msg(`تكفي ${arN(P.nt,AN.spore||['بوغة واحدة','بوغتين','بوغات','بوغة'])}.`);return}u[i]^=1;tone(u[i]?660:330,.05);draw()});
+  function go(){if(api.ended||busy)return;if(u.filter(Boolean).length!==P.nt){api.msg(`المس ${arN(P.nt,AN.spore||['بوغة واحدة','بوغتين','بوغات','بوغة'])} بالضبط.`);return}const rows=wspRun(u.slice(),P.s);$('#wspo').innerHTML=rows.slice(1).map((r,k)=>row(r,k===rows.length-2?'last':'')).join('');
+    if(rows[P.s].join()===P.tg.join()){busy=true;sfx.lvl();later(()=>aSwWin(api,'spores','ردّت الحديقة.'),700);return}miss++;api.wrong();if(miss>=3){busy=true;api.over('سكتت الحديقة.');return}api.msg('هذه ليست رسالتهم. انظر كيف انتشر ضوؤك.')}
+  $('#wspgo').onclick=go;draw();api.msg('المس الأبواغ.');pzHook({P,set:()=>{P.a0.forEach((v,i)=>u[i]=v);draw()},go});
+  return{hint:k=>{if(k===1)return'ارجع خطوة: البوغة المضيئة في الرسالة يكون أحد جاريها فقط مضيئًا قبلها بنبضة.';const i=P.a0.findIndex((v,j)=>v&&!u[j]);if(i<0)return null;u.fill(0);u[i]=1;draw();return'لمست لك إحداها.'},reveal:()=>{P.a0.forEach((v,i)=>u[i]=v);draw();return'هذه.'}}})}
+Object.assign(AN,{spore:['بوغة واحدة','بوغتين','بوغات','بوغة'],pulse:['نبضة واحدة','نبضتين','نبضات','نبضة']});
+
+/* ================= secret 3: السفينة التي لم تُبحر — order log pages dated in four different calendars ================= */
+const WLG_LV=[[4,2],[4,3],[5,3],[5,4],[6,4],[6,4],[7,4],[7,4]];
+function wlgMake(lv){const[k,nf]=WLG_LV[lv-1];const Y0=388,M0=5+rnd(4),MIG=4,SPR=3;for(let t=0;t<300;t++){const ts=new Set();while(ts.size<k)ts.add(Y0*12+M0+1+rnd(60));const T=[...ts].sort((a,b)=>a-b);
+  const fmt=T.map(abs=>{const opts=[0];if(nf>1)opts.push(1);const y=Math.floor(abs/12),m=abs%12;if(nf>2&&m===MIG)opts.push(2);if(nf>3&&m===SPR)opts.push(3);return pick(opts)});
+  const pages=T.map((abs,i)=>{const y=Math.floor(abs/12),m=abs%12;const f=fmt[i];if(f===0)return{abs,txt:`سنة ${XAR(y)} من تقويم الملوك، الشهر ${XAR(m+1)}.`};if(f===1)return{abs,txt:`القمر ${XAR(abs-(Y0*12+M0))} بعد وصولنا.`};
+    if(f===2){const r=Math.floor((abs-(Y0*12+MIG))/12)+(M0<=MIG?1:0);return{abs,txt:`في الهجرة رقم ${XAR(r)} للحيتان المضيئة منذ وصلنا.`}}const s=Math.floor((abs-(Y0*12+SPR))/12)+(M0<=SPR?1:0);return{abs,txt:`في الربيع رقم ${XAR(s)} منذ وصلنا.`}});
+  if(new Set(pages.map(p=>p.txt)).size<k)continue;return{k,Y0,M0,MIG,SPR,pages,order:shuffle([...Array(k).keys()])}}return wlgMake(Math.max(1,lv-1))}
+const WLG_LINE=['حمدان: «الهيكل اكتمل. يعقوب يقول إنه سيعدّ ألواحه أولًا».','سلمى: «رسمت الشراع اليوم. لونته بلون الأبواغ في الليل».','عيسى: «أمي ستعرفني من بعيد. ما زلت أذكر نافذتها».','يعقوب: «كل شيء جاهز… إلا نحن».','سلمى: «جلسنا حول السفينة حتى الفجر. لم يقل أحد: لنبحر».','حمدان: «طبخت للفوانيس الليلة. صاروا يعرفون رائحة قدري».','عيسى: «سأبحر وحدي بالقارب الصغير. هم سيبقون، وأنا سأخبر أمي».'];
+function runWLog(){return pzPlay('pz_wlog',api=>{
+  const P=wlgMake(api.lv),u=[];let miss=0,busy=false;
+  api.body.innerHTML=xSheet(`${xHead('','السفينة التي لم تُبحر')}<ol class="xnote"><li>رتّب صفحات السجل من الأقدم إلى الأحدث.</li></ol>
+   <div class="aclues"><b>ما نعرفه</b><ol><li>وصلت البعثة في الشهر ${XAR(P.M0+1)} من سنة ${XAR(P.Y0)} من تقويم الملوك. «القمر الأول» = الشهر الذي بعده.</li><li>الحيتان المضيئة تهاجر كل سنة في الشهر ${XAR(P.MIG+1)}، والربيع يبدأ في الشهر ${XAR(P.SPR+1)}.</li><li>السنة اثنا عشر شهرًا.</li></ol></div>
+   <div class="wlgp">${P.order.map(i=>`<button data-i="${i}"><p>${P.pages[i].txt}</p><small>${WLG_LINE[i%WLG_LINE.length]}</small><b></b></button>`).join('')}</div>
+   <div class="xkbtns"><button class="go-btn xsm alt2" id="wlgz">امسح</button><button class="go-btn xsm" id="wlggo">ثبّت الترتيب</button></div>`,920,741);
+  const draw=()=>api.body.querySelectorAll('[data-i]').forEach(b=>{const q=u.indexOf(+b.dataset.i);b.querySelector('b').textContent=q>=0?XAR(q+1):'';b.classList.toggle('set',q>=0)});
+  api.body.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{if(api.ended||busy)return;const i=+b.dataset.i;if(u.includes(i))u.splice(u.indexOf(i),1);else u.push(i);tone(400+u.length*30,.04);draw()});
+  $('#wlgz').onclick=()=>{if(api.ended||busy)return;u.length=0;draw()};
+  function check(){if(api.ended||busy)return;if(u.length<P.k){api.msg('رتّب كل الصفحات.');return}if(u.every((v,q)=>v===q)){busy=true;sfx.lvl();later(()=>aSwWin(api,'ship','عاد السجل إلى ترتيبه.'),500);return}
+    miss++;api.wrong();if(miss>=3){busy=true;u.length=0;P.pages.forEach((_,i)=>u.push(i));draw();api.over('هذا الترتيب.');return}api.msg(`أول خطأ عند الصفحة رقم ${XAR(u.findIndex((v,q)=>v!==q)+1)}.`)}
+  $('#wlggo').onclick=check;draw();api.msg('حوّل كل تاريخ إلى شهر وسنة.');pzHook({P,set:()=>{u.length=0;P.pages.forEach((_,i)=>u.push(i));draw()},check});
+  return{hint:k=>{if(k===1)return'حوّل كل صفحة إلى «سنة وشهر» من تقويم الملوك، ثم رتّب.';const q=u.findIndex((v,i)=>v!==i);const n=q<0?u.length:q;if(n>=P.k)return null;u.length=n;u.push(n);draw();return'وضعت لك الصفحة التالية.'},reveal:()=>{u.length=0;P.pages.forEach((_,i)=>u.push(i));draw();return'هذا الترتيب.'}}})}
+
+/* ================= secret 4: بحيرة السماء — which constellation is this upside-down, wind-shifted reflection? ================= */
+const WLK_LV=[[3,5,0,0],[3,5,1,0],[4,6,1,0],[4,6,1,1],[4,7,1,1],[5,7,1,1],[5,7,1,1],[5,8,1,1]];
+const wlkNorm=pts=>{const mx=Math.min(...pts.map(p=>p[0])),my=Math.min(...pts.map(p=>p[1]));return pts.map(p=>[p[0]-mx,p[1]-my]).map(p=>p.join()).sort().join('|')};
+function wlkMake(lv){const[no,ns,shift,miss]=WLK_LV[lv-1];for(let t=0;t<300;t++){const mk=()=>{const s=new Set();while(s.size<ns)s.add(rnd(6)+','+rnd(5));return[...s].map(v=>v.split(',').map(Number))};
+  const truth=mk();const opts=[truth];opts.push(truth.map(([x,y])=>[x,4-y]));opts.push(truth.map(([x,y])=>[5-x,y]));while(opts.length<no)opts.push(mk());
+  const keys=opts.map(wlkNorm);if(new Set(keys).size<no)continue;
+  let refl=truth.map(([x,y])=>[x,4-y]);const dx=shift?pick([-1,1]):0;refl=refl.map(([x,y])=>[x+dx,y]);let hide=-1;if(miss){hide=rnd(ns)}const shown=refl.filter((_,i)=>i!==hide);
+  const matches=opts.filter(o=>{const r=o.map(([x,y])=>[x,4-y]);const rk=r.map(p=>p.join());const sh=shown;for(let ox=-6;ox<=6;ox++)for(let oy=-5;oy<=5;oy++){const S2=new Set(r.map(([x,y])=>(x+ox)+','+(y+oy)));if(sh.every(([x,y])=>S2.has(x+','+y))&&sh.length>=r.length-(miss?1:0))return true}return false});
+  if(matches.length!==1||matches[0]!==truth)continue;const order=shuffle([...Array(no).keys()]);return{opts:order.map(i=>opts[i]),ans:order.indexOf(0),shown,miss}}return wlkMake(Math.max(1,lv-1))}
+function runWLake(){return pzPlay('pz_wlake',api=>{
+  const P=wlkMake(api.lv);let sel=-1,miss=0,busy=false;
+  const sky=(pts,cls)=>`<svg viewBox="-1 -1 8 7" class="${cls}"><rect x="-1" y="-1" width="8" height="7" fill="${cls==='wlkr'?'#3D6E80':'#1E2A44'}"/>${pts.map(([x,y])=>`<circle cx="${x+.5}" cy="${y+.5}" r=".28" fill="#F2E7B8"/>`).join('')}</svg>`;
+  api.body.innerHTML=xSheet(`${xHead('','بحيرة السماء الصافية')}<ol class="xnote"><li>الماء يقلب النجوم من فوق إلى تحت.</li>${P.shift?'<li>الريح تزيح الصورة كلها قليلًا يمينًا أو يسارًا.</li>':''}${P.miss?'<li>نجمة واحدة لا تنعكس.</li>':''}<li>أي كوكبة في السماء هي التي في الماء؟</li></ol>
+   <b class="abrt">في الماء</b><div class="wlkw">${sky(P.shown,'wlkr')}</div><b class="abrt">في السماء</b><div class="wlkc">${P.opts.map((o,i)=>`<button data-i="${i}">${sky(o,'wlks')}</button>`).join('')}</div>
+   <div class="xkbtns"><button class="go-btn xsm" id="wlkgo">هذه</button></div>`,920,751);
+  const draw=()=>api.body.querySelectorAll('[data-i]').forEach(b=>b.classList.toggle('sel',+b.dataset.i===sel));
+  api.body.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{if(api.ended||busy)return;sel=+b.dataset.i;tone(520,.05);draw()});
+  function check(){if(api.ended||busy||sel<0)return;if(sel===P.ans){busy=true;sfx.lvl();later(()=>aSwWin(api,'lake','عرفت الكوكبة.'),500);return}miss++;api.wrong();if(miss>=2){busy=true;sel=P.ans;draw();api.over('كانت هذه.');return}api.msg('انعكاس هذه لا يطابق. تذكّر: الماء يقلب من فوق لتحت فقط.')}
+  $('#wlkgo').onclick=check;draw();api.msg('قارن.');pzHook({P,pick:i=>{sel=i;draw()},check});
+  return{hint:k=>k===1?'اقلب صورة الماء في ذهنك من فوق لتحت، ثم قارن المسافات بين النجوم، لا مكانها.':`ليست الكوكبة رقم ${XAR(((P.ans+1)%P.opts.length)+1)}.`,reveal:()=>{sel=P.ans;draw();return'هذه.'}}})}
+
+/* ================= secret 5: موطن الأثر الأول — turn the rings of the cycle wheel ================= */
+const WFI_S=['bones','spores','ship','lake','sun','moon','wave','root'];
+const WFI_G={bones:'M4 10h12M6 6l-2 4 2 4M14 6l2 4-2 4',spores:'M6 10a2 2 0 1 0 .1 0M14 7a2 2 0 1 0 .1 0M12 14a2 2 0 1 0 .1 0',ship:'M3 12h14l-3 4H6zM10 3v9l5-4',lake:'M3 9q3-3 7 0t7 0M3 13q3-3 7 0t7 0',sun:'M10 6a4 4 0 1 0 .1 0M10 1v3M10 16v3M1 10h3M16 10h3',moon:'M13 3a7 7 0 1 0 4 11a6 6 0 0 1-4-11z',wave:'M2 12q4-6 8 0t8 0',root:'M10 2v8M10 10l-5 7M10 10l5 7M10 14v4'};
+const WFI_N={bones:'العظام',spores:'الأبواغ',ship:'السفينة',lake:'البحيرة',sun:'الشمس',moon:'القمر',wave:'الموجة',root:'الجذر'};
+const WFI_LV=[[2,6],[3,6],[3,6],[3,8],[4,6],[4,8],[4,8],[4,8]];
+function wfiMake(lv){const[nr,ns]=WFI_LV[lv-1];const rings=[...Array(nr)].map(()=>shuffle(WFI_S.slice()).slice(0,ns));const rot=rings.map(()=>rnd(ns));const at=(r,p)=>rings[r][(p+rot[r])%ns];
+  const clues=[`في الأعلى، في الحلقة الخارجية: ${WFI_N[at(0,0)]}.`];for(let r=1;r<nr;r++){const p=rnd(ns);clues.push(`${WFI_N[at(r,p)]} من الحلقة ${XAR(r+1)} يقع عند ${WFI_N[at(r-1,p)]} من الحلقة ${XAR(r)}.`)}
+  return{nr,ns,rings,rot,clues}}
+function runWFirst(){return pzPlay('pz_wfirst',api=>{
+  const P=wfiMake(api.lv),u=P.rings.map(()=>0);let miss=0,busy=false;const R0=118;
+  const draw=()=>{let s=`<svg viewBox="0 0 260 260" class="wfiw"><circle cx="130" cy="130" r="126" fill="#5E5754" stroke="#3A2616" stroke-width="2"/>`;P.rings.forEach((rg,r)=>{const ro=R0-r*26,ri=ro-24;s+=`<circle cx="130" cy="130" r="${ro}" fill="${r%2?'#8E8576':'#B3ADA2'}" stroke="#3A2616"/>`;rg.forEach((sy,p)=>{const a=((p-u[r]+P.ns)%P.ns)/P.ns*Math.PI*2-Math.PI/2,rr=(ro+ri)/2,x=130+Math.cos(a)*rr,y=130+Math.sin(a)*rr;s+=`<g transform="translate(${x-9} ${y-9}) scale(.9)"><path d="${WFI_G[sy]}" fill="none" stroke="#2A2220" stroke-width="1.8" stroke-linecap="round"/></g>`})});
+   s+=`<circle cx="130" cy="130" r="${R0-P.nr*26}" fill="#C8A24A" stroke="#3A2616"/><path d="M130 0l-7 12h14z" fill="#9B2B1F"/></svg>`;$('#wfiw').innerHTML=s};
+  api.body.innerHTML=xSheet(`${xHead('','موطن الأثر الأول')}<ol class="xnote"><li>أدر الحلقات حتى تتحقق كل النقوش. «عند» = في الاتجاه نفسه من المركز.</li></ol><div class="aclues"><b>النقوش</b><ol>${P.clues.map(c=>`<li>${c}</li>`).join('')}</ol></div>
+   <div id="wfiw" class="wfiwrap"></div><div class="wfib">${P.rings.map((_,r)=>`<span>الحلقة ${XAR(r+1)} <button data-r="${r}" data-d="-1">‹</button><button data-r="${r}" data-d="1">›</button></span>`).join('')}</div>
+   <div class="xkbtns"><button class="go-btn xsm" id="wfigo">ثبّت العجلة</button></div>`,940,761);
+  api.body.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{if(api.ended||busy)return;const r=+b.dataset.r;u[r]=(u[r]+ +b.dataset.d+P.ns)%P.ns;tone(200+r*80,.06);draw()});
+  function check(){if(api.ended||busy)return;if(u.every((v,r)=>v===P.rot[r])){busy=true;sfx.lvl();later(()=>aSwWin(api,'first','استقرت العجلة.'),700);return}miss++;api.wrong();if(miss>=3){busy=true;P.rot.forEach((v,r)=>u[r]=v);draw();api.over('هكذا تستقر.');return}api.msg(`${arN(u.filter((v,r)=>v!==P.rot[r]).length,AN.ring||['حلقة واحدة','حلقتان','حلقات','حلقة'])} في غير مكانها.`)}
+  $('#wfigo').onclick=check;draw();api.msg('أدر الحلقات.');pzHook({P,set:()=>{P.rot.forEach((v,r)=>u[r]=v);draw()},check});
+  return{hint:k=>{if(k===1)return'ابدأ بالحلقة الخارجية: النقش الأول يحدد مكانها وحدها. ثم كل حلقة تُضبط على التي قبلها.';const r=u.findIndex((v,q)=>v!==P.rot[q]);if(r<0)return null;u[r]=P.rot[r];draw();return`ضبطت لك الحلقة ${XAR(r+1)}.`},reveal:()=>{P.rot.forEach((v,r)=>u[r]=v);draw();return'هكذا.'}}})}
+Object.assign(AN,{ring:['حلقة واحدة','حلقتان','حلقات','حلقة']});
+
+const PZ_W=[
+ {id:'pz_wbone',maxLv:8,col:['#EDE6D6','#3A2616'],name:'وادي الهياكل',lab:'Bone chain',cat:'log',why:'بناء سلسلة من قطع لكل منها طرفان، مع استبعاد القطعة الغريبة: تخطيط مسار يستعمل كل الحواف.',how:['طابق المفاصل.','ابدأ من الجمجمة.','انتهِ بالذيل.'],run:runWBone},
+ {id:'pz_wspore',maxLv:8,col:['#1E2A20','#C9E28E'],name:'حديقة الأبواغ',lab:'Spore rule',cat:'log',why:'قاعدة محلية بسيطة تصنع أنماطًا معقدة: تتنبأ بالانتشار وتعمل بالعكس لمعرفة البداية.',how:['افهم القاعدة.','المس الأبواغ.','أرسل الضوء.'],run:runWSpore},
+ {id:'pz_wlog',maxLv:8,col:['#6E4320','#EBD7A9'],name:'السفينة التي لم تُبحر',lab:'Calendars',cat:'log',why:'تحويل تواريخ بأنظمة مختلفة إلى نظام واحد ثم الترتيب: مرونة ذهنية وحساب دقيق.',how:['حوّل كل تاريخ.','رتّب.','ثبّت.'],run:runWLog},
+ {id:'pz_wlake',maxLv:8,col:['#1E2A44','#F2E7B8'],name:'بحيرة السماء',lab:'Reflections',cat:'spa',why:'تعرّف على شكل بعد انعكاس وإزاحة ونقص: تمييز الانعكاس الصحيح من الخاطئ.',how:['اقلب الصورة.','قارن المسافات.','اختر.'],run:runWLake},
+ {id:'pz_wfirst',maxLv:8,col:['#5E5754','#C8A24A'],name:'موطن الأثر الأول',lab:'Cycle wheel',cat:'spa',why:'ضبط حلقات متداخلة بقيود نسبية: كل حلقة تُفهم من التي قبلها.',how:['اقرأ النقوش.','أدر الحلقات.','ثبّت العجلة.'],run:runWFirst}];
+PZ_W.forEach(g=>{Object.assign(g,{puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g});TV_PUZ.unshift(...PZ_W.map(g=>g.id));
+Object.assign(I,{pz_wbone:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><path d="M8 24h32M10 18l-4 6 4 6M38 18l4 6-4 6"/></svg>',pz_wspore:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><circle cx="10" cy="24" r="4"/><circle cx="24" cy="16" r="4"/><circle cx="38" cy="24" r="4"/><circle cx="24" cy="34" r="4"/></svg>',pz_wlog:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><path d="M10 6h22l6 6v30H10z"/><path d="M16 18h16M16 26h16M16 34h10"/></svg>',pz_wlake:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><circle cx="14" cy="10" r="3"/><circle cx="30" cy="14" r="3"/><path d="M4 24h40" stroke="#0A0E1C" stroke-width="2"/><circle cx="14" cy="38" r="3" opacity=".5"/><circle cx="30" cy="34" r="3" opacity=".5"/></svg>',pz_wfirst:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><circle cx="24" cy="24" r="20"/><circle cx="24" cy="24" r="12"/><circle cx="24" cy="24" r="4" fill="#0A0E1C"/></svg>'});
+Object.assign(ART_FN,Object.fromEntries(PZ_W.map((g,k)=>[g.id,B=>{B.bg('#EFE2C2',.35);B.wc(B.ell(200,160,110,70),g.col[0],{a:.42});B.wc(B.ell(150,120,50,40),g.col[1],{a:.5});B.frame()}])));
 /* ================= v29: kids — exit to main profile, owl mascot, richer animation, 4 new games ================= */
 const KSTAR='<svg viewBox="0 0 24 24" class="kst"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" stroke="#2B2520" stroke-width="1.4" stroke-linejoin="round"/></svg>';
 const OWL=`<svg viewBox="0 0 64 64" class="owl"><g class="owlb"><g class="owlw l"><path d="M14 34q-9 10-3 22q6-3 9-13z" fill="#7A5A3E" ${RK}/></g><g class="owlw r"><path d="M50 34q9 10 3 22q-6-3-9-13z" fill="#7A5A3E" ${RK}/></g>
