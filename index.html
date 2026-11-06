@@ -1798,6 +1798,24 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 .xm3.wide>.xpin{padding:calc(max(9%,32px) + 34px) calc(9% + 26px) calc(max(5%,16px) + 62px)}
 .xm3 .xpin>h3{justify-content:center;text-align:center}.xm3 .xpin>h3>svg{display:none}
 
+/* v44: خريطتا القصر والأطلس */
+.pfx,.afx{position:absolute;inset:0;pointer-events:none;z-index:1;overflow:hidden}
+.pcand{position:absolute;width:7px;height:11px;margin:-11px 0 0 -3px;border-radius:50% 50% 40% 40%;background:radial-gradient(circle at 50% 70%,#FFF3B0,#F2A93B 60%,rgba(242,169,59,0) 72%);animation:pflick 1.3s ease-in-out infinite alternate;transform-origin:50% 100%}
+.pcand::after{content:'';position:absolute;left:1px;top:10px;width:5px;height:9px;background:#EDE3CF;border:1px solid #3A2616;border-radius:1px}
+.pcand:nth-child(2n){animation-duration:.9s}.pcand:nth-child(3n){animation-duration:1.7s}
+@keyframes pflick{0%{transform:scale(1,1);opacity:.85}50%{transform:scale(.85,1.12);opacity:1}100%{transform:scale(1.05,.92);opacity:.8}}
+.pguard{position:absolute;width:12px;height:18px;left:34%;top:57%;animation:pgwalk 16s linear infinite}.pguard svg{width:100%;height:100%;display:block}
+@keyframes pgwalk{0%{transform:translate(0,0)}25%{transform:translate(1500%,0)}50%{transform:translate(1500%,-900%)}75%{transform:translate(0,-900%)}100%{transform:translate(0,0)}}
+.pteam{position:absolute;width:18px;height:24px;margin:-46px 0 0 -9px;z-index:4;animation:pbob 1.4s ease-in-out infinite alternate}.pteam svg{width:100%;height:100%;display:block;filter:drop-shadow(0 2px 2px rgba(0,0,0,.35))}
+@keyframes pbob{to{transform:translateY(-4px)}}
+.preg.done i{filter:drop-shadow(0 0 5px rgba(242,197,83,.85))}
+.afog{position:absolute;border-radius:50%;background:radial-gradient(closest-side,rgba(250,246,236,.85),rgba(250,246,236,.5) 60%,rgba(250,246,236,0));animation:afog 9s ease-in-out infinite alternate}
+@keyframes afog{0%{transform:translateX(-6%) scale(1)}100%{transform:translateX(6%) scale(1.08)}}
+.aship{position:absolute;left:3%;top:47%;width:9%;animation:pbob 2.2s ease-in-out infinite alternate}.aship svg{width:100%;height:auto;display:block}
+.atwaf{position:absolute;left:4%;top:68%;width:13%;opacity:.7;animation:atw 40s linear infinite}.atwaf svg{width:100%;height:auto;display:block}
+@keyframes atw{0%{transform:translate(0,0)}50%{transform:translate(0,-220%)}50.01%{transform:translate(0,-220%) scaleX(-1)}100%{transform:translate(0,0) scaleX(-1)}}
+.anote{position:absolute;width:16px;height:20px;padding:0;border:0;background:none;z-index:4;transform:translate(-50%,-50%) rotate(-8deg)}.anote svg{width:100%;height:100%;display:block;filter:drop-shadow(0 1px 1px rgba(0,0,0,.3))}
+
 </style>
 
 
@@ -7049,6 +7067,59 @@ function xm3Mount(root,id){root.querySelectorAll('.xsheet.xm3').forEach(sh=>{if(
 {const _pp=pzPlay;pzPlay=function(id,build){return _pp(id,api=>{const r=build(api);try{xm3Mount(api.body,id)}catch(e){}return r})}}
 /* restart redraws the body: re-mount after any later re-render too */
 {const MO=window.MutationObserver?new MutationObserver(ms=>{for(const m of ms)m.addedNodes.forEach(n=>{if(n.nodeType===1&&n.classList&&n.classList.contains('xm3')&&!n.dataset.m3){n.dataset.m3=1;let id='';try{id=RUN&&RUN.queue?RUN.queue[RUN.pos]:''}catch(e){}xm3Mount(n.parentElement||n,id)}})}):null;if(MO){const st=document.getElementById('stage');if(st)MO.observe(st,{childList:true,subtree:true})}}
+/* ================= v44: خريطتا القصر والأطلس — رسومات وحركة ================= */
+/* ---------- palace: a small room drawing under each wing, candles, a patrolling guard, the team marker ---------- */
+const PROOM=(()=>{const c=PBL,L=`fill="none" stroke="${c}" stroke-width="1.3" stroke-linecap="round" stroke-linejoin="round"`;return[
+ `<path d="M6 34V16q14-14 28 0v18M12 34V20q8-8 16 0v14M4 34h32" ${L}/>`,
+ `<path d="M10 34V22h6v12M24 34V22h6v12M13 22v-6a3 3 0 1 1 0-1M27 22v-6a3 3 0 1 1 0-1" ${L}/><circle cx="13" cy="12" r="3" ${L}/><circle cx="27" cy="12" r="3" ${L}/>`,
+ `<path d="M12 36V10l8-6 8 6v26z" ${L}/><circle cx="20" cy="18" r="5" ${L}/><path d="M20 18v-3M20 18h2" ${L}/>`,
+ `<path d="M10 22q0-14 10-14t10 14v8H10zM14 22h12M20 8v-4" ${L}/>`,
+ `<path d="M4 34h32M6 34V8h28v26M6 16h28M6 25h28" ${L}/>${[9,13,17,22,27].map(x=>`<path d="M${x} 15V10M${x+1} 24v-6" ${L}/>`).join('')}`,
+ `<path d="M8 34V10q6-6 12 0v24M22 34V12q5-5 10 0v22" ${L}/><path d="M11 14l6 8M25 16l4 6" ${L}/>`,
+ `<path d="M20 36V20M20 22q-10-2-10-10q8 0 10 8q2-10 10-10q0 10-10 12" ${L}/><path d="M6 36q4-6 8 0M26 36q4-6 8 0" ${L}/>`,
+ `<path d="M8 28l4-14 8 8 8-8 4 14z" ${L}/><path d="M8 32h24" ${L}/>`,
+ `<path d="M20 6l12 4v10q0 10-12 14Q8 30 8 20V10z" ${L}/><path d="M12 30l16-20M28 30L12 10" ${L}/>`,
+ `<path d="M6 8h28v26H6z" ${L}/>${[11,16,21,26,31].map(x=>`<path d="M${x} 8v26" ${L}/>`).join('')}`,
+ `<path d="M8 30l18-14 4 6-18 12zM14 26l-4 10M18 24l6 12M26 16l6-6" ${L}/><circle cx="30" cy="8" r="2" ${L}/>`,
+ `<circle cx="20" cy="20" r="8" ${L}/><circle cx="20" cy="20" r="3" ${L}/>${[0,1,2,3,4,5,6,7].map(k=>{const a=k*Math.PI/4;return`<path d="M${(20+8*Math.cos(a)).toFixed(1)} ${(20+8*Math.sin(a)).toFixed(1)}L${(20+12*Math.cos(a)).toFixed(1)} ${(20+12*Math.sin(a)).toFixed(1)}" ${L}/>`}).join('')}`,
+ `<path d="M6 6h28v28H6zM6 16h18v8M16 6v10M34 24H24v10M16 34v-6" ${L}/>`,
+ `<path d="M8 34V16q12-10 24 0v18zM14 20h12M14 26h12" ${L}/>`,
+ `<path d="M4 16q4-4 8 0t8 0 8 0 8 0M4 24q4-4 8 0t8 0 8 0 8 0M8 34h24M12 34v-6M28 34v-6" ${L}/>`,
+ `<path d="M10 34V20q0-10 10-10t10 10v14M14 20h12M8 34h24" ${L}/>${[0,1,2].map(k=>`<ellipse cx="${13+k*7}" cy="30" rx="3" ry="2" ${L}/>`).join('')}`,
+ `<path d="M6 26q4-14 16-14q8 0 12 6l-6 2 4 6q-8 2-12-2q-4 6-14 2z" ${L}/><circle cx="26" cy="16" r="1" fill="${c}"/>`,
+ `<path d="M12 34V14l8-8 8 8v20M8 34h24M16 14h8M14 22h12" ${L}/>`,
+ `<path d="M20 34L8 18l6-8h12l6 8z" ${L}/><path d="M8 18h24M14 10l6 24 6-24" ${L}/>`]})();
+{const _h=pHubHTML;pHubHTML=function(){let h=_h();const a=pState(),open=pOpen();if(!open)return h;
+  const rooms=PW.map((w,i)=>`<g transform="translate(${w.x-28} ${w.y-34}) scale(1.4)" opacity="${i<=a.prog?.85:.3}">${PROOM[i]||''}</g>`).join('');
+  const cur=PW[Math.min(a.prog,PW.length-1)];
+  const fx=`<div class="pfx"><i class="pcand" style="left:13%;top:68%"></i><i class="pcand" style="left:85%;top:68%"></i><i class="pcand" style="left:13%;top:44%"></i><i class="pcand" style="left:85%;top:44%"></i><i class="pcand" style="left:30%;top:16%"></i><i class="pcand" style="left:70%;top:16%"></i>
+   <div class="pguard"><svg viewBox="0 0 20 30"><circle cx="10" cy="6" r="4" fill="#2D4A7A"/><path d="M4 28V14q0-4 6-4t6 4v14z" fill="#2D4A7A"/><path d="M17 4v24" stroke="#B8902E" stroke-width="1.6"/></svg></div>
+   ${a.prog<PW.length?`<div class="pteam" style="left:${cur.x/3.6}%;top:${cur.y/4.8}%"><svg viewBox="0 0 24 30"><path d="M12 29q-10-12-10-18a10 10 0 0 1 20 0q0 6-10 18z" fill="#9B2B1F" stroke="#3A2616" stroke-width="1.2"/><circle cx="12" cy="11" r="4" fill="#F4E9CC"/></svg></div>`:''}</div>`;
+  return h.replace('<svg class="xmapo" viewBox="0 0 360 480">',`<svg class="xmapo" viewBox="0 0 360 480"><g class="prooms">${rooms}</g>`).replace(/(<div class="xmapw zmapw">)/,'$1'+fx)}}
+
+/* ---------- atlas: terrain drawn as regions are discovered, routes between solved stations, fog, the wanderer, the ship, Layan's notes ---------- */
+const ATER=[
+ (g,s)=>`${[0,1,2].map(k=>`<path d="M${g.x-12+k*10} ${g.y+18+k*8}q4-6 8 0" fill="none" stroke="#3A2616" stroke-width="1"/>`).join('')}<path d="M${g.x-6} ${g.y-30}l10 6-2 8h-10z" fill="#6E4320" opacity=".8"/>`,
+ (g)=>[[-30,-6],[-16,-18],[0,-10],[16,-20],[30,-4],[-22,10],[8,8],[24,14]].map(([dx,dy])=>`<path d="M${g.x+dx} ${g.y+dy+10}v-6" stroke="#3A2616" stroke-width="1.2"/><circle cx="${g.x+dx}" cy="${g.y+dy}" r="7" fill="#4D7A3A" stroke="#2E4D22" stroke-width=".8"/>`).join(''),
+ (g)=>[[-32,4],[-10,-12],[14,6],[30,-8]].map(([dx,dy])=>`<path d="M${g.x+dx-14} ${g.y+dy+8}l10-14 6 6 4-4 8 12z" fill="#2B2B33" stroke="#9CC8DC" stroke-width=".7"/>`).join(''),
+ (g)=>[[-34,6],[-14,-4],[6,4],[26,-6]].map(([dx,dy])=>`<path d="M${g.x+dx-12} ${g.y+dy+10}l12-20 12 20z" fill="#B3A3C9" stroke="#3A2616" stroke-width=".9"/><path d="M${g.x+dx-4} ${g.y+dy-4}l4-6 4 6" fill="#F4E9CC"/>`).join(''),
+ (g)=>`${[[-22,8],[16,-10]].map(([dx,dy])=>`<path d="M${g.x+dx-18} ${g.y+dy+6}q18-26 36 0z" fill="#7FA34F" stroke="#3A2616" stroke-width="1"/><path d="M${g.x+dx-6} ${g.y+dy-6}l-2-6M${g.x+dx+4} ${g.y+dy-8}l2-6" stroke="#4D7A3A" stroke-width="1.4"/>`).join('')}`,
+ (g)=>[[-18,-10],[10,4],[-6,16]].map(([dx,dy])=>`<path d="M${g.x+dx-14} ${g.y+dy}q4-10 12-6q6-8 14 0q8 0 6 6z" fill="#F4F6F6" stroke="#5E7F8E" stroke-width=".9"/>`).join(''),
+ (g)=>[[-20,0],[0,-12],[18,6],[-4,16]].map(([dx,dy])=>`<path d="M${g.x+dx-3} ${g.y+dy+10}v-16h6v16z" fill="#8A6F5A" stroke="#3A2616" stroke-width=".8"/><circle cx="${g.x+dx}" cy="${g.y+dy-8}" r="1.6" fill="#F2C553"/>`).join(''),
+ (g)=>`${[0,1,2].map(k=>`<path d="M${g.x-40+k*10} ${g.y-6+k*8}q10-6 20 0t20 0" fill="none" stroke="#F4E9CC" stroke-width="1.2"/>`).join('')}<path d="M${g.x+8} ${g.y+4}q12-10 24 0q-12 6-24 0z" fill="#9CC8DC" stroke="#F4E9CC" stroke-width=".8"/>`,
+ (g)=>`<circle cx="${g.x}" cy="${g.y}" r="10" fill="#F2C553" stroke="#3A2616" stroke-width="1"/>`];
+const ANOTE=['«الساحل أطول مما رسمه أي أحد. وكل مد يغيّر مكانه قليلًا».','«الأشجار هنا أعلى من الصواري. رسمتها أقصر حتى تدخل الصفحة… وهذا كذب صغير».','«ليست بحيرة. كتبت الكلمة الصحيحة، وتركت الخطأ القديم مشطوبًا حتى نتذكر».','«الصوت هنا يرجع بعد وقت. ما أعرف كيف أرسم الوقت».','«التلال تتنفس».','«بحر فوق الأرض. سأرسمه بالرصاص فقط».','«الأشجار ميتة، والضوء في داخلها حي».','«لا شاطئ آخر في الأفق. تركت الطرف مفتوحًا».','«هذا المكان لا أريد أن أرسمه».'];
+{const _ov=aAtlasOverlay;aAtlasOverlay=function(a){const base=_ov(a);let t='';AREG.forEach((g,i)=>{const v=a.atlas[i]||0;if(v>=2&&ATER[i])t+=`<g opacity="${v===3?.9:.35}">${ATER[i](g)}</g>`});
+  const pts=[[24,226]].concat(ASTN.filter(s=>s.reg!=null&&a.done[s.id]).map(s=>[s.x,s.y]));let route='';if(pts.length>1)route=`<path d="M${pts.map(p=>p.join(' ')).join('L')}" fill="none" stroke="#9B2B1F" stroke-width="1.4" stroke-dasharray="1 5" stroke-linecap="round"/>`;
+  const rivers=(a.atlas[1]===3?`<path d="M150 160q-10 30 6 60t-10 70" fill="none" stroke="#5F8E86" stroke-width="2" opacity=".7"/>`:'')+(a.atlas[0]===3?`<path d="M96 200q-14 10-30 6" fill="none" stroke="#5F8E86" stroke-width="1.6" opacity=".7"/>`:'');
+  return rivers+t+route+base}}
+{const _ah=aHubHTML;aHubHTML=function(){let h=_ah();const a=aState(),open=aOpen();if(!open)return h;
+  const fog=AREG.map((g,i)=>(a.atlas[i]||0)?'':`<i class="afog" style="left:${(g.x-g.rx)/3.6}%;top:${(g.y-g.ry)/4.3}%;width:${g.rx*2/3.6}%;height:${g.ry*2/4.3}%;animation-delay:-${i*1.7}s"></i>`).join('');
+  const notes=AREG.map((g,i)=>(a.atlas[i]||0)===3?`<button class="anote" data-an="${i}" style="left:${(g.x+g.rx*.6)/3.6}%;top:${(g.y-g.ry*.7)/4.3}%" aria-label="ملاحظة ليان"><svg viewBox="0 0 16 20"><path d="M2 2h12v16l-6-4-6 4z" fill="#F4E9CC" stroke="#3A2616" stroke-width="1.2"/><path d="M5 7h6M5 10h4" stroke="#9B2B1F" stroke-width="1"/></svg></button>`:'').join('');
+  const ship=`<div class="aship"><svg viewBox="0 0 30 24"><path d="M3 16h24l-4 6H7z" fill="#6E4320" stroke="#3A2616"/><path d="M15 2v14M15 3l9 9h-9M15 5l-7 7h7" fill="#F4E9CC" stroke="#3A2616" stroke-width=".8"/></svg></div>`;
+  const tw=(a.enc||[]).includes('twaf')?`<div class="atwaf">${AENC.find(e=>e.k==='twaf').s}</div>`:'';
+  return h.replace('<div class="xmapw amapw">',`<div class="xmapw amapw"><div class="afx">${fog}${ship}${tw}</div>${notes}`)}}
+{const _tb=txBind;txBind=function(){_tb();const v=$('#v-puz');if(!v)return;v.querySelectorAll('[data-an]').forEach(b=>b.onclick=e=>{e.stopPropagation();const i=+b.dataset.an;zModal(`<h3 class="xvh">ملاحظة ليان</h3><div class="ascl"><i>${XS_.mapgirl}</i><div><b>${AREG[i].n}</b><p>${ANOTE[i]}</p></div></div>`,300+i)})}}
 /* ================= v29: kids — exit to main profile, owl mascot, richer animation, 4 new games ================= */
 const KSTAR='<svg viewBox="0 0 24 24" class="kst"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" stroke="#2B2520" stroke-width="1.4" stroke-linejoin="round"/></svg>';
 const OWL=`<svg viewBox="0 0 64 64" class="owl"><g class="owlb"><g class="owlw l"><path d="M14 34q-9 10-3 22q6-3 9-13z" fill="#7A5A3E" ${RK}/></g><g class="owlw r"><path d="M50 34q9 10 3 22q-6-3-9-13z" fill="#7A5A3E" ${RK}/></g>
