@@ -1684,6 +1684,22 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 @media(max-width:380px){.pvc{width:40px}.pvt{width:34px;height:100px}.pvv{width:24px;height:24px}}
 .pcrleft i{font-style:normal;display:inline-block;min-width:1.2em;text-align:center}
 
+/* v40: نجوم القصر، العلامات السرية، صوت الأجنحة */
+.psec{position:absolute;width:20px;height:20px;padding:0;border:0;background:none;opacity:.3;z-index:5;transform:translate(-50%,-50%)}
+.psec svg{width:100%;height:100%;display:block}.psec.found{opacity:.75}.psec.found path{fill:#C8A24A}
+.psecg{display:grid;grid-template-columns:repeat(3,1fr);gap:10px;width:min(78%,230px);margin:10px auto}
+.psecg button{aspect-ratio:1;padding:8px;border-radius:50%;border:1.6px solid rgba(58,38,22,.4);background:rgba(255,248,226,.6);transition:transform .15s,box-shadow .15s}
+.psecg button i{display:block;width:100%;height:100%}.psecg button i svg{width:100%;height:100%}
+.psecg button.lit{transform:scale(1.1);box-shadow:0 0 0 4px #C8A24A,0 0 18px rgba(200,162,74,.8);background:#F6E7B8}
+.psecl{margin:10px auto;padding:12px;border:1.6px dashed #9B6A2A;border-radius:10px;background:rgba(255,248,226,.6);text-align:center;color:#3A2616}
+.psecl b{font:700 15px 'Aref Ruqaa',serif;color:#9B2B1F}.psecl p{font:600 13.5px/1.7 Tajawal;margin:6px 0 0}
+.zreg .pst{display:block;margin-top:1px;line-height:0}.pstar{width:36px;height:12px;display:inline-block;vertical-align:middle}
+.pstat .pstar{width:13px;height:13px}.pstat{font:700 11px Tajawal;color:#3A2616;display:inline-flex;align-items:center;gap:3px}
+.zreg .psecd{position:absolute;top:-2px;right:22px;width:7px;height:7px;border-radius:50%;background:#C8A24A;border:1px solid #3A2616}
+.pamb{opacity:.65}.pamb.on{opacity:1}
+.preg i{width:26px;height:26px}.preg span{font-size:9px}
+.zreg .pst{position:absolute;top:17px;left:50%;transform:translateX(-50%);margin:0}.zreg .pst .pstar{width:30px;height:10px;filter:drop-shadow(0 0 1px #F0E0B6)}
+
 </style>
 
 
@@ -3247,7 +3263,7 @@ function pzPlay(id,build){return done=>{
     const hTxt=kid?'':won?(hints?` استخدمت ${arN(hints,AN.hint)}.`:' بدون أي تلميح!'):'';
     if(won){sfx.win();$('#pzb').classList.add('solved');pzStamp(kid?'أحسنت!':'محلول!')}
     later(()=>done({pts:won?pts:0,metric:won?clamp(1000-hints*150-wrongs*100,250,1000):0,detail:(detail||'')+hTxt+lvTxt}),won?1500:300)};
-  const api={lv,kid,id,body:$('#pzb'),msg:h=>{const m=$('#m');if(m)m.innerHTML=h},get ended(){return ended},
+  const api={lv,kid,id,body:$('#pzb'),msg:h=>{const m=$('#m');if(m)m.innerHTML=h},get ended(){return ended},get hints(){return hints},get wrongs(){return wrongs},
     wrong(){if(ended)return;wrongs++;sfx.bad();if(!kid)setP(pts-Math.round(base*.1))},
     win(detail){if(!ended)fin(true,detail)},over(detail){if(!ended)fin(false,detail)}};
   const mount=()=>{const R=Math.random;Math.random=seeded(seed);try{P=build(api)||{}}finally{Math.random=R}};
@@ -6456,6 +6472,78 @@ const PZ_P2=[
 PZ_P2.forEach(g=>{Object.assign(g,{puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g});TV_PUZ.unshift(...PZ_P2.map(g=>g.id));
 Object.assign(I,{pz_pdragon:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M6 30q14-20 36-10q-10 2-12 10q10-2 14 6q-18-6-38-6z"/></svg>',pz_phall:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M6 36l-2-22 8 7 6-12 6 12 6-12 6 12 8-7-2 22z"/></svg>',pz_pheart:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><path d="M24 6v34M10 40h28M6 16h36M6 16l-4 10h8zM42 16l-4 10h8z"/></svg>'});
 Object.assign(ART_FN,Object.fromEntries(PZ_P2.map((g,k)=>[g.id,B=>{B.bg(['#3A2E28','#2D2244','#1E2A44'][k],.5);B.wc(B.ell(210,150,90,60),g.col[0],{a:.6});B.wc(B.ell(210,150,40,30),g.col[1],{a:.7});B.frame()}])));
+/* ================= v40: إضافات القصر — صوت الأجنحة، الأسرار، النجوم ================= */
+[[180,450],[70,404],[290,404],[180,358],[60,312],[180,312],[300,312],[180,266],[60,220],[180,220],[300,220],[180,174],[60,128],[180,128],[300,128],[180,82],[60,82],[300,82],[180,36]].forEach(([x,y],i)=>{if(PW[i])Object.assign(PW[i],{x,y})});
+const pIdx=id=>PW.findIndex(w=>w.id===id);
+function pSt2(){const a=pState();a.stars=a.stars||{};a.sec=a.sec||{};if(a.amb==null)a.amb=1;return a}
+const pStarSVG=(n,m=3)=>`<svg class="pstar" viewBox="0 0 ${m*14} 14">${[...Array(m)].map((_,k)=>`<path transform="translate(${k*14} 0)" d="M7 1l1.8 3.9 4.2.5-3.1 2.9.8 4.2L7 10.4 3.3 12.5l.8-4.2L1 5.4l4.2-.5z" fill="${k<n?'#C8A24A':'none'}" stroke="#3A2616" stroke-width=".9" stroke-linejoin="round"/>`).join('')}</svg>`;
+
+/* ---------- stars: one for the win, one with no hints, one with no mistakes ---------- */
+{const _w=pWin;pWin=function(api,id,msg){const n=1+(api.hints===0?1:0)+(api.wrongs===0?1:0),a=pSt2(),old=a.stars[id]||0;if(pIdx(id)>=0&&n>old){a.stars[id]=n;S.save()}
+  return _w(api,id,msg+` نجومك: ${XAR(n)} من ${XAR(3)}${n>old&&old?' (رقم جديد)':''}.`)}}
+
+/* ---------- ambient sound per wing: a slow drone and a sparse melody in the wing's own mode ---------- */
+const PMODE=[[0,2,3,5,7,8,10],[0,1,4,5,7,8,10],[0,2,4,5,7,9,11],[0,2,3,5,7,9,10],[0,1,3,5,7,8,10],[0,2,4,7,9],[0,3,5,7,10]];
+const PAMB=PW.map((w,i)=>({root:w.boss?98:[110,123.47,130.81,146.83,116.54,103.83][i%6],mode:PMODE[w.boss?1:i%PMODE.length],gap:w.boss?900:[620,700,560,760,660][i%5],type:i%3===2?'triangle':'sine'}));
+let pAmbT=null;
+function pAmbStop(){if(pAmbT){clearInterval(pAmbT);pAmbT=null}}
+function pAmbStart(id){pAmbStop();const i=pIdx(id);if(i<0||!pSt2().amb||S.st.mute)return;const A=PAMB[i]||PAMB[0];let k=0,last=0;
+  const f=st=>A.root*2**(st/12);
+  pAmbT=setInterval(()=>{if(!$('#pzb')||document.hidden){return}if(k%8===0)tone(f(0),2.6,'sine',.018);if(k%8===4)tone(f(A.mode[4%A.mode.length]),2.2,'sine',.012);
+    if(Math.random()<.55){last=clamp(last+pick([-2,-1,1,1,2]),0,A.mode.length*2-1);const st=A.mode[last%A.mode.length]+12*(1+Math.floor(last/A.mode.length));tone(f(st),.9,A.type,.014)}k++},A.gap);
+  cleanup.push(pAmbStop)}
+
+/* ---------- secret mark in every wing: a sequence of royal seals to remember ---------- */
+const PSEC_LORE=[
+ 'خريطة على ظهر البوابة ترسم ساحلًا لا يوجد في أي خريطة أخرى.',
+ 'أحد التماثيل كان يشير طوال الوقت إلى الغرب… إلى ما وراء الأفق.',
+ 'ساعة ثامنة مخفية في البرج: لا تقيس الوقت، بل تقيس المد في بحر لا نعرفه.',
+ 'الحارس كتب في دفتره: «عادوا بعد سبع سنوات، وقالوا إنها كانت سبعة أيام».',
+ 'صفحة ممزقة: «القارة لا تظهر بالشكل نفسه مرتين».',
+ 'في المرآة الأخيرة انعكس جبل ليس خلفك.',
+ 'نبتة في الحديقة تدير أوراقها نحو شمس لم تشرق بعد.',
+ 'الملكة تركت سؤالًا: «لماذا بنى الملوك قصرًا للخرائط وهم لا يحبون الإبحار؟»',
+ 'بين الأدوات بوصلة لا تشير إلى الشمال أبدًا.',
+ 'على جدار الزنزانة نقش لسفينة رست في وسط المحيط… على أرض.',
+ 'نجمة في خريطة المرصد لا تظهر في سمائنا.',
+ 'المهندس صنع ترسًا يدور بعكس الزمن، وكتب تحته: «للعودة».',
+ 'المتاهة نسخة مصغرة من وادٍ لم يره أحد من أهل هذا العالم.',
+ 'في السرداب اسم ثامن محفور ثم ممسوح.',
+ 'الماء في الأساسات مالح بطعم بحر غير بحارنا.',
+ 'السجين الأخير همس: «الملوك السبعة لم يحكموا… كانوا يحرسون بابًا».',
+ 'حراشف تنين عليها خريطة ساحل طويل جدًا.',
+ 'العرش الثامن الفارغ مكتوب عليه: «لمن يعود من أَثْرَان».',
+ 'تحت القلب الأخير خريطة نصفها مرسوم ونصفها فارغ، وكُتب على الفارغ: «من هنا يبدأ العالم».'];
+const PSGP=['M10 4v12M4 10h12','M5 5l10 10M15 5L5 15','M10 3l7 13H3z','M4 4h12v12H4z','M10 3a7 7 0 1 0 .1 0','M3 10q3.5-7 7 0t7 0','M10 3l2 5h5l-4 3 2 5-5-3-5 3 2-5-4-3h5z','M4 16V4l6 6 6-6v12','M3 6h14M3 10h14M3 14h14'];
+const PSG=k=>`<svg viewBox="0 0 20 20"><circle cx="10" cy="10" r="9.2" fill="#E9D9AE" stroke="#9B6A2A" stroke-width=".8"/><path d="${PSGP[k]}" fill="none" stroke="#3A2616" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" transform="translate(2 2) scale(.8)"/></svg>`;
+function pSecPlay(id){const i=pIdx(id),a=pSt2(),len=Math.min(8,3+Math.floor(i/3)),G9=[...Array(9).keys()];let seq=[],at=0,busy=true,tries=0;
+  const m=zModal(`<h3 class="xvh">العلامة السرية</h3><p class="zwhy">راقب ترتيب إضاءة الأختام، ثم اضغطها بالترتيب نفسه (${arN(len,AN.mv)}).</p><div class="psecg ltr">${G9.map(k=>`<button data-k="${k}"><i>${PSG(k)}</i></button>`).join('')}</div><p class="zwhy" id="psm"></p>`,190+i);
+  const bs=[...m.querySelectorAll('[data-k]')],say=t=>{const e=m.querySelector('#psm');if(e)e.textContent=t};
+  const flash=(k,on)=>bs[k].classList.toggle('lit',on);
+  function show(){busy=true;at=0;seq=[...Array(len)].map(()=>rnd(9));for(let r=1;r<len;r++)while(seq[r]===seq[r-1])seq[r]=rnd(9);say('راقب…');
+    seq.forEach((k,j)=>{setTimeout(()=>{if(!m.isConnected)return;flash(k,1);tone(392+k*44,.18)},500+j*650);setTimeout(()=>m.isConnected&&flash(k,0),500+j*650+420)});
+    setTimeout(()=>{busy=false;say('دورك.')},500+len*650)}
+  bs.forEach(b=>b.onclick=()=>{if(busy)return;const k=+b.dataset.k;flash(k,1);setTimeout(()=>flash(k,0),200);
+    if(k!==seq[at]){tries++;sfx.bad();say(tries>=3?'الأختام تبدلت… حاول مرة ثانية لاحقًا.':'خطأ. شاهد من جديد.');if(tries<3)setTimeout(show,900);else busy=true;return}
+    tone(392+k*44,.12);at++;if(at===seq.length){busy=true;a.sec[id]=1;S.save();sfx.lvl();
+      m.querySelector('.psecg').outerHTML=`<div class="psecl"><b>نقش سري</b><p>${PSEC_LORE[i]||''}</p></div>`;say(`الأسرار المكتشفة: ${XAR(Object.keys(a.sec).length)} من ${XAR(PW.filter(w=>w.id).length)}.`);
+      const mk=document.querySelector('.psec');if(mk)mk.classList.add('found')}});
+  if(window.__test)window.__test.sec={seq:()=>seq,bs,busy:()=>busy,m};show()}
+function pSecMark(id,api){const i=pIdx(id);if(i<0)return;const sh=api.body.querySelector('.xsheet');if(!sh)return;
+  const r=seeded(7919*(i+3)),x=r()<.5?2+r()*4:91+r()*4,y=22+r()*62,a=pSt2(),b=document.createElement('button');
+  b.className='psec'+(a.sec[id]?' found':'');b.style.cssText=`left:${x}%;top:${y}%`;b.setAttribute('aria-label','علامة سرية');
+  b.innerHTML=`<svg viewBox="0 0 20 20"><path d="M10 2l2 6h6l-5 4 2 6-5-4-5 4 2-6-5-4h6z" fill="none" stroke="#3A2616" stroke-width="1.1"/><circle cx="10" cy="10" r="1.6" fill="#3A2616"/></svg>`;
+  b.onclick=e=>{e.stopPropagation();pSecPlay(id)};sh.style.position=sh.style.position||'relative';sh.appendChild(b)}
+
+/* ---------- hook every palace wing: ambient + secret mark ---------- */
+{const _pp=pzPlay;pzPlay=function(id,build){if(pIdx(id)<0)return _pp(id,build);return _pp(id,api=>{const r=build(api);pAmbStart(id);pSecMark(id,api);return r})}}
+
+/* ---------- hub: stars per wing, totals, ambient toggle ---------- */
+{const _h=pHubHTML;pHubHTML=function(){const a=pSt2();let h=_h();
+  h=h.replace(/(data-pw="(\d+)"[^>]*>)<i>([\s\S]*?)<\/i><span>([^<]*)<\/span>/g,(s,pre,i,seal,n)=>{const w=PW[+i],st=w&&w.id?a.stars[w.id]||0:0;return`${pre}<i>${seal}</i><span>${n}</span>${st?`<em class="pst">${pStarSVG(st)}</em>`:''}${w&&a.sec[w.id]?'<em class="psecd"></em>':''}`});
+  const tot=Object.values(a.stars).reduce((s,v)=>s+v,0),sec=Object.keys(a.sec).length,ids=PW.filter(w=>w.id).length;
+  return h.replace('<span class="zbtns">',`<span class="pstat">${pStarSVG(1,1)} <b>${XAR(tot)}</b>/${XAR(ids*3)} · الأسرار <b>${XAR(sec)}</b>/${XAR(ids)}</span><span class="zbtns"><button class="xvault pamb ${a.amb?'on':''}" id="pamb">${a.amb?'صوت الأجنحة: يعمل':'صوت الأجنحة: متوقف'}</button>`)}}
+{const _tb=txBind;txBind=function(){_tb();const e=document.querySelector('#pamb');if(e)e.onclick=()=>{const a=pSt2();a.amb=a.amb?0:1;S.save();if(!a.amb)pAmbStop();e.classList.toggle('on',!!a.amb);e.textContent=a.amb?'صوت الأجنحة: يعمل':'صوت الأجنحة: متوقف';tone(a.amb?660:330,.1)}}}
 /* ================= v29: kids — exit to main profile, owl mascot, richer animation, 4 new games ================= */
 const KSTAR='<svg viewBox="0 0 24 24" class="kst"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" stroke="#2B2520" stroke-width="1.4" stroke-linejoin="round"/></svg>';
 const OWL=`<svg viewBox="0 0 64 64" class="owl"><g class="owlb"><g class="owlw l"><path d="M14 34q-9 10-3 22q6-3 9-13z" fill="#7A5A3E" ${RK}/></g><g class="owlw r"><path d="M50 34q9 10 3 22q-6-3-9-13z" fill="#7A5A3E" ${RK}/></g>
