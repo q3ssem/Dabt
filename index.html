@@ -1854,6 +1854,18 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 .aflw{position:relative;width:min(100%,300px);margin:8px auto}.aflg{display:block;width:100%;height:auto}
 .aflb{display:flex;justify-content:space-around;margin-top:-26px;position:relative}.aflb button{width:44px;height:30px;border-radius:0 0 18px 18px;border:1.6px solid #F4E9CC;background:#2F6E8A;color:#F4E9CC;font:700 12px Tajawal}.aflb button.obs{background:#8A6AA0}.aflb button.sel{outline:2.6px solid #F2C553}
 
+/* v47 */
+.arlt{overflow-x:auto;margin:8px 0}.arlt table{width:100%;border-collapse:collapse;font:600 10.5px/1.35 Tajawal;color:#3A2616}.arlt th,.arlt td{border:1px solid rgba(58,38,22,.35);padding:4px 3px;text-align:center}.arlt thead th{font:700 11px 'Aref Ruqaa',serif;background:rgba(200,162,74,.25)}.arlt tbody th{font:700 10.5px 'Aref Ruqaa',serif;background:rgba(255,248,226,.5);white-space:nowrap}
+.arlu td{padding:2px}.arlu button{width:100%;min-height:34px;padding:2px;border-radius:7px;border:1.4px dashed #9B2B1F;background:#FFF6E6;font:700 10.5px/1.3 Tajawal;color:#9B2B1F}.arlu button.set{border-style:solid;background:#F6E3A2;color:#3A2616}
+.ahtnow{display:flex;align-items:center;gap:8px;justify-content:center}.ahtnow b{font:700 13px 'Aref Ruqaa',serif}
+.ahtm{display:grid;grid-template-columns:repeat(var(--n),1fr);gap:1px;width:96px;padding:2px;background:#5F8E86;border-radius:4px}.ahtm i{aspect-ratio:1;background:#9CC8DC;border-radius:1px}.ahtm i.l{background:#C9A86A}.ahtm.now{width:120px}
+.ahtops{font:600 12px/1.7 Tajawal;color:#3A2616;text-align:start;padding-inline-start:20px;margin:6px 0}
+.ahtc{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:8px;justify-items:center;margin:8px 0}.ahtc button{display:flex;flex-direction:column;align-items:center;gap:2px;padding:4px;border-radius:10px;border:1.4px solid rgba(58,38,22,.4);background:rgba(255,248,226,.6)}.ahtc button small{font:700 10.5px Tajawal;color:#3A2616}.ahtc button.sel{outline:2.6px solid #9B2B1F}
+.afint p{font:600 14px/1.85 Tajawal;color:#3A2616;margin:6px 0;opacity:0;animation:afp .9s ease forwards}@keyframes afp{to{opacity:1}}
+.afinmap{position:relative;margin:8px 0;aspect-ratio:360/430;border-radius:10px;overflow:hidden;border:1.4px solid #3A2616}.afinmap img,.afinmap svg{position:absolute;inset:0;width:100%;height:100%}
+.arlt{overflow:visible}.arlt table{table-layout:fixed;font-size:9.5px}.arlt th,.arlt td{padding:3px 1px;word-break:break-word}.arlt tbody th{white-space:normal;font-size:9.5px}.arlt thead th{font-size:10px}.arlu button{font-size:9.5px;min-height:40px}
+#afin .go-btn{--c:#9B6A2A;--c2:#C8A24A;color:#FFF8E2}
+
 </style>
 
 
@@ -7488,6 +7500,90 @@ const PZ_A4=[
 PZ_A4.forEach(g=>{Object.assign(g,{puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g});TV_PUZ.unshift(...PZ_A4.map(g=>g.id));
 Object.assign(I,{pz_alayer:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><rect x="4" y="8" width="40" height="8" opacity=".4"/><rect x="4" y="20" width="40" height="8" opacity=".7"/><rect x="4" y="32" width="40" height="8"/><path d="M22 40V8" stroke="#0A0E1C" stroke-width="3"/></svg>',pz_acity:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><rect x="6" y="18" width="8" height="26"/><rect x="20" y="8" width="8" height="36"/><rect x="34" y="14" width="8" height="30"/></svg>',pz_asong:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><path d="M4 30q8-14 16 0t16 0 8-6"/><circle cx="12" cy="18" r="3" fill="#0A0E1C"/></svg>',pz_aflow:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><path d="M24 4v12M24 16L12 30M24 16l12 14M12 30l-6 14M12 30l8 14M36 30l6 14"/></svg>'});
 Object.assign(ART_FN,Object.fromEntries(PZ_A4.map((g,k)=>[g.id,B=>{B.bg('#EFE2C2',.35);B.wc(B.ell(200,160,110,70),g.col[0],{a:.42});B.wc(B.ell(150,120,50,40),g.col[1],{a:.5});B.frame()}])));
+/* ================= v47: أثران — الدفعة الخامسة: أرشيف الآثار الأولى، قلب أثران، النهاية ================= */
+ATR.push({m:0,t:'في الأرشيف الأول، ورقة بخط يعقوب وهو شيخ: «لم نضِع. اخترنا. سلمى ترسم، وحمدان يطبخ للفوانيس، وأنا ما زلت أعدّ. أخبروا عيسى أننا بخير».'},
+ {m:3,t:'في سجل الميناء القديم تحت القصر، سطر بخط مرتجف: «عاد صبي اسمه عيسى في قارب صغير، وقال: هم بخير، وهم سعداء. ثم مشى إلى بيت أمه».'});
+AENC.push({k:'firstpeople',n:'أهل الأثر الأول',ty:'حضارة',s:ASK('<circle cx="40" cy="30" r="20" fill="none" stroke="#K" stroke-width="1.4"/><path d="M40 10v40M20 30h40M26 16l28 28M54 16L26 44" stroke="#C8A24A" stroke-width="1.2"/>'),d:'لم يبنوا مدنًا ولم يرسموا خرائط ثابتة. رسموا الدورات: أين تكون الأرض في كل موسم. تركوا القارة كما هي، وتركوا لنا طريقة لفهمها، لا لامتلاكها.'});
+const ASC_HEART=`<svg viewBox="0 0 360 160"><defs><linearGradient id="hz" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F2C553"/><stop offset="1" stop-color="#E8C9B0"/></linearGradient></defs><rect width="360" height="160" fill="url(#hz)"/><path d="M0 110q40-30 80-10t90-20 90 10 100-14v84H0z" fill="#7FA34F" opacity=".7"/><path d="M0 130q60-14 120-4t120-8 120 6v36H0z" fill="#5E8A4E"/><path d="M200 100l20-40 20 40z" fill="#8E7BA8" opacity=".6"/><path d="M40 112l14-24 14 24z" fill="#8E7BA8" opacity=".5"/><circle cx="300" cy="40" r="20" fill="#FFF3D6"/></svg>`;
+ASTN.push(
+ {id:'pz_arelic',n:'أرشيف الآثار الأولى',ch:'navigator',reg:8,x:262,y:188,story:'خمسة مصادر تروي كيف نشأت آثار القارة: وثائق الملوك، وسجلات البحارة، والرسوم الجدارية، وآثار المخلوقات، وطبقات الأرض. واحد منها فقط صادق في كل شيء، وكل مصدر غيره أخطأ في شيء واحد فقط.',
+  fx:{tr:[12],enc:['firstpeople']},sc:[['navigator','«الملوك كتبوا أنهم بنوا كل شيء. البحارة كتبوا أنها لعنة. والجدران… الجدران ما كذبت»'],['mapgirl','«وسؤال واحد بقي بلا جواب: لماذا رحل أهل الأثر الأول؟»'],['navigator','«ربما ما رحلوا. ربما صاروا جزءًا من المكان»']]},
+ {id:'pz_aheart',n:'قلب أَثْرَان',ch:'mapgirl',reg:8,x:302,y:224,story:'في القلب خريطة حجرية لساحل القارة كما هو اليوم، وتحتها سجل خطوات الطوّاف في كل موسم. كل خطوة تحرك الأرض. أي الخرائط القديمة رُسمت قبل كل هذه الخطوات؟',
+  fx:{atlas:{8:3},tr:[13]},pic:ASC_HEART,mov:'twaf',
+  sc:[['mapgirl','«الخرائط القديمة ما كانت غلطًا… كانت صحيحة في وقتها. الطوّاف يحرك الساحل في هجرته»'],['navigator','«وهذا سبب اختفاء خليج نجلاء. وسبب أن القبطان ما أكمل خريطته»'],['shipwright','«يعني الأرض نفسها… تمشي؟»'],['mapgirl','«ببطء. مثلنا»']]});
+/* ================= relic archive: one source fully right, each other wrong in exactly one thing ================= */
+const ARL_SRC=['وثائق الملوك','سجلات البحارة','الرسوم الجدارية','آثار المخلوقات','طبقات الأرض'];
+const ARL_AT=[{n:'من صنعها',v:['الملوك السبعة','أهل الأثر الأول','كائنات التجاويف','البحارة']},{n:'متى',v:['قبل الملوك بقرون','في زمن الملوك','قبل مئة سنة','قبل آلاف السنين']},{n:'لماذا',v:['لتخزين الضوء','لتتبع الفصول','للعبادة','للتجارة']},{n:'أين بدأت',v:['في القلب','على الساحل','في الوادي','في الغابة']}];
+const ARL_LV=[[3,3,2],[3,3,1],[4,3,1],[4,3,1],[4,4,1],[5,4,1],[5,4,0],[5,4,0]];
+function arlMake(lv){const[ns,na,nev]=ARL_LV[lv-1],A=ARL_AT.slice(0,na);for(let t=0;t<500;t++){const T=A.map(a=>rnd(a.v.length));const tr=rnd(ns);const S=[...Array(ns)].map((_,i)=>{if(i===tr)return T.slice();const s=T.slice(),k=rnd(na);let v;do v=rnd(A[k].v.length);while(v===T[k]);s[k]=v;return s});
+  const ev=shuffle([...Array(na).keys()]).slice(0,nev).map(k=>({k,v:T[k]}));const all=[];const rec=(a)=>{if(a.length===na){all.push(a.slice());return}for(let v=0;v<A[a.length].v.length;v++){a.push(v);rec(a);a.pop()}};rec([]);
+  const ok=X=>ev.every(e=>X[e.k]===e.v)&&S.filter(s=>s.every((v,j)=>v===X[j])).length===1&&S.every(s=>{const d=s.filter((v,j)=>v!==X[j]).length;return d===0||d===1});const sols=all.filter(ok);if(sols.length!==1)continue;return{ns,na,A,T,S,tr,ev}}return arlMake(Math.max(1,lv-1))}
+function runARelic(){return pzPlay('pz_arelic',api=>{
+  const P=arlMake(api.lv),u=Array(P.na).fill(-1);let miss=0,busy=false;
+  api.body.innerHTML=xSheet(`${xHead('','أرشيف الآثار الأولى')}<ol class="xnote"><li>مصدر واحد صادق في كل ما يقول. كل مصدر غيره أخطأ في شيء واحد فقط.</li><li>اختر الحقيقة في كل عمود.</li></ol>
+   ${P.ev.length?`<div class="aclues"><b>دليل لا يُجادَل</b><ol>${P.ev.map(e=>`<li>${P.A[e.k].n}: ${P.A[e.k].v[e.v]}.</li>`).join('')}</ol></div>`:''}
+   <div class="arlt"><table><thead><tr><th></th>${P.A.map(a=>`<th>${a.n}</th>`).join('')}</tr></thead><tbody>${P.S.map((s,i)=>`<tr><th>${ARL_SRC[i]}</th>${s.map((v,j)=>`<td>${P.A[j].v[v]}</td>`).join('')}</tr>`).join('')}<tr class="arlu"><th>الحقيقة</th>${P.A.map((a,j)=>`<td><button data-j="${j}"></button></td>`).join('')}</tr></tbody></table></div>
+   <div class="xkbtns"><button class="go-btn xsm" id="arlgo">هذه الحقيقة</button></div>`,920,701);
+  const draw=()=>api.body.querySelectorAll('[data-j]').forEach(b=>{const j=+b.dataset.j;b.textContent=u[j]<0?'؟':P.A[j].v[u[j]];b.classList.toggle('set',u[j]>=0)});
+  api.body.querySelectorAll('[data-j]').forEach(b=>b.onclick=()=>{if(api.ended||busy)return;const j=+b.dataset.j;u[j]=u[j]+1>=P.A[j].v.length?-1:u[j]+1;tone(420,.03);draw()});
+  function check(){if(api.ended||busy)return;if(u.includes(-1)){api.msg('اختر في كل عمود.');return}if(u.every((v,j)=>v===P.T[j])){busy=true;sfx.lvl();later(()=>aWin(api,'pz_arelic',`الصادق كان: ${ARL_SRC[P.tr]}.`),500);return}
+    miss++;api.wrong();if(miss>=3){busy=true;P.T.forEach((v,j)=>u[j]=v);draw();api.over(`الصادق كان: ${ARL_SRC[P.tr]}.`);return}api.msg(`${arN(u.filter((v,j)=>v!==P.T[j]).length,AN.thing||['أمر واحد','أمران','أمور','أمرًا'])} غير صحيح.`)}
+  $('#arlgo').onclick=check;draw();api.msg('اعرف من الصادق.');pzHook({P,set:()=>{P.T.forEach((v,j)=>u[j]=v);draw()},check});
+  return{hint:k=>{if(k===1)return'افترض أن مصدرًا ما هو الصادق: هل كل المصادر الأخرى تختلف عنه في شيء واحد فقط؟ إذا اختلف أحدها في شيئين، فافتراضك خطأ.';if(k===2)return`${ARL_SRC[(P.tr+1)%P.ns]} ليس هو الصادق.`;const j=u.findIndex((v,q)=>v!==P.T[q]);if(j<0)return null;u[j]=P.T[j];draw();return'ثبّت لك عمودًا.'},reveal:()=>{P.T.forEach((v,j)=>u[j]=v);draw();return'هذه الحقيقة.'}}})}
+Object.assign(AN,{thing:['أمر واحد','أمران','أمور','أمرًا']});
+
+/* ================= the heart: reverse discovery — undo the wanderer's seasons to find the original map ================= */
+const AHT_LV=[[4,2,3],[4,3,3],[5,3,4],[5,4,4],[5,5,4],[6,5,5],[6,6,5],[6,7,6]];
+function ahtApply(g,n,op){const a=g.slice();if(op.r!=null){const row=[...Array(n)].map((_,x)=>g[op.r*n+x]);row.forEach((v,x)=>a[op.r*n+(x+op.k+n)%n]=v)}else{const col=[...Array(n)].map((_,y)=>g[y*n+op.c]);col.forEach((v,y)=>a[((y+op.k+n)%n)*n+op.c]=v)}return a}
+function ahtMake(lv){const[n,no,nc]=AHT_LV[lv-1];for(let t=0;t<200;t++){const o=[...Array(n*n)].map(()=>Math.random()<.45?1:0);if(o.every(v=>v)||o.every(v=>!v))continue;const ops=[...Array(no)].map(()=>Math.random()<.5?{r:rnd(n),k:pick([1,-1,2])}:{c:rnd(n),k:pick([1,-1,2])});
+  let g=o;ops.forEach(op=>g=ahtApply(g,n,op));if(g.join()===o.join())continue;
+  /* distractors: the map with one season forgotten, seasons applied backwards, or today's map itself */
+  const fake=[];const skip=k=>{let h=o;ops.forEach((op,i)=>{if(i!==k)h=ahtApply(h,n,op)});return h};const inv=op=>op.r!=null?{r:op.r,k:-op.k}:{c:op.c,k:-op.k};
+  let wrongDir=g;ops.forEach(op=>wrongDir=ahtApply(wrongDir,n,op));fake.push(wrongDir);fake.push(g);let ro=g;ops.slice().reverse().forEach(op=>ro=ahtApply(ro,n,{...inv(op),k:op.k}));fake.push(ro);
+  for(let k=0;k<no&&fake.length<nc*2;k++){let h=g;ops.slice().reverse().forEach((op,i)=>{if(no-1-i!==k)h=ahtApply(h,n,inv(op))});fake.push(h)}
+  const uniq=[o.join()];const cands=[o];for(const f of shuffle(fake)){if(!uniq.includes(f.join())){uniq.push(f.join());cands.push(f)}if(cands.length>=nc)break}if(cands.length<nc)continue;
+  const order=shuffle([...Array(nc).keys()]);return{n,ops,o,g,cands:order.map(i=>cands[i]),ans:order.indexOf(0)}}return ahtMake(Math.max(1,lv-1))}
+function runAHeart(){return pzPlay('pz_aheart',api=>{
+  const P=ahtMake(api.lv),n=P.n;let sel=-1,miss=0,busy=false;
+  const map=(g,cls='')=>`<div class="ahtm ${cls}" style="--n:${n}">${g.map(v=>`<i class="${v?'l':''}"></i>`).join('')}</div>`;
+  const opTxt=op=>op.r!=null?`الصف ${XAR(op.r+1)} ينزاح ${op.k>0?'يمينًا':'يسارًا'} ${arN(Math.abs(op.k),AN.cell||['خانة','خانتين','خانات','خانة'])}`:`العمود ${XAR(op.c+1)} ينزاح ${op.k>0?'للأسفل':'للأعلى'} ${arN(Math.abs(op.k),AN.cell||['خانة','خانتين','خانات','خانة'])}`;
+  api.body.innerHTML=xSheet(`${xHead('','قلب أَثْرَان')}<ol class="xnote"><li>هذه الخريطة الحجرية = الساحل اليوم. تحتها خطوات الطوّاف بالترتيب، وكل خطوة تزيح صفًا أو عمودًا من الأرض (وما يخرج من طرف يدخل من الطرف الآخر).</li><li>أي الخرائط القديمة رُسمت قبل كل هذه الخطوات؟</li></ol>
+   <div class="ahtnow"><b>اليوم</b>${map(P.g,'now')}</div><ol class="ahtops">${P.ops.map(op=>`<li>${opTxt(op)}</li>`).join('')}</ol>
+   <div class="ahtc">${P.cands.map((c,i)=>`<button data-i="${i}"><small>خريطة ${XAR(i+1)}</small>${map(c)}</button>`).join('')}</div>
+   <div class="xkbtns"><button class="go-btn xsm" id="ahtgo">هذه هي القديمة</button></div>`,940,711);
+  const draw=()=>api.body.querySelectorAll('[data-i]').forEach(b=>b.classList.toggle('sel',+b.dataset.i===sel));
+  api.body.querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>{if(api.ended||busy)return;sel=+b.dataset.i;tone(300,.05);draw()});
+  function check(){if(api.ended||busy||sel<0)return;if(sel===P.ans){busy=true;sfx.lvl();later(()=>aWin(api,'pz_aheart','عرفت الخريطة القديمة. لم تكن خاطئة؛ الأرض هي التي مشت.'),600);return}
+    miss++;api.wrong();if(miss>=2){busy=true;sel=P.ans;draw();api.over('هذه الخريطة القديمة.');return}api.msg('هذه الخريطة لا تصير خريطة اليوم بعد خطوات الطوّاف.')}
+  $('#ahtgo').onclick=check;draw();api.msg('ارجع بالزمن.');pzHook({P,pick:i=>{sel=i;draw()},check});
+  return{hint:k=>{if(k===1)return'ارجع من الخطوة الأخيرة إلى الأولى، وفي كل خطوة أزح عكس الاتجاه.';if(k===2)return'انتبه: الخطوة الأخيرة هي أول ما تلغيه.';const w=P.cands.findIndex((c,i)=>i!==P.ans&&i!==sel);return`الخريطة ${XAR(w+1)} ليست هي.`},reveal:()=>{sel=P.ans;draw();return'هذه.'}}})}
+Object.assign(AN,{cell:['خانة','خانتين','خانات','خانة']});
+
+/* ================= the finale: five quiet panels ================= */
+function aFinalePanels(){const a=aState(),ch=a.ch||{};const tw=AENC.find(e=>e.k==='twaf').s;
+ return[
+ {t:'القرية التي انتظرت',pic:ASC_CITY,txt:['وجدنا القرية في قلب المدينة الحية: أربعة بيوت من خشب متحجر، وقدر حمدان ما زال معلقًا.','على باب أحد البيوت نافذة صغيرة تطل على البحر. كانوا يجلسون عندها كل ربيع، ينتظرون أن يعود عيسى بأخبار من البيت.','في الأرشيف الأول عرفنا الباقي: عيسى وصل. أخبر أمه أنهم بخير. ولم يعد أحد منهم، لأنهم كانوا قد وصلوا.']},
+ {t:'الأفق الذي لا ينتهي',pic:ASC_HEART,txt:['من أعلى القلب رأينا القارة كلها لأول مرة.','الغابة التي ظنناها كبيرة كانت طرفًا. الصحراء كانت شريطًا. وخلف كل شيء، أرض لم يرسمها أحد.','لم يتكلم أحد. حتى بدر.']},
+ {t:'الطوّاف',pic:ASC_TW,mov:'twaf',txt:['في الفجر الأخير مرّ الطوّاف قريبًا منا، أقرب من أي مرة.','لم يلتفت. أكمل طريقه نحو الجنوب، وخلفه تحرك الساحل ببطء، كما يتحرك كل موسم.','فهمنا الآن كل ما رأيناه: الخليج الذي اختفى، والخرائط التي لا تتطابق. لم يكن يتبعنا. كنا نحن في طريقه.']},
+ {t:'العودة الأخيرة',pic:ASC_SEA,txt:[`أبحرنا عند الفجر.${ch.city==='take'?' حجر الضوء يضيء السطح، ونفكر في الحي الصغير الذي انطفأ.':' بلا ضوء على السفينة، لكن الفوانيس على الشاطئ ودّعتنا حتى غابت.'}`,`${ch.sea==='long'?'أخذنا الطريق الطويل مرة أخرى، ومرت الحيتان المضيئة تحتنا كأنها تودعنا.':ch.sea==='short'?'مررنا بخليج القناديل بصمت، وكان أكثر هدوءًا مما تركناه.':'كان البحر هادئًا.'}`,'غنّى بدر أغنية الميناء، وهذه المرة لم يرجعها أي صدى. ضحكنا رغم ذلك.','العم نوّار وقف عند المؤخرة حتى اختفت القارة. قال: «قلت لهم إن الطريق موجود. الآن صدقوني»']},
+ {t:'الصفحة الأخيرة',txt:['فتحت ليان الأطلس على الصفحة الأخيرة. رسمت الساحل والغابة والصحراء والوادي… ثم توقفت.','ترك القلم جزءًا كبيرًا من الصفحة أبيض.','سألها بدر: «ليش ما كملتي؟»','قالت: «ليس كل ما نحبه يجب أن نضع له حدودًا».']}]}
+function aFinale(start=0){const P=aFinalePanels();let i=start;const m=zModal(`<div id="afin"></div>`,330);const cl=m.querySelector('[data-close]');
+ const show=()=>{const p=P[i];m.querySelector('#afin').innerHTML=`<h3 class="xvh">${p.t}</h3>${p.pic?`<div class="apic"><img alt="" src="${xImg('afin'+i,360,p.pic.includes('360 200')?200:160,p.pic.replace(/^<svg[^>]*>|<\/svg>$/g,''),'xMidYMid slice')}">${p.mov?`<div class="apicm">${AENC.find(e=>e.k===p.mov).s}</div>`:''}</div>`:''}<div class="afint">${p.txt.map((t,k)=>`<p style="animation-delay:${k*.9}s">${t}</p>`).join('')}</div>${i===P.length-1?aFinalAtlas():''}<div class="xkbtns">${i>0?'<button class="go-btn xsm alt2" data-fp>السابق</button>':''}${i<P.length-1?'<button class="go-btn xsm" data-fn>التالي</button>':''}</div>`;
+  const n=m.querySelector('[data-fn]'),pv=m.querySelector('[data-fp]');if(n)n.onclick=e=>{e.stopPropagation();i++;show();tone(392,.3,'sine',.04)};if(pv)pv.onclick=e=>{e.stopPropagation();i--;show()};if(i===P.length-1)aTheme()};show();aState().fin=1;S.save()}
+function aFinalAtlas(){const a=aState();return`<div class="afinmap"><img alt="" src="${xImg('amap',360,430,aMapArt(),'xMidYMid meet')}"><svg viewBox="0 0 360 430">${aAtlasOverlay(a)}<path d="M330 20q20 120-10 240t20 160" fill="none" stroke="#3A2616" stroke-width="1.2" stroke-dasharray="2 6"/><text x="320" y="200" font-size="10" fill="#3A2616" opacity=".6" font-family="'Aref Ruqaa',serif" transform="rotate(90 320 200)">لم يُرسم بعد</text></svg></div>`}
+/* the journey's theme, in full, built from Salma's song */
+function aTheme(){const m=AMOTIF.concat([4,5,7,5,4,2,1,2]);m.forEach((v,i)=>{tone(220*2**([0,2,3,5,7,8,10,12,14,15][v]/12),.6,'sine',.05,i*.42);if(i%4===0)tone(110*2**([0,2,3,5,7,8,10,12,14,15][v]/12),1.4,'sine',.03,i*.42)})}
+{const _w=aWin;aWin=function(api,id,msg){const r=_w(api,id,msg);if(id==='pz_aheart'){const a=aState();a.finPend=1;S.save()}return r}}
+{const _tb=txBind;txBind=function(){_tb();const a=aState();if(a.finPend&&$('#play').hidden&&!aFinale.wait){aFinale.wait=1;let n=0;const tick=()=>{n++;if(!$('#play').hidden||n>60){aFinale.wait=0;return}if(document.querySelector('.xvaultm')){setTimeout(tick,1000);return}a.finPend=0;S.save();aFinale.wait=0;aFinale()};setTimeout(tick,1200)}const b=document.querySelector('#afinb');if(b)b.onclick=()=>aFinale()}}
+{const _ah=aHubHTML;aHubHTML=function(){const a=aState();let h=_ah();if(a.done&&a.done.pz_aheart)h=h.replace('<div class="abtns">','<div class="abtns"><button class="xvault" id="afinb">شاهد النهاية</button>');return h}}
+{const e=AENC.find(x=>x.k==='twaf');const d0=e.d;Object.defineProperty(e,'d',{get(){const a=aState();return d0+(a.done&&a.done.pz_aheart?' — في القلب عرفنا سره: هو الذي يحرك الساحل في هجرته، موسمًا بعد موسم. لم تكن الخرائط القديمة خاطئة؛ كانت متأخرة.':'')}})}
+
+const PZ_A5=[
+ {id:'pz_arelic',maxLv:8,col:['#C8A24A','#3A2616'],name:'أرشيف الآثار الأولى',lab:'Conflicting sources',cat:'log',why:'روايات متعارضة لحدث واحد: تفترض صدق مصدر وتختبر اتساق الباقين، كما يفعل المؤرخون.',how:['اقرأ المصادر.','افترض واختبر.','ثبّت الحقيقة.'],run:runARelic},
+ {id:'pz_aheart',maxLv:8,col:['#F2C553','#5E8A4E'],name:'قلب أَثْرَان',lab:'Reverse discovery',cat:'spa',why:'اكتشاف عكسي: تبدأ من النتيجة وتلغي الخطوات بالعكس حتى تصل إلى البداية.',how:['اقرأ خطوات الطوّاف.','ارجع بالزمن.','اختر الخريطة القديمة.'],run:runAHeart}];
+PZ_A5.forEach(g=>{Object.assign(g,{puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g});TV_PUZ.unshift(...PZ_A5.map(g=>g.id));
+Object.assign(I,{pz_arelic:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><rect x="6" y="6" width="36" height="36"/><path d="M6 18h36M6 30h36M18 6v36"/></svg>',pz_aheart:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M24 44L6 22l8-12h20l8 12z"/></svg>'});
+Object.assign(ART_FN,Object.fromEntries(PZ_A5.map((g,k)=>[g.id,B=>{B.bg('#EFE2C2',.35);B.wc(B.ell(200,160,110,70),g.col[0],{a:.42});B.wc(B.ell(150,120,50,40),g.col[1],{a:.5});B.frame()}])));
 /* ================= v29: kids — exit to main profile, owl mascot, richer animation, 4 new games ================= */
 const KSTAR='<svg viewBox="0 0 24 24" class="kst"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" stroke="#2B2520" stroke-width="1.4" stroke-linejoin="round"/></svg>';
 const OWL=`<svg viewBox="0 0 64 64" class="owl"><g class="owlb"><g class="owlw l"><path d="M14 34q-9 10-3 22q6-3 9-13z" fill="#7A5A3E" ${RK}/></g><g class="owlw r"><path d="M50 34q9 10 3 22q-6-3-9-13z" fill="#7A5A3E" ${RK}/></g>
