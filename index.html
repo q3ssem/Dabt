@@ -1888,6 +1888,55 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 .aseason{text-align:center;font:600 11.5px Tajawal;color:#5E4A33;margin:4px 0}
 .asecn{cursor:default}
 
+/* ===== v50: الأنابيب بالحبر ===== */
+.xpin .ppg{width:100%;max-width:330px;box-sizing:border-box;background:transparent;gap:0;padding:6px;border:2px solid #4a3523;border-radius:4px;box-shadow:inset 0 0 0 4px rgba(120,82,40,.12)}
+.xpin .ppc{background:rgba(244,228,196,.55);border:1px dashed rgba(74,53,35,.35);border-radius:0}
+.xpin .pp1{stroke:#8a5a2b;stroke-width:8}
+.xpin .ppc.on .pp1{stroke:#3d7fa6}
+.xpin .pp2{stroke:#e9f4f8}
+.xpin .pphouse path{fill:#d9c39a;stroke:#3b2a1a}
+.xpin .ppc.on .pphouse path{fill:#e0a64a}
+.xpin .ppc.lock{box-shadow:inset 0 0 0 2px #b8862b}
+.xm3bg .xcity{position:absolute;inset:0;width:100%;height:100%;border-radius:10px;display:block}
+.xoldst>.xsheet{margin-top:8px}
+.xpin .tpeg{background:rgba(244,228,196,.7)!important;border:2px solid #4a3523!important;box-shadow:none!important}
+.xpin .tolgoal{color:#3b2a1a}
+/* shared ink text on old games */
+.xpin .msg,.xpin .eyebrow,.xpin .tolgoal{color:#3b2a1a!important}
+.xpin .msg b{color:#7a3b16}
+/* tower of london */
+.xpin .tolgoal{position:static;margin:4px auto 10px}
+.xpin .tol{width:100%;max-width:320px;margin:0 auto;position:static}
+.xpin .tol.mini{width:min(60%,200px)}
+.xpin .tpeg{border-radius:6px!important}
+.xpin .tpeg::before{background:#8a5a2b!important;width:8px!important}
+.xpin .tpeg i{box-shadow:inset 0 -4px 0 rgba(0,0,0,.25),0 0 0 2px #3b2a1a!important}
+.xpin .tpeg.sel{box-shadow:0 0 0 3px #b8862b!important}
+/* piano: ivory keys */
+.xpin .pkey{background:linear-gradient(#fbf3e0,#e6d4ad)!important;border:2px solid #4a3523!important;border-top:none!important;border-radius:0 0 8px 8px!important}
+.xpin .pkey span{color:#4a3523}
+.xpin .pkey.on{background:linear-gradient(#f3d488,#d9a94a)!important}
+.xpin .pkey.bad{background:#c96a5a!important}
+.xpin .btn,.xpin button.big{color:#3b2a1a}
+/* lock: iron and brass */
+.xpin .lkc{background:rgba(244,228,196,.85)!important;border:1.5px solid #4a3523!important;border-radius:6px!important;color:#3b2a1a}
+.xpin .lkg i{background:#5a4a3a!important;color:#f3d488!important;border-radius:4px!important;box-shadow:inset 0 -3px 0 rgba(0,0,0,.35)}
+.xpin .lkdial{background:#3b2f25!important;border-color:#8a6a3a!important;color:#f3e3c0!important;border-radius:8px!important}
+.xpin .lkdial.on{border-color:#d9a94a!important;box-shadow:0 0 0 3px rgba(217,169,74,.35)!important}
+.xpin .lkpad button{background:rgba(244,228,196,.9)!important;border:1.5px solid #4a3523!important;color:#3b2a1a!important;border-radius:8px!important;box-shadow:0 2px 0 #4a3523}
+.xpin .lkpad button:last-child{background:#8a5a2b!important;color:#f8ecd2!important}
+/* tents: watercolour meadow */
+.xpin .tnw{background:rgba(220,206,160,.6)!important;box-shadow:inset 0 0 0 2px #4a3523!important;border-radius:6px!important}
+.xpin .tnc2{background:#b9c98d!important;border-radius:3px!important;box-shadow:inset 0 0 0 1px rgba(74,53,35,.35)!important}
+.xpin .tnc2.tree{background:#a3b878!important}
+.xpin .tnc2.grass{background:#d8d6a3!important}
+.xpin .tnc2.tent{background:#e8cf96!important}
+.xpin .tnc2.bad{background:#d79a86!important}
+.xpin .tnclue{color:#3b2a1a}.xpin .tnclue b.done{background:rgba(255,255,255,.5)}
+.xpin .tol{display:grid!important;grid-template-columns:repeat(3,minmax(0,1fr))!important;grid-template-rows:auto!important;grid-auto-flow:column!important;align-items:end!important}
+.xpin .tol>.tpeg{grid-row:1!important;width:auto!important}
+.xpin .tol.mini{height:96px!important;min-height:96px}.xpin #tolb{height:196px!important;min-height:196px}
+
 </style>
 
 
@@ -7803,6 +7852,81 @@ const aAllSecrets=a=>ASW.every(w=>(a.swd||{})[w.k]);
   if((a.sw||{}).bones)h=h.replace(/<div class="atwaf">[\s\S]*?<\/svg><\/div>/,'').replace('<div class="alegend">',`<p class="aseason">موسم جديد: الطوّاف في الجنوب، والساحل يتغير بهدوء.</p><div class="alegend">`)}
   const n=Object.keys(a.sec||{}).length;if(n)h=h.replace('<div class="abtns">',`<div class="abtns"><span class="xvault asecn">علامات القارة <b>${XAR(n)}</b>/${XAR(ASTN.length)}</span>`);return h}}
 {const _tb=txBind;txBind=function(){_tb();const b=document.querySelector('#aaft');if(b)b.onclick=()=>aPanels(AAFTER,420);const f=document.querySelector('#afare');if(f)f.onclick=()=>{aPanels([AFAREWELL],430);aTheme()}}}
+/* ================= v50: حذف القصة + بداية إعادة تصميم الألعاب القديمة ================= */
+pzMapHTML=()=>'';pzMapBind=()=>{};
+{const i=TV_PUZ.indexOf('pz_rid');if(i>=0)TV_PUZ.splice(i,1)}
+if(GM.pz_rid){GM.pz_rid.hidden=1;GM.pz_rid.noIndex=1}
+{const _d=pzDailyType;pzDailyType=function(){let t=_d();if(t==='pz_rid'){const r=seeded(+dayKey().replace(/-/g,'')+11),a=PZ_TYPES.filter(x=>x!=='tol');t=a[Math.floor(r()*a.length)]}return t}}
+/* old games moved onto the drawn map paper */
+const XOLD=new Set(['pz_pipe']);
+function xWrapOld(body){if(body.querySelector('.xsheet'))return;const d=document.createElement('div');d.innerHTML=xSheet('',520);const sh=d.firstElementChild,pin=sh.querySelector('.xpin');while(body.firstChild)pin.appendChild(body.firstChild);body.appendChild(sh)}
+{const _pp=pzPlay;pzPlay=function(id,build){if(!XOLD.has(id))return _pp(id,build);return _pp(id,api=>{const r=build(api);try{xWrapOld(api.body,id)}catch(e){}return r})}}
+/* hand-drawn city plan behind the old city puzzles */
+let XCITY=null;
+function xCitySVG(){if(XCITY)return XCITY;const R=seeded(5150),j=a=>(R()-.5)*a,W=600,H=900,ink='#4a3523';let g='';
+  const ln=(x1,y1,x2,y2,w=1.6,c=ink,o=1)=>`<path d="M${x1+j(3)} ${y1+j(3)}Q${(x1+x2)/2+j(8)} ${(y1+y2)/2+j(8)} ${x2+j(3)} ${y2+j(3)}" stroke="${c}" stroke-width="${w}" fill="none" stroke-linecap="round" opacity="${o}"/>`;
+  g+=`<rect width="${W}" height="${H}" fill="#ead6ae"/><rect width="${W}" height="${H}" fill="url(#xcn)" opacity=".5"/>`;
+  /* canal */
+  g+=`<path d="M-20 600C120 560 180 660 320 620S520 520 640 560" stroke="#7fa9b8" stroke-width="46" fill="none" opacity=".55"/><path d="M-20 600C120 560 180 660 320 620S520 520 640 560" stroke="${ink}" stroke-width="1.4" fill="none" stroke-dasharray="1 0" opacity=".5" transform="translate(0,-23)"/><path d="M-20 600C120 560 180 660 320 620S520 520 640 560" stroke="${ink}" stroke-width="1.4" fill="none" opacity=".5" transform="translate(0,23)"/>`;
+  for(let i=0;i<9;i++){const x=20+i*70+j(10),y=590+Math.sin(i)*30;g+=ln(x,y,x+18,y-2,1,'#3d7fa6',.6)}
+  /* streets */
+  const xs=[0,95,215,330,440,600],ys=[0,120,260,400,520,700,800,900];
+  xs.forEach(x=>g+=ln(x,0,x+j(12),H,2.2,ink,.55));ys.forEach(y=>{if(y<560||y>660)g+=ln(0,y,W,y+j(12),2.2,ink,.55)});
+  /* blocks with houses */
+  for(let a=0;a<xs.length-1;a++)for(let b=0;b<ys.length-1;b++){const x0=xs[a]+10,x1=xs[a+1]-10,y0=ys[b]+10,y1=ys[b+1]-10;if(y1>550&&y0<670)continue;
+    if(R()<.18){for(let t=0;t<4;t++){const cx=x0+12+R()*(x1-x0-24),cy=y0+12+R()*(y1-y0-24);g+=`<circle cx="${cx}" cy="${cy}" r="${9+R()*6}" fill="#8fa86a" opacity=".55" stroke="${ink}" stroke-width="1"/>`}continue}
+    for(let x=x0;x<x1-26;x+=30+R()*8)for(let y=y0+14;y<y1-10;y+=34+R()*8){const w=20+R()*6,h=16+R()*4,c=['#c98f5a','#b5754a','#d9b27a','#a8653f'][R()*4|0];
+      g+=`<path d="M${x} ${y+h}V${y+6}L${x+w/2} ${y-4}L${x+w} ${y+6}V${y+h}Z" fill="${c}" opacity=".6" stroke="${ink}" stroke-width="1.1" stroke-linejoin="round"/>`}}
+  /* water tower + pipes hint */
+  g+=`<g transform="translate(470,760)" stroke="${ink}" stroke-width="1.6" fill="none"><path d="M-14 40L-8 0M14 40L8 0M-11 22H11"/><ellipse cx="0" cy="-6" rx="20" ry="10" fill="#7fa9b8" opacity=".7"/><path d="M-20 -6V-24H20V-6"/><ellipse cx="0" cy="-24" rx="20" ry="7" fill="#cfe0e4"/></g>`;
+  g+=ln(470,800,470,880,4,'#8a5a2b',.6)+ln(470,880,120,880,4,'#8a5a2b',.6);
+  /* compass */
+  g+=`<g transform="translate(70,80)" stroke="${ink}" fill="none" stroke-width="1.3"><circle r="28"/><path d="M0 -34L6 0L0 34L-6 0Z" fill="#b8862b" opacity=".7"/><path d="M-34 0H34"/><text y="-38" text-anchor="middle" font-size="13" fill="${ink}" stroke="none">ش</text></g>`;
+  /* bridges */
+  [150,390].forEach(x=>g+=`<rect x="${x-14}" y="${x<300?584:600}" width="28" height="54" fill="#c9a676" stroke="${ink}" stroke-width="1.4" transform="rotate(-6 ${x} 610)"/>`);
+  XCITY=`<svg class="xcity" viewBox="0 0 ${W} ${H}" preserveAspectRatio="xMidYMid slice"><defs><filter id="xcn"><feTurbulence baseFrequency=".9" numOctaves="2"/><feColorMatrix values="0 0 0 0 .4 0 0 0 0 .3 0 0 0 0 .2 0 0 0 .25 0"/></filter></defs><rect width="${W}" height="${H}" filter="url(#xcn)" opacity="0"/>${g}<rect x="6" y="6" width="${W-12}" height="${H-12}" fill="none" stroke="${ink}" stroke-width="3" rx="6"/></svg>`;return XCITY}
+{const _f=xm3Fit;xm3Fit=function(sh){const bg=sh.querySelector('.xm3bg');if(bg&&bg.dataset.k==='city')return;return _f(sh)}}
+/* per-puzzle hand-drawn backdrops */
+const XBG={};
+function xBgFrame(inner,bg='#ead6ae'){return`<svg class="xcity" viewBox="0 0 600 900" preserveAspectRatio="xMidYMid slice"><rect width="600" height="900" fill="${bg}"/>${inner}<rect x="6" y="6" width="588" height="888" fill="none" stroke="#4a3523" stroke-width="3" rx="6"/></svg>`}
+const xIk='#4a3523';
+function xTree(x,y,s=1,c='#7f9a5c'){return`<g transform="translate(${x},${y}) scale(${s})"><path d="M0 0V18" stroke="${xIk}" stroke-width="2"/><path d="M0-30L16 2H-16Z" fill="${c}" opacity=".75" stroke="${xIk}" stroke-width="1.3" stroke-linejoin="round"/><path d="M0-42L12-14H-12Z" fill="${c}" opacity=".85" stroke="${xIk}" stroke-width="1.3" stroke-linejoin="round"/></g>`}
+XBG.tol=()=>{const R=seeded(7101);let g='';
+  g+=`<path d="M0 760C150 730 260 800 420 770S560 740 600 750V900H0Z" fill="#8fb1bd" opacity=".6" stroke="${xIk}" stroke-width="1.5"/>`;
+  for(let i=0;i<10;i++){const x=R()*560,y=800+R()*80;g+=`<path d="M${x} ${y}q10-6 20 0" stroke="#3d7fa6" fill="none" stroke-width="1.3"/>`}
+  /* castle walls plan */
+  g+=`<path d="M80 140H520V680H80Z" fill="#d8c29a" stroke="${xIk}" stroke-width="3"/><path d="M110 170H490V650H110Z" fill="#e6d3ab" stroke="${xIk}" stroke-width="1.5" stroke-dasharray="6 4"/>`;
+  [[80,140],[520,140],[80,680],[520,680],[300,140],[80,410],[520,410],[300,680]].forEach(([x,y])=>g+=`<circle cx="${x}" cy="${y}" r="26" fill="#c9ad7c" stroke="${xIk}" stroke-width="2.4"/><circle cx="${x}" cy="${y}" r="12" fill="none" stroke="${xIk}" stroke-width="1.2"/>`);
+  for(let x=90;x<520;x+=18){g+=`<rect x="${x}" y="128" width="9" height="8" fill="${xIk}" opacity=".5"/>`}
+  g+=`<rect x="230" y="330" width="140" height="150" fill="#cdb489" stroke="${xIk}" stroke-width="2.5"/>`;[[230,330],[370,330],[230,480],[370,480]].forEach(([x,y])=>g+=`<rect x="${x-12}" y="${y-12}" width="24" height="24" fill="#b99b6a" stroke="${xIk}" stroke-width="1.6"/>`);
+  g+=`<path d="M300 680V760" stroke="${xIk}" stroke-width="10" opacity=".25"/>`;
+  [[40,60],[560,60],[40,860],[560,300]].forEach(([x,y])=>g+=xTree(x,y,.9));
+  g+=`<text x="300" y="118" text-anchor="middle" font-size="22" fill="${xIk}" font-family="Aref Ruqaa,serif">قلعة الأبراج</text>`;return xBgFrame(g)};
+XBG.piano=()=>{const R=seeded(7202);let g='';
+  g+=`<rect width="600" height="900" fill="#e8d3b0"/>`;
+  for(let k=0;k<6;k++){const y0=70+k*140;for(let l=0;l<5;l++)g+=`<path d="M20 ${y0+l*12}Q300 ${y0+l*12+(k%2?8:-8)} 580 ${y0+l*12}" stroke="${xIk}" stroke-width="1.1" fill="none" opacity=".45"/>`;
+    for(let n=0;n<8;n++){const x=60+n*66+R()*20,y=y0+((R()*5)|0)*6;g+=`<ellipse cx="${x}" cy="${y+6}" rx="7" ry="5" fill="${xIk}" opacity=".55" transform="rotate(-20 ${x} ${y+6})"/><path d="M${x+6} ${y+5}V${y-26}" stroke="${xIk}" stroke-width="1.4" opacity=".55"/>`}}
+  g+=`<g transform="translate(470,760)" stroke="${xIk}" stroke-width="2" fill="none"><path d="M0 0L60-70Q80-40 70-10Z" fill="#c9963e" opacity=".75"/><rect x="-30" y="0" width="60" height="40" fill="#8a5a2b" opacity=".7"/><circle cx="0" cy="-2" r="4" fill="${xIk}"/></g>`;
+  g+=`<g transform="translate(60,800)" stroke="${xIk}" stroke-width="2" fill="#a8653f" opacity=".8"><path d="M0 0C-20-40 20-60 30-30C40-60 70-40 50 0Z"/><path d="M28-30V-90M28-90l20 6" fill="none"/></g>`;
+  g+=`<path d="M0 0H600V40C500 70 420 30 300 50S100 70 0 40Z" fill="#8b2e2e" opacity=".55" stroke="${xIk}" stroke-width="1.5"/>`;return xBgFrame(g,'#e8d3b0')};
+XBG.pz_lock=()=>{const R=seeded(7303);let g='';
+  for(let y=0;y<900;y+=36)for(let x=(y/36%2)*40-40;x<600;x+=80)g+=`<rect x="${x+2}" y="${y+2}" width="76" height="32" rx="3" fill="${['#c9a77a','#bf9a6b','#d2b38a'][R()*3|0]}" stroke="${xIk}" stroke-width="1.2" opacity=".8"/>`;
+  const gear=(x,y,r,t)=>{let d='';for(let i=0;i<t*2;i++){const a=i*Math.PI/t,rr=i%2?r:r*1.22;d+=(i?'L':'M')+(x+rr*Math.cos(a)).toFixed(1)+' '+(y+rr*Math.sin(a)).toFixed(1)}return`<path d="${d}Z" fill="#9c7b4a" stroke="${xIk}" stroke-width="2"/><circle cx="${x}" cy="${y}" r="${r*.35}" fill="#e3cfa6" stroke="${xIk}" stroke-width="2"/>`};
+  g+=gear(80,120,50,10)+gear(155,195,32,8)+gear(520,800,60,12)+gear(430,860,30,8);
+  const key=(x,y,a)=>`<g transform="translate(${x},${y}) rotate(${a})" stroke="${xIk}" stroke-width="2" fill="#c49a3f"><circle r="16"/><circle r="6" fill="#e3cfa6"/><path d="M16-4H70V4H16Z"/><path d="M56 4V16M66 4V12" fill="none"/></g>`;
+  g+=key(480,110,25)+key(70,780,-35);return xBgFrame(g,'#b38f60')};
+XBG.pz_tent=()=>{const R=seeded(7404);let g='';
+  g+=`<ellipse cx="420" cy="700" rx="150" ry="90" fill="#8fb1bd" opacity=".65" stroke="${xIk}" stroke-width="2"/>`;
+  for(let i=0;i<70;i++){const x=R()*600,y=R()*900;if(Math.hypot((x-420)/170,(y-700)/110)<1)continue;g+=xTree(x,y,.6+R()*.5,['#7f9a5c','#6f8a4c','#93a866'][R()*3|0])}
+  g+=`<g transform="translate(150,760)"><path d="M-20 0L0-36L20 0Z" fill="#c9963e" stroke="${xIk}" stroke-width="2"/><path d="M0-36V0" stroke="${xIk}"/></g><g transform="translate(220,800)"><path d="M-10 0l10-20 10 20z" fill="#e0a64a" stroke="${xIk}" stroke-width="1.6"/><path d="M-14 4h28" stroke="${xIk}" stroke-width="3"/></g>`;
+  g+=`<path d="M0 450C120 430 200 520 300 500S460 400 600 430" stroke="#c4a777" stroke-width="16" fill="none" opacity=".7"/>`;return xBgFrame(g,'#dcc79a')};
+XBG.pz_pipe=xCitySVG;
+['tol','piano','pz_lock','pz_tent'].forEach(k=>XOLD.add(k));
+xWrapOld=function(body,id){if(body.querySelector('.xsheet'))return;const d=document.createElement('div');d.innerHTML=xSheet('',520);const sh=d.firstElementChild,pin=sh.querySelector('.xpin');while(body.firstChild)pin.appendChild(body.firstChild);body.appendChild(sh);const bg=sh.querySelector('.xm3bg'),f=XBG[id];if(bg&&f){bg.dataset.k='city';if(!f.c)f.c=f();bg.innerHTML=f.c}};
+{const _pp=pzPlay;pzPlay=function(id,build){if(!XOLD.has(id)||id==='pz_pipe')return _pp(id,build);return _pp(id,api=>{const r=build(api);try{xWrapOld(api.body,id)}catch(e){}return r})}}
+/* tol and piano draw straight into #stage: wrap everything under the hud */
+function xWrapStage(id){const st=$('#stage');if(!st||st.querySelector(':scope>.xsheet'))return;const d=document.createElement('div');d.innerHTML=xSheet('',520);const sh=d.firstElementChild,pin=sh.querySelector('.xpin');[...st.children].forEach(c=>{if(!c.classList.contains('hud')&&!c.classList.contains('qlv'))pin.appendChild(c)});st.appendChild(sh);const bg=sh.querySelector('.xm3bg'),f=XBG[id];if(bg&&f){bg.dataset.k='city';if(!f.c)f.c=f();bg.innerHTML=f.c}st.classList.add('xoldst')}
+['tol','piano'].forEach(id=>{const g=GM[id];if(!g||typeof g.run!=='function')return;const o=g.run;g.run=function(...a){const r=o.apply(this,a);return done=>{const x=r(done);try{xWrapStage(id)}catch(e){}return x}}});
 /* ================= v29: kids — exit to main profile, owl mascot, richer animation, 4 new games ================= */
 const KSTAR='<svg viewBox="0 0 24 24" class="kst"><path d="M12 2l2.9 6.3 6.9.8-5.1 4.7 1.4 6.8L12 17.2 5.9 20.6l1.4-6.8L2.2 9.1l6.9-.8z" stroke="#2B2520" stroke-width="1.4" stroke-linejoin="round"/></svg>';
 const OWL=`<svg viewBox="0 0 64 64" class="owl"><g class="owlb"><g class="owlw l"><path d="M14 34q-9 10-3 22q6-3 9-13z" fill="#7A5A3E" ${RK}/></g><g class="owlw r"><path d="M50 34q9 10 3 22q-6-3-9-13z" fill="#7A5A3E" ${RK}/></g>
