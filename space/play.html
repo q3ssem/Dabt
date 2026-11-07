@@ -1,0 +1,57 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<title>أطلس النجوم</title>
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<meta name="claude:viewport-fit-sides" content="cover">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Tajawal:wght@400;700;800;900&display=swap">
+<style>
+/* صفحة تجربة نُوارة: عالم واحد داكن بقصد (ليل فضائي)، ذهبي وأزرق */
+:root { --sky: #0B1230; --deep: #050A1E; --gold: #E2A93B; --gold2: #FFE48A; --txt: #F6EEDA; --mut: #B9C3DE; --display: 'Aref Ruqaa', 'Tajawal', serif; --body: 'Tajawal', system-ui, sans-serif; color-scheme: dark; }
+html, body { height: 100%; }
+body { margin: 0; background: radial-gradient(120% 80% at 50% 20%, #1B2D5A 0, var(--sky) 55%, var(--deep) 100%); color: var(--txt); font-family: var(--body); display: flex; align-items: center; justify-content: center; padding-left: max(16px, env(safe-area-inset-left, 0px)); padding-right: max(16px, env(safe-area-inset-right, 0px)); padding-block: 24px; box-sizing: border-box; }
+main { width: 100%; max-width: 420px; display: flex; flex-direction: column; align-items: center; gap: 14px; text-align: center; }
+.planet { width: min(68vw, 280px); max-width: 100%; filter: drop-shadow(0 0 34px rgba(140, 220, 255, .45)); animation: drift 7s ease-in-out infinite; }
+@keyframes drift { 50% { transform: translateY(-8px) rotate(2deg); } }
+small.eb { color: var(--mut); font-weight: 700; letter-spacing: .4px; }
+h1 { margin: 0; font-family: var(--display); font-size: 44px; color: var(--gold2); text-shadow: 0 2px 20px rgba(255, 214, 110, .45); text-wrap: balance; }
+p { margin: 0; color: var(--mut); line-height: 1.7; max-width: 34ch; }
+.go { width: 100%; min-height: 54px; border: 0; border-radius: 16px; background: linear-gradient(180deg, var(--gold2), var(--gold)); color: #2A1A0E; font: 900 18px var(--body); cursor: pointer; }
+.go:focus-visible, .rs:focus-visible { outline: 3px solid #5CC8FF; outline-offset: 3px; }
+.rs { background: none; border: 1.5px solid rgba(226, 169, 59, .45); color: var(--mut); border-radius: 12px; min-height: 42px; padding: 0 14px; font: 700 14px var(--body); cursor: pointer; }
+.rs.warn { border-color: #FF9EA8; color: #FF9EA8; }
+.note { font-size: 13px; }
+@media (prefers-reduced-motion: reduce) { .planet { animation: none; } }
+</style>
+</head>
+<body>
+<main>
+  <img class="planet" src="assets/img/planet-01.webp" alt="كوكب نُوارة">
+  <small class="eb">الكوكب الأول · مرافئ الضوء</small>
+  <h1>نُوارة</h1>
+  <p>اركب «الرَّحّالة» مع وَمْض ونو. الفصل الأول «حدائق النور» جاهز للتجربة: خمسة ألغاز، لكل لغز ثلاث درجات.</p>
+  <button class="go" id="go">ابدأ الرحلة</button>
+  <button class="rs" id="rs">مسح التقدم والبدء من الصفر</button>
+  <p class="note" id="st"></p>
+</main>
+<script src="space-loader.js"></script>
+<script>
+(function () {
+  const st = document.getElementById('st'), rs = document.getElementById('rs');
+  function status() {
+    try { const s = JSON.parse(localStorage.getItem('spaceVoyage.v1') || 'null'); const n = s ? Object.values(s.puz).filter(p => p.status === 'done').length : 0; st.textContent = n ? `أكملت ${n} من 20 لغزًا.` : ''; } catch (e) { st.textContent = ''; }
+  }
+  status();
+  document.getElementById('go').onclick = () => SpaceVoyage.load().then(() => SV.open(document.body, { onClose: status }));
+  let armed = false;
+  rs.onclick = () => {
+    if (!armed) { armed = true; rs.classList.add('warn'); rs.textContent = 'اضغط مرة أخرى للتأكيد'; setTimeout(() => { armed = false; rs.classList.remove('warn'); rs.textContent = 'مسح التقدم والبدء من الصفر'; }, 3500); return; }
+    try { localStorage.removeItem('spaceVoyage.v1'); localStorage.removeItem('spaceVoyage.v1.bak'); } catch (e) { }
+    armed = false; rs.classList.remove('warn'); rs.textContent = 'تم المسح'; status();
+  };
+})();
+</script>
+</body>
+</html>
