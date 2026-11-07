@@ -60,7 +60,7 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 .name{width:100%;height:62px;border-radius:18px;border:2px solid var(--line);background:var(--panel);color:var(--ivory);font:800 24px var(--f-body);text-align:center;outline:none;-webkit-user-select:text;user-select:text}
 .name:focus{border-color:var(--gold)}
 .gobtn{width:100%;height:66px;border-radius:20px;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#2A1C05;font-size:22px;font-weight:800}
-.ans{flex:1;display:grid;grid-template-columns:1fr 1fr;gap:12px;min-height:0}
+.ans{direction:ltr;flex:1;display:grid;grid-template-columns:1fr 1fr;gap:12px;min-height:0}
 .ab{border-radius:26px;background:var(--oc);display:grid;place-items:center;box-shadow:inset 0 -8px 0 rgba(0,0,0,.18);transition:transform .08s,opacity .2s}
 .ab svg{width:42%;height:42%}
 .ab:active{transform:scale(.95)}
@@ -69,6 +69,47 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 .cd b{color:var(--ivory);font-size:22px}
 .res2{font-size:44px;font-weight:800}
 .small{background:none;color:var(--gold);font-weight:800;text-decoration:underline;text-underline-offset:4px;font-size:14px;align-self:center}
+.grp{display:grid;grid-template-columns:1fr 1fr;gap:10px;width:min(86vw,360px)}
+.grp .partyb{width:auto;font-size:15px;height:56px}
+.writeb{width:min(86vw,360px);height:56px;border-radius:18px;border:1.5px dashed var(--line);display:flex;align-items:center;justify-content:center;gap:10px;font-size:17px;font-weight:800;color:var(--gold2)}
+.writeb svg{width:26px;height:26px}
+.kv{flex:1;display:flex;flex-direction:column;min-height:0;padding-top:12px;gap:12px}
+.khead{display:flex;align-items:center;gap:12px}
+.khead h2{flex:1;margin:0;font-family:var(--f-disp);font-size:30px;font-weight:700;color:var(--gold2)}
+.kback{width:46px;height:46px;border-radius:14px;background:var(--panel);border:1px solid var(--line);display:grid;place-items:center;flex:none}.kback svg{width:22px;height:22px}
+.kbank{font-size:12.5px;font-weight:800;color:var(--mist);text-align:left}
+.kscroll{flex:1;overflow-y:auto;display:flex;flex-direction:column;gap:12px;padding-bottom:10px;-webkit-overflow-scrolling:touch}
+.kq{display:grid;grid-template-columns:1fr auto;gap:6px 10px;align-items:center;padding:14px;border-radius:18px;background:rgba(19,36,67,.85);border:1px solid rgba(243,235,216,.08)}
+.kq b{font-size:16px;line-height:1.5;overflow-wrap:anywhere}
+.kq small{grid-column:1/-1;display:flex;gap:10px;align-items:center;font-size:12.5px;color:var(--mist);font-weight:700}
+.kq .tag{padding:2px 8px;border-radius:99px;background:rgba(243,235,216,.08)}
+.kq .ok2{color:var(--good)}.kq .err2{color:var(--bad)}
+.kq .acts{display:flex;gap:6px}.kq .acts button{width:40px;height:40px;border-radius:12px;background:var(--panel2);display:grid;place-items:center}.kq .acts svg{width:20px;height:20px}
+.kq img{grid-column:1/-1;max-width:100%;max-height:120px;border-radius:12px;justify-self:start}
+.lbl{font-size:13px;font-weight:800;color:var(--mist);margin-bottom:-4px}
+.segk{display:grid;grid-auto-flow:column;grid-auto-columns:1fr;gap:6px;background:rgba(243,235,216,.06);border-radius:16px;padding:4px}
+.segk button{height:46px;border-radius:12px;font-weight:800;font-size:16px;color:var(--mist)}
+.segk button.on{background:var(--gold);color:#2A1C05}
+.qta{width:100%;min-height:96px;border-radius:18px;border:2px solid var(--line);background:var(--panel);color:var(--ivory);font:700 19px/1.6 var(--f-body);padding:12px 14px;outline:none;resize:none;-webkit-user-select:text;user-select:text}
+.qta:focus,.opin:focus{border-color:var(--gold)}
+.oprow{display:grid;grid-template-columns:52px 1fr;gap:8px;align-items:center}
+.opmark{height:52px;border-radius:14px;background:var(--oc);display:grid;place-items:center;position:relative;opacity:.55}
+.opmark svg{width:24px;height:24px}
+.opmark.on{opacity:1;box-shadow:0 0 0 3px #fff}
+.opmark.on::after{content:"";position:absolute;bottom:-6px;left:-6px;width:22px;height:22px;border-radius:50%;background:#fff url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24'%3E%3Cpath d='M5 12l5 5 9-10' fill='none' stroke='%234FC08D' stroke-width='3.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E") center/16px no-repeat}
+.opin{height:52px;border-radius:14px;border:2px solid var(--line);background:var(--panel);color:var(--ivory);font:700 17px var(--f-body);padding:0 12px;outline:none;min-width:0;-webkit-user-select:text;user-select:text}
+.tfpick{display:grid;grid-template-columns:1fr 1fr;gap:10px}
+.tfpick button{height:76px;border-radius:18px;background:var(--oc);opacity:.45;display:flex;align-items:center;justify-content:center;gap:8px;font-size:22px;font-weight:800;color:#fff}
+.tfpick button svg{width:30px;height:30px}.tfpick button.on{opacity:1;box-shadow:0 0 0 3px #fff}
+.imgb{height:56px;border-radius:16px;border:1.5px dashed var(--line);display:flex;align-items:center;justify-content:center;gap:10px;font-weight:800;color:var(--gold2);position:relative;overflow:hidden}
+.imgb input{position:absolute;inset:0;opacity:0}
+.imgb svg{width:24px;height:24px}
+.imgp{position:relative}.imgp img{width:100%;max-height:220px;object-fit:contain;border-radius:16px;background:var(--panel)}
+.imgp button{position:absolute;top:8px;left:8px;height:36px;padding:0 12px;border-radius:10px;background:rgba(10,20,40,.85);font-weight:800;font-size:13px}
+.hint{font-size:12.5px;color:var(--mist);font-weight:700;line-height:1.6}
+.ferr{color:var(--bad);font-weight:800;min-height:1.2em;font-size:14px}
+.ab .tfl{font-size:30px;font-weight:800;color:#fff;display:block;margin-top:4px}
+.ans.two{grid-template-columns:1fr}
 </style></head><body>
 <div class="top"><div><h1>ريموت ضبط دماغك</h1><small>تحكّم بالتلفزيون من جوالك</small></div><div class="st" id="st"><i></i><span id="stt">غير متصل</span></div></div>
 
@@ -93,12 +134,18 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
     <button class="big" data-k="BACK"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg>رجوع</button>
     <button class="big" data-k="PAUSE"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>إيقاف مؤقت</button>
   </div>
-  <button class="partyb" id="bopen" hidden>افتح «جمعة الميلخ» على التلفزيون</button>
+  <div class="grp" id="grp" hidden><button class="partyb" id="bopen">افتح «جمعة الميلخ»</button><button class="partyb" id="bopenk">افتح «كاهوت الجلسة»</button></div>
+  <button class="writeb" id="bwrite"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round"><rect x="8" y="6" width="26" height="34" rx="4"/><path d="M14 16h14M14 23h10"/><path d="M40 18L26 32l-3 8 8-3 14-14z"/></svg>اكتب سؤال لكاهوت الجلسة</button>
   <div class="foot"><span>التلفزيون <b id="fcode" class="num"></b></span><button id="bchange">غيّر التلفزيون</button></div>
 </section>
 
+<section class="kv" id="kview" hidden>
+  <div class="khead"><button class="kback" id="kback" aria-label="رجوع"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button><h2 id="ktitle">كاهوت الجلسة</h2><span class="kbank" id="kbank"></span></div>
+  <div id="kbody" class="kscroll"></div>
+</section>
+
 <section class="pv" id="partyv" hidden>
-  <h2>جمعة الميلخ</h2>
+  <h2 id="ptitle">جمعة الميلخ</h2>
   <div id="pbody" class="pv" style="padding:0"></div>
   <button class="small" id="btoremote">استخدم الريموت بدلًا من اللعب</button>
 </section>
@@ -110,15 +157,16 @@ try{code=(new URLSearchParams(location.search).get('c'))||localStorage.getItem('
 if(!/^\d{4}$/.test(code))code='';
 var NAMES={home:'الشاشة الرئيسية',intro:'صفحة الشرح',game:'داخل اللعبة',result:'النتيجة',pause:'إيقاف مؤقت'};
 function status(t,on){$('#st').classList.toggle('on',!!on);$('#stt').textContent=t}
-function view(){$('#pairv').hidden=!!code;$('#padv').hidden=!code;$('#partyv').hidden=true;if(code){$('#fcode').textContent=code;connect();if(P)pView()}else{status('غير متصل',false);setTimeout(function(){$('#c1').focus()},50)}}
-function connect(){if(mq){mq.subscribe(MQ_BASE+code+'/s');mq.subscribe(MQ_BASE+code+'/p');return}
+function view(){$('#pairv').hidden=!!code;$('#padv').hidden=!code;$('#partyv').hidden=true;$('#kview').hidden=true;if(code){$('#fcode').textContent=code;connect();if(P)pView()}else{status('غير متصل',false);setTimeout(function(){$('#c1').focus()},50)}}
+function subAll(){['/s','/p','/ka','/kc'].forEach(function(x){mq.subscribe(MQ_BASE+code+x)})}
+function connect(){if(mq){subAll();return}
   status('يتصل…',false);
-  mq=MQ(MQ_BROKERS,function(t,m){var s;try{s=JSON.parse(m)}catch(e){return}if(t===MQ_BASE+code+'/p'){onParty(s);return}if(t!==MQ_BASE+code+'/s')return;lastSeen=Date.now();showState(s)},function(n){if(!n)status('يعيد الاتصال…',false);else{mq.publish(MQ_BASE+code+'/hi',JSON.stringify({d:dev}));tick()}});
-  mq.subscribe(MQ_BASE+code+'/s');mq.subscribe(MQ_BASE+code+'/p')}
+  mq=MQ(MQ_BROKERS,function(t,m){var s;try{s=JSON.parse(m)}catch(e){return}if(t===MQ_BASE+code+'/p'){onParty(s);return}if(t===MQ_BASE+code+'/ka'){onAck(s);return}if(t===MQ_BASE+code+'/kc'){onBank(s);return}if(t!==MQ_BASE+code+'/s')return;lastSeen=Date.now();showState(s)},function(n){if(!n)status('يعيد الاتصال…',false);else{mq.publish(MQ_BASE+code+'/hi',JSON.stringify({d:dev}));tick()}});
+  subAll()}
 function tick(){var fresh=Date.now()-lastSeen<12000;if(!mq||!mq.up)status('يعيد الاتصال…',false);else status(fresh?'متصل بالتلفزيون':'التلفزيون غير مفتوح',fresh)}
 setInterval(tick,2000);
 function showState(s){$('#iscr').textContent=(s.p?NAMES.pause:NAMES[s.scr])||'';$('#ititle').textContent=s.t||'ضبط دماغك';
-  var ob=document.getElementById('bopen');if(ob)ob.hidden=!!s.party||s.scr!=='home';if(!s.party&&P&&P.on){P.on=false;pView()}
+  var ob=document.getElementById('grp');if(ob)ob.hidden=!!s.party||s.scr!=='home';if(!s.party&&P&&P.on){P.on=false;pView()}
   $('#ileg').innerHTML=(s.keys||[]).map(function(k){return '<span><em>'+esc(k[0])+'</em>'+esc(k[1])+'</span>'}).join('');tick()}
 function esc(x){return String(x).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
 function send(k){if(!mq)return;seq++;mq.publish(MQ_BASE+code+'/k',JSON.stringify({k:k,i:dev+'-'+seq}));try{navigator.vibrate&&navigator.vibrate(k==='OK'?18:10)}catch(e){}}
@@ -133,7 +181,7 @@ var ins=[].slice.call(document.querySelectorAll('.code input'));
 ins.forEach(function(inp,i){inp.addEventListener('input',function(){inp.value=inp.value.replace(/\D/g,'').slice(-1);if(inp.value&&i<3)ins[i+1].focus();if(ins.every(function(x){return x.value}))pair()});
   inp.addEventListener('keydown',function(e){if(e.key==='Backspace'&&!inp.value&&i>0)ins[i-1].focus()})});
 function pair(){var c=ins.map(function(x){return x.value}).join('');if(!/^\d{4}$/.test(c)){$('#err').textContent='اكتب الأرقام الأربعة كاملة';return}
-  $('#err').textContent='';code=c;try{localStorage.setItem('dabt-remote-code',c)}catch(e){}if(mq){mq.subscribe(MQ_BASE+code+'/s');mq.subscribe(MQ_BASE+code+'/p')}view()}
+  $('#err').textContent='';code=c;try{localStorage.setItem('dabt-remote-code',c)}catch(e){}if(mq)subAll();view()}
 $('#bpair').onclick=pair;
 $('#bchange').onclick=function(){code='';lastSeen=0;try{localStorage.removeItem('dabt-remote-code')}catch(e){}ins.forEach(function(x){x.value=''});view()};
 if(code){try{localStorage.setItem('dabt-remote-code',code)}catch(e){}}
@@ -141,33 +189,101 @@ if(code){try{localStorage.setItem('dabt-remote-code',code)}catch(e){}}
 function wake(){try{navigator.wakeLock&&navigator.wakeLock.request('screen').catch(function(){})}catch(e){}}
 document.addEventListener('visibilitychange',function(){if(!document.hidden)wake()});wake();
 
-/* ===== جمعة الميلخ on the phone ===== */
+/* ===== group play on the phone: جمعة الميلخ + كاهوت الجلسة ===== */
 var me='';try{me=localStorage.getItem('dabt-dev')||'';if(!me){me='p'+Math.random().toString(36).slice(2,10);localStorage.setItem('dabt-dev',me)}}catch(e){me='p'+dev}
 var myName='';try{myName=localStorage.getItem('dabt-name')||''}catch(e){}
-var P=null,pRecv=0,myAns={},forceRemote=false,lastPh='',joinTried=0;
-var OCOL=['#E8637A','#6E9CFF','#E8C33B','#4FC08D'];
+var P=null,pRecv=0,myAns={},forceRemote=false,lastPh='',joinTried=0,inK=false;
+var MODEN={party:'جمعة الميلخ',kahoot:'كاهوت الجلسة'},CHAMP={party:'أنت بطل الجمعة',kahoot:'أنت بطل الجلسة'};
+var OCOL=['#E8637A','#6E9CFF','#E8C33B','#4FC08D'],TFCOL=['#4FC08D','#E8637A'],TFN=['صح','خطأ'];
 var OSH=['<polygon points="50,12 90,84 10,84" fill="#fff"/>','<polygon points="50,8 92,50 50,92 8,50" fill="#fff"/>','<circle cx="50" cy="50" r="40" fill="#fff"/>','<rect x="14" y="14" width="72" height="72" rx="8" fill="#fff"/>'];
+var TFSV=['<svg viewBox="0 0 100 100" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round" stroke-linejoin="round"><path d="M22 52l18 18 38-40"/></svg>','<svg viewBox="0 0 100 100" fill="none" stroke="#fff" stroke-width="14" stroke-linecap="round"><path d="M28 28l44 44M72 28L28 72"/></svg>'];
+function shp(i){return '<svg viewBox="0 0 100 100">'+OSH[i]+'</svg>'}
 function pub(t,o){if(mq)mq.publish(MQ_BASE+code+t,JSON.stringify(o))}
+function buzz(p){try{navigator.vibrate&&navigator.vibrate(p)}catch(e){}}
 function meP(){if(!P||!P.players)return null;for(var i=0;i<P.players.length;i++)if(P.players[i].d===me)return P.players[i];return null}
 function rankOf(){if(!P||!P.players)return 0;var a=P.players.slice().sort(function(x,y){return y.s-x.s});for(var i=0;i<a.length;i++)if(a[i].d===me)return i+1;return 0}
 function onParty(p){P=p;pRecv=Date.now();if(P.on&&!meP()&&myName&&Date.now()-joinTried>3000){joinTried=Date.now();pub('/j',{d:me,n:myName})}pView()}
-function pView(){var on=P&&P.on&&!forceRemote;$('#partyv').hidden=!on||!code;$('#padv').hidden=on||!code;if(!on)return;
-  var b=$('#pbody'),m=meP(),ph=P.ph,key=ph+P.qn+(m?1:0)+(myAns[P.qn]!=null?1:0);
-  if(ph==='q'){updCd()}
+function setName(n){myName=n;try{localStorage.setItem('dabt-name',n)}catch(e){}}
+function pView(){if(inK)return;var on=P&&P.on&&!forceRemote;$('#partyv').hidden=!on||!code;$('#padv').hidden=on||!code;if(!on)return;
+  var mode=P.mode||'party';$('#ptitle').textContent=MODEN[mode];
+  var b=$('#pbody'),m=meP(),ph=P.ph,key=mode+ph+P.qn+(m?1:0)+(myAns[P.qn]!=null?1:0);
+  if(ph==='q')updCd();
   if(key===lastPh&&ph!=='lobby')return;lastPh=key;
-  if(!m){b.innerHTML='<div class="pcard"><p>اكتب اسمك عشان يطلع على التلفزيون</p></div><input class="name" id="pname" maxlength="16" placeholder="اسمك" value="'+esc(myName)+'"><button class="gobtn" id="pjoin">ادخل الجمعة</button>';
-    $('#pjoin').onclick=function(){var n=$('#pname').value.trim();if(!n){$('#pname').focus();return}myName=n;try{localStorage.setItem('dabt-name',n)}catch(e){}joinTried=Date.now();pub('/j',{d:me,n:n});$('#pjoin').textContent='جارِ الدخول…'};return}
-  if(ph==='lobby'){b.innerHTML='<div class="pcard"><p>أنت داخل باسم</p><b class="big2">'+esc(m.n)+'</b><p>اللاعبين: '+P.players.length+'</p></div><div class="pcard"><p>إذا اكتمل العدد، أي واحد يقدر يبدأ</p></div><button class="gobtn" id="pstart">ابدأ الجمعة</button>';$('#pstart').onclick=function(){pub('/c',{d:me,c:'start'});try{navigator.vibrate&&navigator.vibrate(20)}catch(e){}};return}
+  if(!m){b.innerHTML='<div class="pcard"><p>اكتب اسمك عشان يطلع على التلفزيون</p></div><input class="name" id="pname" maxlength="16" placeholder="اسمك" value="'+esc(myName)+'"><button class="gobtn" id="pjoin">ادخل</button>';
+    $('#pjoin').onclick=function(){var n=$('#pname').value.trim();if(!n){$('#pname').focus();return}setName(n);joinTried=Date.now();pub('/j',{d:me,n:n});$('#pjoin').textContent='جارِ الدخول…'};return}
+  if(ph==='lobby'){var K=mode==='kahoot';
+    b.innerHTML='<div class="pcard"><p>أنت داخل باسم</p><b class="big2">'+esc(m.n)+'</b><p>اللاعبين: '+P.players.length+(K?' · الأسئلة: '+(P.kq||0):'')+'</p></div>'+
+     (K?'<button class="writeb" id="pwrite" style="width:100%">'+$('#bwrite').innerHTML+'</button>':'')+
+     '<div class="pcard"><p>إذا اكتمل العدد، أي واحد يقدر يبدأ</p></div><button class="gobtn" id="pstart"'+(K&&!P.kq?' disabled style="opacity:.4"':'')+'>ابدأ</button>';
+    $('#pstart').onclick=function(){pub('/c',{d:me,c:'start'});buzz(20)};if($('#pwrite'))$('#pwrite').onclick=openK;return}
   if(ph==='show'){b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center"><div><b class="big2">ركّز على الشاشة</b><p>احفظ الرموز بالترتيب</p></div></div>';return}
-  if(ph==='q'){var mine=myAns[P.qn];
-    b.innerHTML='<div class="cd">السؤال '+P.qn+' من '+P.total+' · باقي <b id="cdn">'+Math.ceil(P.left/1000)+'</b> ث</div><div class="ans">'+OCOL.map(function(c,i){return '<button class="ab'+(mine!=null?(mine===i?' mine':' off'):'')+'" data-a="'+i+'" style="--oc:'+c+'"><svg viewBox="0 0 100 100">'+OSH[i]+'</svg></button>'}).join('')+'</div>'+(mine!=null?'<div class="cd">تم إرسال إجابتك. انتظر الباقين</div>':'');
-    if(mine==null)b.querySelectorAll('.ab').forEach(function(x){x.addEventListener('pointerdown',function(e){e.preventDefault();var a=+x.dataset.a;if(myAns[P.qn]!=null)return;myAns[P.qn]=a;pub('/a',{d:me,q:P.qn,a:a});try{navigator.vibrate&&navigator.vibrate(25)}catch(er){}lastPh='';pView()})});return}
-  if(ph==='reveal'||ph==='board'){var ok=m.ok;b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center;background:'+(ok?'rgba(79,192,141,.18)':'rgba(232,99,122,.16)')+'"><div><div class="res2">'+(ok?'صح!':(myAns[P.qn]==null?'ما جاوبت':'خطأ'))+'</div>'+(ok?'<b class="big2">+'+m.dl+'</b>':'')+'<p>نقاطك '+m.s+' · ترتيبك '+rankOf()+' من '+P.players.length+'</p></div></div>';if(ok){try{navigator.vibrate&&navigator.vibrate([30,60,30])}catch(e){}}return}
-  if(ph==='final'){var r=rankOf();b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center"><div><div class="res2">'+(r===1?'أنت بطل الجمعة':'ترتيبك '+r)+'</div><b class="big2">'+m.s+' نقطة</b><p>من '+P.players.length+' لاعبين</p></div></div><button class="gobtn" id="pagain2">جولة جديدة</button>';$('#pagain2').onclick=function(){pub('/c',{d:me,c:'start'})};return}}
+  if(ph==='q'){var mine=myAns[P.qn],n=P.n||4,tf=!!P.tf;
+    b.innerHTML='<div class="cd">السؤال '+P.qn+' من '+P.total+' · باقي <b id="cdn">'+Math.ceil(P.left/1000)+'</b> ث</div>'+(P.by===me?'<div class="cd" style="color:var(--gold2)">هذا سؤالك. جاوب عليه مثل الباقين</div>':'')+
+     '<div class="ans'+(tf?' two':'')+'">'+[0,1,2,3].slice(0,n).map(function(i){var c=tf?TFCOL[i]:OCOL[i];return '<button class="ab'+(mine!=null?(mine===i?' mine':' off'):'')+'" data-a="'+i+'" style="--oc:'+c+'">'+(tf?'<span><span style="display:block;width:70px;height:70px;margin:auto">'+TFSV[i]+'</span><span class="tfl">'+TFN[i]+'</span></span>':shp(i))+'</button>'}).join('')+'</div>'+
+     (mine!=null?'<div class="cd">تم إرسال إجابتك. انتظر الباقين</div>':'');
+    if(mine==null)b.querySelectorAll('.ab').forEach(function(x){x.addEventListener('pointerdown',function(e){e.preventDefault();var a=+x.dataset.a;if(myAns[P.qn]!=null)return;myAns[P.qn]=a;pub('/a',{d:me,q:P.qn,a:a});buzz(25);lastPh='';pView()})});return}
+  if(ph==='reveal'||ph==='board'){var ok=m.ok;b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center;background:'+(ok?'rgba(79,192,141,.18)':'rgba(232,99,122,.16)')+'"><div><div class="res2">'+(ok?'صح!':(myAns[P.qn]==null?'ما جاوبت':'خطأ'))+'</div>'+(ok?'<b class="big2">+'+m.dl+'</b>':'')+'<p>نقاطك '+m.s+' · ترتيبك '+rankOf()+' من '+P.players.length+'</p></div></div>';if(ok)buzz([30,60,30]);return}
+  if(ph==='final'){var r=rankOf();b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center"><div><div class="res2">'+(r===1?CHAMP[mode]:'ترتيبك '+r)+'</div><b class="big2">'+m.s+' نقطة</b><p>من '+P.players.length+' لاعبين</p></div></div>'+(mode==='party'?'<button class="gobtn" id="pagain2">جولة جديدة</button>':'');
+    if($('#pagain2'))$('#pagain2').onclick=function(){pub('/c',{d:me,c:'start'})};return}}
 function updCd(){var el=$('#cdn');if(!el||!P)return;var left=Math.max(0,P.left-(Date.now()-pRecv));el.textContent=Math.ceil(left/1000)}
 setInterval(function(){if(P&&P.ph==='q')updCd()},250);
 $('#btoremote').onclick=function(){forceRemote=true;pView()};
-$('#bopen').onclick=function(){pub('/c',{d:me,c:'open'});forceRemote=false};
+$('#bopen').onclick=function(){pub('/c',{d:me,c:'open',m:'party'});forceRemote=false};
+$('#bopenk').onclick=function(){pub('/c',{d:me,c:'open',m:'kahoot'});forceRemote=false};
+
+/* ===== كاهوت الجلسة: writing questions ===== */
+var MKEY='dabt-kq-mine',mine=[],bank=null,draft=null;
+try{mine=JSON.parse(localStorage.getItem(MKEY)||'[]')||[]}catch(e){mine=[]}
+function saveMine(){try{localStorage.setItem(MKEY,JSON.stringify(mine))}catch(e){try{localStorage.setItem(MKEY,JSON.stringify(mine.map(function(x){var y=JSON.parse(JSON.stringify(x));if(y.st==='ok')y.q.img='';return y})))}catch(er){}}}
+function onBank(b){bank=b;var el=$('#kbank');if(el)el.textContent=b&&b.total!=null?'في التلفزيون: '+b.total+' سؤال':''}
+function onAck(a){if(!a||a.d!==me)return;for(var i=0;i<mine.length;i++)if(mine[i].id===a.id){if(a.del&&a.ok){mine.splice(i,1)}else{mine[i].st=a.ok?'ok':'err';mine[i].why=a.why||''}break}saveMine();if(inK&&!draft)kList()}
+function sendQ(x){if(x.st==='del')pub('/kq',{d:me,id:x.id,del:true});else pub('/kq',{d:me,n:myName,id:x.id,q:x.q})}
+setInterval(function(){if(!mq||!mq.up||Date.now()-lastSeen>12000)return;mine.forEach(function(x){if(x.st==='pending'||x.st==='del')sendQ(x)})},4000);
+function openK(){inK=true;draft=null;$('#padv').hidden=true;$('#partyv').hidden=true;$('#kview').hidden=false;kList()}
+function closeK(){if(draft){draft=null;kList();return}inK=false;$('#kview').hidden=true;lastPh='';if(P&&P.on&&!forceRemote)pView();else{$('#padv').hidden=!code}}
+$('#bwrite').onclick=openK;$('#kback').onclick=closeK;
+var IC_EDIT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>',IC_DEL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></svg>';
+var ST={pending:'<span class="tag">يرسل للتلفزيون…</span>',ok:'<span class="tag ok2">محفوظ في التلفزيون</span>',err:'<span class="tag err2">ما انحفظ</span>',del:'<span class="tag">يحذف…</span>'};
+function kList(){$('#ktitle').textContent='كاهوت الجلسة';var b=$('#kbody'),live=mine.filter(function(x){return x.st!=='del'});
+  if(!myName){b.innerHTML='<div class="pcard"><p>اكتب اسمك عشان يطلع مع أسئلتك</p></div><input class="name" id="kname" maxlength="16" placeholder="اسمك"><button class="gobtn" id="kname2">التالي</button>';
+    $('#kname2').onclick=function(){var n=$('#kname').value.trim();if(!n){$('#kname').focus();return}setName(n);kList()};return}
+  b.innerHTML='<div class="pcard"><p>اكتب أسئلتك هنا. تنحفظ على التلفزيون ومحد يشوفها لين تبدأ المسابقة.</p></div>'+
+   '<button class="gobtn" id="knew">سؤال جديد</button>'+
+   (live.length?'<div class="lbl">أسئلتك ('+live.length+')</div>':'')+
+   live.map(function(x){var q=x.q;return '<div class="kq"><b>'+esc(q.t)+'</b><div class="acts"><button data-e="'+x.id+'" aria-label="تعديل">'+IC_EDIT+'</button><button data-x="'+x.id+'" aria-label="حذف">'+IC_DEL+'</button></div>'+(q.img?'<img src="'+q.img+'" alt="">':'')+'<small>'+(q.tf?'صح أو خطأ':'أربع خيارات')+' · '+q.s+' ث · الجواب: '+esc(q.o[q.a])+' '+ST[x.st]+(x.st==='err'&&x.why?' <span class="err2">'+esc(x.why)+'</span>':'')+'</small></div>'}).join('');
+  $('#knew').onclick=function(){kForm(null)};
+  b.querySelectorAll('[data-e]').forEach(function(e){e.onclick=function(){kForm(e.dataset.e)}});
+  b.querySelectorAll('[data-x]').forEach(function(e){e.onclick=function(){var x=mine.filter(function(y){return y.id===e.dataset.x})[0];if(!x)return;if(e.dataset.sure){x.st='del';saveMine();sendQ(x);kList()}else{e.dataset.sure='1';e.style.background='var(--bad)';setTimeout(function(){if(e.isConnected){delete e.dataset.sure;e.style.background=''}},2500)}}})}
+function kForm(id){var x=id&&mine.filter(function(y){return y.id===id})[0];
+  draft=x?JSON.parse(JSON.stringify(x.q)):{tf:false,t:'',o:['','','',''],a:-1,s:20,img:''};draft._id=x?x.id:'q'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+  if(draft.tf&&draft.o.length===2)draft.o4=['','','',''];kDraw()}
+function kDraw(){var d=draft,b=$('#kbody');$('#ktitle').textContent=mine.some(function(y){return y.id===d._id})?'تعديل السؤال':'سؤال جديد';
+  var opts4=d.tf?(d.o4||['','','','']):d.o;
+  b.innerHTML='<div class="lbl">نوع السؤال</div><div class="segk" id="ktype"><button data-v="4" class="'+(d.tf?'':'on')+'">أربع خيارات</button><button data-v="tf" class="'+(d.tf?'on':'')+'">صح أو خطأ</button></div>'+
+   '<div class="lbl">السؤال</div><textarea class="qta" id="kt" maxlength="200" placeholder="اكتب سؤالك هنا">'+esc(d.t)+'</textarea>'+
+   (d.img?'<div class="imgp"><img src="'+d.img+'" alt=""><button id="kimgx">إزالة الصورة</button></div>':'<label class="imgb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="11" r="2"/><path d="M21 16l-5-5-8 8"/></svg><span id="kimgl">أضف صورة (اختياري)</span><input type="file" accept="image/*" id="kimg"></label>')+
+   (d.tf?'<div class="lbl">وش الجواب الصح؟</div><div class="tfpick">'+[0,1].map(function(i){return '<button data-a="'+i+'" style="--oc:'+TFCOL[i]+'" class="'+(d.a===i?'on':'')+'">'+TFSV[i]+TFN[i]+'</button>'}).join('')+'</div>'
+     :'<div class="lbl">الخيارات. اضغط اللون عشان تحدد الجواب الصح</div>'+[0,1,2,3].map(function(i){return '<div class="oprow"><button class="opmark'+(d.a===i?' on':'')+'" data-a="'+i+'" style="--oc:'+OCOL[i]+'" aria-label="هذا الجواب الصح">'+shp(i)+'</button><input class="opin" data-o="'+i+'" maxlength="60" placeholder="الخيار '+(i+1)+'" value="'+esc(opts4[i])+'"></div>'}).join(''))+
+   '<div class="lbl">وقت السؤال</div><div class="segk" id="ktime">'+[10,20,30,60].map(function(v){return '<button data-v="'+v+'" class="'+(d.s===v?'on':'')+'">'+v+' ث</button>'}).join('')+'</div>'+
+   '<div class="ferr" id="kerr"></div><button class="gobtn" id="ksave">احفظ وأرسل للتلفزيون</button><button class="small" id="kcancel">إلغاء</button>';
+  $('#kt').oninput=function(){d.t=this.value};
+  b.querySelectorAll('.opin').forEach(function(e){e.oninput=function(){d.o[+e.dataset.o]=e.value}});
+  b.querySelectorAll('#ktype button').forEach(function(e){e.onclick=function(){var tf=e.dataset.v==='tf';if(tf===d.tf)return;if(tf){d.o4=d.o.slice();d.o=['صح','خطأ']}else{d.o=d.o4||['','','',''];delete d.o4}d.tf=tf;d.a=-1;kDraw()}});
+  b.querySelectorAll('[data-a]').forEach(function(e){e.onclick=function(){d.a=+e.dataset.a;buzz(10);b.querySelectorAll('[data-a]').forEach(function(z){z.classList.toggle('on',z===e)})}});
+  b.querySelectorAll('#ktime button').forEach(function(e){e.onclick=function(){d.s=+e.dataset.v;b.querySelectorAll('#ktime button').forEach(function(z){z.classList.toggle('on',z===e)})}});
+  if($('#kimgx'))$('#kimgx').onclick=function(){d.img='';kDraw()};
+  if($('#kimg'))$('#kimg').onchange=function(){var f=this.files&&this.files[0];if(!f)return;$('#kimgl').textContent='نجهز الصورة…';shrink(f,function(u){if(!u){$('#kerr').textContent='ما قدرنا نقرأ الصورة. جرّب صورة ثانية';$('#kimgl').textContent='أضف صورة (اختياري)';return}d.img=u;kDraw()})};
+  $('#kcancel').onclick=function(){draft=null;kList()};
+  $('#ksave').onclick=function(){var t=(d.t||'').trim(),e='';
+    if(!t)e='اكتب السؤال';else if(!d.tf&&d.o.some(function(x){return !(x||'').trim()}))e='عبّ الخيارات الأربعة';else if(!(d.a>=0))e=d.tf?'حدد هل الجواب صح أو خطأ':'اضغط لون الجواب الصح';
+    if(e){$('#kerr').textContent=e;buzz([20,40,20]);return}
+    var q={t:t,tf:d.tf,o:d.tf?['صح','خطأ']:d.o.map(function(x){return x.trim()}),a:d.a,s:d.s,img:d.img||''},id=d._id,ex=mine.filter(function(y){return y.id===id})[0];
+    if(ex){ex.q=q;ex.st='pending'}else{ex={id:id,q:q,st:'pending'};mine.push(ex)}saveMine();sendQ(ex);buzz(20);draft=null;kList()}}
+/* shrink a photo on the phone so it travels fast: longest side 720px, JPEG, under ~90KB */
+function shrink(file,cb){var url=URL.createObjectURL(file),img=new Image();img.onload=function(){URL.revokeObjectURL(url);var w=img.naturalWidth,h=img.naturalHeight,k=Math.min(1,720/Math.max(w,h)),out='';
+    for(var tries=0;tries<6;tries++){var c=document.createElement('canvas');c.width=Math.max(1,Math.round(w*k));c.height=Math.max(1,Math.round(h*k));var g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(img,0,0,c.width,c.height);
+      out=c.toDataURL('image/jpeg',tries<3?.7-tries*.12:.45);if(out.length<120000)break;k*=.8}
+    cb(out.indexOf('data:image/jpeg;base64,')===0&&out.length<150000?out:'')};img.onerror=function(){URL.revokeObjectURL(url);cb('')};img.src=url}
 view();
 })();
 </script>
