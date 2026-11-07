@@ -8368,7 +8368,8 @@ document.documentElement.style.setProperty('--xframe','url('+XFRAME+')');
     const k=(RUN&&RUN.queue?RUN.queue[RUN.pos]:'')+'|'+b.childElementCount+'|'+(b.firstElementChild?b.firstElementChild.className:'');if(k===fitKey)return;fitKey=k;
     b.style.zoom='';const over=st.scrollHeight-st.clientHeight;if(over<=2)return;
     const h=b.getBoundingClientRect().height,z=Math.max(.72,(h-over-4)/h);b.style.zoom=String(Math.round(z*1000)/1000)}
-  try{new MutationObserver(()=>setTimeout(fitOnce,120)).observe($('#stage'),{childList:true,subtree:true})}catch(e){}
+  try{new MutationObserver(()=>{tick();fitOnce()}).observe($('#stage'),{childList:true,subtree:true})}catch(e){}
+  try{new MutationObserver(()=>{tick();fitOnce()}).observe($('#play'),{attributes:true,attributeFilter:['hidden']})}catch(e){}
   setInterval(fitOnce,600);
   setInterval(tick,250);document.addEventListener('click',e=>{setTimeout(tick,30);if(e.target.closest&&e.target.closest('#play .go-btn'))setTimeout(()=>{const s0=$('#stage');if(s0)s0.scrollTop=0},60)},true)})();
 applyMode();if(!MODE)showModePick();
