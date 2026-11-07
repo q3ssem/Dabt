@@ -2087,6 +2087,8 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 .triptx{display:flex;flex-direction:column;gap:4px;min-width:0}.triptx b{font-size:20px}.triptx small{color:var(--muted);font-size:12.5px;font-weight:700;line-height:1.6}
 .tripbar{height:7px;border-radius:7px;background:rgba(var(--tint),.1);overflow:hidden;margin-top:4px}.tripbar i{display:block;height:100%;background:linear-gradient(90deg,#C9962E,#FFD45A);border-radius:7px}
 .tripc .go{color:var(--muted);font-size:22px}
+
+.xstg{display:flex;gap:3px;justify-content:center;margin-top:2px}.xstg i{width:7px;height:7px;border-radius:50%;background:rgba(58,38,22,.25);border:1px solid #3A2616}.xstg i.on{background:#C9962E}
 </style>
 
 
@@ -3637,15 +3639,15 @@ const AN={hint:['تلميحًا واحدًا','تلميحين','تلميحات',
 function pzPlay(id,build){return done=>{
   const g=GM[id],kid=!!g.kid,mx=pzMax(id),daily=!!(RUN&&RUN.daily)&&!kid,isRid=id==='pz_rid';
   const rp=RUN&&RUN.replay&&RUN.replay.id===id?RUN.replay:null;if(RUN)RUN.replay=null;
-  const lv=rp?rp.lv:pzLv(id),seed=rp?rp.seed:(Math.random()*2147483646|0)+1;if(RUN&&!isRid)RUN.last={id,lv,seed};
+  const stg=rp?null:txStageOf(id),lv=rp?rp.lv:stg?stg.lv:pzLv(id),seed=rp?rp.seed:(Math.random()*2147483646|0)+1;if(RUN&&!isRid)RUN.last={id,lv,seed};
   const st=$('#stage');const base=kid?0:(isRid?40:20+lv*10)*(daily?2:1);let pts=base,hints=0,wrongs=0,ended=false,P={};
   const canRe=!PZ_NORESTART.includes(id);
-  st.innerHTML=`<div class="pzhud">${kid?`<span class="pzlv">المستوى <b class="num">${lv}</b></span>`:`<span class="pzlv">${daily?'<span class="badge">لغز اليوم ×2</span> ':''}${isRid?'':`المستوى <b class="num">${lv}</b> من ${mx}`}</span><span class="pzcoin" title="العملات المتاحة">${COIN}<b class="num" id="pzp">${pts}</b></span>`}${canRe?`<button class="pzhb pzre" id="pzr" aria-label="إعادة اللغز من البداية">${RE_SVG}<span>إعادة</span></button>`:''}<button class="pzhb" id="pzh">${BULB}<span>تلميح</span><i class="num" id="pzhn">3</i></button></div><div class="pzhint" id="pzt" hidden></div><div class="msg" id="m"></div><div class="pzbody" id="pzb"></div><div class="pzfoot"><button class="pzgive" id="pzq">${kid?'رجوع':'استسلم'}</button></div>`;
+  st.innerHTML=`<div class="pzhud">${kid?`<span class="pzlv">المستوى <b class="num">${lv}</b></span>`:`<span class="pzlv">${daily?'<span class="badge">لغز اليوم ×2</span> ':''}${isRid?'':stg?`المرحلة <b class="num">${stg.k}</b> من 3`:`المستوى <b class="num">${lv}</b> من ${mx}`}</span><span class="pzcoin" title="العملات المتاحة">${COIN}<b class="num" id="pzp">${pts}</b></span>`}${canRe?`<button class="pzhb pzre" id="pzr" aria-label="إعادة اللغز من البداية">${RE_SVG}<span>إعادة</span></button>`:''}<button class="pzhb" id="pzh">${BULB}<span>تلميح</span><i class="num" id="pzhn">3</i></button></div><div class="pzhint" id="pzt" hidden></div><div class="msg" id="m"></div><div class="pzbody" id="pzb"></div><div class="pzfoot"><button class="pzgive" id="pzq">${kid?'رجوع':'استسلم'}</button></div>`;
   const setP=v=>{pts=Math.max(Math.round(base*.25),v);const e=$('#pzp');if(e)e.textContent=pts};
   const fin=(won,detail)=>{ended=true;stopAll();const p=pzState(),cur=pzLv(id);let nl=cur;
-    if(!isRid)nl=won?Math.min(mx,cur+1):Math.max(1,cur-1);if(!isRid)pzSetLv(id,nl);
+    if(!isRid&&!stg)nl=won?Math.min(mx,cur+1):Math.max(1,cur-1);if(!isRid&&!stg)pzSetLv(id,nl);
     if(won&&!kid){p.pts+=pts;p.n[id]=(p.n[id]||0)+1;if(daily)p.daily=dayKey()}if(RUN){RUN.daily=false;if(isRid)RUN.rid=null}
-    const lvTxt=isRid?'':nl>cur?` المرحلة التالية: المستوى ${nl}.`:nl<cur?` رجعنا للمستوى ${nl} لتثبيت المهارة.`:'';
+    const lvTxt=isRid||stg?'':nl>cur?` المرحلة التالية: المستوى ${nl}.`:nl<cur?` رجعنا للمستوى ${nl} لتثبيت المهارة.`:'';
     const hTxt=kid?'':won?(hints?` استخدمت ${arN(hints,AN.hint)}.`:' بدون أي تلميح!'):'';
     if(won){sfx.win();$('#pzb').classList.add('solved');pzStamp(kid?'أحسنت!':'محلول!')}
     later(()=>done({pts:won?pts:0,metric:won?clamp(1000-hints*150-wrongs*100,250,1000):0,detail:(detail||'')+hTxt+lvTxt}),won?1500:300)};
@@ -5258,7 +5260,7 @@ function txState(){const t=S.st.tx||(S.st.tx={voy:1,prog:0,found:[]});t.inv=t.in
 /* the islands take turns: odd voyages on Treasure Island, even ones on Skull Island */
 const XISLES=[{n:'جزيرة الكنز',st:XST,key:'map',art:()=>xMapArt(),over:()=>xOverA()}];
 const txIsle=t=>XISLES[(t.voy-1)%XISLES.length],txList=t=>txIsle(t).st;
-function txStep(id){const t=txState(),L=txList(t),st=L[t.prog];if(!st||st.id!==id)return null;t.prog++;if(st.item)t.inv.push(st.item);
+function txStep(id){const t=txState(),L=txList(t),st=L[t.prog];if(!st||st.id!==id)return null;t.stage=(t.stage||0)+1;if(t.stage<3){S.save();return'stage'}t.stage=0;t.prog++;if(st.item)t.inv.push(st.item);
   if(t.prog>=L.length){const tr=XT[(t.voy-1)%XT.length];t.found.push(tr.k);t.voy++;t.prog=0;t.inv=[];S.save();return tr}S.save();return'step'}
 function xSeal(st,k){
  const bumps=[...Array(14)].map((_,i)=>{const a=i/14*Math.PI*2,r=i%2?15.5:17.2;return`${(20+Math.cos(a)*r).toFixed(1)},${(20+Math.sin(a)*r).toFixed(1)}`}).join(' ');
@@ -5333,7 +5335,7 @@ function tiPlace(I,k){const kinds=shuffle(TI_LM.slice()).slice(0,k),marks=[];
 /* ---------- shared: paper sheet, station win, board effects ---------- */
 let xSheet=(inner,h=520,seed=3,o={})=>`<div class="xpaper xsheet">${xPaperSVG(360,h,seed,{bite:0,...o})}<div class="xpin">${inner}</div></div>`;
 const xHead=(ic,t)=>`<h3>${ic}${t}</h3>`;
-function xWin(api,id,msg){const t=txState(),st=txList(t)[t.prog],r=txStep(id);api.win(msg+(r==='step'?(st&&st.item?` وحصلت على «${XITEM[st.item].n}» ورونًا جديدًا لباب المعبد، وانفتحت المحطة التالية.`:' وانفتحت المحطة التالية على الخريطة.'):''))}
+function xWin(api,id,msg){const t=txState(),st=txList(t)[t.prog],r=txStep(id);api.win(msg+(r==='stage'?` خلصت المرحلة ${XAR(txState().stage)} من ٣ في «${st.n}». العب المرحلة ${XAR(txState().stage+1)}: فيها قاعدة جديدة.`:r==='step'?(st&&st.item?` وحصلت على «${XITEM[st.item].n}» ورونًا جديدًا لباب المعبد، وانفتحت المحطة التالية.`:' وانفتحت المحطة التالية على الخريطة.'):''))}
 const xRect=(n,c)=>({l:(c%n)*100/n,t:((c/n)|0)*100/n,s:100/n});
 function xDigFx(n,c,cb){const fx=$('#xfx');if(!fx){cb&&cb();return}const r=xRect(n,c),sh=document.createElement('div');sh.className='xshovel';sh.style.cssText=`left:${r.l-r.s*.1}%;top:${r.t-r.s*.75}%;width:${r.s*1.3}%;height:${r.s*1.3}%`;sh.innerHTML=XS_.shovel;fx.appendChild(sh);tone(160,.12,'triangle',.06);later(()=>tone(150,.12,'triangle',.06),260);
   later(()=>{for(let k=0;k<9;k++){const p=document.createElement('i');p.className='xsand';p.style.cssText=`left:${r.l+r.s/2}%;top:${r.t+r.s*.6}%`;fx.appendChild(p);const a=Math.random()*Math.PI,v=18+Math.random()*26;p.animate([{transform:'translate(-50%,-50%)',opacity:1},{transform:`translate(${Math.cos(a)*v*(Math.random()<.5?-1:1)}px,${-Math.sin(a)*v-10}px) scale(.6)`,opacity:0}],{duration:520,easing:'cubic-bezier(.2,.7,.4,1)'});setTimeout(()=>p.remove(),540)}},420);
@@ -5663,7 +5665,7 @@ function runXLock(){return pzPlay('pz_xlock',api=>{
   draw();api.msg(`اكسر القفل. باقي ${arN(P.T,['محاولة واحدة','محاولتان','محاولات','محاولة'])}.`);
   api.body.querySelectorAll('[data-s]').forEach(b=>b.onclick=()=>{if(api.ended||busy)return;dial[slot]=+b.dataset.s;slot=(slot+1)%P.L;tone(600+ +b.dataset.s*50,.04);draw()});
   $('#xkclr').onclick=()=>{if(busy)return;dial.fill(-1);slot=0;draw()};
-  function open(){const c=$('#xkc'),tr=txStep('pz_xlock'),T=tr&&tr!=='step'?tr:null;$('#xkprize').innerHTML=(T||XT[0]).s;
+  function open(){const c=$('#xkc'),tr=txStep('pz_xlock'),T=tr&&typeof tr==='object'?tr:null;$('#xkprize').innerHTML=(T||XT[0]).s;
     [[50,'s1'],[900,'s2'],[1350,'s3'],[1950,'s4']].forEach(([t,s])=>later(()=>{c.classList.add(s);if(s==='s2')tone(220,.15,'square',.05);if(s==='s3'){sfx.lvl();for(let k=0;k<16;k++){const q=document.createElement('i');q.className='xcoin';q.innerHTML=XS_[k%4?'coin':'gem'];c.appendChild(q);const a=-Math.PI*(.12+.76*Math.random()),v=60+Math.random()*80;
       q.animate([{transform:'translate(-50%,-50%) scale(.4)',opacity:1},{transform:`translate(calc(-50% + ${Math.cos(a)*v*.6}px),calc(-50% + ${Math.sin(a)*v}px)) rotate(${200*Math.random()}deg)`,opacity:1,offset:.55},{transform:`translate(calc(-50% + ${Math.cos(a)*v}px),calc(-50% + ${Math.sin(a)*v*.3+60}px))`,opacity:0}],{duration:1300+Math.random()*300,easing:'ease-out',fill:'forwards'})}}},t));
     later(()=>api.win(T?`فتحت الصندوق في ${arN(hist.length,['محاولة واحدة','محاولتين','محاولات','محاولة'])} ووجدت «${T.n}»! انضم لخزانة الكنوز، وبدأت رحلة جديدة.`:`فتحت القفل في ${arN(hist.length,['محاولة واحدة','محاولتين','محاولات','محاولة'])}.`),2900)}
@@ -5900,7 +5902,7 @@ function runYDoor(){return pzPlay('pz_ydoor',api=>{
    <div class="xtools"><span>السحبات: <b id="ydp"></b> من ${XAR(lim)}</span></div>`,800,151);
   const paint=()=>{st.forEach((x,i)=>{$('#ydr'+i).style.transform=`rotate(${x*60}deg)`});$('#ydp').textContent=XAR(pulls)};paint();api.msg('اسحب الأذرع لتدوير الحلقات.');
   function pull(j){if(api.ended||busy)return;const v=P.lev[j];st=st.map((x,i)=>(x+v[i])%6);pulls++;const b=api.body.querySelector(`[data-j="${j}"]`);b.classList.remove('pull');void b.offsetWidth;b.classList.add('pull');paint();tone(200+j*40,.12,'triangle',.05);
-    if(st.every((x,i)=>x===P.goal[i])){busy=true;later(()=>{$('#ydw').classList.add('open');sfx.lvl();const tr=txStep('pz_ydoor'),T=tr&&tr!=='step'?tr:null;
+    if(st.every((x,i)=>x===P.goal[i])){busy=true;later(()=>{$('#ydw').classList.add('open');sfx.lvl();const tr=txStep('pz_ydoor'),T=tr&&typeof tr==='object'?tr:null;
         later(()=>api.win(T?`انفتح باب المعبد! وجدت «${T.n}» وانضم لخزانة الكنوز، وبدأت رحلة جديدة.`:`انفتح باب المعبد في ${arN(pulls,['سحبة واحدة','سحبتين','سحبات','سحبة'])}.`),1400)},400);return}
     if(pulls>=lim){busy=true;api.over('علقت التروس. فكّر: أي ذراع يغيّر حلقة واحدة فقط؟ ابدأ منه.')}}
   api.body.querySelectorAll('[data-j]').forEach(b=>b.onclick=()=>pull(+b.dataset.j));pzHook({P,pull,st:()=>st});
@@ -8239,6 +8241,11 @@ function tripCardHTML(){let voy=1,done=0,total=0,thumb='';
   if(PZ_TRIP){v.insertAdjacentHTML('afterbegin',`<div class="triph"><button class="tripback" id="tripback" aria-label="رجوع للألغاز"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button><div><span class="eyebrow">مدينة الألغاز</span><h1>رحلة جزيرة الكنز</h1></div></div>`);
     $('#tripback').onclick=()=>{PZ_TRIP=false;renderPuz();window.scrollTo(0,0)}}
   else{const d=$('#pzday');if(d)d.insertAdjacentHTML('afterend',tripCardHTML());const g=$('#tripgo');if(g)g.onclick=()=>{PZ_TRIP=true;renderPuz();window.scrollTo(0,0)}}}}
+
+/* ================= v61: every island station is three stages ================= */
+function txStageOf(id){try{const t=txState(),st=txList(t)[t.prog];if(!st||st.id!==id)return null;const mx=pzMax(id),k=(t.stage||0)+1,L=[Math.max(1,Math.round(mx*.25)),Math.max(2,Math.round(mx*.6)),mx];return{k,lv:L[k-1]}}catch(e){return null}}
+xHubHTML=(o=>function(){let s=o();try{const t=txState(),st=txList(t)[t.prog];if(!st)return s;const k=t.stage||0,dots='<em class="xstg">'+[0,1,2].map(i=>'<i class="'+(i<k?'on':'')+'"></i>').join('')+'</em>';
+  s=s.replace(new RegExp('(class="xst cur"[^>]*>[\\s\\S]*?<span>'+st.n.replace(/[.*+?^${}()|[\]\\]/g,'\\$&')+')(</span>)'),'$1'+dots+'$2')}catch(e){}return s})(xHubHTML);
 applyMode();if(!MODE)showModePick();
 </script>
 
