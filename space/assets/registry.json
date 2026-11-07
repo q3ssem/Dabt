@@ -1,0 +1,497 @@
+[
+ {
+  "id": "char-arks",
+  "kind": "character",
+  "status": "approved",
+  "source": "package/01_Characters_APPROVED/char-arks-original-tiger.png",
+  "size": "1536x1024",
+  "use": "أركس",
+  "notes": "لوحة على خلفية بيضاء، ليست sprite شفافًا. التعابير والحركات صغيرة (~٦٠–١٥٠px)."
+ },
+ {
+  "id": "char-crystal",
+  "kind": "character",
+  "status": "approved",
+  "source": "package/01_Characters_APPROVED/char-crystal-latest-short-ears.png",
+  "size": "1536x1024",
+  "use": "كرستال",
+  "notes": "لوحة على خلفية بيضاء، ليست sprite شفافًا. التعابير والحركات صغيرة (~٦٠–١٥٠px)."
+ },
+ {
+  "id": "char-layan",
+  "kind": "character",
+  "status": "approved",
+  "source": "package/01_Characters_APPROVED/char-layan-black-hair.png",
+  "size": "1536x1024",
+  "use": "ليان",
+  "notes": "لوحة على خلفية بيضاء، ليست sprite شفافًا. التعابير والحركات صغيرة (~٦٠–١٥٠px)."
+ },
+ {
+  "id": "char-no",
+  "kind": "character",
+  "status": "approved",
+  "source": "package/01_Characters_APPROVED/char-no-robot.png",
+  "size": "1536x1024",
+  "use": "نو (الروبوت المرافق)",
+  "notes": "لوحة على خلفية بيضاء، ليست sprite شفافًا. التعابير والحركات صغيرة (~٦٠–١٥٠px)."
+ },
+ {
+  "id": "char-reema",
+  "kind": "character",
+  "status": "approved",
+  "source": "package/01_Characters_APPROVED/char-reema-green-hair.png",
+  "size": "1536x1024",
+  "use": "ريما",
+  "notes": "لوحة على خلفية بيضاء، ليست sprite شفافًا. التعابير والحركات صغيرة (~٦٠–١٥٠px)."
+ },
+ {
+  "id": "char-wamd-actions",
+  "kind": "character",
+  "status": "approved",
+  "source": "package/01_Characters_APPROVED/char-wamd-actions.png",
+  "size": "1536x1024",
+  "use": "وَمْض (البطل) — حركات",
+  "notes": "لوحة على خلفية بيضاء، ليست sprite شفافًا. التعابير والحركات صغيرة (~٦٠–١٥٠px)."
+ },
+ {
+  "id": "char-wamd-turnaround",
+  "kind": "character",
+  "status": "approved",
+  "source": "package/01_Characters_APPROVED/char-wamd-faces-turnaround.png",
+  "size": "1536x1024",
+  "use": "وَمْض (البطل) — زوايا وتعابير",
+  "notes": "لوحة على خلفية بيضاء، ليست sprite شفافًا. التعابير والحركات صغيرة (~٦٠–١٥٠px)."
+ },
+ {
+  "id": "char-ghreef",
+  "kind": "character",
+  "status": "approved",
+  "source": "package/01_Characters_APPROVED/char-ghreef-approved-panel.png",
+  "size": "768x1024",
+  "use": "غريف",
+  "notes": "لوحة على خلفية بيضاء، ليست sprite شفافًا. التعابير والحركات صغيرة (~٦٠–١٥٠px)."
+ },
+ {
+  "id": "char-zain",
+  "kind": "character",
+  "status": "approved",
+  "source": "package/01_Characters_APPROVED/char-zain-approved-panel.png",
+  "size": "768x1024",
+  "use": "الحكيم زين",
+  "notes": "لوحة على خلفية بيضاء، ليست sprite شفافًا. التعابير والحركات صغيرة (~٦٠–١٥٠px)."
+ },
+ {
+  "id": "char-zain-ghreef-combined",
+  "kind": "character",
+  "status": "approved",
+  "source": "package/01_Characters_APPROVED/zain-ghreef-approved-reference.jpeg",
+  "size": "1536x1024",
+  "use": "المرجع المشترك لزين وغريف",
+  "notes": "JPEG مضغوط؛ يُستعمل مرجعًا، والقص من اللوحتين المنفصلتين."
+ },
+ {
+  "id": "char-atlases-9",
+  "kind": "character",
+  "status": "approved",
+  "source": "upload e0c38820-______.zip (atlas-stars-character-atlases)",
+  "size": null,
+  "use": "أطالس الحركات والتعابير والأدوات لكل شخصية (٩ لوحات)",
+  "notes": "غير موجودة في حزمة اصول_نواره_1. عناوين عربية مدمجة؛ كرستال معنونة خطأ «الأمير ليان»."
+ },
+ {
+  "id": "ship-pkg-sheet2",
+  "kind": "ship",
+  "status": "superseded",
+  "source": "package/02_Ship_APPROVED_REFERENCE/ship-angles-flight-engines-reference.png",
+  "size": "1536x1024",
+  "use": "⚠ هذه ليست المركبة المعتمدة",
+  "notes": "مطابقة ١٠٠٪ للوحة المركبة رقم ٢ (راية حمراء، طبق، مخروط خلفي). المعتمد هو اللوحة رقم ٣."
+ },
+ {
+  "id": "ship-approved-sheet3",
+  "kind": "ship",
+  "status": "approved",
+  "source": "upload a85c46ad-image.png",
+  "size": "1536x1024",
+  "use": "المركبة «الرَّحّالة» المعتمدة: ٦ زوايا، إقلاع/هبوط، لهب ٨ أطوار، ٥ أنماط لهب",
+  "notes": "عناوين عربية مدمجة (بها خطأ إملائي «المركية»). لقص الزوايا فقط."
+ },
+ {
+  "id": "ship-green-sheet",
+  "kind": "ship",
+  "status": "approved",
+  "source": "upload 2959ac7f-image.png",
+  "size": "1536x1024",
+  "use": "نفس المركبة على خلفية خضراء: زوايا وحالات طيران وبوابة",
+  "notes": "المصدر الأنسب لقص المركبة. التوهج الأزرق يحتاج معالجة حواف."
+ },
+ {
+  "id": "ship-white-sheet",
+  "kind": "ship",
+  "status": "approved",
+  "source": "upload 6b3f6ab1-image.png",
+  "size": "1672x941",
+  "use": "نفس المركبة على أبيض: إقلاع، اندفاع، مناورات، هبوط، بوابة، لهب ٨ أطوار",
+  "notes": "مركبة كريمية على أبيض: الحواف أصعب. مشاهد إقلاع/هبوط مدمجة بخلفيات."
+ },
+ {
+  "id": "planet-01",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-01-nowara.png",
+  "size": "543x724",
+  "use": "كوكب 1",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-02",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-02-lujain.png",
+  "size": "543x724",
+  "use": "كوكب 2",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-03",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-03-miraf.png",
+  "size": "543x724",
+  "use": "كوكب 3",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-04",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-04-raneen.png",
+  "size": "543x724",
+  "use": "كوكب 4",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-05",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-05-ghaym.png",
+  "size": "543x724",
+  "use": "كوكب 5",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-06",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-06-thaljaa.png",
+  "size": "543x724",
+  "use": "كوكب 6",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-07",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-07-titanor.png",
+  "size": "543x724",
+  "use": "كوكب 7",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-08",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-08-halaq.png",
+  "size": "543x724",
+  "use": "كوكب 8",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-09",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-09-magnetis.png",
+  "size": "543x724",
+  "use": "كوكب 9",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-10",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-10-taif.png",
+  "size": "543x724",
+  "use": "كوكب 10",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-11",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-11-tawam.png",
+  "size": "543x724",
+  "use": "كوكب 11",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-12",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-12-marsad.png",
+  "size": "543x724",
+  "use": "كوكب 12",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-13",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-13-burkan.png",
+  "size": "543x724",
+  "use": "كوكب 13",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-14",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-14-nibras.png",
+  "size": "543x724",
+  "use": "كوكب 14",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-15",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-15-sada.png",
+  "size": "543x724",
+  "use": "كوكب 15",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-16",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-16-adas.png",
+  "size": "543x724",
+  "use": "كوكب 16",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-17",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-17-yateem.png",
+  "size": "543x724",
+  "use": "كوكب 17",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-18",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-18-thiql.png",
+  "size": "543x724",
+  "use": "كوكب 18",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-19",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-19-athar.png",
+  "size": "543x724",
+  "use": "كوكب 19",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "planet-20",
+  "kind": "planet",
+  "status": "approved",
+  "source": "package/03_Planets/01_Individual_Planets/planet-20-heart-of-nebula.png",
+  "size": "543x724",
+  "use": "كوكب 20",
+  "notes": "قص خانة من اللوحة، خلفية بيضاء (غير شفافة). الحدود تحتاج إزالة خلفية وتنعيم."
+ },
+ {
+  "id": "env-01-nowara",
+  "kind": "environment",
+  "status": "approved",
+  "source": "package/04_Environments_VERTICAL/environment-01-nowara-vertical.png",
+  "size": "1024x1536",
+  "use": "نُوارة (نسخة العشب — من الحزمة)",
+  "notes": "طولية ٢:٣ بلا كتابة."
+ },
+ {
+  "id": "env-02-lujain-underwater",
+  "kind": "environment",
+  "status": "approved",
+  "source": "package/04_Environments_VERTICAL/environment-02-lujain-underwater-vertical.png",
+  "size": "1024x1536",
+  "use": "لُجين (المائي)",
+  "notes": "طولية ٢:٣ بلا كتابة."
+ },
+ {
+  "id": "env-03-miraf-desert",
+  "kind": "environment",
+  "status": "approved",
+  "source": "package/04_Environments_VERTICAL/environment-03-miraf-desert-vertical.png",
+  "size": "1024x1536",
+  "use": "ميراف (الصحراء)",
+  "notes": "طولية ٢:٣ بلا كتابة."
+ },
+ {
+  "id": "env-04-raneen-purple-forest",
+  "kind": "environment",
+  "status": "approved",
+  "source": "package/04_Environments_VERTICAL/environment-04-raneen-purple-forest-vertical.png",
+  "size": "1024x1536",
+  "use": "رنين",
+  "notes": "طولية ٢:٣ بلا كتابة."
+ },
+ {
+  "id": "env-05-ghaym-sky-islands",
+  "kind": "environment",
+  "status": "approved",
+  "source": "package/04_Environments_VERTICAL/environment-05-ghaym-sky-islands-vertical.png",
+  "size": "1024x1536",
+  "use": "غيم",
+  "notes": "طولية ٢:٣ بلا كتابة."
+ },
+ {
+  "id": "env-06-thaljaa-ice",
+  "kind": "environment",
+  "status": "approved",
+  "source": "package/04_Environments_VERTICAL/environment-06-thaljaa-ice-vertical.png",
+  "size": "1024x1536",
+  "use": "ثلجاء",
+  "notes": "طولية ٢:٣ بلا كتابة."
+ },
+ {
+  "id": "env-01-nowara-b",
+  "kind": "environment",
+  "status": "approved",
+  "source": "upload 9173c6cc-image.png",
+  "size": "1024x1536",
+  "use": "نُوارة — نسخة الشجرة الوردية والساحة الحجرية",
+  "notes": "غير موجودة في الحزمة."
+ },
+ {
+  "id": "env-01-nowara-c",
+  "kind": "environment",
+  "status": "approved",
+  "source": "upload ba5a9352-image.png",
+  "size": "1024x1536",
+  "use": "نُوارة — النسخة الأغنى (فوانيس، بلورات، جزر عائمة، بركة لوتس)",
+  "notes": "غير موجودة في الحزمة. الأنسب بيئة رئيسية."
+ },
+ {
+  "id": "ref-icons-01-mechanisms-mirrors-gears-valves",
+  "kind": "reference",
+  "status": "reference",
+  "source": "package/05_Icons_and_Objects_REFERENCE/icons-01-mechanisms-mirrors-gears-valves.png",
+  "size": "1536x1024",
+  "use": "واجهة وأيقونات مخزون (صورة شخصية، أشرطة، عملات، أزرار، أقفال، بوابات، عناصر، جرعات، مفتاح، فانوس، ترس)",
+  "notes": "الاسم لا يطابق المحتوى: لا مرايا ولا صمامات. لا تُعدّ أصلًا شفافًا جاهزًا."
+ },
+ {
+  "id": "ref-icons-02-artifacts-treasure-compass-crystals",
+  "kind": "reference",
+  "status": "reference",
+  "source": "package/05_Icons_and_Objects_REFERENCE/icons-02-artifacts-treasure-compass-crystals.png",
+  "size": "1536x1024",
+  "use": "آثار وأدوات: كتب، تلسكوب، إسطرلاب، فانوس، بوصلة، خريطة، حقيبة، صناديق، بلورات عناصر، ساعة رملية، بوابة",
+  "notes": "لوحة تجميعية؛ لا PNG مستقل لكل عنصر. لا تُعدّ أصلًا شفافًا جاهزًا."
+ },
+ {
+  "id": "ref-icons-03-plants-and-creatures",
+  "kind": "reference",
+  "status": "reference",
+  "source": "package/05_Icons_and_Objects_REFERENCE/icons-03-plants-and-creatures.png",
+  "size": "1536x1024",
+  "use": "نباتات وكائنات (أشجار، فطر، بلورات، ثعلب، بومة، سلحفاة، تنين، قنديل، حوت، حارس صخري...)",
+  "notes": "لوحة تجميعية. لا تُعدّ أصلًا شفافًا جاهزًا."
+ },
+ {
+  "id": "ref-regions-01-five-region-frames-reference",
+  "kind": "reference",
+  "status": "reference",
+  "source": "package/06_UI_and_Region_Frames_REFERENCE/regions-01-five-region-frames-reference.png",
+  "size": "1536x1024",
+  "use": "شارات الأقاليم الخمسة",
+  "notes": "نصوص عربية مدمجة؛ مرجع فقط. لا تُعدّ أصلًا شفافًا جاهزًا."
+ },
+ {
+  "id": "ref-ui-01-hud-and-controls-reference",
+  "kind": "reference",
+  "status": "reference",
+  "source": "package/06_UI_and_Region_Frames_REFERENCE/ui-01-hud-and-controls-reference.png",
+  "size": "1536x1024",
+  "use": "مرجع الواجهة والتحكم",
+  "notes": "نصوص مدمجة؛ الواجهة تُبنى برمجيًا. لا تُعدّ أصلًا شفافًا جاهزًا."
+ },
+ {
+  "id": "ref-ui-02-main-menu-and-world-selection-reference",
+  "kind": "reference",
+  "status": "reference",
+  "source": "package/06_UI_and_Region_Frames_REFERENCE/ui-02-main-menu-and-world-selection-reference.png",
+  "size": "1672x941",
+  "use": "مرجع القائمة الرئيسية واختيار العوالم",
+  "notes": "مرجع تصميم فقط. لا تُعدّ أصلًا شفافًا جاهزًا."
+ },
+ {
+  "id": "ref-ui-03-story-and-loading-screens-reference",
+  "kind": "reference",
+  "status": "reference",
+  "source": "package/06_UI_and_Region_Frames_REFERENCE/ui-03-story-and-loading-screens-reference.png",
+  "size": "1672x941",
+  "use": "مرجع شاشتي القصة والتحميل",
+  "notes": "مرجع تصميم فقط. لا تُعدّ أصلًا شفافًا جاهزًا."
+ },
+ {
+  "id": "ref-vfx-01-portals-pickups-weather-and-transitions",
+  "kind": "reference",
+  "status": "reference",
+  "source": "package/07_VFX_REFERENCE/vfx-01-portals-pickups-weather-and-transitions.png",
+  "size": "1536x1024",
+  "use": "مؤثرات: بوابات، صناديق، بلورات، نجوم، لفائف، مستوى، مسارات، صخور، براعم، كوكبات، طقس",
+  "notes": "لوحة تجميعية. لا تُعدّ أصلًا شفافًا جاهزًا."
+ },
+ {
+  "id": "ref-audio-01-sound-library-plan-not-audio-files",
+  "kind": "reference",
+  "status": "reference",
+  "source": "package/08_Audio_Design_REFERENCE/audio-01-sound-library-plan-not-audio-files.png",
+  "size": "1536x1024",
+  "use": "مخطط مكتبة صوتية (ليس ملفات صوت)",
+  "notes": "الصوت يُولَّد بالكود. لا تُعدّ أصلًا شفافًا جاهزًا."
+ },
+ {
+  "id": "galaxy-map-clean",
+  "kind": "map",
+  "status": "approved",
+  "source": "upload 5f71965c-image.png",
+  "size": "941x1672",
+  "use": "خلفية خريطة المجرة النظيفة (٩٤١×١٦٧٢)",
+  "notes": "ليست في الحزمة. بلا مسار ولا مركبة ولا جزر. الدقة محدودة للتقريب."
+ },
+ {
+  "id": "galaxy-map-baked-1",
+  "kind": "map",
+  "status": "reference",
+  "source": "upload e5a43474-image.png",
+  "size": "941x1672",
+  "use": "خريطة بها مسار ومركبة وجزر مدمجة",
+  "notes": "لا تُستعمل في اللعبة."
+ },
+ {
+  "id": "galaxy-map-baked-2",
+  "kind": "map",
+  "status": "reference",
+  "source": "upload 784132ed-image.png",
+  "size": "1024x1536",
+  "use": "نسخة ثانية بمسار ومركبة وجزر مدمجة",
+  "notes": "لا تُستعمل في اللعبة."
+ }
+]
