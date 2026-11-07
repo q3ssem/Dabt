@@ -2148,6 +2148,15 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 #play.xframe .xbcode{display:none}
 #play.xframe .xbwheels .xbwheel{width:200px!important;max-width:100%!important;flex:none!important}#play.xframe .xbwheels:has(.xbwheel+.xbwheel) .xbwheel{width:48%!important}#play.xframe .xbwheel>svg{width:100%!important;height:auto!important}
 #play.xframe #m{font-size:13px;line-height:1.4}#play.xframe .xbtxt{font-size:16px}
+#play.xframe #stage{zoom:1!important;left:11%;right:15%}
+#play.xframe .intro h2{font-size:24px}
+#play.xframe .how li,#play.xframe .intro .why{font-size:14px}
+#play.xframe .xnote{font-size:14px}
+#play.xframe #m{font-size:15px}
+#play.xframe .xbtxt{font-size:19px}
+#play.xframe .xbo2{font-size:15px;padding:10px 4px}
+#play.xframe .xbwheels .xbwheel{width:220px!important}
+#play.xframe .xbwheel,#play.xframe .xbwheels,#play.xframe .xbrot{height:auto!important;min-height:0!important}#play.xframe .xbread{margin-top:4px!important;min-height:0!important}
 </style>
 
 
@@ -8311,11 +8320,12 @@ const XFRAME='data:image/webp;base64,UklGRoQrAgBXRUJQVlA4IHgrAgBQMAidASqtA4gGPpV
 document.documentElement.style.setProperty('--xframe','url('+XFRAME+')');
 (function(){let cur='';
   function tick(){const pl=$('#play');if(!pl)return;let id='';try{id=RUN&&RUN.queue?RUN.queue[RUN.pos]:''}catch(e){}
-    const on=!pl.hidden&&TX_IDS.includes(id)&&S_MODE()==='main';pl.classList.toggle('xframe',on);
+    if(!window.XF_IDS){window.XF_IDS=new Set(TX_IDS);[typeof Z3!=='undefined'?Z3:[],typeof PW!=='undefined'?PW:[],typeof ASTN!=='undefined'?ASTN:[]].forEach(L=>L.forEach(x=>x&&x.id&&XF_IDS.add(x.id)))}
+    const on=!pl.hidden&&XF_IDS.has(id)&&S_MODE()==='main';pl.classList.toggle('xframe',on);
     if(!on){cur='';const st=$('#stage');if(st)st.style.zoom='';return}
     let t=$('#xft');if(!t){t=document.createElement('div');t.id='xft';pl.appendChild(t)}
     if(cur!==id){cur=id;const s0=$('#stage');if(s0)s0.scrollTop=0;const g=GM[id],sg=txStageOf(id);t.textContent=g?g.name:''}
-    const st=$('#stage');if(st){const w=st.clientWidth;st.style.zoom=w&&w<330?String(Math.max(.8,w/330).toFixed(3)):''}}
+    }
   setInterval(tick,250);document.addEventListener('click',e=>{setTimeout(tick,30);if(e.target.closest&&e.target.closest('#play .go-btn'))setTimeout(()=>{const s0=$('#stage');if(s0)s0.scrollTop=0},60)},true)})();
 applyMode();if(!MODE)showModePick();
 </script>
