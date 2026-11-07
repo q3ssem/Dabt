@@ -2076,6 +2076,17 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 .xct2{max-width:56px}
 .xcsecret{width:70%}
 
+
+/* v60: treasure-island journey behind one card */
+#v-puz:not(.trip) .xhub{display:none!important}
+#v-puz.trip>*:not(.xhub):not(.triph){display:none!important}
+.triph{display:flex;align-items:center;gap:12px}.triph h1{margin:0;font-size:28px}
+.tripback{width:44px;height:44px;border-radius:14px;background:var(--surface2);border:1px solid var(--line);display:grid;place-items:center;flex:none}.tripback svg{width:22px;height:22px}
+.tripc{display:grid;grid-template-columns:96px 1fr auto;gap:14px;align-items:center;text-align:start;width:100%;border-color:rgba(201,150,46,.5)!important;background:linear-gradient(160deg,rgba(201,150,46,.18),rgba(var(--tint),.04))!important}
+.tripimg{width:96px;height:120px;object-fit:cover;border-radius:14px;max-width:100%}
+.triptx{display:flex;flex-direction:column;gap:4px;min-width:0}.triptx b{font-size:20px}.triptx small{color:var(--muted);font-size:12.5px;font-weight:700;line-height:1.6}
+.tripbar{height:7px;border-radius:7px;background:rgba(var(--tint),.1);overflow:hidden;margin-top:4px}.tripbar i{display:block;height:100%;background:linear-gradient(90deg,#C9962E,#FFD45A);border-radius:7px}
+.tripc .go{color:var(--muted);font-size:22px}
 </style>
 
 
@@ -8217,6 +8228,17 @@ function kidExitBind(){const b=$('#kexit');if(!b)return;let t=null,tm=null;
   const stop=()=>{if(t){clearTimeout(t);t=null;b.classList.remove('hold');b.classList.add('tip');clearTimeout(tm);tm=setTimeout(()=>b.classList.remove('tip'),2200)}};
   b.addEventListener('pointerdown',start);['pointerup','pointerleave','pointercancel'].forEach(k=>b.addEventListener(k,stop));b.addEventListener('keydown',e=>{if(e.key==='Enter'){e.preventDefault();setMode('main')}});b.onclick=e=>e.preventDefault()}
 const KEXIT=`<button class="kexit" id="kexit" aria-label="اضغط مطولًا للرجوع للملف الرئيسي"><span class="kxr"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="17" class="kxbg"/><circle cx="20" cy="20" r="17" class="kxfg" pathLength="100"/></svg><svg viewBox="0 0 24 24" class="kxi" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg></span><small>الملف الرئيسي</small></button>`;
+
+/* ================= v60: رحلة جزيرة الكنز in one card ================= */
+let PZ_TRIP=false;
+function tripCardHTML(){let voy=1,done=0,total=0,thumb='';
+  try{const t=txState(),I=txIsle(t);voy=t.voy;done=t.prog;total=I.st.length;thumb=xImg('map',360,480,I.art(),'xMidYMid meet')}catch(e){}
+  const pct=total?Math.round(done/total*100):0;
+  return `<button class="card tripc" id="tripgo">${thumb?`<img class="tripimg" alt="" src="${thumb}">`:''}<span class="triptx"><span class="eyebrow">المغامرة الكاملة</span><b>رحلة جزيرة الكنز</b><small>جزيرة الكنز، مملكة البحار السبعة، قصر الملوك السبعة، وأطلس المجهول. كل محطاتها في مكان واحد.</small><span class="tripbar"><i style="width:${pct}%"></i></span><small class="num">الرحلة ${voy} · ${done} من ${total} محطات</small></span><span class="go">‹</span></button>`}
+{const _rp=renderPuz;renderPuz=function(){_rp();const v=$('#v-puz');if(!v)return;v.classList.toggle('trip',PZ_TRIP);
+  if(PZ_TRIP){v.insertAdjacentHTML('afterbegin',`<div class="triph"><button class="tripback" id="tripback" aria-label="رجوع للألغاز"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button><div><span class="eyebrow">مدينة الألغاز</span><h1>رحلة جزيرة الكنز</h1></div></div>`);
+    $('#tripback').onclick=()=>{PZ_TRIP=false;renderPuz();window.scrollTo(0,0)}}
+  else{const d=$('#pzday');if(d)d.insertAdjacentHTML('afterend',tripCardHTML());const g=$('#tripgo');if(g)g.onclick=()=>{PZ_TRIP=true;renderPuz();window.scrollTo(0,0)}}}}
 applyMode();if(!MODE)showModePick();
 </script>
 
