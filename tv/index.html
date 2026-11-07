@@ -239,6 +239,18 @@ button:focus{outline:none}
 body.keys #pad{display:none}
 .ptrhint{position:absolute;left:44px;top:50%;margin-top:190px;width:328px;text-align:center;font-size:20px;color:var(--mist);font-weight:700}
 body.keys .ptrhint{display:none}
+.chip.ph{flex-direction:row;gap:16px;min-width:0;padding:0 26px}
+.chip.ph .phc{display:flex;flex-direction:column;align-items:flex-start}
+.chip.ph b{font-size:34px;letter-spacing:.12em;direction:ltr}
+.chip.ph svg{width:44px;height:44px;color:var(--gold2)}
+.chip.ph i{width:14px;height:14px;border-radius:50%;background:var(--dim)}
+.chip.ph i.on{background:var(--good);box-shadow:0 0 12px var(--good)}
+.qrw{display:grid;grid-template-columns:auto 1fr;gap:44px;align-items:center;text-align:right}
+.qrbox{width:340px;height:340px;border-radius:26px;background:#F3EBD8;padding:22px;display:grid;place-items:center}
+.qrbox svg{width:100%;height:100%}
+.qcode{font-size:96px;font-weight:800;letter-spacing:.2em;color:var(--gold2);direction:ltr;line-height:1}
+.qurl{font-size:22px;color:var(--mist);direction:ltr;word-break:break-all}
+.dlg.wide{width:1240px}
 </style>
 
 <div id="app">
@@ -262,6 +274,42 @@ body.keys .ptrhint{display:none}
   <div class="toast" id="toast" hidden></div>
 </div>
 
+<script src="https://cdnjs.cloudflare.com/ajax/libs/qrcode-generator/1.4.4/qrcode.min.js"></script>
+<script>
+/* Tiny MQTT 3.1.1 client over WebSocket (QoS 0 only), no dependencies, works on old TV browsers.
+   Connects to every broker in the list at once so the TV and the phone always share at least one. */
+function MQ(urls,onMsg,onState){
+  var self={up:0,subs:[],conns:[]};
+  function utf8(s){if(window.TextEncoder)return Array.prototype.slice.call(new TextEncoder().encode(s));var u=unescape(encodeURIComponent(s)),o=[];for(var i=0;i<u.length;i++)o.push(u.charCodeAt(i));return o}
+  function dec(a){if(window.TextDecoder)return new TextDecoder().decode(new Uint8Array(a));var s='';for(var i=0;i<a.length;i++)s+=String.fromCharCode(a[i]);try{return decodeURIComponent(escape(s))}catch(e){return s}}
+  function str(s){var b=utf8(s);return [b.length>>8,b.length&255].concat(b)}
+  function rl(n){var o=[];do{var d=n%128;n=Math.floor(n/128);if(n>0)d|=128;o.push(d)}while(n>0);return o}
+  function pkt(h,body){return new Uint8Array([h].concat(rl(body.length),body))}
+  var cid='dabt'+Math.random().toString(36).slice(2,10);
+  function one(url){var c={url:url,ws:null,ok:false,buf:[],pid:1,ping:0,retry:0};
+    function send(p){try{if(c.ws&&c.ws.readyState===1)c.ws.send(p)}catch(e){}}
+    c.sub=function(t){send(pkt(0x82,[c.pid>>8,c.pid&255].concat(str(t),[0])));c.pid=(c.pid%60000)+1};
+    c.pub=function(t,m,ret){if(!c.ok)return;send(pkt(0x30|(ret?1:0),str(t).concat(utf8(m))))};
+    function parse(){var b=c.buf;while(b.length>=2){var mul=1,len=0,i=1,d;do{if(i>=b.length)return;d=b[i++];len+=(d&127)*mul;mul*=128}while(d&128);if(b.length<i+len)return;
+      var type=b[0]>>4,q=(b[0]>>1)&3,body=b.slice(i,i+len);b=c.buf=b.slice(i+len);
+      if(type===2){if(body[1]===0){c.ok=true;self.subs.forEach(c.sub);recount()}}
+      else if(type===3){var tl=(body[0]<<8)|body[1],t=dec(body.slice(2,2+tl)),off=2+tl+(q?2:0);try{onMsg(t,dec(body.slice(off)))}catch(e){}}}}
+    function open(){try{c.ws=new WebSocket(url,['mqtt'])}catch(e){later();return}c.ws.binaryType='arraybuffer';
+      c.ws.onopen=function(){send(pkt(0x10,str('MQTT').concat([4,2,0,45],str(cid+self.conns.indexOf(c)))));clearInterval(c.ping);c.ping=setInterval(function(){send(new Uint8Array([0xC0,0]))},25000)};
+      c.ws.onmessage=function(ev){c.buf=c.buf.concat(Array.prototype.slice.call(new Uint8Array(ev.data)));parse()};
+      c.ws.onclose=function(){c.ok=false;clearInterval(c.ping);recount();later()};c.ws.onerror=function(){}}
+    function later(){clearTimeout(c.retry);c.retry=setTimeout(open,3000)}
+    open();return c}
+  function recount(){var n=self.conns.filter(function(c){return c.ok}).length;if(n!==self.up){self.up=n;onState&&onState(n)}}
+  self.subscribe=function(t){if(self.subs.indexOf(t)<0)self.subs.push(t);self.conns.forEach(function(c){if(c.ok)c.sub(t)})};
+  self.publish=function(t,m,ret){self.conns.forEach(function(c){c.pub(t,m,ret)})};
+  self.conns=urls.map(one);
+  return self}
+var MQ_BROKERS=['wss://broker.emqx.io:8084/mqtt','wss://broker.hivemq.com:8884/mqtt','wss://test.mosquitto.org:8081/mqtt'];
+(function(){var m=/[?&]broker=([^&]+)/.exec(location.search);if(m)MQ_BROKERS=[decodeURIComponent(m[1])]})();
+var MQ_BASE='dabt-q3ssem/tv/';
+
+</script>
 <script>
 (function(){
 'use strict';
@@ -364,8 +412,9 @@ const KC={37:'L',38:'U',39:'R',40:'D',13:'OK',32:'OK',27:'BACK',8:'BACK',10009:'
 const KN={ArrowLeft:'L',ArrowRight:'R',ArrowUp:'U',ArrowDown:'D',Left:'L',Right:'R',Up:'U',Down:'D',Enter:'OK',' ':'OK',Escape:'BACK',Backspace:'BACK',GoBack:'BACK',BrowserBack:'BACK',XF86Back:'BACK',MediaPlayPause:'PAUSE',Pause:'PAUSE',ColorF0Red:'BACK'};
 function norm(e){return KN[e.key]||KC[e.keyCode]||null}
 let lastKey=0;
-document.addEventListener('keydown',e=>{const k=norm(e);if(!k)return;e.preventDefault();e.stopPropagation();document.body.classList.add('keys');
-  const now=performance.now();if(e.repeat&&now-lastKey<85)return;lastKey=now;
+document.addEventListener('keydown',e=>{const k=norm(e);if(!k)return;e.preventDefault();e.stopPropagation();
+  const now=performance.now();if(e.repeat&&now-lastKey<85)return;lastKey=now;handleKey(k)},true);
+function handleKey(k){document.body.classList.add('keys');
   if(OVL){if(k==='BACK'||k==='PAUSE'){OVL.back&&OVL.back();return}if(k==='OK'){const a=document.activeElement;if(a&&a.classList.contains('f'))a.click();return}if('LRUD'.includes(k))move(k);return}
   if(SCR==='game'){if(k==='BACK'||k==='PAUSE'){pauseGame();return}if(G_KEY)G_KEY(k);return}
   const a=document.activeElement;
@@ -373,7 +422,7 @@ document.addEventListener('keydown',e=>{const k=norm(e);if(!k)return;e.preventDe
   if(k==='BACK'){if(SCR==='intro'||SCR==='result')goHome();else toast('أنت في الصفحة الرئيسية');return}
   if(k==='OK'){if(a&&a.classList.contains('f'))a.click();return}
   if(k==='PLAY'){if(SCR==='intro')startGame();return}
-  move(k)},true);
+  move(k)}
 document.addEventListener('mousemove',()=>document.body.classList.remove('keys'));
 document.addEventListener('focusout',()=>setTimeout(keepFocus,0));
 
@@ -537,22 +586,22 @@ G.lights={name:'أطفئ القناديل',sk:'log',keys:[['◀ ▲ ▶ ▼','ت
 /* ---------- 9. flanker: the middle arrow ---------- */
 G.flanker={name:'السهم الأوسط',sk:'foc',keys:[['◀ ▲ ▶ ▼','اتجاه السهم الأوسط']],
  how:['يظهر صف من خمسة أسهم.','اضغط اتجاه السهم الذهبي في المنتصف فقط، وتجاهل الباقي.','السرعة مهمة، والدقة أهم.'],
- run(api){const dirs=api.lv>=5?['L','R','U','D']:['L','R'],lim=Math.max(900,1900-api.lv*90);let cur=null,t0=0,n=0,ok=0,rts=[],pts=0,acc=true;
+ run(api){const dirs=api.lv>=5?['L','R','U','D']:['L','R'],lim=Math.max(900,1900-api.lv*90)+api.lat;let cur=null,t0=0,n=0,ok=0,rts=[],pts=0,acc=true;
   api.el.innerHTML='<div class="stim" id="fs"></div>';const fs=$('#fs');
   function trial(){cur=null;fs.innerHTML='<span class="fix">+</span>';api.later(()=>{const d=pick(dirs),cong=Math.random()<.45,f=cong?d:pick(dirs.filter(x=>x!==d));cur=d;t0=api.now();n++;
    fs.innerHTML=[0,1,2,3,4].map(i=>arrowSVG(i===2?d:f,'arw'+(i===2?' mid':''))).join('');const me=n;api.later(()=>{if(cur&&n===me){cur=null;api.fb(false);sfx.bad();trial()}},lim)},350+rnd(350))}
-  api.key=k=>{if(!cur||!'LRUD'.includes(k))return;const right=k===cur,rt=api.now()-t0;cur=null;api.fb(right);if(right){ok++;rts.push(rt);pts+=Math.max(10,Math.round(60-rt/25));sfx.ok()}else sfx.bad();api.score(pts);trial()};
+  api.key=k=>{if(!cur||!'LRUD'.includes(k))return;const right=k===cur,rt=Math.max(120,api.now()-t0-api.lat);cur=null;api.fb(right);if(right){ok++;rts.push(rt);pts+=Math.max(10,Math.round(60-rt/25));sfx.ok()}else sfx.bad();api.score(pts);trial()};
   api.timer(45,()=>{const a=n?ok/n:0,mrt=rts.length?rts.reduce((x,y)=>x+y,0)/rts.length:lim,sp=clamp((1300-mrt)/700,0,1);api.end({score:pts,m:clamp(a*.7+sp*.3,0,1),detail:'دقتك '+Math.round(a*100)+'٪ ومتوسط سرعتك '+Math.round(mrt)+' جزء من الثانية.'})});trial()}};
 
 /* ---------- 10. go / no-go ---------- */
 G.gonogo={name:'الضوء الأخضر',sk:'spd',keys:[['OK','اضغط على الأخضر']],
  how:['دائرة تظهر في المنتصف.','إذا كانت خضراء اضغط OK بأسرع ما تقدر.','إذا كانت حمراء لا تضغط أبدًا.'],
- run(api){const win=Math.max(480,950-api.lv*45),total=30;let n=0,go=false,live=false,t0=0,hit=0,miss=0,fa=0,ngT=0,rts=[],pts=0,pressed=false;
+ run(api){const win=Math.max(480,950-api.lv*45)+api.lat,total=30;let n=0,go=false,live=false,t0=0,hit=0,miss=0,fa=0,ngT=0,rts=[],pts=0,pressed=false;
   api.el.innerHTML='<div id="gd" class="dot" style="background:transparent"></div>';const d=$('#gd');
   function trial(){if(n>=total){fin();return}live=false;d.style.background='transparent';d.style.boxShadow='none';api.later(()=>{n++;go=Math.random()>.27;if(!go)ngT++;live=true;pressed=false;t0=api.now();
    const c=go?'#4FC08D':'#E8637A';d.style.background=c;d.style.boxShadow='0 0 90px -10px '+c;const me=n;api.later(()=>{if(n!==me||!live)return;live=false;if(go&&!pressed){miss++;api.fb(false)}d.style.background='transparent';d.style.boxShadow='none';trial()},win)},600+rnd(800))}
   function fin(){const gt=hit+miss,m=clamp((gt?hit/gt:0)-(ngT?fa/ngT:0)*.9,0,1),mrt=rts.length?Math.round(rts.reduce((a,b)=>a+b,0)/rts.length):0;api.end({score:pts,m,detail:'التقطت '+hit+' من '+gt+' أخضر، وضغطت على الأحمر '+fa+' مرات. متوسط ردّك '+mrt+' جزء من الثانية.'})}
-  api.key=k=>{if(k!=='OK'||!live||pressed)return;pressed=true;const rt=api.now()-t0;if(go){hit++;rts.push(rt);pts+=Math.max(10,Math.round(80-rt/10));api.fb(true);sfx.ok();d.style.transform='scale(.9)';api.later(()=>d.style.transform='',120)}else{fa++;pts=Math.max(0,pts-40);api.fb(false);sfx.bad()}api.score(pts)};
+  api.key=k=>{if(k!=='OK'||!live||pressed)return;pressed=true;const rt=Math.max(120,api.now()-t0-api.lat);if(go){hit++;rts.push(rt);pts+=Math.max(10,Math.round(80-rt/10));api.fb(true);sfx.ok();d.style.transform='scale(.9)';api.later(()=>d.style.transform='',120)}else{fa++;pts=Math.max(0,pts-40);api.fb(false);sfx.bad()}api.score(pts)};
   api.timer(Math.round(total*(win+1000)/1000)+2,()=>{});trial()}};
 
 /* ---------- 11. which side has more ---------- */
@@ -576,7 +625,7 @@ G.stroop={name:'لون الحبر',sk:'flx',keys:[['▲','أحمر'],['▶','أ�
   const w=$('#sw');let want=null,n=0,ok=0,rts=[],pts=0,t0=0;
   function trial(){want=null;w.textContent='';w.className='sword';api.later(()=>{const word=pick(C),ink=Math.random()<.7?pick(C.filter(c=>c!==word)):word,flip=api.lv>=6&&Math.random()<.3;
    w.textContent=word[0];w.style.color=ink[1];if(flip)w.classList.add('frame');want=flip?word[2]:ink[2];t0=api.now();n++},300)}
-  api.key=k=>{if(!want||!'LRUD'.includes(k))return;const right=k===want,rt=api.now()-t0;want=null;api.fb(right);if(right){ok++;rts.push(rt);pts+=Math.max(10,Math.round(70-rt/25));sfx.ok()}else sfx.bad();api.score(pts);trial()};
+  api.key=k=>{if(!want||!'LRUD'.includes(k))return;const right=k===want,rt=Math.max(120,api.now()-t0-api.lat);want=null;api.fb(right);if(right){ok++;rts.push(rt);pts+=Math.max(10,Math.round(70-rt/25));sfx.ok()}else sfx.bad();api.score(pts);trial()};
   api.timer(45,()=>{const a=n?ok/n:0,mrt=rts.length?rts.reduce((x,y)=>x+y,0)/rts.length:2000,sp=clamp((1700-mrt)/900,0,1);api.end({score:pts,m:clamp(a*.7+sp*.3,0,1),detail:'دقتك '+Math.round(a*100)+'٪ في '+n+' كلمة، ومتوسط سرعتك '+Math.round(mrt)+' جزء من الثانية.'})});trial()}};
 
 /* ---------- 13. dark maze ---------- */
@@ -629,7 +678,7 @@ function dates(){let h='',g='';try{h=new Intl.DateTimeFormat('ar-SA-u-ca-islamic
 function card(id){const g=G[id],sk=SK[g.sk],st=S.best[id]?S.best[id].stars||0:0;return '<button class="f card" data-k="'+id+'" data-g="'+id+'" style="--c:'+sk.c+'"><span class="hd"><span class="ci">'+ico(id)+'</span><span><b>'+g.name+'</b><small>'+sk.n+'</small></span></span><span class="ft"><span>المستوى '+lvOf(id)+'</span>'+stars(st)+'</span></button>'}
 function renderHome(){const D=todayList(),[hj,gr]=dates(),tot=Object.values(S.best).reduce((a,b)=>a+(b.stars||0),0),left=D.list.filter(x=>!D.done.includes(x));
   $('#hs').innerHTML='<div class="top"><div class="brand"><svg class="crest" viewBox="0 0 64 64" fill="none" stroke-width="3.4" stroke-linecap="round"><path d="M32 4l7 16 17 5-12 12 3 18-15-8-15 8 3-18L8 25l17-5z" stroke="#D9B25F"/><circle cx="32" cy="32" r="9" stroke="#6E9CFF"/><circle cx="32" cy="32" r="3" fill="#F3EBD8" stroke="none"/></svg><div><h1>ضبط دماغك</h1><small>إصدار الشاشة الكبيرة · يعمل بالريموت</small></div></div>'+
-   '<div class="chips"><div class="chip date"><b>'+(hj||gr)+'</b><span>'+(hj?gr:'')+'</span></div><div class="chip"><b class="num">'+streak()+'</b><span>أيام متتالية</span></div><div class="chip"><b class="num">'+tot+'</b><span>نجمة</span></div></div></div>'+
+   '<div class="chips" data-row="top">'+(RC.ok?'<button class="f chip ph" data-k="phone" id="bphone"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round"><rect x="6" y="2.5" width="12" height="19" rx="3"/><path d="M11 18.5h2"/></svg><span class="phc"><b class="num">'+RC.code+'</b><span>ريموت الجوال</span></span><i class="'+(RC.phones?'on':'')+'" id="phdot"></i></button>':'')+'<div class="chip date"><b>'+(hj||gr)+'</b><span>'+(hj?gr:'')+'</span></div><div class="chip"><b class="num">'+streak()+'</b><span>أيام متتالية</span></div><div class="chip"><b class="num">'+tot+'</b><span>نجمة</span></div></div></div>'+
    '<div class="hero" data-row="hero"><div class="daily"><div class="eyb">تمرين اليوم</div><h2>'+(left.length?'ثلاث ألعاب، عشر دقائق':'أنهيت تمرين اليوم')+'</h2><p>'+(left.length?'كل يوم مزيج جديد من مهارات مختلفة، يتغير تلقائيًا مع التاريخ.':'أحسنت. تقدر تعيده أو تختار أي لعبة من الأسفل.')+'</p>'+
    '<div class="dlist">'+D.list.map(id=>'<div class="ditem'+(D.done.includes(id)?' done':'')+'" style="--c:'+SK[G[id].sk].c+'"><span class="ci">'+ico(id)+'</span>'+G[id].name+(D.done.includes(id)?' <span class="ok">✓</span>':'')+'</div>').join('')+'</div>'+
    '<button class="f btn gold" data-k="daily" id="bdaily" data-def>'+(left.length?(D.done.length?'أكمل التمرين':'ابدأ التمرين'):'أعد التمرين')+' <svg viewBox="0 0 24 24" fill="currentColor"><path d="M16 5v14L5 12z"/></svg></button></div>'+
@@ -641,6 +690,7 @@ function renderHome(){const D=todayList(),[hj,gr]=dates(),tot=Object.values(S.be
    '<button class="f card set" data-k="keys" id="bkeys"><span class="ci"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><rect x="14" y="4" width="20" height="40" rx="8"/><circle cx="24" cy="16" r="5"/><path d="M24 27v0M20 33h8"/></svg></span><span><b>أزرار الريموت</b><small>ماذا يفعل كل زر</small></span></button>'+
    '<button class="f card set" data-k="reset" id="breset"><span class="ci"><svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round"><path d="M10 24a14 14 0 1 0 4-10M10 8v8h8"/></svg></span><span><b>تصفير التقدم</b><small>يمسح المستويات والنجوم</small></span></button>'+
    '</div></div><div class="foot"><span>الأسهم للتنقل</span><span>OK للاختيار</span><span>رجوع للخلف أو للإيقاف</span></div>';
+  if($('#bphone'))$('#bphone').onclick=pairDialog;
   $('#hs').querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>{PLAY=null;openIntro(b.dataset.g)});
   $('#bdaily').onclick=()=>{const D=todayList();let q=D.list.filter(x=>!D.done.includes(x));if(!q.length){D.done=[];save();q=D.list.slice()}PLAY={list:q,i:0};openIntro(q[0])};
   $('#bsnd').onclick=()=>{S.sound=!S.sound;save();renderHome();focusEl($('#bsnd'),true);if(S.sound)sfx.ok()};
@@ -669,7 +719,7 @@ function startGame(){const id=CUR,g=G[id],sk=SK[g.sk];T.clear();ENDED=false;show
   $('#gn').textContent=g.name;$('#gk').textContent=sk.n;$('#gs').textContent='0';$('#gl').textContent=PICK_LV;$('#gm').innerHTML='';$('#tb').style.transform='scaleX(1)';$('#tb').parentNode.style.visibility='hidden';
   $('#gkey').innerHTML=g.keys.map(k=>'<span><b class="kc">'+k[0]+'</b>'+k[1]+'</span>').join('')+'<span><b class="kc">↩</b>إيقاف مؤقت</span>';
   const ga=$('#ga');ga.innerHTML='';ga.className='';$('#game').focus({preventScroll:true});sfx.go();
-  const api={el:ga,lv:PICK_LV,now:()=>T.now(),later:(f,ms)=>T.later(f,ms),every:(f,ms)=>T.every(f,ms),
+  const api={el:ga,lv:PICK_LV,lat:(typeof RC!=='undefined'&&RC.phones)?250:0,now:()=>T.now(),later:(f,ms)=>T.later(f,ms),every:(f,ms)=>T.every(f,ms),
     msg:h=>$('#gm').innerHTML=h,score:n=>$('#gs').textContent=Math.max(0,Math.round(n)),
     fb:ok=>{ga.className=ok?'good':'bad';T.later(()=>ga.className='',260)},
     timer:(sec,onEnd)=>{const bar=$('#tb'),t0=T.now(),tot=sec*1000;bar.parentNode.style.visibility='visible';const c=T.every(()=>{const r=clamp(1-(T.now()-t0)/tot,0,1);bar.style.transform='scaleX('+r+')';if(r<=0){c.off=true;if(!ENDED)onEnd()}},100)},
@@ -703,6 +753,36 @@ document.querySelectorAll('#pad [data-p]').forEach(b=>{const k=b.dataset.p;if(k!
 let hovT=0;document.addEventListener('mouseover',e=>{const f=e.target.closest&&e.target.closest('.f');if(!f||f===document.activeElement)return;if(!scope().contains(f))return;const n=performance.now();if(n-hovT<60)return;hovT=n;focusEl(f,true)});
 document.addEventListener('wheel',e=>{if(SCR!=='home'||OVL)return;e.preventDefault();const n=performance.now();if(n-hovT<220)return;hovT=n;move(e.deltaY>0?'D':'U')},{passive:false});
 document.addEventListener('keydown',e=>{const c=e.keyCode;if(c===33||c===34||c===427||c===428||e.key==='PageUp'||e.key==='PageDown'||e.key==='ChannelUp'||e.key==='ChannelDown'){e.preventDefault();e.stopPropagation();if(SCR==='home'&&!OVL)move((c===34||c===428||e.key==='PageDown'||e.key==='ChannelDown')?'D':'U')}},true);
+
+/* ===== phone remote: pairing code + relay ===== */
+const REMOTE_URL='https://q3ssem.github.io/Dabt/tv/remote.html';
+if(!/^\d{4}$/.test(S.rc||'')){S.rc=String(1000+rnd(9000));save()}
+const RC={code:S.rc,ok:false,phones:0,mq:null,seen:[],lastHi:0};
+function qrSVG(text){try{if(typeof qrcode!=='function')return '';const q=qrcode(0,'M');q.addData(text);q.make();return q.createSvgTag({cellSize:8,margin:0,scalable:true})}catch(e){return ''}}
+function pairDialog(){const url=REMOTE_URL+'?c='+RC.code,qr=qrSVG(url);
+  overlay('<h2>تحكّم من جوالك</h2><div class="qrw">'+(qr?'<div class="qrbox">'+qr+'</div>':'')+'<div><p style="margin:0 0 6px">صوّر الرمز بكاميرا الجوال، أو افتح هذا الرابط واكتب الرقم:</p><div class="qurl">q3ssem.github.io/Dabt/tv/remote.html</div><p style="margin:26px 0 4px">رقم هذا التلفزيون</p><div class="qcode num">'+RC.code+'</div><p style="margin-top:14px;color:var(--good);font-weight:800" id="pst">'+(RC.phones?'جوال متصل الآن':'')+'</p></div></div><button class="f btn gold" data-def id="pok">تم</button>',closeOverlay);
+  $('#dlg').parentNode.querySelector('.dlg').classList.add('wide');$('#pok').onclick=closeOverlay}
+$('#ovl').addEventListener('transitionend',()=>{});
+const _close=closeOverlay;
+function remoteState(){const g=CUR&&G[CUR];let keys,t;
+  if(OVL){keys=[['▲▼','تنقل'],['OK','اختيار'],['↩','متابعة']];t=SCR==='game'&&g?g.name:'ضبط دماغك'}
+  else if(SCR==='game'&&g){keys=g.keys.concat([['↩','إيقاف']]);t=g.name}
+  else if(SCR==='intro'&&g){keys=[['◀▶','المستوى'],['OK','ابدأ'],['↩','رجوع']];t=g.name}
+  else if(SCR==='result'&&g){keys=[['◀▶','تنقل'],['OK','اختيار'],['↩','الرئيسية']];t=g.name}
+  else{keys=[['◀▲▶▼','تنقل'],['OK','اختيار']];t='ضبط دماغك'}
+  return {scr:SCR,p:!!OVL&&SCR==='game',t,keys,ts:Date.now()}}
+let lastSig='';function pushState(force){if(!RC.mq||!RC.mq.up)return;const st=remoteState(),sig=st.scr+st.p+st.t+(OVL?1:0);if(!force&&sig===lastSig)return;lastSig=sig;RC.mq.publish(MQ_BASE+RC.code+'/s',JSON.stringify(st),true)}
+try{
+  RC.mq=MQ(MQ_BROKERS,(t,m)=>{let d;try{d=JSON.parse(m)}catch(e){return}
+    if(t===MQ_BASE+RC.code+'/k'){if(!d||!d.k||!d.i)return;if(RC.seen.includes(d.i))return;RC.seen.push(d.i);if(RC.seen.length>80)RC.seen.shift();
+      if(['U','D','L','R','OK','BACK','PAUSE','PLAY'].includes(d.k)){lastKey=performance.now();handleKey(d.k)}}
+    else if(t===MQ_BASE+RC.code+'/hi'){const n=Date.now();RC.phones=1;S.paired=true;save();const dot=$('#phdot');if(dot)dot.classList.add('on');const ps=$('#pst');if(ps)ps.textContent='جوال متصل الآن';if(n-RC.lastHi>4000)toast('تم ربط الجوال. تقدر تتحكم منه الحين');RC.lastHi=n;pushState(true)}},
+   n=>{if(n&&!RC.ok){RC.ok=true;if(SCR==='home'&&!OVL){const a=document.activeElement&&document.activeElement.dataset?document.activeElement.dataset.k:null;renderHome();const re=a&&$('#hs [data-k="'+a+'"]');focusEl(re||$('#bdaily'),true)}
+       if(!S.paired&&SCR==='home'&&!OVL)pairDialog()}
+     if(n){RC.mq.subscribe(MQ_BASE+RC.code+'/k');RC.mq.subscribe(MQ_BASE+RC.code+'/hi');pushState(true)}});
+  RC.mq.subscribe(MQ_BASE+RC.code+'/k');RC.mq.subscribe(MQ_BASE+RC.code+'/hi');
+  setInterval(()=>pushState(false),300);setInterval(()=>pushState(true),5000);
+}catch(e){}
 /* ================= boot ================= */
 app.classList.toggle('calm',!!S.calm);
 renderHome();show('home');setTimeout(()=>focusEl($('#bdaily'),true),60);

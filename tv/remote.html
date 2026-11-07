@@ -1,0 +1,121 @@
+<!doctype html>
+<html lang="ar" dir="rtl"><head><meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover,user-scalable=no">
+<meta name="theme-color" content="#0A1428">
+<meta name="apple-mobile-web-app-capable" content="yes">
+<title>ريموت ضبط دماغك</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Aref+Ruqaa:wght@700&family=Tajawal:wght@500;700;800&display=swap">
+<style>
+/* Layout: one-hand phone remote; status on top, big round d-pad in the thumb zone, back + pause below. */
+:root{color-scheme:dark;--night:#0A1428;--panel:#132443;--panel2:#1A2E58;--line:rgba(217,178,95,.25);--gold:#D9B25F;--gold2:#F2D58E;--ivory:#F3EBD8;--mist:#A9B3CC;--good:#4FC08D;--bad:#E8637A;
+  --f-disp:"Aref Ruqaa","Traditional Arabic",serif;--f-body:"Tajawal","Segoe UI",Tahoma,Arial,sans-serif}
+*{box-sizing:border-box;-webkit-tap-highlight-color:transparent;-webkit-user-select:none;user-select:none}
+[hidden]{display:none!important}
+html,body{height:100%;margin:0;overflow:hidden;overscroll-behavior:none;touch-action:manipulation}
+body{background:radial-gradient(120% 60% at 50% 0%,#1A2E58,var(--night) 70%);color:var(--ivory);font-family:var(--f-body);
+  display:flex;flex-direction:column;padding:calc(14px + env(safe-area-inset-top,0px)) max(16px,env(safe-area-inset-right,0px)) calc(16px + env(safe-area-inset-bottom,0px)) max(16px,env(safe-area-inset-left,0px))}
+button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:pointer}
+.top{display:flex;align-items:center;justify-content:space-between;gap:12px}
+.top h1{font-family:var(--f-disp);font-size:23px;margin:0;font-weight:700;line-height:1.1}
+.top small{display:block;color:var(--gold);font-weight:700;font-size:12px}
+.st{display:flex;align-items:center;gap:8px;padding:8px 14px;border-radius:99px;background:var(--panel);border:1px solid var(--line);font-size:13px;font-weight:800;white-space:nowrap}
+.st i{width:10px;height:10px;border-radius:50%;background:var(--bad)}
+.st.on i{background:var(--good);box-shadow:0 0 10px var(--good)}
+.info{margin:14px 0 6px;padding:14px 16px;border-radius:20px;background:rgba(19,36,67,.8);border:1px solid rgba(243,235,216,.08);min-height:82px}
+.info .scr{font-size:13px;color:var(--mist);font-weight:700}
+.info b{display:block;font-size:22px;margin:2px 0 6px}
+.legend{display:flex;flex-wrap:wrap;gap:6px 12px;font-size:13px;color:var(--mist);font-weight:700}
+.legend span{display:flex;align-items:center;gap:6px}
+.legend em{font-style:normal;color:var(--gold2);border:1px solid var(--line);border-radius:8px;padding:1px 7px;direction:ltr}
+.main{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:22px;min-height:0}
+.dpad{position:relative;width:min(86vw,340px);aspect-ratio:1;border-radius:50%;background:radial-gradient(circle,#1C3263,#122245 70%);border:2px solid var(--line);box-shadow:0 24px 50px -24px #000,inset 0 2px 0 rgba(243,235,216,.08);direction:ltr;max-width:100%}
+.dk{position:absolute;display:grid;place-items:center;color:var(--gold2);border-radius:24px;transition:background-color .08s,transform .08s}
+.dk svg{width:46px;height:46px}
+.dk.U{left:32%;right:32%;top:3%;height:30%}.dk.D{left:32%;right:32%;bottom:3%;height:30%}
+.dk.L{top:32%;bottom:32%;left:3%;width:30%}.dk.R{top:32%;bottom:32%;right:3%;width:30%}
+.dk.on{background:rgba(217,178,95,.22);transform:scale(.94)}
+.ok{position:absolute;left:31%;top:31%;width:38%;height:38%;border-radius:50%;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#2A1C05;font-size:30px;font-weight:800;box-shadow:0 10px 26px -10px rgba(217,178,95,.8);transition:transform .08s}
+.ok.on{transform:scale(.92)}
+.row2{display:grid;grid-template-columns:1fr 1fr;gap:12px;width:min(86vw,360px)}
+.big{height:74px;border-radius:22px;background:var(--panel2);border:1px solid var(--line);display:flex;align-items:center;justify-content:center;gap:10px;font-size:21px;font-weight:800}
+.big.on{transform:scale(.96);background:#25407A}
+.big svg{width:26px;height:26px}
+.pair{flex:1;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:18px;text-align:center}
+.pair h2{font-family:var(--f-disp);font-size:38px;margin:0;font-weight:700}
+.pair p{margin:0;color:var(--mist);font-size:16px;line-height:1.7;max-width:32ch}
+.code{display:flex;gap:10px;direction:ltr}
+.code input{width:64px;height:78px;border-radius:18px;border:2px solid var(--line);background:var(--panel);color:var(--ivory);font:800 38px var(--f-body);text-align:center;outline:none;-webkit-user-select:text;user-select:text}
+.code input:focus{border-color:var(--gold)}
+.go{height:64px;padding:0 40px;border-radius:20px;background:linear-gradient(180deg,var(--gold2),var(--gold));color:#2A1C05;font-size:21px;font-weight:800}
+.err{color:var(--bad);font-weight:700;min-height:1.4em}
+.foot{display:flex;justify-content:center;gap:16px;font-size:13px;color:var(--mist);font-weight:700;margin-top:10px}
+.foot button{color:var(--gold);font-weight:800;text-decoration:underline;text-underline-offset:4px}
+</style></head><body>
+<div class="top"><div><h1>ريموت ضبط دماغك</h1><small>تحكّم بالتلفزيون من جوالك</small></div><div class="st" id="st"><i></i><span id="stt">غير متصل</span></div></div>
+
+<section class="pair" id="pairv" hidden>
+  <h2>اربط جوالك</h2>
+  <p>افتح «ضبط دماغك» على التلفزيون، وتلقى الرمز في أعلى الشاشة. أو صوّر رمز QR اللي يطلع هناك بكاميرا جوالك.</p>
+  <div class="code" id="code"><input id="c1" inputmode="numeric" maxlength="1" aria-label="الرقم الأول"><input id="c2" inputmode="numeric" maxlength="1" aria-label="الرقم الثاني"><input id="c3" inputmode="numeric" maxlength="1" aria-label="الرقم الثالث"><input id="c4" inputmode="numeric" maxlength="1" aria-label="الرقم الرابع"></div>
+  <div class="err" id="err"></div>
+  <button class="go" id="bpair">اربط</button>
+</section>
+
+<section class="main" id="padv" hidden>
+  <div class="info" id="info" style="width:100%"><div class="scr" id="iscr">ننتظر التلفزيون…</div><b id="ititle">—</b><div class="legend" id="ileg"></div></div>
+  <div class="dpad" id="dpad">
+    <button class="dk U" data-k="U" aria-label="فوق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15l7-7 7 7"/></svg></button>
+    <button class="dk D" data-k="D" aria-label="تحت"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l7 7 7-7"/></svg></button>
+    <button class="dk L" data-k="L" aria-label="يسار"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M15 5l-7 7 7 7"/></svg></button>
+    <button class="dk R" data-k="R" aria-label="يمين"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button>
+    <button class="ok" data-k="OK">OK</button>
+  </div>
+  <div class="row2">
+    <button class="big" data-k="BACK"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 14L4 9l5-5"/><path d="M4 9h11a5 5 0 0 1 0 10h-3"/></svg>رجوع</button>
+    <button class="big" data-k="PAUSE"><svg viewBox="0 0 24 24" fill="currentColor"><rect x="6" y="5" width="4" height="14" rx="1"/><rect x="14" y="5" width="4" height="14" rx="1"/></svg>إيقاف مؤقت</button>
+  </div>
+  <div class="foot"><span>التلفزيون <b id="fcode" class="num"></b></span><button id="bchange">غيّر التلفزيون</button></div>
+</section>
+
+<script src="mq.js"></script>
+<script>
+(function(){
+var $=function(s){return document.querySelector(s)},code='',mq=null,seq=0,dev=Math.random().toString(36).slice(2,8),lastSeen=0;
+try{code=(new URLSearchParams(location.search).get('c'))||localStorage.getItem('dabt-remote-code')||''}catch(e){}
+if(!/^\d{4}$/.test(code))code='';
+var NAMES={home:'الشاشة الرئيسية',intro:'صفحة الشرح',game:'داخل اللعبة',result:'النتيجة',pause:'إيقاف مؤقت'};
+function status(t,on){$('#st').classList.toggle('on',!!on);$('#stt').textContent=t}
+function view(){$('#pairv').hidden=!!code;$('#padv').hidden=!code;if(code){$('#fcode').textContent=code;connect()}else{status('غير متصل',false);setTimeout(function(){$('#c1').focus()},50)}}
+function connect(){if(mq){mq.subscribe(MQ_BASE+code+'/s');return}
+  status('يتصل…',false);
+  mq=MQ(MQ_BROKERS,function(t,m){if(t!==MQ_BASE+code+'/s')return;var s;try{s=JSON.parse(m)}catch(e){return}lastSeen=Date.now();showState(s)},function(n){if(!n)status('يعيد الاتصال…',false);else{mq.publish(MQ_BASE+code+'/hi',JSON.stringify({d:dev}));tick()}});
+  mq.subscribe(MQ_BASE+code+'/s')}
+function tick(){var fresh=Date.now()-lastSeen<12000;if(!mq||!mq.up)status('يعيد الاتصال…',false);else status(fresh?'متصل بالتلفزيون':'التلفزيون غير مفتوح',fresh)}
+setInterval(tick,2000);
+function showState(s){$('#iscr').textContent=(s.p?NAMES.pause:NAMES[s.scr])||'';$('#ititle').textContent=s.t||'ضبط دماغك';
+  $('#ileg').innerHTML=(s.keys||[]).map(function(k){return '<span><em>'+esc(k[0])+'</em>'+esc(k[1])+'</span>'}).join('');tick()}
+function esc(x){return String(x).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
+function send(k){if(!mq)return;seq++;mq.publish(MQ_BASE+code+'/k',JSON.stringify({k:k,i:dev+'-'+seq}));try{navigator.vibrate&&navigator.vibrate(k==='OK'?18:10)}catch(e){}}
+/* press handling: instant on touch, arrows repeat while held */
+document.querySelectorAll('[data-k]').forEach(function(b){var k=b.dataset.k,rep=0,rep2=0;
+  function up(){b.classList.remove('on');clearTimeout(rep);clearInterval(rep2)}
+  b.addEventListener('pointerdown',function(e){e.preventDefault();b.classList.add('on');send(k);if('LRUD'.indexOf(k)>=0){rep=setTimeout(function(){rep2=setInterval(function(){send(k)},170)},420)}});
+  b.addEventListener('pointerup',up);b.addEventListener('pointerleave',up);b.addEventListener('pointercancel',up);
+  b.addEventListener('contextmenu',function(e){e.preventDefault()})});
+/* code entry */
+var ins=[].slice.call(document.querySelectorAll('.code input'));
+ins.forEach(function(inp,i){inp.addEventListener('input',function(){inp.value=inp.value.replace(/\D/g,'').slice(-1);if(inp.value&&i<3)ins[i+1].focus();if(ins.every(function(x){return x.value}))pair()});
+  inp.addEventListener('keydown',function(e){if(e.key==='Backspace'&&!inp.value&&i>0)ins[i-1].focus()})});
+function pair(){var c=ins.map(function(x){return x.value}).join('');if(!/^\d{4}$/.test(c)){$('#err').textContent='اكتب الأرقام الأربعة كاملة';return}
+  $('#err').textContent='';code=c;try{localStorage.setItem('dabt-remote-code',c)}catch(e){}if(mq)mq.subscribe(MQ_BASE+code+'/s');view()}
+$('#bpair').onclick=pair;
+$('#bchange').onclick=function(){code='';lastSeen=0;try{localStorage.removeItem('dabt-remote-code')}catch(e){}ins.forEach(function(x){x.value=''});view()};
+if(code){try{localStorage.setItem('dabt-remote-code',code)}catch(e){}}
+/* keep the phone screen on while it is being used as a remote */
+function wake(){try{navigator.wakeLock&&navigator.wakeLock.request('screen').catch(function(){})}catch(e){}}
+document.addEventListener('visibilitychange',function(){if(!document.hidden)wake()});wake();
+view();
+})();
+</script>
+</body></html>
