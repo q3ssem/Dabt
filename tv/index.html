@@ -229,6 +229,16 @@ button:focus{outline:none}
 .rec{display:inline-block;background:var(--gold);color:#2A1C05;border-radius:99px;padding:8px 26px;font-weight:800;font-size:26px;margin-bottom:10px}
 .toast{position:absolute;left:50%;bottom:70px;transform:translateX(-50%);padding:22px 40px;border-radius:22px;background:var(--panel2);border:1px solid var(--line);font-size:28px;font-weight:800;z-index:60}
 @media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+/* pointer mode (Hisense VIDAA and other cursor-only TV browsers) */
+#pad{position:absolute;left:44px;top:50%;margin-top:-170px;display:grid;grid-template-columns:repeat(3,104px);grid-template-rows:repeat(3,104px);gap:8px;direction:ltr;z-index:20}
+#pad button{border-radius:26px;background:var(--panel2);border:2px solid var(--line);display:grid;place-items:center;color:var(--gold2);font-size:44px;font-weight:800}
+#pad button:hover{background:#25407A;box-shadow:0 0 0 5px var(--gold)}
+#pad button:active{transform:scale(.94)}
+#pad .ok{background:linear-gradient(180deg,var(--gold2),var(--gold));color:#2A1C05;font-size:32px}
+#pad svg{width:56px;height:56px}
+body.keys #pad{display:none}
+.ptrhint{position:absolute;left:44px;top:50%;margin-top:190px;width:328px;text-align:center;font-size:20px;color:var(--mist);font-weight:700}
+body.keys .ptrhint{display:none}
 </style>
 
 <div id="app">
@@ -244,6 +254,8 @@ button:focus{outline:none}
     <div id="gm"></div>
     <div id="ga"></div>
     <div class="khint" id="gkey"></div>
+    <div id="pad" aria-label="أزرار التحكم"><span></span><button data-p="U"></button><span></span><button data-p="L"></button><button data-p="OK" class="ok">OK</button><button data-p="R"></button><span></span><button data-p="D"></button><span></span></div>
+    <div class="ptrhint">وجّه المؤشر للأزرار واضغط OK</div>
   </section>
   <section class="scr" id="result" hidden></section>
   <div class="ovl" id="ovl" hidden><div class="dlg" id="dlg"></div></div>
@@ -683,6 +695,14 @@ function finish(id,res){const m=clamp(res.m||0,0,1),st=adaptStars(m),old=lvOf(id
   show('result');if(nextId)$('#rnext').onclick=()=>{PLAY.i++;openIntro(nextId)};$('#ragain').onclick=()=>{PICK_LV=lvOf(id);openIntro(id)};$('#rhome').onclick=()=>{PLAY=null;goHome()};
   setTimeout(()=>focusEl($('#result [data-def]'),true),30)}
 
+
+/* ===== pointer mode: cursor-only TV browsers (Hisense VIDAA) ===== */
+document.querySelectorAll('#pad [data-p]').forEach(b=>{const k=b.dataset.p;if(k!=='OK')b.innerHTML=arrowSVG(k);
+  b.addEventListener('mousedown',e=>{e.preventDefault();e.stopPropagation()});
+  b.addEventListener('click',e=>{e.preventDefault();e.stopPropagation();if(OVL||SCR!=='game')return;if(G_KEY)G_KEY(k)})});
+let hovT=0;document.addEventListener('mouseover',e=>{const f=e.target.closest&&e.target.closest('.f');if(!f||f===document.activeElement)return;if(!scope().contains(f))return;const n=performance.now();if(n-hovT<60)return;hovT=n;focusEl(f,true)});
+document.addEventListener('wheel',e=>{if(SCR!=='home'||OVL)return;e.preventDefault();const n=performance.now();if(n-hovT<220)return;hovT=n;move(e.deltaY>0?'D':'U')},{passive:false});
+document.addEventListener('keydown',e=>{const c=e.keyCode;if(c===33||c===34||c===427||c===428||e.key==='PageUp'||e.key==='PageDown'||e.key==='ChannelUp'||e.key==='ChannelDown'){e.preventDefault();e.stopPropagation();if(SCR==='home'&&!OVL)move((c===34||c===428||e.key==='PageDown'||e.key==='ChannelDown')?'D':'U')}},true);
 /* ================= boot ================= */
 app.classList.toggle('calm',!!S.calm);
 renderHome();show('home');setTimeout(()=>focusEl($('#bdaily'),true),60);
