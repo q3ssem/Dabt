@@ -2122,6 +2122,32 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 #play.xframe .xpin>h3:first-child{display:none}
 #play.xframe .arthero{display:none!important}
 .play .intro .arthero{display:none!important}
+
+/* v63 fit inside island frame */
+#play.xframe .intro{gap:8px;padding-top:0}
+#play.xframe .intro h2{font-size:22px;margin:0}
+#play.xframe .intro .skill,#play.xframe .intro .eyebrow{font-size:12px}
+#play.xframe .intro .why{font-size:12.5px;padding:8px 10px;background:rgba(255,248,230,.55);border-color:rgba(58,38,22,.2);color:#3A2616}
+#play.xframe .how{gap:5px}
+#play.xframe .how li{font-size:12.5px;padding:7px 9px;border-radius:10px}
+#play.xframe .how li b{width:20px;height:20px;font-size:11px}
+#play.xframe .bestline,#play.xframe .intro small{font-size:11.5px}
+#play.xframe .go-btn{padding:9px 14px;font-size:15px;border-radius:14px;width:70%;align-self:center;margin:6px auto 0}
+#play.xframe .xnote{font-size:12.5px;line-height:1.6;margin:4px 0}
+#play.xframe .xbcode{font-size:20px}
+#play.xframe .xbwheels{margin-top:2px}
+#play.xframe .xbwheel{max-width:none;flex:0 0 82%}
+#play.xframe .xbwheels:has(.xbwheel+.xbwheel) .xbwheel{flex:0 0 48%}
+#play.xframe .xbwheel text{font-size:9px}
+#play.xframe .xbread small{display:none}
+#play.xframe .xbtxt{font-size:18px}
+#play.xframe .xbo2{padding:8px 4px;font-size:14px}
+#play.xframe .xbwheel svg{width:min(210px,100%)!important;height:auto!important;aspect-ratio:1;max-height:none!important}
+#play.xframe .xbwheels:has(.xbwheel+.xbwheel) .xbwheel svg{width:100%!important}
+#play.xframe .xbrot button{width:52px;height:44px;font-size:22px}
+#play.xframe .xbcode{display:none}
+#play.xframe .xbwheels .xbwheel{width:200px!important;max-width:100%!important;flex:none!important}#play.xframe .xbwheels:has(.xbwheel+.xbwheel) .xbwheel{width:48%!important}#play.xframe .xbwheel>svg{width:100%!important;height:auto!important}
+#play.xframe #m{font-size:13px;line-height:1.4}#play.xframe .xbtxt{font-size:16px}
 </style>
 
 
@@ -8288,9 +8314,9 @@ document.documentElement.style.setProperty('--xframe','url('+XFRAME+')');
     const on=!pl.hidden&&TX_IDS.includes(id)&&S_MODE()==='main';pl.classList.toggle('xframe',on);
     if(!on){cur='';const st=$('#stage');if(st)st.style.zoom='';return}
     let t=$('#xft');if(!t){t=document.createElement('div');t.id='xft';pl.appendChild(t)}
-    if(cur!==id){cur=id;const g=GM[id],sg=txStageOf(id);t.textContent=g?g.name:''}
+    if(cur!==id){cur=id;const s0=$('#stage');if(s0)s0.scrollTop=0;const g=GM[id],sg=txStageOf(id);t.textContent=g?g.name:''}
     const st=$('#stage');if(st){const w=st.clientWidth;st.style.zoom=w&&w<330?String(Math.max(.8,w/330).toFixed(3)):''}}
-  setInterval(tick,250);document.addEventListener('click',()=>setTimeout(tick,30),true)})();
+  setInterval(tick,250);document.addEventListener('click',e=>{setTimeout(tick,30);if(e.target.closest&&e.target.closest('#play .go-btn'))setTimeout(()=>{const s0=$('#stage');if(s0)s0.scrollTop=0},60)},true)})();
 applyMode();if(!MODE)showModePick();
 </script>
 
