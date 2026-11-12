@@ -1,4 +1,4 @@
-import {readSessions,saveSession} from './core/storage.js';
+import {readSessions,saveSession,exportSessions} from './core/storage.js';
 import {createFullBackup,restoreFullBackup} from './core/backup.js';
 import {createPlatformState} from './core/platform-state.js';
 import {adaptChoicesForAgeBand} from './child/curriculum.js';
