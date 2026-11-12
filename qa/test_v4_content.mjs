@@ -1,0 +1,14 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const js=fs.readFileSync(new URL('../src/handdrawn-adventure.js',import.meta.url),'utf8');
+assert.match(js,/const islandScenes=\[/);
+assert.match(js,/const planetScenes=\[/);
+assert.equal((js.match(/chapter:'الفصل/g)||[]).length,6,'six island scenes');
+assert.equal((js.match(/chapter:'المحطة/g)||[]).length,6,'six planet scenes');
+assert.equal((js.match(/puzzle:\{/g)||[]).length,21,'21 authored puzzles');
+assert.match(js,/localStorage\.setItem\('dabt4\.solved'/);
+assert.match(js,/localStorage\.setItem\('dabt4\.journal'/);
+assert.match(js,/activeScene\(\)\.items\.every/,'scene exit gate');
+const html=fs.readFileSync(new URL('../adventure-2d.html',import.meta.url),'utf8');
+for(const id of ['world','puzzleModal','pauseOverlay','journalEntries','worldMap']) assert.ok(html.includes(`id="${id}"`),`missing ${id}`);
+console.log('PASS: 12 scenes, 21 puzzle records, local save namespaces, route gating, core UI elements');

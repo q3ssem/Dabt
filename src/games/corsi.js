@@ -1,0 +1,3 @@
+export function makeCorsiSequence(level,rng=Math.random){const length=Math.min(8,2+level);const seq=[];while(seq.length<length){const n=Math.floor(rng()*9);if(!seq.includes(n))seq.push(n)}return seq}
+export function validateCorsiSequence(seq){return Array.isArray(seq)&&seq.length>=2&&seq.length<=8&&seq.every(n=>Number.isInteger(n)&&n>=0&&n<9)&&new Set(seq).size===seq.length}
+export const corsiGame={id:'corsi',title:'مسار المربعات',subtitle:'شاهد التسلسل المكاني ثم أعد النقر بالترتيب نفسه.',skill:'الذاكرة المكانية',icon:'▦',accent:'#a58af5',time:'2–4 دقائق',description:'ستضيء مربعات متتابعة. احفظ المسار ثم أعده بالترتيب.',create:makeCorsiSequence,validate:validateCorsiSequence};

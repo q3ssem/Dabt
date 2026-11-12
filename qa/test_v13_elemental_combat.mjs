@@ -1,0 +1,12 @@
+import assert from 'node:assert/strict';
+import { resolveElementalCombat } from '../src/adventures/elemental-combat.js';
+assert.deepEqual(resolveElementalCombat({element:'water',hp:2}),{ok:true,kind:'slow',durationMs:4200,hp:2,defeated:false});
+assert.equal(resolveElementalCombat({element:'light'}).kind,'stun');
+assert.equal(resolveElementalCombat({element:'energy'}).kind,'disable');
+const hit1=resolveElementalCombat({element:'fire',hp:2});
+assert.equal(hit1.hp,1);assert.equal(hit1.defeated,false);
+const hit2=resolveElementalCombat({element:'fire',hp:1});
+assert.equal(hit2.hp,0);assert.equal(hit2.defeated,true);
+assert.equal(resolveElementalCombat({element:'fire',hp:0,defeated:true}).ok,false);
+assert.equal(resolveElementalCombat({element:'void'}).ok,false);
+console.log('PASS: elemental combat validates slow, stun, disable, fire damage and defeated-state guard.');

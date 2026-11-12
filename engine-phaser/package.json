@@ -1,0 +1,17 @@
+{
+  "name": "dabt-pro-adventures-phaser4",
+  "version": "2.5.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build",
+    "test": "node ../qa/test_phaser_scaffold.mjs && node ../qa/test_phaser_v55.mjs && node ../qa/test_v60_campaign.mjs && node ../qa/test_v65_mechanics.mjs && node ../qa/test_v70_quests_guardian.mjs && node ../qa/test_v80_world_interactivity.mjs && node ../qa/test_v90_environment_simulation.mjs && node ../qa/test_v10_v15_parallel_foundation.mjs && node ../qa/test_v10_v15_runtime_integration.mjs && node ../qa/test_v11_boss_story_runtime.mjs && node ../qa/test_v12_enemy_ai.mjs && node ../qa/test_v13_elemental_combat.mjs && node ../qa/test_v14_boss_elemental.mjs && node ../qa/test_v15_campaign_consequences.mjs && node ../qa/test_v16_content_expansion.mjs && node ../qa/test_v17_deep_expansion.mjs && node ../qa/test_v17_app_integration.mjs && node ../qa/test_static_server_smoke.mjs && node ../qa/test_release_graph_audit.mjs && node ../qa/test_full_backup_restore.mjs && node ../qa/test_pwa_offline.mjs"
+  },
+  "dependencies": {
+    "phaser": "^4.0.0"
+  },
+  "devDependencies": {
+    "vite": "^6.0.0"
+  }
+}
