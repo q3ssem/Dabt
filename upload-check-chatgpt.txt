@@ -1,4 +1,0 @@
-GitHub upload permission test
-Repository: q3ssem/Dabt
-Branch: chatgpt-upload-test-2026-11-12
-Purpose: verify Contents API write access. This is a temporary test file.
