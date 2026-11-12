@@ -1,0 +1,111 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>ضبط دماغك PRO — القاعدة المتغيرة v1.0</title>
+<style>
+:root{--bg:#10192d;--panel:#172641;--panel2:#1c3151;--line:#31496b;--text:#f4f7ff;--muted:#aab9d0;--teal:#26c6b5;--blue:#5698ff;--violet:#a58af5;--gold:#ffbe59;--coral:#f17d8e;--good:#4bd3a2;--bad:#ff7887}
+*{box-sizing:border-box}body{margin:0;background:radial-gradient(ellipse at 15% 0%,#233a61 0,transparent 40%),var(--bg);color:var(--text);font-family:system-ui,-apple-system,"Segoe UI",Tahoma,Arial,sans-serif;min-height:100vh}
+button{font:inherit;cursor:pointer;touch-action:manipulation;-webkit-tap-highlight-color:transparent}button:disabled{opacity:.55;cursor:default} .wrap{max-width:980px;margin:auto;padding:22px}
+header{display:flex;justify-content:space-between;align-items:center;gap:12px;border-bottom:1px solid var(--line);padding:8px 0 18px}
+.brand{font-weight:900;font-size:21px;display:flex;align-items:center;gap:10px}.logo{width:38px;height:38px;border-radius:12px;background:linear-gradient(135deg,var(--teal),var(--blue));display:grid;place-items:center;color:#071b2b;font-size:22px}
+.pill{border:1px solid var(--line);border-radius:999px;padding:7px 12px;color:var(--muted);font-size:13px}
+h1{font-size:clamp(26px,5vw,42px);margin:26px 0 8px}p{color:var(--muted);line-height:1.7;margin-top:6px}
+.panel{background:linear-gradient(145deg,#1b2d4a,#14233b);border:1px solid var(--line);border-radius:22px;padding:20px;margin-top:18px;box-shadow:0 18px 50px #0003}
+.grid{display:grid;grid-template-columns:repeat(auto-fit,minmax(210px,1fr));gap:12px}.stage{background:#12213a;border:1px solid var(--line);border-radius:15px;padding:15px;text-align:right;color:var(--text);min-height:116px}.stage b{display:block;margin:8px 0}.stage small{color:var(--muted)}.stage.locked{opacity:.42;cursor:not-allowed}.stage.done{border-color:var(--good)}.stage.current{border-color:var(--teal);box-shadow:0 0 0 1px var(--teal) inset}
+.primary,.secondary,.answer{border:0;border-radius:13px;padding:13px 18px;font-weight:800}.primary{background:linear-gradient(100deg,var(--teal),#55e1cf);color:#062a2b}.secondary{background:#213653;color:var(--text);border:1px solid var(--line)}
+.toprow{display:flex;justify-content:space-between;align-items:center;gap:10px;flex-wrap:wrap}.progress{height:9px;background:#0c1729;border-radius:20px;overflow:hidden;margin:14px 0}.progress i{display:block;height:100%;background:linear-gradient(90deg,var(--teal),var(--blue));width:0;transition:width .25s}
+.rulebox{border:1px solid #3c6684;background:#112d43;border-radius:16px;padding:14px;text-align:center;margin:20px auto;max-width:540px}.rulelabel{color:#9eece3;font-size:13px;font-weight:800}.ruletext{font-size:22px;font-weight:900;margin-top:5px}
+.stimulus{height:210px;display:grid;place-items:center;margin:14px auto;max-width:540px;background:linear-gradient(145deg,#102039,#1b3150);border:1px solid var(--line);border-radius:22px}
+.number{font-size:90px;font-weight:950;letter-spacing:2px}.shape{width:110px;height:110px;border:0}.circle{border-radius:50%}.square{border-radius:12px}.diamond{transform:rotate(45deg);border-radius:9px}.arrow{font-size:100px;font-weight:900;direction:ltr}
+.answers{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;max-width:540px;margin:14px auto}.answer{background:#223b5c;color:white;border:1px solid #3d5a7c;min-height:64px;font-size:18px;padding:12px;user-select:none;-webkit-user-select:none}.answer:hover{border-color:var(--teal);background:#29486c}.answer:focus-visible,button:focus-visible{outline:3px solid var(--gold);outline-offset:3px}
+.feedback{text-align:center;min-height:35px;font-weight:800;padding:7px}.explain{max-width:540px;margin:8px auto 14px;padding:12px 14px;border-radius:13px;background:#102039;border:1px solid var(--line);color:var(--muted);line-height:1.65}.review-list{display:grid;gap:9px;margin:14px 0}.review-item{padding:12px;border:1px solid var(--line);border-radius:13px;background:#102039}.review-item b{display:block;margin-bottom:5px}.review-item small{color:var(--muted)}.history{display:grid;gap:8px}.history-row{display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap;padding:9px 0;border-bottom:1px solid var(--line)}.subtle{font-size:12px;color:var(--muted)}.good{color:var(--good)}.bad{color:var(--bad)}
+.hidden{display:none!important}.metric{display:flex;gap:10px;flex-wrap:wrap}.metric span{background:#102039;border:1px solid var(--line);border-radius:12px;padding:10px 13px;color:var(--muted)}.metric b{color:var(--text)}
+footer{font-size:12px;color:var(--muted);text-align:center;padding:24px}
+@media(prefers-reduced-motion:reduce){*{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+@media(max-width:560px){.wrap{padding:12px}.panel{padding:15px}.stimulus{height:175px}.number{font-size:76px}.arrow{font-size:82px}.answers{gap:8px}.answer{font-size:16px;padding:10px}}
+</style></head>
+<body><div class="wrap">
+<header><div class="brand"><div class="logo">◎</div>ضبط دماغك <span style="color:var(--teal)">PRO</span></div><div style="display:flex;gap:8px;align-items:center;flex-wrap:wrap"><a href="Dabt_Player_Dashboard_v1.0.html" class="pill" style="text-decoration:none;color:var(--teal)">لوحة اللاعب</a><div class="pill">نموذج تجريبي v1.0 · مختبر العقل</div></div></header>
+<main id="app"></main><footer>نموذج تصميم واختبار أولي v1.0 — لا يمثل اختبار ذكاء أو تشخيصاً طبياً.</footer>
+</div>
+<script src="../qa/assessment-engine/Dabt_Assessment_Engine_v1.3.js"></script>
+<script>
+const stages=[
+{id:1,title:"قاعدة واحدة: الزوجي والفردي",domainId:"reasoning",skill:"اتباع قاعدة ثابتة",desc:"حدد هل الرقم زوجي أم فردي. ركّز على القاعدة الظاهرة قبل الإجابة.",trials:[
+[n(2),"even"],[n(7),"odd"],[n(4),"even"],[n(9),"odd"],[n(6),"even"],[n(3),"odd"]],rule:"هل الرقم زوجي أم فردي؟",labels:["زوجي","فردي"]},
+{id:2,title:"قاعدة ثانية: أكبر أم أصغر",domainId:"reasoning",skill:"التعامل مع قاعدتين",desc:"تتعرف الآن على مقارنة الرقم بالخمسة. كل محاولة تعرض القاعدة المطلوبة صراحة.",trials:[
+[n(8),"greater"],[n(2),"less"],[n(7),"greater"],[n(4),"less"],[n(9),"greater"],[n(1),"less"]],rule:"هل الرقم أكبر أم أصغر من ٥؟",labels:["أكبر من ٥","أصغر من ٥"]},
+{id:3,title:"التبديل بين قاعدتين",domainId:"cognitive-flexibility",skill:"التبديل المعلن",desc:"ستتغير القاعدة من محاولة لأخرى. اقرأ بطاقة القاعدة في كل مرة.",trials:[
+[n(8),"greater"],[n(3),"odd"],[n(2),"less"],[n(7),"odd"],[n(6),"greater"],[n(4),"even"],[n(1),"odd"],[n(9),"greater"]],rule:"اقرأ القاعدة في كل محاولة",labels:["أكبر من ٥","أصغر من ٥"]},
+{id:4,title:"إشارة اللون تحدد القاعدة",domainId:"cognitive-flexibility",skill:"ربط الإشارة بالقاعدة",desc:"الإطار الأزرق يعني زوجي/فردي، والإطار البنفسجي يعني أكبر/أصغر من خمسة.",trials:[
+[n(6),"even","blue"],[n(8),"greater","violet"],[n(3),"odd","blue"],[n(2),"less","violet"],[n(9),"odd","blue"],[n(7),"greater","violet"],[n(4),"even","blue"],[n(1),"less","violet"]],rule:"الأزرق: زوجي/فردي · البنفسجي: أكبر/أصغر",labels:["زوجي","فردي"]},
+{id:5,title:"الأشكال والألوان",domainId:"cognitive-flexibility",skill:"تبديل مجموعات القواعد",desc:"تبديل بين نوع الشكل ولونه. اقرأ بطاقة القاعدة ولا تعتمد على الذاكرة من المحاولة السابقة.",trials:[
+[shape("circle","#26c6b5"),"circle"],[shape("square","#f17d8e"),"red"],[shape("diamond","#5698ff"),"blue"],[shape("square","#26c6b5"),"square"],[shape("circle","#f17d8e"),"circle"],[shape("diamond","#f17d8e"),"red"],[shape("square","#5698ff"),"blue"],[shape("circle","#5698ff"),"circle"]],rule:"اختر الشكل أو اللون حسب المطلوب",labels:["دائرة","مربع"]},
+{id:6,title:"مشتت بصري",domainId:"selective-attention",skill:"التحكم في المشتتات",desc:"يظهر شكل صغير غير مهم بجانب الهدف. تجاهله وحدد الخاصية المطلوبة من الشكل الكبير.",trials:[
+[shape("circle","#26c6b5",true),"circle"],[shape("square","#f17d8e",true),"red"],[shape("diamond","#5698ff",true),"blue"],[shape("square","#26c6b5",true),"square"],[shape("circle","#f17d8e",true),"circle"],[shape("diamond","#f17d8e",true),"red"],[shape("square","#5698ff",true),"blue"],[shape("circle","#5698ff",true),"circle"]],rule:"تجاهل الشكل الصغير وحدد المطلوب",labels:["دائرة","مربع"]},
+{id:7,title:"التحدي المركّب",domainId:"cognitive-flexibility",skill:"دمج القواعد",desc:"تبديل بين أربع قواعد، مع إشارة لونية ثابتة لكل قاعدة. هذه مرحلة إتقان مركّبة.",trials:[
+[n(8),"even","blue"],[shape("circle","#f17d8e"),"red","coral"],[n(3),"odd","blue"],[shape("square","#5698ff"),"square","violet"],[n(7),"greater","gold"],[shape("diamond","#26c6b5"),"diamond","violet"],[n(2),"less","gold"],[shape("circle","#5698ff"),"blue","coral"],[n(9),"odd","blue"],[shape("square","#f17d8e"),"red","coral"]],rule:"اتبع لون الإشارة لتعرف نوع القاعدة",labels:["الاختيار الأول","الاختيار الثاني"]}
+];
+function n(v){return {type:"number",v}} function shape(s,c,d=false){return {type:"shape",s,c,d}}
+const app=document.getElementById("app");let stageIndex=0,trialIndex=0,correct=0,answers=[],started=0,locked=false,sessionMode="training";
+function readSaved(){try{const raw=localStorage.getItem("dabt-sw-demo");if(!raw)return {unlocked:1,results:[]};const v=JSON.parse(raw);if(!v||!Array.isArray(v.results))return {unlocked:1,results:[]};return {unlocked:Math.max(1,Math.min(7,Number(v.unlocked)||1)),results:v.results};}catch(e){return {unlocked:1,results:[]};}}
+const saved=readSaved();
+const assessmentStore=DabtAssessmentEngine.createStore();
+function persist(){try{localStorage.setItem("dabt-sw-demo",JSON.stringify(saved));return true;}catch(e){return false;}}
+function esc(s){return String(s).replace(/[&<>"']/g,c=>({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]))}
+function home(){const u=saved.unlocked||1;const total=saved.results.length;const best=saved.results.reduce((m,r)=>Math.max(m,Number(r.accuracy)||0),0);app.innerHTML=`<h1>القاعدة المتغيرة</h1><p><a href="./dashboard.html">العودة إلى لوحة التقييم ←</a></p><p>لعبة لتدريب تبديل القواعد والانتباه إلى التعليمات. المراحل ثابتة ومؤلفة مسبقاً، وليست مولدة عشوائياً.</p><section class="panel"><div class="toprow"><div><b>مسار الإتقان</b><p>٧ مراحل متدرجة · ٥٤ محاولة مصممة</p></div><span class="pill">${total} محاولة مكتملة</span></div><div class="toprow" style="margin:12px 0"><b>نوع الجلسة</b><div style="display:flex;gap:8px"><button class="${sessionMode==="training"?"primary":"secondary"}" onclick="setMode('training')">تدريب</button><button class="${sessionMode==="assessment"?"primary":"secondary"}" onclick="setMode('assessment')">قياس</button></div></div><p class="subtle">${sessionMode==="training"?"في التدريب تظهر لك الإجابة والتفسير بعد كل محاولة.":"في القياس لا تظهر الإجابة الصحيحة أثناء المرحلة؛ تظهر المراجعة بعد الانتهاء."}</p><div class="grid">${stages.map((s,i)=>`<button class="stage ${i+1<u?'done':i+1===u?'current':'locked'}" ${i+1>u?'disabled':''} onclick="begin(${i})"><small>المرحلة ${i+1}</small><b>${s.title}</b><small>${s.skill}</small><div style="margin-top:10px">${i+1<u?'✓ متاحة للمراجعة':i+1===u?'ابدأ المرحلة':'مقفلة'}</div></button>`).join("")}</div></section><section class="panel"><b>ملخص تقدمك</b><div class="metric" style="margin-top:12px"><span>المراحل المفتوحة <b>${u} / ٧</b></span><span>المحاولات المكتملة <b>${total}</b></span><span>أفضل دقة <b>${Math.round(best*100)}%</b></span><span>متوسط الدقة <b>${Math.round((saved.results.reduce((a,r)=>a+(Number(r.accuracy)||0),0)/(total||1))*100)}%</b></span></div><p class="subtle">تُحفظ النتائج على هذا الجهاز والمتصفح فقط. استخدم «تصدير النتائج» للاحتفاظ بنسخة JSON تنقلها بنفسك. لا تُرسل بياناتك إلى خادم.</p></section>${total?`<section class="panel"><div class="toprow"><b>آخر النتائج</b><div style="display:flex;gap:8px;flex-wrap:wrap"><button class="secondary" onclick="exportResults()">تصدير النتائج</button><button class="secondary" onclick="clearHistory()">مسح السجل</button></div></div><div class="history">${saved.results.slice(-5).reverse().map(r=>`<div class="history-row"><span>المرحلة ${r.stage}</span><span>${Math.round(r.accuracy*100)}% دقة · ${r.errors} أخطاء</span><small>${new Date(r.date).toLocaleDateString('ar')}</small></div>`).join('')}</div></section>`:''}<section class="panel"><b>ملخص المهارات المسجلة</b><div class="history">${Object.entries(DabtAssessmentEngine.summarize(assessmentStore.getAll()).byDomain).map(([domain,m])=>`<div class="history-row"><span>${m.label}</span><span>${Math.round(m.meanAccuracy*100)}% متوسط الدقة</span><small>${m.sessions} جلسة</small></div>`).join("")||'<p class="subtle">أكمل مرحلة لبدء تكوين سجل الأداء.</p>'}<div class="metric"><span>جلسات التدريب <b>${DabtAssessmentEngine.summarize(assessmentStore.getAll()).byMode.training.sessions}</b></span><span>جلسات القياس <b>${DabtAssessmentEngine.summarize(assessmentStore.getAll()).byMode.assessment.sessions}</b></span></div></div></section><section class="panel"><b>سجل محرك التقييم الموحد</b><div class="metric"><span>جلسات التدريب <b>${DabtAssessmentEngine.dashboard(assessmentStore.getAll()).totals.trainingSessions}</b></span><span>جلسات القياس <b>${DabtAssessmentEngine.dashboard(assessmentStore.getAll()).totals.assessmentSessions}</b></span><span>دقة القياس الموزونة <b>${(()=>{const v=DabtAssessmentEngine.dashboard(assessmentStore.getAll()).assessment.attemptWeightedAccuracy;return v===null?"—":Math.round(v*100)+"%"})()}</b></span></div><p class="subtle">هذا السجل منفصل عن تقدم المراحل، ويستخدم مخطط المحرك الموحد.</p></section><section class="panel"><b>مبدأ القياس</b><p>نسجل الدقة وزمن الاستجابة والأخطاء. هذه مؤشرات أداء داخل اللعبة وليست اختبار ذكاء أو تشخيصاً طبياً، ولا تثبت انتقال التحسن إلى مهارات أخرى.</p></section>`}
+function clearHistory(){if(!confirm("هل تريد مسح سجل النتائج المحفوظ على هذا الجهاز؟"))return;saved.results=[];persist();home()}
+function exportResults(){
+  const payload={product:"Dabt Brain PRO",game:"Rule Switch",schemaVersion:1,exportedAt:new Date().toISOString(),notice:"Local gameplay metrics only; not a standardized psychological assessment.",progress:{unlockedStages:saved.unlocked,results:saved.results},assessmentEngine:assessmentStore.exportData()};
+  const blob=new Blob([JSON.stringify(payload,null,2)],{type:"application/json;charset=utf-8"});
+  const url=URL.createObjectURL(blob);const a=document.createElement("a");a.href=url;a.download="dabt-rule-switch-results.json";document.body.appendChild(a);a.click();a.remove();URL.revokeObjectURL(url);
+}
+
+function setMode(mode){sessionMode=mode==="assessment"?"assessment":"training";home()}
+function begin(i){stageIndex=i;trialIndex=0;correct=0;answers=[];started=performance.now();locked=false;renderTrial()}
+function ruleFor(t){if(stageIndex===0)return ["هل الرقم زوجي أم فردي؟","قاعدة ثابتة"];if(stageIndex===1)return ["هل الرقم أكبر أم أصغر من ٥؟","قاعدة ثابتة"];if(stageIndex===2){return [t[1]==="odd"||t[1]==="even"?"هل الرقم زوجي أم فردي؟":"هل الرقم أكبر أم أصغر من ٥؟","تبديل معلن"]}if(stageIndex===3){return [t[2]==="blue"?"هل الرقم زوجي أم فردي؟":"هل الرقم أكبر أم أصغر من ٥؟",t[2]==="blue"?"إشارة زرقاء":"إشارة بنفسجية"]}if(stageIndex===4||stageIndex===5){return [t[1]==="circle"||t[1]==="square"||t[1]==="diamond"?"ما شكل العنصر؟":"ما لونه؟",t[1]==="red"||t[1]==="blue"?"قاعدة اللون":"قاعدة الشكل"]}return [t[2]==="blue"?"هل الرقم زوجي أم فردي؟":t[2]==="gold"?"هل الرقم أكبر أم أصغر من ٥؟":t[2]==="coral"?"ما لون الشكل؟":"ما شكل العنصر؟","تحدي مركّب"]}
+function promptText(key){return ({even:"زوجي",odd:"فردي",greater:"أكبر من ٥",less:"أصغر من ٥",circle:"دائرة",square:"مربع",diamond:"مُعين",red:"أحمر",blue:"أزرق",teal:"فيروزي"})[key]}
+function optionsFor(key){if(["even","odd"].includes(key))return [["زوجي","even"],["فردي","odd"]];if(["greater","less"].includes(key))return [["أكبر من ٥","greater"],["أصغر من ٥","less"]];if(["circle","square","diamond"].includes(key))return [["دائرة","circle"],["مربع","square"],["مُعين","diamond"]];return [["أحمر","red"],["أزرق","blue"],["فيروزي","teal"]]}
+function renderStim(stim){if(stim.type==="number")return `<div class="number">${stim.v}</div>`;return `<div style="position:relative;width:125px;height:125px;display:grid;place-items:center"><div class="shape ${stim.s}" style="background:${stim.c}"></div>${stim.d?'<div style="position:absolute;left:4px;top:8px;width:18px;height:18px;border-radius:50%;background:#ffbe59;opacity:.8"></div>':''}</div>`}
+function explainAnswer(key,stim){const val=promptText(key);if(stim.type==="number"){if(key==="even"||key==="odd")return `الرقم ${stim.v} ${val} لأن رقم الآحاد ${stim.v%10} ${stim.v%2===0?'يقبل القسمة على ٢ دون باقٍ':'لا يقبل القسمة على ٢ دون باقٍ'}.`;return `الرقم ${stim.v} ${val} مقارنةً بالعدد ٥.`}const shapeName=({circle:"دائرة",square:"مربع",diamond:"مُعين"})[stim.s];const colorName=stim.c==="#f17d8e"?"أحمر":stim.c==="#5698ff"?"أزرق":"فيروزي";return key===stim.s?`الإجابة هي ${shapeName}؛ ركّز على حدود الشكل الكبير وتجاهل العلامة الصغيرة.`:`الإجابة هي ${colorName}؛ اعتمد على لون الشكل الكبير وليس العلامة الصغيرة.`}
+function renderTrial(){const s=stages[stageIndex],t=s.trials[trialIndex],r=ruleFor(t),key=t[1],opts=optionsFor(key);locked=false;let ruleColor=t[2]==="blue"?"var(--blue)":t[2]==="violet"?"var(--violet)":t[2]==="gold"?"var(--gold)":t[2]==="coral"?"var(--coral)":"var(--teal)";
+app.innerHTML=`<section class="panel"><div class="toprow"><span class="pill">المرحلة ${stageIndex+1} من ٧</span><span class="pill">المحاولة ${trialIndex+1} من ${s.trials.length}</span></div><h2>${s.title}</h2><p>${s.desc}</p><div class="progress"><i style="width:${trialIndex/s.trials.length*100}%"></i></div><div class="rulebox" style="border-color:${ruleColor}"><div class="rulelabel">${r[1]}</div><div class="ruletext">${r[0]}</div></div><div class="stimulus">${renderStim(t[0])}</div><div class="answers">${opts.map(([label,val])=>`<button class="answer" onclick="choose('${val}')">${label}</button>`).join("")}</div><div id="feedback" class="feedback" aria-live="polite"></div><div id="explanation" class="explain hidden" aria-live="polite"></div><div class="toprow"><button class="secondary" onclick="home()">خروج للمراحل</button><span class="pill">الصحيحة: ${correct}</span></div></section>`;window.trialStarted=performance.now();if(window.matchMedia&&window.matchMedia("(max-width:560px)").matches)window.scrollTo({top:0,behavior:"auto"})}
+function choose(value){
+ if(locked)return;locked=true;
+ const t=stages[stageIndex].trials[trialIndex],target=t[1],ok=value===target,rt=performance.now()-window.trialStarted;
+ if(ok)correct++;answers.push({trial:trialIndex+1,ok,rt,target,value,stim:t[0]});
+ document.querySelectorAll(".answer").forEach(b=>b.disabled=true);
+ const f=document.getElementById("feedback"),ex=document.getElementById("explanation");
+ if(sessionMode==="training"){
+   f.textContent=ok?`صحيح: ${promptText(target)}`:`ليست الإجابة الصحيحة. الإجابة: ${promptText(target)}`;
+   f.className="feedback "+(ok?"good":"bad");ex.textContent=explainAnswer(target,t[0]);ex.classList.remove("hidden");
+ }else{
+   f.textContent="تم تسجيل إجابتك.";f.className="feedback";ex.classList.add("hidden");
+ }
+ const next=document.createElement("button");next.className="primary";
+ next.textContent=trialIndex===stages[stageIndex].trials.length-1?"عرض نتيجة المرحلة":"المحاولة التالية";
+ next.onclick=()=>{trialIndex++;if(trialIndex>=stages[stageIndex].trials.length)finish();else renderTrial()};
+ const row=document.querySelector(".toprow:last-child");row.insertBefore(next,row.firstChild);
+}
+function finish(){
+ const s=stages[stageIndex];
+ const scored=DabtAssessmentEngine.scoreSession({
+   sessionId:"rule-switch-"+Date.now()+"-"+Math.random().toString(36).slice(2,8),gameId:"rule-switch",gameVersion:"1.1.0",stageId:String(stageIndex+1),
+   stageTitle:s.title,domainId:s.domainId,mode:sessionMode,startedAt:new Date(Date.now()-(performance.now()-started)).toISOString(),
+   passThreshold:.75,responses:answers
+ });
+ const engineSave=assessmentStore.add(scored);
+ const accuracy=scored.accuracy,mean=scored.responseTime.meanMs||0,errors=answers.filter(a=>!a.ok),passed=scored.passed;
+ const result={stage:stageIndex+1,stageTitle:s.title,domainId:scored.domainId,domain:scored.domainLabel,mode:scored.mode,accuracy,meanRT:scored.responseTime.meanMs,
+   medianRT:scored.responseTime.medianMs,rtSD:scored.responseTime.sdMs,errors:errors.length,
+   date:scored.completedAt,attempts:scored.attempts,correct:scored.correct,passed,
+   scoringSchemaVersion:scored.schemaVersion,errorCounts:scored.errorCounts};
+ saved.results.push(result);
+ if(passed)saved.unlocked=Math.max(saved.unlocked||1,Math.min(7,stageIndex+2));
+ const savedOk=persist() && engineSave.added;
+ const review=errors.length?`<div class="review-list">${errors.map(a=>`<div class="review-item"><b>المحاولة ${a.trial}: ${promptText(a.target)}</b><small>إجابتك: ${promptText(a.value)||'غير معروفة'} · الصحيح: ${promptText(a.target)}</small><p>${explainAnswer(a.target,a.stim)}</p></div>`).join("")}</div>`:`<p class="good">لم تسجل أخطاء في هذه المحاولة.</p>`;
+ app.innerHTML=`<section class="panel"><div style="font-size:40px;text-align:center">${passed?"✓":"↻"}</div><h2 style="text-align:center">${passed?"اجتزت المرحلة":"تحتاج إلى محاولة أخرى"}</h2><p style="text-align:center">${s.title}</p><div class="metric"><span>الدقة <b>${Math.round(accuracy*100)}%</b></span><span>متوسط الاستجابة <b>${(mean/1000).toFixed(2)} ث</b></span><span>الأخطاء <b>${errors.length}</b></span></div><p>${passed?"تم فتح المرحلة التالية.":"شرط الاجتياز ٧٥٪ على الأقل. يمكنك مراجعة أخطائك ثم إعادة المرحلة."}</p><h3>${sessionMode==="assessment"?"مراجعة القياس":"مراجعة التدريب"}</h3>${review}<p class="subtle">${savedOk?"تم حفظ النتيجة على هذا الجهاز.":"تعذر حفظ النتيجة في التخزين المحلي؛ قد لا تبقى بعد إغلاق الصفحة."}</p><div class="toprow"><button class="secondary" onclick="home()">قائمة المراحل</button><button class="primary" onclick="${passed&&stageIndex<6?`begin(${stageIndex+1})`:`begin(${stageIndex})`}">${passed&&stageIndex<6?"المرحلة التالية":"إعادة المحاولة"}</button></div><p class="subtle">مؤشرات زمن الاستجابة وصفية داخل هذه اللعبة وتتأثر بالجهاز واللمس والقراءة والتشتت. لا تستخدم للمقارنة التشخيصية أو لقياس الذكاء.</p></section>`;
+}
+home();
+</script></body></html>
