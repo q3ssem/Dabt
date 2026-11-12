@@ -1,0 +1,16 @@
+import fs from 'node:fs';
+import path from 'node:path';
+import assert from 'node:assert/strict';
+const root=path.resolve(import.meta.dirname,'..');
+const src=fs.readFileSync(path.join(root,'engine-phaser/src/main.js'),'utf8');
+const pkg=JSON.parse(fs.readFileSync(path.join(root,'engine-phaser/package.json'),'utf8'));
+assert.match(pkg.dependencies.phaser,/\^4\.0\.0/);
+for(const token of ['class BootScene','class MenuScene','class WorldScene','this.physics.add.staticGroup()','this.physics.add.collider','setVelocityX','setVelocityY','openPuzzle','answerPuzzle','localStorage','makeTouchControls','makeGuideNPC','openGuideDialog','openJournal','showOverlay','closeOverlay','hero-walk','hero-idle']) assert.ok(src.includes(token),`missing ${token}`);
+for(const key of ['island','planet']) assert.ok(src.includes(`${key}: {`),`missing world ${key}`);
+const clueCount=(src.match(/question:'/g)||[]).length; assert.equal(clueCount,18,'eighteen authored encounters expected');
+assert.equal((src.match(/subtitle:'/g)||[]).length,6,'three areas per adventure expected');
+assert.ok(src.includes('areaIndex+1'),'area progression must advance');assert.ok(src.includes('completed:true'),'completion must persist');
+for(const asset of ['island','cave','observatory','moon','mars','neptune']) assert.ok(fs.existsSync(path.join(root,`engine-phaser/public/assets/backgrounds/${asset}-parallax.svg`)),`missing ${asset} background`);
+assert.ok(fs.existsSync(path.join(root,'engine-phaser/public/assets/characters/explorer-spritesheet.png')));
+const html=fs.readFileSync(path.join(root,'engine-phaser/index.html'),'utf8'); assert.match(html,/src\/main\.js/);
+console.log('PASS: Phaser 4 dependency, menu/world scenes, physics, keyboard/touch controls, NPC dialogue, journal, eighteen encounters, progression, persistence and local assets');

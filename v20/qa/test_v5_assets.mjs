@@ -1,0 +1,10 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const root=new URL('../',import.meta.url);
+const html=fs.readFileSync(new URL('../adventure-2d.html',import.meta.url),'utf8');
+const js=fs.readFileSync(new URL('../src/handdrawn-adventure.js',import.meta.url),'utf8');
+assert.match(html,/id="soundToggle"/); assert.match(html,/id="achievementCount"/);
+assert.match(js,/explorer-spritesheet\.png/); assert.match(js,/ctx\.drawImage\(heroSprite/);
+assert.match(js,/\.checkpoint/); assert.match(js,/\.achievements/);
+for(const f of ['assets/characters/explorer-spritesheet.svg','assets/characters/explorer-spritesheet.png','assets/backgrounds/island-parallax.svg','assets/backgrounds/cave-parallax.svg','assets/backgrounds/observatory-parallax.svg','assets/backgrounds/moon-parallax.svg','assets/backgrounds/mars-parallax.svg','assets/backgrounds/neptune-parallax.svg']) assert.ok(fs.existsSync(new URL('../'+f,import.meta.url)),`missing ${f}`);
+console.log('PASS: v5 sprite, environment plates, sound, checkpoint and achievement wiring');

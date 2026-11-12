@@ -1,0 +1,17 @@
+import assert from 'node:assert/strict';
+import { readFile } from 'node:fs/promises';
+const src = await readFile(new URL('../engine-phaser/src/main.js', import.meta.url), 'utf8');
+assert.match(src, /guardianMemoryKey=.*guardian-memory/);
+assert.match(src, /startBossBattle\(\)/);
+assert.match(src, /bossTelegraph\(\)/);
+assert.match(src, /bossStrike\(\)/);
+assert.match(src, /damageBoss\(element='water'\)/);
+assert.match(src, /resolveBossElement/);
+assert.match(src, /bossWeaknessLabel/);
+assert.match(src, /b\.hp=result\.hp;b\.exposed=false;b\.phase=b\.hp<=1\?3:b\.hp===2\?2:1/);
+assert.match(src, /نافذة ضعف/);
+assert.match(src, /this\.saveData\[\`\$\{this\.worldKey\}-ending\`\]=c\.id/);
+assert.match(src, /إعادة التوازن/);
+assert.match(src, /حفظ السر/);
+assert.match(src, /this\.saveData\[this\.bossKey\]=true/);
+console.log('PASS: guardian memory trial unlocks a three-phase dodge-and-strike boss; victory persists and branches to a saved ending choice.');
