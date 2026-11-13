@@ -119,6 +119,23 @@ button{font:inherit;color:inherit;border:0;background:none;padding:0;cursor:poin
 .ans.two{grid-template-columns:1fr}
 
 h1,h2,.ptitle,.mcard b,.brand h1,.itx h2,.res h2,.dlg h2,.gt b,.pql,.daily h2,.top h1,.pv h2,.khead h2,.pair h2{font-weight:900!important}
+
+.seg2{display:grid;grid-template-columns:1fr 1fr;gap:4px;width:min(86vw,340px);background:rgba(243,235,216,.06);border-radius:14px;padding:4px}
+.seg2 button{height:40px;border-radius:10px;font-weight:800;font-size:15px;color:var(--mist)}.seg2 button.on{background:var(--panel2);color:var(--gold2)}
+.tpad{width:min(86vw,340px);aspect-ratio:1;max-width:100%;border-radius:36px;border:2px dashed var(--line);background:radial-gradient(circle,#1C3263,#122245 75%);display:grid;place-items:end center;padding-bottom:18px;color:var(--mist);font-weight:800;font-size:14px;touch-action:none;position:relative;overflow:hidden}
+.tpad i{position:absolute;width:70px;height:70px;border-radius:50%;background:rgba(242,213,142,.35);transform:translate(-50%,-50%);pointer-events:none;animation:tp .35s ease-out forwards}
+@keyframes tp{to{opacity:0;transform:translate(-50%,-50%) scale(1.8)}}
+.lockv{width:min(86vw,360px);text-align:center;padding:22px;border-radius:24px;background:rgba(19,36,67,.85);border:1px solid var(--line);display:flex;flex-direction:column;gap:12px;align-items:center}
+.lockv b{font-size:22px}.lockv p{margin:0;color:var(--mist);line-height:1.7;font-size:15px}
+.hostme{display:inline-block;margin-top:4px;font-size:12px;font-weight:800;color:#2A1C05;background:var(--gold);border-radius:8px;padding:1px 8px}
+.ab{gap:6px;padding:10px}.ab .abt{display:block;color:#fff;font-weight:800;font-size:19px;line-height:1.35;text-shadow:0 1px 2px rgba(0,0,0,.35);max-height:4.1em;overflow:hidden}
+.ab svg{width:40%;height:40%;max-height:70px}.ans.withtxt .ab{grid-template-rows:auto auto;align-content:center}
+.qtxt{font-size:17px;font-weight:800;line-height:1.5;text-align:center;padding:4px 6px}
+.ready{font-size:96px;font-weight:900;color:var(--gold2);line-height:1}
+.oimgb{width:52px;height:52px;border-radius:14px;border:1.5px dashed var(--line);display:grid;place-items:center;position:relative;overflow:hidden;flex:none}
+.oimgb input{position:absolute;inset:0;opacity:0}.oimgb svg{width:22px;height:22px;color:var(--gold2)}.oimgb img{width:100%;height:100%;object-fit:cover}
+.oprow{grid-template-columns:52px 1fr 52px}
+.musnote{font-size:13px;color:var(--gold2);font-weight:800;text-align:center}
 </style></head><body>
 <div class="top"><div><h1>ريموت ضبط دماغك</h1><small>تحكّم بالتلفزيون من جوالك</small></div><div class="st" id="st"><i></i><span id="stt">غير متصل</span></div></div>
 
@@ -132,6 +149,9 @@ h1,h2,.ptitle,.mcard b,.brand h1,.itx h2,.res h2,.dlg h2,.gt b,.pql,.daily h2,.t
 
 <section class="main" id="padv" hidden>
   <div class="info" id="info" style="width:100%"><div class="scr" id="iscr">ننتظر التلفزيون…</div><b id="ititle">—</b><div class="legend" id="ileg"></div></div>
+  <div class="seg2" id="cmode" role="tablist"><button data-m="pad" class="on">أزرار</button><button data-m="touch">لوحة لمس</button></div>
+  <div class="lockv" id="lockv" hidden><b id="lockn">التحكم مع شخص ثاني</b><p>تقدر تلعب الكاهوت وتكتب أسئلة، لكن التنقل بالتلفزيون عند المتحكم.</p><button class="go" id="bask">اطلب التحكم</button></div>
+  <div class="tpad" id="tpad" hidden><span>اسحب للاتجاهات · المس مرة للاختيار</span></div>
   <div class="dpad" id="dpad">
     <button class="dk U" data-k="U" aria-label="فوق"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 15l7-7 7 7"/></svg></button>
     <button class="dk D" data-k="D" aria-label="تحت"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"><path d="M5 9l7 7 7-7"/></svg></button>
@@ -154,7 +174,7 @@ h1,h2,.ptitle,.mcard b,.brand h1,.itx h2,.res h2,.dlg h2,.gt b,.pql,.daily h2,.t
 </section>
 
 <section class="pv" id="partyv" hidden>
-  <h2 id="ptitle">جمعة الميلخ</h2>
+  <h2 id="ptitle">كاهوت الجلسة</h2>
   <div id="pbody" class="pv" style="padding:0"></div>
   <button class="small" id="btoremote">استخدم الريموت بدلًا من اللعب</button>
 </section>
@@ -171,15 +191,21 @@ function view(){$('#pairv').hidden=!!code;$('#padv').hidden=!code;$('#partyv').h
 function subAll(){['/s','/p','/ka','/kc'].forEach(function(x){mq.subscribe(MQ_BASE+code+x)})}
 function connect(){if(mq){subAll();return}
   status('يتصل…',false);
-  mq=MQ(MQ_BROKERS,function(t,m){var s;try{s=JSON.parse(m)}catch(e){return}if(t===MQ_BASE+code+'/p'){onParty(s);return}if(t===MQ_BASE+code+'/ka'){onAck(s);return}if(t===MQ_BASE+code+'/kc'){onBank(s);return}if(t!==MQ_BASE+code+'/s')return;lastSeen=Date.now();showState(s)},function(n){if(!n)status('يعيد الاتصال…',false);else{mq.publish(MQ_BASE+code+'/hi',JSON.stringify({d:dev}));tick()}});
+  mq=MQ(MQ_BROKERS,function(t,m){var s;try{s=JSON.parse(m)}catch(e){return}if(t===MQ_BASE+code+'/p'){onParty(s);return}if(t===MQ_BASE+code+'/ka'){onAck(s);return}if(t===MQ_BASE+code+'/kc'){onBank(s);return}if(t!==MQ_BASE+code+'/s')return;lastSeen=Date.now();showState(s)},function(n){if(!n)status('يعيد الاتصال…',false);else{hello();tick()}});
   subAll()}
+function hello(){if(mq&&code)mq.publish(MQ_BASE+code+'/hi',JSON.stringify({d:me,n:myName,av:myAv}))}
+setInterval(function(){if(mq&&mq.up)hello()},10000);
 function tick(){var fresh=Date.now()-lastSeen<12000;if(!mq||!mq.up)status('يعيد الاتصال…',false);else status(fresh?'متصل بالتلفزيون':'التلفزيون غير مفتوح',fresh)}
 setInterval(tick,2000);
-function showState(s){$('#iscr').textContent=(s.p?NAMES.pause:NAMES[s.scr])||'';$('#ititle').textContent=s.t||'ضبط دماغك';
-  var ob=document.getElementById('grp');if(ob)ob.hidden=!!s.party||s.scr!=='home';if(!s.party&&P&&P.on){P.on=false;pView()}
+var CT={ctl:'all',host:''};
+function applyLock(){var locked=CT.ctl==='one'&&CT.host&&CT.host!==me;$('#lockv').hidden=!locked;$('#cmode').hidden=locked;document.querySelector('.row2').hidden=locked;
+  $('#dpad').hidden=locked||cmode!=='pad';$('#tpad').hidden=locked||cmode!=='touch';if(locked)$('#lockn').textContent='التحكم مع '+(CT.hostN||'شخص ثاني')}
+function showState(s){$('#iscr').innerHTML=esc((s.p?NAMES.pause:NAMES[s.scr])||'')+(s.ctl==='one'&&s.host===me?' <span class="hostme">أنت المتحكم</span>':'');$('#ititle').textContent=s.t||'ضبط دماغك';
+  CT={ctl:s.ctl||'all',host:s.host||'',hostN:s.hostN||''};applyLock();
+  var ob=document.getElementById('grp');if(ob){ob.hidden=!(s.party||s.scr==='home');$('#bopenk').textContent=s.party?'ارجع لكاهوت الجلسة':'افتح «كاهوت الجلسة» على التلفزيون'}if(!s.party&&P&&P.on){P.on=false;pView()}
   $('#ileg').innerHTML=(s.keys||[]).map(function(k){return '<span><em>'+esc(k[0])+'</em>'+esc(k[1])+'</span>'}).join('');tick()}
 function esc(x){return String(x).replace(/[&<>"]/g,function(c){return{'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;'}[c]})}
-function send(k){if(!mq)return;seq++;mq.publish(MQ_BASE+code+'/k',JSON.stringify({k:k,i:dev+'-'+seq}));try{navigator.vibrate&&navigator.vibrate(k==='OK'?18:10)}catch(e){}}
+function send(k){if(!mq)return;seq++;mq.publish(MQ_BASE+code+'/k',JSON.stringify({k:k,i:dev+'-'+seq,d:me}));try{navigator.vibrate&&navigator.vibrate(k==='OK'?18:10)}catch(e){}}
 /* press handling: instant on touch, arrows repeat while held */
 document.querySelectorAll('[data-k]').forEach(function(b){var k=b.dataset.k,rep=0,rep2=0;
   function up(){b.classList.remove('on');clearTimeout(rep);clearInterval(rep2)}
@@ -193,6 +219,19 @@ ins.forEach(function(inp,i){inp.addEventListener('input',function(){inp.value=in
 function pair(){var c=ins.map(function(x){return x.value}).join('');if(!/^\d{4}$/.test(c)){$('#err').textContent='اكتب الأرقام الأربعة كاملة';return}
   $('#err').textContent='';code=c;try{localStorage.setItem('dabt-remote-code',c)}catch(e){}if(mq)subAll();view()}
 $('#bpair').onclick=pair;
+$('#bask').onclick=function(){pub('/c',{d:me,c:'askctl'});this.textContent='انرسل الطلب للتلفزيون';var b=this;setTimeout(function(){b.textContent='اطلب التحكم'},4000)};
+/* buttons or a touch surface: swipe for arrows, tap for OK */
+var cmode='pad';try{cmode=localStorage.getItem('dabt-cmode')==='touch'?'touch':'pad'}catch(e){}
+function setMode(m){cmode=m;try{localStorage.setItem('dabt-cmode',m)}catch(e){}document.querySelectorAll('#cmode button').forEach(function(b){b.classList.toggle('on',b.dataset.m===m)});applyLock()}
+document.querySelectorAll('#cmode button').forEach(function(b){b.onclick=function(){setMode(b.dataset.m)}});
+(function(){var tp=$('#tpad'),sx=0,sy=0,ax=0,ay=0,moved=false,t0=0,id=null;
+  function dot(x,y){var r=tp.getBoundingClientRect(),i=document.createElement('i');i.style.left=(x-r.left)+'px';i.style.top=(y-r.top)+'px';tp.appendChild(i);setTimeout(function(){i.remove()},400)}
+  tp.addEventListener('pointerdown',function(e){e.preventDefault();id=e.pointerId;try{tp.setPointerCapture(id)}catch(x){}sx=ax=e.clientX;sy=ay=e.clientY;moved=false;t0=Date.now()});
+  tp.addEventListener('pointermove',function(e){if(e.pointerId!==id)return;var dx=e.clientX-ax,dy=e.clientY-ay,STEP=56;
+    if(Math.abs(dx)>=STEP&&Math.abs(dx)>Math.abs(dy)){send(dx>0?'R':'L');ax=e.clientX;ay=e.clientY;moved=true;dot(e.clientX,e.clientY)}
+    else if(Math.abs(dy)>=STEP){send(dy>0?'D':'U');ax=e.clientX;ay=e.clientY;moved=true;dot(e.clientX,e.clientY)}});
+  tp.addEventListener('pointerup',function(e){if(e.pointerId!==id)return;id=null;var d=Math.hypot(e.clientX-sx,e.clientY-sy);if(!moved&&d<24&&Date.now()-t0<450){send('OK');dot(e.clientX,e.clientY)}});
+  tp.addEventListener('pointercancel',function(){id=null})})();
 $('#bchange').onclick=function(){code='';lastSeen=0;try{localStorage.removeItem('dabt-remote-code')}catch(e){}ins.forEach(function(x){x.value=''});view()};
 if(code){try{localStorage.setItem('dabt-remote-code',code)}catch(e){}}
 /* keep the phone screen on while it is being used as a remote */
@@ -220,59 +259,69 @@ function avPicker(){return '<div class="avgrid">'+AVP.map(function(_,i){return '
 function bindAv(root){root.querySelectorAll('.avb').forEach(function(b){b.onclick=function(){setAv(+b.dataset.av);buzz(10);root.querySelectorAll('.avb').forEach(function(z){z.classList.toggle('on',z===b)})}})}
 function pView(){if(inK)return;var on=P&&P.on&&!forceRemote;$('#partyv').hidden=!on||!code;$('#padv').hidden=on||!code;if(!on)return;
   $('#ptitle').textContent='كاهوت الجلسة';
-  var b=$('#pbody'),m=meP(),ph=P.ph,key=ph+P.qn+(m?1:0)+(myAns[P.qn]!=null?1:0)+(objd[P.qn]?1:0)+(ph==='lobby'?P.kq+''+P.locked:'');
-  if(ph==='q')updCd();
-  if(key===lastPh&&ph!=='lobby')return;lastPh=key;
-  if(!m){b.innerHTML='<div class="pcard"><p>اكتب اسمك واختر رسمتك. تطلع معك على التلفزيون</p></div><input class="name" id="pname" maxlength="16" placeholder="اسمك" value="'+esc(myName)+'">'+avPicker()+'<div class="ferr" id="perr"></div><button class="gobtn" id="pjoin">ادخل</button>';bindAv(b);
-    $('#pjoin').onclick=function(){var n=$('#pname').value.trim();if(!n){$('#pname').focus();return}if(!(myAv>=0)){$('#perr').textContent='اختر رسمة';return}setName(n);joinTried=Date.now();pub('/j',{d:me,n:n,av:myAv});$('#pjoin').textContent='جارِ الدخول…'};return}
+  var b=$('#pbody'),m=meP(),ph=P.ph,key=!m?'join':ph+P.qn+(myAns[P.qn]!=null?1:0)+(objd[P.qn]?1:0)+(ph==='lobby'?'|'+P.players.length+'|'+P.kq+'|'+P.locked+'|'+P.ol+'|'+P.ctl+P.host+'|'+P.mus+P.musD:'')+(ph==='reveal'||ph==='board'?'|'+m.s:'');
+  if(ph==='q'||ph==='ready')updCd();
+  if(key===lastPh&&$('#pbody').childElementCount)return;lastPh=key;
+  if(!m){var typed=$('#pname')?$('#pname').value:myName;b.innerHTML='<div class="pcard"><p>اكتب اسمك واختر رسمتك. تطلع معك على التلفزيون</p></div><input class="name" id="pname" maxlength="16" placeholder="اسمك" value="'+esc(typed)+'">'+avPicker()+'<div class="ferr" id="perr"></div><button class="gobtn" id="pjoin">ادخل</button>';bindAv(b);
+    $('#pjoin').onclick=function(){var n=$('#pname').value.trim();if(!n){$('#pname').focus();return}if(!(myAv>=0)){$('#perr').textContent='اختر رسمة';return}setName(n);hello();joinTried=Date.now();pub('/j',{d:me,n:n,av:myAv});$('#pjoin').textContent='جارِ الدخول…'};return}
   if(ph==='lobby'){
     b.innerHTML='<div class="pcard"><div style="display:flex;justify-content:center">'+avSVG(m.av,64)+'</div><b class="big2">'+esc(m.n)+'</b><p>اللاعبين: '+P.players.length+' · الأسئلة: '+(P.kq||0)+(P.locked?' · الملف مؤكَّد':'')+'</p></div>'+
      (P.locked?'':'<button class="writeb" id="pwrite" style="width:100%">'+$('#bwrite').innerHTML+'</button>')+
-     '<div class="pcard"><p>'+(P.ol?'أثناء أي سؤال تقدر تعترض عليه. إذا اعترض '+P.ol+' ينلغي السؤال':'الاعتراض على الأسئلة مغلق في هذي الجلسة')+'</p></div><button class="gobtn" id="pstart"'+(!P.kq?' disabled style="opacity:.4"':'')+'>ابدأ</button>';
-    $('#pstart').onclick=function(){pub('/c',{d:me,c:'start'});buzz(20)};if($('#pwrite'))$('#pwrite').onclick=openK;return}
+     '<div class="pcard"><p>'+(P.ol?'أثناء أي سؤال تقدر تعترض عليه. إذا اعترض '+P.ol+' ينلغي السؤال':'الاعتراض على الأسئلة مغلق في هذي الجلسة')+'</p></div>'+
+     (P.mus==='phone'&&P.musD===me?'<div class="musnote">الموسيقى تطلع من جوالك أثناء الأسئلة. ارفع الصوت</div>':'')+
+     (P.ctl==='one'&&P.host&&P.host!==me?'<div class="pcard"><p>ينتظر '+esc(P.hostN||'المتحكم')+' يبدأ المسابقة</p></div>':'<button class="gobtn" id="pstart"'+(!P.kq?' disabled style="opacity:.4"':'')+'>ابدأ</button>');
+    if($('#pstart'))$('#pstart').onclick=function(){pub('/c',{d:me,c:'start'});buzz(20)};if($('#pwrite'))$('#pwrite').onclick=openK;return}
+  if(ph==='ready'){b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center"><div><p>السؤال '+P.qn+' من '+P.total+'</p><div class="qtxt">'+esc(P.qt||'')+'</div><div class="ready" id="cdn">'+Math.max(1,Math.ceil(P.left/1000))+'</div><p>استعد…</p></div></div>';return}
   if(ph==='show'){b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center"><div><b class="big2">ركّز على الشاشة</b><p>احفظ الرموز بالترتيب</p></div></div>';return}
   if(ph==='q'){var mine=myAns[P.qn],n=P.n||4,tf=!!P.tf;
-    b.innerHTML='<div class="qtop"><div class="cd">السؤال '+P.qn+' من '+P.total+' · باقي <b id="cdn">'+Math.ceil(P.left/1000)+'</b> ث</div>'+(P.ol?'<button class="objb'+(objd[P.qn]?' done':'')+'" id="pobj">'+FLAG+(objd[P.qn]?'اعترضت':'اعتراض')+'</button>':'')+'</div>'+(P.by===me?'<div class="cd" style="color:var(--gold2)">هذا سؤالك. جاوب عليه مثل الباقين</div>':'')+
-     '<div class="ans'+(tf?' two':'')+'">'+[0,1,2,3].slice(0,n).map(function(i){var c=tf?TFCOL[i]:OCOL[i];return '<button class="ab'+(mine!=null?(mine===i?' mine':' off'):'')+'" data-a="'+i+'" style="--oc:'+c+'">'+(tf?'<span><span style="display:block;width:70px;height:70px;margin:auto">'+TFSV[i]+'</span><span class="tfl">'+TFN[i]+'</span></span>':shp(i))+'</button>'}).join('')+'</div>'+
+    var qo=P.qo||[];b.innerHTML='<div class="qtop"><div class="cd">السؤال '+P.qn+' من '+P.total+' · باقي <b id="cdn">'+Math.ceil(P.left/1000)+'</b> ث</div>'+(P.ol?'<button class="objb'+(objd[P.qn]?' done':'')+'" id="pobj">'+FLAG+(objd[P.qn]?'اعترضت':'اعتراض')+'</button>':'')+'</div>'+(P.by===me?'<div class="cd" style="color:var(--gold2)">هذا سؤالك. جاوب عليه مثل الباقين</div>':'')+
+     (P.qt?'<div class="qtxt">'+esc(P.qt)+'</div>':'')+
+     '<div class="ans'+(tf?' two':' withtxt')+'">'+[0,1,2,3].slice(0,n).map(function(i){var c=tf?TFCOL[i]:OCOL[i];return '<button class="ab'+(mine!=null?(mine===i?' mine':' off'):'')+'" data-a="'+i+'" style="--oc:'+c+'">'+(tf?'<span><span style="display:block;width:70px;height:70px;margin:auto">'+TFSV[i]+'</span><span class="tfl">'+TFN[i]+'</span></span>':shp(i)+(qo[i]?'<span class="abt">'+esc(qo[i])+'</span>':''))+'</button>'}).join('')+'</div>'+
      (mine!=null?'<div class="cd">تم إرسال إجابتك. انتظر الباقين</div>':'');
     if($('#pobj')&&!objd[P.qn])$('#pobj').onclick=function(){var b2=this;if(!b2.dataset.sure){b2.dataset.sure='1';b2.innerHTML=FLAG+'متأكد؟ اضغط مرة ثانية';setTimeout(function(){if(b2.isConnected&&!objd[P.qn]){delete b2.dataset.sure;b2.innerHTML=FLAG+'اعتراض'}},2500);return}objd[P.qn]=1;pub('/o',{d:me,q:P.qn});buzz([20,40,20]);lastPh='';pView()};
     if(mine==null)b.querySelectorAll('.ab').forEach(function(x){x.addEventListener('pointerdown',function(e){e.preventDefault();var a=+x.dataset.a;if(myAns[P.qn]!=null)return;myAns[P.qn]=a;pub('/a',{d:me,q:P.qn,a:a});buzz(25);lastPh='';pView()})});return}
   if(ph==='void'){b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center"><div><div class="res2">انلغى السؤال</div><p>ما أحد ياخذ نقاط عليه</p></div></div>';return}
-  if(ph==='reveal'||ph==='board'){var ok=m.ok;b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center;background:'+(ok?'rgba(79,192,141,.18)':'rgba(232,99,122,.16)')+'"><div><div class="res2">'+(ok?'صح!':(myAns[P.qn]==null?'ما جاوبت':'خطأ'))+'</div>'+(ok?'<b class="big2">+'+m.dl+'</b>':'')+(ok&&m.bn?'<p class="streak">'+FLAME+' سلسلة '+m.st+' صح: +'+m.bn+' إضافية</p>':'')+'<p>نقاطك '+m.s+' · ترتيبك '+rankOf()+' من '+P.players.length+'</p></div></div>';if(ok)buzz([30,60,30]);return}
+  if(ph==='reveal'||ph==='board'){var ok=m.ok;b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center;background:'+(ok?'rgba(79,192,141,.18)':'rgba(232,99,122,.16)')+'"><div><div class="res2">'+(ok?'صح!':(myAns[P.qn]==null?'ما جاوبت':'خطأ'))+'</div>'+(ok?'<b class="big2">+'+m.dl+'</b>':'')+(ok&&m.bn?'<p class="streak">'+FLAME+' سلسلة '+m.st+' صح: +'+m.bn+' إضافية</p>':'')+(!ok&&P.qo&&P.ans>=0&&P.qo[P.ans]?'<p>الجواب الصح: <b>'+esc(P.qo[P.ans])+'</b></p>':'')+'<p>نقاطك '+m.s+' · ترتيبك '+rankOf()+' من '+P.players.length+'</p></div></div>';if(ok)buzz([30,60,30]);return}
   if(ph==='final'||ph==='summary'){var r=rankOf();b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center"><div><div style="display:flex;justify-content:center">'+avSVG(m.av,80)+'</div><div class="res2">'+(r===1?'أنت بطل الجلسة':'ترتيبك '+r)+'</div><b class="big2">'+m.s+' نقطة</b><p>من '+P.players.length+' لاعبين · الملخص على التلفزيون</p></div></div>';return}}
+var MZ=DabtMusic();
+document.addEventListener('pointerdown',function(){try{MZ.unlock()}catch(e){}},true);
+function musicTick(){var mine=P&&P.on&&P.mus==='phone'&&P.musD===me&&P.ph==='q';if(mine){MZ.start(P.th|0);MZ.hurry(Math.max(0,P.left-(Date.now()-pRecv))<5200)}else if(MZ.playing())MZ.stop()}
+setInterval(musicTick,300);
+window.__remote={music:function(){return MZ.playing()},state:function(){return P}};
 function updCd(){var el=$('#cdn');if(!el||!P)return;var left=Math.max(0,P.left-(Date.now()-pRecv));el.textContent=Math.ceil(left/1000)}
 setInterval(function(){if(P&&P.ph==='q')updCd()},250);
 $('#btoremote').onclick=function(){forceRemote=true;pView()};
-$('#bopenk').onclick=function(){pub('/c',{d:me,c:'open'});forceRemote=false};
+$('#bopenk').onclick=function(){forceRemote=false;if(P&&P.on){lastPh='';pView();return}pub('/c',{d:me,c:'open'})};
 var FLAG='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M5 21V4"/><path d="M5 4h12l-2 4 2 4H5"/></svg>',FLAME='<svg viewBox="0 0 24 24" fill="#E8A93B" width="20" height="20" style="vertical-align:-4px"><path d="M12 2c1 4 6 6 6 12a6 6 0 0 1-12 0c0-3 2-5 3-6 0 2 1 3 2 3 0-4-1-6 1-9z"/></svg>';
 
 /* ===== كاهوت الجلسة: writing questions ===== */
 var MKEY='dabt-kq-mine',mine=[],bank=null,draft=null;
 try{mine=JSON.parse(localStorage.getItem(MKEY)||'[]')||[]}catch(e){mine=[]}
 function saveMine(){try{localStorage.setItem(MKEY,JSON.stringify(mine))}catch(e){try{localStorage.setItem(MKEY,JSON.stringify(mine.map(function(x){var y=JSON.parse(JSON.stringify(x));if(y.st==='ok')y.q.img='';return y})))}catch(er){}}}
+function kRefresh(){if(!inK||draft||$('#kname'))return;kList()}
 function onBank(b){bank=b;var el=$('#kbank');if(el)el.textContent=b&&b.total!=null?'في التلفزيون: '+b.total+' سؤال'+(b.locked?' · مقفول':''):'';
-  if(b&&b.fid){var ch=false;mine=mine.filter(function(x){if(x.st==='ok'&&x.fid&&x.fid!==b.fid){ch=true;return false}return true});if(ch){saveMine();if(inK&&!draft)kList()}}if(inK&&!draft)kList()}
-function onAck(a){if(!a||a.d!==me)return;for(var i=0;i<mine.length;i++)if(mine[i].id===a.id){if(a.del&&a.ok){mine.splice(i,1)}else{mine[i].st=a.ok?'ok':'err';mine[i].why=a.why||'';if(a.ok)mine[i].fid=a.fid}break}saveMine();if(inK&&!draft)kList()}
+  if(b&&b.fid){var ch=false;mine=mine.filter(function(x){if(x.st==='ok'&&x.fid&&x.fid!==b.fid){ch=true;return false}return true});if(ch){saveMine()}}kRefresh()}
+function onAck(a){if(!a||a.d!==me)return;for(var i=0;i<mine.length;i++)if(mine[i].id===a.id){if(a.del&&a.ok){mine.splice(i,1)}else{mine[i].st=a.ok?'ok':'err';mine[i].why=a.why||'';if(a.ok)mine[i].fid=a.fid}break}saveMine();kRefresh()}
 function sendQ(x){if(x.st==='del')pub('/kq',{d:me,id:x.id,del:true});else pub('/kq',{d:me,n:myName,av:myAv,id:x.id,q:x.q})}
 setInterval(function(){if(!mq||!mq.up||Date.now()-lastSeen>12000)return;mine.forEach(function(x){if(x.st==='pending'||x.st==='del')sendQ(x)})},4000);
 function openK(){inK=true;draft=null;$('#padv').hidden=true;$('#partyv').hidden=true;$('#kview').hidden=false;kList()}
 function closeK(){if(draft){draft=null;kList();return}inK=false;$('#kview').hidden=true;lastPh='';if(P&&P.on&&!forceRemote)pView();else{$('#padv').hidden=!code}}
 $('#bwrite').onclick=openK;$('#kback').onclick=closeK;
-var IC_EDIT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>',IC_DEL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></svg>';
+var IC_CAM='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 8h3l2-3h6l2 3h3v11H4z"/><circle cx="12" cy="13" r="3.5"/></svg>',IC_EDIT='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M4 20h4L19 9l-4-4L4 16z"/></svg>',IC_DEL='<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round"><path d="M5 7h14M10 7V4h4v3M7 7l1 13h8l1-13"/></svg>';
 var ST={pending:'<span class="tag">يرسل للتلفزيون…</span>',ok:'<span class="tag ok2">محفوظ في التلفزيون</span>',err:'<span class="tag err2">ما انحفظ</span>',del:'<span class="tag">يحذف…</span>'};
 function kList(){$('#ktitle').textContent='كاهوت الجلسة';var b=$('#kbody'),live=mine.filter(function(x){return x.st!=='del'});
   if(!myName||!(myAv>=0)){b.innerHTML='<div class="pcard"><p>اكتب اسمك واختر رسمتك. تطلع مع أسئلتك ومعك في المسابقة</p></div><input class="name" id="kname" maxlength="16" placeholder="اسمك" value="'+esc(myName)+'">'+avPicker()+'<div class="ferr" id="kerr0"></div><button class="gobtn" id="kname2">التالي</button>';bindAv(b);
-    $('#kname2').onclick=function(){var n=$('#kname').value.trim();if(!n){$('#kname').focus();return}if(!(myAv>=0)){$('#kerr0').textContent='اختر رسمة';return}setName(n);kList()};return}
+    $('#kname2').onclick=function(){var n=$('#kname').value.trim();if(!n){$('#kname').focus();return}if(!(myAv>=0)){$('#kerr0').textContent='اختر رسمة';return}setName(n);hello();$('#kname').remove();kList()};return}
   var lk=bank&&bank.locked;
   b.innerHTML='<div class="pcard"><p>'+(lk?'ملف الأسئلة مؤكَّد ومقفول. اطلب «تعديل الملف» من التلفزيون عشان تضيف أو تعدّل.':'اكتب أسئلتك هنا. تنحفظ على التلفزيون ومحد يشوفها لين تبدأ المسابقة.')+'</p></div>'+
    (lk?'':'<button class="gobtn" id="knew">سؤال جديد</button>')+
    (live.length?'<div class="lbl">أسئلتك ('+live.length+')</div>':'')+
-   live.map(function(x){var q=x.q;return '<div class="kq"><b>'+esc(q.t)+'</b><div class="acts"><button data-e="'+x.id+'" aria-label="تعديل">'+IC_EDIT+'</button><button data-x="'+x.id+'" aria-label="حذف">'+IC_DEL+'</button></div>'+(q.img?'<img src="'+q.img+'" alt="">':'')+'<small>'+(q.tf?'صح أو خطأ':'أربع خيارات')+' · '+q.s+' ث · الجواب: '+esc(q.o[q.a])+' '+ST[x.st]+(x.st==='err'&&x.why?' <span class="err2">'+esc(x.why)+'</span>':'')+'</small></div>'}).join('');
+   live.map(function(x){var q=x.q;return '<div class="kq"><b>'+esc(q.t)+'</b><div class="acts"><button data-e="'+x.id+'" aria-label="تعديل">'+IC_EDIT+'</button><button data-x="'+x.id+'" aria-label="حذف">'+IC_DEL+'</button></div>'+(q.img?'<img src="'+q.img+'" alt="">':'')+'<small>'+(q.tf?'صح أو خطأ':'أربع خيارات')+(q.oi&&q.oi.some(Boolean)?' · صور للخيارات':'')+' · '+q.s+' ث · الجواب: '+esc(q.o[q.a])+' '+ST[x.st]+(x.st==='err'&&x.why?' <span class="err2">'+esc(x.why)+'</span>':'')+'</small></div>'}).join('');
   if($('#knew'))$('#knew').onclick=function(){kForm(null)};
   b.querySelectorAll('[data-e]').forEach(function(e){e.onclick=function(){kForm(e.dataset.e)}});
   b.querySelectorAll('[data-x]').forEach(function(e){e.onclick=function(){var x=mine.filter(function(y){return y.id===e.dataset.x})[0];if(!x)return;if(e.dataset.sure){x.st='del';saveMine();sendQ(x);kList()}else{e.dataset.sure='1';e.style.background='var(--bad)';setTimeout(function(){if(e.isConnected){delete e.dataset.sure;e.style.background=''}},2500)}}})}
 function kForm(id){var x=id&&mine.filter(function(y){return y.id===id})[0];
-  draft=x?JSON.parse(JSON.stringify(x.q)):{tf:false,t:'',o:['','','',''],a:-1,s:20,img:''};draft._id=x?x.id:'q'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
+  draft=x?JSON.parse(JSON.stringify(x.q)):{tf:false,t:'',o:['','','',''],a:-1,s:20,img:'',oi:['','','',''],x:''};if(!draft.oi||draft.oi.length!==4)draft.oi=['','','',''];if(draft.x==null)draft.x='';draft._id=x?x.id:'q'+Date.now().toString(36)+Math.random().toString(36).slice(2,5);
   if(draft.tf&&draft.o.length===2)draft.o4=['','','',''];kDraw()}
 function kDraw(){var d=draft,b=$('#kbody');$('#ktitle').textContent=mine.some(function(y){return y.id===d._id})?'تعديل السؤال':'سؤال جديد';
   var opts4=d.tf?(d.o4||['','','','']):d.o;
@@ -280,11 +329,14 @@ function kDraw(){var d=draft,b=$('#kbody');$('#ktitle').textContent=mine.some(fu
    '<div class="lbl">السؤال</div><textarea class="qta" id="kt" maxlength="200" placeholder="اكتب سؤالك هنا">'+esc(d.t)+'</textarea>'+
    (d.img?'<div class="imgp"><img src="'+d.img+'" alt=""><button id="kimgx">إزالة الصورة</button></div>':'<label class="imgb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="11" r="2"/><path d="M21 16l-5-5-8 8"/></svg><span id="kimgl">أضف صورة (اختياري)</span><input type="file" accept="image/*" id="kimg"></label>')+
    (d.tf?'<div class="lbl">وش الجواب الصح؟</div><div class="tfpick">'+[0,1].map(function(i){return '<button data-a="'+i+'" style="--oc:'+TFCOL[i]+'" class="'+(d.a===i?'on':'')+'">'+TFSV[i]+TFN[i]+'</button>'}).join('')+'</div>'
-     :'<div class="lbl">الخيارات. اضغط اللون عشان تحدد الجواب الصح</div>'+[0,1,2,3].map(function(i){return '<div class="oprow"><button class="opmark'+(d.a===i?' on':'')+'" data-a="'+i+'" style="--oc:'+OCOL[i]+'" aria-label="هذا الجواب الصح">'+shp(i)+'</button><input class="opin" data-o="'+i+'" maxlength="60" placeholder="الخيار '+(i+1)+'" value="'+esc(opts4[i])+'"></div>'}).join(''))+
-   '<div class="lbl">وقت السؤال</div><div class="segk" id="ktime">'+[10,20,30,60].map(function(v){return '<button data-v="'+v+'" class="'+(d.s===v?'on':'')+'">'+v+' ث</button>'}).join('')+'</div>'+
+     :'<div class="lbl">الخيارات. اضغط اللون عشان تحدد الجواب الصح</div>'+[0,1,2,3].map(function(i){return '<div class="oprow"><button class="opmark'+(d.a===i?' on':'')+'" data-a="'+i+'" style="--oc:'+OCOL[i]+'" aria-label="هذا الجواب الصح">'+shp(i)+'</button><input class="opin" data-o="'+i+'" maxlength="60" placeholder="الخيار '+(i+1)+'" value="'+esc(opts4[i])+'"><label class="oimgb" aria-label="صورة للخيار '+(i+1)+'">'+(d.oi[i]?'<img src="'+d.oi[i]+'" alt="">':IC_CAM)+'<input type="file" accept="image/*" data-oi="'+i+'"></label></div>'}).join(''))+
+   (d.tf?'':'<div class="hint">اضغط الكاميرا جنب أي خيار عشان تضيف له صورة. اضغط الصورة مرة ثانية عشان تغيّرها، أو امسح النص وخلّ الصورة.</div>')+
+   '<div class="lbl">معلومة تطلع بعد الجواب (اختياري)</div><input class="opin" id="kx" maxlength="140" placeholder="مثال: الصقر أسرع طائر في الغوص" value="'+esc(d.x||'')+'" style="width:100%">'+
+   '<div class="lbl">وقت السؤال</div><div class="segk" id="ktime">'+[10,20,30,60,90].map(function(v){return '<button data-v="'+v+'" class="'+(d.s===v?'on':'')+'">'+v+' ث</button>'}).join('')+'</div>'+
    '<div class="ferr" id="kerr"></div><button class="gobtn" id="ksave">احفظ وأرسل للتلفزيون</button><button class="small" id="kcancel">إلغاء</button>';
-  $('#kt').oninput=function(){d.t=this.value};
-  b.querySelectorAll('.opin').forEach(function(e){e.oninput=function(){d.o[+e.dataset.o]=e.value}});
+  $('#kt').oninput=function(){d.t=this.value};$('#kx').oninput=function(){d.x=this.value};
+  b.querySelectorAll('[data-oi]').forEach(function(e){e.onchange=function(){var f=this.files&&this.files[0],i=+e.dataset.oi;if(!f)return;shrink(f,function(u){if(!u){$('#kerr').textContent='ما قدرنا نقرأ صورة الخيار';return}d.oi[i]=u;kDraw()},320,40000)}});
+  b.querySelectorAll('.opin[data-o]').forEach(function(e){e.oninput=function(){d.o[+e.dataset.o]=e.value}});
   b.querySelectorAll('#ktype button').forEach(function(e){e.onclick=function(){var tf=e.dataset.v==='tf';if(tf===d.tf)return;if(tf){d.o4=d.o.slice();d.o=['صح','خطأ']}else{d.o=d.o4||['','','',''];delete d.o4}d.tf=tf;d.a=-1;kDraw()}});
   b.querySelectorAll('[data-a]').forEach(function(e){e.onclick=function(){d.a=+e.dataset.a;buzz(10);b.querySelectorAll('[data-a]').forEach(function(z){z.classList.toggle('on',z===e)})}});
   b.querySelectorAll('#ktime button').forEach(function(e){e.onclick=function(){d.s=+e.dataset.v;b.querySelectorAll('#ktime button').forEach(function(z){z.classList.toggle('on',z===e)})}});
@@ -292,15 +344,16 @@ function kDraw(){var d=draft,b=$('#kbody');$('#ktitle').textContent=mine.some(fu
   if($('#kimg'))$('#kimg').onchange=function(){var f=this.files&&this.files[0];if(!f)return;$('#kimgl').textContent='نجهز الصورة…';shrink(f,function(u){if(!u){$('#kerr').textContent='ما قدرنا نقرأ الصورة. جرّب صورة ثانية';$('#kimgl').textContent='أضف صورة (اختياري)';return}d.img=u;kDraw()})};
   $('#kcancel').onclick=function(){draft=null;kList()};
   $('#ksave').onclick=function(){var t=(d.t||'').trim(),e='';
-    if(!t)e='اكتب السؤال';else if(!d.tf&&d.o.some(function(x){return !(x||'').trim()}))e='عبّ الخيارات الأربعة';else if(!(d.a>=0))e=d.tf?'حدد هل الجواب صح أو خطأ':'اضغط لون الجواب الصح';
+    if(!t)e='اكتب السؤال';else if(!d.tf&&d.o.some(function(x,i){return !(x||'').trim()&&!d.oi[i]}))e='عبّ الخيارات الأربعة (نص أو صورة)';else if(!(d.a>=0))e=d.tf?'حدد هل الجواب صح أو خطأ':'اضغط لون الجواب الصح';
     if(e){$('#kerr').textContent=e;buzz([20,40,20]);return}
-    var q={t:t,tf:d.tf,o:d.tf?['صح','خطأ']:d.o.map(function(x){return x.trim()}),a:d.a,s:d.s,img:d.img||''},id=d._id,ex=mine.filter(function(y){return y.id===id})[0];
+    var q={t:t,tf:d.tf,o:d.tf?['صح','خطأ']:d.o.map(function(x,i){return x.trim()||('الصورة '+(i+1))}),a:d.a,s:d.s,img:d.img||'',oi:d.tf?[]:d.oi.slice(),x:(d.x||'').trim()},id=d._id,ex=mine.filter(function(y){return y.id===id})[0];
     if(ex){ex.q=q;ex.st='pending'}else{ex={id:id,q:q,st:'pending'};mine.push(ex)}saveMine();sendQ(ex);buzz(20);draft=null;kList()}}
 /* shrink a photo on the phone so it travels fast: longest side 720px, JPEG, under ~90KB */
-function shrink(file,cb){var url=URL.createObjectURL(file),img=new Image();img.onload=function(){URL.revokeObjectURL(url);var w=img.naturalWidth,h=img.naturalHeight,k=Math.min(1,720/Math.max(w,h)),out='';
+function shrink(file,cb,side,lim){side=side||720;lim=lim||120000;var url=URL.createObjectURL(file),img=new Image();img.onload=function(){URL.revokeObjectURL(url);var w=img.naturalWidth,h=img.naturalHeight,k=Math.min(1,side/Math.max(w,h)),out='';
     for(var tries=0;tries<6;tries++){var c=document.createElement('canvas');c.width=Math.max(1,Math.round(w*k));c.height=Math.max(1,Math.round(h*k));var g=c.getContext('2d');g.fillStyle='#fff';g.fillRect(0,0,c.width,c.height);g.drawImage(img,0,0,c.width,c.height);
-      out=c.toDataURL('image/jpeg',tries<3?.7-tries*.12:.45);if(out.length<120000)break;k*=.8}
-    cb(out.indexOf('data:image/jpeg;base64,')===0&&out.length<150000?out:'')};img.onerror=function(){URL.revokeObjectURL(url);cb('')};img.src=url}
+      out=c.toDataURL('image/jpeg',tries<3?.7-tries*.12:.45);if(out.length<lim)break;k*=.8}
+    cb(out.indexOf('data:image/jpeg;base64,')===0&&out.length<lim*1.2?out:'')};img.onerror=function(){URL.revokeObjectURL(url);cb('')};img.src=url}
+setMode(cmode);
 view();
 })();
 </script>

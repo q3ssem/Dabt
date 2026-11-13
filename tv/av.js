@@ -16,3 +16,34 @@ var AVP=[
  '<path d="M8 48c2-10 6-16 12-16s6-10 12-10 6 10 12 10c4 0 6 4 8 8"/><path d="M52 40c4-4 4-12 0-16h-4l2 6"/><path d="M16 48v10M24 48v10M40 48v10M48 44v14"/><path d="M8 48h44"/>'
 ];
 function avSVG(i,size){i=((i|0)%12+12)%12;return '<svg class="av" viewBox="0 0 64 64" width="'+(size||48)+'" height="'+(size||48)+'" fill="none" stroke="'+AVC[i]+'" stroke-width="3.4" stroke-linecap="round" stroke-linejoin="round" style="color:'+AVC[i]+'">'+AVP[i]+'</svg>'}
+/* Quiz music: synthesised loops (no audio files), three themes, faster in the last seconds.
+   Shared by the TV and the phones. Browsers only start sound after a tap or a key press on that device. */
+function DabtMusic(){
+  var ac=null,timer=0,on=false,theme=0,hurry=false,step=0,next=0,master=null,nb=null;
+  var TH=[
+    {n:'نبض',bpm:112,root:[220,196,175,196],arp:[1,1.5,2,2.5,2,1.5,1.25,1.5],bass:'triangle',lead:'square'},
+    {n:'رحلة',bpm:100,root:[196,207.65,174.6,196],arp:[1,1.0595,1.26,1.335,1.5,1.335,1.26,1.0595],bass:'sine',lead:'triangle'},
+    {n:'مرح',bpm:128,root:[261.6,220,174.6,196],arp:[1,1.25,1.5,2,1.5,1.25,1.5,2],bass:'triangle',lead:'square'}];
+  function ctx(){if(!ac){var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;ac=new C();master=ac.createGain();master.gain.value=.55;master.connect(ac.destination)}if(ac.state==='suspended')ac.resume();return ac}
+  function tone(f,t,d,type,v){var o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(master);o.start(t);o.stop(t+d+.03)}
+  function kick(t){var o=ac.createOscillator(),g=ac.createGain();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(42,t+.12);g.gain.setValueAtTime(.22,t);g.gain.exponentialRampToValueAtTime(.0001,t+.16);o.connect(g);g.connect(master);o.start(t);o.stop(t+.2)}
+  function hat(t,v){if(!nb){nb=ac.createBuffer(1,ac.sampleRate*.05,ac.sampleRate);var d=nb.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1}
+    var s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();s.buffer=nb;f.type='highpass';f.frequency.value=7000;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+.04);s.connect(f);f.connect(g);g.connect(master);s.start(t)}
+  function sched(){if(!on||!ac)return;var th=TH[theme],sp=60/(th.bpm*(hurry?1.35:1))/4;
+    while(next<ac.currentTime+.12){var k=step%16,bar=Math.floor(step/16)%4,r=th.root[bar]*(hurry?1.06:1),t=next;
+      if(k%4===0)kick(t);
+      if(k%2===1)hat(t,hurry?.05:.03);
+      if(k%8===0)tone(r/2,t,sp*3.5,th.bass,.12);
+      if(k%8===6)tone(r/2*1.5,t,sp*1.5,th.bass,.08);
+      if(k%2===0||hurry)tone(r*th.arp[(k>>1)%8]*2,t,sp*.9,th.lead,.025);
+      step++;next+=sp}}
+  return {
+    themes:TH.map(function(x){return x.n}),
+    unlock:function(){var c=ctx();return !!c&&c.state==='running'},
+    blocked:function(){return !ac||ac.state!=='running'},
+    start:function(th){if(!ctx())return;theme=((th|0)%TH.length+TH.length)%TH.length;if(on)return;on=true;hurry=false;step=0;next=ac.currentTime+.05;clearInterval(timer);timer=setInterval(sched,25);sched()},
+    hurry:function(b){hurry=!!b},
+    stop:function(){on=false;clearInterval(timer)},
+    playing:function(){return on},
+    volume:function(v){if(master)master.gain.value=v}}
+}
