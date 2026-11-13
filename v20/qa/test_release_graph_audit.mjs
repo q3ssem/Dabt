@@ -8,7 +8,7 @@ const htmlFiles = [];
 function walk(dir) {
   for (const entry of fs.readdirSync(dir, {withFileTypes:true})) {
     const full = path.join(dir, entry.name);
-    if (entry.isDirectory()) walk(full);
+    if (entry.isDirectory()) { if (["node_modules","dist",".git"].includes(entry.name)) continue; walk(full); }
     else if (entry.isFile() && entry.name.endsWith('.html')) htmlFiles.push(full);
   }
 }
@@ -31,7 +31,7 @@ const jsFiles = [];
 function walkJs(dir) {
   for (const entry of fs.readdirSync(dir,{withFileTypes:true})) {
     const full=path.join(dir,entry.name);
-    if(entry.isDirectory()) walkJs(full);
+    if(entry.isDirectory()) { if (["node_modules","dist",".git"].includes(entry.name)) continue; walkJs(full); }
     else if(entry.isFile() && entry.name.endsWith('.js')) jsFiles.push(full);
   }
 }
