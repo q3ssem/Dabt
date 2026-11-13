@@ -163,6 +163,19 @@ h1,h2,.ptitle,.mcard b,.brand h1,.itx h2,.res h2,.dlg h2,.gt b,.pql,.daily h2,.t
 .main{overflow-y:auto;justify-content:flex-start!important;gap:14px!important;padding-bottom:6px}
 .dpad,.tpad{width:min(86vw,340px,40vh)!important}
 .info{min-height:0!important;padding:10px 14px!important;margin:10px 0 2px!important}
+
+/* fit: nothing may shrink below its content; the page scrolls instead of overlapping */
+html,body{height:100%;height:100dvh}
+.main>*{flex-shrink:0}
+.main{min-height:0;-webkit-overflow-scrolling:touch}
+.info{width:100%}
+.legend{row-gap:4px}
+.dpad,.tpad{width:min(84vw,330px,36vh)!important}
+.dk svg{width:38px;height:38px}.ok{font-size:26px}
+.row3 .big{height:68px!important}
+.partyb{height:52px!important}.writeb{height:50px!important}
+.seg2 button{height:36px}
+@media (max-height:700px){.dpad,.tpad{width:min(80vw,300px,33vh)!important}.top small{display:none}.row3 .big{height:60px!important;font-size:15px}.info .scr{display:none}}
 </style></head><body>
 <div class="top"><button class="homeb" id="bhome" aria-label="الرئيسية"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.4" stroke-linecap="round" stroke-linejoin="round"><path d="M3 11l9-7 9 7"/><path d="M5 10v10h5v-6h4v6h5V10"/></svg></button><div class="ttl"><h1>ضبط دماغك</h1><small id="tsub">تحكّم بالتلفزيون من جوالك</small></div><button class="st" id="st" aria-label="حالة الاتصال، اضغط لإعادة الاتصال"><i></i><span id="stt">غير متصل</span></button></div>
 
