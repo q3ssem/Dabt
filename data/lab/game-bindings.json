@@ -1,0 +1,943 @@
+[
+  {
+    "gameId": "rule-switch",
+    "title": "محطة التحويل",
+    "background": "art/backgrounds/attention.png",
+    "card": "design/cards/rule-switch.svg",
+    "icon": "design/icons/game-01.svg",
+    "family": "attention",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "قاعدة حالية ثم مثير ثم استجابة؛ تحديث القاعدة معلن قبل المحاولة التالية.",
+    "validationContract": "تحقق من بُعد التصنيف المطلوب، لا من البعد السابق.",
+    "example": "شكل: مثلث يحمل ٤؛ مع قاعدة الشكل اختر مثلث.",
+    "difficulty": "ابدأ بقاعدة ثابتة في أول ٤ محاولات؛ بعد ذلك بدّل كل ٣، ثم بمؤشر ظاهر قبل كل محاولة.",
+    "metrics": "دقة التحويل منفصلة عن دقة التكرار؛ زمن صحيح التحويل ناقص زمن صحيح التكرار وصفي فقط.",
+    "legacyIds": [
+      "rule-switch",
+      "rule-shift"
+    ],
+    "authoredNewCases": [],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "conjunction-search",
+    "title": "كشاف التفاصيل",
+    "background": "art/backgrounds/attention.png",
+    "card": "design/cards/conjunction-search.svg",
+    "icon": "design/icons/game-02.svg",
+    "family": "attention",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "هدف ثابت ثم شبكة بحث ثم تحديد جميع المطابقات.",
+    "validationContract": "قارن الشكل والنمط معًا وسجل السهو والإضافات.",
+    "example": "المطلوب دائرة مخططة؛ دائرة منقطة ومربع مخطط مشتتان.",
+    "difficulty": "٦، ٩، ١٢، ١٦ عنصرًا؛ لا تكبر الشبكة إذا نقص هدف اللمس عن ٤٨ بكسل.",
+    "metrics": "نسبة العثور الصحيح وزمن العثور؛ لا تخلطها مع سرعة القراءة.",
+    "legacyIds": [
+      "conjunction-search"
+    ],
+    "authoredNewCases": [],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "corsi",
+    "title": "جزر الذاكرة",
+    "background": "art/backgrounds/memory.png",
+    "card": "design/cards/corsi.svg",
+    "icon": "design/icons/game-03.svg",
+    "family": "memory",
+    "states": [
+      "تعليمات",
+      "عرض الهدف",
+      "حجب الهدف",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "عرض جزر ثابتة ثم حجب التسلسل ثم إعادة النقر بالترتيب.",
+    "validationContract": "طابق تسلسل المواضع، ولا تحرك الجزر أثناء الاستجابة.",
+    "example": "٣ ثم ١ ثم ٥؛ أعد ٣،١،٥.",
+    "difficulty": "طول ٣ ثم ٤ ثم ٥؛ ٦ محاولات في الجلسة، محاولتان لكل طول قبل الزيادة.",
+    "metrics": "صحة التسلسل كاملًا وطوله؛ لا تقارن الأزمنة أثناء العرض.",
+    "legacyIds": [
+      "corsi"
+    ],
+    "authoredNewCases": [],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "stroop",
+    "title": "حبر ومعنى",
+    "background": "art/backgrounds/attention.png",
+    "card": "design/cards/stroop.svg",
+    "icon": "design/icons/game-04.svg",
+    "family": "attention",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "شرح الفرق بين المعنى والحبر ثم كلمة واحدة ثم اختيار لون الحبر.",
+    "validationContract": "قارن لون العرض، مع فصل وضع بديل الألوان عن سجل المهمة الأصلية.",
+    "example": "كلمة أحمر بحبر أزرق؛ اختر أزرق.",
+    "difficulty": "ابدأ بلونين ثم ثلاثة ثم أربعة؛ لا تنقص مهلة إجابة القراءة تلقائيًا.",
+    "metrics": "دقة المتعارض وغير المتعارض كل على حدة، وزمن الإجابات الصحيحة.",
+    "legacyIds": [
+      "stroop",
+      "attention-inhibition"
+    ],
+    "authoredNewCases": [],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "go-no-go",
+    "title": "نبضة وتوقف",
+    "background": "art/backgrounds/attention.png",
+    "card": "design/cards/go-no-go.svg",
+    "icon": "design/icons/game-05.svg",
+    "family": "attention",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "تدريب ثم مثيرات تستدعي ضغطة أو انتظارًا ضمن نافذة محددة.",
+    "validationContract": "سجل الإغفال والضغط غير المطلوب منفصلين؛ لا تجعل الانتظار خطأ.",
+    "example": "دائرة مفتوحة=اضغط، مربع متقاطع=انتظر.",
+    "difficulty": "٢٤ محاولة؛ ١٨ مضي و٦ توقف موزعة ببذرة ثابتة دون أكثر من ٤ مضي متتابعة.",
+    "metrics": "ضغط خاطئ في التوقف، وعدم ضغط في المضي، وزمن الاستجابات الصحيحة؛ الامتناع الصحيح ليس غياب بيانات.",
+    "legacyIds": [
+      "go-no-go"
+    ],
+    "authoredNewCases": [],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "temporal-order",
+    "title": "خط اللحظات",
+    "background": "art/backgrounds/memory.png",
+    "card": "design/cards/temporal-order.svg",
+    "icon": "design/icons/game-06.svg",
+    "family": "memory",
+    "states": [
+      "تعليمات",
+      "عرض الهدف",
+      "حجب الهدف",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "بطاقات تظهر بالتتابع ثم تختفي ثم ترتيب في خانات مرقمة.",
+    "validationContract": "قارن ترتيب الظهور، لا الألوان أو مواضع الاختيارات.",
+    "example": "قمر ثم مفتاح ثم ورقة؛ ضعها في ١،٢،٣.",
+    "difficulty": "زد الطول بعد محاولتين صحيحتين؛ ثبّت زمن العرض خلال جلسة التحدي.",
+    "metrics": "الترتيب الكامل وعدد المواضع الصحيحة دون منحها وزنًا تشخيصيًا.",
+    "legacyIds": [
+      "temporal-order"
+    ],
+    "authoredNewCases": [],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "number-sense",
+    "title": "عين العدد",
+    "background": "art/backgrounds/patterns.png",
+    "card": "design/cards/number-sense.svg",
+    "icon": "design/icons/game-07.svg",
+    "family": "patterns",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "عرض حقلي نقاط لفترة ثم اختيار الحقل الأكثر.",
+    "validationContract": "عدد النقاط مرجع؛ وازن الحجم والمساحة كي لا يصبح الحجم دليلًا ثابتًا.",
+    "example": "٦ نقاط مقابل ١٢؛ اختر حقل ١٢.",
+    "difficulty": "ابدأ بنسبة ١:٢ ثم ٢:٣ ثم ٤:٥؛ العدد بين ٤ و٢٠.",
+    "metrics": "دقة المقارنة حسب النسبة؛ الاستجابة تبدأ بعد الحجب.",
+    "legacyIds": [
+      "number-sense"
+    ],
+    "authoredNewCases": [],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "deduction",
+    "title": "غرفة الاستنتاج",
+    "background": "art/backgrounds/logic.png",
+    "card": "design/cards/deduction.svg",
+    "icon": "design/icons/game-08.svg",
+    "family": "logic",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "قراءة أدلة ثم اختيار استنتاج لازم ثم تفسيره.",
+    "validationContract": "لا تعتبر العبارة المحتملة نتيجة لازمة؛ يجب دعمها بجميع المقدمات.",
+    "example": "كل بطاقات أ مختومة؛ س بطاقة أ؛ يلزم أن س مختومة.",
+    "difficulty": "دليلان ثم ثلاثة ثم أربعة؛ لا تستعمل معرفة خارج النص.",
+    "metrics": "عدد الاستنتاجات الصحيحة ومرات طلب الدليل.",
+    "legacyIds": [
+      "deduction"
+    ],
+    "authoredNewCases": [],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "planning",
+    "title": "مخطط الخطوات",
+    "background": "art/backgrounds/planning.png",
+    "card": "design/cards/planning.svg",
+    "icon": "design/icons/game-09.svg",
+    "family": "planning",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "عرض اعتماديات وتكلفة ثم ترتيب إجراءات ثم تنفيذ افتراضي.",
+    "validationContract": "حقق جميع علاقات السبق والميزانية، واقبل الترتيبات البديلة الصالحة.",
+    "example": "المولد قبل البرج؛ البرج قبل المفتاح.",
+    "difficulty": "٣ إجراءات خطية ثم ٤ متفرعة ثم ٥ مع حد مورد؛ اقبل كل ترتيب صالح.",
+    "metrics": "صلاحية الخطة وتكلفتها وعدد المراجعات؛ لا تعاقب الاستكشاف.",
+    "legacyIds": [
+      "planning",
+      "route-planner",
+      "sequence-planning"
+    ],
+    "authoredNewCases": [],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "visual-rotation",
+    "title": "ورشة الاتجاه",
+    "background": "art/backgrounds/spatial.png",
+    "card": "design/cards/visual-rotation.svg",
+    "icon": "design/icons/game-10.svg",
+    "family": "spatial",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "شكل أصلي وسهم زاوية ثم تدوير معاينة أو اختيار الشكل الناتج.",
+    "validationContract": "ثبّت اتجاه الدوران، وافصل الدوران عن الانعكاس.",
+    "example": "سهم أعلى، ٩٠ مع الساعة ينتج يمينًا.",
+    "difficulty": "٩٠ ثم ١٨٠ ثم تركيب دوران وانعكاس، مع تمييزهما نصيًا.",
+    "metrics": "الدقة بحسب التحويل؛ لا تستخدم أشكالًا متناظرة تنتج إجابات متعددة.",
+    "legacyIds": [
+      "visual-rotation",
+      "spatial-transform"
+    ],
+    "authoredNewCases": [],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "prospective-memory",
+    "title": "موعد الإشارة",
+    "background": "art/backgrounds/memory.png",
+    "card": "design/cards/prospective-memory.svg",
+    "icon": "design/icons/game-11.svg",
+    "family": "memory",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "تعليم نية مستقبلية ثم فرز بطاقات مع تذكر النية عند الهدف.",
+    "validationContract": "زر تذكرت يبقى متاحًا؛ سجل الاستدعاء منفصلًا عن صحة الفرز.",
+    "example": "حين يظهر ختم المرساة اضغط تذكرت، ثم أكمل الفرز.",
+    "difficulty": "نية واحدة ثم اثنتان؛ الإشارة ظاهرة فعلًا في كل نسخة قابلة للحل.",
+    "metrics": "صحة الفرز وصحة تنفيذ النية وتوقيتها بشكل منفصل.",
+    "legacyIds": [
+      "prospective-memory"
+    ],
+    "authoredNewCases": [],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "pattern-matrix",
+    "title": "نسيج القاعدة",
+    "background": "art/backgrounds/patterns.png",
+    "card": "design/cards/pattern-matrix.svg",
+    "icon": "design/icons/game-12.svg",
+    "family": "patterns",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "قاعدة صريحة في البداية ثم أمثلة ثم ملء عنصر ناقص.",
+    "validationContract": "لا تنشئ أنماطًا متعددة التفسير دون ذكر القاعدة أو قبول بدائلها.",
+    "example": "القاعدة زد ٣؛ ٢،٥،٨،؟ ينتج ١١.",
+    "difficulty": "قاعدة واحدة محددة في البداية، ثم تركيب قاعدتين دون إبهام غير مضبوط.",
+    "metrics": "الصحة حسب عائلة القاعدة؛ كل مولد يملك قاعدة قابلة للحساب.",
+    "legacyIds": [
+      "pattern-matrix"
+    ],
+    "authoredNewCases": [],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "probability-lab",
+    "title": "مختبر الفرص",
+    "background": "art/backgrounds/patterns.png",
+    "card": "design/cards/probability-lab.svg",
+    "icon": "design/icons/game-13.svg",
+    "family": "patterns",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "إظهار محتوى كيسين ثم تقدير الفرص ثم تفسير النسبة.",
+    "validationContract": "التساوي خيار صالح؛ اذكر تساوي فرص القطع وهل السحب بإرجاع.",
+    "example": "٢ من٤ تساوي٤ من٨.",
+    "difficulty": "كيس واحد ثم كيسان بعدد إجمالي مختلف ثم سحب دون إرجاع موضح.",
+    "metrics": "دقة الاحتمال؛ لا تعتبر نتيجة سحبة واحدة دليلًا على خطأ الاحتمال.",
+    "legacyIds": [
+      "probability-lab",
+      "probability-judgement"
+    ],
+    "authoredNewCases": [],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "working-update",
+    "title": "نافذة الأحدث",
+    "background": "art/backgrounds/memory.png",
+    "card": "design/cards/working-update.svg",
+    "icon": "design/icons/game-14.svg",
+    "family": "memory",
+    "states": [
+      "تعليمات",
+      "عرض الهدف",
+      "حجب الهدف",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "تدفق عنصر واحد ثم حجب التاريخ ثم استدعاء آخر عدد مطلوب.",
+    "validationContract": "سجل نافذة الأحدث فقط؛ إعادة العرض مساعدة وليست إجابة مستقلة.",
+    "example": "٤،٨،٣،٩،٢؛ النهاية ٩،٢.",
+    "difficulty": "آخر١ ثم آخر٢ ثم آخر٣؛ لا تقل للمستخدم رقمين من كل مسار إذا أردت رقمًا من كل مسار.",
+    "metrics": "صحة الاسترجاع لا الحساب وحده؛ وقت الاستجابة يستبعد العرض.",
+    "legacyIds": [
+      "working-update",
+      "working-memory-update"
+    ],
+    "authoredNewCases": [],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "evidence-check",
+    "title": "ميزان الدليل",
+    "background": "art/backgrounds/logic.png",
+    "card": "design/cards/evidence-check.svg",
+    "icon": "design/icons/game-15.svg",
+    "family": "logic",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "ملف قصير ثم فرز ملاحظة وتفسير وادعاء غير مدعوم.",
+    "validationContract": "فرق بين القياس المباشر والشرح الممكن والتعميم.",
+    "example": "درجة الحرارة٢٢ ملاحظة؛ الغرفة تريح الجميع تعميم.",
+    "difficulty": "٣ جمل ثم٥؛ لا يستخدم نص دعائي بوصفه دليلًا.",
+    "metrics": "صحة التصنيف وسبب الاستنتاج.",
+    "legacyIds": [
+      "evidence-check",
+      "evidence-literacy"
+    ],
+    "authoredNewCases": [],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "causal-reasoning",
+    "title": "مختبر السبب",
+    "background": "art/backgrounds/logic.png",
+    "card": "design/cards/causal-reasoning.svg",
+    "icon": "design/icons/game-16.svg",
+    "family": "logic",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "تجربتان ثم ضبط متغير واحد مع تثبيت الباقي.",
+    "validationContract": "تحقق من العامل المستهدف والعوامل الثابتة قبل الحكم على النتيجة.",
+    "example": "لفحص الضوء ثبّت الماء والتربة وغير الضوء.",
+    "difficulty": "عاملان ثم ثلاثة؛ لا تتحول النتيجة الافتراضية إلى ادعاء علمي واقعي.",
+    "metrics": "عدد العوامل المضبوطة وصلاحية المقارنة.",
+    "legacyIds": [
+      "causal-reasoning"
+    ],
+    "authoredNewCases": [],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "analogy-relations",
+    "title": "شبكة العلاقات",
+    "background": "art/backgrounds/patterns.png",
+    "card": "design/cards/analogy-relations.svg",
+    "icon": "design/icons/game-17.svg",
+    "family": "patterns",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "زوج علاقة ثم إكمال زوج آخر من النوع نفسه.",
+    "validationContract": "اسم العلاقة يظهر بعد الإجابة؛ لا تقبل تشابه الشكل بدل العلاقة.",
+    "example": "قلم:كتابة، مقص:قص.",
+    "difficulty": "علاقات محسوسة ثم تجريدية مع سياق يحسم الالتباس.",
+    "metrics": "الصحة لكل نوع علاقة.",
+    "legacyIds": [
+      "analogy-relations"
+    ],
+    "authoredNewCases": [],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "mirror-room",
+    "title": "غرفة الضوء",
+    "background": "art/backgrounds/spatial.png",
+    "card": "design/cards/mirror-room.svg",
+    "icon": "design/icons/game-18.svg",
+    "family": "spatial",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "اختيار اتجاه كل مرآة ثم تشغيل شعاع وتتبع خلاياه.",
+    "validationContract": "توقف عند الحافة أو حلقة؛ اقبل أي إعداد يصل للمستقبل.",
+    "example": "شرق إلى مرآة / ينتج شمالًا.",
+    "difficulty": "مرآة ثم اثنتان ثم ثلاث؛ اقبل كل تشكيل يصل للمستقبل.",
+    "metrics": "الوصول للمستقبل وعدد المرايا، لا شكل المسار المحفوظ.",
+    "legacyIds": [],
+    "authoredNewCases": [
+      "NX-001",
+      "NX-002",
+      "NX-003",
+      "NX-004"
+    ],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "logic-grid",
+    "title": "سجل الهويات",
+    "background": "art/backgrounds/logic.png",
+    "card": "design/cards/logic-grid.svg",
+    "icon": "design/icons/game-19.svg",
+    "family": "logic",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "قراءة قيود ثم تثبيت أو استبعاد في مصفوفة توزيع.",
+    "validationContract": "قطعة واحدة لكل خانة؛ افحص كل القيود ولا تكتف بالحل المرجعي.",
+    "example": "النجمة في٢ والمرساة ليست٣ والصدفة ليست١.",
+    "difficulty": "٣×٣ ثم٤×٤؛ كل حالة مفردة الحل أو موسومة متعددة الحلول.",
+    "metrics": "صحة التوزيع وعدد القيود المتحققة.",
+    "legacyIds": [],
+    "authoredNewCases": [
+      "NX-005",
+      "NX-006",
+      "NX-007",
+      "NX-008"
+    ],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "switch-circuit",
+    "title": "دوائر الانقلاب",
+    "background": "art/backgrounds/spatial.png",
+    "card": "design/cards/switch-circuit.svg",
+    "icon": "design/icons/game-20.svg",
+    "family": "spatial",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "معاينة أثر زر ثم ضغط ثم تغير مصابيح ثم تحقق.",
+    "validationContract": "تبديل XOR لا تشغيل دائم؛ الحد الأقصى لاستخدام الزر من setup.",
+    "example": "زر يشعل١ و٢ وآخر يشعل٣ يحقق١١١.",
+    "difficulty": "٣ إلى٥ مصابيح، أزرار مرة واحدة في ألغاز البداية.",
+    "metrics": "مطابقة الهدف وأقل أزرار إذا طلب الحد الأدنى صراحة.",
+    "legacyIds": [],
+    "authoredNewCases": [
+      "NX-009",
+      "NX-010",
+      "NX-011",
+      "NX-012"
+    ],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "resource-dock",
+    "title": "مرسى الموارد",
+    "background": "art/backgrounds/planning.png",
+    "card": "design/cards/resource-dock.svg",
+    "icon": "design/icons/game-21.svg",
+    "family": "planning",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "مورد كلي ثم عدادات مواضع ومتبقٍّ ثم تحقق.",
+    "validationContract": "الإجمالي والنسب والثوابت جميعها مطلوبة.",
+    "example": "٩ وحدات؛ أ٣، ب ضعف ج؛ النتيجة٣،٤،٢.",
+    "difficulty": "توزيع ثابت ثم نسبة ثم أكثر من حل مع هدف تحسين.",
+    "metrics": "عدد القيود المتحققة وكفاءة الموارد عند وجود هدف.",
+    "legacyIds": [],
+    "authoredNewCases": [
+      "NX-013",
+      "NX-014",
+      "NX-015",
+      "NX-016"
+    ],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "counterexample",
+    "title": "كاسر التعميم",
+    "background": "art/backgrounds/logic.png",
+    "card": "design/cards/counterexample.svg",
+    "icon": "design/icons/game-22.svg",
+    "family": "logic",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "ادعاء شامل ثم أمثلة ثم اختيار حالة تنقضه.",
+    "validationContract": "تتحقق المقدمة وتفشل النتيجة؛ المثال المؤيد لا يثبت التعميم.",
+    "example": "الادعاء كل عدد زوجي يقبل القسمة على٤؛ العدد٦ ينقضه.",
+    "difficulty": "أشكال ثم أعداد ثم جمل ضمن تعريفات صريحة.",
+    "metrics": "صحة الناقض؛ لا يكفي مثال يؤيد القاعدة لإثباتها.",
+    "legacyIds": [],
+    "authoredNewCases": [
+      "NX-017",
+      "NX-018",
+      "NX-019",
+      "NX-020"
+    ],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "signal-sort",
+    "title": "مصفاة الإشارة",
+    "background": "art/backgrounds/attention.png",
+    "card": "design/cards/signal-sort.svg",
+    "icon": "design/icons/game-23.svg",
+    "family": "attention",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "قراءة حدود ثم تحديد كل السجلات المقبولة.",
+    "validationContract": "طبّق جميع الحدود الشاملة بدقة؛ صحح المجموعة كاملة.",
+    "example": "جودة≥٧ وضغط≤٥: اقبل(٨،٣) وارفض(٩،٦).",
+    "difficulty": "شرط ثم اثنان ثم ثلاثة، والحدود الشاملة واضحة.",
+    "metrics": "صحة المجموعة بالكامل مع عدد السهو والإضافة.",
+    "legacyIds": [],
+    "authoredNewCases": [
+      "NX-021",
+      "NX-022",
+      "NX-023",
+      "NX-024"
+    ],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  },
+  {
+    "gameId": "route-network",
+    "title": "شبكة العبور",
+    "background": "art/backgrounds/planning.png",
+    "card": "design/cards/route-network.svg",
+    "icon": "design/icons/game-24.svg",
+    "family": "planning",
+    "states": [
+      "تعليمات",
+      "مثال",
+      "جاهز",
+      "استجابة",
+      "تحقق",
+      "تفسير",
+      "نتيجة"
+    ],
+    "interactionContract": "شبكة وأوزان ثم بناء مسار قابل للتراجع ثم حساب التكلفة.",
+    "validationContract": "تحقق من الاتصال والوجهة والهدف الأدنى أو زيارة الجميع حسب setup.",
+    "example": "س–أ٢،أ–هـ٢،س–ب١،ب–هـ٥؛ الأفضل عبرأ.",
+    "difficulty": "٤ إلى٧ عقد؛ لا أوزان سالبة؛ اقبل أي مسار يحقق الحد الأمثل.",
+    "metrics": "تكلفة الطريق وصلاحيته، مع إظهار البدائل بعد الحل.",
+    "legacyIds": [],
+    "authoredNewCases": [
+      "NX-025",
+      "NX-026",
+      "NX-027",
+      "NX-028"
+    ],
+    "motion": {
+      "pressMs": 120,
+      "transitionMs": 220,
+      "successMs": 600,
+      "reduced": "fade120ms"
+    },
+    "accessibility": {
+      "minTouchPx": 48,
+      "dragAlternative": "select-then-destination",
+      "rtlUi": true,
+      "spatialGridLTR": true
+    }
+  }
+]

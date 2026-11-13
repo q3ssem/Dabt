@@ -1,3 +1,0 @@
-const COLORS=[{n:'فيروزي',h:'#26c6b5'},{n:'أزرق',h:'#5698ff'},{n:'بنفسجي',h:'#a58af5'},{n:'ذهبي',h:'#ffbe59'}];
-export function makeStroop(level=1,rng=Math.random){const ink=Math.floor(rng()*4),word=(ink+(rng()<.78?1+Math.floor(rng()*3):0))%4;return{prompt:'ما لون الحبر؟ تجاهل معنى الكلمة.',stimulus:COLORS[word].n,stimulusColor:COLORS[ink].h,options:COLORS.map(x=>x.n),correct:ink,explain:`لون الحبر هو ${COLORS[ink].n}، وليس معنى الكلمة.`}}
-export const troopGame={id:'stroop',title:'تعارض اللون والكلمة',subtitle:'قاوم التداخل واختر لون الحبر لا معنى الكلمة.',skill:'كبح الاستجابة والانتباه',icon:'Aa',accent:'#f17d8e',time:'2–3 دقائق',description:'تظهر كلمة بلون قد يختلف عن معناها. المطلوب تحديد لون الحبر.',type:'choice',create:makeStroop};

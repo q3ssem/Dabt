@@ -62,7 +62,7 @@ function legacyBox() {
   const L = app.profile.legacy; if (!L) return null;
   return h('section', { class: 'card' }, h('h2', {}, 'أرشيف الإصدار السابق'), h('p', { class: 'muted small' }, L.note),
     h('ul', { class: 'plain' }, h('li', {}, `مفاتيح محفوظة: ${fmt(L.keys.length)}`), h('li', {}, `ألغاز جزيرة قديمة: ${fmt(L.treasureSolvedOld)}`), h('li', {}, `مهمات كواكب قديمة: ${fmt(L.planetsSolvedOld)}`), h('li', {}, `أنشطة طفل قديمة: ${fmt(L.childCompletedOld)}`), h('li', {}, `جلسات مختبر قديمة: ${fmt(L.labSessions.length)} (قواعد سابقة، لا تُقارن بجلسات V21)`)),
-    h('p', { class: 'small' }, 'البيانات القديمة لم تُحذف من الجهاز، ونسخة منها محفوظة باسم ', h('code', {}, PREMIGRATION_KEY), '. يمكنك فتح ', h('a', { href: '../' }, 'الإصدار السابق'), ' في أي وقت.'));
+    h('p', { class: 'small' }, 'البيانات القديمة لم تُحذف من الجهاز، ونسخة منها محفوظة باسم ', h('code', {}, PREMIGRATION_KEY), '. ملفات الإصدار السابق محفوظة في سجل المستودع.'));
 }
 
 function settingsBox(root, go) {

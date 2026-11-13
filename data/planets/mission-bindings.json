@@ -1,0 +1,794 @@
+[
+  {
+    "missionId": "PJ-01-01",
+    "stationId": "moon",
+    "background": "art/backgrounds/moon.png",
+    "componentReference": "design/props/single.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 1 من سجل القمر.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "القمر تابع طبيعي للأرض، وليس كوكبًا.",
+      "source": "https://science.nasa.gov/moon/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-01-02",
+    "stationId": "moon",
+    "background": "art/backgrounds/moon.png",
+    "componentReference": "design/props/subset.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 2 من سجل القمر.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "القمر تابع طبيعي للأرض، وليس كوكبًا.",
+      "source": "https://science.nasa.gov/moon/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-01-03",
+    "stationId": "moon",
+    "background": "art/backgrounds/moon.png",
+    "componentReference": "design/props/mirror.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 3 من سجل القمر.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "القمر تابع طبيعي للأرض، وليس كوكبًا.",
+      "source": "https://science.nasa.gov/moon/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-01-04",
+    "stationId": "moon",
+    "background": "art/backgrounds/moon.png",
+    "componentReference": "design/props/sequence.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 4 من سجل القمر.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "القمر تابع طبيعي للأرض، وليس كوكبًا.",
+      "source": "https://science.nasa.gov/moon/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-02-01",
+    "stationId": "mercury",
+    "background": "art/backgrounds/mercury.png",
+    "componentReference": "design/props/single.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 1 من سجل عطارد.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "عطارد أقرب الكواكب إلى الشمس، لكنه ليس أشدها حرارة.",
+      "source": "https://science.nasa.gov/mercury/facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-02-02",
+    "stationId": "mercury",
+    "background": "art/backgrounds/mercury.png",
+    "componentReference": "design/props/path.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 2 من سجل عطارد.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "عطارد أقرب الكواكب إلى الشمس، لكنه ليس أشدها حرارة.",
+      "source": "https://science.nasa.gov/mercury/facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-02-03",
+    "stationId": "mercury",
+    "background": "art/backgrounds/mercury.png",
+    "componentReference": "design/props/allocation.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 3 من سجل عطارد.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "عطارد أقرب الكواكب إلى الشمس، لكنه ليس أشدها حرارة.",
+      "source": "https://science.nasa.gov/mercury/facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-02-04",
+    "stationId": "mercury",
+    "background": "art/backgrounds/mercury.png",
+    "componentReference": "design/props/single.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 4 من سجل عطارد.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "عطارد أقرب الكواكب إلى الشمس، لكنه ليس أشدها حرارة.",
+      "source": "https://science.nasa.gov/mercury/facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-03-01",
+    "stationId": "venus",
+    "background": "art/backgrounds/venus.png",
+    "componentReference": "design/props/single.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 1 من سجل الزهرة.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "يمتلك الزهرة غلافًا جويًا كثيفًا وحرارة سطحية شديدة.",
+      "source": "https://science.nasa.gov/venus/venus-facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-03-02",
+    "stationId": "venus",
+    "background": "art/backgrounds/venus.png",
+    "componentReference": "design/props/toggle.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 2 من سجل الزهرة.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "يمتلك الزهرة غلافًا جويًا كثيفًا وحرارة سطحية شديدة.",
+      "source": "https://science.nasa.gov/venus/venus-facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-03-03",
+    "stationId": "venus",
+    "background": "art/backgrounds/venus.png",
+    "componentReference": "design/props/sequence.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 3 من سجل الزهرة.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "يمتلك الزهرة غلافًا جويًا كثيفًا وحرارة سطحية شديدة.",
+      "source": "https://science.nasa.gov/venus/venus-facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-03-04",
+    "stationId": "venus",
+    "background": "art/backgrounds/venus.png",
+    "componentReference": "design/props/multiselect.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 4 من سجل الزهرة.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "يمتلك الزهرة غلافًا جويًا كثيفًا وحرارة سطحية شديدة.",
+      "source": "https://science.nasa.gov/venus/venus-facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-04-01",
+    "stationId": "earth",
+    "background": "art/backgrounds/earth.png",
+    "componentReference": "design/props/sequence.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 1 من سجل الأرض.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "تنتقل المياه في دورة تشمل التبخر والتكاثف والهطول.",
+      "source": "https://science.nasa.gov/earth/water-cycle/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-04-02",
+    "stationId": "earth",
+    "background": "art/backgrounds/earth.png",
+    "componentReference": "design/props/numeric.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 2 من سجل الأرض.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "تنتقل المياه في دورة تشمل التبخر والتكاثف والهطول.",
+      "source": "https://science.nasa.gov/earth/water-cycle/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-04-03",
+    "stationId": "earth",
+    "background": "art/backgrounds/earth.png",
+    "componentReference": "design/props/graph.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 3 من سجل الأرض.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "تنتقل المياه في دورة تشمل التبخر والتكاثف والهطول.",
+      "source": "https://science.nasa.gov/earth/water-cycle/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-04-04",
+    "stationId": "earth",
+    "background": "art/backgrounds/earth.png",
+    "componentReference": "design/props/single.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 4 من سجل الأرض.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "تنتقل المياه في دورة تشمل التبخر والتكاثف والهطول.",
+      "source": "https://science.nasa.gov/earth/water-cycle/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-05-01",
+    "stationId": "mars",
+    "background": "art/backgrounds/mars.png",
+    "componentReference": "design/props/subset.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 1 من سجل المريخ.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "قد تؤثر عواصف غبار المريخ في الرؤية وإنتاج الطاقة الشمسية.",
+      "source": "https://science.nasa.gov/mars/facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-05-02",
+    "stationId": "mars",
+    "background": "art/backgrounds/mars.png",
+    "componentReference": "design/props/coordinate.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 2 من سجل المريخ.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "قد تؤثر عواصف غبار المريخ في الرؤية وإنتاج الطاقة الشمسية.",
+      "source": "https://science.nasa.gov/mars/facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-05-03",
+    "stationId": "mars",
+    "background": "art/backgrounds/mars.png",
+    "componentReference": "design/props/path.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 3 من سجل المريخ.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "قد تؤثر عواصف غبار المريخ في الرؤية وإنتاج الطاقة الشمسية.",
+      "source": "https://science.nasa.gov/mars/facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-05-04",
+    "stationId": "mars",
+    "background": "art/backgrounds/mars.png",
+    "componentReference": "design/props/single.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 4 من سجل المريخ.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "قد تؤثر عواصف غبار المريخ في الرؤية وإنتاج الطاقة الشمسية.",
+      "source": "https://science.nasa.gov/mars/facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-06-01",
+    "stationId": "jupiter",
+    "background": "art/backgrounds/jupiter.png",
+    "componentReference": "design/props/sequence.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 1 من سجل المشتري.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "المشتري عملاق غازي لا يملك سطحًا صلبًا مناسبًا لهبوط الشخصيات.",
+      "source": "https://science.nasa.gov/jupiter/jupiter-facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-06-02",
+    "stationId": "jupiter",
+    "background": "art/backgrounds/jupiter.png",
+    "componentReference": "design/props/allocation.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 2 من سجل المشتري.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "المشتري عملاق غازي لا يملك سطحًا صلبًا مناسبًا لهبوط الشخصيات.",
+      "source": "https://science.nasa.gov/jupiter/jupiter-facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-06-03",
+    "stationId": "jupiter",
+    "background": "art/backgrounds/jupiter.png",
+    "componentReference": "design/props/memory.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 3 من سجل المشتري.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "المشتري عملاق غازي لا يملك سطحًا صلبًا مناسبًا لهبوط الشخصيات.",
+      "source": "https://science.nasa.gov/jupiter/jupiter-facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-06-04",
+    "stationId": "jupiter",
+    "background": "art/backgrounds/jupiter.png",
+    "componentReference": "design/props/single.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 4 من سجل المشتري.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "المشتري عملاق غازي لا يملك سطحًا صلبًا مناسبًا لهبوط الشخصيات.",
+      "source": "https://science.nasa.gov/jupiter/jupiter-facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-07-01",
+    "stationId": "saturn",
+    "background": "art/backgrounds/saturn.png",
+    "componentReference": "design/props/single.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 1 من سجل زحل.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "تتكون حلقات زحل من جسيمات كثيرة، وليست أرضًا متصلة للمشي.",
+      "source": "https://science.nasa.gov/saturn/facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-07-02",
+    "stationId": "saturn",
+    "background": "art/backgrounds/saturn.png",
+    "componentReference": "design/props/numeric.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 2 من سجل زحل.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "تتكون حلقات زحل من جسيمات كثيرة، وليست أرضًا متصلة للمشي.",
+      "source": "https://science.nasa.gov/saturn/facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-07-03",
+    "stationId": "saturn",
+    "background": "art/backgrounds/saturn.png",
+    "componentReference": "design/props/rotate.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 3 من سجل زحل.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "تتكون حلقات زحل من جسيمات كثيرة، وليست أرضًا متصلة للمشي.",
+      "source": "https://science.nasa.gov/saturn/facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-07-04",
+    "stationId": "saturn",
+    "background": "art/backgrounds/saturn.png",
+    "componentReference": "design/props/single.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 4 من سجل زحل.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "تتكون حلقات زحل من جسيمات كثيرة، وليست أرضًا متصلة للمشي.",
+      "source": "https://science.nasa.gov/saturn/facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-08-01",
+    "stationId": "uranus",
+    "background": "art/backgrounds/uranus.png",
+    "componentReference": "design/props/single.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 1 من سجل أورانوس.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "يدور أورانوس بمحور شديد الميل، فيبدو كأنه على جانبه تقريبًا.",
+      "source": "https://science.nasa.gov/uranus/facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-08-02",
+    "stationId": "uranus",
+    "background": "art/backgrounds/uranus.png",
+    "componentReference": "design/props/rotate.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 2 من سجل أورانوس.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "يدور أورانوس بمحور شديد الميل، فيبدو كأنه على جانبه تقريبًا.",
+      "source": "https://science.nasa.gov/uranus/facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-08-03",
+    "stationId": "uranus",
+    "background": "art/backgrounds/uranus.png",
+    "componentReference": "design/props/assignment.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 3 من سجل أورانوس.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "يدور أورانوس بمحور شديد الميل، فيبدو كأنه على جانبه تقريبًا.",
+      "source": "https://science.nasa.gov/uranus/facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-08-04",
+    "stationId": "uranus",
+    "background": "art/backgrounds/uranus.png",
+    "componentReference": "design/props/memory.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 4 من سجل أورانوس.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "يدور أورانوس بمحور شديد الميل، فيبدو كأنه على جانبه تقريبًا.",
+      "source": "https://science.nasa.gov/uranus/facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-09-01",
+    "stationId": "neptune",
+    "background": "art/backgrounds/neptune.png",
+    "componentReference": "design/props/single.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 1 من سجل نبتون.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "نبتون عملاق جليدي ذو رياح قوية، ولا يملك سطحًا صلبًا للمشي.",
+      "source": "https://science.nasa.gov/neptune/neptune-facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-09-02",
+    "stationId": "neptune",
+    "background": "art/backgrounds/neptune.png",
+    "componentReference": "design/props/sequence.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 2 من سجل نبتون.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "نبتون عملاق جليدي ذو رياح قوية، ولا يملك سطحًا صلبًا للمشي.",
+      "source": "https://science.nasa.gov/neptune/neptune-facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-09-03",
+    "stationId": "neptune",
+    "background": "art/backgrounds/neptune.png",
+    "componentReference": "design/props/memory.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 3 من سجل نبتون.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "نبتون عملاق جليدي ذو رياح قوية، ولا يملك سطحًا صلبًا للمشي.",
+      "source": "https://science.nasa.gov/neptune/neptune-facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  },
+  {
+    "missionId": "PJ-09-04",
+    "stationId": "neptune",
+    "background": "art/backgrounds/neptune.png",
+    "componentReference": "design/props/choice-story.svg",
+    "required": true,
+    "characters": [
+      "yara",
+      "tayf"
+    ],
+    "successText": "تكتمل بطاقة 4 من سجل نبتون.",
+    "successMotion": {
+      "durationMs": 600,
+      "effect": "fill-mission-log-card",
+      "reduceMotion": "fade120ms"
+    },
+    "scienceCard": {
+      "fact": "نبتون عملاق جليدي ذو رياح قوية، ولا يملك سطحًا صلبًا للمشي.",
+      "source": "https://science.nasa.gov/neptune/neptune-facts/",
+      "puzzleValuesAreSimulation": true
+    }
+  }
+]

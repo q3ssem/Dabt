@@ -1,6 +1,0 @@
-/* Shared interaction and accessibility baseline for v10–v15. */
-:where(button,a,input,select,textarea,[tabindex]):focus-visible{outline:3px solid #ffca66;outline-offset:3px}
-:where(button,a){touch-action:manipulation}
-@media(prefers-reduced-motion:reduce){*,*::before,*::after{scroll-behavior:auto!important;animation-duration:.01ms!important;animation-iteration-count:1!important;transition-duration:.01ms!important}}
-@media(min-width:700px){button{min-height:40px}}
-@media(max-width:699px){button{min-height:44px}}

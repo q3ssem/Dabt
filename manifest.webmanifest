@@ -1,0 +1,17 @@
+{
+  "name": "ضبط دماغك",
+  "short_name": "ضبط دماغك",
+  "description": "ألغاز تفهمها بيدك، وعوالم تفتحها بفكرتك.",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "background_color": "#F4F0E7",
+  "theme_color": "#17665D",
+  "icons": [
+    { "src": "assets/lab/design/brand-mark.svg", "sizes": "any", "type": "image/svg+xml", "purpose": "any" },
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png" }
+  ]
+}

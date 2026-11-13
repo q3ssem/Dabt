@@ -1,0 +1,26 @@
+{
+  "luma": {
+    "image": "art/characters/luma.png",
+    "poses": {
+      "idle": {
+        "x": 0,
+        "y": 0,
+        "width": 724,
+        "height": 724
+      },
+      "talk": {
+        "x": 724,
+        "y": 0,
+        "width": 724,
+        "height": 724
+      },
+      "celebrate": {
+        "x": 1448,
+        "y": 0,
+        "width": 724,
+        "height": 724
+      }
+    },
+    "note": "Static poses, no walk or lip-sync frames."
+  }
+}
