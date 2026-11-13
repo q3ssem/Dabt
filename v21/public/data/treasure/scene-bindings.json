@@ -1,0 +1,1154 @@
+[
+  {
+    "puzzleId": "TI-01-01",
+    "chapterId": "shore",
+    "background": "art/backgrounds/TI_BG_01.png",
+    "vectorBackground": "design/backgrounds/island-01.svg",
+    "componentReference": "design/props/sequence.svg",
+    "tool": "art/tools/TI_TOOL_01.png",
+    "seal": "design/production/seal-shell.svg",
+    "character": "salem",
+    "required": true,
+    "successText": "تثبت الدرجات ويصبح النزول إلى الرصيف ممكنًا.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تثبت الدرجات ويصبح النزول إلى الرصيف ممكنًا.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-01-02",
+    "chapterId": "shore",
+    "background": "art/backgrounds/TI_BG_01.png",
+    "vectorBackground": "design/backgrounds/island-01.svg",
+    "componentReference": "design/props/assignment.svg",
+    "tool": "art/tools/TI_TOOL_01.png",
+    "seal": "design/production/seal-shell.svg",
+    "character": "salem",
+    "required": true,
+    "successText": "يفتح صندوق المرساة وفيه أول بطاقة من دفتر سالم.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يفتح صندوق المرساة وفيه أول بطاقة من دفتر سالم.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-01-03",
+    "chapterId": "shore",
+    "background": "art/backgrounds/TI_BG_01.png",
+    "vectorBackground": "design/backgrounds/island-01.svg",
+    "componentReference": "design/props/balance.svg",
+    "tool": "art/tools/TI_TOOL_01.png",
+    "seal": "design/production/seal-shell.svg",
+    "character": "salem",
+    "required": true,
+    "successText": "ترتفع سلسلة البوابة دون أن تتساقط القطع.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "ترتفع سلسلة البوابة دون أن تتساقط القطع.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-01-04",
+    "chapterId": "shore",
+    "background": "art/backgrounds/TI_BG_01.png",
+    "vectorBackground": "design/backgrounds/island-01.svg",
+    "componentReference": "design/props/rotate.svg",
+    "tool": "art/tools/TI_TOOL_01.png",
+    "seal": "design/production/seal-shell.svg",
+    "character": "salem",
+    "required": true,
+    "successText": "تظهر علامة الغابة غرب الرصيف.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تظهر علامة الغابة غرب الرصيف.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-01-05",
+    "chapterId": "shore",
+    "background": "art/backgrounds/TI_BG_01.png",
+    "vectorBackground": "design/backgrounds/island-01.svg",
+    "componentReference": "design/props/path.svg",
+    "tool": "art/tools/TI_TOOL_01.png",
+    "seal": "design/production/seal-shell.svg",
+    "character": "salem",
+    "required": true,
+    "successText": "يمد الطاقم ألواح الجسر فوق الطريق الذي اخترته.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يمد الطاقم ألواح الجسر فوق الطريق الذي اخترته.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-01-06",
+    "chapterId": "shore",
+    "background": "art/backgrounds/TI_BG_01.png",
+    "vectorBackground": "design/backgrounds/island-01.svg",
+    "componentReference": "design/props/memory.svg",
+    "tool": "art/tools/TI_TOOL_01.png",
+    "seal": "design/production/seal-shell.svg",
+    "character": "salem",
+    "required": false,
+    "successText": "يتزامن رنين العوامات وتصل رسالة من السفينة.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يتزامن رنين العوامات وتصل رسالة من السفينة.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-01-07",
+    "chapterId": "shore",
+    "background": "art/backgrounds/TI_BG_01.png",
+    "vectorBackground": "design/backgrounds/island-01.svg",
+    "componentReference": "design/props/subset.svg",
+    "tool": "art/tools/TI_TOOL_01.png",
+    "seal": "design/production/seal-shell.svg",
+    "character": "salem",
+    "required": false,
+    "successText": "ينطلق القارب مجهزًا لإصلاح المنارة.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "ينطلق القارب مجهزًا لإصلاح المنارة.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-01-08",
+    "chapterId": "shore",
+    "background": "art/backgrounds/TI_BG_01.png",
+    "vectorBackground": "design/backgrounds/island-01.svg",
+    "componentReference": "design/props/sequence.svg",
+    "tool": "art/tools/TI_TOOL_01.png",
+    "seal": "design/production/seal-shell.svg",
+    "character": "salem",
+    "required": true,
+    "successText": "تستقر الصدفة في الأطلس ويُفتح الفصل الثاني.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تستقر الصدفة في الأطلس ويُفتح الفصل الثاني.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-02-01",
+    "chapterId": "forest",
+    "background": "art/backgrounds/TI_BG_02.png",
+    "vectorBackground": "design/backgrounds/island-02.svg",
+    "componentReference": "design/props/sequence.svg",
+    "tool": "art/tools/TI_TOOL_02.png",
+    "seal": "design/production/seal-root.svg",
+    "character": "mahra",
+    "required": true,
+    "successText": "تكتسب أربع بطاقات أسماءها.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تكتسب أربع بطاقات أسماءها.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-02-02",
+    "chapterId": "forest",
+    "background": "art/backgrounds/TI_BG_02.png",
+    "vectorBackground": "design/backgrounds/island-02.svg",
+    "componentReference": "design/props/single.svg",
+    "tool": "art/tools/TI_TOOL_02.png",
+    "seal": "design/production/seal-root.svg",
+    "character": "mahra",
+    "required": true,
+    "successText": "يُفتح تجويف يحمل عدسة اللحاء.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يُفتح تجويف يحمل عدسة اللحاء.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-02-03",
+    "chapterId": "forest",
+    "background": "art/backgrounds/TI_BG_02.png",
+    "vectorBackground": "design/backgrounds/island-02.svg",
+    "componentReference": "design/props/allocation.svg",
+    "tool": "art/tools/TI_TOOL_02.png",
+    "seal": "design/production/seal-root.svg",
+    "character": "mahra",
+    "required": true,
+    "successText": "ينفتح قفل الري.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "ينفتح قفل الري.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-02-04",
+    "chapterId": "forest",
+    "background": "art/backgrounds/TI_BG_02.png",
+    "vectorBackground": "design/backgrounds/island-02.svg",
+    "componentReference": "design/props/schedule.svg",
+    "tool": "art/tools/TI_TOOL_02.png",
+    "seal": "design/production/seal-root.svg",
+    "character": "mahra",
+    "required": true,
+    "successText": "يُصلح الجسر دون سقوط أي أداة.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يُصلح الجسر دون سقوط أي أداة.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-02-05",
+    "chapterId": "forest",
+    "background": "art/backgrounds/TI_BG_02.png",
+    "vectorBackground": "design/backgrounds/island-02.svg",
+    "componentReference": "design/props/multiselect.svg",
+    "tool": "art/tools/TI_TOOL_02.png",
+    "seal": "design/production/seal-root.svg",
+    "character": "mahra",
+    "required": true,
+    "successText": "تعمل العدسة وتكشف حبرًا على اللحاء.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تعمل العدسة وتكشف حبرًا على اللحاء.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-02-06",
+    "chapterId": "forest",
+    "background": "art/backgrounds/TI_BG_02.png",
+    "vectorBackground": "design/backgrounds/island-02.svg",
+    "componentReference": "design/props/graph.svg",
+    "tool": "art/tools/TI_TOOL_02.png",
+    "seal": "design/production/seal-root.svg",
+    "character": "mahra",
+    "required": false,
+    "successText": "تكشف الجذور ممرًا كان مدفونًا.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تكشف الجذور ممرًا كان مدفونًا.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-02-07",
+    "chapterId": "forest",
+    "background": "art/backgrounds/TI_BG_02.png",
+    "vectorBackground": "design/backgrounds/island-02.svg",
+    "componentReference": "design/props/memory.svg",
+    "tool": "art/tools/TI_TOOL_02.png",
+    "seal": "design/production/seal-root.svg",
+    "character": "mahra",
+    "required": false,
+    "successText": "تظهر رسالة غير مكتملة من نادر.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تظهر رسالة غير مكتملة من نادر.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-02-08",
+    "chapterId": "forest",
+    "background": "art/backgrounds/TI_BG_02.png",
+    "vectorBackground": "design/backgrounds/island-02.svg",
+    "componentReference": "design/props/assignment.svg",
+    "tool": "art/tools/TI_TOOL_02.png",
+    "seal": "design/production/seal-root.svg",
+    "character": "mahra",
+    "required": true,
+    "successText": "يتكون ختم الجذر ويكشف طريق المنارة.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يتكون ختم الجذر ويكشف طريق المنارة.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-03-01",
+    "chapterId": "lighthouse",
+    "background": "art/backgrounds/TI_BG_03.png",
+    "vectorBackground": "design/backgrounds/island-03.svg",
+    "componentReference": "design/props/subset.svg",
+    "tool": "art/tools/TI_TOOL_03.png",
+    "seal": "design/production/seal-light.svg",
+    "character": "salem",
+    "required": true,
+    "successText": "تتوازن قاعدة العدسة.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تتوازن قاعدة العدسة.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-03-02",
+    "chapterId": "lighthouse",
+    "background": "art/backgrounds/TI_BG_03.png",
+    "vectorBackground": "design/backgrounds/island-03.svg",
+    "componentReference": "design/props/numeric.svg",
+    "tool": "art/tools/TI_TOOL_03.png",
+    "seal": "design/production/seal-light.svg",
+    "character": "salem",
+    "required": true,
+    "successText": "يتحرك محور المنارة بسلاسة.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يتحرك محور المنارة بسلاسة.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-03-03",
+    "chapterId": "lighthouse",
+    "background": "art/backgrounds/TI_BG_03.png",
+    "vectorBackground": "design/backgrounds/island-03.svg",
+    "componentReference": "design/props/mirror.svg",
+    "tool": "art/tools/TI_TOOL_03.png",
+    "seal": "design/production/seal-light.svg",
+    "character": "salem",
+    "required": true,
+    "successText": "يستقر الشعاع على خليج الأرشيف.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يستقر الشعاع على خليج الأرشيف.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-03-04",
+    "chapterId": "lighthouse",
+    "background": "art/backgrounds/TI_BG_03.png",
+    "vectorBackground": "design/backgrounds/island-03.svg",
+    "componentReference": "design/props/toggle.svg",
+    "tool": "art/tools/TI_TOOL_03.png",
+    "seal": "design/production/seal-light.svg",
+    "character": "salem",
+    "required": true,
+    "successText": "تعمل لوحة المنارة.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تعمل لوحة المنارة.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-03-05",
+    "chapterId": "lighthouse",
+    "background": "art/backgrounds/TI_BG_03.png",
+    "vectorBackground": "design/backgrounds/island-03.svg",
+    "componentReference": "design/props/memory.svg",
+    "tool": "art/tools/TI_TOOL_03.png",
+    "seal": "design/production/seal-light.svg",
+    "character": "salem",
+    "required": true,
+    "successText": "تستقبل السفينة إشارة المنارة.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تستقبل السفينة إشارة المنارة.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-03-06",
+    "chapterId": "lighthouse",
+    "background": "art/backgrounds/TI_BG_03.png",
+    "vectorBackground": "design/backgrounds/island-03.svg",
+    "componentReference": "design/props/numeric.svg",
+    "tool": "art/tools/TI_TOOL_03.png",
+    "seal": "design/production/seal-light.svg",
+    "character": "salem",
+    "required": false,
+    "successText": "يضبط سالم مؤقت التشغيل.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يضبط سالم مؤقت التشغيل.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-03-07",
+    "chapterId": "lighthouse",
+    "background": "art/backgrounds/TI_BG_03.png",
+    "vectorBackground": "design/backgrounds/island-03.svg",
+    "componentReference": "design/props/schedule.svg",
+    "tool": "art/tools/TI_TOOL_03.png",
+    "seal": "design/production/seal-light.svg",
+    "character": "salem",
+    "required": false,
+    "successText": "تصبح المنارة مستقرة حتى بعد مغادرتك.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تصبح المنارة مستقرة حتى بعد مغادرتك.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-03-08",
+    "chapterId": "lighthouse",
+    "background": "art/backgrounds/TI_BG_03.png",
+    "vectorBackground": "design/backgrounds/island-03.svg",
+    "componentReference": "design/props/coordinate.svg",
+    "tool": "art/tools/TI_TOOL_03.png",
+    "seal": "design/production/seal-light.svg",
+    "character": "salem",
+    "required": true,
+    "successText": "يظهر ختم الضوء ومدخل الأرشيف.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يظهر ختم الضوء ومدخل الأرشيف.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-04-01",
+    "chapterId": "archive",
+    "background": "art/backgrounds/TI_BG_04.png",
+    "vectorBackground": "design/backgrounds/island-04.svg",
+    "componentReference": "design/props/sequence.svg",
+    "tool": "art/tools/TI_TOOL_04.png",
+    "seal": "design/production/seal-ink.svg",
+    "character": "mahra",
+    "required": true,
+    "successText": "يُفتح سجل رحلات نادر.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يُفتح سجل رحلات نادر.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-04-02",
+    "chapterId": "archive",
+    "background": "art/backgrounds/TI_BG_04.png",
+    "vectorBackground": "design/backgrounds/island-04.svg",
+    "componentReference": "design/props/allocation.svg",
+    "tool": "art/tools/TI_TOOL_04.png",
+    "seal": "design/production/seal-ink.svg",
+    "character": "mahra",
+    "required": true,
+    "successText": "تستقر قاعة القراءة.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تستقر قاعة القراءة.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-04-03",
+    "chapterId": "archive",
+    "background": "art/backgrounds/TI_BG_04.png",
+    "vectorBackground": "design/backgrounds/island-04.svg",
+    "componentReference": "design/props/assignment.svg",
+    "tool": "art/tools/TI_TOOL_04.png",
+    "seal": "design/production/seal-ink.svg",
+    "character": "mahra",
+    "required": true,
+    "successText": "تجد مهرة شريط الصوت الذي تبحث عنه.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تجد مهرة شريط الصوت الذي تبحث عنه.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-04-04",
+    "chapterId": "archive",
+    "background": "art/backgrounds/TI_BG_04.png",
+    "vectorBackground": "design/backgrounds/island-04.svg",
+    "componentReference": "design/props/schedule.svg",
+    "tool": "art/tools/TI_TOOL_04.png",
+    "seal": "design/production/seal-ink.svg",
+    "character": "mahra",
+    "required": true,
+    "successText": "تنجو الصفحة الأخيرة قبل إغلاق الباب.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تنجو الصفحة الأخيرة قبل إغلاق الباب.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-04-05",
+    "chapterId": "archive",
+    "background": "art/backgrounds/TI_BG_04.png",
+    "vectorBackground": "design/backgrounds/island-04.svg",
+    "componentReference": "design/props/assignment.svg",
+    "tool": "art/tools/TI_TOOL_04.png",
+    "seal": "design/production/seal-ink.svg",
+    "character": "mahra",
+    "required": true,
+    "successText": "تتصل شهادات الرحلة ببعضها.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تتصل شهادات الرحلة ببعضها.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-04-06",
+    "chapterId": "archive",
+    "background": "art/backgrounds/TI_BG_04.png",
+    "vectorBackground": "design/backgrounds/island-04.svg",
+    "componentReference": "design/props/memory.svg",
+    "tool": "art/tools/TI_TOOL_04.png",
+    "seal": "design/production/seal-ink.svg",
+    "character": "mahra",
+    "required": false,
+    "successText": "تكتشف ورقة مدسوسة بلا توقيع.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تكتشف ورقة مدسوسة بلا توقيع.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-04-07",
+    "chapterId": "archive",
+    "background": "art/backgrounds/TI_BG_04.png",
+    "vectorBackground": "design/backgrounds/island-04.svg",
+    "componentReference": "design/props/single.svg",
+    "tool": "art/tools/TI_TOOL_04.png",
+    "seal": "design/production/seal-ink.svg",
+    "character": "mahra",
+    "required": false,
+    "successText": "تُعلّم الصفحة بأنها شهادة موثقة بدل شائعة.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تُعلّم الصفحة بأنها شهادة موثقة بدل شائعة.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-04-08",
+    "chapterId": "archive",
+    "background": "art/backgrounds/TI_BG_04.png",
+    "vectorBackground": "design/backgrounds/island-04.svg",
+    "componentReference": "design/props/numeric.svg",
+    "tool": "art/tools/TI_TOOL_04.png",
+    "seal": "design/production/seal-ink.svg",
+    "character": "mahra",
+    "required": true,
+    "successText": "يظهر ختم الحبر وخريطة المرصد.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يظهر ختم الحبر وخريطة المرصد.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-05-01",
+    "chapterId": "observatory",
+    "background": "art/backgrounds/TI_BG_05.png",
+    "vectorBackground": "design/backgrounds/island-05.svg",
+    "componentReference": "design/props/rotate.svg",
+    "tool": "art/tools/TI_TOOL_05.png",
+    "seal": "design/production/seal-star.svg",
+    "character": "nader",
+    "required": true,
+    "successText": "ينفتح قرص الرصد الأول.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "ينفتح قرص الرصد الأول.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-05-02",
+    "chapterId": "observatory",
+    "background": "art/backgrounds/TI_BG_05.png",
+    "vectorBackground": "design/backgrounds/island-05.svg",
+    "componentReference": "design/props/graph.svg",
+    "tool": "art/tools/TI_TOOL_05.png",
+    "seal": "design/production/seal-star.svg",
+    "character": "nader",
+    "required": true,
+    "successText": "تتحول الكوكبة إلى شكل الجزيرة.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تتحول الكوكبة إلى شكل الجزيرة.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-05-03",
+    "chapterId": "observatory",
+    "background": "art/backgrounds/TI_BG_05.png",
+    "vectorBackground": "design/backgrounds/island-05.svg",
+    "componentReference": "design/props/assignment.svg",
+    "tool": "art/tools/TI_TOOL_05.png",
+    "seal": "design/production/seal-star.svg",
+    "character": "nader",
+    "required": true,
+    "successText": "تعمل العدسة العليا.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تعمل العدسة العليا.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-05-04",
+    "chapterId": "observatory",
+    "background": "art/backgrounds/TI_BG_05.png",
+    "vectorBackground": "design/backgrounds/island-05.svg",
+    "componentReference": "design/props/subset.svg",
+    "tool": "art/tools/TI_TOOL_05.png",
+    "seal": "design/production/seal-star.svg",
+    "character": "nader",
+    "required": true,
+    "successText": "تتجمع سجلات تكفي لإعادة بناء المسار.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تتجمع سجلات تكفي لإعادة بناء المسار.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-05-05",
+    "chapterId": "observatory",
+    "background": "art/backgrounds/TI_BG_05.png",
+    "vectorBackground": "design/backgrounds/island-05.svg",
+    "componentReference": "design/props/multiselect.svg",
+    "tool": "art/tools/TI_TOOL_05.png",
+    "seal": "design/production/seal-star.svg",
+    "character": "nader",
+    "required": true,
+    "successText": "يُسجل الاستنتاج مع سببه في الدفتر.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يُسجل الاستنتاج مع سببه في الدفتر.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-05-06",
+    "chapterId": "observatory",
+    "background": "art/backgrounds/TI_BG_05.png",
+    "vectorBackground": "design/backgrounds/island-05.svg",
+    "componentReference": "design/props/mirror.svg",
+    "tool": "art/tools/TI_TOOL_05.png",
+    "seal": "design/production/seal-star.svg",
+    "character": "nader",
+    "required": false,
+    "successText": "يظهر موضع قلب الجزيرة.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يظهر موضع قلب الجزيرة.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-05-07",
+    "chapterId": "observatory",
+    "background": "art/backgrounds/TI_BG_05.png",
+    "vectorBackground": "design/backgrounds/island-05.svg",
+    "componentReference": "design/props/memory.svg",
+    "tool": "art/tools/TI_TOOL_05.png",
+    "seal": "design/production/seal-star.svg",
+    "character": "nader",
+    "required": false,
+    "successText": "تسمع آخر جملة مسجلة بصوت نادر.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تسمع آخر جملة مسجلة بصوت نادر.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-05-08",
+    "chapterId": "observatory",
+    "background": "art/backgrounds/TI_BG_05.png",
+    "vectorBackground": "design/backgrounds/island-05.svg",
+    "componentReference": "design/props/coordinate.svg",
+    "tool": "art/tools/TI_TOOL_05.png",
+    "seal": "design/production/seal-star.svg",
+    "character": "nader",
+    "required": true,
+    "successText": "يتكون ختم النجمة وتفتح سلالم الفوهة.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يتكون ختم النجمة وتفتح سلالم الفوهة.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-06-01",
+    "chapterId": "heart",
+    "background": "art/backgrounds/TI_BG_06.png",
+    "vectorBackground": "design/backgrounds/island-06.svg",
+    "componentReference": "design/props/sequence.svg",
+    "tool": "art/tools/TI_TOOL_06.png",
+    "seal": "design/production/seal-ash.svg",
+    "character": "explorer",
+    "required": true,
+    "successText": "تنتظم تجاويف الباب.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تنتظم تجاويف الباب.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-06-02",
+    "chapterId": "heart",
+    "background": "art/backgrounds/TI_BG_06.png",
+    "vectorBackground": "design/backgrounds/island-06.svg",
+    "componentReference": "design/props/allocation.svg",
+    "tool": "art/tools/TI_TOOL_06.png",
+    "seal": "design/production/seal-ash.svg",
+    "character": "explorer",
+    "required": true,
+    "successText": "تستقر منظومة الإنقاذ.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تستقر منظومة الإنقاذ.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-06-03",
+    "chapterId": "heart",
+    "background": "art/backgrounds/TI_BG_06.png",
+    "vectorBackground": "design/backgrounds/island-06.svg",
+    "componentReference": "design/props/toggle.svg",
+    "tool": "art/tools/TI_TOOL_06.png",
+    "seal": "design/production/seal-ash.svg",
+    "character": "explorer",
+    "required": true,
+    "successText": "تعمل أدوات الطاقم في لحظة واحدة.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تعمل أدوات الطاقم في لحظة واحدة.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-06-04",
+    "chapterId": "heart",
+    "background": "art/backgrounds/TI_BG_06.png",
+    "vectorBackground": "design/backgrounds/island-06.svg",
+    "componentReference": "design/props/graph.svg",
+    "tool": "art/tools/TI_TOOL_06.png",
+    "seal": "design/production/seal-ash.svg",
+    "character": "explorer",
+    "required": true,
+    "successText": "يتكوّن مسار عودة لا يستهلك طاقة الاحتياطي.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يتكوّن مسار عودة لا يستهلك طاقة الاحتياطي.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-06-05",
+    "chapterId": "heart",
+    "background": "art/backgrounds/TI_BG_06.png",
+    "vectorBackground": "design/backgrounds/island-06.svg",
+    "componentReference": "design/props/single.svg",
+    "tool": "art/tools/TI_TOOL_06.png",
+    "seal": "design/production/seal-ash.svg",
+    "character": "explorer",
+    "required": true,
+    "successText": "يسجل الأطلس مقصد صاحبه.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يسجل الأطلس مقصد صاحبه.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-06-06",
+    "chapterId": "heart",
+    "background": "art/backgrounds/TI_BG_06.png",
+    "vectorBackground": "design/backgrounds/island-06.svg",
+    "componentReference": "design/props/memory.svg",
+    "tool": "art/tools/TI_TOOL_06.png",
+    "seal": "design/production/seal-ash.svg",
+    "character": "explorer",
+    "required": false,
+    "successText": "تكتمل الحلقة التي تحمل اسم مهرة.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تكتمل الحلقة التي تحمل اسم مهرة.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-06-07",
+    "chapterId": "heart",
+    "background": "art/backgrounds/TI_BG_06.png",
+    "vectorBackground": "design/backgrounds/island-06.svg",
+    "componentReference": "design/props/numeric.svg",
+    "tool": "art/tools/TI_TOOL_06.png",
+    "seal": "design/production/seal-ash.svg",
+    "character": "explorer",
+    "required": false,
+    "successText": "يتأكد الطاقم أن العودة ممكنة قبل فتح الباب.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "يتأكد الطاقم أن العودة ممكنة قبل فتح الباب.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  },
+  {
+    "puzzleId": "TI-06-08",
+    "chapterId": "heart",
+    "background": "art/backgrounds/TI_BG_06.png",
+    "vectorBackground": "design/backgrounds/island-06.svg",
+    "componentReference": "design/props/choice-story.svg",
+    "tool": "art/tools/TI_TOOL_06.png",
+    "seal": "design/production/seal-ash.svg",
+    "character": "explorer",
+    "required": true,
+    "successText": "تتغير خاتمة الطريق وفق القرار مع اكتمال الإنقاذ في كل الحالات.",
+    "animation": {
+      "trigger": "validated-success",
+      "durationMs": 600,
+      "semanticEffect": "تتغير خاتمة الطريق وفق القرار مع اكتمال الإنقاذ في كل الحالات.",
+      "reduceMotion": "crossfade-120ms",
+      "persistAfterComplete": true
+    },
+    "layout": {
+      "phone": "scene-above-live-puzzle",
+      "desktop": "scene-with-contained-live-panel",
+      "minTouchPx": 48
+    }
+  }
+]

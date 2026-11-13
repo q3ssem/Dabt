@@ -1,0 +1,154 @@
+{
+  "salem": {
+    "image": "art/characters/TI_CHAR_SALEM.png",
+    "imageWidth": 2172,
+    "imageHeight": 724,
+    "poses": {
+      "idle": {
+        "x": 0,
+        "y": 0,
+        "width": 724,
+        "height": 724,
+        "anchor": [
+          362,
+          704
+        ]
+      },
+      "talk": {
+        "x": 724,
+        "y": 0,
+        "width": 724,
+        "height": 724,
+        "anchor": [
+          362,
+          704
+        ]
+      },
+      "celebrate": {
+        "x": 1448,
+        "y": 0,
+        "width": 724,
+        "height": 724,
+        "anchor": [
+          362,
+          704
+        ]
+      }
+    },
+    "use": "Static pose changes and gentle whole-sprite transforms; no lip-sync or walk-cycle frames."
+  },
+  "explorer": {
+    "image": "art/characters/TI_CHAR_EXPLORER.png",
+    "imageWidth": 2172,
+    "imageHeight": 724,
+    "poses": {
+      "idle": {
+        "x": 0,
+        "y": 0,
+        "width": 724,
+        "height": 724,
+        "anchor": [
+          362,
+          704
+        ]
+      },
+      "talk": {
+        "x": 724,
+        "y": 0,
+        "width": 724,
+        "height": 724,
+        "anchor": [
+          362,
+          704
+        ]
+      },
+      "celebrate": {
+        "x": 1448,
+        "y": 0,
+        "width": 724,
+        "height": 724,
+        "anchor": [
+          362,
+          704
+        ]
+      }
+    },
+    "use": "Static pose changes and gentle whole-sprite transforms; no lip-sync or walk-cycle frames."
+  },
+  "mahra": {
+    "image": "art/characters/TI_CHAR_MAHRA.png",
+    "imageWidth": 2172,
+    "imageHeight": 724,
+    "poses": {
+      "idle": {
+        "x": 0,
+        "y": 0,
+        "width": 724,
+        "height": 724,
+        "anchor": [
+          362,
+          704
+        ]
+      },
+      "talk": {
+        "x": 724,
+        "y": 0,
+        "width": 724,
+        "height": 724,
+        "anchor": [
+          362,
+          704
+        ]
+      },
+      "celebrate": {
+        "x": 1448,
+        "y": 0,
+        "width": 724,
+        "height": 724,
+        "anchor": [
+          362,
+          704
+        ]
+      }
+    },
+    "use": "Static pose changes and gentle whole-sprite transforms; no lip-sync or walk-cycle frames."
+  },
+  "nader": {
+    "image": "art/characters/TI_CHAR_NADER.png",
+    "imageWidth": 2172,
+    "imageHeight": 724,
+    "poses": {
+      "idle": {
+        "x": 0,
+        "y": 0,
+        "width": 724,
+        "height": 724,
+        "anchor": [
+          362,
+          704
+        ]
+      },
+      "talk": {
+        "x": 724,
+        "y": 0,
+        "width": 724,
+        "height": 724,
+        "anchor": [
+          362,
+          704
+        ]
+      },
+      "celebrate": {
+        "x": 1448,
+        "y": 0,
+        "width": 724,
+        "height": 724,
+        "anchor": [
+          362,
+          704
+        ]
+      }
+    },
+    "use": "Static pose changes and gentle whole-sprite transforms; no lip-sync or walk-cycle frames."
+  }
+}

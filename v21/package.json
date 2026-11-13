@@ -1,0 +1,14 @@
+{
+  "name": "dabt-v21",
+  "version": "21.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "dev": "vite --host 0.0.0.0",
+    "build": "vite build && node scripts/postbuild.mjs",
+    "preview": "vite preview --host 0.0.0.0 --port 4173",
+    "test": "node tests/data.test.mjs && node tests/store.test.mjs",
+    "test:e2e": "python3 tests/e2e.py"
+  },
+  "devDependencies": { "vite": "^6.0.0" }
+}
