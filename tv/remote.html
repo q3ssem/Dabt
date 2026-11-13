@@ -136,6 +136,10 @@ h1,h2,.ptitle,.mcard b,.brand h1,.itx h2,.res h2,.dlg h2,.gt b,.pql,.daily h2,.t
 .oimgb input{position:absolute;inset:0;opacity:0}.oimgb svg{width:22px;height:22px;color:var(--gold2)}.oimgb img{width:100%;height:100%;object-fit:cover}
 .oprow{grid-template-columns:52px 1fr 52px}
 .musnote{font-size:13px;color:var(--gold2);font-weight:800;text-align:center}
+
+.x2p{color:#fff!important;background:linear-gradient(90deg,#E8637A,#E8A93B);border-radius:12px;padding:4px 10px;font-weight:900!important}
+.tmb{font-weight:900!important;font-size:17px!important}
+.blrow{display:flex;align-items:center;gap:10px;font-weight:800;font-size:15px;color:var(--gold2);padding:6px 4px}.blrow input{width:22px;height:22px}
 </style></head><body>
 <div class="top"><div><h1>ريموت ضبط دماغك</h1><small>تحكّم بالتلفزيون من جوالك</small></div><div class="st" id="st"><i></i><span id="stt">غير متصل</span></div></div>
 
@@ -259,29 +263,29 @@ function avPicker(){return '<div class="avgrid">'+AVP.map(function(_,i){return '
 function bindAv(root){root.querySelectorAll('.avb').forEach(function(b){b.onclick=function(){setAv(+b.dataset.av);buzz(10);root.querySelectorAll('.avb').forEach(function(z){z.classList.toggle('on',z===b)})}})}
 function pView(){if(inK)return;var on=P&&P.on&&!forceRemote;$('#partyv').hidden=!on||!code;$('#padv').hidden=on||!code;if(!on)return;
   $('#ptitle').textContent='كاهوت الجلسة';
-  var b=$('#pbody'),m=meP(),ph=P.ph,key=!m?'join':ph+P.qn+(myAns[P.qn]!=null?1:0)+(objd[P.qn]?1:0)+(ph==='lobby'?'|'+P.players.length+'|'+P.kq+'|'+P.locked+'|'+P.ol+'|'+P.ctl+P.host+'|'+P.mus+P.musD:'')+(ph==='reveal'||ph==='board'?'|'+m.s:'');
+  var b=$('#pbody'),m=meP(),ph=P.ph,key=!m?'join':ph+P.qn+(myAns[P.qn]!=null?1:0)+(objd[P.qn]?1:0)+(ph==='lobby'?'|'+P.players.length+'|'+(P.teams?'T'+(m&&m.tm):'')+'|'+P.kq+'|'+P.locked+'|'+P.ol+'|'+P.ctl+P.host+'|'+P.mus+P.musD:'')+(ph==='reveal'||ph==='board'?'|'+m.s:'');
   if(ph==='q'||ph==='ready')updCd();
   if(key===lastPh&&$('#pbody').childElementCount)return;lastPh=key;
   if(!m){var typed=$('#pname')?$('#pname').value:myName;b.innerHTML='<div class="pcard"><p>اكتب اسمك واختر رسمتك. تطلع معك على التلفزيون</p></div><input class="name" id="pname" maxlength="16" placeholder="اسمك" value="'+esc(typed)+'">'+avPicker()+'<div class="ferr" id="perr"></div><button class="gobtn" id="pjoin">ادخل</button>';bindAv(b);
     $('#pjoin').onclick=function(){var n=$('#pname').value.trim();if(!n){$('#pname').focus();return}if(!(myAv>=0)){$('#perr').textContent='اختر رسمة';return}setName(n);hello();joinTried=Date.now();pub('/j',{d:me,n:n,av:myAv});$('#pjoin').textContent='جارِ الدخول…'};return}
   if(ph==='lobby'){
-    b.innerHTML='<div class="pcard"><div style="display:flex;justify-content:center">'+avSVG(m.av,64)+'</div><b class="big2">'+esc(m.n)+'</b><p>اللاعبين: '+P.players.length+' · الأسئلة: '+(P.kq||0)+(P.locked?' · الملف مؤكَّد':'')+'</p></div>'+
+    b.innerHTML='<div class="pcard"><div style="display:flex;justify-content:center">'+avSVG(m.av,64)+'</div><b class="big2">'+esc(m.n)+'</b>'+(P.teams?'<p class="tmb" style="color:'+['#6E9CFF','#E8A93B'][m.tm|0]+'">فريق '+['الصقور','النجوم'][m.tm|0]+'</p>':'')+'<p>اللاعبين: '+P.players.length+' · الأسئلة: '+(P.kq||0)+(P.locked?' · الملف مؤكَّد':'')+'</p></div>'+
      (P.locked?'':'<button class="writeb" id="pwrite" style="width:100%">'+$('#bwrite').innerHTML+'</button>')+
-     '<div class="pcard"><p>'+(P.ol?'أثناء أي سؤال تقدر تعترض عليه. إذا اعترض '+P.ol+' ينلغي السؤال':'الاعتراض على الأسئلة مغلق في هذي الجلسة')+'</p></div>'+
+     '<div class="pcard"><p>'+(P.ol?'أثناء أي سؤال تقدر تعترض عليه. إذا اعترض '+(P.olp||40)+'٪ من اللاعبين ينلغي السؤال':'الاعتراض على الأسئلة مغلق في هذي الجلسة')+'</p></div>'+
      (P.mus==='phone'&&P.musD===me?'<div class="musnote">الموسيقى تطلع من جوالك أثناء الأسئلة. ارفع الصوت</div>':'')+
      (P.ctl==='one'&&P.host&&P.host!==me?'<div class="pcard"><p>ينتظر '+esc(P.hostN||'المتحكم')+' يبدأ المسابقة</p></div>':'<button class="gobtn" id="pstart"'+(!P.kq?' disabled style="opacity:.4"':'')+'>ابدأ</button>');
     if($('#pstart'))$('#pstart').onclick=function(){pub('/c',{d:me,c:'start'});buzz(20)};if($('#pwrite'))$('#pwrite').onclick=openK;return}
-  if(ph==='ready'){b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center"><div><p>السؤال '+P.qn+' من '+P.total+'</p><div class="qtxt">'+esc(P.qt||'')+'</div><div class="ready" id="cdn">'+Math.max(1,Math.ceil(P.left/1000))+'</div><p>استعد…</p></div></div>';return}
+  if(ph==='ready'){b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center"><div><p>السؤال '+P.qn+' من '+P.total+'</p><div class="qtxt">'+esc(P.qt||'')+'</div>'+(P.x2?'<div class="cd x2p">جولة السرعة ×٢</div>':'')+'<div class="ready" id="cdn">'+Math.max(1,Math.ceil(P.left/1000))+'</div><p>استعد…</p></div></div>';return}
   if(ph==='show'){b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center"><div><b class="big2">ركّز على الشاشة</b><p>احفظ الرموز بالترتيب</p></div></div>';return}
   if(ph==='q'){var mine=myAns[P.qn],n=P.n||4,tf=!!P.tf;
-    var qo=P.qo||[];b.innerHTML='<div class="qtop"><div class="cd">السؤال '+P.qn+' من '+P.total+' · باقي <b id="cdn">'+Math.ceil(P.left/1000)+'</b> ث</div>'+(P.ol?'<button class="objb'+(objd[P.qn]?' done':'')+'" id="pobj">'+FLAG+(objd[P.qn]?'اعترضت':'اعتراض')+'</button>':'')+'</div>'+(P.by===me?'<div class="cd" style="color:var(--gold2)">هذا سؤالك. جاوب عليه مثل الباقين</div>':'')+
+    var qo=P.qo||[];b.innerHTML='<div class="qtop"><div class="cd">السؤال '+P.qn+' من '+P.total+' · باقي <b id="cdn">'+Math.ceil(P.left/1000)+'</b> ث</div>'+(P.ol?'<button class="objb'+(objd[P.qn]?' done':'')+'" id="pobj">'+FLAG+(objd[P.qn]?'اعترضت':'اعتراض')+'</button>':'')+'</div>'+(P.x2?'<div class="cd x2p">جولة السرعة: النقاط ×٢</div>':'')+
      (P.qt?'<div class="qtxt">'+esc(P.qt)+'</div>':'')+
      '<div class="ans'+(tf?' two':' withtxt')+'">'+[0,1,2,3].slice(0,n).map(function(i){var c=tf?TFCOL[i]:OCOL[i];return '<button class="ab'+(mine!=null?(mine===i?' mine':' off'):'')+'" data-a="'+i+'" style="--oc:'+c+'">'+(tf?'<span><span style="display:block;width:70px;height:70px;margin:auto">'+TFSV[i]+'</span><span class="tfl">'+TFN[i]+'</span></span>':shp(i)+(qo[i]?'<span class="abt">'+esc(qo[i])+'</span>':''))+'</button>'}).join('')+'</div>'+
      (mine!=null?'<div class="cd">تم إرسال إجابتك. انتظر الباقين</div>':'');
     if($('#pobj')&&!objd[P.qn])$('#pobj').onclick=function(){var b2=this;if(!b2.dataset.sure){b2.dataset.sure='1';b2.innerHTML=FLAG+'متأكد؟ اضغط مرة ثانية';setTimeout(function(){if(b2.isConnected&&!objd[P.qn]){delete b2.dataset.sure;b2.innerHTML=FLAG+'اعتراض'}},2500);return}objd[P.qn]=1;pub('/o',{d:me,q:P.qn});buzz([20,40,20]);lastPh='';pView()};
     if(mine==null)b.querySelectorAll('.ab').forEach(function(x){x.addEventListener('pointerdown',function(e){e.preventDefault();var a=+x.dataset.a;if(myAns[P.qn]!=null)return;myAns[P.qn]=a;pub('/a',{d:me,q:P.qn,a:a});buzz(25);lastPh='';pView()})});return}
   if(ph==='void'){b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center"><div><div class="res2">انلغى السؤال</div><p>ما أحد ياخذ نقاط عليه</p></div></div>';return}
-  if(ph==='reveal'||ph==='board'){var ok=m.ok;b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center;background:'+(ok?'rgba(79,192,141,.18)':'rgba(232,99,122,.16)')+'"><div><div class="res2">'+(ok?'صح!':(myAns[P.qn]==null?'ما جاوبت':'خطأ'))+'</div>'+(ok?'<b class="big2">+'+m.dl+'</b>':'')+(ok&&m.bn?'<p class="streak">'+FLAME+' سلسلة '+m.st+' صح: +'+m.bn+' إضافية</p>':'')+(!ok&&P.qo&&P.ans>=0&&P.qo[P.ans]?'<p>الجواب الصح: <b>'+esc(P.qo[P.ans])+'</b></p>':'')+'<p>نقاطك '+m.s+' · ترتيبك '+rankOf()+' من '+P.players.length+'</p></div></div>';if(ok)buzz([30,60,30]);return}
+  if(ph==='reveal'||ph==='board'){var ok=m.ok;b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center;background:'+(ok?'rgba(79,192,141,.18)':'rgba(232,99,122,.16)')+'"><div><div class="res2">'+(ok?'صح!':(myAns[P.qn]==null?'ما جاوبت':'خطأ'))+'</div>'+(ok?'<b class="big2">+'+m.dl+'</b>':'')+(ok&&m.bn?'<p class="streak">'+FLAME+' سلسلة '+m.st+' صح: +'+m.bn+' إضافية</p>':'')+(!ok&&P.qo&&P.ans>=0&&P.qo[P.ans]?'<p>الجواب الصح: <b>'+esc(P.qo[P.ans])+'</b></p>':'')+'<p>نقاطك '+m.s+' · ترتيبك '+rankOf()+' من '+P.players.length+'</p>'+(P.teams&&P.tt?'<p>الصقور '+P.tt[0]+' · النجوم '+P.tt[1]+'</p>':'')+'</div></div>';if(ok)buzz([30,60,30]);return}
   if(ph==='final'||ph==='summary'){var r=rankOf();b.innerHTML='<div class="pcard" style="flex:1;display:grid;place-items:center"><div><div style="display:flex;justify-content:center">'+avSVG(m.av,80)+'</div><div class="res2">'+(r===1?'أنت بطل الجلسة':'ترتيبك '+r)+'</div><b class="big2">'+m.s+' نقطة</b><p>من '+P.players.length+' لاعبين · الملخص على التلفزيون</p></div></div>';return}}
 var MZ=DabtMusic();
 document.addEventListener('pointerdown',function(){try{MZ.unlock()}catch(e){}},true);
@@ -316,7 +320,7 @@ function kList(){$('#ktitle').textContent='كاهوت الجلسة';var b=$('#kb
   b.innerHTML='<div class="pcard"><p>'+(lk?'ملف الأسئلة مؤكَّد ومقفول. اطلب «تعديل الملف» من التلفزيون عشان تضيف أو تعدّل.':'اكتب أسئلتك هنا. تنحفظ على التلفزيون ومحد يشوفها لين تبدأ المسابقة.')+'</p></div>'+
    (lk?'':'<button class="gobtn" id="knew">سؤال جديد</button>')+
    (live.length?'<div class="lbl">أسئلتك ('+live.length+')</div>':'')+
-   live.map(function(x){var q=x.q;return '<div class="kq"><b>'+esc(q.t)+'</b><div class="acts"><button data-e="'+x.id+'" aria-label="تعديل">'+IC_EDIT+'</button><button data-x="'+x.id+'" aria-label="حذف">'+IC_DEL+'</button></div>'+(q.img?'<img src="'+q.img+'" alt="">':'')+'<small>'+(q.tf?'صح أو خطأ':'أربع خيارات')+(q.oi&&q.oi.some(Boolean)?' · صور للخيارات':'')+' · '+q.s+' ث · الجواب: '+esc(q.o[q.a])+' '+ST[x.st]+(x.st==='err'&&x.why?' <span class="err2">'+esc(x.why)+'</span>':'')+'</small></div>'}).join('');
+   live.map(function(x){var q=x.q;return '<div class="kq"><b>'+esc(q.t)+'</b><div class="acts"><button data-e="'+x.id+'" aria-label="تعديل">'+IC_EDIT+'</button><button data-x="'+x.id+'" aria-label="حذف">'+IC_DEL+'</button></div>'+(q.img?'<img src="'+q.img+'" alt="">':'')+'<small>'+(q.tf?'صح أو خطأ':'أربع خيارات')+(q.bl?' · صورة غامضة':'')+(q.oi&&q.oi.some(Boolean)?' · صور للخيارات':'')+' · '+q.s+' ث · الجواب: '+esc(q.o[q.a])+' '+ST[x.st]+(x.st==='err'&&x.why?' <span class="err2">'+esc(x.why)+'</span>':'')+'</small></div>'}).join('');
   if($('#knew'))$('#knew').onclick=function(){kForm(null)};
   b.querySelectorAll('[data-e]').forEach(function(e){e.onclick=function(){kForm(e.dataset.e)}});
   b.querySelectorAll('[data-x]').forEach(function(e){e.onclick=function(){var x=mine.filter(function(y){return y.id===e.dataset.x})[0];if(!x)return;if(e.dataset.sure){x.st='del';saveMine();sendQ(x);kList()}else{e.dataset.sure='1';e.style.background='var(--bad)';setTimeout(function(){if(e.isConnected){delete e.dataset.sure;e.style.background=''}},2500)}}})}
@@ -327,14 +331,14 @@ function kDraw(){var d=draft,b=$('#kbody');$('#ktitle').textContent=mine.some(fu
   var opts4=d.tf?(d.o4||['','','','']):d.o;
   b.innerHTML='<div class="lbl">نوع السؤال</div><div class="segk" id="ktype"><button data-v="4" class="'+(d.tf?'':'on')+'">أربع خيارات</button><button data-v="tf" class="'+(d.tf?'on':'')+'">صح أو خطأ</button></div>'+
    '<div class="lbl">السؤال</div><textarea class="qta" id="kt" maxlength="200" placeholder="اكتب سؤالك هنا">'+esc(d.t)+'</textarea>'+
-   (d.img?'<div class="imgp"><img src="'+d.img+'" alt=""><button id="kimgx">إزالة الصورة</button></div>':'<label class="imgb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="11" r="2"/><path d="M21 16l-5-5-8 8"/></svg><span id="kimgl">أضف صورة (اختياري)</span><input type="file" accept="image/*" id="kimg"></label>')+
+   (d.img?'<div class="imgp"><img src="'+d.img+'" alt=""><button id="kimgx">إزالة الصورة</button></div>'+(d.tf?'':'<label class="blrow"><input type="checkbox" id="kbl"'+(d.bl?' checked':'')+'> صورة غامضة: تبدأ مغبشة وتتوضح مع الوقت</label>'):'<label class="imgb"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><rect x="3" y="5" width="18" height="14" rx="3"/><circle cx="9" cy="11" r="2"/><path d="M21 16l-5-5-8 8"/></svg><span id="kimgl">أضف صورة (اختياري)</span><input type="file" accept="image/*" id="kimg"></label>')+
    (d.tf?'<div class="lbl">وش الجواب الصح؟</div><div class="tfpick">'+[0,1].map(function(i){return '<button data-a="'+i+'" style="--oc:'+TFCOL[i]+'" class="'+(d.a===i?'on':'')+'">'+TFSV[i]+TFN[i]+'</button>'}).join('')+'</div>'
      :'<div class="lbl">الخيارات. اضغط اللون عشان تحدد الجواب الصح</div>'+[0,1,2,3].map(function(i){return '<div class="oprow"><button class="opmark'+(d.a===i?' on':'')+'" data-a="'+i+'" style="--oc:'+OCOL[i]+'" aria-label="هذا الجواب الصح">'+shp(i)+'</button><input class="opin" data-o="'+i+'" maxlength="60" placeholder="الخيار '+(i+1)+'" value="'+esc(opts4[i])+'"><label class="oimgb" aria-label="صورة للخيار '+(i+1)+'">'+(d.oi[i]?'<img src="'+d.oi[i]+'" alt="">':IC_CAM)+'<input type="file" accept="image/*" data-oi="'+i+'"></label></div>'}).join(''))+
    (d.tf?'':'<div class="hint">اضغط الكاميرا جنب أي خيار عشان تضيف له صورة. اضغط الصورة مرة ثانية عشان تغيّرها، أو امسح النص وخلّ الصورة.</div>')+
    '<div class="lbl">معلومة تطلع بعد الجواب (اختياري)</div><input class="opin" id="kx" maxlength="140" placeholder="مثال: الصقر أسرع طائر في الغوص" value="'+esc(d.x||'')+'" style="width:100%">'+
    '<div class="lbl">وقت السؤال</div><div class="segk" id="ktime">'+[10,20,30,60,90].map(function(v){return '<button data-v="'+v+'" class="'+(d.s===v?'on':'')+'">'+v+' ث</button>'}).join('')+'</div>'+
    '<div class="ferr" id="kerr"></div><button class="gobtn" id="ksave">احفظ وأرسل للتلفزيون</button><button class="small" id="kcancel">إلغاء</button>';
-  $('#kt').oninput=function(){d.t=this.value};$('#kx').oninput=function(){d.x=this.value};
+  $('#kt').oninput=function(){d.t=this.value};if($('#kbl'))$('#kbl').onchange=function(){d.bl=this.checked};$('#kx').oninput=function(){d.x=this.value};
   b.querySelectorAll('[data-oi]').forEach(function(e){e.onchange=function(){var f=this.files&&this.files[0],i=+e.dataset.oi;if(!f)return;shrink(f,function(u){if(!u){$('#kerr').textContent='ما قدرنا نقرأ صورة الخيار';return}d.oi[i]=u;kDraw()},320,40000)}});
   b.querySelectorAll('.opin[data-o]').forEach(function(e){e.oninput=function(){d.o[+e.dataset.o]=e.value}});
   b.querySelectorAll('#ktype button').forEach(function(e){e.onclick=function(){var tf=e.dataset.v==='tf';if(tf===d.tf)return;if(tf){d.o4=d.o.slice();d.o=['صح','خطأ']}else{d.o=d.o4||['','','',''];delete d.o4}d.tf=tf;d.a=-1;kDraw()}});
@@ -346,7 +350,7 @@ function kDraw(){var d=draft,b=$('#kbody');$('#ktitle').textContent=mine.some(fu
   $('#ksave').onclick=function(){var t=(d.t||'').trim(),e='';
     if(!t)e='اكتب السؤال';else if(!d.tf&&d.o.some(function(x,i){return !(x||'').trim()&&!d.oi[i]}))e='عبّ الخيارات الأربعة (نص أو صورة)';else if(!(d.a>=0))e=d.tf?'حدد هل الجواب صح أو خطأ':'اضغط لون الجواب الصح';
     if(e){$('#kerr').textContent=e;buzz([20,40,20]);return}
-    var q={t:t,tf:d.tf,o:d.tf?['صح','خطأ']:d.o.map(function(x,i){return x.trim()||('الصورة '+(i+1))}),a:d.a,s:d.s,img:d.img||'',oi:d.tf?[]:d.oi.slice(),x:(d.x||'').trim()},id=d._id,ex=mine.filter(function(y){return y.id===id})[0];
+    var q={t:t,tf:d.tf,o:d.tf?['صح','خطأ']:d.o.map(function(x,i){return x.trim()||('الصورة '+(i+1))}),a:d.a,s:d.s,img:d.img||'',oi:d.tf?[]:d.oi.slice(),x:(d.x||'').trim(),bl:!!(d.bl&&d.img&&!d.tf)},id=d._id,ex=mine.filter(function(y){return y.id===id})[0];
     if(ex){ex.q=q;ex.st='pending'}else{ex={id:id,q:q,st:'pending'};mine.push(ex)}saveMine();sendQ(ex);buzz(20);draft=null;kList()}}
 /* shrink a photo on the phone so it travels fast: longest side 720px, JPEG, under ~90KB */
 function shrink(file,cb,side,lim){side=side||720;lim=lim||120000;var url=URL.createObjectURL(file),img=new Image();img.onload=function(){URL.revokeObjectURL(url);var w=img.naturalWidth,h=img.naturalHeight,k=Math.min(1,side/Math.max(w,h)),out='';
