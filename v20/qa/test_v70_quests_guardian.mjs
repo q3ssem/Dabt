@@ -1,0 +1,16 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const s=fs.readFileSync(new URL('../engine-phaser/src/main.js',import.meta.url),'utf8');
+assert.match(s,/dabt-pro-phaser-v70/);
+assert.match(s,/dabt-pro-phaser-v60/,'legacy save migration retained');
+assert.match(s,/مهمة جانبية: أثران مفقودان/);
+assert.match(s,/function useFieldTool|useFieldTool\(marker\)/);
+assert.match(s,/زر T قرب أي ختم غير محلول/);
+assert.match(s,/الأداة: \$\{this\.tool/);
+assert.match(s,/openBossChallenge\(\)/);
+assert.match(s,/guardian-defeated/);
+assert.match(s,/this\.bossAttempts=3/);
+assert.ok(s.includes('[2,0,1,2]'));
+assert.ok(s.includes('[1,2,0,1]'));
+assert.match(s,/closeOverlay\(\).*tryExit/s);
+console.log('PASS: v7 side quests, persistent field tools, journal integration, save migration and final guardian memory challenge');

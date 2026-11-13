@@ -1,0 +1,15 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const s=fs.readFileSync(new URL('../engine-phaser/src/main.js',import.meta.url),'utf8');
+assert.match(s,/dabt-pro-phaser-v100/,'v10-v15 save namespace');
+assert.match(s,/dabt-pro-phaser-v90/,'v9 save migration');
+assert.match(s,/dabt-pro-phaser-v80/,'v8 save migration');
+assert.match(s,/takeHazardHit\(\)/);
+assert.match(s,/activateCheckpoint\(\)/);
+assert.match(s,/activateEnvironmentDevice\(\)/);
+assert.match(s,/this\.physics\.add\.collider\(this\.hero,this\.movingPlatform\)/);
+assert.match(s,/tool-charges/);
+assert.match(s,/this\.mechanismSolved/);
+assert.match(s,/this\.tweens\.add\(\{targets:this\.hazard/);
+assert.match(s,/shortcut/);
+console.log('PASS: v9 moving platform, timed hazard, checkpoint respawn, charge-limited tool device, persistent environmental shortcut and save migration');

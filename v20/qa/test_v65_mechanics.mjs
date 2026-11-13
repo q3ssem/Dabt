@@ -1,0 +1,13 @@
+import fs from 'node:fs';
+import assert from 'node:assert/strict';
+const source = fs.readFileSync(new URL('../engine-phaser/src/main.js', import.meta.url), 'utf8');
+assert.match(source, /marker\.data\.title==='مرآة الحارس'.*openMirrorMechanism/s);
+assert.match(source, /marker\.data\.title==='تروس الحارس'.*openGearMechanism/s);
+assert.match(source, /this\.mirrorAngle===1/);
+assert.match(source, /this\.gearTurn===2/);
+assert.match(source, /finishMechanism\(marker,correct,explanation\)/);
+assert.match(source, /this\.saveData\[this\.progressKey\].*=.*solved:\[\.\.\.this\.solved\]/s);
+assert.match(source, /if\(this\.mechanismItems\)this\.closeMechanism\(\)/);
+assert.match(source, /التروس المتشابكة تدور في اتجاهين متعاكسين/);
+assert.match(source, /انعكاس الضوء يساوي زاوية السقوط زاوية الانعكاس/);
+console.log('v6.5 mechanical puzzle source checks: PASS');
