@@ -20,11 +20,13 @@ function MQ(urls,onMsg,onState){
       c.ws.onopen=function(){send(pkt(0x10,str('MQTT').concat([4,2,0,45],str(cid+self.conns.indexOf(c)))));clearInterval(c.ping);c.ping=setInterval(function(){send(new Uint8Array([0xC0,0]))},25000)};
       c.ws.onmessage=function(ev){c.buf=c.buf.concat(Array.prototype.slice.call(new Uint8Array(ev.data)));parse()};
       c.ws.onclose=function(){c.ok=false;clearInterval(c.ping);recount();later()};c.ws.onerror=function(){}}
-    function later(){clearTimeout(c.retry);c.retry=setTimeout(open,3000)}
+    function later(){if(c.dead)return;clearTimeout(c.retry);c.retry=setTimeout(open,3000)}
+    c.close=function(){c.dead=true;c.ok=false;clearTimeout(c.retry);clearInterval(c.ping);try{c.ws&&c.ws.close()}catch(e){}};
     open();return c}
   function recount(){var n=self.conns.filter(function(c){return c.ok}).length;if(n!==self.up){self.up=n;onState&&onState(n)}}
   self.subscribe=function(t){if(self.subs.indexOf(t)<0)self.subs.push(t);self.conns.forEach(function(c){if(c.ok)c.sub(t)})};
   self.publish=function(t,m,ret){self.conns.forEach(function(c){c.pub(t,m,ret)})};
+  self.close=function(){self.conns.forEach(function(c){c.close()});self.up=0};
   self.conns=urls.map(one);
   return self}
 var MQ_BROKERS=['wss://broker.emqx.io:8084/mqtt','wss://broker.hivemq.com:8884/mqtt','wss://test.mosquitto.org:8081/mqtt'];
