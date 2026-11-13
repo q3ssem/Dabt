@@ -1,4 +1,0 @@
-const SHAPES=['●','◆','▲','■'];const COLORS=['#26c6b5','#5698ff','#a58af5','#ffbe59'];
-export function makeRuleQuestion(level,index,rng=Math.random){const rule=index%2===0?'shape':'color';const shape=Math.floor(rng()*4),color=Math.floor(rng()*4);const correct=rule==='shape'?shape:color;const options=[0,1,2,3].sort(()=>rng()-.5);return{rule,shape,color,options,correct,stimulus:{shape:SHAPES[shape],color:COLORS[color]},level,index}}
-export function validateRuleQuestion(q){return q&&['shape','color'].includes(q.rule)&&q.options.length===4&&new Set(q.options).size===4&&q.options.includes(q.correct)&&q.correct===(q.rule==='shape'?q.shape:q.color)}
-export const ruleGame={id:'rule-switch',title:'القاعدة المتغيرة',subtitle:'بدّل انتباهك بين لون الشكل ونوعه وفق الإشارة.',skill:'المرونة المعرفية',icon:'⇄',accent:'#26c6b5',time:'3–4 دقائق',description:'تتغير القاعدة بين سؤال وآخر. اقرأ المطلوب قبل اختيار الإجابة.',create:makeRuleQuestion,validate:validateRuleQuestion};

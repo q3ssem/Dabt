@@ -1,3 +1,0 @@
-const SHAPES=['●','◆','▲','■'];
-export function makeGoNoGo(level=1,rng=Math.random){const isGo=rng()<(level<3?.72:.62);const shape=SHAPES[Math.floor(rng()*4)];return{prompt:isGo?'إشارة استجابة: اضغط خلال الوقت المحدد.':'إشارة كبح: لا تضغط حتى تنتهي المهلة.',stimulus:shape,stimulusColor:isGo?'#26c6b5':'#f17d8e',isGo,options:[],correct:isGo?1:0,explain:isGo?'كانت الإشارة تتطلب استجابة ضمن المهلة.':'كانت الإشارة تتطلب الامتناع عن الاستجابة.'}}
-export const goNoGoGame={id:'go-no-go',title:'كبح الاستجابة',subtitle:'استجب لإشارة الهدف وامتنع عند إشارة الكبح.',skill:'كبح الاستجابة',icon:'◉',accent:'#f17d8e',time:'2–3 دقائق',description:'اضغط فقط عند إشارة الاستجابة. عند إشارة الكبح، انتظر انتهاء المهلة.',type:'go-no-go',create:makeGoNoGo};
