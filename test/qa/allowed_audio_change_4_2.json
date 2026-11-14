@@ -1,0 +1,6 @@
+{
+  "reason": "Requested direct stone Foley in statue turn handler; no rule/score/level changes. Baseline hashes unchanged.",
+  "before": "tone(180+i*30,.22,'triangle',.06);draw();",
+  "after": "if(window.Watercolor)Watercolor.stone();else tone(180+i*30,.22,'triangle',.06);draw();",
+  "occurrences": 1
+}

@@ -1,0 +1,43 @@
+npm warn Unknown env config "http-proxy". This will stop working in the next major version of npm.
+
+> mind-lab@4.2.0 test
+> node qa/tests/storybook.logic.cjs && node qa/tests/storybook.interaction.cjs && node qa/tests/story.extras.cjs && node qa/tests/legacy.art.cjs && node qa/tests/deep.art.cjs && node qa/tests/watercolor.cjs && node qa/tests/generators.cjs && node qa/tests/release42.cjs
+
+{
+  "stations": 21,
+  "checks": 68,
+  "status": "passed"
+}
+{
+  "status": "passed",
+  "assertions": 158,
+  "stations": 21,
+  "renderer": "in-memory DOM; no visual browser test"
+}
+{
+  "status": "passed",
+  "checks": 233,
+  "sideQuests": 7,
+  "toolInventory": 7,
+  "mainStations": 21,
+  "visualBrowserTest": false
+}
+{
+  "status": "passed",
+  "checks": 482,
+  "brainIds": 32,
+  "puzzleIds": 88,
+  "artObjects": 80,
+  "visualBrowserTest": false
+}
+{
+  "status": "passed",
+  "checks": 353,
+  "originalBrainIds": 32,
+  "originalPuzzleIds": 88,
+  "worldArt": 80,
+  "browserVisualTest": false
+}
+{"status":"passed","checks":451,"scope":"source, simulated DOM/canvas/audio; no browser layout or physical playback"}
+{"status":"passed","pipes":{"levels":8,"samples":160},"statues":{"levels":7,"samples":35},"river":{"levels":7,"samples":70},"totalGeneratedPuzzles":265,"scope":"pure source generators and legal solution paths; no layout, input, audio or physical-device validation"}
+{"status":"passed","checks":74,"gridContrast":10.288756823065125,"scope":"source, simulated UI/storage and service worker; not browser/physical-device approval"}

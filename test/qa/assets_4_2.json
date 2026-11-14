@@ -1,0 +1,8 @@
+{
+  "quality": 80,
+  "input_png": 18,
+  "output_webp": 48,
+  "total_bytes": 3433232,
+  "target_bytes": 6291456,
+  "separate_atlas_cells": true
+}

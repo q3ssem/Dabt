@@ -1,0 +1,272 @@
+{
+  "syntax_files": 37,
+  "syntax_errors": [],
+  "http": [
+    {
+      "path": "assessment/dashboard.html",
+      "status": 200,
+      "bytes": 1743
+    },
+    {
+      "path": "assessment/rule-switch.html",
+      "status": 200,
+      "bytes": 2463
+    },
+    {
+      "path": "sw.js",
+      "status": 200,
+      "bytes": 1930
+    },
+    {
+      "path": "offline-manifest.js",
+      "status": 200,
+      "bytes": 1272
+    },
+    {
+      "path": "watercolor/art/tracking.webp",
+      "status": 200,
+      "bytes": 118214
+    },
+    {
+      "path": "watercolor/art/pack-spatial-3.webp",
+      "status": 200,
+      "bytes": 36286
+    },
+    {
+      "path": "watercolor/art/pack-scenes-1.webp",
+      "status": 200,
+      "bytes": 111866
+    },
+    {
+      "path": "watercolor/art/pack-logic-0.webp",
+      "status": 200,
+      "bytes": 30574
+    },
+    {
+      "path": "watercolor/art/pack-attention-3.webp",
+      "status": 200,
+      "bytes": 33890
+    },
+    {
+      "path": "watercolor/art/workbench.webp",
+      "status": 200,
+      "bytes": 138492
+    },
+    {
+      "path": "watercolor/art/pack-spatial-1.webp",
+      "status": 200,
+      "bytes": 41412
+    },
+    {
+      "path": "watercolor/art/pack-home-1.webp",
+      "status": 200,
+      "bytes": 45266
+    },
+    {
+      "path": "watercolor/art/icons.webp",
+      "status": 200,
+      "bytes": 146850
+    },
+    {
+      "path": "watercolor/art/pack-memory-3.webp",
+      "status": 200,
+      "bytes": 31618
+    },
+    {
+      "path": "watercolor/art/pack-puzzle-craft-3.webp",
+      "status": 200,
+      "bytes": 36974
+    },
+    {
+      "path": "watercolor/art/pack-speed-3.webp",
+      "status": 200,
+      "bytes": 31198
+    },
+    {
+      "path": "watercolor/art/pack-executive-2.webp",
+      "status": 200,
+      "bytes": 25034
+    },
+    {
+      "path": "watercolor/art/pack-logic-3.webp",
+      "status": 200,
+      "bytes": 45652
+    },
+    {
+      "path": "watercolor/art/pack-spatial-2.webp",
+      "status": 200,
+      "bytes": 38390
+    },
+    {
+      "path": "watercolor/art/pack-logic-1.webp",
+      "status": 200,
+      "bytes": 37038
+    },
+    {
+      "path": "watercolor/art/pack-puzzle-craft-2.webp",
+      "status": 200,
+      "bytes": 48104
+    },
+    {
+      "path": "watercolor/art/racer.webp",
+      "status": 200,
+      "bytes": 298372
+    },
+    {
+      "path": "watercolor/art/pack-speed-0.webp",
+      "status": 200,
+      "bytes": 50790
+    },
+    {
+      "path": "watercolor/art/pack-scenes-3.webp",
+      "status": 200,
+      "bytes": 56312
+    },
+    {
+      "path": "watercolor/art/tower.webp",
+      "status": 200,
+      "bytes": 225446
+    },
+    {
+      "path": "watercolor/art/pack-spatial-0.webp",
+      "status": 200,
+      "bytes": 55002
+    },
+    {
+      "path": "watercolor/art/pack-logic-2.webp",
+      "status": 200,
+      "bytes": 37150
+    },
+    {
+      "path": "watercolor/art/pack-memory-0.webp",
+      "status": 200,
+      "bytes": 52344
+    },
+    {
+      "path": "watercolor/art/pack-puzzle-worlds-0.webp",
+      "status": 200,
+      "bytes": 47252
+    },
+    {
+      "path": "watercolor/art/pack-home-2.webp",
+      "status": 200,
+      "bytes": 42922
+    },
+    {
+      "path": "watercolor/art/pack-home-0.webp",
+      "status": 200,
+      "bytes": 60316
+    },
+    {
+      "path": "watercolor/art/pack-memory-1.webp",
+      "status": 200,
+      "bytes": 29180
+    },
+    {
+      "path": "watercolor/art/pack-executive-1.webp",
+      "status": 200,
+      "bytes": 24092
+    },
+    {
+      "path": "watercolor/art/piano.webp",
+      "status": 200,
+      "bytes": 203746
+    },
+    {
+      "path": "watercolor/art/pack-attention-0.webp",
+      "status": 200,
+      "bytes": 27450
+    },
+    {
+      "path": "watercolor/art/pack-puzzle-worlds-2.webp",
+      "status": 200,
+      "bytes": 53038
+    },
+    {
+      "path": "watercolor/art/pack-attention-2.webp",
+      "status": 200,
+      "bytes": 24868
+    },
+    {
+      "path": "watercolor/art/pack-speed-1.webp",
+      "status": 200,
+      "bytes": 37934
+    },
+    {
+      "path": "watercolor/art/pack-puzzle-worlds-3.webp",
+      "status": 200,
+      "bytes": 38980
+    },
+    {
+      "path": "watercolor/art/pack-memory-2.webp",
+      "status": 200,
+      "bytes": 35310
+    },
+    {
+      "path": "watercolor/art/pack-scenes-2.webp",
+      "status": 200,
+      "bytes": 57252
+    },
+    {
+      "path": "watercolor/art/pack-scenes-0.webp",
+      "status": 200,
+      "bytes": 104300
+    },
+    {
+      "path": "watercolor/art/pack-executive-3.webp",
+      "status": 200,
+      "bytes": 29510
+    },
+    {
+      "path": "watercolor/art/pack-puzzle-craft-0.webp",
+      "status": 200,
+      "bytes": 41076
+    },
+    {
+      "path": "watercolor/art/pack-home-3.webp",
+      "status": 200,
+      "bytes": 50444
+    },
+    {
+      "path": "watercolor/art/pack-attention-1.webp",
+      "status": 200,
+      "bytes": 62940
+    },
+    {
+      "path": "watercolor/art/pack-speed-2.webp",
+      "status": 200,
+      "bytes": 41514
+    },
+    {
+      "path": "watercolor/art/pack-puzzle-worlds-1.webp",
+      "status": 200,
+      "bytes": 44810
+    },
+    {
+      "path": "watercolor/art/river.webp",
+      "status": 200,
+      "bytes": 255596
+    },
+    {
+      "path": "watercolor/art/pack-puzzle-craft-1.webp",
+      "status": 200,
+      "bytes": 58396
+    },
+    {
+      "path": "watercolor/art/pack-executive-0.webp",
+      "status": 200,
+      "bytes": 34320
+    },
+    {
+      "path": "watercolor/art/pipes.webp",
+      "status": 200,
+      "bytes": 255712
+    }
+  ],
+  "protected_folders_equal": {
+    "tv": true,
+    "tools": true,
+    "upgrade": true
+  },
+  "inline_engines_equal_except_documented_audio": true
+}
