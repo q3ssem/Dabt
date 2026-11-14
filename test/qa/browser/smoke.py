@@ -106,9 +106,29 @@ async def main(a):
                     await page.locator('#v-puz .t7-btn.primary').last.click(); await page.wait_for_timeout(250)
                 gate = page.locator('.v5-gate .t7-btn.primary')
                 if await gate.count(): await gate.click(); await page.wait_for_timeout(300)
-                steps = await page.evaluate(f"""()=>{{const L=T7.logic,s=T7.data.stations[{i}];let v=T7.state().work[s.id]||L.initial(s),out=[],n=0;
-                  while(!L.solved(s,v)&&n++<40){{const nx=L.assist(s,v);out.push(nx.map((x,k)=>x!==v[k]?k:-1).filter(k=>k>=0));v=nx}}
-                  const pos=['أعلى','يمين','أسفل','يسار'];return out.map(d=>s.kind==='locks'?['القفل '+(d[0]+1)+':']:s.kind==='mirrors'?['مرآة في الصف '+s.target.mirrors[d[0]][0]+' العمود '+s.target.mirrors[d[0]][1]+':']:[pos[d[0]]+':',pos[d[1]]+':'])}}""")
+                steps = await page.evaluate(f"""()=>{{const L=T7.logic,s=T7.data.stations[{i}],work=()=>T7.state().work[s.id];
+                  if(s.kind==='weigh')return null;
+                  let v=work()||L.initial(s),out=[],n=0,last=null;const pos=['أعلى','يمين','أسفل','يسار'],nm=['الأيسر','الأوسط','الأيمن'],gate=['البوابة العليا','البوابة الوسطى','البوابة اليسرى','البوابة اليمنى'],bell=['الدائرة','المثلث','المعين','الموجة'];
+                  while(!L.solved(s,v)&&n++<40){{const nx=L.assist(s,v),d=v.map((x,k)=>x!==nx[k]?k:-1).filter(k=>k>=0);
+                    if(s.kind==='locks')out.push(['القفل '+(d[0]+1)+':']);
+                    else if(s.kind==='mirrors')out.push(['مرآة في الصف '+s.target.mirrors[d[0]][0]+' العمود '+s.target.mirrors[d[0]][1]+':']);
+                    else if(s.kind==='cipher')out.push([pos[d[0]]+':',pos[d[1]]+':']);
+                    else if(s.kind==='torn')out.push(['قصاصة في الموضع '+(d[0]+1),'قصاصة في الموضع '+(d[1]+1)]);
+                    else if(s.kind==='chime')out.push(['جرس '+bell[nx[nx.length-1]]]);
+                    else if(s.kind==='linked'){{const k=[0,1,2].find(k=>JSON.stringify(L.linkedTurn(s.target,v,k))===JSON.stringify(nx));out.push(last===k?['تمثال '+nm[k]]:['تمثال '+nm[k],'تمثال '+nm[k]]);last=k;}}
+                    else if(s.kind==='tide')out.push([nx[0]!==v[0]?s.target.names[nx[0]]:'ذراع المد']);
+                    else if(s.kind==='valves')out.push([gate[d[0]]]);
+                    v=nx}}return out}}""")
+                if steps is None:
+                    for k in range(6):
+                        await page.locator(f'#v5-board [aria-label^="حجر {k+1}"]').first.click(); await page.wait_for_timeout(80)
+                    await page.locator('#v5-board .v5-weighbtn').click(); await page.wait_for_timeout(300)
+                    cand = await page.evaluate(f"()=>{{const v=T7.state().work[T7.data.stations[{i}].id];return T7.logic.weighParts(v).p.map((x,k)=>x!==3?k:-1).filter(k=>k>=0)}}")
+                    for k in cand[:2]:
+                        await page.locator(f'#v5-board [aria-label^="حجر {k+1}"]').first.click(); await page.wait_for_timeout(80)
+                    await page.locator('#v5-board .v5-weighbtn').click(); await page.wait_for_timeout(300)
+                    ded = await page.evaluate(f"()=>T7.logic.weighDeduced(T7.state().work[T7.data.stations[{i}].id])")
+                    steps = [[f'حجر {ded+1}']]
                 for labels in steps:
                     for lab in labels:
                         await page.locator(f'#v5-board [aria-label^="{lab}"]').first.click(); await page.wait_for_timeout(120)

@@ -1,8 +1,8 @@
 {
-  "version": "5.0.0-sea1",
+  "version": "5.0.0-seas1-3",
   "date": "2026-11-14",
   "source": "4.2.1 + 4.2.2 presentation fixes (atlas re-layout, sprite clipping, light-surface ink)",
-  "status": "trial build 5.0.0-sea1; Chrome smoke passed (sea 1 played by taps); iPhone/audio not validated",
+  "status": "trial build 5.0.0-seas1-3; Chrome smoke passed (seas 1–3 played by taps); iPhone/audio not validated",
   "checks": {
     "total": 1819,
     "generated_problem_samples": 265,
@@ -319,7 +319,8 @@
     "note": "Games are opened and Treasure stations solved programmatically via the in-game assist; this is not touch/drag play.",
     "note_4_2_2": "smoke re-run on 4.2.2: passed, problems []",
     "note_4_2_3": "smoke re-run on 4.2.3: passed, problems []",
-    "note_5_0": "smoke re-run on 5.0.0-sea1: passed, problems []; sea 1 stations solved through tapped controls"
+    "note_5_0": "smoke re-run on 5.0.0-sea1: passed, problems []; sea 1 stations solved through tapped controls",
+    "note_5_0_seas": "smoke re-run on 5.0.0-seas1-3: passed, problems []; nine 5.0 stations solved through tapped controls"
   },
   "physical_iphone": "not tested",
   "audio_listening": "not tested",
@@ -354,5 +355,17 @@
     "browser_playthrough": "390 and 320 px, real taps, fresh save, no page errors",
     "migration": "4.x save with sea 1 done: completion kept, old boards dropped, tools + letter granted, backup validates",
     "art": "16 files -> WebP 1.7 MB"
+  },
+  "seas2_3_5_0": {
+    "stations": [
+      "sea7_3 torn map: 1 of 720, min 5",
+      "sea7_4 chime: 1 of 24 orders, min 4 strikes",
+      "sea7_5 linked statues: min 4",
+      "sea7_6 tide: min 6, budget 8, unique shortest path",
+      "sea7_7 weigh: heavy stone random per attempt; 2 weighings for all 9 positions",
+      "sea7_8 valves: 1 of 24 states, min 5"
+    ],
+    "browser_playthrough": "390 and 320 px, real taps, no page errors",
+    "art": "25 files -> WebP; art folder treasure/art/story5"
   }
 }

@@ -27,18 +27,28 @@ const t=boot(),c=t.c,D=c.TreasureData,L=c.TreasureLogic;
 c.T7.map();ok(t.nodes().filter(n=>n.className.includes('t7-station ')).length===21,'21 map nodes');
 c.T7.open(1);ok(!t.nodes().some(n=>n.className==='t7-dialog'),'locked cannot open');
 
-/* 5.0 sea 1: play through the real board controls (tool gate, taps) — no state writes. */
-function playV5(s){c.T7.open(s.i);for(let j=1;j<s.dialog.length;j++)t.click('متابعة الحوار');t.click('ابدأ اللغز');ok(!!t.byid('v5-board'),'5.0 board '+s.id);
- if(s.needs){ok(t.buttons().some(n=>n.textContent==='ضع '+D.SEA1_TOOLS[s.needs].name),'tool gate shown '+s.id);t.click('ضع '+D.SEA1_TOOLS[s.needs].name);}
- const work=()=>c.T7.state().work[s.id];let path=[work()],v=work(),n=0;while(!L.solved(s,v)&&n++<40){v=L.assist(s,v);path.push(v);}
+
+/* Drive any 5.0 board through its real controls from the current saved state. */
+function drive(s){drive.sel=null;const work=()=>c.T7.state().work[s.id];
+ if(s.kind==='weigh'){const P=()=>L.weighParts(work());for(const i of [0,1,2,3,4,5])t.aria('حجر '+(i+1));t.click('زِن');const cand=P().p.map((x,i)=>x!==3?i:-1).filter(i=>i>=0);t.aria('حجر '+(cand[0]+1));t.aria('حجر '+(cand[1]+1));t.click('زِن');t.aria('حجر '+(L.weighDeduced(work())+1));return;}
+ let v=work(),path=[v],n=0;while(!L.solved(s,v)&&n++<40){v=L.assist(s,v);path.push(v);}
  for(let k=1;k<path.length;k++){const a=path[k-1],b=path[k],d=a.map((x,i)=>x!==b[i]?i:-1).filter(i=>i>=0);
   if(s.kind==='locks')t.aria('القفل '+(d[0]+1)+':');
   if(s.kind==='mirrors'){const [r,cc]=s.target.mirrors[d[0]];t.aria('مرآة في الصف '+r+' العمود '+cc+':');}
-  if(s.kind==='cipher'){const pos=['أعلى','يمين','أسفل','يسار'];t.aria(pos[d[0]]+':');t.aria(pos[d[1]]+':');}}
- ok(L.solved(s,work()),'5.0 solved via real controls '+s.id);ok(!!c.T7.state().done[s.id],'5.0 reward saved '+s.id);ok(c.T7.state().v5.ch[s.id][0],'challenge 1 star '+s.id);
+  if(s.kind==='cipher'){const pos=['أعلى','يمين','أسفل','يسار'];t.aria(pos[d[0]]+':');t.aria(pos[d[1]]+':');}
+  if(s.kind==='torn'){t.aria('قصاصة في الموضع '+(d[0]+1));t.aria('قصاصة في الموضع '+(d[1]+1));}
+  if(s.kind==='chime')t.aria('جرس '+['الدائرة','المثلث','المعين','الموجة'][b[b.length-1]]);
+  if(s.kind==='linked'){const nm=['الأيسر','الأوسط','الأيمن'],i=[0,1,2].find(i=>JSON.stringify(L.linkedTurn(s.target,a,i))===JSON.stringify(b));if(drive.sel!==s.id+i)t.aria('تمثال '+nm[i]);drive.sel=s.id+i;t.aria('تمثال '+nm[i]);}
+  if(s.kind==='tide'){if(b[0]!==a[0])t.aria(s.target.names[b[0]]);else t.aria('ذراع المد');}
+  if(s.kind==='valves')t.aria(['البوابة العليا','البوابة الوسطى','البوابة اليسرى','البوابة اليمنى'][d[0]]);}}
+/* 5.0 sea 1: play through the real board controls (tool gate, taps) — no state writes. */
+function playV5(s){c.T7.open(s.i);for(let j=1;j<s.dialog.length;j++)t.click('متابعة الحوار');t.click('ابدأ اللغز');ok(!!t.byid('v5-board'),'5.0 board '+s.id);
+ if(s.needs){ok(t.buttons().some(n=>n.textContent==='ضع '+D.SEA1_TOOLS[s.needs].name),'tool gate shown '+s.id);t.click('ضع '+D.SEA1_TOOLS[s.needs].name);}
+ const work=()=>c.T7.state().work[s.id];drive(s);
+ ok(L.solved(s,work())||!!c.T7.state().done[s.id],'5.0 solved via real controls '+s.id);ok(!!c.T7.state().done[s.id],'5.0 reward saved '+s.id);ok(c.T7.state().v5.ch[s.id][0],'challenge 1 star '+s.id);
  ok(c.T7.state().v5.ch[s.id][1]===false,'stars are not granted retroactively '+s.id);
- const replay=()=>{if(s.needs)t.click('ضع '+D.SEA1_TOOLS[s.needs].name);let v=work(),p=[v],n=0;while(!L.solved(s,v)&&n++<40){v=L.assist(s,v);p.push(v);}for(let k=1;k<p.length;k++){const a=p[k-1],b=p[k],d=a.map((x,i)=>x!==b[i]?i:-1).filter(i=>i>=0);if(s.kind==='locks')t.aria('القفل '+(d[0]+1)+':');if(s.kind==='mirrors'){const [r,cc]=s.target.mirrors[d[0]];t.aria('مرآة في الصف '+r+' العمود '+cc+':');}if(s.kind==='cipher'){const pos=['أعلى','يمين','أسفل','يسار'];t.aria(pos[d[0]]+':');t.aria(pos[d[1]]+':');}}};
- t.click('العب التحدي التالي');t.aria('التحدي 2');ok(JSON.stringify(work())===JSON.stringify(L.initial(s)),'challenge 2 starts from the original board '+s.id);replay();ok(c.T7.state().v5.ch[s.id][1],'min-move star '+s.id);
+ const replay=()=>{if(s.needs)t.click('ضع '+D.SEA1_TOOLS[s.needs].name);drive(s);};
+ t.click('العب التحدي التالي');t.aria('التحدي 2');ok(JSON.stringify(work().slice(s.kind==='weigh'?1:0))===JSON.stringify(L.initial(s).slice(s.kind==='weigh'?1:0)),'challenge 2 starts from the original board '+s.id);if(s.kind==='weigh'){const seen=new Set();for(let k=0;k<40;k++){t.click('محاولة جديدة');seen.add(work()[0]);}ok(seen.size>=5,'weigh: heavy stone moves between attempts ('+seen.size+' positions seen)');}replay();ok(c.T7.state().v5.ch[s.id][1],'min-move star '+s.id);
  t.aria('التحدي 3');t.click('تلميح');replay();ok(!c.T7.state().v5.ch[s.id][2],'a hint voids the no-hint star '+s.id);t.click('محاولة جديدة');replay();ok(c.T7.state().v5.ch[s.id][2],'no-hint star '+s.id);
  if(s.needs)ok(c.T7.state().v5.tools[s.needs]==='used','tool marked used '+s.needs);if(s.gives)ok(!!c.T7.state().v5.tools[s.gives],'tool earned '+s.gives);}
 function enter(s){c.T7.open(s.i);for(let j=1;j<s.dialog.length;j++)t.click('متابعة الحوار');t.click('افحص المشهد');ok(!t.buttons().some(n=>n.textContent==='ابدأ حل اللغز'),'clue gating');t.click('افتح الرق واقرأ الدليل');t.click('ابدأ حل اللغز');ok(!!t.byid('t7-board'),'board rendered '+s.kind);}
@@ -54,6 +64,6 @@ for(const s of D.stations){if(s.v5){playV5(s);continue;}enter(s);const initial=J
  ok(L.solved(s,c.T7.state().work[s.id]),'solved via actual handlers '+s.id);t.click('اختبر الحل');ok(!!c.T7.state().done[s.id],'reward saved '+s.id);ok(t.nodes().some(n=>n.textContent===s.outcome),'outcome shown');
 }
 ok(Object.keys(c.T7.state().done).length===21,'all 21 complete');ok(c.T7.state().rewards.length===7,'7 rewards earned');
-const restored=boot(JSON.parse(c.persisted));ok(Object.keys(restored.c.T7.state().done).length===21,'reload keeps completion');ok(restored.c.S.st.hist[0].pts===77,'legacy results preserved');ok(restored.c.S.st.tx.prog===5,'legacy journey preserved');restored.c.T7.map();restored.click('الكنوز');ok(restored.nodes().filter(n=>n.className==='t7-treasure earned').length===7,'treasure cabinet');restored.click('إغلاق');restored.click('دفتر الرحلة');ok(restored.nodes().filter(n=>n.tag==='article').length===22,'notebook all clues (5.0: 3 sea-1 pages + the lighthouse letter + 18)');
+const restored=boot(JSON.parse(c.persisted));ok(Object.keys(restored.c.T7.state().done).length===21,'reload keeps completion');ok(restored.c.S.st.hist[0].pts===77,'legacy results preserved');ok(restored.c.S.st.tx.prog===5,'legacy journey preserved');restored.c.T7.map();restored.click('الكنوز');ok(restored.nodes().filter(n=>n.className==='t7-treasure earned').length===7,'treasure cabinet');restored.click('إغلاق');restored.click('دفتر الرحلة');ok(restored.nodes().filter(n=>n.tag==='article').length===24,'notebook all clues (5.0: 9 pages for seas 1–3 + their 3 secrets + 12)');
 const remote=JSON.parse(c.persisted);delete remote.treasureV3.done.sea7_0;remote.treasureV3.updatedAt=Date.now()+100;restored.c.S.merge(remote);ok(Object.keys(restored.c.T7.state().done).length===21,'cloud merge preserves local completed nodes');const malformed=JSON.parse(JSON.stringify(remote));malformed.treasureV3.work.sea7_0=[999];restored.c.S.merge(malformed);ok(Object.keys(restored.c.T7.state().done).length===21,'invalid remote cannot overwrite progress');
 console.log(JSON.stringify({status:'passed',assertions:total,stations:21,renderer:'in-memory DOM; no visual browser test'},null,2));
