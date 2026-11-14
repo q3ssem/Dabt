@@ -24,16 +24,6 @@
     fill();
   };
 
-  /* ---- بطاقتا المغامرتين في الرئيسية وقسم الألغاز ---- */
-  DX.cards = () => {
-    const c = DX.worldStats('campaign'), p = DX.worldStats('planets');
-    const card = (k, art, eyebrow, title, sub, st) => `<button class="dx-cover" data-world="${k}" style="background-image:linear-gradient(180deg,rgba(6,10,26,.05),rgba(6,10,26,.88)),url('upgrade/art/${art}')"><span class="dx-eyebrow">${eyebrow}</span><b>${title}</b><small>${sub}</small><div class="dx-progress"><i style="width:${st.done / st.total * 100}%"></i></div><small>${AR(st.done)} من ${AR(st.total)} مهمة${st.done ? ' · تابع من حيث توقفت' : ''}</small></button>`;
-    return `<div class="dx-head"><div><span class="dx-eyebrow">عوالم الاكتشاف</span><h2>المغامرة تنتظرك</h2></div></div><div class="dx-covers">${card('campaign', 'island-cover.jpg', '٦ فصول · ١٨ منطقة · ٣٦ آلية', 'جزيرة الكنز', 'امشِ واقفز، اجمع الأدوات، وشغّل الآليات لتفتح الطريق.', c)}${card('planets', 'planets-cover.jpg', '٩ محطات · ٢٧ مهمة', 'رحلة الكواكب', 'من القمر إلى نبتون: جاذبية مختلفة ومهمة علمية في كل محطة.', p)}</div>`;
-  };
-  DX.bindCards = v => v.querySelectorAll('[data-world]').forEach(b => b.onclick = () => DX.openWorld(b.dataset.world));
-  const home0 = renderHome; renderHome = function () { home0(); const v = $('#v-home'), n = E('div', { html: DX.cards() }), w = v.querySelector('.workout'); w ? w.after(n) : v.append(n); DX.bindCards(v); };
-  const puz0 = renderPuz; renderPuz = function () { puz0(); const v = $('#v-puz'); if (typeof PZ_TRIP !== 'undefined' && PZ_TRIP) return; const b = v.querySelector('#tripgo'), n = E('div', { html: DX.cards() }); if (b) { b.before(n); const s = b.querySelector('b,strong'); } else v.prepend(n); DX.bindCards(v); };
-
   /* ---- عالم الطفل: أربع فئات عمرية ---- */
   const lv0 = kidLvGet; kidLvGet = function (id) { const a = DX.age(); return Math.min(a.cap, Math.max(a.floor, lv0(id))); };
   const add0 = renderKidAdd; renderKidAdd = function () {
