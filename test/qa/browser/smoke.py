@@ -99,6 +99,25 @@ async def main(a):
         for i in range(21):
             n = len(errs)
             await page.evaluate(f"()=>{{const x=T7.state();T7.data.stations.forEach((s,j)=>{{if(j<{i})x.done[s.id]={{at:1}};else delete x.done[s.id]}});x.rewards=[...Array(Math.floor({i}/3)).keys()];S.save();T7.open({i})}}")
+            if await page.evaluate(f"()=>!!T7.data.stations[{i}].v5"):
+                # 5.0 sea 1: play with real taps on the board controls (no state writes).
+                for _ in range(6):
+                    if await page.locator('#v5-board').count(): break
+                    await page.locator('#v-puz .t7-btn.primary').last.click(); await page.wait_for_timeout(250)
+                gate = page.locator('.v5-gate .t7-btn.primary')
+                if await gate.count(): await gate.click(); await page.wait_for_timeout(300)
+                steps = await page.evaluate(f"""()=>{{const L=T7.logic,s=T7.data.stations[{i}];let v=T7.state().work[s.id]||L.initial(s),out=[],n=0;
+                  while(!L.solved(s,v)&&n++<40){{const nx=L.assist(s,v);out.push(nx.map((x,k)=>x!==v[k]?k:-1).filter(k=>k>=0));v=nx}}
+                  const pos=['أعلى','يمين','أسفل','يسار'];return out.map(d=>s.kind==='locks'?['القفل '+(d[0]+1)+':']:s.kind==='mirrors'?['مرآة في الصف '+s.target.mirrors[d[0]][0]+' العمود '+s.target.mirrors[d[0]][1]+':']:[pos[d[0]]+':',pos[d[1]]+':'])}}""")
+                for labels in steps:
+                    for lab in labels:
+                        await page.locator(f'#v5-board [aria-label^="{lab}"]').first.click(); await page.wait_for_timeout(120)
+                await page.wait_for_timeout(1200)
+                done = await page.evaluate(f"()=>!!T7.state().done[T7.data.stations[{i}].id]")
+                if shots: await page.screenshot(path=str(shots / f'station{i+1:02d}.png'))
+                if not done: problems.append(f'station {i+1}: 5.0 board not completed by taps')
+                if len(errs) > n: problems.append(f'station {i+1}: {errs[n:][:2]}')
+                continue
             for _ in range(12):
                 if await page.locator('#t7-board').count(): break
                 if not await page.evaluate("()=>{const b=[...document.querySelectorAll('#v-puz button')].filter(b=>!b.closest('.t7-tools')&&b.offsetParent&&!b.disabled).at(-1);if(!b)return false;b.click();return true}"): break
