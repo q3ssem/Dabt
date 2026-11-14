@@ -39,19 +39,13 @@ PAINTED_URLS_JS = r"""async()=>{
 
 async def visual_checks(page, gid, problems):
     if gid in BACKGROUND_SURFACES:
+        # 4.2.3: play surfaces are solid night panels — no painted backdrop, and a dark colour.
         selector = BACKGROUND_SURFACES[gid]
         await page.locator(selector).first.wait_for(state='visible', timeout=15000)
-        await page.wait_for_function("g=>{const w=window.Watercolor,c=WC_MANIFEST.games[g];return w&&w.images.get(c.file)}", arg=gid, timeout=20000)
-        result = await page.locator(selector).first.evaluate(r"""async el=>{
-          const st=getComputedStyle(el), bg=st.backgroundImage;
-          const urls=[...bg.matchAll(/url\(["']?([^"')]+)["']?\)/g)].map(x=>x[1]);
-          const loaded=await Promise.all(urls.map(src=>new Promise(resolve=>{const i=new Image();i.onload=()=>resolve(i.naturalWidth>0);i.onerror=()=>resolve(false);i.src=src})));
-          return {background:bg, urls, loaded, width:el.clientWidth,height:el.clientHeight};
-        }""")
-        statuses = await page.evaluate("async us=>Promise.all(us.map(async u=>{try{return (await fetch(u,{cache:'no-store'})).status}catch(e){return 0}}))", result['urls'])
-        if any(st != 200 for st in statuses): problems.append(f'{gid}: background HTTP {list(zip(result["urls"], statuses))}')
-        if result['background']=='none' or not result['urls'] or not all(result['loaded']) or not result['width'] or not result['height']:
-            problems.append(f'{gid}: background absent or undecoded: {result}')
+        result = await page.locator(selector).first.evaluate(r"""el=>{const st=getComputedStyle(el);const m=st.backgroundColor.match(/[\d.]+/g).map(Number);
+          return {image:st.backgroundImage, lum:(.2126*m[0]+.7152*m[1]+.0722*m[2])/255, alpha:m.length>3?m[3]:1}}""")
+        if 'url(' in result['image'] or result['lum'] > 0.2 or result['alpha'] < 0.9:
+            problems.append(f'{gid}: play surface is not a solid night panel: {result}')
     if gid=='pz_grid':
         ratios=await page.locator('.lgt th').evaluate_all(r"""els=>{
           const rgb=s=>s.match(/[\d.]+/g).slice(0,3).map(Number);

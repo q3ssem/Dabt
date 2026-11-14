@@ -1,12 +1,14 @@
 'use strict';
 /* Presentation only: original generators, score, timing and controls are authoritative. */
 (function(){
-const W=window.Watercolor={version:'4.2.2',images:new Map(),failed:new Set(),pending:new Map()},$=DX.$,M=window.WC_MANIFEST;
+const W=window.Watercolor={version:'4.2.3',images:new Map(),failed:new Set(),pending:new Map()},$=DX.$,M=window.WC_MANIFEST;
 const oldSprite=LA.sprite,oldCar=carSVG,oldPerson=scPerson,oldLoad=LA.load,oldAssets=LA.assets;
 // Keep natural proportions (meet) AND clip to the sprite's own cell: with meet a non-square box would otherwise
 // reveal slivers of the neighbouring atlas cells (4.2.1: guitar, cactus, hawk birds).
 W.fitMarkup=s=>{const m=/^(<svg\b[^>]*viewBox="([\d.-]+) ([\d.-]+) ([\d.]+) ([\d.]+)"[^>]*>)([\s\S]*)(<\/svg>)$/.exec(s);if(!m)return s.replace('preserveAspectRatio="none"','preserveAspectRatio="xMidYMid meet"');const[,open,x,y,w,h,body,close]=m;return open.replace('preserveAspectRatio="none"','preserveAspectRatio="xMidYMid meet"')+'<svg x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" viewBox="'+x+' '+y+' '+w+' '+h+'" overflow="hidden">'+body+'</svg>'+close;};
-LA.sprite=function(){return W.fitMarkup(oldSprite.apply(this,arguments));};
+LA.sprite=function(file,index,o){let m=oldSprite.apply(this,arguments);const B=/^(objects|world)-/.test(file)&&window.WC_SPRITE_BOXES&&WC_SPRITE_BOXES[file],b=B&&(!o||((o.cols||4)===4&&(o.rows||4)===4))&&B[index];
+ /* 4.2.3: frame each object by its own content so icons and objects fill their boxes evenly */
+ if(b)m=m.replace(/viewBox="[^"]*"/,'viewBox="'+b[0]+' '+b[1]+' '+b[2]+' '+b[2]+'"');return W.fitMarkup(m);};
 carSVG=function(){return W.fitMarkup(oldCar.apply(this,arguments));};
 scPerson=function(color,hat){const i=SC_SHIRT.findIndex(s=>s[1]===color);if(i<0||LA.failed.has('scene-people'))return oldPerson(color,hat);const n=i+(hat?5:0),x=n%4*100+29,y=Math.floor(n/4)*100+2;return '<svg class="wc-person" viewBox="'+x+' '+y+' 43 96" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><image href="legacy/art/scene-people.webp" width="400" height="400" preserveAspectRatio="none"/></svg>';};
 W.asset=function(file){
@@ -18,9 +20,9 @@ W.asset=function(file){
 W.abs=rel=>{try{return new URL(rel,document.baseURI).href;}catch(e){return rel;}};
 W.url=c=>c?W.abs('watercolor/art/'+c.file+'.webp'):'';
 LA.load=f=>f.startsWith('wc:')?W.asset(f.slice(3)):oldLoad(f);
-LA.assets=function(g){const out=oldAssets(g),c=M.games[g.id];if(g.id==='scene')for(let i=0;i<4;i++)out.push('wc:pack-scenes-'+i);else if(c)out.push('wc:'+c.file);return [...new Set(out)];};
+LA.assets=function(g){const out=oldAssets(g),c=M.games[g.id];if(g.id==='scene')for(let i=0;i<4;i++)out.push('wc:pack-scenes-'+i);/* 4.2.3: no decorative backdrops are preloaded */return [...new Set(out)];};
 W.current=function(){try{return curGame();}catch(e){return null;}};
-W.apply=function(g){const p=$('#play');if(!p||!g||g.kid)return;const c=M.games[g.id];if(!c)return;if(g.id!=='scene')W.asset(c.file);p.classList.add('wc-play');p.dataset.wcGame=g.id;p.dataset.wcFamily=c.family;p.classList.remove('xframe');const u=W.url(c);if(u)p.style.setProperty('--wc-scene','url("'+u+'")');else p.style.removeProperty('--wc-scene');p.style.setProperty('--wc-accent',c.accent||'#487b76');};
+W.apply=function(g){const p=$('#play');if(!p||!g||g.kid)return;const c=M.games[g.id];if(!c)return;p.classList.add('wc-play');p.dataset.wcGame=g.id;p.dataset.wcFamily=c.family;p.classList.remove('xframe');/* 4.2.3: solid night surfaces — no painted backdrop */p.style.removeProperty('--wc-scene');p.style.setProperty('--wc-accent',c.accent||'#487b76');};
 // XF_IDS is solely the old decorative frame list.
 window.XF_IDS=new Set();
 const h0=header;header=function(g){h0(g);W.apply(g);};
@@ -29,13 +31,19 @@ W.decorate=function(){const p=$('#play');if(!p||p.hidden)return;const g=W.curren
 new MutationObserver(W.decorate).observe($('#stage'),{childList:true,subtree:true});
 W.icon=i=>'<svg class="wc-icon" viewBox="'+i%4*100+' '+Math.floor(i/4)*100+' 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><image href="watercolor/art/icons.webp" width="400" height="200" preserveAspectRatio="none"/></svg>';
 W.iconById={pz_lock:0,pz_stat:1,pz_scale:2,pz_pipe:3,pz_river:4,pz_rush:5,pz_grid:6,tol:7};
+/* 4.2.3: library icons — show the sprite itself as a square, framed by its own content (some cards reused an
+   in-puzzle piece with a 30×12 box, so the icon came out tiny). */
+W.squareIcon=function(box){if(!box||box.dataset.wcSq)return;const ls=box.querySelector('svg.la-sprite');if(!ls)return;box.dataset.wcSq='1';
+ ['x','y','width','height','style'].forEach(a=>ls.removeAttribute(a));const im=ls.querySelector('image'),f=(im&&(im.getAttribute('href')||'').match(/art\/([\w-]+)\.webp/)||[])[1],B=f&&window.WC_SPRITE_BOXES&&WC_SPRITE_BOXES[f],vb=(ls.getAttribute('viewBox')||'').split(' ').map(Number);
+ if(B&&vb.length===4){const i=Math.floor(vb[1]/100)*4+Math.floor(vb[0]/100),k=B[i];if(k)ls.setAttribute('viewBox',k.join(' ')+' '+k[2]);}
+ if(box.firstElementChild!==ls)box.replaceChildren(ls);};
 W.cards=function(){
  if(typeof curTab!=='undefined'&&curTab!=='puz')return;
  const cards=[...document.querySelectorAll('.t7-classic'),...document.querySelectorAll('.la-library-card')];
  if(!cards.length||W.failed.has('icons'))return;
  if(!W.images.has('icons')){W.asset('icons').then(ok=>{if(ok)W.cards();});return;}
- cards.forEach(b=>{const id=b.dataset.puzzleId||b.dataset.legacyPuzzle,i=W.iconById[id];if(i==null||b.dataset.wcIcon===id)return;
- const box=b.querySelector('.la-library-image')||b.querySelector('.wc-game-icon');if(box)box.innerHTML=W.icon(i);else{const icon=document.createElement('span');icon.className='wc-game-icon';icon.innerHTML=W.icon(i);const old=b.querySelector('svg');if(old)old.replaceWith(icon);else b.prepend(icon);}b.dataset.wcIcon=id;b.setAttribute('aria-label',GM[id]?.name||b.textContent);});
+ cards.forEach(b=>W.squareIcon(b.querySelector('.la-library-image')));cards.forEach(b=>{const id=b.dataset.puzzleId||b.dataset.legacyPuzzle,i=W.iconById[id];if(i==null||b.dataset.wcIcon===id)return;
+ const box=b.querySelector('.la-library-image')||b.querySelector('.wc-game-icon');if(box)box.innerHTML=W.icon(i);else{const icon=document.createElement('span');icon.className='wc-game-icon';icon.innerHTML=W.icon(i);const old=b.querySelector('svg');if(old)old.replaceWith(icon);else b.prepend(icon);}b.querySelectorAll('.t7-sprite').forEach(e=>e.remove());/* 4.2.3: one icon per card */b.dataset.wcIcon=id;b.setAttribute('aria-label',GM[id]?.name||b.textContent);});
 };
 new MutationObserver(W.cards).observe($('#v-puz'),{childList:true,subtree:true});
 // Paint terrain beneath the same exact native road path and collision geometry.

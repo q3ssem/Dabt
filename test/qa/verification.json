@@ -1,8 +1,8 @@
 {
-  "version": "4.2.2",
+  "version": "4.2.3",
   "date": "2026-11-14",
   "source": "4.2.1 + 4.2.2 presentation fixes (atlas re-layout, sprite clipping, light-surface ink)",
-  "status": "review build 4.2.2; Chrome browser smoke passed; iPhone/audio/touch not validated",
+  "status": "review build 4.2.3; Chrome browser smoke passed; iPhone/audio/touch not validated",
   "checks": {
     "total": 1819,
     "generated_problem_samples": 265,
@@ -317,7 +317,8 @@
     ],
     "problems": [],
     "note": "Games are opened and Treasure stations solved programmatically via the in-game assist; this is not touch/drag play.",
-    "note_4_2_2": "smoke re-run on 4.2.2: passed, problems []"
+    "note_4_2_2": "smoke re-run on 4.2.2: passed, problems []",
+    "note_4_2_3": "smoke re-run on 4.2.3: passed, problems []"
   },
   "physical_iphone": "not tested",
   "audio_listening": "not tested",
@@ -335,5 +336,12 @@
     "watercolor/app.js W.fitMarkup clips every sprite to its own atlas cell",
     "watercolor/style.css dark ink for light watercolor surfaces and old-puzzle bodies; .road selector no longer hits .prio",
     "story-puzzle sheets get a paper wash over the painting"
+  ],
+  "fixes_4_2_3": [
+    "solid night play surfaces, no decorative watercolor backdrops (river board and scene places kept as game content)",
+    "story-puzzle sheets plain cream card",
+    "one icon per challenge card; icon atlas keyed to transparency",
+    "watercolor/sprite-boxes.js frames objects/world/library icons evenly",
+    "smoke.py checks surfaces are solid night panels"
   ]
 }

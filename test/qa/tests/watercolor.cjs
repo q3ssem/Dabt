@@ -16,7 +16,7 @@ vm.runInContext(fs.readFileSync(path.join(base,'watercolor/manifest.js'),'utf8')
 const W=c.Watercolor,M=c.WC_MANIFEST;
 ok(W.pending.size===0,'no game artwork loads at application startup');
 ok(Object.keys(M.games).length===120,'32 brain and 88 puzzle entries');
-for(const g of [...inventory.brain,...inventory.puzzles]){const cfg=M.games[g.id];ok(!!cfg,'mapped '+g.id);ok(fs.existsSync(path.join(base,'watercolor/art',cfg.file+'.webp')),'image exists '+g.id);ok(c.LA.assets(g).includes('wc:'+cfg.file),'unscored loading '+g.id);}
+for(const g of [...inventory.brain,...inventory.puzzles]){const cfg=M.games[g.id];ok(!!cfg,'mapped '+g.id);ok(fs.existsSync(path.join(base,'watercolor/art',cfg.file+'.webp')),'image exists '+g.id);ok(g.id==='scene'?c.LA.assets(g).includes('wc:pack-scenes-0'):!c.LA.assets(g).some(a=>a.startsWith('wc:')),'4.2.3: only scene places preload, no decorative backdrop '+g.id);}
 ok(new Set(inventory.brain.filter(g=>g.id!=='scene').map(g=>{const a=M.games[g.id];return a.file})).size===31,'31 distinct brain scenes; fine details retains its four truthful place scenes');
 for(const [i,s]of c.SC_SHIRT.entries())for(const hat of [false,true]){const n=i+(hat?5:0),v=c.scPerson(s[1],hat);ok(v.includes('viewBox="'+(n%4*100+29)+' '+(Math.floor(n/4)*100+2)+' 43 96"'),'same shirt and hat');ok(v.includes('xMidYMid meet'),'natural proportions');}
 ok(c.LA.sprite('objects-a',0).includes('preserveAspectRatio="xMidYMid meet"'),'sprite natural aspect ratio');ok(c.XF_IDS.size===0,'presentation frame disabled');
