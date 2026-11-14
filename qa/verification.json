@@ -1,283 +1,371 @@
 {
-  "version": "3.2.0",
+  "version": "5.0.0",
   "date": "2026-11-14",
-  "syntax": [
-    {
-      "file": "legacy/art.js",
-      "passed": true
-    },
-    {
-      "file": "legacy/deep-manifest.js",
-      "passed": true
-    },
-    {
-      "file": "legacy/deep.js",
-      "passed": true
-    },
-    {
-      "file": "qa/assessment-engine/Dabt_Assessment_Engine_v1.3.js",
-      "passed": true
-    },
-    {
-      "file": "treasure/app.js",
-      "passed": true
-    },
-    {
-      "file": "treasure/data.js",
-      "passed": true
-    },
-    {
-      "file": "treasure/logic.js",
-      "passed": true
-    },
-    {
-      "file": "upgrade/app.js",
-      "passed": true
-    },
-    {
-      "file": "upgrade/core.js",
-      "passed": true
-    },
-    {
-      "file": "upgrade/games.js",
-      "passed": true
-    },
-    {
-      "file": "upgrade/mech.js",
-      "passed": true
-    },
-    {
-      "file": "qa/tests/deep.art.cjs",
-      "passed": true
-    },
-    {
-      "file": "qa/tests/legacy.art.cjs",
-      "passed": true
-    },
-    {
-      "file": "qa/tests/story.extras.cjs",
-      "passed": true
-    },
-    {
-      "file": "qa/tests/storybook.interaction.cjs",
-      "passed": true
-    },
-    {
-      "file": "qa/tests/storybook.logic.cjs",
-      "passed": true
-    },
-    {
-      "inline": 1,
-      "passed": true
-    }
-  ],
-  "png_files": [
-    {
-      "file": "legacy/art/boards.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGB"
-    },
-    {
-      "file": "legacy/art/classic.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGB"
-    },
-    {
-      "file": "legacy/art/motion.png",
-      "width": 1024,
-      "height": 1536,
-      "mode": "RGBA"
-    },
-    {
-      "file": "legacy/art/objects-a.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGB"
-    },
-    {
-      "file": "legacy/art/objects-b.png",
-      "width": 1269,
-      "height": 1240,
-      "mode": "RGB"
-    },
-    {
-      "file": "legacy/art/objects-c.png",
-      "width": 1263,
-      "height": 1246,
-      "mode": "RGB"
-    },
-    {
-      "file": "legacy/art/objects-d.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGB"
-    },
-    {
-      "file": "legacy/art/objects-e.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGB"
-    },
-    {
-      "file": "legacy/art/portraits.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGB"
-    },
-    {
-      "file": "legacy/art/puzzle-parts.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGB"
-    },
-    {
-      "file": "legacy/art/rooms.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGB"
-    },
-    {
-      "file": "legacy/art/scene-people.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGB"
-    },
-    {
-      "file": "legacy/art/surfaces.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGB"
-    },
-    {
-      "file": "legacy/art/world-a.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGB"
-    },
-    {
-      "file": "legacy/art/world-b.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGB"
-    },
-    {
-      "file": "legacy/art/world-c.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGB"
-    },
-    {
-      "file": "legacy/art/world-d.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGB"
-    },
-    {
-      "file": "legacy/art/world-e.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGB"
-    },
-    {
-      "file": "treasure/art/chapter1.png",
-      "width": 2172,
-      "height": 724,
-      "mode": "RGB"
-    },
-    {
-      "file": "treasure/art/chapter2.png",
-      "width": 2172,
-      "height": 724,
-      "mode": "RGB"
-    },
-    {
-      "file": "treasure/art/chapter3.png",
-      "width": 2172,
-      "height": 724,
-      "mode": "RGB"
-    },
-    {
-      "file": "treasure/art/chapter4.png",
-      "width": 2172,
-      "height": 724,
-      "mode": "RGB"
-    },
-    {
-      "file": "treasure/art/chapter5.png",
-      "width": 2172,
-      "height": 724,
-      "mode": "RGB"
-    },
-    {
-      "file": "treasure/art/chapter6.png",
-      "width": 2172,
-      "height": 724,
-      "mode": "RGB"
-    },
-    {
-      "file": "treasure/art/chapter7.png",
-      "width": 2172,
-      "height": 724,
-      "mode": "RGB"
-    },
-    {
-      "file": "treasure/art/cover.png",
-      "width": 1536,
-      "height": 1024,
-      "mode": "RGB"
-    },
-    {
-      "file": "treasure/art/map.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGB"
-    },
-    {
-      "file": "treasure/art/portraits.png",
-      "width": 2172,
-      "height": 724,
-      "mode": "RGB"
-    },
-    {
-      "file": "treasure/art/puzzle-sprites.png",
-      "width": 1448,
-      "height": 1086,
-      "mode": "RGB"
-    },
-    {
-      "file": "treasure/art/reward-scenes.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGB"
-    },
-    {
-      "file": "treasure/art/vessel.png",
-      "width": 1254,
-      "height": 1254,
-      "mode": "RGBA"
-    }
-  ],
-  "station_scenes": 21,
-  "side_quests": 7,
-  "earned_tools": 7,
+  "source": "4.2.1 + 4.2.2 presentation fixes (atlas re-layout, sprite clipping, light-surface ink)",
+  "status": "trial build 5.0.0; Chrome smoke passed (seas 1–3 played by taps); iPhone/audio not validated",
   "checks": {
-    "logic": 68,
-    "interaction": 158,
-    "extras": 233,
-    "legacy": 473,
-    "deep_art": 353,
-    "total": 1285
+    "total": 1819,
+    "generated_problem_samples": 265,
+    "npm_test": "passed"
   },
-  "browser_visual_test": "not completed; environment blocked local preview",
-  "iphone_physical_test": "not performed",
-  "excludes_V20": true,
-  "legacy": {
-    "brain_identifiers": 32,
-    "puzzle_identifiers": 88,
-    "additional_world_art": 80,
-    "original_inline_engine_unchanged": true,
-    "original_upgrade_files_unchanged": true
+  "syntax": {
+    "files": 37,
+    "passed": true
+  },
+  "art": {
+    "quality": 80,
+    "input_png": 18,
+    "output_webp": 48,
+    "total_bytes": 3433232,
+    "target_bytes": 6291456,
+    "separate_atlas_cells": true
+  },
+  "source_http": {
+    "syntax_files": 37,
+    "syntax_errors": [],
+    "http": [
+      {
+        "path": "assessment/dashboard.html",
+        "status": 200,
+        "bytes": 1743
+      },
+      {
+        "path": "assessment/rule-switch.html",
+        "status": 200,
+        "bytes": 2463
+      },
+      {
+        "path": "sw.js",
+        "status": 200,
+        "bytes": 1930
+      },
+      {
+        "path": "offline-manifest.js",
+        "status": 200,
+        "bytes": 1272
+      },
+      {
+        "path": "watercolor/art/tracking.webp",
+        "status": 200,
+        "bytes": 118214
+      },
+      {
+        "path": "watercolor/art/pack-spatial-3.webp",
+        "status": 200,
+        "bytes": 36286
+      },
+      {
+        "path": "watercolor/art/pack-scenes-1.webp",
+        "status": 200,
+        "bytes": 111866
+      },
+      {
+        "path": "watercolor/art/pack-logic-0.webp",
+        "status": 200,
+        "bytes": 30574
+      },
+      {
+        "path": "watercolor/art/pack-attention-3.webp",
+        "status": 200,
+        "bytes": 33890
+      },
+      {
+        "path": "watercolor/art/workbench.webp",
+        "status": 200,
+        "bytes": 138492
+      },
+      {
+        "path": "watercolor/art/pack-spatial-1.webp",
+        "status": 200,
+        "bytes": 41412
+      },
+      {
+        "path": "watercolor/art/pack-home-1.webp",
+        "status": 200,
+        "bytes": 45266
+      },
+      {
+        "path": "watercolor/art/icons.webp",
+        "status": 200,
+        "bytes": 146850
+      },
+      {
+        "path": "watercolor/art/pack-memory-3.webp",
+        "status": 200,
+        "bytes": 31618
+      },
+      {
+        "path": "watercolor/art/pack-puzzle-craft-3.webp",
+        "status": 200,
+        "bytes": 36974
+      },
+      {
+        "path": "watercolor/art/pack-speed-3.webp",
+        "status": 200,
+        "bytes": 31198
+      },
+      {
+        "path": "watercolor/art/pack-executive-2.webp",
+        "status": 200,
+        "bytes": 25034
+      },
+      {
+        "path": "watercolor/art/pack-logic-3.webp",
+        "status": 200,
+        "bytes": 45652
+      },
+      {
+        "path": "watercolor/art/pack-spatial-2.webp",
+        "status": 200,
+        "bytes": 38390
+      },
+      {
+        "path": "watercolor/art/pack-logic-1.webp",
+        "status": 200,
+        "bytes": 37038
+      },
+      {
+        "path": "watercolor/art/pack-puzzle-craft-2.webp",
+        "status": 200,
+        "bytes": 48104
+      },
+      {
+        "path": "watercolor/art/racer.webp",
+        "status": 200,
+        "bytes": 298372
+      },
+      {
+        "path": "watercolor/art/pack-speed-0.webp",
+        "status": 200,
+        "bytes": 50790
+      },
+      {
+        "path": "watercolor/art/pack-scenes-3.webp",
+        "status": 200,
+        "bytes": 56312
+      },
+      {
+        "path": "watercolor/art/tower.webp",
+        "status": 200,
+        "bytes": 225446
+      },
+      {
+        "path": "watercolor/art/pack-spatial-0.webp",
+        "status": 200,
+        "bytes": 55002
+      },
+      {
+        "path": "watercolor/art/pack-logic-2.webp",
+        "status": 200,
+        "bytes": 37150
+      },
+      {
+        "path": "watercolor/art/pack-memory-0.webp",
+        "status": 200,
+        "bytes": 52344
+      },
+      {
+        "path": "watercolor/art/pack-puzzle-worlds-0.webp",
+        "status": 200,
+        "bytes": 47252
+      },
+      {
+        "path": "watercolor/art/pack-home-2.webp",
+        "status": 200,
+        "bytes": 42922
+      },
+      {
+        "path": "watercolor/art/pack-home-0.webp",
+        "status": 200,
+        "bytes": 60316
+      },
+      {
+        "path": "watercolor/art/pack-memory-1.webp",
+        "status": 200,
+        "bytes": 29180
+      },
+      {
+        "path": "watercolor/art/pack-executive-1.webp",
+        "status": 200,
+        "bytes": 24092
+      },
+      {
+        "path": "watercolor/art/piano.webp",
+        "status": 200,
+        "bytes": 203746
+      },
+      {
+        "path": "watercolor/art/pack-attention-0.webp",
+        "status": 200,
+        "bytes": 27450
+      },
+      {
+        "path": "watercolor/art/pack-puzzle-worlds-2.webp",
+        "status": 200,
+        "bytes": 53038
+      },
+      {
+        "path": "watercolor/art/pack-attention-2.webp",
+        "status": 200,
+        "bytes": 24868
+      },
+      {
+        "path": "watercolor/art/pack-speed-1.webp",
+        "status": 200,
+        "bytes": 37934
+      },
+      {
+        "path": "watercolor/art/pack-puzzle-worlds-3.webp",
+        "status": 200,
+        "bytes": 38980
+      },
+      {
+        "path": "watercolor/art/pack-memory-2.webp",
+        "status": 200,
+        "bytes": 35310
+      },
+      {
+        "path": "watercolor/art/pack-scenes-2.webp",
+        "status": 200,
+        "bytes": 57252
+      },
+      {
+        "path": "watercolor/art/pack-scenes-0.webp",
+        "status": 200,
+        "bytes": 104300
+      },
+      {
+        "path": "watercolor/art/pack-executive-3.webp",
+        "status": 200,
+        "bytes": 29510
+      },
+      {
+        "path": "watercolor/art/pack-puzzle-craft-0.webp",
+        "status": 200,
+        "bytes": 41076
+      },
+      {
+        "path": "watercolor/art/pack-home-3.webp",
+        "status": 200,
+        "bytes": 50444
+      },
+      {
+        "path": "watercolor/art/pack-attention-1.webp",
+        "status": 200,
+        "bytes": 62940
+      },
+      {
+        "path": "watercolor/art/pack-speed-2.webp",
+        "status": 200,
+        "bytes": 41514
+      },
+      {
+        "path": "watercolor/art/pack-puzzle-worlds-1.webp",
+        "status": 200,
+        "bytes": 44810
+      },
+      {
+        "path": "watercolor/art/river.webp",
+        "status": 200,
+        "bytes": 255596
+      },
+      {
+        "path": "watercolor/art/pack-puzzle-craft-1.webp",
+        "status": 200,
+        "bytes": 58396
+      },
+      {
+        "path": "watercolor/art/pack-executive-0.webp",
+        "status": 200,
+        "bytes": 34320
+      },
+      {
+        "path": "watercolor/art/pipes.webp",
+        "status": 200,
+        "bytes": 255712
+      }
+    ],
+    "protected_folders_equal": {
+      "tv": true,
+      "tools": true,
+      "upgrade": true
+    },
+    "inline_engines_equal_except_documented_audio": true
+  },
+  "browser": {
+    "attempted": true,
+    "command": "python3 qa/browser/smoke.py --chrome /usr/bin/google-chrome --shots <dir>",
+    "browser": "Google Chrome headless, 390x844 mobile emulation (touch emulated)",
+    "exit_code": 0,
+    "completed": true,
+    "games": 32,
+    "puzzles": 88,
+    "stations": 21,
+    "skipped": [
+      "delay: internal helper"
+    ],
+    "manifest_backgrounds_checked": 46,
+    "assessment_http": {
+      "assessment/dashboard.html": 200,
+      "assessment/rule-switch.html": 200
+    },
+    "screenshot_widths": [
+      320,
+      390,
+      430,
+      768
+    ],
+    "problems": [],
+    "note": "Games are opened and Treasure stations solved programmatically via the in-game assist; this is not touch/drag play.",
+    "note_4_2_2": "smoke re-run on 4.2.2: passed, problems []",
+    "note_4_2_3": "smoke re-run on 4.2.3: passed, problems []",
+    "note_5_0": "smoke re-run on 5.0.0-sea1: passed, problems []; sea 1 stations solved through tapped controls",
+    "note_5_0_seas": "smoke re-run on 5.0.0: passed, problems []; nine 5.0 stations solved through tapped controls"
+  },
+  "physical_iphone": "not tested",
+  "audio_listening": "not tested",
+  "physical_touch_drag": "not tested",
+  "offline_browser": "service worker registers and activates in Chrome on localhost; offline reload not tested",
+  "engine_baselines_regenerated": false,
+  "fixes_4_2_1": [
+    "watercolor/app.js W.url returns absolute URL (4.2 painted watercolor/watercolor/art/... 404)",
+    "qa/browser/smoke.py start-wait fixed for cards and racer; painted background URLs must return HTTP 200",
+    "assessment digits unified to Western",
+    "version 4.2.1 in package.json, sw.js cache name, Watercolor.version"
+  ],
+  "fixes_4_2_2": [
+    "legacy/art objects-a..e, world-a/c/d/e, motion re-laid on exact grid by tools/relayout_atlas.py (no cell touches its edge)",
+    "watercolor/app.js W.fitMarkup clips every sprite to its own atlas cell",
+    "watercolor/style.css dark ink for light watercolor surfaces and old-puzzle bodies; .road selector no longer hits .prio",
+    "story-puzzle sheets get a paper wash over the painting"
+  ],
+  "fixes_4_2_3": [
+    "solid night play surfaces, no decorative watercolor backdrops (river board and scene places kept as game content)",
+    "story-puzzle sheets plain cream card",
+    "one icon per challenge card; icon atlas keyed to transparency",
+    "watercolor/sprite-boxes.js frames objects/world/library icons evenly",
+    "smoke.py checks surfaces are solid night panels"
+  ],
+  "sea1_5_0": {
+    "stations": [
+      "sea7_0 locks (min 10, unique shortest path)",
+      "sea7_1 cipher (1 of 24 arrangements, min 3 swaps)",
+      "sea7_2 mirrors revised (1 of 64 states, min 4 turns, 2 mirrors start correct)"
+    ],
+    "browser_playthrough": "390 and 320 px, real taps, fresh save, no page errors",
+    "migration": "4.x save with sea 1 done: completion kept, old boards dropped, tools + letter granted, backup validates",
+    "art": "16 files -> WebP 1.7 MB"
+  },
+  "seas2_3_5_0": {
+    "stations": [
+      "sea7_3 torn map: 1 of 720, min 5",
+      "sea7_4 chime: 1 of 24 orders, min 4 strikes",
+      "sea7_5 linked statues: min 4",
+      "sea7_6 tide: min 6, budget 8, unique shortest path",
+      "sea7_7 weigh: heavy stone random per attempt; 2 weighings for all 9 positions",
+      "sea7_8 valves: 1 of 24 states, min 5"
+    ],
+    "browser_playthrough": "390 and 320 px, real taps, no page errors",
+    "art": "25 files -> WebP; art folder treasure/art/story5"
   }
 }

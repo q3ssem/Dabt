@@ -1,5 +1,5 @@
 'use strict';
-/* Treasure Island 5.0 · Seas 1–3 — puzzle boards, three challenges, tools and visual hints.
+/* Treasure Island 5.0 · the 21 puzzle boards: three challenges, tool gates and visual hints.
    Rules and answers live in data.js / logic.js; this file only draws and records attempts. */
 (function (root) {
   const $ = q => DX.$(q), later = (f, ms) => root.__T7_SYNC ? f() : setTimeout(f, ms);
@@ -724,5 +724,5 @@
     b.append(grid, ctx.button('افحص الباب', () => { if (L.solved(s, v)) return; say(ctx, 'لم يستيقظ الطريق بعد. راجع الأسرار السبعة؛ يجب أن تصدق كلها معًا.'); }, 'v5-check'), cards);
   }
 
-  root.TreasureSea1 = { render, v5state, chal, attempt, ART };
+  root.TreasureBoards = { render, v5state, chal, attempt, ART };
 })(typeof window === 'undefined' ? globalThis : window);

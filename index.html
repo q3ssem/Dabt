@@ -3975,7 +3975,7 @@ function runStatues(){return pzPlay('pz_stat',api=>{
   function draw(){btns.forEach((b,i)=>{b.querySelector('.sthead2').style.transform=`rotate(${ang[i]}deg)`;b.classList.toggle('ok',s[i]===0)});$('#stb').classList.toggle('all',s.every(d=>d===0))}
   function press(i){if(api.ended)return;P.R[i].forEach((r,j)=>{if(r){s[j]=(s[j]+r)%4;ang[j]+=r*90}});presses++;
     btns.forEach((b,j)=>{b.classList.remove('hint');if(P.R[i][j]){b.classList.remove('press');void b.offsetWidth;b.classList.add('press')}});lines.forEach(l=>{const on=+l.dataset.a===i||+l.dataset.b===i;l.classList.remove('zap');if(on){void l.getBoundingClientRect();l.classList.add('zap')}});
-    tone(180+i*30,.22,'triangle',.06);draw();
+    if(window.Watercolor)Watercolor.stone();else tone(180+i*30,.22,'triangle',.06);draw();
     if(s.every(d=>d===0))api.win(`وجّهت الحراس في ${arN(presses,AN.press)}، والأقل ${arN(P.min,AN.press)}.`);else api.msg(`الضغطات: <b class="num">${presses}</b> · أقل حل: <b class="num">${P.min}</b>`)}
   btns.forEach((b,i)=>b.onclick=()=>press(i));draw();pzHook({P,press,s:()=>s});
   return{hint:k=>{if(k===1)return`أقل حل ${arN(P.min,AN.press)}. ترتيب الضغطات لا يهم، المهم عدد مرات ضغط كل حارس. الخطوط بينهم تريك من يحرّك من.`;const i=P.nxt[P.enc(s)];if(i<0)return null;btns[i].classList.add('hint');return'اضغط الحارس المضيء.'},
@@ -8446,11 +8446,19 @@ applyMode();if(!MODE)showModePick();
 <link rel="stylesheet" href="treasure/style.css">
 <script src="treasure/data.js"></script>
 <script src="treasure/logic.js"></script>
+<script src="treasure/boards.js"></script>
 <script src="treasure/app.js"></script>
 <link rel="stylesheet" href="legacy/style.css">
 <script src="legacy/art.js"></script>
 <link rel="stylesheet" href="legacy/deep.css">
 <script src="legacy/deep-manifest.js"></script>
 <script src="legacy/deep.js"></script>
+<link rel="stylesheet" href="watercolor/style.css">
+<script src="watercolor/manifest.js"></script>
+<script src="watercolor/sprite-boxes.js"></script>
+<script src="watercolor/app.js"></script>
+<script src="assessment/common.js"></script>
+<script src="assessment/sync.js"></script>
+<script src="pwa.js"></script>
 </body>
 </html>
