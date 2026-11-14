@@ -11,3 +11,4 @@ button:focus-visible,input:focus,textarea:focus,select:focus{outline-color:var(-
 .answer.right{box-shadow:0 0 0 4px var(--gold)}
 #brand .logo{background:var(--accent);color:#1B1407}
 nav button.active,#nav .active{background:linear-gradient(180deg,#F0CD78,var(--accent));color:#1B1407;border-color:#F2D58E}
+html{background:#0A1428;min-height:100%}body{min-height:100vh;min-height:100dvh;background-attachment:fixed}
