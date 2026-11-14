@@ -1,8 +1,8 @@
 {
-  "version": "5.0.0-seas1-3",
+  "version": "5.0.0-seas1-7",
   "date": "2026-11-14",
   "source": "4.2.1 + 4.2.2 presentation fixes (atlas re-layout, sprite clipping, light-surface ink)",
-  "status": "trial build 5.0.0-seas1-3; Chrome smoke passed (seas 1–3 played by taps); iPhone/audio not validated",
+  "status": "trial build 5.0.0-seas1-7; Chrome smoke passed (seas 1–3 played by taps); iPhone/audio not validated",
   "checks": {
     "total": 1819,
     "generated_problem_samples": 265,
@@ -320,7 +320,7 @@
     "note_4_2_2": "smoke re-run on 4.2.2: passed, problems []",
     "note_4_2_3": "smoke re-run on 4.2.3: passed, problems []",
     "note_5_0": "smoke re-run on 5.0.0-sea1: passed, problems []; sea 1 stations solved through tapped controls",
-    "note_5_0_seas": "smoke re-run on 5.0.0-seas1-3: passed, problems []; nine 5.0 stations solved through tapped controls"
+    "note_5_0_seas": "smoke re-run on 5.0.0-seas1-7: passed, problems []; nine 5.0 stations solved through tapped controls"
   },
   "physical_iphone": "not tested",
   "audio_listening": "not tested",

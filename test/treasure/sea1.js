@@ -28,6 +28,7 @@
     const c = chal(x, s.id);
     host.innerHTML = '';
     host.dataset.kind = s.kind;
+    if (lastId !== s.id) { sel = null; picked = null; lastId = s.id; }
 
     // Challenge chips
     const chips = E('div', { class: 'v5-chips', role: 'tablist' });
@@ -41,12 +42,12 @@
     });
     const limit = s.kind === 'tide' ? s.target.budget : at.c === 1 && s.kind !== 'weigh' ? s.target.min : null;
     const counter = E('div', { class: 'v5-counter' },
-      E('span', { text: s.kind === 'weigh' ? 'الوزنات' : s.kind === 'chime' ? 'الضربات' : s.kind === 'tide' ? 'الأفعال' : 'الحركات' }), E('b', { id: 'v5-moves', text: String(at.moves) }),
+      E('span', { text: s.kind === 'weigh' ? 'الوزنات' : s.kind === 'chime' ? 'الضربات' : s.kind === 'tide' ? 'الأفعال' : s.kind === 'river' ? 'العبور' : s.kind === 'slide' ? 'الانزلاقات' : ['scales', 'gearfit', 'path'].includes(s.kind) ? 'التبديلات' : 'الحركات' }), E('b', { id: 'v5-moves', text: String(at.moves) }),
       limit ? E('small', { text: '/ ' + limit }) : null,
       at.c === 2 ? E('small', { class: 'v5-nohint', text: at.hint ? 'استُعمل تلميح' : 'بلا تلميح' }) : null);
     host.append(E('div', { class: 'v5-head' }, chips, counter), E('p', { class: 'v5-goal', text: s.goal }));
 
-    const board = E('div', { class: 'v5-board v5-' + s.kind, id: 'v5-board' });
+    const board = E('div', { class: 'v5-board v5-k-' + s.kind, id: 'v5-board' });
     host.append(board);
     const hintBox = E('div', { class: 'v5-hint', id: 'v5-hint', role: 'status', 'aria-live': 'polite' });
     host.append(hintBox);
@@ -132,17 +133,22 @@
     if (!b) return;
     b.innerHTML = '';
     b.append(ctx.E('p', { id: 'v5-say', class: 'v5-say', role: 'status', 'aria-live': 'polite' }));
-    ({ locks: paintLocks, cipher: paintCipher, mirrors: paintMirrors, torn: paintTorn, chime: paintChime, linked: paintLinked, tide: paintTide, weigh: paintWeigh, valves: paintValves })[ctx.s.kind](b, ctx);
+    ({ locks: paintLocks, cipher: paintCipher, mirrors: paintMirrors, torn: paintTorn, chime: paintChime, linked: paintLinked, tide: paintTide, weigh: paintWeigh, valves: paintValves, slide: paintSlide, lights: paintLights, scales: paintScales, ropes: paintRopes, gearfit: paintGearfit, drums: paintDrums, push: paintPush, stroke: paintStroke, hanoi: paintHanoi, river: paintRiver, frogs: paintFrogs, path: paintPath })[ctx.s.kind](b, ctx);
   }
 
   function toolGate(b, ctx, tool, label) {
-    const { s, x, E } = ctx, at = attempt(x, s, ctx.done()), T = TreasureData.SEA1_TOOLS[tool];
+    const { s, x, E } = ctx, at = attempt(x, s, ctx.done());
     if (at.tool) return false;
-    const has = !!v5state(x).tools[tool];
-    b.append(E('div', { class: 'v5-gate' }, img(T.art, 'v5-gate-art'), E('p', { text: has ? label : 'تحتاج ' + T.name + ' من ' + T.from + ' أولًا.' }),
+    const list = [].concat(s.needs || tool), k = Math.min(at.tp || 0, list.length - 1), name = list[k], T = TreasureData.SEA1_TOOLS[name];
+    const has = !!v5state(x).tools[name];
+    const lab = Array.isArray(label) ? label[k] : label;
+    b.append(E('div', { class: 'v5-gate' }, img(T.art, 'v5-gate-art'), E('p', { text: has ? lab : 'تحتاج ' + T.name + ' من ' + T.from + ' أولًا.' }),
+      list.length > 1 ? E('small', { class: 'v5-gate-step', text: `الأداة ${k + 1} من ${list.length}` }) : null,
       ctx.button(has ? 'ضع ' + T.name : 'غير متاحة', () => {
         if (!has) return;
-        at.tool = true; v5state(x).tools[tool] = 'used'; ctx.save(); paint(ctx);
+        at.tp = k + 1; v5state(x).tools[name] = 'used';
+        if (at.tp >= list.length) at.tool = true;
+        ctx.save(); paint(ctx);
       }, 'primary')));
     return true;
   }
@@ -181,7 +187,7 @@
   }
 
   // Cipher: four sockets around the compass; tap two symbols to swap them.
-  let picked = null, sel = null;
+  let picked = null, sel = null, lastId = null;
   function paintCipher(b, ctx) {
     const { s, E } = ctx, t = s.target, v = ctx.work(), at = attempt(ctx.x, s, ctx.done());
     const name = { shell: 'صدفة', anchor: 'مرساة', fish: 'سمكة', sail: 'شراع' }, pos = ['أعلى', 'يمين', 'أسفل', 'يسار'];
@@ -439,6 +445,283 @@
       onclick: () => { try { tone(330 + i * 50, .1, 'triangle', .04); } catch (er) {} const n = v.slice(); n[i] = (n[i] + 1) % t.gates[i]; moved(ctx, n); } },
       img('tool_water_valve', 'v5-valve-art', { style: `transform:rotate(${v[i] * (360 / t.gates[i])}deg)` }), E('b', { class: 'v5-outs', text: outs[i][v[i]].join(' ') }))));
     b.append(net);
+  }
+
+
+  /* ---------- seas 4–7 ---------- */
+  const nextHint = ctx => { const at = attempt(ctx.x, ctx.s, ctx.done()); return at.hint >= 2 ? TreasureLogic.assist(ctx.s, ctx.work()) : null; };
+  const SHAPE8 = [null, SHAPES[2], SHAPES[1], SHAPES[3], SHAPES[4], SHAPES[5],
+    '<path d="M20 37 V20 M20 22 L9 9 M20 18 L31 7 M20 28 L30 20" fill="none" stroke-width="4.5" stroke-linecap="round"/>', SHAPES[7],
+    '<path d="M20 3 L24.7 14.5 L37 15.3 L27.6 23.3 L30.5 35.4 L20 28.8 L9.5 35.4 L12.4 23.3 L3 15.3 L15.3 14.5Z"/>'];
+  const pickSwap = (ctx, i, v) => {
+    if (sel === null) { sel = i; paint(ctx); return; }
+    if (sel === i) { sel = null; paint(ctx); return; }
+    const n = v.slice(); [n[sel], n[i]] = [n[i], n[sel]]; sel = null;
+    try { tone(470, .06, 'triangle', .04); } catch (er) {}
+    moved(ctx, n);
+  };
+  const diffIdx = (a, b) => b ? a.map((x, i) => x !== b[i] ? i : -1).filter(i => i >= 0) : [];
+
+  // Ice map: 3×3 sliding tiles; each tile keeps its badge; a small key shows the finished map.
+  function paintSlide(b, ctx) {
+    const { s, E } = ctx, v = ctx.work(), at = attempt(ctx.x, s, ctx.done()), L = TreasureLogic, nx = nextHint(ctx), z = v.indexOf(0);
+    const hl = nx ? nx.indexOf(0) : -1;
+    const key = E('div', { class: 'v5-slide-key', 'aria-label': 'الترتيب المطلوب' }, ...[1, 2, 3, 4, 5, 6, 7, 8, 0].map(k => E('i', { class: k ? '' : 'gap' }, k ? svg(SHAPE8[k], 'v5-sb s' + k) : null)));
+    const grid = E('div', { class: 'v5-slide' + (L.solved(s, v) ? ' solved' : '') });
+    v.forEach((k, i) => {
+      const near = Math.abs(i % 3 - z % 3) + Math.abs(Math.floor(i / 3) - Math.floor(z / 3)) === 1;
+      if (!k) { grid.append(E('i', { class: 'v5-tile gap' + (at.hint === 1 ? ' pulse' : '') })); return; }
+      grid.append(E('button', { type: 'button', class: 'v5-tile' + (near ? ' near' : '') + (i === hl ? ' pulse' : ''), 'aria-label': `لوح ${['', 'الدائرة', 'المثلث', 'المعين', 'الهلال', 'الموجة', 'الفرع', 'الورقة', 'النجمة'][k]}${near ? '، ملاصق للفراغ' : ''}`,
+        onclick: () => { const n = L.slideMove(v, i); if (!n) { say(ctx, 'حرّك لوحًا ملاصقًا للفراغ.'); return; } try { tone(380, .05, 'triangle', .04); } catch (er) {} moved(ctx, n); } },
+        img('ch4_s1_piece_map_tile', 'v5-tile-art'), svg(SHAPE8[k], 'v5-sb s' + k)));
+    });
+    b.append(E('div', { class: 'v5-slide-wrap' }, grid, E('figure', { class: 'v5-slide-ref' }, key, E('figcaption', { text: 'الخريطة المطلوبة' }))));
+  }
+
+  // Crystal platform: a press flips the crystal and its orthogonal neighbours.
+  function paintLights(b, ctx) {
+    const { s, E } = ctx, v = ctx.work(), at = attempt(ctx.x, s, ctx.done()), L = TreasureLogic, nx = nextHint(ctx);
+    const gated = toolGate(b, ctx, 'needle', ['ركّب إبرة المرصد في مركز المنصة لتصل البلورات ببعضها.', 'ضع عدسة المنارة فوق المنصة لترى البارز من الغائر.']);
+    const target = nx ? v.findIndex((_, i) => L.equal(L.lightsPress(v, i), nx)) : -1;
+    const grid = E('div', { class: 'v5-lights' + (gated ? ' covered' : '') + (L.solved(s, v) ? ' solved' : '') });
+    const net = E('span', { class: 'v5-lnet', 'aria-hidden': 'true' }); net.innerHTML = '<svg viewBox="0 0 300 300"><path d="M50 50H250M50 150H250M50 250H250M50 50V250M150 50V250M250 50V250"/></svg>'; grid.append(net);
+    v.forEach((on, i) => grid.append(E('button', { type: 'button', disabled: gated, class: 'v5-crys' + (on ? ' up' : '') + (i === target ? ' pulse' : ''),
+      'aria-label': `بلورة ${i + 1}: ${on ? 'بارزة' : 'منخفضة'}`,
+      onclick: () => { try { tone(on ? 700 : 520, .08, 'sine', .04); } catch (er) {} moved(ctx, L.lightsPress(v, i)); } },
+      img('ch4_s2_piece_ring', 'v5-crys-ring'), on ? img('tool_crystal_weight', 'v5-crys-gem') : E('i', { class: 'v5-crys-low' }))));
+    if (!gated) grid.append(img('tool_observatory_needle', 'v5-lneedle'));
+    const plus = E('div', { class: 'v5-plus' + (at.hint >= 1 ? ' pulse' : '') }, ...Array.from({ length: 9 }, (_, k) => E('i', { class: [1, 3, 4, 5, 7].includes(k) ? (k === 4 ? 'me' : 'on') : '' })));
+    b.append(grid, E('div', { class: 'v5-lkey' }, plus, E('span', { text: 'اللمسة تقلب البلورة وجاراتها الأربع' })));
+  }
+
+  // Winter scales: a sealed reference on the left pan, a movable piece on the right; swap pieces until all are level.
+  const PIECE = ['ch4_s3_piece_feather', 'ch4_s3_piece_wood_leaf', 'tool_crystal_weight'], PNAME = ['الريشة', 'الورقة', 'البلورة'];
+  const REFMARK = [BADGE.circle, BADGE.triangle, BADGE.diamond];
+  function miniBal(E, left, right, tilt) {
+    return E('span', { class: 'v5-mbal', style: `--t:${tilt * 10}deg` }, E('i', { class: 'v5-mbeam' }, E('b', { class: 'l' }, left), E('b', { class: 'r' }, right)), E('i', { class: 'v5-mpost' }));
+  }
+  function paintScales(b, ctx) {
+    const { s, E } = ctx, t = s.target, v = ctx.work(), at = attempt(ctx.x, s, ctx.done()), L = TreasureLogic, nx = nextHint(ctx);
+    const gated = toolGate(b, ctx, 'weight', 'ضع بلورة الضبط في كفتها لتبدأ الموازنة.');
+    const P = k => img(PIECE[k], 'v5-mp'), R = k => E('span', { class: 'v5-mref' }, img('ch3_s2_piece_stone', 'v5-mp'), svg(REFMARK[k], 'v5-badge v5-refb'));
+    const cards = E('div', { class: 'v5-scards' },
+      E('figure', {}, miniBal(E, P(1), P(0), -1), miniBal(E, P(2), P(1), -1), E('figcaption', { text: 'الأخف إلى الأثقل: ريشة، ورقة، بلورة' })),
+      E('figure', { class: at.hint >= 1 ? 'pulse' : '' }, miniBal(E, R(0), P(0), -1), miniBal(E, P(2), R(0), -1), E('figcaption', { text: 'ثقل الأعلى بين الريشة والبلورة' })),
+      E('figure', {}, miniBal(E, P(1), R(1), -1), E('figcaption', { text: 'ثقل الأوسط أخف من الورقة' })),
+      E('figure', {}, miniBal(E, R(2), P(1), -1), E('figcaption', { text: 'ثقل الأسفل أثقل من الورقة' })));
+    const ghost = nx ? diffIdx(v, nx) : [];
+    const rows = E('div', { class: 'v5-scales' + (gated ? ' covered' : '') });
+    v.forEach((piece, k) => {
+      const tilt = L.scaleTilt(t, v, k);
+      rows.append(E('button', { type: 'button', disabled: gated, class: 'v5-scale' + (sel === k ? ' picked' : '') + (ghost.includes(k) ? ' pulse' : '') + (tilt === 0 ? ' level' : ''),
+        'aria-label': `الميزان ${['الأعلى', 'الأوسط', 'الأسفل'][k]}: ${PNAME[piece]}، ${tilt === 0 ? 'متزن' : tilt < 0 ? 'القطعة أخف' : 'القطعة أثقل'}${sel === k ? '، محدد' : ''}`, 'aria-pressed': sel === k,
+        onclick: () => pickSwap(ctx, k, v) }, miniBal(E, R(k), P(piece), tilt), E('small', { text: tilt === 0 ? 'متزن' : 'مائل' })));
+    });
+    b.append(cards, rows);
+  }
+
+  // Storm ropes: four loops; a loop drawn over another must leave first. A wrong pull strains the rope until released.
+  const LOOPS = [[92, 92, 74, 52], [210, 104, 70, 56], [96, 222, 74, 50], [212, 214, 70, 54]], ZORDER = [0, 1, 3, 2];
+  function paintRopes(b, ctx) {
+    const { s, E } = ctx, t = s.target, v = ctx.work(), at = attempt(ctx.x, s, ctx.done()), L = TreasureLogic, nx = nextHint(ctx);
+    const strained = v[4], hl = nx && strained < 0 ? diffIdx(v.slice(0, 4), nx.slice(0, 4))[0] : -1;
+    let g = '';
+    ZORDER.forEach(i => { if (!v[i]) return; const [cx, cy, rx, ry] = LOOPS[i], bad = strained === i || (strained >= 0 && t.cover[strained] === i);
+      g += `<ellipse class="halo" cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"/><ellipse class="rope${bad ? ' strain' : ''}" cx="${cx}" cy="${cy}" rx="${rx}" ry="${ry}"/>`; });
+    const board = E('div', { class: 'v5-ropes' + (strained >= 0 ? ' tight' : '') + (L.solved(s, v) ? ' solved' : '') });
+    const sv = E('span', { class: 'v5-rsvg', 'aria-hidden': 'true' }); sv.innerHTML = `<svg viewBox="0 0 300 300">${g}</svg>`; board.append(sv);
+    const pins = [[70, 70], [232, 84], [74, 240], [234, 236]], names = ['أعلى اليسار', 'أعلى اليمين', 'أسفل اليسار', 'أسفل اليمين'];
+    pins.forEach(([x, y], i) => { if (!v[i]) return; board.append(E('button', { type: 'button', class: 'v5-pin' + (i === hl ? ' pulse' : '') + (strained === i ? ' strain' : ''), disabled: strained >= 0, style: `left:${x / 3}%;top:${y / 3}%`,
+      'aria-label': `وتد ${names[i]}`,
+      onclick: () => { const n = L.ropePull(t, v, i); if (!n) return; try { tone(n[4] >= 0 ? 160 : 420, .15, 'triangle', .05); } catch (er) {} if (n[4] >= 0) say(ctx, 'انشد الحبل: حلقة أخرى تمر فوق هذا الوتد. أرخه ثم جرّب غيره.'); moved(ctx, n); } },
+      img('ch5_s1_piece_rope_pin', 'v5-pin-art'))); });
+    b.append(board);
+    if (strained >= 0) b.append(ctx.button('أرخِ الحبل', () => { try { tone(300, .2, 'sine', .04); } catch (er) {} moved(ctx, L.ropeRelease(v)); }, 'primary v5-release'));
+    b.append(E('p', { class: 'v5-legend' }, E('span', { text: 'الحبل المتصل فوق الحبل المقطوع عند التقاطع' })));
+  }
+
+  // Wind gears: motor on top, four swappable gears, output below; the turn travels down until the first gap or overlap.
+  function paintGearfit(b, ctx) {
+    const { s, E } = ctx, t = s.target, v = ctx.work(), at = attempt(ctx.x, s, ctx.done()), L = TreasureLogic, nx = nextHint(ctx);
+    const gated = toolGate(b, ctx, 'axle', 'ثبّت محور الرياح في حاملة الآلة لتتصل التروس.');
+    const U = 14, top = 2 * U + 6, files = ['small', 'medium', 'large', 'xlarge'], run = gated ? 0 : L.gearRun(t, v), gaps = L.gearContacts(t, v);
+    const ghost = nx ? diffIdx(v, nx) : [];
+    const col = E('div', { class: 'v5-gearcol' + (gated ? ' covered' : '') + (run === 5 ? ' solved' : ''), style: `height:${top + t.centers[5] * U + 2 * U + 10}px` });
+    const radii = [t.motor, ...v.map(g => t.radii[g]), t.output];
+    radii.forEach((r, k) => {
+      const y = top + t.centers[k] * U, d = r * 2 * U * 1.16, file = k === 0 ? 'medium' : k === 5 ? 'small' : files[v[k - 1]];
+      const spin = run >= k ? (k % 2 ? ' ccw' : ' cw') : '';
+      const gear = img('ch5_s2_piece_gear_' + file, 'v5-gear' + spin, { style: `width:${d}px;height:${d}px;top:${y - d / 2}px` });
+      if (k === 0 || k === 5) { col.append(gear); return; }
+      const i = k - 1;
+      col.append(E('button', { type: 'button', disabled: gated, class: 'v5-gslot' + (sel === i ? ' picked' : '') + (ghost.includes(i) ? ' pulse' : ''), style: `top:${y - 24}px`,
+        'aria-label': `الموضع ${i + 1}: ترس ${['صغير', 'متوسط', 'كبير', 'أكبر'][v[i]]}${sel === i ? '، محدد' : ''}`, 'aria-pressed': sel === i,
+        onclick: () => pickSwap(ctx, i, v) }, E('b', { text: String(i + 1) })), gear);
+    });
+    gaps.forEach((g, k) => { if (g === 0) return; const y = top + (t.centers[k] + radii[k]) * U; col.append(E('i', { class: 'v5-gmark ' + (g > 0 ? 'gap' : 'over') + (at.hint >= 1 && k === 0 ? ' pulse' : ''), style: `top:${y - 9}px`, title: g > 0 ? 'فراغ' : 'تداخل' })); });
+    col.append(E('i', { class: 'v5-gtarget' + (run === 5 ? ' on' : ''), style: `top:${top + t.centers[5] * U - 14}px`, 'aria-hidden': 'true' }));
+    b.append(col, E('p', { class: 'v5-legend' }, E('span', {}, E('i', { class: 'v5-gmark gap sm' }), ' فراغ'), E('span', {}, E('i', { class: 'v5-gmark over sm' }), ' تداخل'), E('span', { text: '↺ المطلوب: يدور الترس الأخير عكس الساعة' })));
+  }
+
+  // Volcano drums: three cylinders 0 closed → 1 side → 2 open → 0; a window shows the other drums each needs.
+  const PORT = ['<rect x="7" y="7" width="26" height="26" rx="5"/>', '<rect x="7" y="7" width="26" height="26" rx="5" fill="none" stroke-width="3.5"/><path d="M7 12 Q7 7 12 7 H20 V33 H12 Q7 33 7 28Z"/>', '<rect x="7" y="7" width="26" height="26" rx="5" fill="none" stroke-width="3.5"/><circle cx="20" cy="20" r="6" fill="none" stroke-width="3"/>'];
+  function paintDrums(b, ctx) {
+    const { s, E } = ctx, t = s.target, v = ctx.work(), at = attempt(ctx.x, s, ctx.done()), L = TreasureLogic, nx = nextHint(ctx);
+    const gated = toolGate(b, ctx, 'heatkey', 'أدخل مفتاح الحرارة في فتحة العزل ليبرد سطح الأقفال.');
+    const ghost = nx ? diffIdx(v, nx) : [];
+    const box = E('div', { class: 'v5-chest v5-drums' + (gated ? ' covered' : '') + (L.solved(s, v) ? ' open' : '') });
+    t.rules.forEach((rule, i) => {
+      const can = L.drumCan(t, v, i);
+      const win = E('div', { class: 'v5-window ' + (can ? 'ok' : 'wait') + (at.hint >= 1 && i === 2 ? ' pulse' : ''), 'aria-hidden': 'true' });
+      if (!rule.length) win.append(E('b', { class: 'v5-free', text: '✓' }));
+      rule.forEach(([j, w]) => win.append(E('span', { class: 'v5-cond' + (v[j] === w ? ' met' : '') }, E('i', { text: ['أ', 'ب', 'ج'][j] }), svg(PORT[w], 'v5-port'))));
+      box.append(E('div', { class: 'v5-lockrow' },
+        E('button', { type: 'button', disabled: gated, class: 'v5-drum' + (can ? '' : ' blocked') + (ghost.includes(i) ? ' pulse' : ''), 'aria-label': `الأسطوانة ${['العليا', 'الوسطى', 'السفلى'][i]}: ${['مغلقة', 'جانبية', 'مفتوحة'][v[i]]}${can ? '' : '، محجوبة'}`,
+          onclick: () => { const n = L.drumMove(t, v, i); if (!n) { win.classList.remove('flash'); void win.offsetWidth; win.classList.add('flash'); try { sfx.bad(); } catch (er) {} return; } try { tone(260 + v[i] * 80, .12, 'triangle', .05); } catch (er) {} moved(ctx, n); } },
+          E('i', { class: 'v5-dtag', text: ['أ', 'ب', 'ج'][i] }), img('ch5_s3_piece_lock_drum', 'v5-drum-art', { style: `transform:rotate(${v[i] * 90}deg)` }), svg(PORT[v[i]], 'v5-port big s' + v[i])), win));
+    });
+    b.append(box, E('p', { class: 'v5-legend' }, ...['مغلق', 'جانبي', 'مفتوح'].map((n, k) => E('span', {}, svg(PORT[k], 'v5-port sm s' + k), ' ' + n))));
+  }
+
+  // Shadow pass: two stones; pick one, then an arrow. A stone moves only with free cells ahead and behind.
+  function paintPush(b, ctx) {
+    const { s, E } = ctx, t = s.target, v = ctx.work(), at = attempt(ctx.x, s, ctx.done()), L = TreasureLogic, nx = nextHint(ctx);
+    const gated = toolGate(b, ctx, 'lens', 'ضع عدسة المنارة لترى التجويفين ومجرى المكبس.');
+    const grid = E('div', { class: 'v5-push' + (gated ? ' covered' : '') + (L.solved(s, v) ? ' solved' : ''), style: `--n:${t.n}` });
+    const stoneAt = (r, c) => v[0] === r && v[1] === c ? 0 : v[2] === r && v[3] === c ? 1 : -1;
+    const hintStone = nx ? [0, 1].find(k => ![nx[0] === v[k * 2] && nx[1] === v[k * 2 + 1], nx[2] === v[k * 2] && nx[3] === v[k * 2 + 1]].some(Boolean)) : -1;
+    for (let r = 0; r < t.n; r++) for (let c = 0; c < t.n; c++) {
+      const wall = t.walls.some(w => w[0] === r && w[1] === c), goal = !gated && t.goal.some((_, k) => k % 2 === 0 && t.goal[k] === r && t.goal[k + 1] === c), k = stoneAt(r, c);
+      const cell = E(k >= 0 ? 'button' : 'div', { class: 'v5-pcell' + (wall ? ' wall' : '') + (goal ? ' goal' : '') });
+      if (k >= 0) {
+        cell.type = 'button'; cell.disabled = gated; cell.classList.add('stone'); if (sel === k) cell.classList.add('picked'); if (k === hintStone) cell.classList.add('pulse');
+        cell.setAttribute('aria-label', `حجر في الصف ${r + 1} العمود ${c + 1}${sel === k ? '، محدد' : ''}`);
+        cell.append(img('ch3_s2_piece_stone', 'v5-pstone'));
+        cell.onclick = () => { sel = sel === k ? null : k; paint(ctx); };
+      }
+      grid.append(cell);
+    }
+    if (sel !== null && !gated) {
+      const r = v[sel * 2], c = v[sel * 2 + 1];
+      [['↑', -1, 0, 'أعلى'], ['→', 0, 1, 'يمين'], ['↓', 1, 0, 'أسفل'], ['←', 0, -1, 'يسار']].forEach(([ar, dr, dc, nm], d) => {
+        const n = L.pushMove(t, v, sel, d), R = r + dr, C = c + dc;
+        if (R < 0 || C < 0 || R >= t.n || C >= t.n) return;
+        grid.append(E('button', { type: 'button', class: 'v5-parrow' + (n ? '' : ' no'), style: `left:${(C + .5) / t.n * 100}%;top:${(R + .5) / t.n * 100}%`, 'aria-label': `ادفع نحو ${nm}${n ? '' : '، لا يمكن'}`,
+          onclick: () => { if (!n) { say(ctx, 'يلزم فراغ أمام الحجر وفراغ خلفه ليصل المكبس.'); return; } sel = null; try { tone(200, .12, 'triangle', .05); } catch (er) {} moved(ctx, n); } }, ar));
+      });
+    }
+    b.append(grid, E('p', { class: 'v5-legend' }, E('span', {}, E('i', { class: 'v5-pkey goal' }), ' تجويف'), E('span', {}, E('i', { class: 'v5-pkey wall' }), ' صخر')));
+    if (at.hint >= 1 && !gated) say(ctx, 'المكبس يأتي من الخلف: انظر إلى الخانة المقابلة لاتجاه الدفع.');
+  }
+
+  // Moon crossing: draw every link once from the compass, without lifting the pen.
+  function paintStroke(b, ctx) {
+    const { s, E } = ctx, t = s.target, v = ctx.work(), at = attempt(ctx.x, s, ctx.done()), L = TreasureLogic, nx = nextHint(ctx);
+    const gated = toolGate(b, ctx, 'compass', 'ضع البوصلة على اللوحة لتعرف أين يبدأ الرسم.');
+    const pen = L.strokeAt(t, v), P = n => [(n % t.cols + .5) / t.cols * 100, (Math.floor(n / t.cols) + .5) / t.rows * 100];
+    const used = new Set(v), nextEdge = nx ? nx[nx.length - 1] : -1, deg = {};
+    t.edges.forEach(([a, c]) => { deg[a] = (deg[a] || 0) + 1; deg[c] = (deg[c] || 0) + 1; });
+    let lines = '';
+    t.edges.forEach(([a, c], e) => { const [x1, y1] = P(a), [x2, y2] = P(c); lines += `<line x1="${x1 * 3}" y1="${y1 * 4}" x2="${x2 * 3}" y2="${y2 * 4}" class="${used.has(e) ? 'on' : 'off'}${e === nextEdge ? ' hl' : ''}"/>`; });
+    const board = E('div', { class: 'v5-stroke' + (gated ? ' covered' : '') + (L.solved(s, v) ? ' solved' : '') });
+    const sv = E('span', { class: 'v5-ssvg', 'aria-hidden': 'true' }); sv.innerHTML = `<svg viewBox="0 0 300 400">${lines}</svg>`; board.append(sv);
+    const stuck = !gated && !L.solved(s, v) && !L.nextStates(s, v).length;
+    Object.keys(deg).map(Number).forEach(n => {
+      const [x, y] = P(n), e = t.edges.findIndex(([a, c], k) => !used.has(k) && ((a === pen && c === n) || (c === pen && a === n)));
+      board.append(E('button', { type: 'button', disabled: gated, class: 'v5-snode' + (n === pen ? ' pen' : '') + (e >= 0 ? ' near' : '') + (at.hint >= 1 && deg[n] === 1 ? ' pulse' : ''), style: `left:${x}%;top:${y}%`,
+        'aria-label': `النجمة ${n + 1} ${n === pen ? '، القلم هنا' : e >= 0 ? '، يمكن الوصل إليها' : ''}`,
+        onclick: () => { if (e < 0) { say(ctx, n === pen ? 'القلم هنا. المس نجمة متصلة به.' : 'لا وصلة متبقية بين القلم وهذه النجمة.'); return; } try { tone(600 + v.length * 20, .06, 'sine', .04); } catch (er) {} moved(ctx, L.strokeDraw(t, v, e)); } },
+        n === pen ? img('tool_compass', 'v5-spen') : E('i', { class: 'v5-sdot' })));
+    });
+    b.append(board);
+    if (stuck) say(ctx, 'لا وصلة متبقية من هنا. تراجع خطوة أو ابدأ محاولة جديدة.');
+    if (!gated && v.length) b.append(ctx.button('تراجع خطوة', () => moved(ctx, v.slice(0, -1)), 'v5-undo'));
+  }
+
+  // Oath platform (three pegs): tap a peg to lift its top ring, then tap the peg it goes to.
+  function paintHanoi(b, ctx) {
+    const { s, E } = ctx, v = ctx.work(), at = attempt(ctx.x, s, ctx.done()), L = TreasureLogic, nx = nextHint(ctx);
+    const gated = toolGate(b, ctx, 'clapper', 'ركّب مطرقة الجرس في العربة لتصير ذراعًا تلتقط الحلقة العليا.');
+    const from = nx ? v[diffIdx(v, nx)[0]] : -1, to = nx ? nx[diffIdx(v, nx)[0]] : -1;
+    const row = E('div', { class: 'v5-hanoi' + (gated ? ' covered' : '') + (L.solved(s, v) ? ' solved' : '') });
+    [0, 1, 2].forEach(p => {
+      const discs = [2, 1, 0].filter(k => v[k] === p), top = L.hanoiTop(v, p);
+      const peg = E('button', { type: 'button', disabled: gated, class: 'v5-peg' + (sel === p ? ' picked' : '') + (p === from && sel === null ? ' pulse' : '') + (p === to && sel !== null ? ' pulse' : '') + (p === 2 ? ' goal' : ''),
+        'aria-label': `العمود ${['الأيسر', 'الأوسط', 'الأيمن'][p]}: ${discs.length} حلقات${sel === p ? '، الحلقة العليا مرفوعة' : ''}`,
+        onclick: () => {
+          if (sel === null) { if (top < 0) return; sel = p; paint(ctx); return; }
+          if (sel === p) { sel = null; paint(ctx); return; }
+          const n = L.hanoiMove(v, sel, p);
+          if (!n) { say(ctx, 'لا توضع حلقة فوق حلقة أصغر منها.'); sel = null; paint(ctx); return; }
+          sel = null; try { tone(330 + p * 60, .1, 'triangle', .05); } catch (er) {} moved(ctx, n);
+        } }, E('i', { class: 'v5-rod' }));
+      discs.forEach(k => peg.append(img('ch4_s2_piece_ring', 'v5-disc d' + k + (sel === p && k === top ? ' up' : ''))));
+      row.append(peg);
+    });
+    b.append(row, E('p', { class: 'v5-legend' }, E('span', { text: 'الهدف: الحلقات كلها على العمود الأيمن، الكبرى أسفل' })));
+  }
+
+  // Last sea: ferry Shibl, the fish and the bait; the boat carries Nawfal and one load at most.
+  const BAIT = '<path d="M8 30 C8 18 20 22 20 12 C20 5 28 5 30 10" fill="none" stroke-width="5" stroke-linecap="round"/><circle cx="31" cy="11" r="3"/>';
+  function paintRiver(b, ctx) {
+    const { s, E } = ctx, t = s.target, v = ctx.work(), at = attempt(ctx.x, s, ctx.done()), L = TreasureLogic, nx = nextHint(ctx);
+    const gated = toolGate(b, ctx, 'heatkey', 'أدخل مفتاح الحرارة في محرك الزورق ليعمل.');
+    const art = k => k === 0 ? img('crew_shibl', 'v5-cargo-art round') : k === 1 ? img('ch1_s2_piece_fish', 'v5-cargo-art') : svg(BAIT, 'v5-cargo-art bait');
+    const load = sel !== null && v[sel + 1] === v[0] ? sel : null;
+    const hintItem = nx ? [0, 1, 2].find(k => nx[k + 1] !== v[k + 1]) : undefined;
+    const bank = side => E('div', { class: 'v5-bank ' + (side ? 'right' : 'left') }, ...[0, 1, 2].filter(k => v[k + 1] === side && k !== load).map(k =>
+      E('button', { type: 'button', disabled: gated || side !== v[0], class: 'v5-cargo' + (nx && hintItem === k ? ' pulse' : ''), 'aria-label': `${t.items[k]}${side === v[0] ? '، المس لتحميله' : ''}`,
+        onclick: () => { sel = k; paint(ctx); } }, art(k), E('small', { text: t.items[k] }))));
+    const boat = E('div', { class: 'v5-ferry ' + (v[0] ? 'right' : 'left') }, img('crew_nawfal', 'v5-ferry-man'), img('ch3_s1_piece_boat', 'v5-ferry-boat'),
+      load !== null ? E('button', { type: 'button', class: 'v5-cargo onboard', 'aria-label': `${t.items[load]} في الزورق، المس لإنزاله`, onclick: () => { sel = null; paint(ctx); } }, art(load)) : null);
+    const river = E('div', { class: 'v5-river' + (gated ? ' covered' : '') + (L.solved(s, v) ? ' solved' : '') }, bank(0), E('div', { class: 'v5-water' }, boat), bank(1));
+    const go = ctx.button(load !== null ? 'اعبر مع ' + t.items[load] : 'اعبر بالزورق فارغًا', () => {
+      const n = L.riverCross(t, v, load === null ? -1 : load); if (!n) return;
+      if (!L.riverSafe(t, n)) { const bad = t.clash.find(([a, c]) => n[a + 1] === n[c + 1] && n[a + 1] !== n[0]); say(ctx, `لا يمكن: سيبقى ${t.items[bad[0]]} مع ${t.items[bad[1]]} دون نوفل.`); return; }
+      sel = null; try { tone(260, .2, 'sine', .05); } catch (er) {} moved(ctx, n);
+    }, 'primary v5-cross' + (nx && hintItem === undefined ? ' pulse' : ''));
+    go.disabled = gated; go.setAttribute('aria-label', 'عبور: ' + go.textContent);
+    const clash = E('div', { class: 'v5-clash' + (at.hint >= 1 ? ' pulse' : '') }, ...t.clash.map(([a, c]) => E('span', {}, art(a), E('b', { text: '✕' }), art(c))));
+    b.append(clash, river, go);
+  }
+
+  // Dawn channel: boats sail only forward; step into the gap or hop over one boat coming the other way.
+  function paintFrogs(b, ctx) {
+    const { s, E } = ctx, v = ctx.work(), L = TreasureLogic, nx = nextHint(ctx);
+    const hl = nx ? diffIdx(v, nx).find(i => v[i] !== 0) : -1;
+    const row = E('div', { class: 'v5-frogs' + (L.solved(s, v) ? ' solved' : '') });
+    v.forEach((p, i) => {
+      if (!p) { row.append(E('i', { class: 'v5-fcell gap' })); return; }
+      row.append(E('button', { type: 'button', class: 'v5-fcell' + (L.frogMove(v, i) ? ' can' : '') + (i === hl ? ' pulse' : ''), 'aria-label': `زورق في الخانة ${i + 1} يتجه ${p === 1 ? 'شرقًا' : 'غربًا'}`,
+        onclick: () => { const n = L.frogMove(v, i); if (!n) { say(ctx, 'لا يتحرك هذا الزورق الآن: أمامه زورق من اتجاهه أو لا فراغ قريب.'); return; } try { tone(p === 1 ? 500 : 420, .07, 'sine', .04); } catch (er) {} moved(ctx, n); } },
+        img('ch3_s1_piece_boat', 'v5-fboat' + (p === 2 ? ' west' : '')), E('i', { class: 'v5-fdir', text: p === 1 ? '→' : '←' })));
+    });
+    const goal = E('div', { class: 'v5-frogs goal', 'aria-hidden': 'true' }, ...s.target.goal.map(p => p ? E('i', { class: 'v5-fcell mini' }, img('ch3_s1_piece_boat', 'v5-fboat' + (p === 2 ? ' west' : ''))) : E('i', { class: 'v5-fcell mini gap' })));
+    b.append(row, E('figure', { class: 'v5-fgoal' }, goal, E('figcaption', { text: 'الهدف' })));
+  }
+
+  // Final door: seven seals on a fixed light channel; every secret must hold at once.
+  const SEALS = ['ch1_seal_coral', 'ch2_seal_echo', 'ch3_seal_oasis', 'ch4_seal_crystal', 'ch5_seal_wind', 'ch6_seal_moon', 'ch7_seal_dawn'];
+  const SEALN = ['المرجان', 'الصدى', 'الواحة', 'البلور', 'الرياح', 'القمر', 'الفجر'];
+  function paintPath(b, ctx) {
+    const { s, E } = ctx, t = s.target, v = ctx.work(), at = attempt(ctx.x, s, ctx.done()), L = TreasureLogic, nx = nextHint(ctx);
+    const ghost = nx ? diffIdx(v, nx) : [];
+    const solved = L.solved(s, v), C = (r, c) => [(c - .5) * 25, (r - .5) * 25];
+    const pts = [[4, 0], ...t.slots.slice(0, 4), t.bend, ...t.slots.slice(4), [2, 5]].map(([r, c]) => C(r, c).map(n => n * 3).join(' ')).join(' L');
+    const grid = E('div', { class: 'v5-door' + (solved ? ' solved' : '') });
+    const sv = E('span', { class: 'v5-dsvg', 'aria-hidden': 'true' }); sv.innerHTML = `<svg viewBox="0 0 300 300"><path class="chan" d="M${pts}"/><path class="beam" d="M${pts}"/></svg>`; grid.append(sv);
+    for (let r = 1; r <= 4; r++) for (let c = 1; c <= 4; c++) {
+      const k = t.slots.findIndex(p => p[0] === r && p[1] === c), bend = t.bend[0] === r && t.bend[1] === c;
+      if (k < 0) { grid.append(E('i', { class: 'v5-dcell' + (bend ? ' bend' : ' rock'), style: `grid-row:${r};grid-column:${c}` })); continue; }
+      grid.append(E('button', { type: 'button', class: 'v5-dcell slot' + (sel === k ? ' picked' : '') + (ghost.includes(k) ? ' pulse' : ''), style: `grid-row:${r};grid-column:${c}`,
+        'aria-label': `تجويف ${k + 1}: ختم ${SEALN[v[k]]}${sel === k ? '، محدد' : ''}`, 'aria-pressed': sel === k,
+        onclick: () => { say(ctx, ''); pickSwap(ctx, k, v); } }, img(SEALS[v[k]], 'v5-dseal')));
+    }
+    grid.append(E('i', { class: 'v5-dio in', 'aria-hidden': 'true' }), E('i', { class: 'v5-dio out', 'aria-hidden': 'true' }));
+    const CARD = [['→', 0], [0, '→', 1], ['→', 2, '↰'], [3, 2], ['→', 4, '→'], [5, 2], [6, '▮']];
+    const cards = E('div', { class: 'v5-dcards' + (at.hint >= 1 ? ' hl' : '') }, ...TreasureData.SECRETS5.map((Q, k) => E('figure', { class: k === 3 ? 'col' : '' },
+      E('div', {}, ...CARD[k].map(p => typeof p === 'number' ? img(SEALS[p], 'v5-dcard-art') : E('b', { text: p }))), E('figcaption', { text: Q.title + ': ' + Q.mark }))));
+    b.append(grid, ctx.button('افحص الباب', () => { if (L.solved(s, v)) return; say(ctx, 'لم يستيقظ الطريق بعد. راجع الأسرار السبعة؛ يجب أن تصدق كلها معًا.'); }, 'v5-check'), cards);
   }
 
   root.TreasureSea1 = { render, v5state, chal, attempt, ART };

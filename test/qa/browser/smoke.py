@@ -104,8 +104,10 @@ async def main(a):
                 for _ in range(6):
                     if await page.locator('#v5-board').count(): break
                     await page.locator('#v-puz .t7-btn.primary').last.click(); await page.wait_for_timeout(250)
-                gate = page.locator('.v5-gate .t7-btn.primary')
-                if await gate.count(): await gate.click(); await page.wait_for_timeout(300)
+                for _ in range(3):
+                    gate = page.locator('.v5-gate .t7-btn.primary')
+                    if not await gate.count(): break
+                    await gate.click(); await page.wait_for_timeout(300)
                 steps = await page.evaluate(f"""()=>{{const L=T7.logic,s=T7.data.stations[{i}],work=()=>T7.state().work[s.id];
                   if(s.kind==='weigh')return null;
                   let v=work()||L.initial(s),out=[],n=0,last=null;const pos=['أعلى','يمين','أسفل','يسار'],nm=['الأيسر','الأوسط','الأيمن'],gate=['البوابة العليا','البوابة الوسطى','البوابة اليسرى','البوابة اليمنى'],bell=['الدائرة','المثلث','المعين','الموجة'];
@@ -118,6 +120,17 @@ async def main(a):
                     else if(s.kind==='linked'){{const k=[0,1,2].find(k=>JSON.stringify(L.linkedTurn(s.target,v,k))===JSON.stringify(nx));out.push(last===k?['تمثال '+nm[k]]:['تمثال '+nm[k],'تمثال '+nm[k]]);last=k;}}
                     else if(s.kind==='tide')out.push([nx[0]!==v[0]?s.target.names[nx[0]]:'ذراع المد']);
                     else if(s.kind==='valves')out.push([gate[d[0]]]);
+                    else if(s.kind==='slide')out.push(['لوح '+['','الدائرة','المثلث','المعين','الهلال','الموجة','الفرع','الورقة','النجمة'][v[nx.indexOf(0)]]]);
+                    else if(s.kind==='lights')out.push(['بلورة '+(v.findIndex((_,k)=>L.equal(L.lightsPress(v,k),nx))+1)+':']);
+                    else if(s.kind==='scales'){{const m=['الميزان الأعلى','الميزان الأوسط','الميزان الأسفل'];out.push([m[d[0]],m[d[1]]]);}}
+                    else if(s.kind==='ropes')out.push(['وتد '+['أعلى اليسار','أعلى اليمين','أسفل اليسار','أسفل اليمين'][d[0]]]);
+                    else if(s.kind==='gearfit'||s.kind==='path')out.push([(s.kind==='path'?'تجويف ':'الموضع ')+(d[0]+1)+':',(s.kind==='path'?'تجويف ':'الموضع ')+(d[1]+1)+':']);
+                    else if(s.kind==='drums')out.push(['الأسطوانة '+['العليا','الوسطى','السفلى'][d[0]]+':']);
+                    else if(s.kind==='push'){{let k=0,dd;for(k=0;k<2;k++){{dd=[0,1,2,3].find(x=>L.equal(L.pushMove(s.target,v,k,x),nx));if(dd!==undefined)break;}}out.push(['حجر في الصف '+(v[k*2]+1)+' العمود '+(v[k*2+1]+1),'ادفع نحو '+['أعلى','يمين','أسفل','يسار'][dd]]);}}
+                    else if(s.kind==='stroke')out.push(['النجمة '+(L.strokeAt(s.target,nx)+1)+' ']);
+                    else if(s.kind==='hanoi'){{const m=['العمود الأيسر','العمود الأوسط','العمود الأيمن'];out.push([m[v[d[0]]],m[nx[d[0]]]]);}}
+                    else if(s.kind==='river'){{const k=[0,1,2].find(k=>v[k+1]!==nx[k+1]);out.push(k===undefined?['عبور']:[s.target.items[k]+'،','عبور']);}}
+                    else if(s.kind==='frogs')out.push(['زورق في الخانة '+(d.find(k=>v[k]!==0)+1)+' ']);
                     v=nx}}return out}}""")
                 if steps is None:
                     for k in range(6):
