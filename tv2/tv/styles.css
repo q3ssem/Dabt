@@ -2,6 +2,30 @@
 
 .question-title.long{font-size:1.05rem;line-height:1.5}.has-question-image .question-title{font-size:1.05rem;max-height:14vh}.has-question-image .question-image{height:15vh}.has-question-image .option{min-height:10vh;font-size:.85rem}.has-question-image .option img{width:4rem;max-height:8vh}
 
+
+/* ===== هوية ضبط دماغك (مطوّرة من تصميم التلفزيون الأول): ليل كحلي، ذهب، عاجي ===== */
+:root{--bg:#0A1428;--bg2:#0F1D38;--surface:#122241;--panel:#182C52;--line:rgba(227,188,98,.26);--line2:rgba(243,235,216,.12);--text:#F5EEDC;--muted:#AEB8D0;--accent:#E3BC62;--gold:#F2D58E;--blue:#7AA6FF;--good:#4FC08D;--bad:#EF6F86;font-family:"Tajawal","Segoe UI",Tahoma,Arial,sans-serif}
+body{background:radial-gradient(70% 55% at 85% 0%,rgba(227,188,98,.14),transparent 60%),radial-gradient(60% 60% at 0% 100%,rgba(122,166,255,.12),transparent 60%),linear-gradient(180deg,var(--bg2),var(--bg));font-weight:500}
+h1,h2,h3,.brand{font-weight:800;letter-spacing:0}h1{color:var(--text)}
+.logo i{background:var(--accent)}.logo i:last-child{background:var(--blue)}
+button{background:linear-gradient(180deg,#1C3260,var(--panel));border:1.5px solid var(--line2);font-weight:700}
+.primary{background:linear-gradient(180deg,#F0CD78,var(--accent));color:#1B1407;border-color:#F2D58E;box-shadow:0 6px 18px -8px rgba(227,188,98,.7)}
+.danger{color:var(--bad)}
+.panel,.home-card,.rank-row,.pod,.dialog{background:linear-gradient(180deg,#152850,var(--surface));border:1.5px solid var(--line)!important;box-shadow:0 14px 34px -22px #000}
+.home-card.main,.home-card:nth-child(2){background:linear-gradient(160deg,#2A2A3E 0%,#1B2F57 55%,#14264A 100%);border-color:rgba(242,213,142,.55)!important}
+.focus:focus-visible,.focus:focus,input:focus,select:focus{outline:4px solid var(--gold);outline-offset:5px;box-shadow:0 0 0 10px rgba(242,213,142,.12)}
+.chip{background:rgba(18,34,65,.9);border-color:var(--line)}.chip b{color:var(--gold)}
+#connection.on,.eyebrow,a{color:var(--accent)}
+.paircode{color:var(--gold);font-weight:900;letter-spacing:.08em}
+.qr{box-shadow:0 0 0 6px rgba(227,188,98,.35)}
+.option{border-radius:22px;border:0;box-shadow:inset 0 -6px 0 rgba(0,0,0,.18),0 10px 24px -14px #000;font-weight:800}
+.option .badge{background:rgba(255,255,255,.22);border-radius:12px}
+.option.right{box-shadow:0 0 0 5px var(--gold),0 0 40px rgba(242,213,142,.5)}
+#progress{background:linear-gradient(90deg,var(--accent),var(--gold))}
+.rank-row:first-child{border-color:rgba(242,213,142,.7)!important;background:linear-gradient(90deg,rgba(227,188,98,.22),#152850)}
+.podium .pod.first{background:linear-gradient(180deg,rgba(227,188,98,.3),#152850);border-color:var(--gold)!important}
+.podium .score{color:var(--gold)}
+.countdown{color:var(--gold)}
 /* ثيمات الشاشة */
 body[data-look=ramadan]{--bg:#0d1630;--surface:#162245;--panel:#1d2c58;--line:#33467d;--accent:#f2c75c;--blue:#8fb6ff}
 body[data-look=eid]{--bg:#141a33;--surface:#1f2850;--panel:#283364;--line:#3e4b86;--accent:#ff9ec7;--blue:#ffd36b}
@@ -17,3 +41,14 @@ header .brand{font-size:calc(var(--fs)*1.35)}.header-tools{font-size:calc(var(--
 /* صالة الانتظار مضغوطة لتناسب الشاشة */
 .split .note{display:none}.qr{width:min(22vh,20vw)}.paircode{line-height:1.2}
 .podium{margin:1.5vh 0}.podium .pod{min-height:15vh;padding:.6rem}.podium .pod.first{min-height:20vh}
+/* النهاية: بقية اللاعبين في شبكة مضغوطة تتسع لـ20 لاعبًا */
+.rest-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(14em,1fr));gap:.35rem .8rem;margin-top:1.2vh}
+.rest{display:flex;align-items:center;gap:.5em;padding:.25em .7em;border-radius:12px;background:rgba(18,34,65,.75);border:1px solid var(--line2);font-size:.82rem}
+.rest span{color:var(--muted);min-width:1.6em}.rest b{flex:1;white-space:nowrap;overflow:hidden;text-overflow:ellipsis;font-weight:700}.rest em{font-style:normal;color:var(--gold);font-weight:800}
+.board .rank-row{padding-block:.35em}
+.final-actions{margin-block:1vh}
+.board{gap:6px;max-height:none;padding-block:4px}.board .rank-row{min-height:5vh}.board~.round-extra{margin-top:1vh}
+.podium{margin:1vh 0}.podium .pod{min-height:0;padding:.45rem .6rem}.podium .pod.first{min-height:0;transform:translateY(-1vh)}.pod strong{margin:.3em 0}.podium .av{width:1.8em;height:1.8em}
+.rest-grid{grid-template-columns:repeat(5,minmax(0,1fr));gap:.3rem .6rem;margin-top:1vh}.rest{padding:.25em .6em}
+.podium .pod{display:grid;grid-template-columns:auto auto;justify-content:center;align-items:center;column-gap:.6em}.podium .pod strong,.podium .pod .score{grid-column:1/-1}.podium .pod .medal{font-size:1.6rem}
+.pagehead:has(~.podium) .eyebrow{display:none}.pagehead:has(~.podium){margin-bottom:.5vh}.podium~.note,.podium~.stats{padding:.5em .9em}
