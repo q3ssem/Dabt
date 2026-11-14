@@ -1,8 +1,8 @@
 {
-  "version": "4.2.1",
+  "version": "4.2.2",
   "date": "2026-11-14",
-  "source": "MindLab_4.2.zip + 4.2.1 fixes",
-  "status": "review build 4.2.1; Chrome browser smoke passed; iPhone/audio/touch not validated",
+  "source": "4.2.1 + 4.2.2 presentation fixes (atlas re-layout, sprite clipping, light-surface ink)",
+  "status": "review build 4.2.2; Chrome browser smoke passed; iPhone/audio/touch not validated",
   "checks": {
     "total": 1819,
     "generated_problem_samples": 265,
@@ -316,7 +316,8 @@
       768
     ],
     "problems": [],
-    "note": "Games are opened and Treasure stations solved programmatically via the in-game assist; this is not touch/drag play."
+    "note": "Games are opened and Treasure stations solved programmatically via the in-game assist; this is not touch/drag play.",
+    "note_4_2_2": "smoke re-run on 4.2.2: passed, problems []"
   },
   "physical_iphone": "not tested",
   "audio_listening": "not tested",
@@ -328,5 +329,11 @@
     "qa/browser/smoke.py start-wait fixed for cards and racer; painted background URLs must return HTTP 200",
     "assessment digits unified to Western",
     "version 4.2.1 in package.json, sw.js cache name, Watercolor.version"
+  ],
+  "fixes_4_2_2": [
+    "legacy/art objects-a..e, world-a/c/d/e, motion re-laid on exact grid by tools/relayout_atlas.py (no cell touches its edge)",
+    "watercolor/app.js W.fitMarkup clips every sprite to its own atlas cell",
+    "watercolor/style.css dark ink for light watercolor surfaces and old-puzzle bodies; .road selector no longer hits .prio",
+    "story-puzzle sheets get a paper wash over the painting"
   ]
 }

@@ -16,7 +16,7 @@
 .wc-play .xsheet .cta.ghost{color:#284d51;border-color:#7d9c98;background:#f9f5e9e8}
 .wc-play .pzbody{border-radius:22px;background:var(--wc-paper) var(--wc-scene) center/cover no-repeat;border-color:#b6b59d;padding:18px 12px}
 .wc-play .pzbody>.xsheet{margin:0!important;border:0!important;background:none!important;box-shadow:none!important}
-.wc-play :is(.field,.crf,.ddf,.jgf,.radarf,.navf,.rdf,.fcard,.loci,.road){background-image:var(--wc-scene)!important;background-size:cover!important;background-position:center!important;border-color:#b8c4b3;border-radius:22px;box-shadow:0 8px 25px #0002}
+.wc-play :is(.field,.crf,.ddf,.jgf,.radarf,.navf,.rdf,.fcard,.loci,.road:not(.prio)){background-image:var(--wc-scene)!important;background-size:cover!important;background-position:center!important;border-color:#b8c4b3;border-radius:22px;box-shadow:0 8px 25px #0002}
 .wc-play .field{background-color:#dbe9df}
 .wc-play .qp{background-image:linear-gradient(#142d3ded,#142d3ded),var(--wc-scene);background-size:cover;border:1px solid #75949044;border-radius:20px}
 .wc-play .fcard{background-image:linear-gradient(#183244db,#183244db),var(--wc-scene)!important}
@@ -84,3 +84,27 @@
 #play.wc-play .lgt caption{background:#f4efdf;color:#243b40}
 #play.wc-play .lgclues{background:#f4efdf;color:#243b40}
 #play.wc-play .xpin :is(.xnote,.zstory,.phsm,.tolgoal){color:#243b40}
+
+/* 4.2.2 — light watercolor play surfaces: the original dark theme draws rings, maze walls, slots and helper
+   text in white (rgba(var(--tint),…) / var(--ink)). Re-ink them for a light background; game geometry,
+   target colours and states (.right/.wrong/.pk/.odd/.on) keep their own colours. */
+.wc-play :is(.field,.crf,.ddf,.jgf,.radarf,.navf,.rdf){--tint:34,58,60;--ink:#27403f;--line:rgba(34,58,60,.28);--muted:#4c6664;color:#27403f}
+.wc-play :is(.field,.crf,.ddf,.jgf,.radarf,.navf,.rdf) .fix{color:#3d5957}
+.wc-play .ddslot{border-color:rgba(34,58,60,.5)}
+.wc-play .rdz{border-color:rgba(34,58,60,.45)}
+.wc-play .rdc{background:rgba(34,58,60,.22)}
+.wc-play .navf .wl{stroke:#3b4f4c;stroke-width:2.2}
+.wc-play .navf rect.st{stroke:#3b4f4c}
+.wc-play .hkb{background:rgba(255,252,242,.72);border-color:rgba(34,58,60,.3)}
+.wc-play .prio{color:#eef1ff}
+/* Old puzzles inherit the app's dark theme (white text, rgba(var(--tint)) lines, --surface panels). On the light
+   watercolor puzzle body give them a light theme; boards with their own dark background keep explicit colours. */
+.wc-play .pzbody{--ink:#27403f;--tint:34,58,60;--line:rgba(34,58,60,.26);--muted:#4c6664;--surface:rgba(255,250,238,.84);--surface2:rgba(255,250,238,.72);color:#27403f}
+.wc-play .pzbody .pzgive{color:#284d51!important;border-color:#7d9c98!important}
+.wc-play .drd small{color:#3b2a1a!important;text-shadow:0 1px 1px #fff9}
+/* Dark boards inside a puzzle keep light ink (tangram board). */
+.wc-play .pzbody .tgb{--ink:#EEF1FF}
+.wc-play .pzbody .cta.ghost{color:#284d51;border-color:#7d9c98;background:#f9f5e9e8}
+/* Story-puzzle sheets: the rules sat directly on the busy top of the painting. Keep the painting as the frame
+   (pzbody) and give the sheet itself a calm paper wash so title, rules and board read clearly. */
+.wc-play .pzbody .xsheet,.wc-play .pzbody .xsheet.xm3,.wc-play .pzbody .xsheet.xm3.wide{background:linear-gradient(#f7f2e3eb,#f7f2e3eb),var(--wc-scene) center/cover no-repeat!important}

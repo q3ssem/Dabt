@@ -1,9 +1,11 @@
 'use strict';
 /* Presentation only: original generators, score, timing and controls are authoritative. */
 (function(){
-const W=window.Watercolor={version:'4.2.1',images:new Map(),failed:new Set(),pending:new Map()},$=DX.$,M=window.WC_MANIFEST;
+const W=window.Watercolor={version:'4.2.2',images:new Map(),failed:new Set(),pending:new Map()},$=DX.$,M=window.WC_MANIFEST;
 const oldSprite=LA.sprite,oldCar=carSVG,oldPerson=scPerson,oldLoad=LA.load,oldAssets=LA.assets;
-W.fitMarkup=s=>s.replace('preserveAspectRatio="none"','preserveAspectRatio="xMidYMid meet"');
+// Keep natural proportions (meet) AND clip to the sprite's own cell: with meet a non-square box would otherwise
+// reveal slivers of the neighbouring atlas cells (4.2.1: guitar, cactus, hawk birds).
+W.fitMarkup=s=>{const m=/^(<svg\b[^>]*viewBox="([\d.-]+) ([\d.-]+) ([\d.]+) ([\d.]+)"[^>]*>)([\s\S]*)(<\/svg>)$/.exec(s);if(!m)return s.replace('preserveAspectRatio="none"','preserveAspectRatio="xMidYMid meet"');const[,open,x,y,w,h,body,close]=m;return open.replace('preserveAspectRatio="none"','preserveAspectRatio="xMidYMid meet"')+'<svg x="'+x+'" y="'+y+'" width="'+w+'" height="'+h+'" viewBox="'+x+' '+y+' '+w+' '+h+'" overflow="hidden">'+body+'</svg>'+close;};
 LA.sprite=function(){return W.fitMarkup(oldSprite.apply(this,arguments));};
 carSVG=function(){return W.fitMarkup(oldCar.apply(this,arguments));};
 scPerson=function(color,hat){const i=SC_SHIRT.findIndex(s=>s[1]===color);if(i<0||LA.failed.has('scene-people'))return oldPerson(color,hat);const n=i+(hat?5:0),x=n%4*100+29,y=Math.floor(n/4)*100+2;return '<svg class="wc-person" viewBox="'+x+' '+y+' 43 96" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><image href="legacy/art/scene-people.webp" width="400" height="400" preserveAspectRatio="none"/></svg>';};
