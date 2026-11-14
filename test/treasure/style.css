@@ -537,3 +537,32 @@ ellipse.peek{stroke:#7ff0ff!important;outline:none!important}
 .v5-smap p{margin:10px 0 0;color:#e8d6b0;font-size:13px}
 .v5-pips{flex-wrap:wrap;gap:3px;min-width:0}.v5-pips i{width:11px;height:11px}
 .v5-tide-top{min-width:0}
+/* 5.1.1 · cipher cards without rings; symbols fill their sockets */
+.v5-cc{position:static;height:56px;display:flex;align-items:center;justify-content:center;gap:6px;direction:ltr}
+.v5-cc img{position:static!important;transform:none!important;width:40px;height:40px;object-fit:contain}
+.v5-cc .v5-cc-compass{width:44px;height:44px}
+.v5-cc b{color:#b8452c;font:900 20px sans-serif}
+.v5-socket{padding:3px;overflow:hidden}
+.v5-socket .v5-sym{width:100%;height:100%;object-fit:contain;display:block}
+.v5-cring{margin-bottom:6px}
+.v5-ctray .v5-socket{width:78px;height:78px}
+/* one-page intro */
+.v5-intro{display:flex;flex-direction:column;align-items:center;text-align:center;gap:6px}
+.v5-intro-face{width:120px;height:120px;border-radius:50%;border:3px solid #ac9459;margin:0 auto 4px;flex-shrink:0}
+.v5-intro-who{color:#73603f}
+.v5-intro-title{margin:0 0 6px}
+.v5-story-line{margin:2px 0;font-size:16px!important;line-height:1.8!important;text-align:start;align-self:stretch}
+.v5-story-say{display:flex;gap:10px;align-items:flex-start;align-self:stretch;text-align:start;padding:8px 10px;border-radius:14px;background:#efe2c4}
+.v5-story-say p{margin:0;font-size:15px!important;line-height:1.7!important}.v5-story-say b{color:#73603f}
+.v5-say-face{width:40px;height:40px;border-radius:50%;flex-shrink:0;border:2px solid #ac9459}
+.v5-story-say.main .v5-say-face{display:none}.v5-story-say.main{background:#f8edd2;border-inline-start:4px solid #ac9459}
+.v5-intro-goal{align-self:stretch;margin-top:6px;padding:10px 12px;border-radius:12px;background:#243b40;color:#f3e6c8;font:600 14px/1.7 Tajawal,sans-serif;text-align:start}
+.v5-intro-goal b{color:#ffd25a}
+.v5-intro-go{width:100%;margin-top:8px;min-height:52px;font-size:17px}
+/* puzzles hub */
+.v5-hubcard{display:grid;grid-template-columns:120px 1fr;gap:14px;align-items:center;width:100%;padding:12px;border-radius:22px;border:1px solid #e2be7488;background:linear-gradient(135deg,#16363f,#0f2430);color:#f5e7cb;text-align:start;cursor:pointer}
+.v5-hubart{width:120px;height:120px;border-radius:18px;background:url('art/story5/ch7_s3_scene.webp') center/cover;box-shadow:0 8px 20px #0006}
+.v5-hubtext{display:grid;gap:4px}.v5-hubtext b{font-size:22px;color:#fff0d4}.v5-hubtext small{color:#b7e9dc;font-size:12px}
+.v5-hubtext .t7-btn{justify-self:start;margin-top:4px;padding:8px 16px;min-height:40px}
+.v5-hublib{margin-top:22px}
+.la-section-head{margin:0 0 10px;font-size:22px!important;color:#fff0d4}

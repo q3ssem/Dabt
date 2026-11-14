@@ -298,7 +298,7 @@
     const art = k => t.symbols[k] === 'boat' ? 'ch3_s1_piece_boat' : 'ch1_s2_piece_' + t.symbols[k];
     const card = (c, k) => {
       const [kind, a, bb] = c, A = img(art(a), 'v5-cc-a'), B = bb !== undefined ? img(art(bb), 'v5-cc-b') : null;
-      const pic = kind === 'N' ? E('div', { class: 'v5-cc n' }, img('tool_compass', 'v5-cc-compass'), A) : E('div', { class: 'v5-cc ' + kind.toLowerCase() }, E('i', { class: 'v5-ring' }), A, B, kind === 'CW' ? E('i', { class: 'v5-arc' }) : null);
+      const mark = { N: '', OPP: '⟷', CW: '↻', ADJ: '+' }[kind], pic = kind === 'N' ? E('div', { class: 'v5-cc' }, A, E('b', { text: '◀' }), img('tool_compass', 'v5-cc-compass')) : E('div', { class: 'v5-cc' }, A, E('b', { text: mark }), B);
       const txt = kind === 'N' ? `${AR[t.symbols[a]]} عند طرف البوصلة` : kind === 'OPP' ? `${AR[t.symbols[a]]} تقابل ${AR[t.symbols[bb]]}` : kind === 'CW' ? `${AR[t.symbols[bb]]} بعد ${AR[t.symbols[a]]} مع عقارب الساعة` : `${AR[t.symbols[a]]} بجوار ${AR[t.symbols[bb]]}`;
       return E('figure', { class: at.hint >= 1 && k === 0 ? 'pulse' : '' }, pic, E('figcaption', { text: txt }));
     };

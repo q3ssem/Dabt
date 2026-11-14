@@ -54,7 +54,7 @@ function drive(s){drive.sel=null;const work=()=>c.T7.state().work[s.id];if(s.var
   if(s.kind==='frogs'){const i=d.find(i=>a[i]!==0);t.aria('زورق في الخانة '+(i+1)+' ');}
   if(s.kind==='path'){t.aria('تجويف '+(d[0]+1)+':');t.aria('تجويف '+(d[1]+1)+':');}}}
 /* Play every station through its real board controls (tool gate, taps) — no state writes. */
-function playV5(s){c.T7.open(s.i);for(let j=1;j<s.dialog.length;j++)t.click('متابعة الحوار');t.click('ابدأ اللغز');ok(!!t.byid('v5-board'),'5.0 board '+s.id);
+function playV5(s){c.T7.open(s.i);t.click('ابدأ اللغز');ok(!!t.byid('v5-board'),'5.0 board '+s.id);
  if(s.needs){for(const nd of [].concat(s.needs)){ok(t.buttons().some(n=>n.textContent==='ضع '+D.SEA1_TOOLS[nd].name),'tool gate shown '+s.id+' '+nd);t.click('ضع '+D.SEA1_TOOLS[nd].name);}}
  const work=()=>c.T7.state().work[s.id];drive(s);
  ok(L.solved(s,work())||!!c.T7.state().done[s.id],'5.0 solved via real controls '+s.id);ok(!!c.T7.state().done[s.id],'5.0 reward saved '+s.id);ok(c.T7.state().v5.ch[s.id][0],'challenge 1 star '+s.id);
@@ -65,7 +65,7 @@ function playV5(s){c.T7.open(s.i);for(let j=1;j<s.dialog.length;j++)t.click('م�
  if(s.needs)for(const nd of [].concat(s.needs))ok(c.T7.state().v5.tools[nd]==='used','tool marked used '+nd);if(s.gives)ok(!!c.T7.state().v5.tools[s.gives],'tool earned '+s.gives);}
 for(const s of D.stations)playV5(s);
 /* «خبير» boards open once the sea is sealed; play each through the real controls. */
-for(const s of D.stations.filter(s=>s.expert)){c.T7.open(s.i);for(let j=1;j<s.dialog.length;j++)t.click('متابعة الحوار');t.click('ابدأ اللغز');t.aria('التحدي 4');
+for(const s of D.stations.filter(s=>s.expert)){c.T7.open(s.i);t.click('ابدأ اللغز');t.aria('التحدي 4');
  ok(JSON.stringify(c.T7.state().work[s.id])===JSON.stringify(s.expert.start),'expert board loaded '+s.id);if(s.needs)for(const nd of [].concat(s.needs))t.click('ضع '+D.SEA1_TOOLS[nd].name);
  drive(L.variant(s,3));ok(c.T7.state().v5.ch[s.id][3],'expert star '+s.id);}
 ok(Object.keys(c.T7.state().done).length===21,'all 21 complete');ok(c.T7.state().rewards.length===7,'7 rewards earned');

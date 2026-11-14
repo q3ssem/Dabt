@@ -1,5 +1,5 @@
 {
-  "version": "5.1.0",
+  "version": "5.2.0",
   "date": "2026-11-14",
   "source": "4.2.1 + 4.2.2 presentation fixes (atlas re-layout, sprite clipping, light-surface ink)",
   "status": "trial build 5.0.0; Chrome smoke passed (seas 1–3 played by taps); iPhone/audio not validated",

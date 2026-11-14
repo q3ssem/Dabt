@@ -1,0 +1,76 @@
+/* 5.1 presentation layer. Mobile first: three tiles per row, nothing wider than the screen. */
+input,select,textarea{font-size:16px!important}
+html,body{overflow-x:hidden}
+/* الألعاب */
+.ui-cat{margin:18px 0 6px}
+.ui-cat h2{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:18px;color:#f2ead6}
+.ui-cat h2 i{width:10px;height:10px;border-radius:50%}
+.ui-cat h2 small{margin-inline-start:auto;color:#9fb3b8;font-size:12px;font-weight:600}
+.ui-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ui-game{position:relative;min-width:0}
+.ui-gmain{display:flex;flex-direction:column;align-items:center;gap:5px;width:100%;min-height:118px;padding:12px 4px 10px;border-radius:16px;border:1px solid #84b2c433;background:linear-gradient(160deg,#182d39,#111a30);color:#f2ead6;text-align:center;font:inherit;cursor:pointer}
+.ui-gmain:active{transform:scale(.96)}
+.ui-gmain .ico{width:46px!important;height:46px!important;border-radius:13px!important;margin:0!important;flex-shrink:0}
+.ui-gmain .ico svg{width:60%!important;height:60%!important}
+.ui-gmain b{font-size:12.5px;line-height:1.35;min-height:2.7em;display:flex;align-items:center}
+.ui-gmain small{font-size:10px;color:#9fb3b8}
+.ui-fav{position:absolute;top:4px;inset-inline-end:4px;width:28px;height:28px;border:0;background:none;color:#ffd25a;font-size:15px;padding:0;cursor:pointer}
+/* مكتبة الألغاز */
+.la-section{margin:16px 0 4px}
+.la-section-title{display:flex;align-items:center;gap:8px;margin:0 0 10px!important;font-size:18px!important;color:#f2ead6}
+.la-section-title small{margin-inline-start:auto;color:#9fb3b8;font-size:12px}
+.la-sections .la-library-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;margin-top:0!important}
+.la-sections .la-library-card{min-height:0!important;padding:10px 4px 8px!important;gap:5px!important;border-radius:16px!important}
+.la-sections .la-library-image{width:52px!important;height:52px!important}
+.la-sections .la-library-card b{font-size:12px!important;line-height:1.35;min-height:2.7em;display:flex;align-items:center}
+.la-sections .la-library-card small{font-size:10px!important}
+/* الطفل: three per row, smaller icons, fits the phone */
+.kgrid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}
+.kgame{padding:10px 4px!important;border-radius:18px!important;gap:5px!important;min-width:0}
+.kge{width:54px!important;height:54px!important;font-size:30px!important;border-radius:14px!important}
+.kgame b,.kgame span,.kgame .kgn{font-size:12.5px!important;line-height:1.35}
+.kgame .dx-agenote{font-size:9.5px!important}
+#v-kid{max-width:100%;overflow-x:hidden}
+#v-kid .dx-chips{flex-wrap:wrap}
+.kavs{flex-wrap:wrap}
+/* مستواي */
+.ui-dash{margin:14px 0;padding:16px;border-radius:22px;background:linear-gradient(160deg,#182d39,#101a2e);border:1px solid #84b2c433;color:#f2ead6}
+.ui-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.ui-kpis div{padding:10px 4px;border-radius:14px;background:#0f1e2b}
+.ui-kpis b{display:block;font-size:24px;color:#ffd25a}.ui-kpis span{font-size:11px;color:#b9cbc7}
+.ui-week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;height:70px;margin:14px 0 4px;align-items:end}
+.ui-week div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:3px}
+.ui-week i{width:70%;border-radius:6px 6px 2px 2px;background:#2b4150}.ui-week .on i{background:linear-gradient(#7ff0ff,#3aa7b8)}
+.ui-week small{font-size:10px;color:#9fb3b8}
+.ui-dash h3{margin:14px 0 8px;font-size:15px}
+.ui-skill{display:grid;grid-template-columns:62px 1fr 40px;gap:8px;align-items:center;margin:6px 0;font-size:12px}
+.ui-skill b{text-align:end;color:#f2ead6}
+.ui-bar{height:9px;border-radius:6px;background:#0f1e2b;overflow:hidden}.ui-bar i{display:block;height:100%;border-radius:6px}
+.ui-island{display:flex;align-items:center;gap:10px;margin-top:14px;padding:10px 12px;border-radius:14px;background:#0f1e2b}
+.ui-island p{margin:0;font-size:13px}
+.ui-best p{display:flex;justify-content:space-between;margin:4px 0;font-size:13px}.ui-best b{color:#ffd25a}
+.ui-fold{margin:10px 0;border-radius:18px;background:#14212e;border:1px solid #84b2c422;overflow:hidden}
+.ui-fold>summary{list-style:none;cursor:pointer;padding:14px 16px;font-weight:800;color:#f2ead6;display:flex;justify-content:space-between}
+.ui-fold>summary::-webkit-details-marker{display:none}
+.ui-fold>summary::after{content:'⌄';color:#9fb3b8}.ui-fold[open]>summary::after{content:'⌃'}
+.ui-fold>*:not(summary){margin:0 10px 12px!important}
+/* عبور النهر: decoration */
+.ui-decor{position:absolute;inset:0;pointer-events:none;z-index:3;overflow:hidden}
+.ui-bird{position:absolute;width:44px;animation:uiBird 14s linear infinite}
+.ui-bird svg{width:100%;animation:uiFlap .5s ease-in-out infinite alternate}
+.ui-fly{position:absolute;width:34px;animation:uiFly 9s ease-in-out infinite}
+.ui-fly svg{width:100%;animation:uiWing .25s ease-in-out infinite alternate}
+@keyframes uiBird{from{transform:translateX(-30vw)}to{transform:translateX(110vw)}}
+@keyframes uiFlap{from{transform:scaleY(1)}to{transform:scaleY(.45)}}
+@keyframes uiFly{0%,100%{transform:translate(0,0)}25%{transform:translate(18px,-14px)}50%{transform:translate(-10px,-24px)}75%{transform:translate(-20px,-6px)}}
+@keyframes uiWing{from{transform:scaleX(1)}to{transform:scaleX(.3)}}
+@media(prefers-reduced-motion:reduce){.ui-decor{display:none}}
+#v-kid .ktop{flex-wrap:wrap;gap:8px}
+#v-kid .ktop>*{min-width:0}
+#v-kid .ktop button,#v-kid .ktop .kbtn{padding:6px 10px!important;font-size:12px!important}
+.kgrid .kge .la-token{width:68%!important;height:68%!important;display:grid;place-items:center}
+.kgrid .kge .la-token>svg,.kgrid .kge .la-token>.la-sprite{width:100%!important;height:100%!important}
+.kgrid .kge>svg,.kgrid .kge>img{width:62%!important;height:62%!important}
+.dx-kbanner .dx-chips{display:flex!important;flex-direction:row!important;flex-wrap:wrap;gap:6px}
+.dx-kbanner .dx-chip{padding:6px 12px!important;font-size:12px!important;min-height:0!important}
+.dx-kbanner h2{font-size:20px!important}
