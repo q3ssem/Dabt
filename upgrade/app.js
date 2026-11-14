@@ -9,7 +9,7 @@
   DX.catalog = { query: '', filter: 'all' }; DX.favorites = () => S.st.discoveryFavorites || (S.st.discoveryFavorites = []);
   renderGames = function () {
     const v = $('#v-games'), shown = G.filter(g => !g.hidden);
-    v.innerHTML = `<div class="dx-head"><div><span class="dx-eyebrow">ضبط دماغك · مكتبة العقل</span><h1>اختر مهارتك وابدأ</h1><p class="dx-muted">${AR(shown.length)} لعبة · لكل لعبة تعليمات ومستويات وإيقاف مؤقت</p></div></div>
+    v.innerHTML = `<div class="dx-head"><div><span class="dx-eyebrow">مختبر العقل · مكتبة الألعاب</span><h1>اختر مهارتك وابدأ</h1><p class="dx-muted">${AR(shown.length)} لعبة · لكل لعبة تعليمات ومستويات وإيقاف مؤقت</p></div></div>
      <input id="dxSearch" class="dx-search" type="search" aria-label="ابحث عن لعبة" placeholder="ابحث عن لعبة…" value="${esc(DX.catalog.query)}">
      <div class="dx-chips">${[['all', 'الكل'], ['new', 'الجديدة'], ['favorites', 'المفضلة'], ...Object.entries(CATS).map(([k, c]) => [k, c.n])].map(([k, n]) => `<button class="dx-chip ${DX.catalog.filter === k ? 'active' : ''}" aria-pressed="${DX.catalog.filter === k}" data-filter="${k}">${n}</button>`).join('')}</div>
      <div class="dx-catalog" id="dxCatalog"></div><p class="dx-muted">النتائج تصف أداءك داخل الألعاب فقط، وليست قياسًا للذكاء أو تشخيصًا.</p>`;
@@ -50,7 +50,7 @@
     file.onchange = async e => { const f = e.target.files[0]; if (!f) return; try { if (f.size > 1e7) throw Error('حجم الملف كبير جدًا.'); const data = DX.validateBackup(JSON.parse(await f.text())); if (!confirm('ستستبدل النسخة تقدم هذا الجهاز. هل تريد الاستعادة؟')) return; DX.restore(data); renderAll(); DX.toast('تمت استعادة التقدم'); } catch (err) { st.textContent = 'تعذرت الاستعادة: ' + (err.message || 'ملف غير صالح'); } file.value = ''; };
     const rounds = E('select', { id: 'dxRounds' }, [[4, '٤ مهام · سريعة'], [6, '٦ مهام · متوازنة'], [8, '٨ مهام · أطول']].map(([n, t]) => E('option', { value: n, text: t }))); rounds.value = String(p.rounds); rounds.onchange = () => { p.rounds = +rounds.value; S.save(); };
     const chk = (id, key, text) => { const c = E('input', { type: 'checkbox', id }); c.checked = !!p[key]; c.onchange = () => { p[key] = c.checked; S.save(); }; return E('label', {}, E('span', { text }), c); };
-    v.prepend(E('section', { class: 'dx-settings' }, E('h2', { text: 'تجربتك وتقدمك' }), E('label', {}, E('span', { text: 'طول جلسة الألعاب الجديدة' }), rounds), chk('dxMotion', 'motion', 'حركة المشاهد والخلفيات'), chk('dxSpeech', 'speech', 'قراءة التعليمات صوتيًا تلقائيًا'),
+    v.append(E('section', { class: 'dx-settings' }, E('h2', { text: 'تجربتك وتقدمك' }), E('label', {}, E('span', { text: 'طول جلسة الألعاب الجديدة' }), rounds), chk('dxMotion', 'motion', 'حركة المشاهد والخلفيات'), chk('dxSpeech', 'speech', 'قراءة التعليمات صوتيًا تلقائيًا'),
       E('div', { class: 'dx-acts' }, E('button', { class: 'dx-btn', id: 'dxBackup', text: 'حفظ نسخة من التقدم', onclick: DX.download }), E('button', { class: 'dx-btn', id: 'dxRestore', text: 'استعادة التقدم', onclick: () => file.click() }), file), st));
   };
 

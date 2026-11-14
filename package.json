@@ -1,0 +1,9 @@
+{
+  "name": "mind-lab",
+  "version": "4.0.0",
+  "private": true,
+  "scripts": {
+    "test": "node qa/tests/storybook.logic.cjs && node qa/tests/storybook.interaction.cjs && node qa/tests/story.extras.cjs && node qa/tests/legacy.art.cjs && node qa/tests/deep.art.cjs",
+    "test:browser": "python3 qa/browser/smoke.py"
+  }
+}

@@ -1,5 +1,5 @@
 'use strict';
-/* ضبط دماغك — طبقة التطوير (الإصدار 2)
+/* مختبر العقل — طبقة التطوير (الإصدار 2)
    core.js: ساعة قابلة للإيقاف لكل الألعاب، أدوات الرسم، مشغّل المهام الموحد، الحفظ والترحيل. */
 const DX = window.DX = { ver: 2, M: {}, back: null };
 
@@ -158,7 +158,7 @@ DX.validateBackup = data => {
   for (const k of ['discoveryJourney', 'discoveryCampaign']) if (st[k] && (typeof st[k] !== 'object' || !st[k].done || typeof st[k].done !== 'object')) throw Error('سجل المغامرة غير مكتمل.');
   return st;
 };
-DX.download = () => { const blob = new Blob([JSON.stringify(DX.backupData(), null, 2)], { type: 'application/json' }), url = URL.createObjectURL(blob), a = DX.el('a', { href: url, download: 'Dabt_Progress.json' }); document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1500); };
+DX.download = () => { const blob = new Blob([JSON.stringify(DX.backupData(), null, 2)], { type: 'application/json' }), url = URL.createObjectURL(blob), a = DX.el('a', { href: url, download: 'MindLab_Progress.json' }); document.body.append(a); a.click(); a.remove(); setTimeout(() => URL.revokeObjectURL(url), 1500); };
 DX.restore = st => { try { localStorage.setItem('dabt:before-restore', JSON.stringify(S.st)); } catch (e) { } Object.keys(S.st).forEach(k => delete S.st[k]); Object.assign(S.st, st); DX.migrate(); S.save(); };
 
 /* ---------- 7. ترحيل الحفظ: لقطة حماية ثم إكمال الحقول الناقصة دون حذف أي تقدم ---------- */

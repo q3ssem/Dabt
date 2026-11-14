@@ -1,4 +1,4 @@
-/* ضبط دماغك — طبقة التطوير 2. تستخدم متغيرات ألوان التطبيق الأصلي (--bg, --ink, --gold, ألوان المهارات). */
+/* مختبر العقل — طبقة التطوير 2. تستخدم متغيرات ألوان التطبيق الأصلي (--bg, --ink, --gold, ألوان المهارات). */
 .dx-head{display:flex;justify-content:space-between;align-items:flex-end;gap:12px;margin:6px 0 2px}
 .dx-head h1{font-size:24px}.dx-head h2{font-size:19px}
 .dx-eyebrow{font-size:12.5px;font-weight:700;color:var(--muted);letter-spacing:.02em}

@@ -1,0 +1,17 @@
+{
+  "name": "مختبر العقل",
+  "short_name": "مختبر العقل",
+  "description": "ألعاب وألغاز لتدريب الدماغ مبنية على أبحاث علمية",
+  "lang": "ar",
+  "dir": "rtl",
+  "start_url": "./",
+  "scope": "./",
+  "display": "standalone",
+  "orientation": "portrait",
+  "background_color": "#0A1024",
+  "theme_color": "#0B1024",
+  "icons": [
+    { "src": "icons/icon-192.png", "sizes": "192x192", "type": "image/png" },
+    { "src": "icons/icon-512.png", "sizes": "512x512", "type": "image/png", "purpose": "any maskable" }
+  ]
+}

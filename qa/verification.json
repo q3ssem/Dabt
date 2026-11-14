@@ -1,0 +1,283 @@
+{
+  "version": "3.2.0",
+  "date": "2026-11-14",
+  "syntax": [
+    {
+      "file": "legacy/art.js",
+      "passed": true
+    },
+    {
+      "file": "legacy/deep-manifest.js",
+      "passed": true
+    },
+    {
+      "file": "legacy/deep.js",
+      "passed": true
+    },
+    {
+      "file": "qa/assessment-engine/Dabt_Assessment_Engine_v1.3.js",
+      "passed": true
+    },
+    {
+      "file": "treasure/app.js",
+      "passed": true
+    },
+    {
+      "file": "treasure/data.js",
+      "passed": true
+    },
+    {
+      "file": "treasure/logic.js",
+      "passed": true
+    },
+    {
+      "file": "upgrade/app.js",
+      "passed": true
+    },
+    {
+      "file": "upgrade/core.js",
+      "passed": true
+    },
+    {
+      "file": "upgrade/games.js",
+      "passed": true
+    },
+    {
+      "file": "upgrade/mech.js",
+      "passed": true
+    },
+    {
+      "file": "qa/tests/deep.art.cjs",
+      "passed": true
+    },
+    {
+      "file": "qa/tests/legacy.art.cjs",
+      "passed": true
+    },
+    {
+      "file": "qa/tests/story.extras.cjs",
+      "passed": true
+    },
+    {
+      "file": "qa/tests/storybook.interaction.cjs",
+      "passed": true
+    },
+    {
+      "file": "qa/tests/storybook.logic.cjs",
+      "passed": true
+    },
+    {
+      "inline": 1,
+      "passed": true
+    }
+  ],
+  "png_files": [
+    {
+      "file": "legacy/art/boards.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB"
+    },
+    {
+      "file": "legacy/art/classic.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB"
+    },
+    {
+      "file": "legacy/art/motion.png",
+      "width": 1024,
+      "height": 1536,
+      "mode": "RGBA"
+    },
+    {
+      "file": "legacy/art/objects-a.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB"
+    },
+    {
+      "file": "legacy/art/objects-b.png",
+      "width": 1269,
+      "height": 1240,
+      "mode": "RGB"
+    },
+    {
+      "file": "legacy/art/objects-c.png",
+      "width": 1263,
+      "height": 1246,
+      "mode": "RGB"
+    },
+    {
+      "file": "legacy/art/objects-d.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB"
+    },
+    {
+      "file": "legacy/art/objects-e.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB"
+    },
+    {
+      "file": "legacy/art/portraits.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB"
+    },
+    {
+      "file": "legacy/art/puzzle-parts.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB"
+    },
+    {
+      "file": "legacy/art/rooms.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB"
+    },
+    {
+      "file": "legacy/art/scene-people.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB"
+    },
+    {
+      "file": "legacy/art/surfaces.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB"
+    },
+    {
+      "file": "legacy/art/world-a.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB"
+    },
+    {
+      "file": "legacy/art/world-b.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB"
+    },
+    {
+      "file": "legacy/art/world-c.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB"
+    },
+    {
+      "file": "legacy/art/world-d.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB"
+    },
+    {
+      "file": "legacy/art/world-e.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB"
+    },
+    {
+      "file": "treasure/art/chapter1.png",
+      "width": 2172,
+      "height": 724,
+      "mode": "RGB"
+    },
+    {
+      "file": "treasure/art/chapter2.png",
+      "width": 2172,
+      "height": 724,
+      "mode": "RGB"
+    },
+    {
+      "file": "treasure/art/chapter3.png",
+      "width": 2172,
+      "height": 724,
+      "mode": "RGB"
+    },
+    {
+      "file": "treasure/art/chapter4.png",
+      "width": 2172,
+      "height": 724,
+      "mode": "RGB"
+    },
+    {
+      "file": "treasure/art/chapter5.png",
+      "width": 2172,
+      "height": 724,
+      "mode": "RGB"
+    },
+    {
+      "file": "treasure/art/chapter6.png",
+      "width": 2172,
+      "height": 724,
+      "mode": "RGB"
+    },
+    {
+      "file": "treasure/art/chapter7.png",
+      "width": 2172,
+      "height": 724,
+      "mode": "RGB"
+    },
+    {
+      "file": "treasure/art/cover.png",
+      "width": 1536,
+      "height": 1024,
+      "mode": "RGB"
+    },
+    {
+      "file": "treasure/art/map.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB"
+    },
+    {
+      "file": "treasure/art/portraits.png",
+      "width": 2172,
+      "height": 724,
+      "mode": "RGB"
+    },
+    {
+      "file": "treasure/art/puzzle-sprites.png",
+      "width": 1448,
+      "height": 1086,
+      "mode": "RGB"
+    },
+    {
+      "file": "treasure/art/reward-scenes.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGB"
+    },
+    {
+      "file": "treasure/art/vessel.png",
+      "width": 1254,
+      "height": 1254,
+      "mode": "RGBA"
+    }
+  ],
+  "station_scenes": 21,
+  "side_quests": 7,
+  "earned_tools": 7,
+  "checks": {
+    "logic": 68,
+    "interaction": 158,
+    "extras": 233,
+    "legacy": 473,
+    "deep_art": 353,
+    "total": 1285
+  },
+  "browser_visual_test": "not completed; environment blocked local preview",
+  "iphone_physical_test": "not performed",
+  "excludes_V20": true,
+  "legacy": {
+    "brain_identifiers": 32,
+    "puzzle_identifiers": 88,
+    "additional_world_art": 80,
+    "original_inline_engine_unchanged": true,
+    "original_upgrade_files_unchanged": true
+  }
+}
