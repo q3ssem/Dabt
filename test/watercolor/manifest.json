@@ -1,0 +1,578 @@
+{
+  "version": "4.2",
+  "games": {
+    "dual": {
+      "file": "pack-memory-0",
+      "family": "memory"
+    },
+    "juggle": {
+      "file": "pack-memory-1",
+      "family": "memory"
+    },
+    "crash": {
+      "file": "pack-memory-2",
+      "family": "memory"
+    },
+    "faces": {
+      "file": "pack-memory-3",
+      "family": "memory"
+    },
+    "loci": {
+      "file": "pack-home-0",
+      "family": "home"
+    },
+    "cards": {
+      "file": "pack-home-1",
+      "family": "home"
+    },
+    "mylist": {
+      "file": "pack-home-2",
+      "family": "home"
+    },
+    "pm": {
+      "file": "pack-home-3",
+      "family": "home"
+    },
+    "mmap": {
+      "file": "pack-spatial-0",
+      "family": "spatial"
+    },
+    "compass": {
+      "file": "pack-spatial-1",
+      "family": "spatial"
+    },
+    "nav": {
+      "file": "pack-spatial-2",
+      "family": "spatial"
+    },
+    "delay": {
+      "file": "pack-spatial-3",
+      "family": "spatial"
+    },
+    "fold": {
+      "file": "pack-logic-0",
+      "family": "logic"
+    },
+    "matrix": {
+      "file": "pack-logic-1",
+      "family": "logic"
+    },
+    "series": {
+      "file": "pack-logic-2",
+      "family": "logic"
+    },
+    "xw": {
+      "file": "pack-logic-3",
+      "family": "logic"
+    },
+    "hawk": {
+      "file": "pack-attention-0",
+      "family": "attention"
+    },
+    "scene": {
+      "file": "pack-scenes-1",
+      "family": "attention"
+    },
+    "symspan": {
+      "file": "pack-attention-2",
+      "family": "attention"
+    },
+    "glance": {
+      "file": "pack-attention-3",
+      "family": "attention"
+    },
+    "dd": {
+      "file": "pack-speed-0",
+      "family": "speed"
+    },
+    "steps": {
+      "file": "pack-speed-1",
+      "family": "speed"
+    },
+    "radar": {
+      "file": "pack-speed-2",
+      "family": "speed"
+    },
+    "conf": {
+      "file": "pack-speed-3",
+      "family": "speed"
+    },
+    "sw": {
+      "file": "pack-executive-0",
+      "family": "executive"
+    },
+    "brake": {
+      "file": "pack-executive-1",
+      "family": "executive"
+    },
+    "revspan": {
+      "file": "pack-executive-2",
+      "family": "executive"
+    },
+    "deduce": {
+      "file": "pack-executive-3",
+      "family": "executive"
+    },
+    "piano": {
+      "file": "piano",
+      "family": "piano"
+    },
+    "mot": {
+      "file": "tracking",
+      "family": "tracking"
+    },
+    "tol": {
+      "file": "tower",
+      "family": "tower"
+    },
+    "racer": {
+      "file": "racer",
+      "family": "racer"
+    },
+    "pz_rid": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "page1"
+    },
+    "pz_river": {
+      "file": "river",
+      "family": "puzzle",
+      "icon": "bridge"
+    },
+    "pz_rush": {
+      "file": "workbench",
+      "family": "puzzle",
+      "icon": "car"
+    },
+    "pz_lock": {
+      "file": "pack-puzzle-craft-0",
+      "family": "puzzle",
+      "icon": "oldkey"
+    },
+    "pz_stat": {
+      "file": "pack-puzzle-craft-1",
+      "family": "puzzle",
+      "icon": "guard"
+    },
+    "pz_pipe": {
+      "file": "pipes",
+      "family": "puzzle",
+      "icon": "valve"
+    },
+    "pz_grid": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "tablet"
+    },
+    "pz_scale": {
+      "file": "pack-puzzle-craft-2",
+      "family": "puzzle",
+      "icon": "balance"
+    },
+    "pz_laser": {
+      "file": "pack-puzzle-craft-3",
+      "family": "puzzle",
+      "icon": "prism"
+    },
+    "pz_soko": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "crate"
+    },
+    "pz_sudo": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "tile"
+    },
+    "pz_flow": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "coral"
+    },
+    "pz_tan": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "astone"
+    },
+    "pz_tent": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "camp"
+    },
+    "pz_door": {
+      "file": "pack-puzzle-craft-0",
+      "family": "puzzle",
+      "icon": "door"
+    },
+    "pz_lights": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "lampOn"
+    },
+    "pz_untangle": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "chain"
+    },
+    "pz_stroke": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "mapp"
+    },
+    "pz_binary": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "astroclock"
+    },
+    "pz_ice": {
+      "file": "pack-puzzle-worlds-3",
+      "family": "puzzle",
+      "icon": "penguin"
+    },
+    "pz_xbottle": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "bottle"
+    },
+    "pz_tpath": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "palacemap"
+    },
+    "pz_xreef": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "reef"
+    },
+    "pz_xbridge": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "bridge"
+    },
+    "pz_xcave": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "cave"
+    },
+    "pz_xloot": {
+      "file": "pack-puzzle-craft-2",
+      "family": "puzzle",
+      "icon": "coin"
+    },
+    "pz_tmap": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "shovel"
+    },
+    "pz_tdig": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "gem"
+    },
+    "pz_xlock": {
+      "file": "pack-puzzle-craft-0",
+      "family": "puzzle",
+      "icon": "skullk"
+    },
+    "pz_ybell": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "bell"
+    },
+    "pz_ymap": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "mapp"
+    },
+    "pz_yhold": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "wreck"
+    },
+    "pz_ytide": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "wave"
+    },
+    "pz_ydoor": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "temple"
+    },
+    "pz_zcomp": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "compass"
+    },
+    "pz_zroute": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "ship"
+    },
+    "pz_zcur": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "coral"
+    },
+    "pz_zcode": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "page1"
+    },
+    "pz_zharp": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "mermaid"
+    },
+    "pz_zshadow": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "abyss"
+    },
+    "pz_znim": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "dragon"
+    },
+    "pz_zstars": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "astroclock"
+    },
+    "pz_zthrone": {
+      "file": "pack-puzzle-worlds-0",
+      "family": "puzzle",
+      "icon": "crown7"
+    },
+    "pz_plock": {
+      "file": "pack-puzzle-craft-0",
+      "family": "puzzle",
+      "icon": "dragonkey"
+    },
+    "pz_pliar": {
+      "file": "pack-puzzle-craft-1",
+      "family": "puzzle",
+      "icon": "guard"
+    },
+    "pz_pclock": {
+      "file": "pack-puzzle-worlds-1",
+      "family": "puzzle",
+      "icon": "astroclock"
+    },
+    "pz_pboss1": {
+      "file": "pack-puzzle-worlds-1",
+      "family": "puzzle",
+      "icon": "keeper"
+    },
+    "pz_plib": {
+      "file": "pack-puzzle-worlds-1",
+      "family": "puzzle",
+      "icon": "librarian"
+    },
+    "pz_pmirror": {
+      "file": "pack-puzzle-craft-3",
+      "family": "puzzle",
+      "icon": "mirrorq"
+    },
+    "pz_pgarden": {
+      "file": "pack-puzzle-worlds-1",
+      "family": "puzzle",
+      "icon": "flower"
+    },
+    "pz_pqueen": {
+      "file": "pack-puzzle-worlds-1",
+      "family": "puzzle",
+      "icon": "queen"
+    },
+    "pz_parm": {
+      "file": "pack-puzzle-worlds-1",
+      "family": "puzzle",
+      "icon": "cog"
+    },
+    "pz_pjail": {
+      "file": "pack-puzzle-worlds-1",
+      "family": "puzzle",
+      "icon": "prisoner"
+    },
+    "pz_pobs": {
+      "file": "pack-puzzle-worlds-1",
+      "family": "puzzle",
+      "icon": "lensx"
+    },
+    "pz_peng": {
+      "file": "pack-puzzle-worlds-1",
+      "family": "puzzle",
+      "icon": "engineer"
+    },
+    "pz_pmaze": {
+      "file": "pack-puzzle-worlds-1",
+      "family": "puzzle",
+      "icon": "mkey"
+    },
+    "pz_pcrypt": {
+      "file": "pack-puzzle-worlds-1",
+      "family": "puzzle",
+      "icon": "tablet"
+    },
+    "pz_pvalve": {
+      "file": "pack-puzzle-worlds-1",
+      "family": "puzzle",
+      "icon": "valve"
+    },
+    "pz_plast": {
+      "file": "pack-puzzle-worlds-1",
+      "family": "puzzle",
+      "icon": "prisoner"
+    },
+    "pz_pdragon": {
+      "file": "pack-puzzle-worlds-1",
+      "family": "puzzle",
+      "icon": "dragon"
+    },
+    "pz_phall": {
+      "file": "pack-puzzle-worlds-1",
+      "family": "puzzle",
+      "icon": "giant"
+    },
+    "pz_pheart": {
+      "file": "pack-puzzle-worlds-1",
+      "family": "puzzle",
+      "icon": "amulet"
+    },
+    "pz_aarch": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "page1"
+    },
+    "pz_aport": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "port"
+    },
+    "pz_alight": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "lantern"
+    },
+    "pz_acur": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "wave"
+    },
+    "pz_ashell": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "shell"
+    },
+    "pz_aroot": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "tree"
+    },
+    "pz_aring": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "ring"
+    },
+    "pz_ashade": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "astroclock"
+    },
+    "pz_aswarm": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "jelly"
+    },
+    "pz_aecho": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "seasnake"
+    },
+    "pz_avsong": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "bell"
+    },
+    "pz_agiant": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "giant"
+    },
+    "pz_aherd": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "forest"
+    },
+    "pz_abridge": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "bridge"
+    },
+    "pz_asilent": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "well"
+    },
+    "pz_alayer": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "astone"
+    },
+    "pz_acity": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "hut"
+    },
+    "pz_asong": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "mermaid"
+    },
+    "pz_aflow": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "wave"
+    },
+    "pz_arelic": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "seal"
+    },
+    "pz_aheart": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "glowstone"
+    },
+    "pz_wbone": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "skull"
+    },
+    "pz_wspore": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "flower"
+    },
+    "pz_wlog": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "shipwright"
+    },
+    "pz_wlake": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "mount"
+    },
+    "pz_wfirst": {
+      "file": "pack-puzzle-worlds-2",
+      "family": "puzzle",
+      "icon": "navigator"
+    }
+  },
+  "scope": {
+    "brain": 32,
+    "puzzles": 88
+  },
+  "art": "Generated watercolor-style raster illustrations, not a claim of human painting."
+}

@@ -1,0 +1,495 @@
+{
+  "original_inline_sha256": [
+    "fa6c96af51ecf7e17442365131dd8b0338dd24975b2e2643edfa415aa49dfa18"
+  ],
+  "brain": [
+    {
+      "id": "dual",
+      "name": "الثنائي N-Back"
+    },
+    {
+      "id": "juggle",
+      "name": "الأرقام الطائرة"
+    },
+    {
+      "id": "crash",
+      "name": "الدخيل"
+    },
+    {
+      "id": "loci",
+      "name": "قصر الذاكرة"
+    },
+    {
+      "id": "faces",
+      "name": "الأسماء والوجوه"
+    },
+    {
+      "id": "cards",
+      "name": "بطاقاتي"
+    },
+    {
+      "id": "mylist",
+      "name": "قصر ذاكرتك"
+    },
+    {
+      "id": "pm",
+      "name": "لا تنسَ!"
+    },
+    {
+      "id": "mmap",
+      "name": "الخريطة المقلوبة"
+    },
+    {
+      "id": "compass",
+      "name": "البوصلة"
+    },
+    {
+      "id": "nav",
+      "name": "الملّاح"
+    },
+    {
+      "id": "delay",
+      "name": "التذكر المؤجل"
+    },
+    {
+      "id": "fold",
+      "name": "طيّ الورق"
+    },
+    {
+      "id": "matrix",
+      "name": "المصفوفات"
+    },
+    {
+      "id": "tol",
+      "name": "برج لندن"
+    },
+    {
+      "id": "series",
+      "name": "سلاسل الأنماط"
+    },
+    {
+      "id": "xw",
+      "name": "الكلمات المتقاطعة"
+    },
+    {
+      "id": "hawk",
+      "name": "عين الصقر"
+    },
+    {
+      "id": "piano",
+      "name": "العازف"
+    },
+    {
+      "id": "scene",
+      "name": "التفاصيل الدقيقة"
+    },
+    {
+      "id": "symspan",
+      "name": "المرآة والمواقع"
+    },
+    {
+      "id": "glance",
+      "name": "لمحة العين"
+    },
+    {
+      "id": "dd",
+      "name": "القرار المزدوج"
+    },
+    {
+      "id": "racer",
+      "name": "السائق اليقظ"
+    },
+    {
+      "id": "steps",
+      "name": "الخطوات الذكية"
+    },
+    {
+      "id": "radar",
+      "name": "الرادار"
+    },
+    {
+      "id": "mot",
+      "name": "تتبع الكرات"
+    },
+    {
+      "id": "conf",
+      "name": "متأكد؟"
+    },
+    {
+      "id": "sw",
+      "name": "القاعدة المتغيرة"
+    },
+    {
+      "id": "brake",
+      "name": "مكبح الاستجابة"
+    },
+    {
+      "id": "revspan",
+      "name": "الذاكرة العكسية"
+    },
+    {
+      "id": "deduce",
+      "name": "محقق القواعد"
+    }
+  ],
+  "puzzles": [
+    {
+      "id": "pz_rid",
+      "name": "ألغاز القصة"
+    },
+    {
+      "id": "pz_river",
+      "name": "عبور النهر"
+    },
+    {
+      "id": "pz_rush",
+      "name": "موقف السيارات"
+    },
+    {
+      "id": "pz_lock",
+      "name": "القفل السري"
+    },
+    {
+      "id": "pz_stat",
+      "name": "التماثيل الدوّارة"
+    },
+    {
+      "id": "pz_pipe",
+      "name": "الأنابيب"
+    },
+    {
+      "id": "pz_grid",
+      "name": "شبكة المنطق"
+    },
+    {
+      "id": "pz_scale",
+      "name": "الميزان والقطعة المزيفة"
+    },
+    {
+      "id": "pz_laser",
+      "name": "الليزر والمرايا"
+    },
+    {
+      "id": "pz_soko",
+      "name": "صناديق المخزن"
+    },
+    {
+      "id": "pz_sudo",
+      "name": "سودوكو الأشكال"
+    },
+    {
+      "id": "pz_flow",
+      "name": "وصّل الألوان"
+    },
+    {
+      "id": "pz_tan",
+      "name": "تانغرام المربعات"
+    },
+    {
+      "id": "pz_tent",
+      "name": "الخيام والأشجار"
+    },
+    {
+      "id": "pz_door",
+      "name": "أبواب القصر"
+    },
+    {
+      "id": "pz_lights",
+      "name": "أطفئ الأنوار"
+    },
+    {
+      "id": "pz_untangle",
+      "name": "فك التشابك"
+    },
+    {
+      "id": "pz_stroke",
+      "name": "بخط واحد"
+    },
+    {
+      "id": "pz_binary",
+      "name": "شمس وقمر"
+    },
+    {
+      "id": "pz_ice",
+      "name": "الجليد المنزلق"
+    },
+    {
+      "id": "pz_xbottle",
+      "name": "رسالة الزجاجة"
+    },
+    {
+      "id": "pz_tpath",
+      "name": "خريطة القرصان"
+    },
+    {
+      "id": "pz_xreef",
+      "name": "ممر الشعاب"
+    },
+    {
+      "id": "pz_xbridge",
+      "name": "جسر الوادي"
+    },
+    {
+      "id": "pz_xcave",
+      "name": "مشاعل الكهف"
+    },
+    {
+      "id": "pz_xloot",
+      "name": "قسمة الغنيمة"
+    },
+    {
+      "id": "pz_tmap",
+      "name": "أين دُفن الكنز؟"
+    },
+    {
+      "id": "pz_tdig",
+      "name": "احفر بذكاء"
+    },
+    {
+      "id": "pz_xlock",
+      "name": "قفل الصندوق"
+    },
+    {
+      "id": "pz_ybell",
+      "name": "أجراس الحطام"
+    },
+    {
+      "id": "pz_ymap",
+      "name": "الخريطة الممزقة"
+    },
+    {
+      "id": "pz_yhold",
+      "name": "السفينة الغارقة"
+    },
+    {
+      "id": "pz_ytide",
+      "name": "صخور المدّ"
+    },
+    {
+      "id": "pz_ydoor",
+      "name": "باب المعبد"
+    },
+    {
+      "id": "pz_zcomp",
+      "name": "بوصلة النجوم"
+    },
+    {
+      "id": "pz_zroute",
+      "name": "الطريق الآمن"
+    },
+    {
+      "id": "pz_zcur",
+      "name": "بوابات المرجان"
+    },
+    {
+      "id": "pz_zcode",
+      "name": "سجلات القبطان"
+    },
+    {
+      "id": "pz_zharp",
+      "name": "قيثارة الحورية"
+    },
+    {
+      "id": "pz_zshadow",
+      "name": "ظلال الخندق"
+    },
+    {
+      "id": "pz_znim",
+      "name": "لعبة التنين"
+    },
+    {
+      "id": "pz_zstars",
+      "name": "كوكبة المعبد"
+    },
+    {
+      "id": "pz_zthrone",
+      "name": "عرش المحيط"
+    },
+    {
+      "id": "pz_plock",
+      "name": "أقفال البوابة"
+    },
+    {
+      "id": "pz_pliar",
+      "name": "التماثيل المتكلمة"
+    },
+    {
+      "id": "pz_pclock",
+      "name": "برج الساعات"
+    },
+    {
+      "id": "pz_pboss1",
+      "name": "اختبار حارس البوابة"
+    },
+    {
+      "id": "pz_plib",
+      "name": "صفحات اليوميات"
+    },
+    {
+      "id": "pz_pmirror",
+      "name": "مرايا الألوان"
+    },
+    {
+      "id": "pz_pgarden",
+      "name": "قنوات الحديقة"
+    },
+    {
+      "id": "pz_pqueen",
+      "name": "تحدي ملكة المرايا"
+    },
+    {
+      "id": "pz_parm",
+      "name": "تركيب الأدوات"
+    },
+    {
+      "id": "pz_pjail",
+      "name": "شهادات السجناء"
+    },
+    {
+      "id": "pz_pobs",
+      "name": "الخريطتان الشفافتان"
+    },
+    {
+      "id": "pz_peng",
+      "name": "اختبار مهندس الساعات"
+    },
+    {
+      "id": "pz_pmaze",
+      "name": "المتاهة الدوّارة"
+    },
+    {
+      "id": "pz_pcrypt",
+      "name": "النقش المخفي"
+    },
+    {
+      "id": "pz_pvalve",
+      "name": "صمامات الأعماق"
+    },
+    {
+      "id": "pz_plast",
+      "name": "تحدي السجين الأخير"
+    },
+    {
+      "id": "pz_pdragon",
+      "name": "لغة التنانين"
+    },
+    {
+      "id": "pz_phall",
+      "name": "قاعة الملوك السبعة"
+    },
+    {
+      "id": "pz_pheart",
+      "name": "القلب الأخير"
+    },
+    {
+      "id": "pz_aarch",
+      "name": "أرشيف الرحلات"
+    },
+    {
+      "id": "pz_aport",
+      "name": "ميناء ما وراء المد"
+    },
+    {
+      "id": "pz_alight",
+      "name": "المنارة الأخيرة"
+    },
+    {
+      "id": "pz_acur",
+      "name": "حيث تعود الأشياء"
+    },
+    {
+      "id": "pz_ashell",
+      "name": "أغنية الأصداف"
+    },
+    {
+      "id": "pz_aroot",
+      "name": "ممرات راعي الجذور"
+    },
+    {
+      "id": "pz_aring",
+      "name": "شجرة الأسماء"
+    },
+    {
+      "id": "pz_ashade",
+      "name": "ساعة الظل"
+    },
+    {
+      "id": "pz_aswarm",
+      "name": "سرب البياض"
+    },
+    {
+      "id": "pz_aecho",
+      "name": "مصدر الصوت"
+    },
+    {
+      "id": "pz_avsong",
+      "name": "الوادي يغني"
+    },
+    {
+      "id": "pz_agiant",
+      "name": "عادات العمالقة"
+    },
+    {
+      "id": "pz_aherd",
+      "name": "عبور القطيع"
+    },
+    {
+      "id": "pz_abridge",
+      "name": "جسور الضباب"
+    },
+    {
+      "id": "pz_asilent",
+      "name": "الماء الصافي"
+    },
+    {
+      "id": "pz_alayer",
+      "name": "طبقات الزمن"
+    },
+    {
+      "id": "pz_acity",
+      "name": "المدينة الحية"
+    },
+    {
+      "id": "pz_asong",
+      "name": "أغاني الأعماق"
+    },
+    {
+      "id": "pz_aflow",
+      "name": "مفترقات التيار"
+    },
+    {
+      "id": "pz_arelic",
+      "name": "أرشيف الآثار الأولى"
+    },
+    {
+      "id": "pz_aheart",
+      "name": "قلب أَثْرَان"
+    },
+    {
+      "id": "pz_wbone",
+      "name": "وادي الهياكل"
+    },
+    {
+      "id": "pz_wspore",
+      "name": "حديقة الأبواغ"
+    },
+    {
+      "id": "pz_wlog",
+      "name": "السفينة التي لم تُبحر"
+    },
+    {
+      "id": "pz_wlake",
+      "name": "بحيرة السماء"
+    },
+    {
+      "id": "pz_wfirst",
+      "name": "موطن الأثر الأول"
+    }
+  ],
+  "preserved_files": {
+    "upgrade/mech.js": "560241805ae2bde74d27e02c3c08bf539a4cf0aa3b93618b2698d465a4de892c",
+    "upgrade/core.js": "f3c33486519a0396e595aec7c0dd486eea15c6550fd56f43b87d9998d5eb759f",
+    "upgrade/app.js": "42ea657676b94c3f8e15cd5230b43afabd9bd25ce7b105bb71dd479acae27217",
+    "upgrade/games.js": "90ac2753fe2896094ac99d6e7febb4d7a2edf4e56370c0ec05104fccdef032f3"
+  }
+}
