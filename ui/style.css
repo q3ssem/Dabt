@@ -1,0 +1,121 @@
+/* 5.1 presentation layer. Mobile first: three tiles per row, nothing wider than the screen. */
+input,select,textarea{font-size:16px!important}
+html,body{overflow-x:hidden}
+/* الألعاب */
+.ui-cat{margin:18px 0 6px}
+.ui-cat h2{display:flex;align-items:center;gap:8px;margin:0 0 10px;font-size:18px;color:#f2ead6}
+.ui-cat h2 i{width:10px;height:10px;border-radius:50%}
+.ui-cat h2 small{margin-inline-start:auto;color:#9fb3b8;font-size:12px;font-weight:600}
+.ui-grid{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:8px}
+.ui-game{position:relative;min-width:0}
+.ui-gmain{display:flex;flex-direction:column;align-items:center;gap:5px;width:100%;min-height:118px;padding:12px 4px 10px;border-radius:16px;border:1px solid #84b2c433;background:linear-gradient(160deg,#182d39,#111a30);color:#f2ead6;text-align:center;font:inherit;cursor:pointer}
+.ui-gmain:active{transform:scale(.96)}
+.ui-gmain .ico{width:46px!important;height:46px!important;border-radius:13px!important;margin:0!important;flex-shrink:0}
+.ui-gmain .ico svg{width:60%!important;height:60%!important}
+.ui-gmain b{font-size:12.5px;line-height:1.35;min-height:2.7em;display:flex;align-items:center}
+.ui-gmain small{font-size:10px;color:#9fb3b8}
+.ui-fav{position:absolute;top:4px;inset-inline-end:4px;width:28px;height:28px;border:0;background:none;color:#ffd25a;font-size:15px;padding:0;cursor:pointer}
+/* مكتبة الألغاز */
+.la-section{margin:16px 0 4px}
+.la-section-title{display:flex;align-items:center;gap:8px;margin:0 0 10px!important;font-size:18px!important;color:#f2ead6}
+.la-section-title small{margin-inline-start:auto;color:#9fb3b8;font-size:12px}
+.la-sections .la-library-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important;margin-top:0!important}
+.la-sections .la-library-card{min-height:0!important;padding:10px 4px 8px!important;gap:5px!important;border-radius:16px!important}
+.la-sections .la-library-image{width:52px!important;height:52px!important}
+.la-sections .la-library-card b{font-size:12px!important;line-height:1.35;min-height:2.7em;display:flex;align-items:center}
+.la-sections .la-library-card small{font-size:10px!important}
+/* الطفل: three per row, smaller icons, fits the phone */
+.kgrid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}
+.kgame{padding:10px 4px!important;border-radius:18px!important;gap:5px!important;min-width:0}
+.kge{width:54px!important;height:54px!important;font-size:30px!important;border-radius:14px!important}
+.kgame b,.kgame span,.kgame .kgn{font-size:12.5px!important;line-height:1.35}
+.kgame .dx-agenote{font-size:9.5px!important}
+#v-kid{max-width:100%;overflow-x:hidden}
+#v-kid .dx-chips{flex-wrap:wrap}
+.kavs{flex-wrap:wrap}
+/* مستواي */
+.ui-dash{margin:14px 0;padding:16px;border-radius:22px;background:linear-gradient(160deg,#182d39,#101a2e);border:1px solid #84b2c433;color:#f2ead6}
+.ui-kpis{display:grid;grid-template-columns:repeat(3,1fr);gap:8px;text-align:center}
+.ui-kpis div{padding:10px 4px;border-radius:14px;background:#0f1e2b}
+.ui-kpis b{display:block;font-size:24px;color:#ffd25a}.ui-kpis span{font-size:11px;color:#b9cbc7}
+.ui-week{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;height:70px;margin:14px 0 4px;align-items:end}
+.ui-week div{display:flex;flex-direction:column;align-items:center;justify-content:flex-end;height:100%;gap:3px}
+.ui-week i{width:70%;border-radius:6px 6px 2px 2px;background:#2b4150}.ui-week .on i{background:linear-gradient(#7ff0ff,#3aa7b8)}
+.ui-week small{font-size:10px;color:#9fb3b8}
+.ui-dash h3{margin:14px 0 8px;font-size:15px}
+.ui-skill{display:grid;grid-template-columns:62px 1fr 40px;gap:8px;align-items:center;margin:6px 0;font-size:12px}
+.ui-skill b{text-align:end;color:#f2ead6}
+.ui-bar{height:9px;border-radius:6px;background:#0f1e2b;overflow:hidden}.ui-bar i{display:block;height:100%;border-radius:6px}
+.ui-island{display:flex;align-items:center;gap:10px;margin-top:14px;padding:10px 12px;border-radius:14px;background:#0f1e2b}
+.ui-island p{margin:0;font-size:13px}
+.ui-best p{display:flex;justify-content:space-between;margin:4px 0;font-size:13px}.ui-best b{color:#ffd25a}
+.ui-fold{margin:10px 0;border-radius:18px;background:#14212e;border:1px solid #84b2c422;overflow:hidden}
+.ui-fold>summary{list-style:none;cursor:pointer;padding:14px 16px;font-weight:800;color:#f2ead6;display:flex;justify-content:space-between}
+.ui-fold>summary::-webkit-details-marker{display:none}
+.ui-fold>summary::after{content:'⌄';color:#9fb3b8}.ui-fold[open]>summary::after{content:'⌃'}
+.ui-fold>*:not(summary){margin:0 10px 12px!important}
+/* عبور النهر: decoration */
+.ui-decor{position:absolute;inset:0;pointer-events:none;z-index:6;overflow:hidden;border-radius:inherit}
+.ui-bird{position:absolute;height:auto;animation:uiBird 16s linear infinite;filter:drop-shadow(0 3px 3px #0004)}
+.ui-fly{position:absolute;width:30px;height:auto;animation:uiFly 9s ease-in-out infinite,uiWing .35s ease-in-out infinite alternate;filter:drop-shadow(0 2px 2px #0003)}
+.ui-fly.flip{scale:-1 1}
+@keyframes uiBird{0%{transform:translate(-30vw,0) rotate(-2deg)}25%{transform:translate(5vw,-8px) rotate(2deg)}50%{transform:translate(40vw,4px) rotate(-2deg)}75%{transform:translate(75vw,-6px) rotate(2deg)}100%{transform:translate(110vw,0) rotate(-2deg)}}
+@keyframes uiFlap{from{transform:scaleY(1)}to{transform:scaleY(.45)}}
+@keyframes uiFly{0%,100%{transform:translate(0,0)}25%{transform:translate(18px,-14px)}50%{transform:translate(-10px,-24px)}75%{transform:translate(-20px,-6px)}}
+@keyframes uiWing{from{scale:1 1}to{scale:.55 1}}
+@media(prefers-reduced-motion:reduce){.ui-decor{display:none}}
+#v-kid .ktop{flex-wrap:wrap;gap:8px}
+#v-kid .ktop>*{min-width:0}
+#v-kid .ktop button,#v-kid .ktop .kbtn{padding:6px 10px!important;font-size:12px!important}
+.kgrid .kge .la-token{width:68%!important;height:68%!important;display:grid;place-items:center}
+.kgrid .kge .la-token>svg,.kgrid .kge .la-token>.la-sprite{width:100%!important;height:100%!important}
+.kgrid .kge>svg,.kgrid .kge>img{width:62%!important;height:62%!important}
+.dx-kbanner .dx-chips{display:flex!important;flex-direction:row!important;flex-wrap:wrap;gap:6px}
+.dx-kbanner .dx-chip{padding:6px 12px!important;font-size:12px!important;min-height:0!important}
+.dx-kbanner h2{font-size:20px!important}
+
+/* ---------- 5.3 art and puzzle screens ---------- */
+/* game icons drawn as art (three brain games) */
+.ico .ui-ico-art,.ui-gmain .ui-ico-art{width:100%;height:100%;object-fit:contain;display:block}
+.ico:has(.ui-ico-art){background:#132634!important;padding:3px;box-sizing:border-box}
+/* kids: painted icons fill the tile */
+.kgrid .kge.ui-kart{background:#fff3dc!important;padding:3px;box-sizing:border-box;overflow:hidden}
+.kgrid .kge.ui-kart img{width:100%!important;height:100%!important;object-fit:contain;display:block}
+/* «مستواي» badges */
+.ui-kpis img{display:block;width:34px;height:34px;margin:0 auto 2px;object-fit:contain}
+.ui-kpis img.ui-kpi-isl{border-radius:9px;object-fit:cover}
+.ui-h-badge{display:flex;align-items:center;gap:6px}.ui-h-badge img{width:26px;height:26px}
+/* puzzles hub: the island cover */
+.v5-hubart{background:url('art/hub_treasure.webp') center/cover!important}
+/* library: one dark style, section icon + series cover strip */
+.la-section-title{display:flex;align-items:center;gap:8px}
+.la-section-title .la-section-ico{width:30px;height:30px;object-fit:contain;flex:none}
+.la-section-title.has-cover{min-height:64px;padding:10px 12px!important;border-radius:16px;background-size:cover!important;background-position:center!important;border:1px solid #c9a96a44;color:#fff5dc}
+.la-section-title.has-cover .la-section-ico{width:40px;height:40px;filter:drop-shadow(0 2px 4px #0008)}
+.la-section-title small{margin-inline-start:auto}
+.la-library-card{background:linear-gradient(160deg,#173244,#0f2231)!important;border:1px solid #2f5566!important;color:#eaf2ef!important}
+.la-library-card b{color:#f4ecd8!important}.la-library-card small{color:#9fb7b4!important}
+/* faded art behind three boards removed: plain calm surface */
+.la-play[data-la-game="dual"] .board,.la-play[data-la-game="xw"] .xgrid,.la-play[data-la-game="pz_tan"] .tgb{background-image:none!important;background-color:#122a3b!important}
+.la-play[data-la-game="dual"] .board>*{background-image:none!important}
+/* compact puzzle header: title bar + HUD tighter */
+#play .pbar{padding-top:6px!important;padding-bottom:6px!important;min-height:0!important}
+#play .pbar .t #ps{font-size:10px}
+#play .pzhud{margin:2px 0 4px!important;gap:6px!important}
+#play .pzhint:empty{display:none}
+#play .pzhint{margin:0 0 6px!important;padding:6px 10px!important;font-size:13px!important}
+/* rule + folded notes inside series puzzles */
+.ui-rules{margin:4px 0 8px;border-radius:12px;background:#f6ead055;border:1px solid #8a6a3a55}
+.ui-rules>summary{list-style:none;cursor:pointer;display:block;padding:7px 10px;font-size:14px;line-height:1.5;color:#3a2614}
+.ui-rules>summary::-webkit-details-marker{display:none}
+.ui-rules>summary b{color:#8a4b14;margin-inline-end:6px}
+.ui-rules>summary i{float:left;margin:2px 6px 0 0;font-style:normal;font-size:11px;color:#7a5a32;border:1px solid #7a5a3266;border-radius:99px;padding:1px 8px}
+.ui-rules[open]>summary i::after{content:' ⌃'}.ui-rules:not([open])>summary i::after{content:' ⌄'}
+.ui-rules>ol{margin:0 4px 8px!important}
+/* بطاقاتي sample */
+.ui-sample{display:block;margin:10px auto 0}
+/* puzzles: one slim title row (the English subtitle is dropped there), smaller round buttons */
+#play:has(.pzhud) .pbar #ps{display:none}
+#play:has(.pzhud) .pbar .x{width:36px!important;height:36px!important;min-height:0!important}
+#play:has(.pzhud) .pbar #pt{font-size:17px}
+#play .pzhud .pzhb,#play .pzhud .pzcoin{min-height:34px!important;padding-top:3px!important;padding-bottom:3px!important}

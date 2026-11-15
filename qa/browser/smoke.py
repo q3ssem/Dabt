@@ -110,7 +110,7 @@ async def main(a):
                     await gate.click(); await page.wait_for_timeout(300)
                 steps = await page.evaluate(f"""()=>{{const L=T7.logic,s=T7.data.stations[{i}],work=()=>T7.state().work[s.id];
                   if(s.kind==='weigh')return null;
-                  let v=work()||L.initial(s),out=[],n=0,last=null;const pos=['أعلى','يمين','أسفل','يسار'],nm=['الأيسر','الأوسط','الأيمن'],gate=['البوابة العليا','البوابة الوسطى','البوابة اليسرى','البوابة اليمنى'],bell=['الدائرة','المثلث','المعين','الموجة'];
+                  let v=work()||L.initial(s),out=[],n=0,last=null;const pos=['أعلى','يمين','أسفل','يسار','الدرج'],nm=['الأيسر','الأوسط','الأيمن'],gate=['البوابة العليا','البوابة الوسطى','البوابة اليسرى','البوابة اليمنى'],bell=['الدائرة','المثلث','المعين','الموجة','النجمة'];
                   while(!L.solved(s,v)&&n++<40){{const nx=L.assist(s,v),d=v.map((x,k)=>x!==nx[k]?k:-1).filter(k=>k>=0);
                     if(s.kind==='locks')out.push(['القفل '+(d[0]+1)+':']);
                     else if(s.kind==='mirrors')out.push(['مرآة في الصف '+s.target.mirrors[d[0]][0]+' العمود '+s.target.mirrors[d[0]][1]+':']);
@@ -122,10 +122,10 @@ async def main(a):
                     else if(s.kind==='valves')out.push([gate[d[0]]]);
                     else if(s.kind==='slide')out.push(['لوح '+['','الدائرة','المثلث','المعين','الهلال','الموجة','الفرع','الورقة','النجمة'][v[nx.indexOf(0)]]]);
                     else if(s.kind==='lights')out.push(['بلورة '+(v.findIndex((_,k)=>L.equal(L.lightsPress(v,k),nx))+1)+':']);
-                    else if(s.kind==='scales'){{const m=['الميزان الأعلى','الميزان الأوسط','الميزان الأسفل'];out.push([m[d[0]],m[d[1]]]);}}
-                    else if(s.kind==='ropes')out.push(['وتد '+['أعلى اليسار','أعلى اليمين','أسفل اليسار','أسفل اليمين'][d[0]]]);
-                    else if(s.kind==='gearfit'||s.kind==='path')out.push([(s.kind==='path'?'تجويف ':'الموضع ')+(d[0]+1)+':',(s.kind==='path'?'تجويف ':'الموضع ')+(d[1]+1)+':']);
-                    else if(s.kind==='drums')out.push(['الأسطوانة '+['العليا','الوسطى','السفلى'][d[0]]+':']);
+                    else if(s.kind==='scales'){{const m=['الميزان الأعلى','الميزان الأوسط','الميزان الأسفل'];if(nx[3]===1&&v[3]===0)out.push(['@weigh']);else{{const dd=d.filter(i=>i<3);out.push([m[dd[0]],m[dd[1]]]);}}}}
+                    else if(s.kind==='ropes')out.push(['وتد '+['أعلى اليسار','أعلى اليمين','الوسط الأيسر','الوسط الأيمن','أسفل اليسار','أسفل اليمين'][d[0]]]);
+                    else if(s.kind==='gearfit'||s.kind==='path'){{const nm=i=>s.kind==='path'?'تجويف '+(i+1)+':':i===4?'الدرج:':'الموضع '+(i+1)+':';out.push([nm(d[0]),nm(d[1])]);}}
+                    else if(s.kind==='drums')out.push(['الأسطوانة '+['العليا','الثانية','الثالثة','الرابعة'][d[0]]+':']);
                     else if(s.kind==='push'){{let k=0,dd;for(k=0;k<2;k++){{dd=[0,1,2,3].find(x=>L.equal(L.pushMove(s.target,v,k,x),nx));if(dd!==undefined)break;}}out.push(['حجر في الصف '+(v[k*2]+1)+' العمود '+(v[k*2+1]+1),'ادفع نحو '+['أعلى','يمين','أسفل','يسار'][dd]]);}}
                     else if(s.kind==='stroke')out.push(['النجمة '+(L.strokeAt(s.target,nx)+1)+' ']);
                     else if(s.kind==='hanoi'){{const m=['العمود الأيسر','العمود الأوسط','العمود الأيمن'];out.push([m[v[d[0]]],m[nx[d[0]]]]);}}
@@ -144,7 +144,8 @@ async def main(a):
                     steps = [[f'حجر {ded+1}']]
                 for labels in steps:
                     for lab in labels:
-                        await page.locator(f'#v5-board [aria-label^="{lab}"]').first.click(); await page.wait_for_timeout(120)
+                        if lab == '@weigh': await page.locator('#v5-board .v5-weighbtn').click(); await page.wait_for_timeout(200); continue
+                        await page.locator(f'#v5-board [aria-label^="{lab}"]').first.click(); await page.wait_for_timeout(160)
                 await page.wait_for_timeout(1200)
                 done = await page.evaluate(f"()=>!!T7.state().done[T7.data.stations[{i}].id]")
                 if shots: await page.screenshot(path=str(shots / f'station{i+1:02d}.png'))

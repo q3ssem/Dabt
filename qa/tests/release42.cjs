@@ -28,7 +28,7 @@ ok(r.correct===12&&r.attempts===12,'actual reference UI handlers complete 12 tri
 $('retry-save').onclick();ok(JSON.parse(gameStore.getItem('miran:v2')).assessmentV4.results.length===1,'retry save does not duplicate result');
 const colors=['243b40','f4efdf'].map(h=>[0,2,4].map(i=>parseInt(h.slice(i,i+2),16)/255).map(x=>x<=.04045?x/12.92:((x+.055)/1.055)**2.4)).map(a=>.2126*a[0]+.7152*a[1]+.0722*a[2]);
 const ratio=(Math.max(...colors)+.05)/(Math.min(...colors)+.05);ok(ratio>=4.5,'grid explicit palette meets 4.5:1');
-const assets=fs.readdirSync(path.join(base,'watercolor/art'));ok(!assets.some(x=>x.endsWith('.png')),'source PNG removed from deployment');ok(assets.filter(x=>x.endsWith('.webp')).length===48,'48 standalone WebP assets');
+const assets=fs.readdirSync(path.join(base,'watercolor/art'));ok(!assets.some(x=>x.endsWith('.png')),'source PNG removed from deployment');ok(assets.filter(x=>x.endsWith('.webp')).length===56,'56 standalone WebP assets (5.1: + eight cropped library icons)');
 ok(assets.reduce((n,f)=>n+fs.statSync(path.join(base,'watercolor/art',f)).size,0)<6*1024*1024,'art budget below 6 MiB');
 const app=fs.readFileSync(path.join(base,'watercolor/app.js'),'utf8');ok(!/toDataURL|createElement\('canvas'\)|const tone0=tone/.test(app),'no atlas canvas crop or fragile tone interception');
 const html=fs.readFileSync(path.join(base,'index.html'),'utf8');ok(html.includes('if(window.Watercolor)Watercolor.stone();else tone('),'stone called directly by existing statue turn handler');

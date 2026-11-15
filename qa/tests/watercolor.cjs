@@ -20,7 +20,7 @@ for(const g of [...inventory.brain,...inventory.puzzles]){const cfg=M.games[g.id
 ok(new Set(inventory.brain.filter(g=>g.id!=='scene').map(g=>{const a=M.games[g.id];return a.file})).size===31,'31 distinct brain scenes; fine details retains its four truthful place scenes');
 for(const [i,s]of c.SC_SHIRT.entries())for(const hat of [false,true]){const n=i+(hat?5:0),v=c.scPerson(s[1],hat);ok(v.includes('viewBox="'+(n%4*100+29)+' '+(Math.floor(n/4)*100+2)+' 43 96"'),'same shirt and hat');ok(v.includes('xMidYMid meet'),'natural proportions');}
 ok(c.LA.sprite('objects-a',0).includes('preserveAspectRatio="xMidYMid meet"'),'sprite natural aspect ratio');ok(c.XF_IDS.size===0,'presentation frame disabled');
-for(let i=0;i<8;i++)ok(W.icon(i).includes('viewBox="'+i%4*100+' '+Math.floor(i/4)*100+' 100 100"'),'icon cell '+i);
+for(let i=0;i<8;i++)ok(W.icon(i).includes('icon-'+i+'.webp')&&fs.existsSync(path.join(__dirname,'../../watercolor/art/icon-'+i+'.webp')),'icon file '+i);
 c.current={id:'piano'};c.header(c.current);ok(play.dataset.wcGame==='piano','same game');
 const count=nativeTones;c.tone(300,.1,'sine',.1);ok(nativeTones===count+1,'other sound unchanged');
 c.current={id:'pz_stat'};W.stone();ok(created===1,'foley context');ok(nativeTones===count+1,'electronic rotation beep replaced');
@@ -37,9 +37,9 @@ for(let i=0;i<4;i++){scene.place=c.SC_PLACE[i][1];W.decorate();ok(scene.style['-
 Node.prototype.replaceWith=function(n){const p=this.parentElement,i=p.children.indexOf(this);p.children[i]=n;n.parentElement=p;};
 const ids=['pz_lock','pz_stat','pz_scale','pz_pipe','pz_river','pz_rush','pz_grid','tol'],puz=body.querySelector('#v-puz'),cards=[];
 ids.forEach((id,i)=>{c.GM[id]={name:id};const b=new Node('button',{class:'t7-classic'},new Node('svg'),new Node('b',{text:id}));b.dataset.puzzleId=id;b.onclick=()=>id;cards.push(b);puz.append(b);});
-W.images.set('icons',{});W.cards();
-cards.forEach((b,i)=>{const el=b.querySelector('.wc-game-icon');ok(el.innerHTML.includes('viewBox="'+i%4*100+' '+Math.floor(i/4)*100+' 100 100"'),'actual card matching icon');ok(b.onclick()===ids[i],'same launch handler');ok(b.attrs['aria-label']===ids[i],'accessible game name');});
+W.images.set('icon-0',{});W.cards();
+cards.forEach((b,i)=>{const el=b.querySelector('.wc-game-icon');ok(el.innerHTML.includes('icon-'+i+'.webp'),'actual card matching icon');ok(b.onclick()===ids[i],'same launch handler');ok(b.attrs['aria-label']===ids[i],'accessible game name');});
 W.cards();ok(cards.every(b=>b.querySelectorAll('.wc-game-icon').length===1),'no duplicate icons on repeated render');
-puz.children.reverse();cards.forEach(b=>delete b.dataset.wcIcon);W.cards();cards.forEach((b,i)=>ok(b.querySelector('.wc-game-icon').innerHTML.includes('viewBox="'+i%4*100+' '+Math.floor(i/4)*100+' 100 100"'),'card reorder keeps icon identity'));
+puz.children.reverse();cards.forEach(b=>delete b.dataset.wcIcon);W.cards();cards.forEach((b,i)=>ok(b.querySelector('.wc-game-icon').innerHTML.includes('icon-'+i+'.webp'),'card reorder keeps icon identity'));
 
 console.log(JSON.stringify({status:'passed',checks,scope:'source, simulated DOM/canvas/audio; no browser layout or physical playback'}));
