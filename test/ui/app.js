@@ -3,6 +3,18 @@
    kids layout and river decorations. Game engines, scores and saves are untouched. */
 // 5.5: white theme by default — set before first paint; release54.js keeps it in sync afterwards.
 try { if (!S.st.skin) document.documentElement.dataset.skin = 'light'; } catch (e) {}
+// 5.5.1: transparent game illustrations (ui/art/games/<id>.webp). The engine's icoBox() draws I[g.id], so filling
+// that map shows the art everywhere a game icon appears (cards, home, intro, plans) without touching any engine.
+// A game with no file keeps its original glyph.
+const ML_GAME_ART = ['dual','juggle','crash','loci','faces','cards','mylist','pm','piano','scene','symspan','revspan','dx_cargo','dx_memory',
+  'mmap','compass','nav','fold','dx_pack','dx_turn','matrix','series','xw','deduce','dx_route','dx_balance','dx_order',
+  'hawk','glance','dd','dx_signal','racer','steps','radar','mot','brake','dx_search','conf','sw','dx_sort'];
+const ML_CAT_ART = { mem: 'memory', spa: 'space', log: 'logic', spd: 'speed', foc: 'attention', flx: 'flexibility' };
+try {
+  ML_GAME_ART.forEach(id => {
+    if (typeof I === 'object' && I && id in I) I[id] = `<img class="ml-art" src="ui/art/games/${id}.webp" alt="" width="512" height="512" loading="lazy" decoding="async" draggable="false">`;
+  });
+} catch (e) {}
 (function () {
   const $ = DX.$, E = DX.el, AR = DX.AR, ART = 'ui/art/';
 
@@ -16,7 +28,7 @@ try { if (!S.st.skin) document.documentElement.dataset.skin = 'light'; } catch (
       <p class="dx-muted">النتائج تصف أداءك داخل الألعاب فقط، وليست قياسًا للذكاء أو تشخيصًا.</p>`;
     const fill = () => {
       const q = (DX.catalog.query || '').trim(), fav = DX.favorites(), box = $('#uiCatalog');
-      const section = (title, color, list, key) => list.length ? `<section class="ui-cat" data-cat="${key}"><h2><i style="background:${color}"></i>${title}<small>${AR(list.length)}</small></h2><div class="ui-grid">${list.map(g => cardHTML(g, fav)).join('')}</div></section>` : '';
+      const section = (title, color, list, key) => list.length ? `<section class="ui-cat" data-cat="${key}"><h2>${ML_CAT_ART[key] ? `<img class="ml-cat-art" src="ui/art/games/${ML_CAT_ART[key]}.webp" alt="" width="512" height="512" decoding="async">` : `<i style="background:${color}"></i>`}${title}<small>${AR(list.length)}</small></h2><div class="ui-grid">${list.map(g => cardHTML(g, fav)).join('')}</div></section>` : '';
       if (q) { const rows = shown.filter(g => g.name.includes(q)); box.innerHTML = rows.length ? `<div class="ui-grid">${rows.map(g => cardHTML(g, fav)).join('')}</div>` : '<p class="dx-empty">لا توجد ألعاب مطابقة.</p>'; }
       else box.innerHTML = section('المفضلة', '#ffd25a', shown.filter(g => fav.includes(g.id)), 'fav') + Object.entries(CATS).map(([k, c]) => section(c.n, c.hex, shown.filter(g => g.cat === k), k)).join('');
       v.querySelectorAll('[data-open]').forEach(b => b.onclick = () => startRun([b.dataset.open]));
@@ -81,7 +93,7 @@ try { if (!S.st.skin) document.documentElement.dataset.skin = 'light'; } catch (
   const cl0 = closePlay; closePlay = function () { const d = $('#play .ui-decor'); if (d) d.remove(); return cl0.apply(this, arguments); }; if ($('#quit')) $('#quit').onclick = closePlay;
 
   /* ---------- 5.3 art: game, kids and badge icons ---------- */
-  if (typeof I === 'object') [['brake', 'brain_brake'], ['revspan', 'brain_backward'], ['deduce', 'brain_rules']].forEach(([id, f]) => { I[id] = `<img class="ui-ico-art" src="${ART}${f}.webp" alt="" loading="lazy">`; });
+  if (typeof I === 'object') [['brake', 'brain_brake'], ['revspan', 'brain_backward'], ['deduce', 'brain_rules']].filter(([id]) => !ML_GAME_ART.includes(id)).forEach(([id, f]) => { I[id] = `<img class="ui-ico-art" src="${ART}${f}.webp" alt="" loading="lazy">`; });
   const KID_ART = ['بطاقات الذاكرة', 'وش تغيّر؟', 'كمّل النمط', 'اتبع الضوء', 'ظل الشكل', 'موقف السيارات', 'نفس الحيوان؟', 'الصورة الناقصة', 'الرسم بالمربعات', 'خريطة الكنز', 'فقاعات الألوان', 'وين الكرة؟', 'المرآة السحرية', 'لا تلمس الذئب!', 'حديقة الحروف', 'ورشة الكلمات', 'متجري الصغير', 'قطار الأرقام', 'قصة النبتة', 'البنّاء الصغير', 'جسر الأصدقاء', 'بيت الحيوان', 'رحلة قطرة', 'قلبي يفهم', 'ميزان الفريق', 'بوصلة الأصدقاء'];
   const kidArt = g => { const i = KID_ART.indexOf(g.name); return i < 0 ? null : `${ART}kid_${String(i + 1).padStart(2, '0')}.webp`; };
   function kidIcons() { const v = $('#v-kid'); if (!v || typeof KID_GAMES === 'undefined') return;

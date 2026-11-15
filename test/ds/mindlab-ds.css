@@ -272,3 +272,24 @@ html[data-skin="light"] #stage .xkg{color:#8A6408!important}
   .t7 .t7-story-layout{max-width:920px;margin-inline:auto}
 }
 @media (min-width:1200px){.shell{max-width:1120px!important}}
+
+/* ---------- 9. رسوم الألعاب المفرغة (5.5.1) ----------
+   حيثما ظهرت أيقونة لعبة لها رسم: يُزال المربع المتدرج، ويظهر الرسم كاملًا (contain) دون تمديد أو قص. */
+img.ml-art{display:block;width:100%;height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none;pointer-events:none}
+:is(.ico,.hero):has(>img.ml-art){background:none!important;box-shadow:none!important;border:0!important;overflow:visible!important}
+/* بطاقات صفحة الألعاب والمقترحة: الرسم أكبر من الرمز القديم، بهالة خفيفة بلون المجال وظل تحت الرسم */
+:root{--ml-game-art:96px}
+@media (max-width:359px){:root{--ml-game-art:84px}}
+@media (min-width:700px){:root{--ml-game-art:112px}}
+@media (min-width:1100px){:root{--ml-game-art:120px}}
+#v-games .ui-gmain .ico:has(>img.ml-art),#v-home .rcard .ico:has(>img.ml-art){width:var(--ml-game-art)!important;height:var(--ml-game-art)!important;border-radius:0!important;margin:0 auto 6px!important;
+  background:radial-gradient(closest-side at 50% 58%,color-mix(in srgb,var(--c) 16%,transparent),transparent 72%)!important}
+#v-games .ui-gmain .ico>img.ml-art,#v-home .rcard .ico>img.ml-art{filter:drop-shadow(0 6px 8px rgba(29,39,41,.16))}
+html[data-skin="dark"] #v-games .ui-gmain .ico>img.ml-art,html[data-skin="dark"] #v-home .rcard .ico>img.ml-art{filter:drop-shadow(0 6px 10px rgba(0,0,0,.45))}
+/* شاشة البداية: رسم كبير بدل المربع */
+#stage .intro .hero:has(>img.ml-art){width:132px!important;height:132px!important;border-radius:0!important;margin-inline:auto}
+#stage .intro .hero>img.ml-art{filter:drop-shadow(0 10px 14px rgba(29,39,41,.18))}
+/* الأماكن الصغيرة (خطة اليوم، البطاقات المستحقة، التحديات): الرسم بحجم الأيقونة القديمة نفسها */
+:is(.wk-row,.card,.cp,.pzcard) .ico:has(>img.ml-art){border-radius:0!important}
+/* رؤوس المجالات في صفحة الألعاب */
+#v-games .ui-cat>h2 .ml-cat-art{width:40px;height:40px;object-fit:contain;flex:none;filter:drop-shadow(0 3px 4px rgba(29,39,41,.14))}
