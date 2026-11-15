@@ -1,0 +1,62 @@
+/* 5.5.2 — طقم شاشة اللعب لألعاب العقل الأصلية (ألعاب dx لها طقمها الخاص).
+   تنسيق فقط في الثيم الأبيض: لوحات بلون الرقّ، أزرار موحّدة، وتوسيط. لا تغيير في القواعد أو النقاط. */
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]){--pk-paper:#FFFCF5;--pk-paper2:#F8F0E1;--pk-edge:#E6D9C0;--pk-edge2:#D8C6A3;--pk-ink:#2A2418;--pk-gold:#B3802A}
+
+/* اللوحات */
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) :is(.qp,.ddf,.field,.crf,.cfield,#mmw,.symst,.rdf,.navf,.road,#bd.board,.pmcard,#cw>.qp,.stnum,.mmg){
+  background:linear-gradient(180deg,var(--pk-paper),var(--pk-paper2))!important;border:1px solid var(--pk-edge)!important;
+  border-radius:22px!important;box-shadow:0 1px 0 #fff inset,0 8px 22px -14px rgba(74,56,24,.35)!important}
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) :is(.field,.crf,.ddf,.rdf,.navf,.symst){background:radial-gradient(120% 90% at 50% 0%,#fff 0%,var(--pk-paper) 45%,var(--pk-paper2) 100%)!important}
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) .mmg{background:transparent!important;border:0!important;box-shadow:none!important}
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) .road{padding:6px!important;overflow:hidden}
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) .road canvas{border-radius:16px}
+
+/* لون أساس صلب تحت التدرّج (للمتصفحات والفحص) */
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) :is(.qp,.ddf,.field,.crf,.cfield,#mmw,.symst,.rdf,.navf,.road,#bd.board,.pmcard,.stnum){background-color:#FFFCF5!important}
+
+/* الخانات */
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) :is(#bd .cell,.mmc){background:#fff!important;border:1px solid var(--pk-edge)!important;border-radius:14px!important;box-shadow:0 2px 0 var(--pk-edge)!important}
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) #bd .cell.lit{background:color-mix(in srgb,var(--c) 70%,#fff)!important;border-color:color-mix(in srgb,var(--c) 80%,#000)!important}
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) .cpair>*{background:#fff!important;border:1px solid var(--pk-edge)!important;border-radius:16px!important}
+
+/* أزرار الإجابة */
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) .opt{background:#fff!important;border:1.5px solid var(--pk-edge)!important;border-radius:16px!important;color:var(--pk-ink)!important;
+  box-shadow:0 3px 0 var(--pk-edge2)!important;font-family:Tajawal,system-ui,sans-serif;font-weight:800}
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) .opt:active{transform:translateY(2px)!important;box-shadow:0 1px 0 var(--pk-edge2)!important}
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) .opt.pick{border-color:color-mix(in srgb,var(--c) 70%,#000)!important;background:color-mix(in srgb,var(--c) 16%,#fff)!important}
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) .opt.ok{border-color:var(--ml-good,#1F8A55)!important;background:#E5F5EC!important;box-shadow:0 3px 0 #9ED3B5!important}
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) .opt.no{border-color:var(--ml-bad,#C2412D)!important;background:#FCE8E4!important;box-shadow:0 3px 0 #EDB2A7!important}
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) .opt.miss{border-style:dashed!important;border-color:var(--ml-good,#1F8A55)!important}
+
+/* أزرار القرار الكبيرة */
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) :is(.match,.stpad,.steer){background:linear-gradient(180deg,#fff,color-mix(in srgb,var(--c) 12%,#fff))!important;
+  border:2px solid color-mix(in srgb,var(--c) 55%,var(--pk-edge))!important;color:var(--pk-ink)!important;border-radius:18px!important;
+  box-shadow:0 4px 0 color-mix(in srgb,var(--c) 38%,var(--pk-edge2))!important;font-family:Tajawal,system-ui,sans-serif}
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) :is(.match,.stpad,.steer):active{transform:translateY(3px);box-shadow:0 1px 0 color-mix(in srgb,var(--c) 38%,var(--pk-edge2))!important}
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) .match.hit{background:#DDF2E6!important;border-color:var(--ml-good,#1F8A55)!important}
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) .match.miss{background:#FBE3DE!important;border-color:var(--ml-bad,#C2412D)!important}
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) .match:disabled{opacity:.6}
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) #go.match{background:var(--ml-accent,#12867F)!important;border-color:#0E6E68!important;color:#fff!important;box-shadow:0 4px 0 #0B5752!important}
+
+/* المتاهة: خطوط بلون الحبر البني بدل الأسود */
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) #nsv .wl{stroke:#7A5E36!important;stroke-linecap:round}
+
+/* المساحات الفارغة: تكبير لوحات الومضة السريعة إلى مربع متوازن */
+html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) :is(#f.ddf){min-height:min(62vw,300px)!important}
+
+/* ======== ألعاب القراصنة المصغّرة ======== */
+.ml-mini-card .ml-mini-art img{width:100%;height:100%;object-fit:contain}
+#v-puz .ml-mini-section .la-library-grid{grid-template-columns:1fr!important}
+#v-puz .ml-mini-section .ml-mini-card{flex-direction:row!important;display:grid!important;grid-template-columns:96px 1fr;grid-template-rows:auto auto;align-items:center;text-align:right;gap:2px 14px!important;padding:12px 14px!important;min-height:0!important}
+#v-puz .ml-mini-section .ml-mini-card .la-library-image{grid-row:1/3;width:96px!important;height:96px!important;margin:0!important}
+#v-puz .ml-mini-section .ml-mini-card b{align-self:end;font-size:18px!important}
+#v-puz .ml-mini-section .ml-mini-card small{align-self:start;justify-self:start;margin:0!important}
+.ml-mini-hero{display:grid;grid-template-columns:110px 1fr;grid-template-rows:auto auto;align-items:center;gap:6px 14px;margin:6px 0 18px;padding:14px;
+  border-radius:var(--ml-r-lg,22px);background:var(--ml-surface,#fff);border:1px solid var(--ml-line,#E6DED0);box-shadow:var(--ml-sh-1,0 6px 18px -12px rgba(0,0,0,.3))}
+.ml-mini-hero-art{grid-row:1/3;width:110px;height:110px;object-fit:cover;border-radius:16px}
+.ml-mini-hero-text{display:grid;gap:2px}
+.ml-mini-hero-text b{font:900 20px/1.3 Tajawal,system-ui,sans-serif;color:var(--ml-ink,#1D2729)}
+.ml-mini-hero-text small{font:700 13px/1.4 Tajawal,system-ui,sans-serif;color:var(--ml-ink-3,#6B7276)}
+.ml-mini-go{justify-self:start;padding:10px 20px;border-radius:999px;background:var(--ml-accent,#12867F);color:#fff!important;font:800 15px Tajawal,system-ui,sans-serif!important;box-shadow:0 4px 0 #0B5752}
+.ml-mini-go:active{transform:translateY(3px);box-shadow:0 1px 0 #0B5752}
+.ml-mini-list-head{margin:4px 0 10px}

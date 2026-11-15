@@ -135,7 +135,7 @@
   link.dataset.release = '5.4.0';
   document.head.append(link);
   // 5.5: the design system — generated white layer, then the central tokens/components (last = wins).
-  ['ds/light-auto.css', 'ds/mindlab-ds.css'].forEach(href => {
+  ['ds/light-auto.css', 'ds/mindlab-ds.css'].concat(['ds/play-kit.css']).forEach(href => {
     const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = new URL(href, document.baseURI).href; l.dataset.release = '5.5.0'; document.head.append(l);
   });
 })();

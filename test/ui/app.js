@@ -138,3 +138,8 @@ try {
   if(document.querySelector('script[data-release="5.4.0"]'))return;
   const s=document.createElement('script');s.src=new URL('release54.js',document.baseURI).href;s.dataset.release='5.4.0';document.body.append(s);
 })();
+/* 5.5.2 — ألعاب القراصنة المصغّرة (طبقة عرض فوق مكتبة الألغاز). */
+(function(){
+  if(document.querySelector('script[data-release="5.5.2-mini"]'))return;
+  const s=document.createElement('script');s.src=new URL('ui/mini.js',document.baseURI).href;s.dataset.release='5.5.2-mini';document.body.append(s);
+})();
