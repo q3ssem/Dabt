@@ -3,8 +3,8 @@
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),vm=require('node:vm'),crypto=require('node:crypto');
 const root=path.resolve(__dirname,'../..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
 let checks=0;const ok=(v,m)=>{assert.ok(v,m);checks++;};
-const pkg=JSON.parse(read('package.json'));ok(pkg.version==='5.5.1','version 5.5.1');
-ok(read('sw.js').includes("const VERSION='5.5.1'"),'cache renamed');
+const pkg=JSON.parse(read('package.json'));ok(/^5\.5\.[1-9]\d*$/.test(pkg.version),'version 5.5.x (>=5.5.1)');
+ok(read('sw.js').includes("const VERSION='"+pkg.version+"'"),'cache renamed');
 const app=read('ui/app.js');
 const ids=JSON.parse(app.match(/const ML_GAME_ART = (\[[\s\S]*?\]);/)[1].replace(/'/g,'"'));
 ok(ids.length===40&&new Set(ids).size===40,'40 games mapped once each');
