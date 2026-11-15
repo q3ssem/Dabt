@@ -62,7 +62,7 @@ async def main(a):
     problems = []
     async with async_playwright() as p:
         kw = {'executable_path': a.chrome} if a.chrome else {}
-        b = await p.chromium.launch(args=['--no-sandbox'], **kw)
+        b = (await p.webkit.launch() if getattr(a,'engine','chromium')=='webkit' else await p.chromium.launch(args=['--no-sandbox'], **kw))
         ctx = await b.new_context(viewport={'width': 390, 'height': 844}, device_scale_factor=2, is_mobile=True, has_touch=True, locale='ar-SA')
         page = await ctx.new_page(); errs = []
         page.on('pageerror', lambda e: errs.append(str(e)))
@@ -126,7 +126,7 @@ async def main(a):
                     else if(s.kind==='ropes')out.push(['وتد '+['أعلى اليسار','أعلى اليمين','الوسط الأيسر','الوسط الأيمن','أسفل اليسار','أسفل اليمين'][d[0]]]);
                     else if(s.kind==='gearfit'||s.kind==='path'){{const nm=i=>s.kind==='path'?'تجويف '+(i+1)+':':i===4?'الدرج:':'الموضع '+(i+1)+':';out.push([nm(d[0]),nm(d[1])]);}}
                     else if(s.kind==='drums')out.push(['الأسطوانة '+['العليا','الثانية','الثالثة','الرابعة'][d[0]]+':']);
-                    else if(s.kind==='push'){{let k=0,dd;for(k=0;k<2;k++){{dd=[0,1,2,3].find(x=>L.equal(L.pushMove(s.target,v,k,x),nx));if(dd!==undefined)break;}}out.push(['حجر في الصف '+(v[k*2]+1)+' العمود '+(v[k*2+1]+1),'ادفع نحو '+['أعلى','يمين','أسفل','يسار'][dd]]);}}
+                    else if(s.kind==='push'){{let k=0,dd;for(k=0;k<v.length/2;k++){{dd=[0,1,2,3].find(x=>L.equal(L.pushMove(s.target,v,k,x),nx));if(dd!==undefined)break;}}out.push(['حجر في الصف '+(v[k*2]+1)+' العمود '+(v[k*2+1]+1),'ادفع نحو '+['أعلى','يمين','أسفل','يسار'][dd]]);}}
                     else if(s.kind==='stroke')out.push(['النجمة '+(L.strokeAt(s.target,nx)+1)+' ']);
                     else if(s.kind==='hanoi'){{const m=['العمود الأيسر','العمود الأوسط','العمود الأيمن'];out.push([m[v[d[0]]],m[nx[d[0]]]]);}}
                     else if(s.kind==='river'){{const k=[0,1,2].find(k=>v[k+1]!==nx[k+1]);out.push(k===undefined?['عبور']:[s.target.items[k]+'،','عبور']);}}
@@ -188,7 +188,7 @@ async def main(a):
     return 1 if problems else 0
 
 if __name__ == '__main__':
-    ap = argparse.ArgumentParser(); ap.add_argument('--url', default='http://localhost:8080/'); ap.add_argument('--chrome'); ap.add_argument('--shots')
+    ap = argparse.ArgumentParser(); ap.add_argument('--url', default='http://localhost:8080/'); ap.add_argument('--chrome'); ap.add_argument('--engine', choices=['chromium', 'webkit'], default='chromium'); ap.add_argument('--shots')
     try:
         sys.exit(asyncio.run(main(ap.parse_args())))
     except Exception as exc:

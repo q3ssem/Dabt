@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="ar" dir="rtl">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width,initial-scale=1,viewport-fit=cover">
+<title>نموذج تتبع الكرات</title>
+<script>performance.mark('page-start');</script>
+<style>
+@font-face{font-family:Tajawal;src:url(fonts/tajawal-arabic-500-normal.woff2) format('woff2');font-weight:500;font-display:swap}
+@font-face{font-family:Tajawal;src:url(fonts/tajawal-arabic-800-normal.woff2) format('woff2');font-weight:800;font-display:swap}
+:root{--bg:#111315;--panel:#1b1f24;--ink:#f4f1ea;--muted:#a9b0b8;--gold:#FFC34D}
+*{box-sizing:border-box}html,body{margin:0;background:var(--bg);color:var(--ink);font-family:Tajawal,system-ui,sans-serif;overscroll-behavior:none}
+.app{max-width:560px;margin:0 auto;min-height:100vh;display:flex;flex-direction:column;padding:max(10px,env(safe-area-inset-top)) 12px 70px}
+header{display:flex;justify-content:space-between;align-items:center;gap:8px}
+header h1{font-size:20px;margin:0;font-weight:800}header small{color:var(--muted);font-size:12px}
+.engine{font:700 11px/1 ui-monospace,monospace;direction:ltr;background:#263040;padding:5px 8px;border-radius:99px;color:#9fd2ff}
+.hud{display:flex;gap:8px;margin:10px 0 6px}.hud div{flex:1;background:var(--panel);border-radius:12px;padding:7px 8px;text-align:center}
+.hud b{display:block;font-size:18px}.hud span{font-size:11px;color:var(--muted)}
+.msg{min-height:26px;text-align:center;font-weight:800;margin:4px 0 8px;font-size:16px}
+.field{position:relative;width:100%;aspect-ratio:1;background:#151a33;border-radius:18px;overflow:hidden;touch-action:none;contain:strict}
+.field canvas{display:block;width:100%!important;height:100%!important;touch-action:none}
+nav{position:fixed;inset:auto 0 0 0;height:58px;background:#16191d;display:flex;justify-content:space-around;align-items:center;font-size:12px;color:var(--muted);border-top:1px solid #23282e}
+body.tv .app{max-width:none;flex-direction:row;gap:40px;align-items:center;justify-content:center;padding:40px}
+body.tv .side{width:520px}body.tv .field{width:min(80vh,900px)}body.tv header h1{font-size:44px}body.tv .msg{font-size:34px}body.tv .hud b{font-size:40px}body.tv .hud span{font-size:22px}body.tv nav{display:none}
+@media (orientation:landscape) and (max-height:500px){.app{max-width:none;flex-direction:row;gap:14px;padding-bottom:10px}.side{flex:1}.field{width:auto;height:calc(100vh - 20px)}nav{display:none}}
+</style>
+</head>
+<body>
+<div class="app">
+  <div class="side">
+    <header><div><h1>تتبع الكرات</h1><small>نموذج دراسة — ليس جزءًا من التطبيق</small></div><span class="engine" id="eng">…</span></header>
+    <div class="hud"><div><b id="h-round">٠</b><span>الجولة</span></div><div><b id="h-lives">♥♥♥</b><span>المحاولات</span></div><div><b id="h-pts">٠</b><span>النقاط</span></div></div>
+    <p class="msg" id="msg" role="status" aria-live="polite"></p>
+  </div>
+  <div class="field" id="field" aria-label="ساحة الكرات"></div>
+</div>
+<nav><span>اليوم</span><span>الألعاب</span><span>الألغاز</span><span>مستواي</span></nav>
+<script src="mot-core.js"></script>
+<script>
+'use strict';
+const Q=new URLSearchParams(location.search),R=Q.get('r')||'canvas';
+if(MOT.OPT.tv)document.body.classList.add('tv');
+const AR=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+const hud=({round,lives,pts,msg})=>{document.getElementById('h-round').textContent=AR(round);document.getElementById('h-lives').textContent='♥'.repeat(Math.max(0,lives))||'—';document.getElementById('h-pts').textContent=AR(pts);if(msg)document.getElementById('msg').textContent=msg;};
+// تحميل كسول: مكتبة المحرك لا تُطلب إلا عند فتح هذه اللعبة.
+const lib=src=>new Promise((ok,no)=>{const s=document.createElement('script');s.src=src;s.onload=ok;s.onerror=no;document.head.append(s);});
+const firstFrame=()=>{if(__bench.firstFrame==null)requestAnimationFrame(()=>{__bench.firstFrame=performance.now();performance.mark('first-frame');__bench.ready=true;});};
+const field=document.getElementById('field');
+(async()=>{
+  const mod=await import('./renderers/'+R+'.js');
+  if(mod.needs)await lib(mod.needs);
+  __bench.renderer=R;
+  window.CTX={hud,firstFrame,tv:MOT.OPT.tv,opt:Q};window.GAME=await mod.mount(field,CTX);
+  document.getElementById('eng').textContent=GAME.label;
+})().catch(e=>{document.getElementById('msg').textContent='تعذر التشغيل: '+e.message;window.__bench.error=String(e);});
+</script>
+</body>
+</html>

@@ -16,3 +16,18 @@
 12. راجع مشاهد قبل/بعد للبوابة والمنارة والسفينة والماء والخزانة، وإعداد تقليل الحركة، ثم الصوت والإيقاف والعودة من خلفية الجهاز.
 
 سجل اسم الجهاز والمتصفح وإصداره، والخطأ وخطوات تكراره. لا تُسجل خطوة كناجحة دون تجربتها فعليًا. افحص معدل الإطارات والذاكرة على الجهاز قبل إعلان هدف أداء محقق.
+
+## فحص Chrome للإصدار 5.4.7
+
+لا حاجة لإرسال ملف Chrome التنفيذي. شغّل التطبيق محليًا ثم نفّذ اختبار Playwright باستخدام نسخة Chrome المثبتة لديك:
+
+1. فك ضغط الحزمة وافتح مجلد المشروع في الطرفية.
+2. شغّل الخادم: `python start.py` (أو `py start.py` على Windows).
+3. في نافذة طرفية ثانية ثبّت Playwright عند الحاجة: `python -m pip install playwright`.
+4. شغّل الاختبار مع مسار Chrome:
+   - Windows: `python qa/browser/smoke.py --chrome "C:\\Program Files\\Google\\Chrome\\Application\\chrome.exe" --shots screenshots`
+   - macOS: `python3 qa/browser/smoke.py --chrome "/Applications/Google Chrome.app/Contents/MacOS/Google Chrome" --shots screenshots`
+   - Linux: `python3 qa/browser/smoke.py --chrome "/usr/bin/google-chrome" --shots screenshots`
+5. أرسل مجلد `screenshots` مضغوطًا، مع نص نتيجة الطرفية ونسخة Chrome ونظام التشغيل. لا ترسل ملف المتصفح نفسه.
+
+الاختبار يفتح ألعاب العقل والألغاز ومحطات جزيرة الكنز على إطار هاتف 390×844، ويفحص أخطاء JavaScript وتجاوز العرض الأفقي وموارد الصور. أضف `--shots` لتوليد لقطات الشاشة. الاختبار الآلي لا يغني عن الاستماع الفعلي للأصوات على الهاتف.

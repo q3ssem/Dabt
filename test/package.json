@@ -1,9 +1,9 @@
 {
   "name": "mind-lab",
-  "version": "5.3.0",
+  "version": "5.4.8",
   "private": true,
   "scripts": {
-    "test": "node qa/tests/storybook.logic.cjs && node qa/tests/storybook.interaction.cjs && node qa/tests/story.extras.cjs && node qa/tests/legacy.art.cjs && node qa/tests/deep.art.cjs && node qa/tests/watercolor.cjs && node qa/tests/generators.cjs && node qa/tests/release42.cjs",
-    "test:browser": "python3 qa/browser/smoke.py"
+    "test": "node qa/tests/storybook.logic.cjs && node qa/tests/storybook.interaction.cjs && node qa/tests/story.extras.cjs && node qa/tests/legacy.art.cjs && node qa/tests/deep.art.cjs && node qa/tests/watercolor.cjs && node qa/tests/generators.cjs && node qa/tests/release42.cjs && node qa/tests/release54.cjs && node qa/tests/release544.cjs && node qa/tests/release545.cjs && node qa/tests/release546.cjs && node qa/tests/release547.cjs && node qa/tests/release548.cjs",
+    "test:browser": "python3 qa/browser/smoke.py && python3 qa/browser/journey.py && python3 qa/browser/challenges.py && python3 qa/browser/sweep.py"
   }
 }

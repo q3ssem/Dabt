@@ -566,3 +566,112 @@ ellipse.peek{stroke:#7ff0ff!important;outline:none!important}
 .v5-hubtext .t7-btn{justify-self:start;margin-top:4px;padding:8px 16px;min-height:40px}
 .v5-hublib{margin-top:22px}
 .la-section-head{margin:0 0 10px;font-size:22px!important;color:#fff0d4}
+
+/* 5.4.1 — explain the purpose of the selected island challenge without changing its rules */
+.v5-challenge-note{margin:7px 0 4px;padding:8px 11px;border-inline-start:3px solid #b9914c;border-radius:10px;background:rgba(185,145,76,.10);color:#c6c4ac;font-size:12px;line-height:1.6;font-weight:700;text-align:start}
+
+/* 5.4.3 — canonical full-body crew art from the supplied character collection */
+.v5-crew-roster{margin:18px 0 8px;border:1px solid #bba27666;border-radius:18px;background:#132b34;color:#f4e8d0;overflow:hidden}
+.v5-crew-roster>summary{cursor:pointer;list-style:none;padding:14px 18px;display:flex;align-items:center;justify-content:space-between;gap:10px;font:800 15px/1.5 Tajawal,sans-serif}
+.v5-crew-roster>summary::-webkit-details-marker{display:none}
+.v5-crew-roster>summary:after{content:'＋';font-size:20px;color:#e3bd73}
+.v5-crew-roster[open]>summary:after{content:'−'}
+.v5-crew-roster-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:10px;padding:0 12px 12px}
+.v5-crew-card{min-width:0;overflow:hidden;border:1px solid #c8a96c66;border-radius:15px;background:linear-gradient(180deg,#f5ead3,#ead9b8);color:#30291f;text-align:center;display:flex;flex-direction:column;align-items:center}
+.v5-crew-card-art{height:190px;width:100%;display:flex;align-items:flex-end;justify-content:center;padding:8px 5px 0;background:radial-gradient(ellipse at 50% 80%,#d7c49c 0,transparent 68%)}
+.v5-crew-card-art img{height:100%;max-width:100%;object-fit:contain;object-position:center bottom}
+.v5-crew-card-copy{display:grid;gap:3px;padding:8px 7px 11px;width:100%}
+.v5-crew-card-copy b{font:900 17px/1.3 Tajawal,sans-serif;color:#24434a}
+.v5-crew-card-copy strong{font:700 11px/1.5 Tajawal,sans-serif}
+.v5-crew-card-copy small{font:500 10px/1.5 Tajawal,sans-serif;color:#6b5638}
+.v5-station-guide{display:flex;align-items:center;gap:6px;color:#e7c991;font:700 11px/1.3 Tajawal,sans-serif;margin-top:4px}
+.v5-station-guide img{width:25px;height:25px;object-fit:cover;border-radius:50%;border:1.5px solid #d7b46b;background:#f2e3c5}
+.v5-intro-crew{display:flex;align-items:center;gap:14px;width:100%;margin:4px 0 12px;padding:12px;border:1px solid #c9aa70;border-radius:16px;background:linear-gradient(135deg,#f7efdE,#eadab9);text-align:right}
+.v5-intro-crew-art{flex:0 0 112px;height:174px;display:flex;align-items:flex-end;justify-content:center;background:radial-gradient(ellipse at 50% 85%,#d7c49c 0,transparent 70%)}
+.v5-intro-crew-art img{height:100%;max-width:100%;object-fit:contain;object-position:center bottom}
+.v5-intro-crew-copy{display:grid;gap:5px;min-width:0}
+.v5-intro-crew-copy .t7-kicker{color:#8a6735}
+.v5-intro-crew-copy b{font:900 24px/1.2 Tajawal,sans-serif;color:#24434a}
+.v5-intro-crew-copy strong{font:700 14px/1.5 Tajawal,sans-serif;color:#4e3d2b}
+.v5-intro-crew-copy p{margin:0;font:500 12px/1.7 Tajawal,sans-serif;color:#725c3d}
+.v5-intro-face{width:76px;height:76px;margin:0 auto 2px}
+@media(max-width:760px){.v5-crew-roster-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;padding:0 8px 8px}.v5-crew-card-art{height:170px}.v5-station-guide{font-size:10px}.v5-station-guide img{width:22px;height:22px}.v5-intro-crew-art{flex-basis:94px;height:150px}.v5-intro-crew-copy b{font-size:21px}.v5-intro-crew{gap:10px;padding:10px}}
+@media(max-width:360px){.v5-crew-card-art{height:145px}.v5-crew-card-copy strong{font-size:10px}.v5-intro-crew-art{flex-basis:82px;height:132px}}
+
+/* 5.4.4 — illustrated sea chapter cards and crew debrief after each solved station */
+.v544-chapter-overview{display:grid;grid-template-columns:116px minmax(0,1fr);gap:14px;align-items:center;margin:14px 0;padding:12px;border:1px solid #bba27666;border-radius:17px;background:linear-gradient(120deg,#18343d,#10262e);color:#f4e8d0}
+.v544-chapter-art{height:112px;overflow:hidden;border-radius:12px;background:#ead9b8}
+.v544-chapter-art img{width:100%;height:100%;object-fit:cover}
+.v544-chapter-info{display:grid;gap:3px;min-width:0}
+.v544-chapter-info h3{margin:0;color:#f3d69c;font-size:19px}
+.v544-chapter-info p{margin:0;color:#d3d4c4;font-size:12px}
+.v544-chapter-progress{display:flex;align-items:center;gap:10px;margin-top:6px;color:#d7c59e;font-size:11px}
+.v544-progress-track{height:6px;flex:1;max-width:150px;border-radius:9px;background:#ffffff24;overflow:hidden}
+.v544-progress-track i{display:block;height:100%;border-radius:9px;background:#d9b66e}
+.v544-crew-debrief{display:flex;align-items:center;gap:12px;margin:16px 0;padding:10px 12px;border:1px solid #c9aa70;border-radius:15px;background:linear-gradient(135deg,#f7efdf,#e8d6b4)}
+.v544-crew-debrief img{width:76px;height:104px;object-fit:contain;object-position:center bottom;flex:0 0 auto}
+.v544-crew-debrief>div{display:grid;gap:3px;min-width:0}
+.v544-crew-debrief .t7-kicker{color:#8a6735}
+.v544-crew-debrief b{color:#24434a;font-size:17px}
+.v544-crew-debrief p{margin:0;color:#725c3d;font-size:13px;line-height:1.65}
+@media(max-width:760px){.v544-chapter-overview{grid-template-columns:88px minmax(0,1fr);gap:10px;padding:9px}.v544-chapter-art{height:92px}.v544-chapter-info h3{font-size:16px}.v544-chapter-info p{font-size:11px}.v544-crew-debrief img{width:62px;height:90px}}
+
+
+/* 5.4.5 — illustrated narrative passages between the seven seas */
+.v545-passage-layout{align-items:stretch}
+.v545-passage-art{position:relative;min-height:420px;overflow:hidden;border-radius:22px;background:#132c36;box-shadow:0 14px 34px #0003}
+.v545-passage-art:after{content:'';position:absolute;inset:35% 0 0;background:linear-gradient(transparent,#101d23b8)}
+.v545-passage-art>img{width:100%;height:100%;min-height:420px;object-fit:cover;display:block}
+.v545-passage-number{position:absolute;z-index:1;top:14px;inset-inline-start:14px;padding:8px 13px;border-radius:99px;background:#142a34eF;color:#f4dfb3;border:1px solid #d6b36a;font:800 12px Tajawal,sans-serif}
+.v545-passage-card{display:flex;flex-direction:column;justify-content:center;gap:10px}
+.v545-passage-card h2{margin:0;color:#24434a;font-size:clamp(23px,3vw,30px)}
+.v545-passage-card>p{margin:0;color:#4c493d;font-size:15px;line-height:1.9}
+.v545-passage-crew{display:flex;align-items:center;gap:12px;padding:10px 12px;border-radius:15px;border:1px solid #c9aa70;background:linear-gradient(135deg,#f7efdf,#e8d6b4)}
+.v545-passage-crew>img{width:72px;height:100px;object-fit:contain;object-position:center bottom;flex:0 0 auto}
+.v545-passage-crew>div{display:grid;gap:4px}.v545-passage-crew .t7-kicker{color:#8a6735}.v545-passage-crew b{font-size:17px;color:#24434a}.v545-passage-crew p{margin:0;color:#725c3d;font-size:12px;line-height:1.7}
+.v545-passage-destination{display:grid;gap:3px;padding:12px 14px;border-inline-start:4px solid #b9914c;border-radius:10px;background:#f1e5cb;color:#4d422c}
+.v545-passage-destination small{color:#8a6735;font-size:11px;font-weight:800}.v545-passage-destination b{font-size:18px;color:#24434a}.v545-passage-destination span{font-size:12px;line-height:1.6}
+.v545-passage-go{width:100%;min-height:50px}.v545-passage-skip{align-self:center;border:0;background:transparent;color:#776748;font:700 12px Tajawal,sans-serif;padding:7px 14px}
+@media(max-width:760px){.v545-passage-layout{grid-template-columns:1fr!important}.v545-passage-art,.v545-passage-art>img{min-height:200px;height:210px}.v545-passage-card{padding:18px!important}.v545-passage-card>p{font-size:14px}.v545-passage-crew>img{width:60px;height:86px}}
+
+
+/* 5.4.6 — the seven clues resolve into one oath and a replayable finale */
+.v546-memory{display:grid;gap:14px;margin:18px 0;padding:16px;border:1px solid #c9aa70;border-radius:18px;background:linear-gradient(145deg,#f7efdE,#ead9b8);color:#3d392d}
+.v546-memory>header h3{margin:3px 0;color:#24434a;font-size:clamp(21px,3vw,27px)}
+.v546-memory>header p{margin:3px 0 0;color:#67583e;font-size:13px;line-height:1.8}
+.v546-seal-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:9px}
+.v546-seal-card{display:grid;grid-template-columns:48px minmax(0,1fr);gap:8px;align-items:center;padding:9px;border:1px solid #c4ad7f;border-radius:12px;background:#fff9e9}
+.v546-seal-card>img{width:48px;height:48px;object-fit:contain}
+.v546-seal-card>div{display:grid;gap:2px;min-width:0}
+.v546-seal-card small{font-size:9px;color:#9a763d;font-weight:800}
+.v546-seal-card b{font-size:12px;color:#24434a}
+.v546-seal-card span{font-size:10px;color:#806d4d}
+.v546-seal-card p{grid-column:1/-1;margin:5px 0 0;font-size:10px;line-height:1.6;color:#554b39}
+.v546-memory-oath{padding:13px 15px;border-inline-start:4px solid #b9914c;border-radius:11px;background:#e4d2aa}
+.v546-memory-oath b{color:#24434a;font-size:15px}
+.v546-memory-oath p{margin:5px 0;color:#4e4634;font-size:14px;line-height:1.8}
+.v546-memory-oath small{font-size:10px;color:#866b3e}
+.v546-crew-credit-wrap h4{margin:4px 0;color:#24434a;font-size:16px}
+.v546-crew-credit-wrap>p{margin:0 0 8px;color:#67583e;font-size:12px}
+.v546-crew-grid{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:8px}
+.v546-crew-credit{display:flex;align-items:center;gap:7px;min-height:66px;padding:6px;border-radius:10px;background:#fff9e9;border:1px solid #d3c09a}
+.v546-crew-credit img{width:38px;height:54px;object-fit:contain;object-position:center bottom;flex:0 0 auto}
+.v546-crew-credit div{display:grid;gap:2px;min-width:0}
+.v546-crew-credit b{font-size:12px;color:#24434a}
+.v546-crew-credit span{font-size:9px;line-height:1.4;color:#786346}
+.v546-notebook-oath{border-inline-start:4px solid #b9914c;background:#f7efdE}
+.v546-notebook-oath .t7-btn{margin-top:8px}
+.v546-return-finale{display:flex;align-items:center;justify-content:space-between;gap:12px;margin:14px 0;padding:14px 16px;border-radius:15px;border:1px solid #c9aa70;background:#18343d;color:#f4e8d0}
+.v546-return-finale>div{display:grid;gap:3px}.v546-return-finale .t7-kicker{color:#e6c990}.v546-return-finale b{font-size:14px}
+@media(max-width:760px){.v546-memory{padding:11px}.v546-seal-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}.v546-seal-card{grid-template-columns:38px minmax(0,1fr);padding:7px}.v546-seal-card>img{width:38px;height:38px}.v546-crew-grid{grid-template-columns:repeat(2,minmax(0,1fr));gap:6px}.v546-crew-credit{min-height:60px;padding:5px}.v546-crew-credit img{width:32px;height:48px}.v546-crew-credit b{font-size:11px}.v546-crew-credit span{font-size:8px}.v546-return-finale{align-items:stretch;flex-direction:column}.v546-return-finale .t7-btn{width:100%}}
+
+/* 5.4.7 — unified puzzle proportions and safe-area containment. */
+.t7,.t7 *{box-sizing:border-box}
+.t7-puzzle-layout,.t7-puzzle-pane,.v5-board{min-width:0;max-width:100%}
+.t7-puzzle-pane{width:100%;overflow:hidden}
+.v5-board{width:100%;overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:thin}
+.v5-board>*,.v5-board svg,.v5-board canvas,.v5-board img{max-width:100%}
+.v5-board button{max-width:100%;min-width:0;overflow-wrap:anywhere}
+@media(max-width:480px){.t7-puzzle-pane{padding:14px;border-radius:18px}.v5-board{margin:10px auto 4px}}
+/* 5.4.8: «أرني حركة» is a read-only preview — taps wait until the real board returns. */
+.v5-board.demo{pointer-events:none}

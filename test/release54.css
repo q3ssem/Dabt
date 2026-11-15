@@ -1,0 +1,115 @@
+/* مختبر العقل 5.4 — unified monochrome skins + hand-painted 2D artwork.
+   Presentation only: puzzle rules, timing, scoring, progression IDs and saved data remain untouched. */
+:root{
+  color-scheme:dark;
+  --bg:#111315; --bg2:rgba(246,245,240,.035);
+  --surface:rgba(246,245,240,.055); --surface2:rgba(246,245,240,.085);
+  --line:rgba(246,245,240,.14); --ink:#F4F3EF; --muted:#A5A7A7; --dim:#7B8081;
+  --tint:244,243,239; --panel1:#1C1F21; --panel2:#17191B; --panel3:#24282A;
+  --tabbg:rgba(17,19,21,.96); --catmix:92%; --gold:#D6B36B;
+  --good:#6BCB91; --bad:#E47779;
+}
+:root[data-skin="dark"]{color-scheme:dark}
+:root[data-skin="light"]{
+  color-scheme:light;
+  --bg:#F7F7F5; --bg2:rgba(27,31,32,.035);
+  --surface:rgba(27,31,32,.045); --surface2:rgba(27,31,32,.07);
+  --line:rgba(27,31,32,.13); --ink:#24282A; --muted:#666D70; --dim:#92999B;
+  --tint:36,40,42; --panel1:#FFFFFF; --panel2:#F1F3F1; --panel3:#E9EFEC;
+  --tabbg:rgba(255,255,255,.96); --catmix:58%; --gold:#A77E35;
+  --good:#287D4E; --bad:#B9454A;
+}
+@media(prefers-color-scheme:light){
+  :root[data-skin="auto"]{
+    color-scheme:light;
+    --bg:#F7F7F5; --bg2:rgba(27,31,32,.035);
+    --surface:rgba(27,31,32,.045); --surface2:rgba(27,31,32,.07);
+    --line:rgba(27,31,32,.13); --ink:#24282A; --muted:#666D70; --dim:#92999B;
+    --tint:36,40,42; --panel1:#FFFFFF; --panel2:#F1F3F1; --panel3:#E9EFEC;
+    --tabbg:rgba(255,255,255,.96); --catmix:58%; --gold:#A77E35;
+    --good:#287D4E; --bad:#B9454A;
+  }
+}
+html:not([data-look="sketch"]) body{background:var(--bg);background-image:linear-gradient(180deg,color-mix(in srgb,var(--ink) 2%,transparent),transparent 280px);background-attachment:scroll;color:var(--ink)}
+html[data-skin="dark"] .workout{background:linear-gradient(155deg,#202426,#171A1C);border-color:#FFFFFF18}
+html[data-skin="light"] .workout{background:linear-gradient(155deg,#FFFFFF,#F0F2F0);border-color:#20242620}
+html[data-skin="dark"] .tabs{background:var(--tabbg);border-color:#FFFFFF1A}
+html[data-skin="light"] .tabs{background:var(--tabbg);border-color:#20242620}
+html:not([data-look="sketch"]) .cta:not(.ghost){background:linear-gradient(110deg,#4DB6B1,#B6C98A 62%,#D9B66F);color:#17201F;box-shadow:none}
+html:not([data-look="sketch"]) .go-btn{background:linear-gradient(110deg,#55BDB6,#B8C98D 62%,#D8B36B);color:#18201F;box-shadow:0 8px 20px -14px #4DADA8}
+html:not([data-look="sketch"]) .cta.ghost{border-color:var(--line);background:var(--surface);color:var(--ink)}
+html:not([data-look="sketch"]) .seg{background:var(--surface2);border:1px solid var(--line)}
+html:not([data-look="sketch"]) .seg button{color:var(--muted)}
+html:not([data-look="sketch"]) .seg button.on{background:var(--ink);color:var(--bg)}
+html:not([data-look="sketch"]) .set{border-color:var(--line)}
+html:not([data-look="sketch"]) .ui-cat h2,html:not([data-look="sketch"]) .la-section-title{color:var(--ink)}
+html:not([data-look="sketch"]) .ui-cat h2 small,html:not([data-look="sketch"]) .la-section-title small{color:var(--muted)}
+html[data-skin="dark"] .ui-gmain{background:linear-gradient(155deg,#202426,#171A1C)!important;border-color:#FFFFFF1B!important;color:#F4F3EF!important;box-shadow:0 6px 16px #0002}
+html[data-skin="light"] .ui-gmain{background:linear-gradient(155deg,#FFFFFF,#F0F2F0)!important;border-color:#252A2B20!important;color:#24282A!important;box-shadow:0 5px 14px #1d252410}
+html[data-skin="dark"] .ui-gmain small{color:#A5A7A7!important}
+html[data-skin="light"] .ui-gmain small{color:#666D70!important}
+html[data-skin="dark"] .ui-dash{background:linear-gradient(145deg,#202426,#171A1C)!important;border-color:#FFFFFF18!important;color:#F4F3EF!important}
+html[data-skin="light"] .ui-dash{background:linear-gradient(145deg,#FFFFFF,#F0F2F0)!important;border-color:#252A2B20!important;color:#24282A!important}
+html[data-skin="dark"] .ui-kpis div,html[data-skin="dark"] .ui-island{background:#111416!important}
+html[data-skin="light"] .ui-kpis div,html[data-skin="light"] .ui-island{background:#ECEFED!important}
+html[data-skin="dark"] .ui-kpis span,html[data-skin="dark"] .ui-week small{color:#B7BABA!important}
+html[data-skin="light"] .ui-kpis span,html[data-skin="light"] .ui-week small{color:#646C6E!important}
+html[data-skin="dark"] .ui-skill b{color:#F4F3EF!important}
+html[data-skin="light"] .ui-skill b{color:#24282A!important}
+html[data-skin="dark"] .ui-bar{background:#0D1011!important}
+html[data-skin="light"] .ui-bar{background:#DDE2DF!important}
+html[data-skin="dark"] .ui-fold{background:#1C1F21!important;border-color:#FFFFFF18!important}
+html[data-skin="light"] .ui-fold{background:#FFFFFF!important;border-color:#252A2B20!important}
+html[data-skin="dark"] .ui-fold>summary{color:#F4F3EF!important}
+html[data-skin="light"] .ui-fold>summary{color:#24282A!important}
+html[data-skin="dark"] .la-library-card{background:linear-gradient(155deg,#202426,#171A1C)!important;border-color:#FFFFFF20!important;color:#F4F3EF!important}
+html[data-skin="light"] .la-library-card{background:linear-gradient(155deg,#FFFFFF,#F0F2F0)!important;border-color:#252A2B22!important;color:#24282A!important}
+html[data-skin="dark"] .la-library-card b{color:#F4F3EF!important}
+html[data-skin="light"] .la-library-card b{color:#24282A!important}
+html[data-skin="dark"] .la-library-card small{color:#A5A7A7!important}
+html[data-skin="light"] .la-library-card small{color:#666D70!important}
+html[data-skin="dark"] .la-library-image,html[data-skin="dark"] .wc-game-icon{background:#111416!important}
+html[data-skin="light"] .la-library-image,html[data-skin="light"] .wc-game-icon{background:#F1F3F0!important}
+.wc-icon-art{display:block;width:100%;height:100%;object-fit:contain;padding:2px;filter:drop-shadow(0 3px 2px #1a19130d)}
+html:not([data-look="sketch"]) .la-library-image:has(.wc-icon-art){border-radius:18px!important;overflow:hidden}
+html[data-skin="dark"] .ui-week i{background:#303537!important}
+html[data-skin="light"] .ui-week i{background:#D7DEDA!important}
+html:not([data-look="sketch"]) .ui-fav{color:var(--gold)}
+html:not([data-look="sketch"]) .dx-board:not(.th-ink):not(.th-space):not(.th-kid){background:linear-gradient(155deg,#202426,#171A1C);border-color:#FFFFFF20;color:var(--ink);--tx:var(--ink);--cell:#2A2E30;--cellb:#596164}
+html[data-skin="light"] .dx-board:not(.th-ink):not(.th-space):not(.th-kid){background:linear-gradient(155deg,#FFFFFF,#F0F2F0);border-color:#252A2B24;color:#24282A;--tx:#24282A;--cell:#FFFFFF;--cellb:#B9C2BE}
+html[data-skin="light"] .dx-pause{background:rgba(35,40,40,.48)}
+html[data-skin="light"] .dx-pause-card{background:#FFFFFF;color:#24282A;border-color:#C8D0CC}
+html[data-skin="light"] .dx-toast{background:#24282A;color:#FFFFFF}
+html[data-skin="light"] .dx-game .dx-board{color:#24282A}
+html[data-skin="light"] .dxw{background:#F7F7F5;color:#24282A}
+html[data-skin="light"] .dxw-top,html[data-skin="light"] .dxw-load{background:#FFFFFF;color:#24282A;border-color:#D7DEDA}
+html[data-skin="light"] .dxw-card{background:#FFFFFF!important;color:#24282A;border-color:#D7DEDA}
+html[data-skin="light"] .dxw-card .dx-btn{color:#24282A;border-color:#C9D1CD;background:#F1F3F0}
+html[data-skin="light"] .dxw-card .dx-muted{color:#666D70}
+html[data-skin="light"] .dxw-clue{background:#F1F3F0;color:#24282A;border-color:#B9C2BE}
+html[data-skin="light"] .dxw-zone{background:#F1F3F0;color:#24282A;border-color:#D7DEDA}
+html[data-skin="light"] .dxw-zone small{color:#666D70}
+html[data-skin="light"] .dxw-hud span{background:#FFFFFFE8;color:#24282A;border-color:#D7DEDA}
+html[data-skin="light"] .dxw-pad button{background:#FFFFFF;color:#24282A;border-color:#A77E35}
+@media(prefers-reduced-motion:reduce){.wc-icon-art{filter:none}}
+/* A consistent three-part progression shown on every growing puzzle (levels and results are unchanged). */
+.pz-phase-card{width:100%;max-width:460px;margin:0;padding:12px 14px;border:1px solid var(--line);border-radius:16px;background:var(--surface);text-align:start}
+.pz-phase-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12.5px;color:var(--muted)}
+.pz-phase-head span{font-variant-numeric:tabular-nums;font-weight:800;color:var(--ink)}
+.pz-phase-track{display:grid;grid-template-columns:repeat(3,1fr);gap:5px;margin:8px 0}
+.pz-phase-track i{height:6px;border-radius:9px;background:var(--line)}
+.pz-phase-track i.on{background:#4DAFA8}
+.pz-phase-track i.current{background:#D2AD61;box-shadow:0 0 0 2px color-mix(in srgb,#D2AD61 24%,transparent)}
+.pz-phase-title{font-size:15px;font-weight:900;color:var(--ink)}
+.pz-phase-card p{margin:2px 0 4px;color:var(--muted);font-size:13px;line-height:1.7}
+.pz-phase-card small{font-size:11px;color:var(--muted);font-variant-numeric:tabular-nums}
+.pz-phase-inline{display:inline-block;color:var(--muted);font-size:11px;font-weight:800;margin-inline-start:5px}
+html[data-skin="light"] .pz-phase-card{background:#FFFFFF;border-color:#252A2B20}
+html[data-skin="dark"] .pz-phase-card{background:#1C1F21;border-color:#FFFFFF18}
+
+/* 5.4.1 — puzzle-specific coaching for the learner's current phase */
+.pz-phase-focus{display:grid;gap:3px;margin:7px 0 2px;padding:9px 11px;border-inline-start:3px solid #4DAFA8;border-radius:10px;background:color-mix(in srgb,var(--surface2) 72%,transparent)}
+.pz-phase-focus span{font-size:11px;font-weight:800;color:var(--muted)}
+.pz-phase-focus b{font-size:13px;line-height:1.65;color:var(--ink);font-weight:750}
+.pz-phase-track[role="progressbar"]{position:relative}
+.pz-phase-card small{display:block;margin-top:5px}

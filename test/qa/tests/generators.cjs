@@ -6,7 +6,8 @@ vm.runInContext(html.slice(html.indexOf('const PP_SZ='),html.indexOf('function r
 vm.runInContext(html.slice(html.indexOf('function stMake('),html.indexOf('function runStatues(')),ctx);
 vm.runInContext(html.match(/^const RV=\{.*$/m)[0],ctx);
 vm.runInContext(html.slice(html.indexOf('const RV_EAT='),html.indexOf('function runRiver(')),ctx);
-let pipes=0,statues=0,rivers=0;
+ctx.window=ctx;vm.runInContext(fs.readFileSync(require('path').join(__dirname,'../../upgrade/river-difficulty.js'),'utf8'),ctx);
+let pipes=0,statues=0,rivers=0,riverProgression=0;
 for(let lv=1;lv<=8;lv++)for(let t=0;t<20;t++){
  const p=ctx.ppMake(lv);p.cur=p.sol.slice();assert.equal(ctx.ppSolved(p),true);assert.equal(ctx.ppPowered(p).size,p.w*p.h);pipes++;
 }
@@ -17,7 +18,9 @@ for(let lv=1;lv<=7;lv++)for(let t=0;t<5;t++){
 }
 for(let lv=1;lv<=7;lv++)for(let t=0;t<10;t++){
  const p=ctx.rvMake(lv),path=ctx.rvPath(p.it.length,p.cap,p.conf,0),N=p.it.length,F=1<<N;assert.ok(path);assert.equal(path.length-1,p.min);
+ if(lv===3){assert.equal(p.it.length,4,'river level 3 must not fall back to the introductory board');assert.equal(p.cap,1);riverProgression++;}
+ if(lv===7){assert.equal(p.it.length,6);assert.equal(p.cap,2,'expert river level retains a meaningful capacity constraint');assert.ok(p.conf.length>=4);riverProgression++;}
  for(let i=1;i<path.length;i++){const a=path[i-1],b=path[i],f=a&F?1:0;assert.ok((a^b)&F);let moved=0;for(let j=0;j<N;j++)if((a^b)&(1<<j)){moved++;assert.equal((a>>j)&1,f)}assert.ok(moved<=p.cap);const nf=b&F?1:0;for(const[x,y]of p.conf)assert.ok(!(((b>>x)&1)===((b>>y)&1)&&((b>>x)&1)!==nf));}rivers++;
 }
-const result={status:'passed',pipes:{levels:8,samples:pipes},statues:{levels:7,samples:statues},river:{levels:7,samples:rivers},totalGeneratedPuzzles:pipes+statues+rivers,scope:'pure source generators and legal solution paths; no layout, input, audio or physical-device validation'};
+const result={status:'passed',pipes:{levels:8,samples:pipes},statues:{levels:7,samples:statues},river:{levels:7,samples:rivers},totalGeneratedPuzzles:pipes+statues+rivers,riverProgressionChecks:riverProgression,scope:'pure source generators and legal solution paths; no layout, input, audio or physical-device validation'};
 console.log(JSON.stringify(result));

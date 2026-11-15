@@ -51,13 +51,15 @@
       best.length ? E('div', { class: 'ui-best' }, E('h3', { text: 'أفضل نتائجك' }), ...best.map(h => { const g = GM[h.g]; return g ? E('p', {}, E('span', { text: g.name }), E('b', { text: AR(h.idx || h.pts || 0) })) : null; })) : null);
   }
   const me0 = renderMe; renderMe = function () {
+    // 5.4.8: a setting (theme, mute, motion…) re-renders this page; keep the folds the player had open.
+    const prev = $('#v-me'), wasOpen = new Set(prev ? [...prev.querySelectorAll('details.ui-fold[open]')].map(d => d.dataset.fold) : []);
     me0();
     const v = $('#v-me'); if (!v) return;
     const head = v.firstElementChild, rest = [...v.children].slice(1);
     const titleOf = n => { const h = n.querySelector && n.querySelector('h2'); if (h) return h.textContent.trim(); if (n.classList.contains('radar')) return 'مؤشر العقل'; if (n.classList.contains('stats')) return 'أرقامك'; return ''; };
     const groups = []; rest.forEach(n => { const t = titleOf(n); if (t || !groups.length) groups.push([t || 'المزيد', [n]]); else groups[groups.length - 1][1].push(n); });
     // radar + stats read better together
-    const folded = groups.map(([t, nodes]) => { const d = E('details', { class: 'ui-fold' }, E('summary', { text: t })); nodes.forEach(n => d.append(n)); return d; });
+    const folded = groups.map(([t, nodes]) => { const d = E('details', { class: 'ui-fold', 'data-fold': t }, E('summary', { text: t })); if (wasOpen.has(t)) d.open = true; nodes.forEach(n => d.append(n)); return d; });
     v.innerHTML = ''; v.append(head, dashboard(), ...folded);
     const settings = folded.find(d => d.querySelector('#dxBackupStatus')); if (settings) settings.querySelector('summary').textContent = 'الإعدادات والنسخة الاحتياطية';
   };
@@ -115,4 +117,10 @@
   if ($('#play')) new MutationObserver(onPlay).observe($('#play'), { childList: true, subtree: true });
 
   if (curTab === 'games') renderGames();
+})();
+
+/* 5.4.1 — additive release layer; keeps the original application engine source intact. */
+(function(){
+  if(document.querySelector('script[data-release="5.4.0"]'))return;
+  const s=document.createElement('script');s.src=new URL('release54.js',document.baseURI).href;s.dataset.release='5.4.0';document.body.append(s);
 })();

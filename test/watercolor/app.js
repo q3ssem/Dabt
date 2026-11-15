@@ -32,6 +32,17 @@ new MutationObserver(W.decorate).observe($('#stage'),{childList:true,subtree:tru
 /* 5.1: one cropped file per library icon (the shared atlas let neighbouring cells show at the edges). */
 W.icon=i=>'<svg class="wc-icon" viewBox="0 0 100 100" preserveAspectRatio="xMidYMid meet" aria-hidden="true"><image href="watercolor/art/icon-'+i+'.webp" width="100" height="100"/></svg>';
 W.iconById={pz_lock:0,pz_stat:1,pz_scale:2,pz_pipe:3,pz_river:4,pz_rush:5,pz_grid:6,tol:7};
+/* 5.4: hand-painted 2D icons in the same maritime storybook direction as the island crew. */
+W.iconArtById={
+ pz_xlock:'lock',pz_plock:'key',
+ pz_pvalve:'lever',pz_parm:'gear',pz_zcomp:'compass',
+ pz_zroute:'boat',pz_yhold:'boat',pz_abridge:'bridge',
+ pz_stroke:'map',pz_tmap:'map',pz_ymap:'map',
+ pz_pmirror:'mirror',pz_zshadow:'mirror',pz_wlake:'mirror',
+ pz_zstars:'crystal',pz_tdig:'pearlstand',pz_xloot:'chest',
+ pz_ybell:'bell',pz_ashell:'shell',pz_alight:'lantern'
+};
+W.iconArtUrl=name=>W.abs('watercolor/art/icons54/'+name+'.webp');
 /* 4.2.3: library icons — show the sprite itself as a square, framed by its own content (some cards reused an
    in-puzzle piece with a 30×12 box, so the icon came out tiny). */
 W.squareIcon=function(box){if(!box||box.dataset.wcSq)return;const ls=box.querySelector('svg.la-sprite');if(!ls)return;box.dataset.wcSq='1';
@@ -43,8 +54,11 @@ W.cards=function(){
  const cards=[...document.querySelectorAll('.t7-classic'),...document.querySelectorAll('.la-library-card')];
  if(!cards.length||W.failed.has('icon-0'))return;
  if(!W.images.has('icon-0')){W.asset('icon-0').then(ok=>{if(ok)W.cards();});return;}
- cards.forEach(b=>W.squareIcon(b.querySelector('.la-library-image')));cards.forEach(b=>{const id=b.dataset.puzzleId||b.dataset.legacyPuzzle,i=W.iconById[id];if(i==null||b.dataset.wcIcon===id)return;
- const box=b.querySelector('.la-library-image')||b.querySelector('.wc-game-icon');if(box)box.innerHTML=W.icon(i);else{const icon=document.createElement('span');icon.className='wc-game-icon';icon.innerHTML=W.icon(i);const old=b.querySelector('svg');if(old)old.replaceWith(icon);else b.prepend(icon);}b.querySelectorAll('.t7-sprite').forEach(e=>e.remove());/* 4.2.3: one icon per card */b.dataset.wcIcon=id;b.setAttribute('aria-label',GM[id]?.name||b.textContent);});
+ cards.forEach(b=>W.squareIcon(b.querySelector('.la-library-image')));cards.forEach(b=>{const id=b.dataset.puzzleId||b.dataset.legacyPuzzle,i=W.iconById[id],art=W.iconArtById[id];if((i==null&&!art)||b.dataset.wcIcon===id)return;
+ const box=b.querySelector('.la-library-image')||b.querySelector('.wc-game-icon');
+ const markup=art?'<img class="wc-icon-art" src="'+W.iconArtUrl(art)+'" alt="" loading="lazy">':W.icon(i);
+ if(box)box.innerHTML=markup;else{const icon=document.createElement('span');icon.className='wc-game-icon';icon.innerHTML=markup;const old=b.querySelector('svg');if(old)old.replaceWith(icon);else b.prepend(icon);}
+ b.querySelectorAll('.t7-sprite').forEach(e=>e.remove());/* one icon per card */b.dataset.wcIcon=id;b.setAttribute('aria-label',GM[id]?.name||b.textContent);});
 };
 new MutationObserver(W.cards).observe($('#v-puz'),{childList:true,subtree:true});
 // Paint terrain beneath the same exact native road path and collision geometry.
