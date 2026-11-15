@@ -1,8 +1,8 @@
 'use strict';
-/* 5.1 presentation layer (loaded last): games page in sections, faster game start, «مستواي» dashboard,
+/* 5.1–5.3 presentation layer (loaded last): games page in sections, faster game start, «مستواي» dashboard,
    kids layout and river decorations. Game engines, scores and saves are untouched. */
 (function () {
-  const $ = DX.$, E = DX.el, AR = DX.AR;
+  const $ = DX.$, E = DX.el, AR = DX.AR, ART = 'ui/art/';
 
   /* ---------- الألعاب: one page, every skill section with its games, three per row ---------- */
   const cardHTML = (g, fav) => { const gi = gameIndex(g.id), rk = gameRank(g.id);
@@ -41,11 +41,11 @@
     const best = [...hist].sort((a, b) => (b.idx || 0) - (a.idx || 0)).filter((h, i, a) => a.findIndex(x => x.g === h.g) === i).slice(0, 3);
     return E('section', { class: 'ui-dash' },
       E('div', { class: 'ui-kpis' },
-        E('div', {}, E('b', { text: AR(sk) }), E('span', { text: 'يوم متتالي' })),
-        E('div', {}, E('b', { text: AR(hist.length) }), E('span', { text: 'جلسة لعب' })),
-        E('div', {}, E('b', { text: AR(stations) + '/٢١' }), E('span', { text: 'محطة في الجزيرة' }))),
+        E('div', {}, E('img', { src: ART + 'badge_streak.webp', alt: '' }), E('b', { text: AR(sk) }), E('span', { text: 'يوم متتالي' })),
+        E('div', {}, E('img', { src: ART + 'badge_sessions.webp', alt: '' }), E('b', { text: AR(hist.length) }), E('span', { text: 'جلسة لعب' })),
+        E('div', {}, E('img', { src: ART + 'hub_treasure.webp', alt: '', class: 'ui-kpi-isl' }), E('b', { text: AR(stations) + '/٢١' }), E('span', { text: 'محطة في الجزيرة' }))),
       E('div', { class: 'ui-week', 'aria-label': 'نشاط آخر سبعة أيام' }, ...week.map(([n, c]) => E('div', { class: c ? 'on' : '' }, E('i', { style: `height:${Math.min(100, 18 + c * 20)}%` }), E('small', { text: n })))),
-      E('h3', { text: 'مهاراتك' }),
+      E('h3', { class: 'ui-h-badge' }, E('img', { src: ART + 'badge_skills.webp', alt: '' }), E('span', { text: 'مهاراتك' })),
       E('div', { class: 'ui-skills' }, ...skills.map(([c, v]) => E('div', { class: 'ui-skill' }, E('span', { text: c.n }), E('div', { class: 'ui-bar' }, E('i', { style: `width:${v == null ? 0 : Math.min(100, v / 10)}%;background:${c.hex}` })), E('b', { text: v == null ? '—' : AR(v) })))),
       E('div', { class: 'ui-island' }, E('span', { text: '🏝' }), E('p', { text: `جزيرة الكنز: ${AR(seals)} / ٧ أختام · ${AR(stars)} نجمة تحدٍّ` })),
       best.length ? E('div', { class: 'ui-best' }, E('h3', { text: 'أفضل نتائجك' }), ...best.map(h => { const g = GM[h.g]; return g ? E('p', {}, E('span', { text: g.name }), E('b', { text: AR(h.idx || h.pts || 0) })) : null; })) : null);
@@ -63,19 +63,56 @@
   };
 
   /* ---------- عبور النهر: birds and butterflies drift over the river (decoration only) ---------- */
-  const BIRD = '<svg viewBox="0 0 40 20"><path d="M2 12 Q10 2 20 10 Q30 2 38 12" fill="none" stroke="#2b3a44" stroke-width="2.6" stroke-linecap="round"/></svg>';
-  const FLY = c => `<svg viewBox="0 0 30 24"><path d="M15 12 C8 0 0 4 4 12 C0 20 10 22 15 12 C20 22 30 20 26 12 C30 4 22 0 15 12Z" fill="${c}" stroke="#5a3a2a" stroke-width="1"/><path d="M15 6 V19" stroke="#3a2a20" stroke-width="1.6"/></svg>`;
   function riverDecor() {
-    const p = $('#play'), g = (() => { try { return curGame(); } catch (e) { return null; } })();
-    const old = p && p.querySelector('.ui-decor'); if (old && (!g || g.id !== 'pz_river')) old.remove();
-    if (!p || !g || g.id !== 'pz_river' || p.querySelector('.ui-decor')) return;
+    const g = (() => { try { return curGame(); } catch (e) { return null; } })(), old = $('#play .ui-decor');
+    if (old && (!g || g.id !== 'pz_river')) old.remove();
+    const p = g && g.id === 'pz_river' && $('#play .rv3'); // birds stay over the painted river, not the HUD
+    if (!p || p.querySelector('.ui-decor')) return;
     const d = E('div', { class: 'ui-decor', 'aria-hidden': 'true' });
-    [[8, 14, 0], [22, 9, 3], [60, 16, 6]].forEach(([x, y, delay], i) => { const b = E('span', { class: 'ui-bird', style: `left:${x}%;top:${y}%;animation-delay:-${delay}s` }); b.innerHTML = BIRD; d.append(b); });
-    [['#f2b24c', 14, 70, 0], ['#e98aa8', 82, 64, 2], ['#8fd0e8', 70, 30, 4]].forEach(([c, x, y, delay]) => { const f = E('span', { class: 'ui-fly', style: `left:${x}%;top:${y}%;animation-delay:-${delay}s` }); f.innerHTML = FLY(c); d.append(f); });
+    [['bird_1', 8, 12, 0, 38], ['bird_2', 30, 7, 3, 30], ['bird_3', 62, 15, 6, 34]].forEach(([f, x, y, delay, w]) => d.append(E('img', { class: 'ui-bird', src: ART + f + '.webp', alt: '', style: `left:${x}%;top:${y}%;width:${w}px;animation-delay:-${delay}s` })));
+    [['butterfly_2', 12, 72, 0], ['butterfly_1', 82, 64, 2], ['butterfly_2', 70, 30, 4]].forEach(([f, x, y, delay], i) => d.append(E('img', { class: 'ui-fly' + (i === 2 ? ' flip' : ''), src: ART + f + '.webp', alt: '', style: `left:${x}%;top:${y}%;animation-delay:-${delay}s` })));
     p.append(d);
   }
   const hd0 = header; header = function (g) { hd0.apply(this, arguments); setTimeout(riverDecor, 0); };
   const cl0 = closePlay; closePlay = function () { const d = $('#play .ui-decor'); if (d) d.remove(); return cl0.apply(this, arguments); }; if ($('#quit')) $('#quit').onclick = closePlay;
+
+  /* ---------- 5.3 art: game, kids and badge icons ---------- */
+  if (typeof I === 'object') [['brake', 'brain_brake'], ['revspan', 'brain_backward'], ['deduce', 'brain_rules']].forEach(([id, f]) => { I[id] = `<img class="ui-ico-art" src="${ART}${f}.webp" alt="" loading="lazy">`; });
+  const KID_ART = ['بطاقات الذاكرة', 'وش تغيّر؟', 'كمّل النمط', 'اتبع الضوء', 'ظل الشكل', 'موقف السيارات', 'نفس الحيوان؟', 'الصورة الناقصة', 'الرسم بالمربعات', 'خريطة الكنز', 'فقاعات الألوان', 'وين الكرة؟', 'المرآة السحرية', 'لا تلمس الذئب!', 'حديقة الحروف', 'ورشة الكلمات', 'متجري الصغير', 'قطار الأرقام', 'قصة النبتة', 'البنّاء الصغير', 'جسر الأصدقاء', 'بيت الحيوان', 'رحلة قطرة', 'قلبي يفهم', 'ميزان الفريق', 'بوصلة الأصدقاء'];
+  const kidArt = g => { const i = KID_ART.indexOf(g.name); return i < 0 ? null : `${ART}kid_${String(i + 1).padStart(2, '0')}.webp`; };
+  function kidIcons() { const v = $('#v-kid'); if (!v || typeof KID_GAMES === 'undefined') return;
+    v.querySelectorAll('.kgame[data-g]').forEach(b => { const g = KID_GAMES.find(k => k.id === b.dataset.g), src = g && kidArt(g), box = b.querySelector('.kge'); if (!src || !box || box.dataset.uiArt) return; box.dataset.uiArt = '1'; box.classList.add('ui-kart'); box.innerHTML = `<img src="${src}" alt="" loading="lazy">`; }); }
+  if (typeof renderKid === 'function') { const rk0 = renderKid; renderKid = function () { const r = rk0.apply(this, arguments); kidIcons(); return r; }; }
+  if ($('#v-kid')) new MutationObserver(() => kidIcons()).observe($('#v-kid'), { childList: true, subtree: true });
+
+  /* ---------- 5.3 series puzzles: short rule on top, the detailed notes fold under it ---------- */
+  const RULES = window.UI_RULES || {};
+  if (typeof G !== 'undefined') G.forEach(g => { const r = RULES[g.id]; if (r) { g.rule = r[0]; g.how = r.slice(1); } });
+  const ruleOpen = {};
+  const played = id => (S.st.hist || []).some(h => h.g === id) || (typeof pzLv === 'function' && pzLv(id) > 1);
+  function foldNotes() {
+    const g = (() => { try { return curGame(); } catch (e) { return null; } })(), r = g && RULES[g.id], body = $('#pzb');
+    if (!r || !body) return;
+    const ol = body.querySelector('.xpin ol, .xpaper ol'); if (!ol || ol.closest('.ui-rules')) return;
+    if (!(g.id in ruleOpen)) ruleOpen[g.id] = !played(g.id);
+    const d = E('details', { class: 'ui-rules' }), sum = E('summary', {}, E('b', { text: 'القاعدة' }), E('span', { text: r[0] }), E('i', { text: 'التفاصيل' }));
+    d.open = ruleOpen[g.id]; d.addEventListener('toggle', () => { ruleOpen[g.id] = d.open; });
+    ol.replaceWith(d); d.append(sum, ol);
+  }
+
+  /* ---------- 5.3 بطاقاتي: a one-tap sample deck when the list is empty ---------- */
+  const SAMPLE = [['عاصمة اليابان؟', 'طوكيو'], ['كم عظمة في جسم الإنسان البالغ؟', '٢٠٦ عظمات'], ['أطول نهر في العالم؟', 'النيل']];
+  function cardsSample() {
+    const g = (() => { try { return curGame(); } catch (e) { return null; } })(), list = $('#stage .clist'), add0 = $('#stage .cardadd');
+    if (!g || g.id !== 'cards' || !list || !add0 || list.querySelector('.citem') || $('#stage .ui-sample') || (S.st.cards || []).length) return;
+    add0.after(E('button', { class: 'cta ui-sample', type: 'button', text: 'جرّب ببطاقات مثال', onclick: () => {
+      SAMPLE.slice(0, 2).forEach(([q, a], i) => S.st.cards.push({ id: Date.now().toString(36) + 's' + i, q, a, box: 0, due: Date.now(), ts: Date.now() }));
+      const [q, a] = SAMPLE[2], cq = $('#cq'), ca = $('#ca'), add = $('#cadd'); if (cq && ca && add) { cq.value = q; ca.value = a; add.click(); } else S.save(); } }));
+  }
+
+  let pending = 0;
+  const onPlay = () => { if (pending) return; pending = requestAnimationFrame(() => { pending = 0; try { foldNotes(); cardsSample(); riverDecor(); } catch (e) {} }); };
+  if ($('#play')) new MutationObserver(onPlay).observe($('#play'), { childList: true, subtree: true });
 
   if (curTab === 'games') renderGames();
 })();

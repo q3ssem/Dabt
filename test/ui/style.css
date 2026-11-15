@@ -55,15 +55,14 @@ html,body{overflow-x:hidden}
 .ui-fold>summary::after{content:'⌄';color:#9fb3b8}.ui-fold[open]>summary::after{content:'⌃'}
 .ui-fold>*:not(summary){margin:0 10px 12px!important}
 /* عبور النهر: decoration */
-.ui-decor{position:absolute;inset:0;pointer-events:none;z-index:3;overflow:hidden}
-.ui-bird{position:absolute;width:44px;animation:uiBird 14s linear infinite}
-.ui-bird svg{width:100%;animation:uiFlap .5s ease-in-out infinite alternate}
-.ui-fly{position:absolute;width:34px;animation:uiFly 9s ease-in-out infinite}
-.ui-fly svg{width:100%;animation:uiWing .25s ease-in-out infinite alternate}
-@keyframes uiBird{from{transform:translateX(-30vw)}to{transform:translateX(110vw)}}
+.ui-decor{position:absolute;inset:0;pointer-events:none;z-index:6;overflow:hidden;border-radius:inherit}
+.ui-bird{position:absolute;height:auto;animation:uiBird 16s linear infinite;filter:drop-shadow(0 3px 3px #0004)}
+.ui-fly{position:absolute;width:30px;height:auto;animation:uiFly 9s ease-in-out infinite,uiWing .35s ease-in-out infinite alternate;filter:drop-shadow(0 2px 2px #0003)}
+.ui-fly.flip{scale:-1 1}
+@keyframes uiBird{0%{transform:translate(-30vw,0) rotate(-2deg)}25%{transform:translate(5vw,-8px) rotate(2deg)}50%{transform:translate(40vw,4px) rotate(-2deg)}75%{transform:translate(75vw,-6px) rotate(2deg)}100%{transform:translate(110vw,0) rotate(-2deg)}}
 @keyframes uiFlap{from{transform:scaleY(1)}to{transform:scaleY(.45)}}
 @keyframes uiFly{0%,100%{transform:translate(0,0)}25%{transform:translate(18px,-14px)}50%{transform:translate(-10px,-24px)}75%{transform:translate(-20px,-6px)}}
-@keyframes uiWing{from{transform:scaleX(1)}to{transform:scaleX(.3)}}
+@keyframes uiWing{from{scale:1 1}to{scale:.55 1}}
 @media(prefers-reduced-motion:reduce){.ui-decor{display:none}}
 #v-kid .ktop{flex-wrap:wrap;gap:8px}
 #v-kid .ktop>*{min-width:0}
@@ -74,3 +73,49 @@ html,body{overflow-x:hidden}
 .dx-kbanner .dx-chips{display:flex!important;flex-direction:row!important;flex-wrap:wrap;gap:6px}
 .dx-kbanner .dx-chip{padding:6px 12px!important;font-size:12px!important;min-height:0!important}
 .dx-kbanner h2{font-size:20px!important}
+
+/* ---------- 5.3 art and puzzle screens ---------- */
+/* game icons drawn as art (three brain games) */
+.ico .ui-ico-art,.ui-gmain .ui-ico-art{width:100%;height:100%;object-fit:contain;display:block}
+.ico:has(.ui-ico-art){background:#132634!important;padding:3px;box-sizing:border-box}
+/* kids: painted icons fill the tile */
+.kgrid .kge.ui-kart{background:#fff3dc!important;padding:3px;box-sizing:border-box;overflow:hidden}
+.kgrid .kge.ui-kart img{width:100%!important;height:100%!important;object-fit:contain;display:block}
+/* «مستواي» badges */
+.ui-kpis img{display:block;width:34px;height:34px;margin:0 auto 2px;object-fit:contain}
+.ui-kpis img.ui-kpi-isl{border-radius:9px;object-fit:cover}
+.ui-h-badge{display:flex;align-items:center;gap:6px}.ui-h-badge img{width:26px;height:26px}
+/* puzzles hub: the island cover */
+.v5-hubart{background:url('art/hub_treasure.webp') center/cover!important}
+/* library: one dark style, section icon + series cover strip */
+.la-section-title{display:flex;align-items:center;gap:8px}
+.la-section-title .la-section-ico{width:30px;height:30px;object-fit:contain;flex:none}
+.la-section-title.has-cover{min-height:64px;padding:10px 12px!important;border-radius:16px;background-size:cover!important;background-position:center!important;border:1px solid #c9a96a44;color:#fff5dc}
+.la-section-title.has-cover .la-section-ico{width:40px;height:40px;filter:drop-shadow(0 2px 4px #0008)}
+.la-section-title small{margin-inline-start:auto}
+.la-library-card{background:linear-gradient(160deg,#173244,#0f2231)!important;border:1px solid #2f5566!important;color:#eaf2ef!important}
+.la-library-card b{color:#f4ecd8!important}.la-library-card small{color:#9fb7b4!important}
+/* faded art behind three boards removed: plain calm surface */
+.la-play[data-la-game="dual"] .board,.la-play[data-la-game="xw"] .xgrid,.la-play[data-la-game="pz_tan"] .tgb{background-image:none!important;background-color:#122a3b!important}
+.la-play[data-la-game="dual"] .board>*{background-image:none!important}
+/* compact puzzle header: title bar + HUD tighter */
+#play .pbar{padding-top:6px!important;padding-bottom:6px!important;min-height:0!important}
+#play .pbar .t #ps{font-size:10px}
+#play .pzhud{margin:2px 0 4px!important;gap:6px!important}
+#play .pzhint:empty{display:none}
+#play .pzhint{margin:0 0 6px!important;padding:6px 10px!important;font-size:13px!important}
+/* rule + folded notes inside series puzzles */
+.ui-rules{margin:4px 0 8px;border-radius:12px;background:#f6ead055;border:1px solid #8a6a3a55}
+.ui-rules>summary{list-style:none;cursor:pointer;display:block;padding:7px 10px;font-size:14px;line-height:1.5;color:#3a2614}
+.ui-rules>summary::-webkit-details-marker{display:none}
+.ui-rules>summary b{color:#8a4b14;margin-inline-end:6px}
+.ui-rules>summary i{float:left;margin:2px 6px 0 0;font-style:normal;font-size:11px;color:#7a5a32;border:1px solid #7a5a3266;border-radius:99px;padding:1px 8px}
+.ui-rules[open]>summary i::after{content:' ⌃'}.ui-rules:not([open])>summary i::after{content:' ⌄'}
+.ui-rules>ol{margin:0 4px 8px!important}
+/* بطاقاتي sample */
+.ui-sample{display:block;margin:10px auto 0}
+/* puzzles: one slim title row (the English subtitle is dropped there), smaller round buttons */
+#play:has(.pzhud) .pbar #ps{display:none}
+#play:has(.pzhud) .pbar .x{width:36px!important;height:36px!important;min-height:0!important}
+#play:has(.pzhud) .pbar #pt{font-size:17px}
+#play .pzhud .pzhb,#play .pzhud .pzcoin{min-height:34px!important;padding-top:3px!important;padding-bottom:3px!important}
