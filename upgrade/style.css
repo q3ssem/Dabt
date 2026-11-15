@@ -142,3 +142,12 @@ textarea.dx-search{min-height:90px;resize:vertical}
 @media (min-width:900px){.dxw-pad button{width:60px;height:60px;font-size:22px}.dxw-say{top:60px}}
 @media (max-height:520px){.dxw-top{padding-top:4px;padding-bottom:4px}.dxw-b{width:40px;height:40px}.dxw-pad button{width:58px;height:58px}.dxw-say{top:44px}}
 @media (prefers-reduced-motion:reduce){.dx-board.shake{animation:none}.dx-arrow,.dx-progress i{transition:none}}
+
+/* 5.4.7 — disciplined puzzle frame: one width system, no accidental overflow. */
+.dx-game,.dx-body,.dx-board{width:100%;min-width:0;max-width:100%;box-sizing:border-box}
+.dx-board{overflow-x:auto;overscroll-behavior-inline:contain;scrollbar-width:thin}
+.dx-board>*{max-width:100%;min-width:0;box-sizing:border-box}
+.dx-board svg,.dx-board canvas,.dx-board img{display:block;max-width:100%;height:auto}
+.dx-board button{max-width:100%;min-width:0;overflow-wrap:anywhere}
+.set:has(#mt){flex-wrap:wrap}.set:has(#mt)::after{content:'لكل حركة صوتها: خشب وحجر ومعدن وبلور وماء وورق وحبال وأجراس. تعمل الأصوات بعد أول لمسة، ويمكن كتمها من هنا.';flex:0 0 100%;color:var(--muted);font-size:12px;line-height:1.65;padding:0 2px 8px}
+@media(max-width:480px){.dx-board{padding:12px 9px;border-radius:17px;gap:8px}.dx-tile{min-width:44px;min-height:46px;padding:7px 9px}.dx-tile.big{min-width:52px;min-height:54px}}

@@ -1,6 +1,6 @@
 'use strict';
 importScripts('./offline-manifest.js');
-const VERSION='5.3.0',PREFIX='mindlab-',CORE=PREFIX+VERSION+'-core',RUNTIME=PREFIX+VERSION+'-images',BASE=new URL('./',self.location.href);
+const VERSION='5.5.1',PREFIX='mindlab-',CORE=PREFIX+VERSION+'-core',RUNTIME=PREFIX+VERSION+'-images',BASE=new URL('./',self.location.href);
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CORE).then(cache=>cache.addAll(self.MINDLAB_OFFLINE_FILES.map(p=>new URL(p,BASE).href))).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(names=>Promise.all(names.filter(n=>n.startsWith(PREFIX)&&![CORE,RUNTIME].includes(n)).map(n=>caches.delete(n)))).then(()=>self.clients.claim()));});
 self.addEventListener('fetch',event=>{
@@ -10,3 +10,7 @@ const image=/\.(?:webp|png|jpe?g|svg)$/i.test(url.pathname),documentRequest=req.
 if(documentRequest){event.respondWith((async()=>{try{const response=await fetch(req);if(response.ok){const cache=await caches.open(CORE);await cache.put(req,response.clone());}return response;}catch(e){const cache=await caches.open(CORE),hit=await cache.match(req,{ignoreSearch:true});return hit||new Response('هذه الصفحة لم تُحفظ للعمل دون اتصال. افتحها أولًا أثناء الاتصال.',{status:503,headers:{'Content-Type':'text/plain;charset=utf-8'}});}})());return;}
 if(image||/\.(?:js|css|woff2|webmanifest|json)$/i.test(url.pathname)){event.respondWith((async()=>{const cache=await caches.open(image?RUNTIME:CORE),hit=await cache.match(req);if(hit)return hit;try{const response=await fetch(req);if(response.ok)await cache.put(req,response.clone());return response;}catch(e){return new Response('',{status:503});}})());}
 });
+/* 5.4.8: on the page's request, quietly fetch the journey kit (≈3.4 MB) so every station's board
+   draws offline. Only missing files are fetched; a failure leaves the online path untouched. */
+self.addEventListener('message',event=>{if(!event.data||event.data.type!=='warm-journey')return;
+event.waitUntil(caches.open(RUNTIME).then(async cache=>{for(const p of [...(self.MINDLAB_JOURNEY_ART||[]),...(self.MINDLAB_GAME_ART||[])]){const u=new URL(p,BASE).href;try{if(!(await cache.match(u))){const r=await fetch(u);if(r.ok)await cache.put(u,r);}}catch(e){}}}));});

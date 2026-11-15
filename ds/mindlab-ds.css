@@ -1,0 +1,295 @@
+/* =====================================================================
+   مختبر العقل 5.5 — نظام التصميم المركزي (Design System)
+   يُحمَّل بعد كل أوراق الأنماط (عبر release54.js) فيعلو عليها.
+   1) الرموز (tokens) للثيمين  2) ربط المتغيرات القديمة بها  3) المكونات المشتركة
+   4) بطاقات الألعاب والألغاز  5) شاشة اللعب  6) جزيرة الكنز  7) النوافذ والتلميحات
+   أي لعبة جديدة تستعمل var(--ml-*) والأصناف .ml-* فتتبع الثيم تلقائيًا.
+   عرض فقط: لا تغيير في القواعد أو النقاط أو الحفظ أو المعرّفات.
+   ===================================================================== */
+
+/* ---------- 1. الرموز ---------- */
+:root{
+  /* المسافات والأنصاف والخط (مشتركة بين الثيمين) */
+  --ml-s1:4px;--ml-s2:8px;--ml-s3:12px;--ml-s4:16px;--ml-s5:24px;--ml-s6:32px;
+  --ml-r-sm:10px;--ml-r-md:14px;--ml-r-lg:20px;--ml-r-xl:26px;--ml-r-pill:999px;
+  --ml-t-xs:12px;--ml-t-sm:13.5px;--ml-t-md:15px;--ml-t-lg:17px;--ml-t-xl:21px;--ml-t-2xl:27px;
+  --ml-w-reg:500;--ml-w-bold:700;--ml-w-heavy:800;
+  --ml-card-art:84px;--ml-card-min:150px;--ml-ease:cubic-bezier(.2,.8,.2,1);
+  /* الثيم الداكن (يبقى خيارًا) */
+  --ml-bg:#111315;--ml-bg-2:#16191B;--ml-surface:#1C1F21;--ml-surface-2:#22262A;--ml-sunken:#141719;
+  --ml-line:rgba(246,245,240,.12);--ml-line-strong:rgba(246,245,240,.22);
+  --ml-ink:#F4F3EF;--ml-ink-2:#B9BDBD;--ml-ink-3:#878D8E;
+  --ml-accent:#3FC4B8;--ml-accent-ink:#0E2B29;--ml-accent-soft:rgba(63,196,184,.14);
+  --ml-gold:#D6B36B;--ml-gold-ink:#2A2112;--ml-gold-soft:rgba(214,179,107,.16);
+  --ml-good:#5FC48A;--ml-good-soft:rgba(95,196,138,.15);--ml-bad:#E47779;--ml-bad-soft:rgba(228,119,121,.15);
+  --ml-warn:#E3A84A;--ml-warn-soft:rgba(227,168,74,.15);
+  --ml-sh-1:0 1px 2px rgba(0,0,0,.35);--ml-sh-2:0 10px 24px -14px rgba(0,0,0,.6);--ml-sh-3:0 18px 40px -18px rgba(0,0,0,.7);
+  --ml-halo:rgba(255,255,255,.05);--ml-focus:0 0 0 3px rgba(63,196,184,.45);
+}
+:root[data-skin="light"]{
+  --ml-bg:#F7F5F0;--ml-bg-2:#EFECE5;--ml-surface:#FFFFFF;--ml-surface-2:#FAF8F4;--ml-sunken:#F1EEE7;
+  --ml-line:#E5E1D8;--ml-line-strong:#D3CEC2;
+  --ml-ink:#1D2729;--ml-ink-2:#4E5A5D;--ml-ink-3:#7D888A;
+  --ml-accent:#12867F;--ml-accent-ink:#FFFFFF;--ml-accent-soft:#E2F2EF;
+  --ml-gold:#B3802A;--ml-gold-ink:#FFFFFF;--ml-gold-soft:#F7EDD8;
+  --ml-good:#2C8653;--ml-good-soft:#E3F2E8;--ml-bad:#C0433C;--ml-bad-soft:#FBE6E3;--ml-warn:#B8720F;--ml-warn-soft:#FBEFD9;
+  --ml-sh-1:0 1px 2px rgba(29,39,41,.06),0 1px 1px rgba(29,39,41,.04);
+  --ml-sh-2:0 8px 22px -12px rgba(29,39,41,.22);--ml-sh-3:0 16px 36px -16px rgba(29,39,41,.28);
+  --ml-halo:rgba(29,39,41,.035);--ml-focus:0 0 0 3px rgba(18,134,127,.35);
+  /* 2. ربط متغيرات التطبيق القديمة بالرموز، فكل ما يستعملها يتبع الثيم */
+  --bg:var(--ml-bg);--bg2:rgba(29,39,41,.03);--surface:rgba(29,39,41,.04);--surface2:rgba(29,39,41,.07);
+  --line:var(--ml-line);--ink:var(--ml-ink);--muted:var(--ml-ink-2);--dim:var(--ml-ink-3);
+  --tint:29,39,41;--panel1:var(--ml-surface);--panel2:var(--ml-surface-2);--panel3:var(--ml-sunken);
+  --tabbg:rgba(255,255,255,.95);--gold:var(--ml-gold);--good:var(--ml-good);--bad:var(--ml-bad);
+}
+@media (prefers-color-scheme:light){:root[data-skin="auto"]{
+  --ml-bg:#F7F5F0;--ml-bg-2:#EFECE5;--ml-surface:#FFFFFF;--ml-surface-2:#FAF8F4;--ml-sunken:#F1EEE7;
+  --ml-line:#E5E1D8;--ml-line-strong:#D3CEC2;--ml-ink:#1D2729;--ml-ink-2:#4E5A5D;--ml-ink-3:#7D888A;
+  --ml-accent:#12867F;--ml-accent-ink:#FFFFFF;--ml-accent-soft:#E2F2EF;--ml-gold:#B3802A;--ml-gold-ink:#FFFFFF;--ml-gold-soft:#F7EDD8;
+  --ml-good:#2C8653;--ml-good-soft:#E3F2E8;--ml-bad:#C0433C;--ml-bad-soft:#FBE6E3;--ml-warn:#B8720F;--ml-warn-soft:#FBEFD9;
+  --ml-sh-1:0 1px 2px rgba(29,39,41,.06),0 1px 1px rgba(29,39,41,.04);--ml-sh-2:0 8px 22px -12px rgba(29,39,41,.22);--ml-sh-3:0 16px 36px -16px rgba(29,39,41,.28);
+  --ml-halo:rgba(29,39,41,.035);--ml-focus:0 0 0 3px rgba(18,134,127,.35);
+  --bg:var(--ml-bg);--line:var(--ml-line);--ink:var(--ml-ink);--muted:var(--ml-ink-2);--dim:var(--ml-ink-3);--tint:29,39,41;
+  --panel1:var(--ml-surface);--panel2:var(--ml-surface-2);--panel3:var(--ml-sunken);--tabbg:rgba(255,255,255,.95);--gold:var(--ml-gold);--good:var(--ml-good);--bad:var(--ml-bad)}}
+
+/* ---------- 3. المكونات المشتركة (للألعاب الجديدة أيضًا) ---------- */
+.ml-surface{background:var(--ml-surface);border:1px solid var(--ml-line);border-radius:var(--ml-r-lg);box-shadow:var(--ml-sh-1)}
+.ml-btn{font:var(--ml-w-heavy) var(--ml-t-md)/1.2 Tajawal,system-ui,sans-serif;border-radius:var(--ml-r-md);padding:12px 18px;border:1px solid var(--ml-line-strong);background:var(--ml-surface);color:var(--ml-ink);transition:transform .12s var(--ml-ease),box-shadow .2s}
+.ml-btn.primary{background:var(--ml-accent);border-color:transparent;color:var(--ml-accent-ink)}
+.ml-btn:active{transform:scale(.97)}.ml-btn:focus-visible{outline:none;box-shadow:var(--ml-focus)}
+.ml-btn[disabled]{opacity:.45;pointer-events:none}
+.ml-chip{display:inline-flex;align-items:center;gap:6px;font-size:var(--ml-t-xs);font-weight:var(--ml-w-bold);padding:5px 10px;border-radius:var(--ml-r-pill);background:var(--ml-sunken);color:var(--ml-ink-2)}
+.ml-good{color:var(--ml-good)}.ml-bad{color:var(--ml-bad)}.ml-warn{color:var(--ml-warn)}
+
+/* ---------- 4. بطاقات الألعاب والألغاز (الثيمان) ----------
+   رسم كبير حر فوق هالة ناعمة بلون المجال، اسم واضح تحته، وسطر تصنيف صغير.
+   عمودان على الهاتف، ثلاثة على التابلت، أربعة فأكثر على الكمبيوتر. */
+#v-games .ui-grid,#v-puz .la-library-grid,#v-home .rgrid{display:grid!important;grid-template-columns:repeat(auto-fill,minmax(var(--ml-card-min),1fr))!important;gap:12px!important}
+@media (max-width:359px){#v-games .ui-grid,#v-puz .la-library-grid{grid-template-columns:1fr 1fr!important;gap:10px!important}:root{--ml-card-art:78px}}
+@media (min-width:700px){:root{--ml-card-min:178px;--ml-card-art:104px}}
+@media (min-width:1100px){:root{--ml-card-min:196px;--ml-card-art:112px}}
+
+/* بطاقة اللعبة */
+#v-games .ui-game{position:relative;min-width:0;height:auto!important}
+#v-games .ui-gmain{all:unset;box-sizing:border-box;display:flex!important;flex-direction:column;align-items:center;justify-content:flex-start;gap:6px;width:100%;height:100%;min-height:176px;
+  padding:16px 12px 14px!important;border-radius:var(--ml-r-lg)!important;background:var(--ml-surface)!important;border:1px solid var(--ml-line)!important;box-shadow:var(--ml-sh-1)!important;
+  color:var(--ml-ink)!important;text-align:center;cursor:pointer;transition:transform .14s var(--ml-ease),box-shadow .2s,border-color .2s;-webkit-tap-highlight-color:transparent}
+#v-games .ui-gmain:hover{box-shadow:var(--ml-sh-2)!important;border-color:var(--ml-line-strong)!important}
+#v-games .ui-gmain:active{transform:scale(.975)}
+#v-games .ui-gmain:focus-visible{box-shadow:var(--ml-focus)!important}
+/* الرسم: بلا مربع. الهالة دائرة شفافة بلون المهارة، والرمز بلون المهارة الداكن */
+#v-games .ui-gmain .ico{position:relative;width:var(--ml-card-art)!important;height:var(--ml-card-art)!important;flex:none;margin:2px auto 6px!important;border-radius:50%!important;
+  background:radial-gradient(closest-side,color-mix(in srgb,var(--c) 30%,var(--ml-surface)),color-mix(in srgb,var(--c) 12%,var(--ml-surface)) 62%,transparent 100%)!important;box-shadow:none!important;border:0!important;
+  display:grid!important;place-items:center;color:#fff!important}
+#v-games .ui-gmain .ico svg{width:74%!important;height:74%!important;fill:color-mix(in srgb,var(--c) 78%,#0b1a1c)!important;filter:drop-shadow(0 5px 6px color-mix(in srgb,var(--c) 45%,transparent))}
+#v-games .ui-gmain .ico svg [opacity]{opacity:.42}
+html[data-skin="dark"] #v-games .ui-gmain .ico svg{fill:var(--c)!important;color:#111315!important}
+#v-games .ui-gmain .ico img{width:100%!important;height:100%!important;object-fit:contain!important;background:none!important}
+#v-games .ui-gmain>b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-wrap:balance;
+  font:var(--ml-w-heavy) 16px/1.3 Tajawal,system-ui,sans-serif!important;color:var(--ml-ink)!important;min-height:0;margin-top:2px;max-width:100%}
+#v-games .ui-gmain>small{display:inline-flex;align-items:center;gap:6px;font:var(--ml-w-bold) var(--ml-t-xs)/1.3 Tajawal,sans-serif!important;color:var(--ml-ink-3)!important;margin-top:auto}
+#v-games .ui-gmain>small::before{content:"";width:7px;height:7px;border-radius:50%;background:var(--c);flex:none}
+#v-games .ui-fav{position:absolute!important;top:8px!important;left:8px!important;right:auto!important;width:34px;height:34px;border-radius:50%!important;display:grid;place-items:center;
+  background:var(--ml-surface-2)!important;border:1px solid var(--ml-line)!important;color:var(--ml-ink-3)!important;font-size:16px!important;z-index:2}
+#v-games .ui-fav[aria-pressed="true"]{color:var(--ml-gold)!important;background:var(--ml-gold-soft)!important;border-color:transparent!important}
+#v-games .ui-cat>h2{display:flex;align-items:center;gap:10px;font:var(--ml-w-heavy) var(--ml-t-xl)/1.2 Tajawal,sans-serif!important;color:var(--ml-ink)!important;margin:26px 2px 12px!important}
+#v-games .ui-cat>h2 i{width:12px!important;height:12px!important;border-radius:4px!important}
+#v-games .ui-cat>h2 small{margin-inline-start:auto;font:var(--ml-w-bold) var(--ml-t-xs) Tajawal,sans-serif;color:var(--ml-ink-3);background:var(--ml-sunken);padding:4px 10px;border-radius:var(--ml-r-pill)}
+
+/* بطاقة اللغز */
+#v-puz .la-library-card{all:unset;box-sizing:border-box;position:relative;display:flex!important;flex-direction:column;align-items:center;gap:6px;min-width:0;min-height:184px;
+  padding:14px 12px 14px!important;border-radius:var(--ml-r-lg)!important;background:var(--ml-surface)!important;border:1px solid var(--ml-line)!important;box-shadow:var(--ml-sh-1)!important;
+  color:var(--ml-ink)!important;text-align:center;cursor:pointer;transition:transform .14s var(--ml-ease),box-shadow .2s,border-color .2s;-webkit-tap-highlight-color:transparent}
+#v-puz .la-library-card:hover{box-shadow:var(--ml-sh-2)!important;border-color:var(--ml-line-strong)!important}
+#v-puz .la-library-card:active{transform:scale(.975)}#v-puz .la-library-card:focus-visible{box-shadow:var(--ml-focus)!important}
+#v-puz .la-library-image{width:calc(var(--ml-card-art) + 18px)!important;height:calc(var(--ml-card-art) + 18px)!important;flex:none;margin:0 auto 4px!important;padding:0!important;
+  border-radius:50%!important;background:radial-gradient(closest-side,var(--ml-halo),transparent)!important;border:0!important;box-shadow:none!important;display:grid!important;place-items:center;overflow:visible!important}
+#v-puz .la-library-image>svg,#v-puz .la-library-image>img{width:100%!important;height:100%!important;object-fit:contain!important;filter:drop-shadow(0 8px 10px rgba(29,39,41,.16));background:none!important}
+#v-puz .la-library-card>b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-wrap:balance;font:var(--ml-w-heavy) 16px/1.3 Tajawal,system-ui,sans-serif!important;color:var(--ml-ink)!important}
+#v-puz .la-library-card>small{font:var(--ml-w-bold) var(--ml-t-xs)/1.3 Tajawal,sans-serif!important;color:var(--ml-ink-3)!important;margin-top:auto;background:var(--ml-sunken);padding:4px 10px;border-radius:var(--ml-r-pill)}
+#v-puz .la-section-title{display:flex!important;align-items:center;gap:10px;font:var(--ml-w-heavy) var(--ml-t-xl)/1.2 Tajawal,sans-serif!important;color:var(--ml-ink)!important;margin:26px 2px 12px!important}
+#v-puz .la-section-title img{width:34px!important;height:34px!important;object-fit:contain}
+#v-puz .la-section-title small{margin-inline-start:auto;font:var(--ml-w-bold) var(--ml-t-xs) Tajawal,sans-serif;color:var(--ml-ink-3);background:var(--ml-sunken);padding:4px 10px;border-radius:var(--ml-r-pill)}
+
+/* البحث ورؤوس الصفحات */
+.dx-search{border-radius:var(--ml-r-md)!important;border:1px solid var(--ml-line)!important;background:var(--ml-surface)!important;color:var(--ml-ink)!important;box-shadow:var(--ml-sh-1);min-height:46px;font-size:var(--ml-t-md)!important}
+.dx-search:focus{outline:none;box-shadow:var(--ml-focus)!important}
+.dx-head h1,.t7-top h1{color:var(--ml-ink)!important}.dx-eyebrow,.t7-kicker{color:var(--ml-accent)!important}
+html[data-skin="light"] .dx-muted{color:var(--ml-ink-2)!important}
+
+/* ---------- 5. شاشة اللعب في الثيم الأبيض: البداية، الشريط، العد التنازلي، اللوحات، النتائج ---------- */
+html[data-skin="light"] #play,html[data-skin="light"] #play .pin{background:var(--ml-bg)!important;background-image:none!important;color:var(--ml-ink)!important}
+html[data-skin="light"] #play .pbar{background:rgba(255,255,255,.94)!important;backdrop-filter:blur(8px);border-bottom:1px solid var(--ml-line)!important;box-shadow:none!important;color:var(--ml-ink)!important}
+html[data-skin="light"] #play .pbar .t b{color:var(--ml-ink)!important}html[data-skin="light"] #play .pbar .t span{color:var(--ml-ink-3)!important}
+html[data-skin="light"] #play .x{background:var(--ml-surface)!important;border:1px solid var(--ml-line)!important;color:var(--ml-ink-2)!important;box-shadow:var(--ml-sh-1)!important}
+html[data-skin="light"] #play .x svg{color:var(--ml-ink-2)!important;stroke:currentColor}
+html[data-skin="light"] #stage .intro{background:transparent!important;color:var(--ml-ink)!important}
+html[data-skin="light"] #stage .intro h2{color:var(--ml-ink)!important}
+html[data-skin="light"] #stage .intro .skill{color:color-mix(in srgb,var(--c) 70%,#10201f)!important}
+html[data-skin="light"] #stage .la-intro-art{background:var(--ml-surface)!important;border:1px solid var(--ml-line)!important;box-shadow:var(--ml-sh-1)!important;color:var(--ml-ink)!important}
+html[data-skin="light"] #stage .la-intro-art small{color:var(--ml-ink-3)!important}html[data-skin="light"] #stage .la-intro-art b{color:var(--ml-ink)!important}
+html[data-skin="light"] #stage .why{background:var(--ml-surface)!important;border:1px solid var(--ml-line)!important;color:var(--ml-ink-2)!important;box-shadow:var(--ml-sh-1)!important}
+html[data-skin="light"] #stage .why b{color:var(--ml-accent)!important}
+html[data-skin="light"] #stage .how li,html[data-skin="light"] #stage .intro li{background:var(--ml-surface)!important;border:1px solid var(--ml-line)!important;color:var(--ml-ink)!important;box-shadow:none!important}
+html[data-skin="light"] #stage .how li b{background:var(--ml-accent-soft)!important;color:var(--ml-accent)!important}
+html[data-skin="light"] #stage .bestline{color:var(--ml-ink-2)!important}html[data-skin="light"] #stage .bestline b{color:var(--ml-ink)!important}
+html[data-skin="light"] #stage .pz-phase-card{background:var(--ml-surface)!important;border:1px solid var(--ml-line)!important;color:var(--ml-ink)!important}
+html[data-skin="light"] #play .go-btn,html[data-skin="light"] #stage #go{background:var(--ml-accent)!important;color:var(--ml-accent-ink)!important;border:0!important;box-shadow:0 8px 18px -10px rgba(18,134,127,.6)!important}
+html[data-skin="light"] #stage .cd{background:transparent!important}
+html[data-skin="light"] #stage .cd b{color:color-mix(in srgb,var(--c,#12867F) 72%,#10201f)!important;text-shadow:none!important}
+html[data-skin="light"] #stage .msg{color:var(--ml-ink)!important}
+html[data-skin="light"] #stage .hud,html[data-skin="light"] #stage .pzhud{color:var(--ml-ink)!important}
+html[data-skin="light"] #stage .pzhud>*{background:var(--ml-surface)!important;border:1px solid var(--ml-line)!important;color:var(--ml-ink)!important}
+html[data-skin="light"] #stage .pzbody,html[data-skin="light"] #stage .dx-board,html[data-skin="light"] #stage .field{background:var(--ml-surface)!important;background-image:none!important;border:1px solid var(--ml-line)!important;box-shadow:var(--ml-sh-1)!important;color:var(--ml-ink)!important}
+html[data-skin="light"] #stage .pzhint{background:var(--ml-gold-soft)!important;color:var(--ml-ink)!important;border:1px solid color-mix(in srgb,var(--ml-gold) 35%,transparent)!important}
+html[data-skin="light"] #stage .pzgive{background:transparent!important;color:var(--ml-ink-3)!important}
+html[data-skin="light"] #stage .res{background:transparent!important;color:var(--ml-ink)!important}
+html[data-skin="light"] #stage .res .card,html[data-skin="light"] #stage .res>div:not(.btns){background:var(--ml-surface)!important;border-color:var(--ml-line)!important;color:var(--ml-ink)!important}
+html[data-skin="light"] .dx-pause{background:rgba(247,245,240,.97)!important;color:var(--ml-ink)!important}
+html[data-skin="light"] .dx-pause *{border-color:var(--ml-line)!important}
+
+/* ---------- 6. جزيرة الكنز في الثيم الأبيض ---------- */
+html[data-skin="light"] .t7 .t7-puzzle-pane,html[data-skin="light"] .t7 .v5-pane{background:var(--ml-surface)!important;background-image:none!important;border:1px solid var(--ml-line)!important;box-shadow:var(--ml-sh-2)!important;color:var(--ml-ink)!important}
+html[data-skin="light"] .t7 .v5-board{background:var(--ml-surface-2)!important;border-radius:var(--ml-r-lg)}
+html[data-skin="light"] .t7 .v5-goal,html[data-skin="light"] .t7 .v5-challenge-note{color:var(--ml-ink-2)!important}
+html[data-skin="light"] .t7 .v5-chip{background:var(--ml-sunken)!important;border:1px solid var(--ml-line)!important;color:var(--ml-ink-2)!important}
+html[data-skin="light"] .t7 .v5-chip.on{background:var(--ml-accent)!important;color:#fff!important;border-color:transparent!important}
+html[data-skin="light"] .t7 .v5-chip.won .v5-star{color:var(--ml-gold)!important}
+html[data-skin="light"] .t7 .v5-chip.on.won .v5-star{color:#FFE7A6!important}
+html[data-skin="light"] .t7 .v5-chip.expert{border-color:color-mix(in srgb,var(--ml-gold) 45%,transparent)!important}
+html[data-skin="light"] .t7 .v5-counter{background:var(--ml-surface)!important;border:1px solid var(--ml-line)!important;color:var(--ml-ink)!important}
+html[data-skin="light"] .t7 .t7-btn{background:var(--ml-surface)!important;border:1px solid var(--ml-line-strong)!important;color:var(--ml-ink)!important;box-shadow:var(--ml-sh-1)!important}
+html[data-skin="light"] .t7 .t7-btn.primary{background:var(--ml-accent)!important;border-color:transparent!important;color:#fff!important}
+html[data-skin="light"] .t7 .t7-btn[disabled]{opacity:.5}
+html[data-skin="light"] .t7 .v5-hint{background:var(--ml-gold-soft)!important;color:var(--ml-ink)!important;border-color:color-mix(in srgb,var(--ml-gold) 35%,transparent)!important}
+html[data-skin="light"] .t7 .v5-crew{background:var(--ml-surface)!important;border:1px solid var(--ml-line)!important;color:var(--ml-ink)!important}
+html[data-skin="light"] .t7 .v5-gate{background:var(--ml-gold-soft)!important;border:1px dashed color-mix(in srgb,var(--ml-gold) 50%,transparent)!important;color:var(--ml-ink)!important}
+html[data-skin="light"] .t7 .v5-done{background:var(--ml-good-soft)!important;color:var(--ml-ink)!important;border:1px solid color-mix(in srgb,var(--ml-good) 30%,transparent)!important}
+html[data-skin="light"] .t7 .v5-say{color:var(--ml-ink)!important}
+html[data-skin="light"] .t7 .t7-location{background:rgba(255,255,255,.92)!important;color:var(--ml-ink)!important;border:1px solid var(--ml-line)!important;backdrop-filter:blur(4px)}
+html[data-skin="light"] .t7 .v5-intro-face,html[data-skin="light"] .t7 .v5-say-face{background-color:var(--ml-sunken)!important;border:2px solid var(--ml-surface)!important;box-shadow:var(--ml-sh-1)!important}
+html[data-skin="light"] .t7 .v5-intro-goal{background:var(--ml-accent-soft)!important;color:var(--ml-ink)!important;border:1px solid color-mix(in srgb,var(--ml-accent) 25%,transparent)!important}
+html[data-skin="light"] .t7 .v5-intro-goal b{color:var(--ml-accent)!important}
+
+/* صور المحطات: إطار موحّد بنسبة ثابتة، الصورة تملؤه دون تشويه، وموضع القص في المنتصف العلوي */
+.t7 .t7-scene.v5-scene{aspect-ratio:16/10;width:100%;height:auto!important;min-height:0!important;border-radius:var(--ml-r-lg)!important;background-size:cover!important;background-position:50% 38%!important;background-repeat:no-repeat!important;overflow:hidden;box-shadow:var(--ml-sh-2)}
+.t7 .t7-puzzle-scene.v5-scene{aspect-ratio:16/7}
+.t7 .t7-thumb{aspect-ratio:4/3;height:auto!important;background-size:cover!important;background-position:50% 40%!important;border-radius:var(--ml-r-md)!important}
+.t7 .v544-chapter-art img,.t7 .v545-passage-art img,.t7 .v5-letter>img,.t7 .v5-finale-scene{width:100%!important;height:100%!important;object-fit:cover!important;object-position:50% 40%!important;display:block}
+.t7 .v545-passage-art{aspect-ratio:16/10;overflow:hidden;border-radius:var(--ml-r-lg)!important}
+/* الشخصيات كاملة الجسم: تظهر كلها دون قص */
+.t7 .v5-intro-crew-art img,.t7 .v544-crew-debrief img,.t7 .v545-passage-crew img,.t7 .v5-crew-card-art img,.t7 .v546-crew-credit img{object-fit:contain!important;object-position:50% 100%!important;background:none!important}
+/* المقتنيات والأختام والأدوات: رسم حر بلا خلفية */
+.t7 .v5-loot figure img,.t7 .v546-seal-card img,.t7 .v5-page-tool img,.t7 .v5-gate-art{object-fit:contain!important;background:none!important}
+
+/* ---------- 7. النوافذ المنبثقة والتلميحات والإعدادات ---------- */
+html[data-skin="light"] .t7-modal{background:var(--ml-surface)!important;color:var(--ml-ink)!important;border:1px solid var(--ml-line)!important;box-shadow:var(--ml-sh-3)!important}
+html[data-skin="light"] .t7-modal::backdrop{background:rgba(29,39,41,.35)}
+html[data-skin="light"] .t7-modal .v5-page,html[data-skin="light"] .t7-modal .t7-treasure{background:var(--ml-surface-2)!important;border-color:var(--ml-line)!important;color:var(--ml-ink)!important}
+html[data-skin="light"] .t7-modal h2,html[data-skin="light"] .t7-modal h3{color:var(--ml-ink)!important}
+html[data-skin="light"] .ui-fold{background:var(--ml-surface)!important;border:1px solid var(--ml-line)!important;border-radius:var(--ml-r-lg)!important;box-shadow:var(--ml-sh-1)!important}
+html[data-skin="light"] .ui-fold>summary{color:var(--ml-ink)!important}
+html[data-skin="light"] .dx-toast{background:var(--ml-ink)!important;color:#fff!important}
+html[data-skin="light"] .tabs .tab.on,html[data-skin="light"] .tabs .tab[aria-selected="true"]{color:var(--ml-accent)!important}
+
+/* متغيرات الألوان الخاصة بالطبقات القديمة (اللوحات والقطع) في الثيم الأبيض */
+html[data-skin="light"] .wc-play{--wc-night:var(--ml-surface);--wc-night-line:var(--ml-line)}
+html[data-skin="light"] .la-play{--la-tile:var(--ml-sunken);--la-edge:var(--ml-line-strong);--la-soft:var(--ml-ink-2);--la-gold:var(--ml-gold)}
+html[data-skin="light"] .dx-board{--cell:#EDF1F0;--cellb:#D6DEDC;--tx:var(--ml-ink)}
+html[data-skin="light"] .dx-board.th-kid{--cell:#FFF6E6;--cellb:#F1DDB8}
+
+/* حالات اللوحة المقفلة حتى توضع الأداة: تتلاشى نحو الخلفية بدل أن تُعتم */
+html[data-skin="light"] .t7 .covered,html[data-skin="light"] .t7 .v5-grid.covered,html[data-skin="light"] .t7 .v5-birds.covered,html[data-skin="light"] .t7 .v5-valves.covered{filter:grayscale(.75) opacity(.42)!important}
+/* شريط النقاط والتقدم أعلى ألعاب العقل */
+html[data-skin="light"] #stage .hud{background:var(--ml-surface)!important;border:1px solid var(--ml-line)!important;box-shadow:var(--ml-sh-1)!important}
+/* أسطح داكنة يكتبها محرك اللعبة نفسه في style (المحركات لا تُعدَّل) */
+html[data-skin="light"] #stage [style*="background:#102039"]{background:var(--ml-surface-2)!important;color:var(--ml-ink)!important}
+
+/* الصفحة الرئيسية: الخلفية الدافئة، بطاقة مؤشر العقل، والألعاب المقترحة بنفس تصميم البطاقات */
+:root[data-skin="light"] body{background:var(--ml-bg)!important;background-image:radial-gradient(70% 40% at 90% -10%,rgba(18,134,127,.07),transparent 70%)!important}
+html[data-skin="light"] .hero-card,html[data-skin="light"] .wkgoal{background:var(--ml-surface)!important;background-image:none!important;border:1px solid var(--ml-line)!important;box-shadow:var(--ml-sh-1)!important;color:var(--ml-ink)!important}
+#v-home .rail{gap:12px!important;padding:4px 2px 10px!important;scroll-snap-type:x mandatory}
+#v-home .rcard{all:unset;box-sizing:border-box;position:relative;display:flex!important;flex-direction:column;align-items:center;gap:6px;flex:0 0 150px!important;width:150px!important;min-height:184px;scroll-snap-align:start;padding:16px 12px 14px!important;
+  border-radius:var(--ml-r-lg)!important;background:var(--ml-surface)!important;border:1px solid var(--ml-line)!important;box-shadow:var(--ml-sh-1)!important;color:var(--ml-ink)!important;text-align:center;cursor:pointer;
+  transition:transform .14s var(--ml-ease),box-shadow .2s;-webkit-tap-highlight-color:transparent}
+#v-home .rcard:active{transform:scale(.975)}#v-home .rcard:focus-visible{box-shadow:var(--ml-focus)!important}
+#v-home .rcard .ico{width:var(--ml-card-art)!important;height:var(--ml-card-art)!important;border-radius:50%!important;margin:2px auto 4px!important;display:grid!important;place-items:center;color:#fff!important;box-shadow:none!important;
+  background:radial-gradient(closest-side,color-mix(in srgb,var(--c) 30%,var(--ml-surface)),color-mix(in srgb,var(--c) 12%,var(--ml-surface)) 62%,transparent 100%)!important}
+#v-home .rcard .ico svg{width:74%!important;height:74%!important;fill:color-mix(in srgb,var(--c) 78%,#0b1a1c)!important}
+#v-home .rcard .ico svg [opacity]{opacity:.42}
+html[data-skin="dark"] #v-home .rcard .ico svg{fill:var(--c)!important;color:#111315!important}
+#v-home .rcard>b{display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;text-wrap:balance;font:var(--ml-w-heavy) 16px/1.3 Tajawal,system-ui,sans-serif!important;color:var(--ml-ink)!important}
+#v-home .rcard .badge{position:absolute;top:10px;left:10px;font:var(--ml-w-bold) 11px Tajawal,sans-serif!important;background:var(--ml-gold-soft)!important;color:var(--ml-gold)!important;border-radius:var(--ml-r-pill)!important;padding:3px 8px!important;box-shadow:none!important}
+#v-home .rcard .rmeta{display:flex;gap:6px;align-items:center;justify-content:center;flex-wrap:wrap;margin-top:auto;font:var(--ml-w-bold) var(--ml-t-xs) Tajawal,sans-serif}
+#v-home .rcard .rmeta .new{background:var(--ml-accent-soft);color:var(--ml-accent);border-radius:var(--ml-r-pill);padding:2px 8px}
+
+/* ---------- 6ب. خريطة الجزيرة: بطاقة البحر ومحطاته ---------- */
+/* بطاقة البحر: رقعة السر الأصلية كاملة (عمودية) بجانب المعلومات — بلا قص ولا تراكب */
+.t7 .v544-chapter-overview{display:grid!important;grid-template-columns:86px minmax(0,1fr)!important;align-items:center;gap:14px!important;padding:12px!important;border-radius:var(--ml-r-lg)!important;
+  background:var(--ml-surface)!important;border:1px solid var(--ml-line)!important;box-shadow:var(--ml-sh-1)!important;color:var(--ml-ink)!important}
+.t7 .v544-chapter-art{width:86px!important;height:auto!important;aspect-ratio:4/5;border-radius:var(--ml-r-sm)!important;background:var(--ml-sunken)!important;overflow:hidden;display:grid;place-items:center}
+.t7 .v544-chapter-art img{width:100%!important;height:100%!important;object-fit:contain!important;object-position:50% 50%!important}
+.t7 .v544-chapter-info{gap:4px}
+.t7 .v544-chapter-info h3{font:var(--ml-w-heavy) var(--ml-t-lg)/1.3 Tajawal,sans-serif!important;color:var(--ml-ink)!important}
+.t7 .v544-chapter-info p{font-size:var(--ml-t-xs)!important;color:var(--ml-ink-3)!important}
+.t7 .v544-chapter-progress{color:var(--ml-ink-2)!important}
+html[data-skin="light"] .t7 .t7-chapter>header h2{color:var(--ml-ink)!important}
+html[data-skin="light"] .t7 .t7-chapter-no{background:var(--ml-accent-soft)!important;color:var(--ml-accent)!important;border-color:transparent!important}
+/* المحطات: على الهاتف صفوف عريضة (صورة كبيرة بجانب الاسم)، وعلى الشاشات الواسعة ثلاثة أعمدة */
+.t7 .t7-stations{grid-template-columns:1fr!important;gap:10px!important}
+.t7 .t7-station{display:grid!important;grid-template-columns:44% minmax(0,1fr);align-items:stretch;text-align:right;border-radius:var(--ml-r-lg)!important;
+  background:var(--ml-surface)!important;border:1px solid var(--ml-line)!important;box-shadow:var(--ml-sh-1)!important;color:var(--ml-ink)!important}
+.t7 .t7-station.available{border-color:color-mix(in srgb,var(--ml-accent) 55%,transparent)!important;box-shadow:0 0 0 3px var(--ml-accent-soft)!important}
+.t7 .t7-thumb{aspect-ratio:4/3!important;height:100%!important;border-radius:0!important;background-size:cover!important;background-position:50% 42%!important}
+.t7 .t7-station-label{padding:12px!important;align-content:center;gap:3px!important}
+.t7 .t7-station-label strong{font:var(--ml-w-heavy) var(--ml-t-lg)/1.25 Tajawal,sans-serif!important;color:var(--ml-ink)!important}
+.t7 .t7-station-label small{font-size:var(--ml-t-xs)!important;color:var(--ml-ink-3)!important}
+.t7 .t7-badge{background:rgba(255,255,255,.92)!important;color:var(--ml-ink)!important;border-radius:var(--ml-r-pill)!important;font-weight:var(--ml-w-bold)!important;box-shadow:var(--ml-sh-1)}
+.t7 .t7-station.complete .t7-badge{color:var(--ml-good)!important}
+@media (min-width:700px){.t7 .t7-stations{grid-template-columns:repeat(3,minmax(0,1fr))!important}.t7 .t7-station{grid-template-columns:1fr;grid-template-rows:auto 1fr}.t7 .t7-thumb{height:auto!important}}
+/* الطاقم في مقدمة المحطة: إطار ثابت أكبر، والشخصية كاملة دون قص أو تشويه */
+.t7 .v5-intro-crew-art{flex:0 0 124px!important;height:196px!important}
+.t7 .v5-intro-crew-art img{height:100%!important;width:auto!important;max-width:100%!important;object-fit:contain!important;object-position:50% 100%!important}
+html[data-skin="light"] .t7 .v5-intro-crew{background:var(--ml-surface-2)!important;border-color:var(--ml-line)!important}
+html[data-skin="light"] .t7 .v5-intro-crew-art{background:radial-gradient(ellipse at 50% 88%,var(--ml-gold-soft) 0,transparent 70%)!important}
+html[data-skin="light"] .t7 .v5-intro-crew-copy b{color:var(--ml-ink)!important}
+html[data-skin="light"] .t7 .v5-intro-crew-copy strong{color:var(--ml-ink-2)!important}html[data-skin="light"] .t7 .v5-intro-crew-copy p{color:var(--ml-ink-3)!important}
+
+/* ألوان هي نفسها المثير في اللعبة (كلمة اللون في «مكبح الاستجابة»، حرف الطفل): الدرجة اللونية لا تتغير، وتُعمَّق إضاءتها فقط لتُقرأ على الأبيض */
+html[data-skin="light"] #stage #qp>div[style*="color"]{filter:brightness(.78) saturate(1.25);text-shadow:0 0 1px rgba(29,39,41,.5),0 1px 0 rgba(29,39,41,.18)}
+html[data-skin="light"] #stage [style*="color:#FFC"],html[data-skin="light"] #stage [style*="color:#ffc"],html[data-skin="light"] #stage [style*="color:#FFD"],html[data-skin="light"] #stage [style*="color:#ffd"]{filter:brightness(.72) saturate(1.3)}
+/* أرقام «مستواي» المملوءة بتدرج: تدرج أعمق في الأبيض */
+html[data-skin="light"] #v-me .fig{background-image:linear-gradient(120deg,#0B7F91,#3B8F27)!important}
+html[data-skin="light"] #v-me .lnk{color:var(--ml-accent)!important}
+#v-home .rcard .badge{color:#7A5413!important}
+html[data-skin="light"] #stage .xkg{color:#8A6408!important}
+
+/* ---------- 8. التابلت والكمبيوتر: استغلال العرض ---------- */
+@media (min-width:760px){
+  .shell{max-width:920px!important}
+  #v-home>*,#v-me>*{max-width:720px;width:100%;margin-inline:auto;box-sizing:border-box}
+  #v-home .rail{max-width:none}
+  .t7 .t7-story-layout{max-width:920px;margin-inline:auto}
+}
+@media (min-width:1200px){.shell{max-width:1120px!important}}
+
+/* ---------- 9. رسوم الألعاب المفرغة (5.5.1) ----------
+   حيثما ظهرت أيقونة لعبة لها رسم: يُزال المربع المتدرج، ويظهر الرسم كاملًا (contain) دون تمديد أو قص. */
+img.ml-art{display:block;width:100%;height:100%;object-fit:contain;user-select:none;-webkit-user-drag:none;pointer-events:none}
+:is(.ico,.hero):has(>img.ml-art){background:none!important;box-shadow:none!important;border:0!important;overflow:visible!important}
+/* بطاقات صفحة الألعاب والمقترحة: الرسم أكبر من الرمز القديم، بهالة خفيفة بلون المجال وظل تحت الرسم */
+:root{--ml-game-art:96px}
+@media (max-width:359px){:root{--ml-game-art:84px}}
+@media (min-width:700px){:root{--ml-game-art:112px}}
+@media (min-width:1100px){:root{--ml-game-art:120px}}
+#v-games .ui-gmain .ico:has(>img.ml-art),#v-home .rcard .ico:has(>img.ml-art){width:var(--ml-game-art)!important;height:var(--ml-game-art)!important;border-radius:0!important;margin:0 auto 6px!important;
+  background:radial-gradient(closest-side at 50% 58%,color-mix(in srgb,var(--c) 16%,transparent),transparent 72%)!important}
+#v-games .ui-gmain .ico>img.ml-art,#v-home .rcard .ico>img.ml-art{filter:drop-shadow(0 6px 8px rgba(29,39,41,.16))}
+html[data-skin="dark"] #v-games .ui-gmain .ico>img.ml-art,html[data-skin="dark"] #v-home .rcard .ico>img.ml-art{filter:drop-shadow(0 6px 10px rgba(0,0,0,.45))}
+/* شاشة البداية: رسم كبير بدل المربع */
+#stage .intro .hero:has(>img.ml-art){width:132px!important;height:132px!important;border-radius:0!important;margin-inline:auto}
+#stage .intro .hero>img.ml-art{filter:drop-shadow(0 10px 14px rgba(29,39,41,.18))}
+/* الأماكن الصغيرة (خطة اليوم، البطاقات المستحقة، التحديات): الرسم بحجم الأيقونة القديمة نفسها */
+:is(.wk-row,.card,.cp,.pzcard) .ico:has(>img.ml-art){border-radius:0!important}
+/* رؤوس المجالات في صفحة الألعاب */
+#v-games .ui-cat>h2 .ml-cat-art{width:40px;height:40px;object-fit:contain;flex:none;filter:drop-shadow(0 3px 4px rgba(29,39,41,.14))}

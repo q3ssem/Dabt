@@ -53,12 +53,21 @@
         onclick: () => { if (at.c !== k) startAttempt(ctx, k); }
       }, E('span', { class: 'v5-star', text: c[k] ? '★' : '☆' }), E('b', { text: name })));
     });
+    const challengeNotes = [
+      'تعرّف على آلية المحطة، وجرّب الوصول إلى الحل.',
+      'أعد المحاولة مع الالتزام بأقل عدد من الحركات المحدد.',
+      'حلّ المحطة دون استخدام أي تلميح.',
+      'تحدٍّ أعمق بلوحة أو شروط أكثر تعقيدًا.',
+      'نسخة يومية متجددة من اللغز؛ راقب اختلاف ترتيب البداية.'
+    ];
     const limit = s.kind === 'tide' ? s.target.budget : (at.c === 1 || at.c === 4) && s.kind !== 'weigh' ? s.target.min : null;
     const label = s.kind === 'weigh' ? 'الوزنات' : s.kind === 'chime' ? 'الضربات' : s.kind === 'tide' ? 'الأفعال' : s.kind === 'river' ? 'العبور' : s.kind === 'slide' ? 'الانزلاقات' : ['gearfit', 'path', 'cipher', 'torn'].includes(s.kind) ? 'التبديلات' : 'الحركات';
     const counter = E('div', { class: 'v5-counter' }, E('span', { text: label }), E('b', { id: 'v5-moves', text: String(at.moves) }),
       limit ? E('small', { text: '/ ' + limit }) : null,
       at.c >= 2 ? E('small', { class: 'v5-nohint', text: at.c === 4 ? 'لغز اليوم' : at.c === 3 ? 'لوحة الخبير' : at.hint ? 'استُعمل تلميح' : 'بلا تلميح' }) : null);
-    host.append(E('div', { class: 'v5-head' }, chips, counter), E('p', { class: 'v5-goal', text: s.goal + (at.c === 2 && base.alt ? ' (ترتيب مختلف عن المحاولة الأولى)' : at.c === 3 && !base.expert.goal ? ' لوحة الخبير أكبر من لوحة القصة.' : at.c === 4 ? ' لغز اليوم: ترتيب جديد كل يوم.' : '') }));
+    host.append(E('div', { class: 'v5-head' }, chips, counter),
+      E('p', { class: 'v5-challenge-note', text: challengeNotes[at.c] || challengeNotes[0] }),
+      E('p', { class: 'v5-goal', text: s.goal + (at.c === 2 && base.alt ? ' (ترتيب مختلف عن المحاولة الأولى)' : at.c === 3 && !base.expert.goal ? ' لوحة الخبير أكبر من لوحة القصة.' : at.c === 4 ? ' لغز اليوم: ترتيب جديد كل يوم.' : '') }));
     host.append(E('div', { class: 'v5-board v5-k-' + s.kind, id: 'v5-board' }));
     host.append(E('div', { class: 'v5-crew', id: 'v5-crew', role: 'status', 'aria-live': 'polite' }));
     const hintBox = E('div', { class: 'v5-hint', id: 'v5-hint', role: 'status', 'aria-live': 'polite' });
@@ -74,7 +83,8 @@
   }
 
   function startAttempt(ctx, k) {
-    bind(ctx);
+    bind(ctx); try { sfx.puzzleSelect(); } catch (e) {}
+    ctx.demo = null;
     const { x } = ctx, base = ctx.base;
     v5state(x).att[base.id] = { c: k, moves: 0, hint: 0, tool: !base.needs, wrong: 0, hist: [] };
     sel = null; picked = null;
@@ -108,22 +118,30 @@
   }
 
   // «أرني حركة»: play the next move on the board, then return to the real state (no move counted).
+  // 5.4.8: the preview is read-only. Moves are ignored while it plays, and the real board comes back
+  // only if nothing replaced it meanwhile (a new attempt, another challenge or another station).
   function showMove(ctx) {
     const s = ctx.s, v = ctx.work(), n = L().assist(s, v);
     if (!n) return;
     const b = $('#v5-board'); if (!b) return;
-    ctx.setWork(n); paint(ctx); b.classList.add('demo');
-    later(() => { ctx.setWork(v); paint(ctx); const bb = $('#v5-board'); if (bb) bb.classList.remove('demo'); }, 1400);
+    ctx.setWork(n); ctx.demo = n; paint(ctx); b.classList.add('demo');
+    later(() => {
+      const still = ctx.demo === n; ctx.demo = null;
+      const w = ctx.x.work; if (still && w[ctx.base.id] === n) { w[ctx.base.id] = v; if (lastId === ctx.base.id) paint(ctx); }
+      const bb = $('#v5-board'); if (bb) bb.classList.remove('demo');
+    }, 1400);
   }
 
-  function free(ctx, next) { ctx.setWork(next); ctx.save(); paint(ctx); }
+  function free(ctx, next) { if (ctx.demo) return; ctx.setWork(next); ctx.save(); paint(ctx); }
   function undoMove(ctx) {
+    try { sfx.puzzleUndo(); } catch (e) {}
     const at = attempt(ctx.x, ctx.base, ctx.done());
     if (!at.hist.length) return;
     sel = null; picked = null;
     moved(ctx, at.hist.pop(), { undo: true });
   }
   function moved(ctx, next, opt = {}) {
+    if (ctx.demo) return;
     const { x } = ctx, base = ctx.base, s = ctx.s, at = attempt(x, base, ctx.done());
     const prev = ctx.work();
     if (!opt.undo) { at.hist.push(prev.slice()); if (at.hist.length > 60) at.hist.shift(); }
@@ -138,7 +156,7 @@
     if (m) { m.textContent = String(at.moves); m.parentElement.classList.toggle('over', at.c === 1 && at.moves > s.target.min); }
     const u = $('#v5-undo'); if (u) u.disabled = !at.hist.length;
     paint(ctx);
-    if (L().solved(s, next)) { const b = $('#v5-board'); if (b) b.classList.add('win'); try { tone(880, .18, 'sine', .05); later(() => tone(1175, .25, 'sine', .05), 140); } catch (e) {} later(() => solvedNow(ctx), 900); return; }
+    if (L().solved(s, next)) { const b = $('#v5-board'); if (b) b.classList.add('win'); try { sfx.puzzleWin(); } catch (e) {} later(() => solvedNow(ctx), 900); return; }
     if (s.kind === 'tide' && at.moves >= s.target.budget) { say(ctx, 'انتهت الأفعال قبل الوصول. ابدأ محاولة جديدة.'); return; }
     if (at.c === 1 && s.kind !== 'weigh' && at.moves === s.target.min + 1) { crew(ctx, 'نَبض', 'تجاوزت أقل عدد من الحركات. أكمل الحل، أو ابدأ محاولة جديدة لنيل النجمة.'); return; }
     // The crew talks during the story attempt only, so the challenges stay clean.
@@ -236,7 +254,7 @@
     (keys || []).forEach(k => b.querySelectorAll(`[data-k="${k}"],[data-pk="${k}"]`).forEach(n => n.classList.add('peek')));
   }
   // Tap-two-to-swap with drag support for every swap board.
-  function swapTo(ctx, i, j, v) { const n = v.slice(); [n[i], n[j]] = [n[j], n[i]]; sel = null; try { tone(470, .06, 'triangle', .04); } catch (er) {} moved(ctx, n); }
+  function swapTo(ctx, i, j, v) { const n = v.slice(); [n[i], n[j]] = [n[j], n[i]]; sel = null; try { sfx.puzzleMove(ctx.s.kind); } catch (e) {} moved(ctx, n); }
 
   function toolGate(b, ctx, tool, label) {
     const { x, E } = ctx, s = ctx.base, at = attempt(x, s, ctx.done());
@@ -250,7 +268,7 @@
         if (!has) return;
         at.tp = k + 1; v5state(x).tools[name] = 'used';
         if (at.tp >= list.length) at.tool = true;
-        try { tone(392, .12, 'triangle', .05); } catch (er) {}
+        try { sfx.puzzleMove(ctx.s.kind); } catch (e) {}
         ctx.save(); paint(ctx);
       }, 'primary')));
     return true;
@@ -278,7 +296,7 @@
         onclick: () => {
           const n = L.locksMove(t, v, i);
           if (!n) { win.classList.remove('flash'); void win.offsetWidth; win.classList.add('flash'); try { sfx.bad(); } catch (e) {} return; }
-          try { tone(300 + i * 60, .08, 'triangle', .05); } catch (e) {}
+          try { sfx.puzzleMove(ctx.s.kind); } catch (e) {}
           moved(ctx, n);
         }
       }, E('span', { class: 'v5-groove' }), img('ch1_s1_piece_lock_slider', 'v5-slider'));
@@ -342,7 +360,7 @@
         if (at.hint >= 1 && nxm === m) cell.classList.add('pulse');
         const im = img('ch1_s3_piece_mirror', 'v5-mirror'); im.style.transform = `rotate(${v[m] ? 0 : 90}deg)`;
         cell.append(im);
-        cell.onclick = () => { const n = v.slice(); n[m] = 1 - n[m]; try { tone(660, .05, 'sine', .04); } catch (e) {} moved(ctx, n); };
+        cell.onclick = () => { const n = v.slice(); n[m] = 1 - n[m]; try { sfx.puzzleMove(ctx.s.kind); } catch (e) {} moved(ctx, n); };
       }
       if (lens) cell.append(img('tool_lens', 'v5-lens'));
       grid.append(cell);
@@ -377,7 +395,7 @@
           if (sel === null) { sel = pos; paint(ctx); return; }
           if (sel === pos) { sel = null; paint(ctx); return; }
           const n = v.slice(); [n[sel], n[pos]] = [n[pos], n[sel]]; sel = null;
-          try { tone(440, .05, 'triangle', .04); } catch (er) {}
+          try { sfx.puzzleMove(ctx.s.kind); } catch (e) {}
           moved(ctx, n);
         } }, img('ch2_s1_piece_map_fragment', 'v5-frag-art'));
       e.forEach((code, sd) => {
@@ -418,7 +436,7 @@
       'aria-label': `جرس ${NM[name]}`,
       onclick: () => {
         const nx = L0.chimeStrike(t, v, i); if (!nx) return;
-        try { tone([523, 587, 659, 784, 988][i], .3, 'sine', .06); } catch (er) {}
+        try { sfx.puzzleMove(ctx.s.kind); } catch (e) {}
         if (nx.length === 0) say(ctx, 'ليس هذا النداء. تبقى الضربات محسوبة؛ أعد الترتيب من البداية.');
         moved(ctx, nx);
       } }, img('ch2_s2_piece_bell', 'v5-bell-art'), badge(i, 'v5-badge on-bell'))));
@@ -439,7 +457,7 @@
           'aria-label': `تمثال ${['الأيسر', 'الأوسط', 'الأيمن'][i]}${sel === i ? '، المس مرة ثانية للتدوير' : ''}`,
           onclick: () => {
             if (sel !== i) { sel = i; paint(ctx); return; }
-            try { tone(180 + i * 40, .25, 'triangle', .05); } catch (er) {}
+            try { sfx.puzzleMove(ctx.s.kind); } catch (e) {}
             moved(ctx, L.linkedTurn(t, v, i));
           } }, bird),
         E('div', { class: 'v5-goalshadow' }, goal)));
@@ -472,7 +490,7 @@
         style: `left:${x / W * 100}%;top:${y / H * 100}%`, disabled: out || here, 'aria-label': `${t.names[i]}${here ? '، الزورق هنا' : near ? '، قناة مفتوحة' : ''}`,
         onclick: () => {
           if (!L0.tideOpen(t, v[0], i, v[1], v)) { say(ctx, wave && [v[0], i].sort().join() === t.wave.edge.slice().sort().join() ? 'الموجة تغمر هذه القناة الآن. انتظر فعلًا آخر.' : 'لا قناة مفتوحة بين المحطتين الآن.'); return; }
-          try { tone(392, .08, 'sine', .04); } catch (er) {}
+          try { sfx.puzzleMove(ctx.s.kind); } catch (e) {}
           moved(ctx, [i, v[1], (v[2] + 1) % t.wave.period]);
         } }, here ? img('ch3_s1_piece_boat', 'v5-boat', { 'data-k': 'boat' }) : E('i', { class: 'v5-dot' }), E('small', { text: t.names[i] })));
     });
@@ -480,7 +498,7 @@
     for (let k = 0; k < t.budget; k++) pips.append(E('i', { class: (k < at.moves ? 'used' : '') + (k % t.wave.period === t.wave.at ? ' wavepip' : '') }));
     const lever = E('button', { type: 'button', class: 'v5-lever ' + (v[1] ? 'high' : 'low') + (nx && nx[1] !== v[1] ? ' pulse' : ''), disabled: out,
       'aria-label': `ذراع المد: ${v[1] ? 'مد' : 'جزر'}، المس للتبديل`,
-      onclick: () => { try { tone(v[1] ? 300 : 360, .2, 'triangle', .05); } catch (er) {} moved(ctx, [v[0], 1 - v[1], (v[2] + 1) % t.wave.period]); } },
+      onclick: () => { try { sfx.puzzleMove(ctx.s.kind); } catch (e) {} moved(ctx, [v[0], 1 - v[1], (v[2] + 1) % t.wave.period]); } },
       img('ch3_s1_piece_tide_lever', 'v5-lever-art'), E('b', { text: v[1] ? 'مد' : 'جزر' }));
     const legend = E('div', { class: 'v5-tkey' },
       E('span', {}, svg('<circle cx="20" cy="20" r="16" class="lo"/><path d="M12 24 q4 -5 8 0 t8 0" fill="none" stroke-width="3"/><rect x="12" y="13" width="16" height="3"/>', 'v5-tkeyic lo'), ' تفتح في الجزر'),
@@ -524,7 +542,7 @@
     const ready = L.weighReady(v);
     const word = r => r === 1 ? 'مالت الكفة اليسرى' : r === 2 ? 'مالت الكفة اليمنى' : 'اتزنت الكفتان';
     const status = E('p', { class: 'v5-wstatus' + (at.hint >= 1 && o.stage > 0 ? ' pulse' : '') }, o.stage === 0 ? 'ضع ثلاثة أحجار في كل كفة، واترك ثلاثة في الصندوق.' : o.stage === 1 ? `${word(o.r1)}. الأحجار الباقية في الصندوق هي المرشحة؛ ضع حجرًا منها في كل كفة.` : o.stage === 2 ? `${word(o.r1)}، ثم ${word(o.r2)}. اختر الحجر الأثقل.` : 'انفتح الختم.');
-    b.append(rule, bal, ctx.button(o.stage < 2 ? 'زِن' : 'تمت الوزنتان', () => { const n = L.weighNow(t, v); if (n) { try { tone(220, .35, 'triangle', .06); } catch (er) {} moved(ctx, n); } }, 'primary v5-weighbtn' + (ready ? '' : ' wait')), status, tray);
+    b.append(rule, bal, ctx.button(o.stage < 2 ? 'زِن' : 'تمت الوزنتان', () => { const n = L.weighNow(t, v); if (n) { try { sfx.puzzleMove(ctx.s.kind); } catch (e) {} moved(ctx, n); } }, 'primary v5-weighbtn' + (ready ? '' : ' wait')), status, tray);
     const wbtn = b.querySelector('.v5-weighbtn'); if (wbtn) wbtn.disabled = gated || !ready;
   }
 
@@ -553,7 +571,7 @@
     const ghost = at.hint >= 2 ? [1, 2, 1, 0] : null;
     at4.forEach(([x, y], i) => net.append(E('button', { type: 'button', class: 'v5-gate-btn' + (ghost && ghost[i] !== v[i] ? ' pulse' : ''), disabled: gated, style: `left:${x / 3}%;top:${y / 3.3}%`,
       'aria-label': `${names[i]}: الوضع ${v[i] + 1} من ${t.gates[i]}`,
-      onclick: () => { try { tone(330 + i * 50, .1, 'triangle', .04); } catch (er) {} const n = v.slice(); n[i] = (n[i] + 1) % t.gates[i]; moved(ctx, n); } },
+      onclick: () => { try { sfx.puzzleMove(ctx.s.kind); } catch (e) {} const n = v.slice(); n[i] = (n[i] + 1) % t.gates[i]; moved(ctx, n); } },
       img('tool_water_valve', 'v5-valve-art', { style: `transform:rotate(${v[i] * (360 / t.gates[i])}deg)` }), E('b', { class: 'v5-outs', text: outs[i][v[i]].join(' ') }))));
     b.append(net);
   }
@@ -568,7 +586,7 @@
     if (sel === null) { sel = i; paint(ctx); return; }
     if (sel === i) { sel = null; paint(ctx); return; }
     const n = v.slice(); [n[sel], n[i]] = [n[i], n[sel]]; sel = null;
-    try { tone(470, .06, 'triangle', .04); } catch (er) {}
+    try { sfx.puzzleMove(ctx.s.kind); } catch (e) {}
     moved(ctx, n);
   };
   const diffIdx = (a, b) => b ? a.map((x, i) => x !== b[i] ? i : -1).filter(i => i >= 0) : [];
@@ -579,7 +597,7 @@
     const hl = nx ? nx.indexOf(0) : -1, NM = ['', 'الدائرة', 'المثلث', 'المعين', 'الهلال', 'الموجة', 'الفرع', 'الورقة', 'النجمة'];
     const key = E('div', { class: 'v5-slide-key', 'aria-label': 'الترتيب المطلوب' }, ...[1, 2, 3, 4, 5, 6, 7, 8, 0].map(k => E('i', { class: k ? '' : 'gap' }, k ? svg(SHAPE8[k], 'v5-sb s' + k) : null)));
     const grid = E('div', { class: 'v5-slide' + (L0.solved(s, v) ? ' solved' : '') });
-    const go = i => { const n = L0.slideMove(v, i); if (!n) { say(ctx, 'حرّك لوحًا ملاصقًا للفراغ.'); return; } try { tone(380, .05, 'triangle', .04); } catch (er) {} moved(ctx, n); };
+    const go = i => { const n = L0.slideMove(v, i); if (!n) { say(ctx, 'حرّك لوحًا ملاصقًا للفراغ.'); return; } try { sfx.puzzleMove(ctx.s.kind); } catch (e) {} moved(ctx, n); };
     v.forEach((k, i) => {
       const near = Math.abs(i % 3 - z % 3) + Math.abs(Math.floor(i / 3) - Math.floor(z / 3)) === 1;
       if (!k) { grid.append(E('i', { class: 'v5-tile gap' + (at.hint === 1 ? ' pulse' : ''), 'data-drop': 'gap' })); return; }
@@ -603,7 +621,7 @@
     const nb = i => { const r = Math.floor(i / n), c = i % n; return [[0, 0], [1, 0], [-1, 0], [0, 1], [0, -1]].map(([dr, dc]) => [r + dr, c + dc]).filter(([R, C]) => R >= 0 && R < n && C >= 0 && C < n).map(([R, C]) => 'c' + (R * n + C)); };
     v.forEach((on, i) => grid.append(E('button', { type: 'button', disabled: gated, class: 'v5-crys' + (on ? ' up' : '') + (i === target ? ' pulse' : '') + (changed.includes(i) ? ' flip' : ''), 'data-pk': 'c' + i, 'data-peek': i,
       'aria-label': `بلورة ${i + 1}: ${on ? 'بارزة' : 'منخفضة'}`,
-      onclick: () => { try { tone(on ? 700 : 520, .08, 'sine', .04); } catch (er) {} moved(ctx, L0.lightsPress(v, i)); } },
+      onclick: () => { try { sfx.puzzleMove(ctx.s.kind); } catch (e) {} moved(ctx, L0.lightsPress(v, i)); } },
       img('ch4_s2_piece_ring', 'v5-crys-ring'), on ? img('tool_crystal_weight', 'v5-crys-gem') : E('i', { class: 'v5-crys-low' }))));
     if (!gated) grid.append(img('tool_observatory_needle', 'v5-lneedle'));
     ctx.peek = i => nb(+i);
@@ -628,7 +646,7 @@
       E('figure', {}, miniBal(E, R(2), Pc(1), -1), E('figcaption', { text: 'ثقل الأسفل أثقل من الورقة' })));
     const ghost = nx ? diffIdx(v.slice(0, 3), nx.slice(0, 3)) : [], shown = v[3] === 1;
     const rows = E('div', { class: 'v5-scales' + (gated ? ' covered' : '') });
-    const tap = k => { if (sel === null) { sel = k; paint(ctx); return; } if (sel === k) { sel = null; paint(ctx); return; } const a = sel; sel = null; try { tone(470, .06, 'triangle', .04); } catch (er) {} moved(ctx, L0.scaleSwap(v, a, k)); };
+    const tap = k => { if (sel === null) { sel = k; paint(ctx); return; } if (sel === k) { sel = null; paint(ctx); return; } const a = sel; sel = null; try { sfx.puzzleMove(ctx.s.kind); } catch (e) {} moved(ctx, L0.scaleSwap(v, a, k)); };
     [0, 1, 2].forEach(k => {
       const tilt = shown ? L0.scaleTilt(t, v, k) : 0;
       rows.append(E('button', { type: 'button', disabled: gated, class: 'v5-scale' + (sel === k ? ' picked' : '') + (ghost.includes(k) ? ' pulse' : '') + (shown && tilt === 0 ? ' level' : '') + (shown ? ' shown' : ' hidden'), 'data-drag': k, 'data-drop': k,
@@ -636,7 +654,7 @@
         onclick: () => tap(k) }, miniBal(E, R(k), P(v[k]), tilt), E('small', { text: shown ? (tilt === 0 ? 'متزن' : 'مائل') : 'لم يُوزن' })));
     });
     ctx.drop = (a, c) => { if (+a !== +c) { sel = null; moved(ctx, L0.scaleSwap(v, +a, +c)); } };
-    const left = t.limit - v[4], wb = ctx.button(left > 0 ? `زِن (${left === 1 ? 'وزنة واحدة باقية' : 'وزنتان باقيتان'})` : 'لا وزنات باقية', () => { const n = L0.scaleWeigh(t, v); if (!n) return; try { tone(220, .35, 'triangle', .06); } catch (er) {} moved(ctx, n); }, 'primary v5-weighbtn' + (nx && nx[3] === 1 && v[3] === 0 ? ' pulse' : ''));
+    const left = t.limit - v[4], wb = ctx.button(left > 0 ? `زِن (${left === 1 ? 'وزنة واحدة باقية' : 'وزنتان باقيتان'})` : 'لا وزنات باقية', () => { const n = L0.scaleWeigh(t, v); if (!n) return; try { sfx.puzzleMove(ctx.s.kind); } catch (e) {} moved(ctx, n); }, 'primary v5-weighbtn' + (nx && nx[3] === 1 && v[3] === 0 ? ' pulse' : ''));
     wb.disabled = gated || left <= 0;
     b.append(cards, rows, wb);
   }
@@ -654,11 +672,11 @@
     const sv = E('span', { class: 'v5-rsvg', 'aria-hidden': 'true' }); sv.innerHTML = `<svg viewBox="0 0 300 400">${g}</svg>`; board.append(sv);
     PINS.forEach(([x, y], i) => { if (!v[i]) return; board.append(E('button', { type: 'button', class: 'v5-pin' + (i === hl ? ' pulse' : '') + (strained === i ? ' strain' : ''), disabled: strained >= 0, style: `left:${x / 3}%;top:${y / 4}%`, 'data-peek': i, 'data-pk': 'pin' + i,
       'aria-label': `وتد ${PINNAME[i]}`,
-      onclick: () => { const n = L0.ropePull(t, v, i); if (!n) return; try { tone(n[m] >= 0 ? 160 : 420, .15, 'triangle', .05); } catch (er) {} if (n[m] >= 0) say(ctx, 'انشد الحبل: حلقة أخرى تمر فوق هذا الوتد. أرخه ثم جرّب غيره.'); moved(ctx, n); } },
+      onclick: () => { const n = L0.ropePull(t, v, i); if (!n) return; try { sfx.puzzleMove(ctx.s.kind); } catch (e) {} if (n[m] >= 0) say(ctx, 'انشد الحبل: حلقة أخرى تمر فوق هذا الوتد. أرخه ثم جرّب غيره.'); moved(ctx, n); } },
       img('ch5_s1_piece_rope_pin', 'v5-pin-art'))); });
     ctx.peek = i => ['loop' + i, ...t.cover[+i].filter(c => v[c]).map(c => 'loop' + c)];
     b.append(board);
-    if (strained >= 0) b.append(ctx.button('أرخِ الحبل', () => { try { tone(300, .2, 'sine', .04); } catch (er) {} moved(ctx, L0.ropeRelease(v)); }, 'primary v5-release'));
+    if (strained >= 0) b.append(ctx.button('أرخِ الحبل', () => { try { sfx.puzzleMove(ctx.s.kind); } catch (e) {} moved(ctx, L0.ropeRelease(v)); }, 'primary v5-release'));
     b.append(E('p', { class: 'v5-legend' }, E('span', { text: 'الحبل المتصل يمر فوق المقطوع · اضغط مطولًا على وتد لترى ما فوقه' })));
   }
 
@@ -703,7 +721,7 @@
       rule.forEach(([j, w]) => win.append(E('span', { class: 'v5-cond' + (v[j] === w ? ' met' : '') }, E('i', { text: TAG[j] }), svg(PORT[w], 'v5-port'))));
       box.append(E('div', { class: 'v5-lockrow' },
         E('button', { type: 'button', disabled: gated, class: 'v5-drum' + (can ? '' : ' blocked') + (ghost.includes(i) ? ' pulse' : ''), 'data-peek': i, 'aria-label': `الأسطوانة ${['العليا', 'الثانية', 'الثالثة', 'الرابعة'][i] || i + 1}: ${['مغلقة', 'جانبية', 'مفتوحة'][v[i]]}${can ? '' : '، محجوبة'}`,
-          onclick: () => { const n = L0.drumMove(t, v, i); if (!n) { win.classList.remove('flash'); void win.offsetWidth; win.classList.add('flash'); try { sfx.bad(); } catch (er) {} return; } try { tone(260 + v[i] * 80, .12, 'triangle', .05); } catch (er) {} moved(ctx, n); } },
+          onclick: () => { const n = L0.drumMove(t, v, i); if (!n) { win.classList.remove('flash'); void win.offsetWidth; win.classList.add('flash'); try { sfx.puzzleError(); } catch (er) {} return; } try { sfx.puzzleMove(ctx.s.kind); } catch (e) {} moved(ctx, n); } },
           E('i', { class: 'v5-dtag', text: TAG[i] }), img('ch5_s3_piece_lock_drum', 'v5-drum-art', { style: `transform:rotate(${v[i] * 90}deg)` }), svg(PORT[v[i]], 'v5-port big s' + v[i])), win));
     });
     ctx.peek = i => ['w' + i];
@@ -719,7 +737,7 @@
     const nxt = nx ? L0.stones(nx) : null, hintStone = nxt ? st.findIndex(p => !nxt.some(q => q[0] === p[0] && q[1] === p[1])) : -1;
     // keep each stone's identity through the sorted encoding, so motion follows the stone that moved
     const prevSt = ctx.prev && ctx.prev.length === v.length ? L0.stones(ctx.prev) : null, idOf = p => { if (!prevSt) return p.join('-'); if (prevSt.some(q => q[0] === p[0] && q[1] === p[1])) return p.join('-'); const gone = prevSt.find(q => !st.some(w => w[0] === q[0] && w[1] === q[1])); return gone ? gone.join('-') : p.join('-'); };
-    const push = (k, d) => { const n = L0.pushMove(t, v, k, d); if (!n) { say(ctx, 'يلزم فراغ أمام الحجر وفراغ خلفه ليصل المكبس.'); return; } sel = null; try { tone(200, .12, 'triangle', .05); } catch (er) {} moved(ctx, n); };
+    const push = (k, d) => { const n = L0.pushMove(t, v, k, d); if (!n) { say(ctx, 'يلزم فراغ أمام الحجر وفراغ خلفه ليصل المكبس.'); return; } sel = null; try { sfx.puzzleMove(ctx.s.kind); } catch (e) {} moved(ctx, n); };
     for (let r = 0; r < t.n; r++) for (let c = 0; c < t.n; c++) {
       const wall = t.walls.some(w => w[0] === r && w[1] === c), goal = !gated && goals.some(p => p[0] === r && p[1] === c), k = at2(r, c);
       const cell = E(k >= 0 ? 'button' : 'div', { class: 'v5-pcell' + (wall ? ' wall' : '') + (goal ? ' goal' : '') });
@@ -760,7 +778,7 @@
       const [x, y] = P(n), e = t.edges.findIndex(([a, c], k) => !used.has(k) && ((a === pen && c === n) || (c === pen && a === n)));
       board.append(E('button', { type: 'button', disabled: gated, class: 'v5-snode' + (n === pen ? ' pen' : '') + (e >= 0 ? ' near' : '') + (at.hint >= 1 && deg[n] % 2 === 1 && n !== t.pen ? ' pulse' : ''), style: `left:${x}%;top:${y}%`,
         'aria-label': `النجمة ${n + 1} ${n === pen ? '، القلم هنا' : e >= 0 ? '، يمكن الوصل إليها' : ''}`,
-        onclick: () => { if (e < 0) { say(ctx, n === pen ? 'القلم هنا. المس نجمة متصلة به.' : 'لا وصلة متبقية بين القلم وهذه النجمة.'); return; } try { tone(600 + v.length * 20, .06, 'sine', .04); } catch (er) {} moved(ctx, L0.strokeDraw(t, v, e)); } },
+        onclick: () => { if (e < 0) { say(ctx, n === pen ? 'القلم هنا. المس نجمة متصلة به.' : 'لا وصلة متبقية بين القلم وهذه النجمة.'); return; } try { sfx.puzzleMove(ctx.s.kind); } catch (e) {} moved(ctx, L0.strokeDraw(t, v, e)); } },
         n === pen ? img('tool_compass', 'v5-spen', { 'data-k': 'pen' }) : E('i', { class: 'v5-sdot' })));
     });
     b.append(board);
@@ -773,7 +791,7 @@
     const gated = toolGate(b, ctx, 'clapper', 'ركّب مطرقة الجرس في العربة لتصير ذراعًا تلتقط الحلقة العليا.');
     const dk = nx ? diffIdx(v, nx)[0] : -1, from = dk >= 0 ? v[dk] : -1, to = dk >= 0 ? nx[dk] : -1;
     const row = E('div', { class: 'v5-hanoi' + (gated ? ' covered' : '') + (L0.solved(s, v) ? ' solved' : '') });
-    const go = (a, c) => { const m = L0.hanoiMove(v, a, c); sel = null; if (!m) { say(ctx, 'لا توضع حلقة فوق حلقة أصغر منها.'); paint(ctx); return; } try { tone(330 + c * 60, .1, 'triangle', .05); } catch (er) {} moved(ctx, m); };
+    const go = (a, c) => { const m = L0.hanoiMove(v, a, c); sel = null; if (!m) { say(ctx, 'لا توضع حلقة فوق حلقة أصغر منها.'); paint(ctx); return; } try { sfx.puzzleMove(ctx.s.kind); } catch (e) {} moved(ctx, m); };
     [0, 1, 2].forEach(p => {
       const discs = Array.from({ length: n }, (_, k) => n - 1 - k).filter(k => v[k] === p), top = L0.hanoiTop(v, p);
       const peg = E('button', { type: 'button', disabled: gated, class: 'v5-peg' + (sel === p ? ' picked' : '') + (p === from && sel === null ? ' pulse' : '') + (p === to && sel !== null ? ' pulse' : '') + (p === 2 ? ' goal' : ''), 'data-drag': p, 'data-drop': p,
@@ -803,7 +821,7 @@
     const cross = () => {
       const n = L0.riverCross(t, v, load === null ? -1 : load); if (!n) return;
       if (!L0.riverSafe(t, n)) { const bad = t.clash.find(([a, c]) => n[a + 1] === n[c + 1] && n[a + 1] !== n[0]); say(ctx, `لا يمكن: سيبقى ${t.items[bad[0]]} مع ${t.items[bad[1]]} دون نوفل.`); return; }
-      sel = null; try { tone(260, .2, 'sine', .05); } catch (er) {} moved(ctx, n);
+      sel = null; try { sfx.puzzleMove(ctx.s.kind); } catch (e) {} moved(ctx, n);
     };
     const go = ctx.button(load !== null ? 'اعبر مع ' + t.items[load] : 'اعبر بالزورق فارغًا', cross, 'primary v5-cross' + (nx && hintItem === undefined ? ' pulse' : ''));
     go.disabled = gated; go.setAttribute('aria-label', 'عبور: ' + go.textContent);
@@ -822,7 +840,7 @@
       if (!p) { row.append(E('i', { class: 'v5-fcell gap' })); return; }
       const id = p + '-' + (seen[p]++);
       row.append(E('button', { type: 'button', class: 'v5-fcell' + (L0.frogMove(v, i) ? ' can' : '') + (i === hl ? ' pulse' : ''), 'data-drag': i, 'aria-label': `زورق في الخانة ${i + 1} يتجه ${p === 1 ? 'شرقًا' : 'غربًا'}`,
-        onclick: () => { const m = L0.frogMove(v, i); if (!m) { say(ctx, 'لا يتحرك هذا الزورق الآن: أمامه زورق من اتجاهه أو لا فراغ قريب.'); return; } try { tone(p === 1 ? 500 : 420, .07, 'sine', .04); } catch (er) {} moved(ctx, m); } },
+        onclick: () => { const m = L0.frogMove(v, i); if (!m) { say(ctx, 'لا يتحرك هذا الزورق الآن: أمامه زورق من اتجاهه أو لا فراغ قريب.'); return; } try { sfx.puzzleMove(ctx.s.kind); } catch (e) {} moved(ctx, m); } },
         img('ch3_s1_piece_boat', 'v5-fboat' + (p === 2 ? ' west' : ''), { 'data-k': 'b' + id }), E('i', { class: 'v5-fdir', text: p === 1 ? '→' : '←' })));
     });
     ctx.swipe = i => { const m = L0.frogMove(v, +i); if (m) moved(ctx, m); };

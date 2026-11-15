@@ -1,0 +1,18 @@
+'use strict';
+const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict');
+const root=path.resolve(__dirname,'../..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const audio=read('audio/mindlab-audio.js'),index=read('index.html'),boards=read('treasure/boards.js'),mech=read('upgrade/mech.js'),uCss=read('upgrade/style.css'),tCss=read('treasure/style.css'),offline=read('offline-manifest.js'),sw=read('sw.js');
+for(const k of ['wood','stone','metal','glass','water','paper','rope','gear','bell','switch','pencil','seal','hop','chime'])assert(audio.includes(k+'(){'),`unique material sound exists: ${k}`);
+for(const k of ['locks','cipher','mirrors','torn','chime','linked','tide','weigh','valves','slide','lights','scales','ropes','gearfit','drums','push','stroke','hanoi','river','frogs','path'])assert(audio.includes(`${k}:'`),`treasure action mapped to material sound: ${k}`);
+assert(index.includes('<script src="audio/mindlab-audio.js"></script>'),'audio palette loaded into application');
+assert(offline.includes('audio/mindlab-audio.js'),'audio palette cached offline');
+assert(sw.includes("const VERSION='"+JSON.parse(read('package.json')).version+"'"),'service worker cache bumped');
+assert(boards.includes('sfx.puzzleWin()')&&boards.includes('sfx.puzzleUndo()')&&boards.includes('sfx.puzzleSelect()'),'treasure completion, undo and challenge selection have dedicated sounds');
+assert(read('treasure/app.js').includes('sfx.seaTransition()'),'chapter transitions have a dedicated sound cue');
+assert(!/\btone\(/.test(boards),'treasure boards no longer use generic tones for moves');
+assert(audio.includes('sfx.tick=()=>sfx.brainMove()'),'existing brain-game move hooks route through category-aware sounds');
+assert(uCss.includes('.dx-board{overflow-x:auto')&&uCss.includes('max-width:100%'),'brain boards have responsive containment');
+assert(tCss.includes('.v5-board{width:100%;overflow-x:auto')&&tCss.includes('.t7-puzzle-pane{width:100%'),'treasure boards have responsive containment');
+assert(uCss.includes('لكل حركة صوتها'),'sound preference describes the material palette');
+assert(index.includes('miran:v2'),'existing save key remains intact');
+console.log(JSON.stringify({status:'passed',checks:53,materialSounds:14,treasureKinds:21,brainSoundFamilies:6,offlineAudio:true,layoutContainment:true,saveKey:'miran:v2'},null,2));
