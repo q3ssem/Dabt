@@ -10,6 +10,8 @@ const ML_GAME_ART = ['dual','juggle','crash','loci','faces','cards','mylist','pm
   'mmap','compass','nav','fold','dx_pack','dx_turn','matrix','series','xw','deduce','dx_route','dx_balance','dx_order',
   'hawk','glance','dd','dx_signal','racer','steps','radar','mot','brake','dx_search','conf','sw','dx_sort'];
 const ML_CAT_ART = { mem: 'memory', spa: 'space', log: 'logic', spd: 'speed', foc: 'attention', flx: 'flexibility' };
+// Prevent the legacy random switch task from being launched before its 5.5.4 replacement is ready.
+try { if (typeof GM !== 'undefined' && GM.sw) GM.sw.hidden = true; } catch (e) {}
 try {
   ML_GAME_ART.forEach(id => {
     if (typeof I === 'object' && I && id in I) I[id] = `<img class="ml-art" src="ui/art/games/${id}.webp" alt="" width="512" height="512" loading="lazy" decoding="async" draggable="false">`;
@@ -142,4 +144,27 @@ try {
 (function(){
   if(document.querySelector('script[data-release="5.5.2-mini"]'))return;
   const s=document.createElement('script');s.src=new URL('ui/mini.js',document.baseURI).href;s.dataset.release='5.5.2-mini';document.body.append(s);
+})();
+
+
+/* 5.5.4 — independent cognitive-game layers. Core engines remain untouched. */
+(function loadMindLabAddons() {
+  if (window.__MINDLAB_ADDONS_LOADING || window.MINDLAB_HASAD_RUNTIME) return;
+  window.__MINDLAB_ADDONS_LOADING = true;
+  const addStyle = (href, marker) => {
+    if (document.querySelector(`link[${marker}]`)) return;
+    const link = document.createElement('link'); link.rel = 'stylesheet'; link.href = new URL(href, document.baseURI).href; link.setAttribute(marker, '1'); document.head.append(link);
+  };
+  const load = src => new Promise((resolve, reject) => {
+    const script = document.createElement('script'); script.src = new URL(src, document.baseURI).href;
+    script.onload = resolve; script.onerror = () => reject(new Error('Failed to load ' + src)); document.body.append(script);
+  });
+  addStyle('cognition/signal-guard.css', 'data-signal-guard-style');
+  addStyle('hasad/style.css', 'data-hasad-style');
+  addStyle('cognition/ear-alert.css', 'data-ear-alert-style');
+  load('cognition/signal-guard.js').catch(error => {
+    console.error('تعذر تحميل حارس الإشارة', error);
+  }).then(() => load('hasad/data.js')).then(() => load('hasad/engine.js')).then(() => load('hasad/game.js'))
+    .then(() => load('cognition/ear-alert.js'))
+    .catch(error => { window.__MINDLAB_ADDONS_LOADING = false; console.error('تعذر تحميل طبقات الألعاب الإضافية', error); });
 })();

@@ -1,0 +1,62 @@
+/* 5.5.4 — حارس الإشارة: scoped game UI */
+#play .sg-shell{width:min(100%,760px);margin:0 auto;padding:4px 0 20px;color:#f4f7ff}
+#play .sg-overview{padding:8px 2px 14px}
+#play .sg-overview h2,#play .sg-stage-title{margin:7px 0 5px;font-size:clamp(20px,4vw,27px);line-height:1.35;color:#f4f7ff}
+#play .sg-overview p,#play .sg-stage-desc{margin:5px 0 12px;color:#b9c8dc;line-height:1.7;font-size:14px}
+#play .sg-kicker{display:inline-flex;align-items:center;border:1px solid #4c6a8d;border-radius:999px;padding:5px 10px;color:#bfece8;font-size:12px;font-weight:800}
+#play .sg-stage-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px}
+#play .sg-stage-card{display:flex;flex-direction:column;align-items:flex-start;gap:5px;min-width:0;min-height:112px;padding:13px;border:1px solid #49617f;border-radius:15px;background:linear-gradient(145deg,#1b304b,#14253b);color:#f4f7ff;text-align:right;font:inherit}
+#play .sg-stage-card b{font-size:14px;line-height:1.45}
+#play .sg-stage-card small{font-size:12px;color:#b9c8dc}
+#play .sg-stage-card em{margin-top:auto;font-size:11px;font-style:normal;color:#86dfc9}
+#play .sg-stage-card.is-current{border-color:#42cdbd;box-shadow:inset 0 0 0 1px #42cdbd}
+#play .sg-stage-card.is-locked{opacity:.42;cursor:not-allowed}
+#play .sg-stage-no{font-size:11px;color:#92b5dc}
+#play .sg-progress-note{margin-top:14px;padding:11px 13px;border:1px solid #344d69;border-radius:12px;color:#b9c8dc;font-size:13px;line-height:1.6;background:#122239}
+#play .sg-play-top{display:flex;justify-content:space-between;align-items:center;gap:8px;flex-wrap:wrap}
+#play .sg-counter{border:1px solid #425c7d;border-radius:999px;padding:5px 10px;font-size:12px;color:#c4d3e8}
+#play .sg-stage-title{margin-top:13px}
+#play .sg-progress-track{height:7px;margin:13px 0 15px;overflow:hidden;border-radius:99px;background:#0b1728}
+#play .sg-progress-track i{display:block;height:100%;border-radius:inherit;background:linear-gradient(90deg,#26c6b5,#5698ff);transition:width .18s ease}
+#play .sg-legend{display:flex;flex-wrap:wrap;gap:7px 12px;margin:8px 0 13px;padding:10px 12px;border:1px solid #354f6e;border-radius:12px;background:#11243b}
+#play .sg-legend span{display:inline-flex;align-items:center;gap:6px;color:#c4d3e8;font-size:11px}
+#play .sg-legend i{display:inline-block;width:9px;height:9px;border-radius:50%;background:var(--sg-signal-color)}
+#play .sg-rule-card{display:flex;align-items:center;justify-content:center;flex-wrap:wrap;gap:9px;margin:12px auto;padding:13px 14px;max-width:600px;min-height:64px;border:1px solid #45617f;border-radius:15px;background:#132b45;text-align:center}
+#play .sg-rule-card b{font-size:18px;line-height:1.5;color:#f5f8ff}
+#play .sg-instruction-tag{padding:4px 9px;border-radius:999px;background:#24405c;color:#b9d8ee;font-size:11px;font-weight:800}
+#play .sg-signal{display:inline-flex;align-items:center;gap:7px;padding:5px 10px;border-radius:999px;background:#0b1b30;color:#f5f8ff;font-size:12px;font-weight:800}
+#play .sg-signal i{width:11px;height:11px;border-radius:50%;background:var(--sg-signal-color);box-shadow:0 0 0 3px color-mix(in srgb,var(--sg-signal-color) 22%,transparent)}
+#play .sg-stimulus{display:grid;place-items:center;position:relative;min-height:165px;max-width:600px;margin:13px auto;padding:12px;border:1px solid #354f6e;border-radius:20px;background:linear-gradient(145deg,#102139,#1b3150)}
+#play .sg-number{font-size:clamp(70px,18vw,100px);font-weight:950;line-height:1;color:#f4f7ff;font-variant-numeric:tabular-nums}
+#play .sg-shape-scene{position:relative;display:grid;place-items:center;width:132px;height:132px}
+#play .sg-shape{display:block;width:104px;height:104px;background:var(--sg-stim-color);filter:drop-shadow(0 6px 12px #0005)}
+#play .sg-shape-circle{border-radius:50%}
+#play .sg-shape-square{border-radius:13px}
+#play .sg-shape-diamond{clip-path:polygon(50% 0,100% 50%,50% 100%,0 50%)}
+#play .sg-distractor{position:absolute;top:5px;inset-inline-start:3px;width:17px;height:17px;border:2px solid #ffdc86;border-radius:50%;background:#ffbe59;box-shadow:0 0 0 4px #ffbe5922}
+#play .sg-options{display:grid;grid-template-columns:repeat(auto-fit,minmax(120px,1fr));gap:9px;max-width:600px;margin:12px auto}
+#play .sg-option{position:relative;display:flex;align-items:center;justify-content:center;gap:8px;min-height:55px;padding:11px 15px;border:1px solid #466384;border-radius:13px;background:#203b5b;color:#fff;font:inherit;font-size:16px;font-weight:850;cursor:pointer}
+#play .sg-option span{display:inline-grid;place-items:center;width:21px;height:21px;border-radius:50%;background:#10243c;color:#b8cbe0;font-size:10px}
+#play .sg-option:hover:not(:disabled){border-color:#45d2c2;background:#294c70}
+#play .sg-option:focus-visible,#play .sg-stage-card:focus-visible,#play .sg-back:focus-visible{outline:3px solid #ffcf70;outline-offset:3px}
+#play .sg-option:disabled{cursor:default;opacity:.82}
+#play .sg-option.is-correct{border-color:#4bd3a2;background:#174c48;color:#eafff7}
+#play .sg-option.is-wrong{border-color:#ff7887;background:#512c3a;color:#fff0f2}
+#play .sg-feedback{min-height:39px;margin:10px auto;padding:8px 12px;max-width:600px;border-radius:12px;color:#c4d3e8;font-size:13px;line-height:1.7;text-align:center}
+#play .sg-feedback.is-good{background:#164a43;color:#c9ffed}
+#play .sg-feedback.is-bad{background:#4b2b38;color:#ffe0e5}
+#play .sg-bottom{display:flex;justify-content:space-between;align-items:center;gap:10px;margin-top:12px;color:#9eb2cc;font-size:11px}
+#play .sg-back{border:1px solid #49617f;border-radius:10px;padding:7px 10px;background:#1b304b;color:#f4f7ff;font:inherit;cursor:pointer}
+@media(max-width:560px){
+  #play .sg-shell{padding-inline:2px}
+  #play .sg-stage-grid{gap:7px}
+  #play .sg-stage-card{min-height:105px;padding:10px}
+  #play .sg-stage-card b{font-size:12.5px}
+  #play .sg-stage-card small{font-size:10.5px}
+  #play .sg-rule-card b{font-size:16px}
+  #play .sg-stimulus{min-height:145px}
+  #play .sg-options{grid-template-columns:repeat(2,minmax(0,1fr));gap:7px}
+  #play .sg-option{min-height:52px;padding:9px 7px;font-size:14px}
+  #play .sg-bottom{align-items:flex-start}
+}
+@media(prefers-reduced-motion:reduce){#play .sg-progress-track i{transition:none}}

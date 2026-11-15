@@ -1,0 +1,82 @@
+'use strict';
+const fs = require('fs');
+const path = require('path');
+const root = path.join(__dirname, '..', '..');
+const data = require(path.join(root, 'hasad', 'data.js'));
+const engine = require(path.join(root, 'hasad', 'engine.js'));
+let checks = 0;
+const ok = (condition, message) => { if (!condition) { console.error('FAIL:', message); process.exit(1); } checks++; };
+const words = data.words, prompts = data.prompts, index = engine.buildIndex(words);
+ok(data.meta.total_words === 723, '723 active words bundled');
+ok(data.meta.basic_words === 699 && data.meta.advanced_words === 24, 'basic/advanced split retained');
+ok(words.filter(w => w.tier === 'basic').length === 699, 'basic tier has 699 words');
+ok(words.filter(w => w.tier === 'advanced').length === 24, 'advanced tier has 24 words');
+ok(index.byId.size === 723, 'all IDs unique');
+ok(index.byMatch.size === 723, 'all active match keys unique');
+ok(engine.normalizeAnswer(' أَبٌ ـ بَيتٌ! ') === 'أب بيت', 'normalizer strips diacritics, tatweel and punctuation');
+ok(engine.normalizeAnswer('أب') !== engine.normalizeAnswer('اب'), 'answer matching does not collapse hamza variants');
+ok(engine.normalizeInitial('إبل') === 'ابل', 'initial-letter policy canonicalises hamza-on-alif only for letter tasks');
+for (const p of prompts) {
+  const ids = p.mode === 'alternating' ? Object.values(p.accepted_ids_by_category || {}).flat() : (p.accepted_ids || []);
+  ok(ids.every(id => index.byId.has(id)), `all accepted IDs resolve for ${p.prompt}`);
+}
+const sem = engine.eligiblePrompts(prompts, index.byId, 'semantic');
+const letters = engine.eligiblePrompts(prompts, index.byId, 'initial_letter');
+const alternating = engine.eligiblePrompts(prompts, index.byId, 'alternating');
+ok(sem.length === 9, 'all nine top-level semantic domains meet the 10-answer minimum');
+ok(data.meta.domain_count === 9 && new Set(sem.map(p => p.domain_id)).size === 9, 'nine semantic domains are unique and complete');
+const expectedDomainCounts = { D01: 66, D02: 115, D03: 120, D04: 120, D05: 81, D06: 50, D07: 51, D08: 35, D09: 85 };
+for (const [domainId, expected] of Object.entries(expectedDomainCounts)) {
+  const actual = words.filter(w => w.domain_id === domainId).length;
+  ok(actual === expected, `domain ${domainId} has ${expected} words`);
+  const prompt = sem.find(p => p.domain_id === domainId);
+  ok(prompt && prompt.accepted_ids.length === words.filter(w => w.domain_id === domainId && w.tier === 'basic').length, `domain ${domainId} basic prompt membership matches bank`);
+}
+const semanticBaseIds = new Set(sem.flatMap(p => p.accepted_ids));
+const basicIds = new Set(words.filter(w => w.tier === 'basic').map(w => w.id));
+ok(semanticBaseIds.size === 699 && sem.reduce((n, p) => n + p.accepted_ids.length, 0) === 699 && [...basicIds].every(id => semanticBaseIds.has(id)), 'every basic word belongs to exactly one semantic domain');
+ok(words.filter(w => w.tier === 'advanced').every(w => !semanticBaseIds.has(w.id)), 'advanced words do not leak into base semantic rounds');
+ok(letters.length === 23, '23 letter prompts meet the 10-answer minimum');
+const letterIds = new Set(letters.flatMap(p => p.accepted_ids));
+for (const id of letterIds) {
+  const word = index.byId.get(id);
+  ok(ENGINE_NORMALIZE_INITIAL(word.match || word.word).startsWith(ENGINE_NORMALIZE_INITIAL(letters.find(p => p.accepted_ids.includes(id)).initial_letter)), `letter prompt accepts only its initial letter: ${word.word}`);
+}
+function ENGINE_NORMALIZE_INITIAL(v) { return engine.normalizeInitial(v); }
+ok(alternating.length === 4, 'all four alternating prompts have two adequately stocked groups');
+ok(new Set(sem.map(p => p.domain_id)).size === 9, 'semantic domains do not repeat');
+const semPrompt = sem.find(p => p.domain_id === 'D01');
+const semInfo = engine.makeAllowed(semPrompt, words, index, 1);
+const goodBasic = index.byId.get(semPrompt.accepted_ids[0]);
+ok(engine.classifyAnswer({ text: goodBasic.word, prompt: semPrompt, index, allowed: semInfo.allowed, groups: semInfo.groups, used: new Set(), acceptedCount: 0 }).status === 'accepted', 'valid semantic answer accepted');
+ok(engine.classifyAnswer({ text: goodBasic.word, prompt: semPrompt, index, allowed: semInfo.allowed, groups: semInfo.groups, used: new Set([goodBasic.id]), acceptedCount: 1 }).status === 'duplicate', 'duplicate answer rejected');
+const foreignSemantic = words.find(w => w.tier === 'basic' && w.domain_id !== semPrompt.domain_id);
+ok(engine.classifyAnswer({ text: foreignSemantic.word, prompt: semPrompt, index, allowed: semInfo.allowed, groups: semInfo.groups, used: new Set(), acceptedCount: 0 }).status === 'wrong_group', 'valid word outside category rejected');
+ok(engine.classifyAnswer({ text: 'كلمة غير موجودة', prompt: semPrompt, index, allowed: semInfo.allowed, groups: semInfo.groups, used: new Set(), acceptedCount: 0 }).status === 'unknown', 'unknown word rejected');
+const adv = engine.advancedForPrompt(semPrompt, words, 'semantic')[0];
+const locked = engine.classifyAnswer({ text: adv.word, prompt: semPrompt, index, allowed: semInfo.allowed, groups: semInfo.groups, used: new Set(), acceptedCount: 0 });
+ok(locked.status === 'advanced_locked', 'advanced vocabulary is locked below level 4');
+const semInfo4 = engine.makeAllowed(semPrompt, words, index, 4);
+ok(engine.classifyAnswer({ text: adv.word, prompt: semPrompt, index, allowed: semInfo4.allowed, groups: semInfo4.groups, used: new Set(), acceptedCount: 0 }).status === 'accepted', 'advanced vocabulary becomes available at level 4');
+const letterPrompt = letters[0], letterInfo = engine.makeAllowed(letterPrompt, words, index, 1), letterWord = index.byId.get(letterPrompt.accepted_ids[0]);
+ok(engine.classifyAnswer({ text: letterWord.word, prompt: letterPrompt, index, allowed: letterInfo.allowed, groups: letterInfo.groups, used: new Set(), acceptedCount: 0 }).status === 'accepted', 'valid initial-letter answer accepted');
+const alt = alternating[0], altInfo = engine.makeAllowed(alt, words, index, 1), altGroups = Object.entries(alt.accepted_ids_by_category);
+const secondGroupWord = index.byId.get(altGroups[1][1][0]);
+ok(engine.classifyAnswer({ text: secondGroupWord.word, prompt: alt, index, allowed: altInfo.allowed, groups: altInfo.groups, used: new Set(), acceptedCount: 0 }).status === 'out_of_turn', 'alternating mode enforces category order');
+const firstGroupWord = index.byId.get(altGroups[0][1][0]);
+ok(engine.classifyAnswer({ text: firstGroupWord.word, prompt: alt, index, allowed: altInfo.allowed, groups: altInfo.groups, used: new Set(), acceptedCount: 0 }).status === 'accepted', 'first alternating category accepted');
+ok(engine.classifyAnswer({ text: secondGroupWord.word, prompt: alt, index, allowed: altInfo.allowed, groups: altInfo.groups, used: new Set([firstGroupWord.id]), acceptedCount: 1 }).status === 'accepted', 'second alternating category accepted on turn');
+const html = fs.readFileSync(path.join(root, 'index.html'), 'utf8');
+const uiApp = fs.readFileSync(path.join(root, 'ui', 'app.js'), 'utf8');
+ok(uiApp.includes('loadMindLabAddons') && uiApp.includes('hasad/data.js') && uiApp.includes('hasad/engine.js') && uiApp.includes('hasad/game.js'), 'Hasad data/engine/game loaded additively from UI layer');
+ok(!html.includes('hasad/data.js') && !html.includes('hasad/game.js'), 'core index remains unchanged by Hasad integration');
+const game = fs.readFileSync(path.join(root, 'hasad', 'game.js'), 'utf8');
+ok(game.includes("id: GAME_ID, cat: 'flx'") && game.includes('GM[GAME_ID]'), 'game registered in flexibility catalogue');
+ok(game.includes('S.st.lv.hasad') && game.includes('timeBar(Number(prompt.duration_seconds) || 60'), 'level and timed round integrated');
+const pkg = JSON.parse(fs.readFileSync(path.join(root, 'package.json'), 'utf8'));
+const sw = fs.readFileSync(path.join(root, 'sw.js'), 'utf8');
+ok(sw.includes(`const VERSION='${pkg.version}'`), 'service worker cache version matches package');
+const manifest = fs.readFileSync(path.join(root, 'offline-manifest.js'), 'utf8');
+for (const file of ['hasad/data.js','hasad/engine.js','hasad/game.js','hasad/style.css']) ok(manifest.includes(`"${file}"`), `${file} included in offline install cache`);
+ok(pkg.version === '5.5.5', 'package version 5.5.5');
+console.log('hasad integration ok', checks, 'checks', `| pools: semantic=${sem.length}, letters=${letters.length}, alternating=${alternating.length}`);
