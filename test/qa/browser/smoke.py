@@ -39,13 +39,16 @@ PAINTED_URLS_JS = r"""async()=>{
 
 async def visual_checks(page, gid, problems):
     if gid in BACKGROUND_SURFACES:
-        # 4.2.3: play surfaces are solid night panels — no painted backdrop, and a dark colour.
+        # 4.2.3: play surfaces are solid panels with no painted backdrop. 5.5: their colour follows the theme
+        # (white by default): light under data-skin=light, dark under data-skin=dark.
         selector = BACKGROUND_SURFACES[gid]
+        skin = await page.evaluate("()=>document.documentElement.dataset.skin")
         await page.locator(selector).first.wait_for(state='visible', timeout=15000)
         result = await page.locator(selector).first.evaluate(r"""el=>{const st=getComputedStyle(el);const m=st.backgroundColor.match(/[\d.]+/g).map(Number);
           return {image:st.backgroundImage, lum:(.2126*m[0]+.7152*m[1]+.0722*m[2])/255, alpha:m.length>3?m[3]:1}}""")
-        if 'url(' in result['image'] or result['lum'] > 0.2 or result['alpha'] < 0.9:
-            problems.append(f'{gid}: play surface is not a solid night panel: {result}')
+        wrong_tone = result['lum'] < 0.8 if skin == 'light' else result['lum'] > 0.2
+        if 'url(' in result['image'] or wrong_tone or result['alpha'] < 0.9:
+            problems.append(f'{gid}: play surface is not a solid {skin} panel: {result}')
     if gid=='pz_grid':
         ratios=await page.locator('.lgt th').evaluate_all(r"""els=>{
           const rgb=s=>s.match(/[\d.]+/g).slice(0,3).map(Number);

@@ -1,9 +1,10 @@
 {
   "name": "mind-lab",
-  "version": "5.4.8",
+  "version": "5.5.0",
   "private": true,
   "scripts": {
-    "test": "node qa/tests/storybook.logic.cjs && node qa/tests/storybook.interaction.cjs && node qa/tests/story.extras.cjs && node qa/tests/legacy.art.cjs && node qa/tests/deep.art.cjs && node qa/tests/watercolor.cjs && node qa/tests/generators.cjs && node qa/tests/release42.cjs && node qa/tests/release54.cjs && node qa/tests/release544.cjs && node qa/tests/release545.cjs && node qa/tests/release546.cjs && node qa/tests/release547.cjs && node qa/tests/release548.cjs",
-    "test:browser": "python3 qa/browser/smoke.py && python3 qa/browser/journey.py && python3 qa/browser/challenges.py && python3 qa/browser/sweep.py"
+    "test": "node qa/tests/storybook.logic.cjs && node qa/tests/storybook.interaction.cjs && node qa/tests/story.extras.cjs && node qa/tests/legacy.art.cjs && node qa/tests/deep.art.cjs && node qa/tests/watercolor.cjs && node qa/tests/generators.cjs && node qa/tests/release42.cjs && node qa/tests/release54.cjs && node qa/tests/release544.cjs && node qa/tests/release545.cjs && node qa/tests/release546.cjs && node qa/tests/release547.cjs && node qa/tests/release548.cjs && node qa/tests/release550.cjs",
+    "test:browser": "python3 qa/browser/smoke.py && python3 qa/browser/journey.py && python3 qa/browser/challenges.py && python3 qa/browser/sweep.py",
+    "test:visual": "python3 qa/browser/theme_audit.py --games-card \"#v-games article.ui-game\" --puz-card \"#v-puz button.la-library-card\""
   }
 }

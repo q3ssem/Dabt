@@ -6,14 +6,15 @@
 
   // Resolve the stored Auto preference to the active black/white palette, and tint browser chrome.
   function resolveTheme() {
-    let preference = root.dataset.skinPreference || root.dataset.skin || 'dark';
-    try { preference = S.st.skin || preference; } catch (_) {}
+    // 5.5: white is the default for anyone who has not chosen; a stored choice (dark/light/auto) is kept.
+    let preference = 'light';
+    try { preference = S.st.skin || 'light'; } catch (_) {}
     const light = preference === 'light' || (preference === 'auto' && !!(window.matchMedia && window.matchMedia('(prefers-color-scheme: light)').matches));
     const resolved = light ? 'light' : 'dark';
     if (root.dataset.skin !== resolved) root.dataset.skin = resolved;
     root.dataset.skinPreference = preference;
     const meta = $('meta[name="theme-color"]');
-    if (meta) meta.setAttribute('content', light ? '#F7F7F5' : '#111315');
+    if (meta) meta.setAttribute('content', light ? '#F7F5F0' : '#111315');
   }
   const themeObserver = new MutationObserver(resolveTheme);
   themeObserver.observe(root, { attributes: true, attributeFilter: ['data-skin'] });
@@ -32,6 +33,8 @@
     if (b.getAttribute('aria-label') !== aria) b.setAttribute('aria-label', aria);
   };
   function labelThemeOptions() {
+    let pref = 'light'; try { pref = S.st.skin || 'light'; } catch (_) {}
+    document.querySelectorAll('#v-me [data-sk]').forEach(b => { const on = b.dataset.sk === pref; if (b.classList.contains('on') !== on) b.classList.toggle('on', on); });
     document.querySelectorAll('#v-me [data-sk="dark"]').forEach(b => setLabel(b, 'أسود', 'الثيم الأسود'));
     document.querySelectorAll('#v-me [data-sk="light"]').forEach(b => setLabel(b, 'أبيض', 'الثيم الأبيض'));
     document.querySelectorAll('#v-me [data-sk="auto"]').forEach(b => setLabel(b, 'تلقائي', 'الثيم التلقائي'));
@@ -131,4 +134,8 @@
   link.href = new URL('release54.css', document.baseURI).href;
   link.dataset.release = '5.4.0';
   document.head.append(link);
+  // 5.5: the design system — generated white layer, then the central tokens/components (last = wins).
+  ['ds/light-auto.css', 'ds/mindlab-ds.css'].forEach(href => {
+    const l = document.createElement('link'); l.rel = 'stylesheet'; l.href = new URL(href, document.baseURI).href; l.dataset.release = '5.5.0'; document.head.append(l);
+  });
 })();

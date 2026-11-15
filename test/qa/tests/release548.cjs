@@ -7,8 +7,8 @@ const fixture=fs.readFileSync(path.join(__dirname,'storybook.interaction.cjs'),'
 const boot=new Function('require','__dirname',fixture.slice(0,fixture.indexOf('const t=boot(),'))+'return boot;')(require,__dirname);
 let checks=0;const ok=(v,m)=>{assert.ok(v,m);checks++;};
 const pkg=JSON.parse(read('package.json'));
-ok(pkg.version==='5.4.8','package version 5.4.8');
-ok(read('sw.js').includes("const VERSION='5.4.8'"),'service-worker caches renamed so updated scripts reach installed apps');
+const ver=pkg.version.split('.').map(Number);ok(ver[0]>5||ver[0]===5&&(ver[1]>4||ver[1]===4&&ver[2]>=8),'package version 5.4.8 or later ('+pkg.version+')');
+ok(read('sw.js').includes("const VERSION='"+pkg.version+"'"),'service-worker caches renamed so updated scripts reach installed apps');
 ok(read('index.html').includes("localStorage.getItem('miran:v2')")&&read('index.html').includes("localStorage.setItem('miran:v2'"),'save key miran:v2 unchanged');
 
 // 1. «مستواي» froze: the theme-label observer rewrote text on every mutation it caused.

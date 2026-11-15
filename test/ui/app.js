@@ -1,6 +1,8 @@
 'use strict';
 /* 5.1–5.3 presentation layer (loaded last): games page in sections, faster game start, «مستواي» dashboard,
    kids layout and river decorations. Game engines, scores and saves are untouched. */
+// 5.5: white theme by default — set before first paint; release54.js keeps it in sync afterwards.
+try { if (!S.st.skin) document.documentElement.dataset.skin = 'light'; } catch (e) {}
 (function () {
   const $ = DX.$, E = DX.el, AR = DX.AR, ART = 'ui/art/';
 
