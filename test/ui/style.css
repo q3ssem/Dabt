@@ -119,3 +119,72 @@ html,body{overflow-x:hidden}
 #play:has(.pzhud) .pbar .x{width:36px!important;height:36px!important;min-height:0!important}
 #play:has(.pzhud) .pbar #pt{font-size:17px}
 #play .pzhud .pzhb,#play .pzhud .pzcoin{min-height:34px!important;padding-top:3px!important;padding-bottom:3px!important}
+
+/* ---------- 5.5.8 — MindLab logic + river visual direction ---------- */
+#play[data-ml-puzzle] #pzb{color:#382d20}
+#play[data-ml-puzzle] .mlp-eyebrow{display:inline-flex;align-items:center;gap:6px;color:#85602d;font-size:11px;font-weight:900;letter-spacing:.04em}
+#play[data-ml-puzzle] .mlp-eyebrow::before{content:"";width:7px;height:7px;border-radius:50%;background:#c99a4d;box-shadow:0 0 0 3px #c99a4d22}
+#play[data-ml-puzzle] .mlp-logic-intro,
+#play[data-ml-puzzle] .mlp-river-intro{position:relative;overflow:hidden;margin:5px 0 10px;padding:15px 16px;border:1px solid #d9c59e;border-radius:20px;background:linear-gradient(135deg,#fff8e9 0%,#f3e3c2 58%,#e8d2a8 100%);box-shadow:0 8px 18px #61462212;text-align:right}
+#play[data-ml-puzzle] .mlp-logic-intro::after{content:"";position:absolute;left:-18px;bottom:-38px;width:112px;height:112px;border-radius:50%;background:radial-gradient(circle,#e6c17a88 0 30%,#d8b36c22 31% 63%,transparent 64%);pointer-events:none}
+#play[data-ml-puzzle] .mlp-logic-intro h2,
+#play[data-ml-puzzle] .mlp-river-intro h2{position:relative;z-index:1;margin:5px 0 4px;color:#48351f;font-size:clamp(17px,4.5vw,21px);line-height:1.35;font-weight:900}
+#play[data-ml-puzzle] .mlp-logic-intro p,
+#play[data-ml-puzzle] .mlp-river-intro p{position:relative;z-index:1;margin:0;color:#766044;font-size:12px;line-height:1.7;font-weight:650}
+#play[data-ml-puzzle] .mlp-logic-meter,
+#play[data-ml-puzzle] .mlp-river-status{margin:8px 0;padding:11px 13px;border-radius:16px;border:1px solid #d9c59e;background:linear-gradient(180deg,#fffdf7,#f6eddc);box-shadow:0 4px 12px #6146220b;color:#4a3a29}
+#play[data-ml-puzzle] .mlp-meter-head,
+#play[data-ml-puzzle] .mlp-river-status-head{display:flex;align-items:center;justify-content:space-between;gap:8px;font-size:12px;font-weight:800}
+#play[data-ml-puzzle] .mlp-meter-head b,
+#play[data-ml-puzzle] .mlp-river-status-head b{color:#936a2d;font-variant-numeric:tabular-nums}
+#play[data-ml-puzzle] .mlp-meter-track,
+#play[data-ml-puzzle] .mlp-river-track{height:8px;margin-top:8px;border-radius:99px;background:#e5d7bd;overflow:hidden}
+#play[data-ml-puzzle] .mlp-meter-fill,
+#play[data-ml-puzzle] .mlp-river-fill{display:block;width:0;height:100%;border-radius:inherit;background:linear-gradient(90deg,#4caaa3,#77b879,#d2a34f);transition:width .25s ease}
+#play[data-ml-puzzle] .mlp-clues-title,
+#play[data-ml-puzzle] .mlp-rules-label{display:flex;align-items:center;justify-content:space-between;gap:8px;margin:10px 2px 5px;color:#624a2c}
+#play[data-ml-puzzle] .mlp-clues-title b,
+#play[data-ml-puzzle] .mlp-rules-label b{font-size:14px;font-weight:900}
+#play[data-ml-puzzle] .mlp-clues-title span,
+#play[data-ml-puzzle] .mlp-rules-label span{font-size:10px;color:#927d5e}
+#play[data-ml-puzzle="logic"] .lgclues{margin:0 0 10px;padding:13px 30px 13px 12px;border:1px solid #dfcfb1;border-radius:17px;background:linear-gradient(145deg,#fffdf8,#f5ecdc);color:#4b3d2c;box-shadow:0 5px 14px #604b2a0c;font-size:13px;line-height:1.75}
+#play[data-ml-puzzle="logic"] .mlp-table-scroll{width:100%;overflow-x:auto;overscroll-behavior-inline:contain;border-radius:16px;padding:2px 0 7px;scrollbar-width:thin;scrollbar-color:#c4a66d #f1e6d3}
+#play[data-ml-puzzle="logic"] .lgt{min-width:460px;border-spacing:5px;direction:rtl}
+#play[data-ml-puzzle="logic"] .lgt th{padding:7px 4px;color:#806746;font-size:12px;white-space:nowrap}
+#play[data-ml-puzzle="logic"] .lgt tr th:first-child{color:#4c3a25}
+#play[data-ml-puzzle="logic"] .lgc{min-height:56px;border:1.5px solid #d7c6a5;border-radius:13px;background:linear-gradient(180deg,#fffdf8,#f1e5cf);color:#5b472d;box-shadow:0 3px 7px #604b2a12;transition:transform .14s,border-color .14s,background .14s}
+#play[data-ml-puzzle="logic"] .lgc:active{transform:scale(.97)}
+#play[data-ml-puzzle="logic"] .lgc.set{border-color:#79aa83;background:linear-gradient(145deg,#eef7e9,#dcebd2);color:#33563c}
+#play[data-ml-puzzle="logic"] .lgc.fix{border-color:#c89a47;background:linear-gradient(145deg,#fff3cc,#f4df9f);color:#775319;box-shadow:0 0 0 2px #d7b45b30}
+#play[data-ml-puzzle="logic"] #lgok,
+#play[data-ml-puzzle="river"] #rvgo{border:1px solid #b48a48;background:linear-gradient(135deg,#dfb963,#bd8a39);color:#fffdf4;font-weight:900;box-shadow:0 6px 14px #9b6c2a35}
+#play[data-ml-puzzle="logic"] #lgok{margin-top:9px;min-height:48px;border-radius:15px}
+#play[data-ml-puzzle="river"] .mlp-river-intro{background:linear-gradient(135deg,#fff8e9,#e4efe4 62%,#cce5db)}
+#play[data-ml-puzzle="river"] .mlp-river-status-foot{display:flex;justify-content:space-between;gap:8px;margin-top:7px;color:#7c694e;font-size:10px;font-weight:800}
+#play[data-ml-puzzle="river"] .mlp-river-status{border-color:#c7d8bd;background:linear-gradient(180deg,#fbfff7,#eaf2df)}
+#play[data-ml-puzzle="river"] .rv3{border:1px solid #a7c2a0;border-radius:19px;box-shadow:0 8px 18px #345b4a22}
+#play[data-ml-puzzle="river"] .rvland{min-height:224px}
+#play[data-ml-puzzle="river"] .rvwater{background:linear-gradient(180deg,#6fc3d0,#3c9eb5 65%,#287e9d)}
+#play[data-ml-puzzle="river"] .rvbk.dry{background:radial-gradient(circle at 20% 70%,#9c714c55 0 1.5px,transparent 2.5px) 0 0/14px 13px,linear-gradient(180deg,#e7c991,#c7985c)}
+#play[data-ml-puzzle="river"] .rvbk.meadow{background:radial-gradient(circle at 30% 40%,#fff4b5 0 1.5px,transparent 2.5px) 0 0/22px 19px,radial-gradient(circle at 70% 70%,#e9a4ac 0 1.5px,transparent 2.5px) 3px 6px/26px 23px,linear-gradient(180deg,#b0d987,#77b66d)}
+#play[data-ml-puzzle="river"] #rvgo{display:block;width:min(100%,340px);min-height:48px;margin:10px auto 0;border-radius:15px}
+#play[data-ml-puzzle] .mlp-music-toggle{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:34px;padding:5px 9px;border:1px solid #cbb78e;border-radius:999px;background:#fff9ec;color:#75572d;font-size:10px;font-weight:800;white-space:nowrap}
+#play[data-ml-puzzle] .mlp-music-toggle svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
+#play[data-ml-puzzle] .mlp-music-toggle.on{border-color:#87b6a5;background:#eaf5ee;color:#286a58}
+@media(max-width:390px){#play[data-ml-puzzle] .mlp-music-toggle span{max-width:72px;overflow:hidden;text-overflow:ellipsis}#play[data-ml-puzzle="logic"] .lgt{min-width:430px}#play[data-ml-puzzle="river"] .rvland{min-height:204px}}
+@media(prefers-reduced-motion:reduce){#play[data-ml-puzzle] .mlp-meter-fill,#play[data-ml-puzzle] .mlp-river-fill{transition:none!important}}
+
+/* ---------- 5.5.9 — pirate / wreck / temple adventure design ---------- */
+#play[data-mla-theme] #pzb{color:#3f3020}
+#play[data-mla-theme] .mla-adventure-intro{position:relative;overflow:hidden;margin:5px 0 10px;padding:14px 16px;border:1px solid #d7c39b;border-radius:19px;background:linear-gradient(135deg,#fff8e9,#f0dfbd 62%,#dfc69a);box-shadow:0 7px 17px #60431b16;text-align:right}
+#play[data-mla-theme] .mla-adventure-intro:after{content:"";position:absolute;left:-22px;bottom:-48px;width:126px;height:126px;border-radius:50%;background:radial-gradient(circle,#d4a44d55 0 30%,#c18b3922 31% 62%,transparent 63%);pointer-events:none}
+#play[data-mla-theme] .mla-eyebrow{position:relative;z-index:1;color:#8a622a;font-size:11px;font-weight:900}
+#play[data-mla-theme] .mla-adventure-intro h2{position:relative;z-index:1;margin:5px 0;color:#49351e;font-size:clamp(17px,4.5vw,21px);line-height:1.4;font-weight:900}
+#play[data-mla-theme] .mla-adventure-intro p{position:relative;z-index:1;margin:0;color:#766044;font-size:12px;line-height:1.75;font-weight:650}
+#play[data-mla-theme="pirate"] .mla-adventure-intro{background:linear-gradient(135deg,#fff6df,#ead4a4 60%,#c7d7b4);border-color:#c9b17d}
+#play[data-mla-theme="wreck"] .mla-adventure-intro{background:linear-gradient(135deg,#f5f5e9,#d6e4d9 58%,#b8d1cf);border-color:#a8c5bb}
+#play[data-mla-theme="temple"] .mla-adventure-intro{background:linear-gradient(135deg,#fff6df,#e6d4ad 58%,#c6b8a0);border-color:#c4ad83}
+#play[data-mla-theme] .mla-music-toggle{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:5px 9px;border:1px solid #cbb78e;border-radius:999px;background:#fff9ec;color:#75572d;font-size:10px;font-weight:850;white-space:nowrap}
+#play[data-mla-theme] .mla-music-toggle[aria-pressed="true"]{border-color:#87b6a5;background:#eaf5ee;color:#286a58}
+@media(max-width:390px){#play[data-mla-theme] .mla-music-toggle{max-width:118px;overflow:hidden;text-overflow:ellipsis}}
+@media(prefers-reduced-motion:reduce){#play[data-mla-theme] *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}

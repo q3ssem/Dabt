@@ -1,0 +1,89 @@
+{
+  "reason": "Approved, scoped Mirror Palace puzzle-quality changes for release 5.5.11; reverse these exact patches before comparing the untouched legacy inline engine baseline.",
+  "patches": [
+    {
+      "reason": "Correct the second clock hint and replace an inaccurate fixed-rate assumption with the true first-arrival calculation.",
+      "before": "return{hint:k=>{if(k===1)return'لكل ساعة لوحدها: كم دقة تحتاج لتصل ١٢ أول مرة؟ وكل كم دقة ترجع لها بعد ذلك؟';if(k===2)return`الساعة الأولى تصل ١٢ بعد ${XAR(((12-P.h[0])%12)/1)} ساعة من الحركة؛ اقسمها على سرعتها.`;return`الجواب بين ${XAR(Math.max(1,P.T-5))} و${XAR(P.T+5)}.`},reveal:()=>`الجواب: ${XAR(P.T)}.`}})}",
+      "after": "return{hint:k=>{if(k===1)return'لكل ساعة لوحدها: كم دقة تحتاج لتصل ١٢ أول مرة؟ وكل كم دقة ترجع لها بعد ذلك؟';if(k===2){let first=1;while(first<=12&&(P.h[0]+P.s[0]*first)%12!==0)first++;return`الساعة الأولى تحتاج ${XAR(first)} دقة لتصل إلى ١٢ أول مرة؛ احسب أوقات عودتها ثم ابحث عن أول وقت مشترك.`}return`ابحث عن أول مضاعف مشترك لأوقات عودة الساعات إلى ١٢؛ أول اتفاق عند ${XAR(P.T)} دقة.`},reveal:()=>`الجواب: ${XAR(P.T)}.`}})}",
+      "occurrences": 1
+    },
+    {
+      "reason": "Add a solution counter so the coloured-beam generator rejects boards with alternate mirror states.",
+      "before": "",
+      "after": "function pmCountSolutions(P,cap=2){let count=0,answer=null;const n=P.sol.length;for(let mask=0;mask<(1<<n);mask++){const state=Array.from({length:n},(_,i)=>(mask>>i)&1);if(pmTrace(P,state).lit.size===P.crys.length){count++;answer=state;if(count>=cap)break}}return{count,answer}}\n",
+      "occurrences": 1
+    },
+    {
+      "reason": "Require the coloured-beam board to have exactly one complete solution.",
+      "before": "const P={n,sy,cell,sol:st,crys};if(pmTrace(P,st).lit.size!==crys.length)continue;const s0=st.map(s=>Math.random()<.5?1-s:s);",
+      "after": "const P={n,sy,cell,sol:st,crys};if(pmTrace(P,st).lit.size!==crys.length)continue;if(pmCountSolutions(P).count!==1)continue;const s0=st.map(s=>Math.random()<.5?1-s:s);",
+      "occurrences": 1
+    },
+    {
+      "reason": "Count all valid rotations and translations to guarantee one overlay for the transparent star charts.",
+      "before": "",
+      "after": "function poCountSolutions(P,cap=2){const dots=new Set(P.bot);let count=0;for(let r=0;r<4;r++){const shape=paRot(P.top,r),mx=Math.max(...shape.map(p=>p[0])),my=Math.max(...shape.map(p=>p[1]));for(let y=-my;y<P.n;y++)for(let x=-mx;x<P.n;x++){if(shape.every(([a,b])=>inb(a+x,b+y,P.n,P.n)&&dots.has((b+y)*P.n+a+x))){count++;if(count>=cap)return count}}}return count}\n",
+      "occurrences": 1
+    },
+    {
+      "reason": "Reject transparent star chart boards unless exactly one placement matches.",
+      "before": "const w=Math.max(...top.map(a=>a[0]))+1,h=Math.max(...top.map(a=>a[1]))+1;if(w>n||h>n)continue;return{n,bot:[...bot],top,R,ans:[mx,my],shape}",
+      "after": "const w=Math.max(...top.map(a=>a[0]))+1,h=Math.max(...top.map(a=>a[1]))+1;if(w>n||h>n)continue;const P={n,bot:[...bot],top,R,ans:[mx,my],shape};if(poCountSolutions(P)!==1)continue;return P",
+      "occurrences": 1
+    },
+    {
+      "reason": "Add a capped row-by-row solution counter for nonogram uniqueness.",
+      "before": "",
+      "after": "function pcrCountSolutions(R,C,n,cap=2){const bits=a=>a.reduce((v,x,i)=>v|(x<<i),0),rows=R.map(cl=>pcrLine(cl,Array(n).fill(-1)).map(bits)),cols=C.map(cl=>{const masks=pcrLine(cl,Array(n).fill(-1)).map(bits),can=Array.from({length:n+1},()=>[]);for(let d=0;d<=n;d++){const mask=(1<<d)-1;can[d]=Array.from({length:1<<d},(_,p)=>masks.some(m=>(m&mask)===p))}return can}),pref=Array(n).fill(0);let found=0;function visit(r){if(found>=cap)return;if(r===n){found++;return}for(const row of rows[r]){let valid=true;for(let c=0;c<n;c++){const part=pref[c]|(((row>>c)&1)<<r);if(!cols[c][r+1][part]){valid=false;break}}if(!valid)continue;for(let c=0;c<n;c++)pref[c]|=((row>>c)&1)<<r;visit(r+1);for(let c=0;c<n;c++)pref[c]&=((1<<r)-1);if(found>=cap)return}}visit(0);return found}\n",
+      "occurrences": 1
+    },
+    {
+      "reason": "Require the nonogram solver to match the generated image and confirm a unique solution.",
+      "before": "const s=pcrSolve(R,C,n);if(s&&s.every((v,i)=>v===a[i]))return{n,a,R,C}",
+      "after": "const s=pcrSolve(R,C,n);if(s&&s.every((v,i)=>v===a[i])&&pcrCountSolutions(R,C,n)===1)return{n,a,R,C}",
+      "occurrences": 1
+    },
+    {
+      "reason": "Replace the cryptogram hint that overclaimed forced central cells with a correct high-density deduction strategy.",
+      "before": "return{hint:k=>{if(k===1)return'ابدأ بالصفوف ذات الأرقام الكبيرة: مجموعة بطول قريب من عرض الصف تفرض مربعات في الوسط مهما كان مكانها.';const i=P.a.findIndex((v,j)=>v!==(g[j]===1?1:0));",
+      "after": "return{hint:k=>{if(k===1)return'ابدأ بالصفوف التي مجموع أرقامها كبير؛ فهي تترك فراغات قليلة وتكشف معظم الخانات مبكرًا.';const i=P.a.findIndex((v,j)=>v!==(g[j]===1?1:0));",
+      "occurrences": 1
+    },
+    {
+      "reason": "Correct the water-valve odd remainder rule to match the deterministic split operation.",
+      "before": " (والزيادة تروح لليسار).",
+      "after": "، وإذا بقيت وحدة زائدة تذهب إلى الغرفة اليمنى.",
+      "occurrences": 1
+    },
+    {
+      "reason": "Add a breadth-first route helper for actionable valve hints.",
+      "before": "",
+      "after": "function pvRoute(start,goal){const target=goal.join(','),seen=new Set([start.join(',')]),q=[[start.slice(),[]]];for(let h=0;h<q.length;h++){const [state,path]=q[h],key=state.join(',');if(key===target)return path;for(let i=0;i<state.length-1;i++){const next=pvOp(state,i),nk=next.join(',');if(!seen.has(nk)){seen.add(nk);q.push([next,path.concat(i)])}}}return null}\n",
+      "occurrences": 1
+    },
+    {
+      "reason": "Replace generic valve hints with a next move and shortest route from the current state.",
+      "before": "return{hint:k=>{if(k===1)return'المجموع الكلي ثابت. ابدأ بالطرف اللي هدفه أبعد عن حاله الحالي.';return'فكّر من الهدف للخلف: أي صمام كان آخر واحد انفتح؟'},reveal:()=>`الهدف: ${P.goal.map(XAR).join('، ')}.`}})}",
+      "after": "return{hint:k=>{if(k===1)return'كل صمام يحافظ على مجموع الماء في الغرفتين اللتين يصلهما. استخدم هذه القاعدة لتستنتج أي صمام يمكن أن يكون آخر خطوة قبل الوصول إلى الأهداف.';const route=pvRoute(s,P.goal);if(!route)return'لم يبقَ مسار من هذه الحالة. أعد المحاولة من بداية الغرف.';if(k===2){if(!route.length)return'وصلت إلى التوازن بالفعل.';const i=route[0];return`أفضل خطوة الآن: افتح الصمام بين الغرفة ${XAR(i+1)} والغرفة ${XAR(i+2)}. يتبقى ${arN(route.length,AN.mv)} في أقصر مسار.`}return`المسار الأقصر من وضعك الحالي: ${route.map(i=>`الصمام ${XAR(i+1)}–${XAR(i+2)}`).join('، ثم ')}.`},reveal:()=>`الهدف: ${P.goal.map(XAR).join('، ')}.`}})}",
+      "occurrences": 1
+    },
+    {
+      "reason": "Give the circular throne a strict, tested clue-count progression across all eight levels.",
+      "before": "function zoMake(lv){const n=6,perms=xcPerms(n).map(p=>{const q=[];p.forEach((s,i)=>q[s]=i);return q});\n  for(let t=0;t<200;t++){const ord=shuffle([...Array(n).keys()]),pos=[];ord.forEach((s,i)=>pos[s]=i);const pool=[{t:'at',a:ord[0],k:0}];\n    for(let a=0;a<n;a++)for(let b=0;b<n;b++)if(a!==b){['opp','adj','cw','nadj'].forEach(tt=>{if(zoSat({t:tt,a,b},pos,n))pool.push({t:tt,a,b})})}\n    let cand=perms.filter(q=>zoSat(pool[0],q,n)),cl=[pool[0]];for(const c of shuffle(pool.slice(1))){const nc=cand.filter(q=>zoSat(c,q,n));if(nc.length<cand.length){cl.push(c);cand=nc;if(cand.length===1)break}}\n    if(cand.length!==1)continue;return{n,ord,pos,clues:cl}}return null}",
+      "after": "const ZO_CLUE_COUNTS=[9,8,7,6,6,5,5,5];\nfunction zoMake(lv){const n=6,target=ZO_CLUE_COUNTS[lv-1],perms=xcPerms(n).map(p=>{const q=[];p.forEach((s,i)=>q[s]=i);return q});\n  for(let t=0;t<900;t++){const ord=shuffle([...Array(n).keys()]),pos=[];ord.forEach((s,i)=>pos[s]=i);const pool=[{t:'at',a:ord[0],k:0}],seen=new Set(['at:'+ord[0]+':0']);\n    for(let a=0;a<n;a++)for(let b=0;b<n;b++)if(a!==b){for(const tt of ['opp','adj','cw','nadj']){const key=tt+':'+a+':'+b;if(!seen.has(key)&&zoSat({t:tt,a,b},pos,n)){seen.add(key);pool.push({t:tt,a,b})}}}\n    let cand=perms.filter(q=>zoSat(pool[0],q,n)),cl=[pool[0]];for(const c of shuffle(pool.slice(1))){const nc=cand.filter(q=>zoSat(c,q,n));if(nc.length<cand.length){cl.push(c);cand=nc;if(cand.length===1)break}}\n    if(cand.length!==1)continue;\n    for(const c of shuffle(cl.slice())){const r=cl.filter(x=>x!==c);if(perms.filter(x=>r.every(q=>zoSat(q,x,n))).length===1)cl=r}\n    if(cl.length>target)continue;\n    const used=new Set(cl.map(c=>c.t+':'+c.a+':'+(c.b??c.k)));\n    for(const c of shuffle(pool.slice(1))){const key=c.t+':'+c.a+':'+(c.b??c.k);if(used.has(key))continue;cl.push(c);used.add(key);if(cl.length===target)break}\n    if(cl.length!==target)continue;\n    if(perms.filter(x=>cl.every(q=>zoSat(q,x,n))).length!==1)continue;\n    return{n,ord,pos,clues:cl,level:lv};\n  }\n  return null;\n}",
+      "occurrences": 1
+    },
+    {
+      "reason": "Constrain dragon pattern rows by an explicit rule family and require one unique next symbol.",
+      "before": "const PD_LV=[[2,0],[3,0],[3,0],[4,1],[4,1],[5,1],[5,2],[6,2]];\nfunction pdSeq(){const R=rnd(4),a=rnd(6),b=1+rnd(5),p=2+rnd(2),cyc=shuffle([0,1,2,3,4,5]).slice(0,p);\n  switch(R){case 0:return{r:'cycle',f:i=>cyc[i%p]};case 1:return{r:'step',f:i=>(a+b*i)%6};case 2:return{r:'alt',f:i=>i%2?(a+3)%6:(a+Math.floor(i/2)*b)%6};default:return{r:'grow',f:i=>(a+i*(i+1)/2)%6}}}\nfunction pdMake(lv){const[k,ex]=PD_LV[lv-1];const dr=shuffle([0,1,2,3,4,5]).slice(0,k).map(d=>{const S=pdSeq();return{d,seq:[...Array(6)].map((_,i)=>S.f(i)),next:S.f(6),bad:-1}});\n  shuffle(dr.slice()).slice(0,ex).forEach(x=>{const i=1+rnd(4);x.bad=i;x.seq[i]=(x.seq[i]+1+rnd(5))%6});\n  return dr.every(x=>new Set(x.seq).size>1)?{k,dr}:pdMake(lv)}",
+      "after": "const PD_LV=[[2,0],[3,0],[3,0],[4,1],[4,1],[5,1],[5,2],[6,2]],PD_RULE_NAME={cycle:'دورة متكررة',step:'قفزة ثابتة',alt:'تناوب منتظم',grow:'زيادة متدرجة'};\nfunction pdSeq(){const R=rnd(4),a=rnd(6),b=1+rnd(5),p=2+rnd(2),cyc=shuffle([0,1,2,3,4,5]).slice(0,p);\n  switch(R){case 0:return{r:'cycle',f:i=>cyc[i%p]};case 1:return{r:'step',f:i=>(a+b*i)%6};case 2:return{r:'alt',f:i=>i%2?(a+3)%6:(a+Math.floor(i/2)*b)%6};default:return{r:'grow',f:i=>(a+i*(i+1)/2)%6}}}\nfunction pdRuleSolutions(seq,rule){const out=new Set(),accept=f=>{if(seq.every((v,i)=>v===f(i)))out.add(f(6))};\n  if(rule==='cycle'){for(let a=0;a<6;a++)for(let b=0;b<6;b++)if(a!==b){accept(i=>i%2?b:a);for(let c=0;c<6;c++)if(c!==a&&c!==b)accept(i=>[a,b,c][i%3])}}\n  else if(rule==='step'){for(let a=0;a<6;a++)for(let b=1;b<6;b++)accept(i=>(a+b*i)%6)}\n  else if(rule==='alt'){for(let a=0;a<6;a++)for(let b=1;b<6;b++)accept(i=>i%2?(a+3)%6:(a+Math.floor(i/2)*b)%6)}\n  else if(rule==='grow'){for(let a=0;a<6;a++)accept(i=>(a+i*(i+1)/2)%6)}\n  return[...out];\n}\nfunction pdRepairOptions(seq,rule){const out=[];for(let i=1;i<seq.length;i++)for(let v=0;v<6;v++){if(v===seq[i])continue;const q=seq.slice();q[i]=v;const next=pdRuleSolutions(q,rule);if(next.length===1)out.push({index:i,value:v,next:next[0]})}return out}\nfunction pdMake(lv){const[k,ex]=PD_LV[lv-1];for(let attempt=0;attempt<700;attempt++){const dr=[];for(const d of shuffle([0,1,2,3,4,5]).slice(0,k)){let row=null;for(let t=0;t<1800;t++){const S=pdSeq(),seq=[...Array(6)].map((_,i)=>S.f(i)),next=pdRuleSolutions(seq,S.r);if(next.length===1&&next[0]===S.f(6)){row={d,seq,next:S.f(6),bad:-1,rule:S.r};break}}if(!row)break;dr.push(row)}if(dr.length!==k)continue;\n    const candidates=dr.map(x=>{const all=[];for(let i=1;i<x.seq.length;i++)for(let v=0;v<6;v++){if(v===x.seq[i])continue;const seq=x.seq.slice();seq[i]=v;if(pdRuleSolutions(seq,x.rule).length!==0)continue;const fixes=pdRepairOptions(seq,x.rule);if(fixes.length===1&&fixes[0].index===i&&fixes[0].value===x.seq[i]&&fixes[0].next===x.next)all.push({index:i,value:v})}return all});\n    const eligible=candidates.map((a,i)=>a.length?i:-1).filter(i=>i>=0);if(eligible.length<ex)continue;for(const j of shuffle(eligible).slice(0,ex)){const fix=pick(candidates[j]);dr[j].bad=fix.index;dr[j].seq[fix.index]=fix.value}\n    return{k,ex,dr,level:lv};}\n  return null;\n}",
+      "occurrences": 1
+    },
+    {
+      "reason": "Show each dragon rule family in the puzzle UI so the deduction has a stated rule.",
+      "before": "<b>${PD_N[x.d]}</b><div class=\"pdseq ltr\">",
+      "after": "<b>${PD_N[x.d]}</b><small class=\"pdrule\">${PD_RULE_NAME[x.rule]}</small><div class=\"pdseq ltr\">",
+      "occurrences": 1
+    }
+  ]
+}

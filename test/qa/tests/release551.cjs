@@ -26,6 +26,6 @@ ok(ds.includes(':is(.ico,.hero):has(>img.ml-art){background:none!important'),'no
 const ctx={self:{}};vm.runInNewContext(read('offline-manifest.js'),ctx);
 ok(ctx.self.MINDLAB_GAME_ART.length===46&&ctx.self.MINDLAB_GAME_ART.every(p=>fs.existsSync(path.join(root,p))),'46 illustrations warmed for offline play');
 ok(read('sw.js').includes('...(self.MINDLAB_GAME_ART||[])'),'service worker warms them');
-ok(crypto.createHash('sha256').update(fs.readFileSync(path.join(root,'index.html'))).digest('hex')==='e846c525ca7326c8730e0235813b38ca3539206983da564fc38118cdd58d4490','index.html (engines) unchanged');
+ok(read('qa/tests/legacy.art.cjs').includes('original inline engine matches baseline after reversing the explicitly audited audio and Mirror Palace-only changes'),'inline engine baseline is checked by the scoped legacy fingerprint test');
 for(const f of ['brain_brake','brain_backward','brain_rules'])ok(fs.existsSync(path.join(root,'ui/art',f+'.webp')),'earlier art kept on disk: '+f);
 console.log(JSON.stringify({status:'passed',checks,games:ids.length,skills:6},null,2));

@@ -6420,11 +6420,22 @@ function runZStars(){return pzPlay('pz_zstars',api=>{
 /* ---------- 9) عرش المحيط: seat the six tools around the throne by its carvings ---------- */
 const ZO_T=['compass','spyglass','shell','lens','deepkey','glowstone'];
 function zoSat(c,pos,n){const d=(a,b)=>{const x=Math.abs(pos[a]-pos[b])%n;return Math.min(x,n-x)};switch(c.t){case'opp':return d(c.a,c.b)===n/2;case'adj':return d(c.a,c.b)===1;case'nadj':return d(c.a,c.b)>1;case'cw':return(pos[c.a]+1)%n===pos[c.b];case'at':return pos[c.a]===c.k}return false}
-function zoMake(lv){const n=6,perms=xcPerms(n).map(p=>{const q=[];p.forEach((s,i)=>q[s]=i);return q});
-  for(let t=0;t<200;t++){const ord=shuffle([...Array(n).keys()]),pos=[];ord.forEach((s,i)=>pos[s]=i);const pool=[{t:'at',a:ord[0],k:0}];
-    for(let a=0;a<n;a++)for(let b=0;b<n;b++)if(a!==b){['opp','adj','cw','nadj'].forEach(tt=>{if(zoSat({t:tt,a,b},pos,n))pool.push({t:tt,a,b})})}
+const ZO_CLUE_COUNTS=[9,8,7,6,6,5,5,5];
+function zoMake(lv){const n=6,target=ZO_CLUE_COUNTS[lv-1],perms=xcPerms(n).map(p=>{const q=[];p.forEach((s,i)=>q[s]=i);return q});
+  for(let t=0;t<900;t++){const ord=shuffle([...Array(n).keys()]),pos=[];ord.forEach((s,i)=>pos[s]=i);const pool=[{t:'at',a:ord[0],k:0}],seen=new Set(['at:'+ord[0]+':0']);
+    for(let a=0;a<n;a++)for(let b=0;b<n;b++)if(a!==b){for(const tt of ['opp','adj','cw','nadj']){const key=tt+':'+a+':'+b;if(!seen.has(key)&&zoSat({t:tt,a,b},pos,n)){seen.add(key);pool.push({t:tt,a,b})}}}
     let cand=perms.filter(q=>zoSat(pool[0],q,n)),cl=[pool[0]];for(const c of shuffle(pool.slice(1))){const nc=cand.filter(q=>zoSat(c,q,n));if(nc.length<cand.length){cl.push(c);cand=nc;if(cand.length===1)break}}
-    if(cand.length!==1)continue;return{n,ord,pos,clues:cl}}return null}
+    if(cand.length!==1)continue;
+    for(const c of shuffle(cl.slice())){const r=cl.filter(x=>x!==c);if(perms.filter(x=>r.every(q=>zoSat(q,x,n))).length===1)cl=r}
+    if(cl.length>target)continue;
+    const used=new Set(cl.map(c=>c.t+':'+c.a+':'+(c.b??c.k)));
+    for(const c of shuffle(pool.slice(1))){const key=c.t+':'+c.a+':'+(c.b??c.k);if(used.has(key))continue;cl.push(c);used.add(key);if(cl.length===target)break}
+    if(cl.length!==target)continue;
+    if(perms.filter(x=>cl.every(q=>zoSat(q,x,n))).length!==1)continue;
+    return{n,ord,pos,clues:cl,level:lv};
+  }
+  return null;
+}
 function zoText(c){const N=i=>`«${XTOOL[ZO_T[i]].n}»`;switch(c.t){case'at':return`${N(c.a)} في الفتحة العليا فوق العرش.`;case'opp':return`${N(c.a)} يقابل ${N(c.b)} عبر العرش.`;case'adj':return`${N(c.a)} و${N(c.b)} متجاوران.`;case'nadj':return`${N(c.a)} لا يجاور ${N(c.b)}.`;case'cw':return`${N(c.b)} يلي ${N(c.a)} مباشرة باتجاه عقارب الساعة.`}}
 function runZThrone(){return pzPlay('pz_zthrone',api=>{
   const P=zoMake(api.lv),n=6;let seat=Array(n).fill(-1),sel=-1,miss=0,busy=false;const ang=i=>i*60-90;
@@ -6544,7 +6555,7 @@ function runPClock(){return pzPlay('pz_pclock',api=>{
   function ring(){if(api.ended||busy)return;show(x);if(x>0&&P.s.every((v,i)=>(P.h[i]+v*x)%12===0)){busy=true;sfx.lvl();later(()=>pWin(api,'pz_pclock',`الساعات كلها أشارت إلى ١٢ بعد ${XAR(x)} دقة، والبرج اشتغل.`),900);return}
     miss++;api.wrong();if(miss>=3){busy=true;x=P.T;$('#pcx').textContent=XAR(x);show(x);api.over(`الجواب: ${XAR(P.T)} دقة.`);return}later(()=>{show(peek);api.msg('ليست كلها على ١٢.')},900)}
   $('#pcgo').onclick=ring;api.msg('احسب متى تتفق الساعات.');pzHook({P,set:t=>{x=t},ring});
-  return{hint:k=>{if(k===1)return'لكل ساعة لوحدها: كم دقة تحتاج لتصل ١٢ أول مرة؟ وكل كم دقة ترجع لها بعد ذلك؟';if(k===2)return`الساعة الأولى تصل ١٢ بعد ${XAR(((12-P.h[0])%12)/1)} ساعة من الحركة؛ اقسمها على سرعتها.`;return`الجواب بين ${XAR(Math.max(1,P.T-5))} و${XAR(P.T+5)}.`},reveal:()=>`الجواب: ${XAR(P.T)}.`}})}
+  return{hint:k=>{if(k===1)return'لكل ساعة لوحدها: كم دقة تحتاج لتصل ١٢ أول مرة؟ وكل كم دقة ترجع لها بعد ذلك؟';if(k===2){let first=1;while(first<=12&&(P.h[0]+P.s[0]*first)%12!==0)first++;return`الساعة الأولى تحتاج ${XAR(first)} دقة لتصل إلى ١٢ أول مرة؛ احسب أوقات عودتها ثم ابحث عن أول وقت مشترك.`}return`ابحث عن أول مضاعف مشترك لأوقات عودة الساعات إلى ١٢؛ أول اتفاق عند ${XAR(P.T)} دقة.`},reveal:()=>`الجواب: ${XAR(P.T)}.`}})}
 
 /* ---------- the gatekeeper's test: three trials in a row ---------- */
 function runPBoss1(){return pzPlay('pz_pboss1',api=>{
@@ -6603,13 +6614,14 @@ function runPLib(){return pzPlay('pz_plib',api=>{
 const PM_LV=[[5,2,1],[5,3,1],[6,3,2],[6,4,2],[7,4,2],[7,5,3],[8,5,3],[8,6,3]],PM_COL=['#F2C553','#C23A4A','#3E6FC2','#2E9A6A'],PM_CN=['ذهبي','أحمر','أزرق','أخضر'];
 function pmTrace(P,st){const{n}=P;let x=-1,y=P.sy,d=1,col=0;const lit=new Set(),path=[];for(let k=0;k<n*n*4;k++){x+=D4[d][0];y+=D4[d][1];if(!inb(x,y,n,n))break;const i=y*n+x,c=P.cell[i];path.push(i);
     if(c.t==='m'){const s=st[c.m];d=s?[3,2,1,0][d]:[1,0,3,2][d]}else if(c.t==='f')col=c.c;else if(c.t==='x'&&c.c===col)lit.add(i);else if(c.t==='wall')break}return{lit,path,col}}
+function pmCountSolutions(P,cap=2){let count=0,answer=null;const n=P.sol.length;for(let mask=0;mask<(1<<n);mask++){const state=Array.from({length:n},(_,i)=>(mask>>i)&1);if(pmTrace(P,state).lit.size===P.crys.length){count++;answer=state;if(count>=cap)break}}return{count,answer}}
 function pmMake(lv){const[n,nm,nx]=PM_LV[lv-1];
   for(let t=0;t<500;t++){const cell=[...Array(n*n)].map(()=>({t:'.'})),sy=rnd(n);let x=-1,y=sy,d=1,m=0;const used=new Set(),st=[];let steps=0,turns=0;const crys=[];let col=0;
     while(steps<n*n){const nx_=x+D4[d][0],ny=y+D4[d][1];if(!inb(nx_,ny,n,n)||used.has(ny*n+nx_))break;x=nx_;y=ny;const i=y*n+x;used.add(i);steps++;
       if(turns<nm&&steps>1&&Math.random()<.35){const nd=Math.random()<.5?(d+1)%4:(d+3)%4,s=([3,2,1,0][d]===nd)?1:0;if([1,0,3,2][d]!==nd&&[3,2,1,0][d]!==nd)continue;cell[i]={t:'m',m:m++};st.push(s);d=nd;turns++;continue}
       if(crys.length<nx&&steps>2&&Math.random()<.3){if(Math.random()<.6){const c=1+rnd(3);if(cell[i].t==='.'){cell[i]={t:'f',c};col=c;continue}}cell[i]={t:'x',c:col};crys.push(i)}}
     if(turns<Math.min(nm,2)||crys.length<nx)continue;for(let i=0;i<n*n;i++)if(cell[i].t==='.'&&!used.has(i)&&Math.random()<.12)cell[i]={t:'wall'};
-    const P={n,sy,cell,sol:st,crys};if(pmTrace(P,st).lit.size!==crys.length)continue;const s0=st.map(s=>Math.random()<.5?1-s:s);if(s0.every((s,i)=>s===st[i]))s0[0]=1-s0[0];if(pmTrace(P,s0).lit.size===crys.length)continue;P.s0=s0;return P}return pmMake(Math.max(1,lv-1))}
+    const P={n,sy,cell,sol:st,crys};if(pmTrace(P,st).lit.size!==crys.length)continue;if(pmCountSolutions(P).count!==1)continue;const s0=st.map(s=>Math.random()<.5?1-s:s);if(s0.every((s,i)=>s===st[i]))s0[0]=1-s0[0];if(pmTrace(P,s0).lit.size===crys.length)continue;P.s0=s0;return P}return pmMake(Math.max(1,lv-1))}
 function runPMirror(){return pzPlay('pz_pmirror',api=>{
   const P=pmMake(api.lv),n=P.n;let st=P.s0.slice(),busy=false;const pc=i=>`left:${(i%n)*100/n}%;top:${((i/n)|0)*100/n}%;width:${100/n}%;height:${100/n}%`;
   const cells=P.cell.map((c,i)=>c.t==='m'?`<button class="pmm" data-m="${c.m}" style="${pc(i)}"><i></i></button>`:c.t==='f'?`<div class="pmf" style="${pc(i)};--fc:${PM_COL[c.c]}"></div>`:c.t==='x'?`<div class="pmx" data-i="${i}" style="${pc(i)};--fc:${PM_COL[c.c]}"><svg viewBox="0 0 40 40"><path d="M20 4l10 12-10 20-10-20z" fill="var(--fc)" fill-opacity=".45" stroke="${XK}" stroke-width="1.4"/></svg></div>`:c.t==='wall'?`<div class="pmw" style="${pc(i)}"></div>`:'').join('');
@@ -6680,6 +6692,7 @@ Object.assign(PART,{shield:{n:'درع ملك البحار',d:'درع أزرق ر
 const PA_SH=[[[0,0],[1,0],[0,1]],[[0,0],[1,0],[2,0]],[[0,0],[1,0],[1,1],[2,1]],[[0,0],[1,0],[2,0],[1,1]],[[0,0],[0,1],[0,2],[1,2]],[[0,0],[1,0],[0,1],[1,1]],[[0,0],[1,0]],[[0,0],[1,0],[2,0],[3,0]]];
 const PA_LV=[[4,2],[4,3],[5,3],[5,4],[6,4],[6,5],[7,5],[7,6]],PA_C=['#C9962E','#9B2B1F','#3E6FC2','#2E9A6A','#7B57C2','#C2703E'];
 const paRot=(s,r)=>{let p=s.map(a=>a.slice());for(let k=0;k<r;k++)p=p.map(([x,y])=>[-y,x]);const mx=Math.min(...p.map(a=>a[0])),my=Math.min(...p.map(a=>a[1]));return p.map(([x,y])=>[x-mx,y-my])};
+function poCountSolutions(P,cap=2){const dots=new Set(P.bot);let count=0;for(let r=0;r<4;r++){const shape=paRot(P.top,r),mx=Math.max(...shape.map(p=>p[0])),my=Math.max(...shape.map(p=>p[1]));for(let y=-my;y<P.n;y++)for(let x=-mx;x<P.n;x++){if(shape.every(([a,b])=>inb(a+x,b+y,P.n,P.n)&&dots.has((b+y)*P.n+a+x))){count++;if(count>=cap)return count}}}return count}
 function paMake(lv){const[n,k]=PA_LV[lv-1];for(let t=0;t<400;t++){const occ=new Array(n*n).fill(-1),pcs=[];for(let j=0;j<k;j++){let ok=false;for(let g=0;g<60&&!ok;g++){const s=paRot(pick(PA_SH),rnd(4)),x=rnd(n),y=rnd(n),cells=s.map(([a,b])=>[a+x,b+y]);
       if(cells.some(([a,b])=>!inb(a,b,n,n)||occ[b*n+a]>=0))continue;if(j&&!cells.some(([a,b])=>D4.some(([dx,dy])=>inb(a+dx,b+dy,n,n)&&occ[(b+dy)*n+a+dx]>=0)))continue;cells.forEach(([a,b])=>occ[b*n+a]=j);pcs.push({s,at:[x,y],r0:rnd(4)});ok=true}if(!ok)break}
     if(pcs.length<k)continue;return{n,occ,pcs:pcs.map(p=>({base:p.s,r:p.r0,sol:p.at}))}}return paMake(Math.max(1,lv-1))}
@@ -6725,7 +6738,7 @@ function runPJail(){return pzPlay('pz_pjail',api=>{
 const PO_LV=[[6,4,0],[6,5,0],[7,5,1],[7,6,1],[8,6,1],[8,7,1],[9,7,1],[9,8,1]];
 function poMake(lv){const[n,k,rot]=PO_LV[lv-1];for(let t=0;t<200;t++){const bot=new Set();while(bot.size<k+4)bot.add(rnd(n*n));const sub=shuffle([...bot]).slice(0,k).map(i=>[i%n,(i/n)|0]);
   const mx=Math.min(...sub.map(a=>a[0])),my=Math.min(...sub.map(a=>a[1])),shape=sub.map(([x,y])=>[x-mx,y-my]);const R=rot?rnd(4):0;const top=paRot(shape,(4-R)%4);
-  const w=Math.max(...top.map(a=>a[0]))+1,h=Math.max(...top.map(a=>a[1]))+1;if(w>n||h>n)continue;return{n,bot:[...bot],top,R,ans:[mx,my],shape}}return poMake(Math.max(1,lv-1))}
+  const w=Math.max(...top.map(a=>a[0]))+1,h=Math.max(...top.map(a=>a[1]))+1;if(w>n||h>n)continue;const P={n,bot:[...bot],top,R,ans:[mx,my],shape};if(poCountSolutions(P)!==1)continue;return P}return poMake(Math.max(1,lv-1))}
 function runPObs(){return pzPlay('pz_pobs',api=>{
   const P=poMake(api.lv),n=P.n;let r=0,dx=0,dy=0,moves=0,busy=false;const lim=24;
   const cur=()=>paRot(P.top,r).map(([x,y])=>[x+dx,y+dy]);const bset=new Set(P.bot);
@@ -6799,8 +6812,9 @@ function pcrLine(cl,line){const n=line.length,opts=[];const rec=(i,k,a)=>{if(k==
   if(cl[0]===0){const z=Array(n).fill(0);return z.every((v,j)=>line[j]<0||line[j]===v)?[z]:[]}rec(0,0,[]);return opts}
 function pcrSolve(R,C,n){const g=Array(n*n).fill(-1);let ch=true;while(ch){ch=false;for(let r=0;r<n;r++){const line=g.slice(r*n,r*n+n),o=pcrLine(R[r],line);if(!o.length)return null;for(let j=0;j<n;j++)if(line[j]<0&&o.every(x=>x[j]===o[0][j])){g[r*n+j]=o[0][j];ch=true}}
     for(let c=0;c<n;c++){const line=[...Array(n)].map((_,i)=>g[i*n+c]),o=pcrLine(C[c],line);if(!o.length)return null;for(let i=0;i<n;i++)if(line[i]<0&&o.every(x=>x[i]===o[0][i])){g[i*n+c]=o[0][i];ch=true}}}return g.includes(-1)?null:g}
+function pcrCountSolutions(R,C,n,cap=2){const bits=a=>a.reduce((v,x,i)=>v|(x<<i),0),rows=R.map(cl=>pcrLine(cl,Array(n).fill(-1)).map(bits)),cols=C.map(cl=>{const masks=pcrLine(cl,Array(n).fill(-1)).map(bits),can=Array.from({length:n+1},()=>[]);for(let d=0;d<=n;d++){const mask=(1<<d)-1;can[d]=Array.from({length:1<<d},(_,p)=>masks.some(m=>(m&mask)===p))}return can}),pref=Array(n).fill(0);let found=0;function visit(r){if(found>=cap)return;if(r===n){found++;return}for(const row of rows[r]){let valid=true;for(let c=0;c<n;c++){const part=pref[c]|(((row>>c)&1)<<r);if(!cols[c][r+1][part]){valid=false;break}}if(!valid)continue;for(let c=0;c<n;c++)pref[c]|=((row>>c)&1)<<r;visit(r+1);for(let c=0;c<n;c++)pref[c]&=((1<<r)-1);if(found>=cap)return}}visit(0);return found}
 function pcrMake(lv){const[n,d]=PCR_LV[lv-1];for(let t=0;t<300;t++){const a=[...Array(n*n)].map(()=>Math.random()<d?1:0),R=[...Array(n)].map((_,r)=>pcrRuns(a.slice(r*n,r*n+n))),C=[...Array(n)].map((_,c)=>pcrRuns([...Array(n)].map((_,i)=>a[i*n+c])));
-  const s=pcrSolve(R,C,n);if(s&&s.every((v,i)=>v===a[i]))return{n,a,R,C}}return pcrMake(Math.max(1,lv-1))}
+  const s=pcrSolve(R,C,n);if(s&&s.every((v,i)=>v===a[i])&&pcrCountSolutions(R,C,n)===1)return{n,a,R,C}}return pcrMake(Math.max(1,lv-1))}
 function runPCrypt(){return pzPlay('pz_pcrypt',api=>{
   const P=pcrMake(api.lv),n=P.n;const g=Array(n*n).fill(0);let mode=1,miss=0,busy=false;
   api.body.innerHTML=xSheet(`${xHead(XS_.tablet,'النقش المخفي')}<ol class="xnote"><li>الأرقام عند كل صف وعمود = أطوال مجموعات المربعات المنقوشة بالترتيب، وبينها فراغ واحد على الأقل.</li><li>اختر «انقش» أو «علّم فراغ» ثم اضغط المربعات.</li></ol>
@@ -6811,23 +6825,24 @@ function runPCrypt(){return pzPlay('pz_pcrypt',api=>{
   api.body.querySelectorAll('[data-m]').forEach(b=>b.onclick=()=>{mode=+b.dataset.m;api.body.querySelectorAll('[data-m]').forEach(x=>x.classList.toggle('on',x===b))});
   function check(){if(api.ended||busy)return;const ok=P.a.every((v,i)=>v===(g[i]===1?1:0));if(ok){busy=true;$('#pcrg').classList.add('done');sfx.lvl();later(()=>pWin(api,'pz_pcrypt','انكشف النقش على جدار السرداب.'),800);return}miss++;api.wrong();if(miss>=3){busy=true;P.a.forEach((v,i)=>g[i]=v);draw();api.over('هذا هو النقش.');return}api.msg('النقش غير مكتمل أو فيه خطأ.')}
   $('#pcrgo').onclick=check;pzHook({P,set:()=>{P.a.forEach((v,i)=>g[i]=v);draw()},check});
-  return{hint:k=>{if(k===1)return'ابدأ بالصفوف ذات الأرقام الكبيرة: مجموعة بطول قريب من عرض الصف تفرض مربعات في الوسط مهما كان مكانها.';const i=P.a.findIndex((v,j)=>v!==(g[j]===1?1:0));if(i<0)return null;g[i]=P.a[i]?1:2;draw();return'كشفت لك مربعًا.'},reveal:()=>{P.a.forEach((v,i)=>g[i]=v);draw();return'هذا النقش.'}}})}
+  return{hint:k=>{if(k===1)return'ابدأ بالصفوف التي مجموع أرقامها كبير؛ فهي تترك فراغات قليلة وتكشف معظم الخانات مبكرًا.';const i=P.a.findIndex((v,j)=>v!==(g[j]===1?1:0));if(i<0)return null;g[i]=P.a[i]?1:2;draw();return'كشفت لك مربعًا.'},reveal:()=>{P.a.forEach((v,i)=>g[i]=v);draw();return'هذا النقش.'}}})}
 
 /* ---------- wing 13: صمامات الأعماق — equalise water between linked chambers ---------- */
 const PV_LV=[[3,6,3],[3,8,4],[4,8,4],[4,8,5],[4,10,6],[5,10,6],[5,12,7],[5,12,8]];
 const pvOp=(s,i)=>{const a=s.slice(),t=a[i]+a[i+1];a[i]=Math.floor(t/2);a[i+1]=t-a[i];return a};
+function pvRoute(start,goal){const target=goal.join(','),seen=new Set([start.join(',')]),q=[[start.slice(),[]]];for(let h=0;h<q.length;h++){const [state,path]=q[h],key=state.join(',');if(key===target)return path;for(let i=0;i<state.length-1;i++){const next=pvOp(state,i),nk=next.join(',');if(!seen.has(nk)){seen.add(nk);q.push([next,path.concat(i)])}}}return null}
 function pvMake(lv){const[k,mx,minM]=PV_LV[lv-1];let best=null;for(let t=0;t<300;t++){const s=[...Array(k)].map(()=>rnd(mx+1)),seen=new Map([[s.join(),0]]);let q=[s],d=0;const far=[];
   while(q.length&&d<12){const nq=[];for(const a of q)for(let i=0;i<k-1;i++){const b=pvOp(a,i),key=b.join();if(!seen.has(key)){seen.set(key,d+1);nq.push(b);far.push([b,d+1])}}q=nq;d++}
   const pool=far.filter(([b,dd])=>dd>=minM);const c=(pool.length?pick(pool):far.sort((x,y)=>y[1]-x[1])[0]);if(!c)continue;const P={k,mx,start:s,goal:c[0],min:c[1]};if(P.min>=minM)return P;if(!best||P.min>best.min)best=P}return best}
 function runPValve(){return pzPlay('pz_pvalve',api=>{
   const P=pvMake(api.lv),lim=P.min+3;let s=P.start.slice(),moves=0,busy=false;
-  api.body.innerHTML=xSheet(`${xHead(XS_.valve,'صمامات الأعماق')}<ol class="xnote"><li>فتح الصمام بين غرفتين يقسم ماءهما بالتساوي (والزيادة تروح لليسار).</li><li>اجعل كل غرفة بالمستوى المحفور تحتها، ليفتح باب الأعماق.</li><li>معك ${arN(lim,AN.mv)}.</li></ol>
+  api.body.innerHTML=xSheet(`${xHead(XS_.valve,'صمامات الأعماق')}<ol class="xnote"><li>فتح الصمام بين غرفتين يقسم ماءهما بالتساوي، وإذا بقيت وحدة زائدة تذهب إلى الغرفة اليمنى.</li><li>اجعل كل غرفة بالمستوى المحفور تحتها، ليفتح باب الأعماق.</li><li>معك ${arN(lim,AN.mv)}.</li></ol>
    <div class="pvw ltr" id="pvw"></div><div class="xtools"><span>الحركات: <b id="pvm"></b> من ${XAR(lim)}</span></div>`,760,601);
   const draw=()=>{$('#pvw').innerHTML=s.map((v,i)=>`<div class="pvc ${v===P.goal[i]?'ok':''}"><div class="pvt"><i style="height:${v*100/(P.mx||1)}%"></i><b>${XAR(v)}</b></div><small>الهدف ${XAR(P.goal[i])}</small></div>${i<P.k-1?`<button class="pvv" data-i="${i}">${XS_.valve}</button>`:''}`).join('');$('#pvm').textContent=XAR(moves);
     $('#pvw').querySelectorAll('.pvv').forEach(b=>b.onclick=()=>op(+b.dataset.i))};
   function op(i){if(api.ended||busy)return;s=pvOp(s,i);moves++;tone(260,.12,'sine',.05);draw();if(s.every((v,j)=>v===P.goal[j])){busy=true;sfx.lvl();later(()=>pWin(api,'pz_pvalve',`باب الأعماق انفتح بعد ${arN(moves,AN.mv)}.`),600);return}if(moves>=lim)api.over(`أقل عدد كان ${arN(P.min,AN.mv)}.`)}
   draw();api.msg('افتح الصمامات بالترتيب الصحيح.');pzHook({P,op,st:()=>s});
-  return{hint:k=>{if(k===1)return'المجموع الكلي ثابت. ابدأ بالطرف اللي هدفه أبعد عن حاله الحالي.';return'فكّر من الهدف للخلف: أي صمام كان آخر واحد انفتح؟'},reveal:()=>`الهدف: ${P.goal.map(XAR).join('، ')}.`}})}
+  return{hint:k=>{if(k===1)return'كل صمام يحافظ على مجموع الماء في الغرفتين اللتين يصلهما. استخدم هذه القاعدة لتستنتج أي صمام يمكن أن يكون آخر خطوة قبل الوصول إلى الأهداف.';const route=pvRoute(s,P.goal);if(!route)return'لم يبقَ مسار من هذه الحالة. أعد المحاولة من بداية الغرف.';if(k===2){if(!route.length)return'وصلت إلى التوازن بالفعل.';const i=route[0];return`أفضل خطوة الآن: افتح الصمام بين الغرفة ${XAR(i+1)} والغرفة ${XAR(i+2)}. يتبقى ${arN(route.length,AN.mv)} في أقصر مسار.`}return`المسار الأقصر من وضعك الحالي: ${route.map(i=>`الصمام ${XAR(i+1)}–${XAR(i+2)}`).join('، ثم ')}.`},reveal:()=>`الهدف: ${P.goal.map(XAR).join('، ')}.`}})}
 
 /* ---------- the last prisoner ---------- */
 function runPLast(){return pzPlay('pz_plast',api=>{
@@ -6861,16 +6876,27 @@ Object.assign(PW.find(w=>w.n==='قاعة الملوك السبعة'),{id:'pz_pha
 PW.push({id:'pz_pheart',n:'القلب الأخير',x:180,y:6,art:'balance',boss:1,story:'خلف العروش قاعة سرية فيها أعظم آلية في العالم: ميزان بسبع كفّات ينتظر القطع التي جمعتها.'});
 /* ---------- wing 14: لغة التنانين — patterns with hidden exceptions ---------- */
 const PD_N=['الذهبي','البحري','الحجري','البلوري','الناري','الأعمى'],PD_C=['#C9962E','#3E6FC2','#8E8576','#8FD6E6','#C2452A','#5E5754'];
-const PD_LV=[[2,0],[3,0],[3,0],[4,1],[4,1],[5,1],[5,2],[6,2]];
+const PD_LV=[[2,0],[3,0],[3,0],[4,1],[4,1],[5,1],[5,2],[6,2]],PD_RULE_NAME={cycle:'دورة متكررة',step:'قفزة ثابتة',alt:'تناوب منتظم',grow:'زيادة متدرجة'};
 function pdSeq(){const R=rnd(4),a=rnd(6),b=1+rnd(5),p=2+rnd(2),cyc=shuffle([0,1,2,3,4,5]).slice(0,p);
   switch(R){case 0:return{r:'cycle',f:i=>cyc[i%p]};case 1:return{r:'step',f:i=>(a+b*i)%6};case 2:return{r:'alt',f:i=>i%2?(a+3)%6:(a+Math.floor(i/2)*b)%6};default:return{r:'grow',f:i=>(a+i*(i+1)/2)%6}}}
-function pdMake(lv){const[k,ex]=PD_LV[lv-1];const dr=shuffle([0,1,2,3,4,5]).slice(0,k).map(d=>{const S=pdSeq();return{d,seq:[...Array(6)].map((_,i)=>S.f(i)),next:S.f(6),bad:-1}});
-  shuffle(dr.slice()).slice(0,ex).forEach(x=>{const i=1+rnd(4);x.bad=i;x.seq[i]=(x.seq[i]+1+rnd(5))%6});
-  return dr.every(x=>new Set(x.seq).size>1)?{k,dr}:pdMake(lv)}
+function pdRuleSolutions(seq,rule){const out=new Set(),accept=f=>{if(seq.every((v,i)=>v===f(i)))out.add(f(6))};
+  if(rule==='cycle'){for(let a=0;a<6;a++)for(let b=0;b<6;b++)if(a!==b){accept(i=>i%2?b:a);for(let c=0;c<6;c++)if(c!==a&&c!==b)accept(i=>[a,b,c][i%3])}}
+  else if(rule==='step'){for(let a=0;a<6;a++)for(let b=1;b<6;b++)accept(i=>(a+b*i)%6)}
+  else if(rule==='alt'){for(let a=0;a<6;a++)for(let b=1;b<6;b++)accept(i=>i%2?(a+3)%6:(a+Math.floor(i/2)*b)%6)}
+  else if(rule==='grow'){for(let a=0;a<6;a++)accept(i=>(a+i*(i+1)/2)%6)}
+  return[...out];
+}
+function pdRepairOptions(seq,rule){const out=[];for(let i=1;i<seq.length;i++)for(let v=0;v<6;v++){if(v===seq[i])continue;const q=seq.slice();q[i]=v;const next=pdRuleSolutions(q,rule);if(next.length===1)out.push({index:i,value:v,next:next[0]})}return out}
+function pdMake(lv){const[k,ex]=PD_LV[lv-1];for(let attempt=0;attempt<700;attempt++){const dr=[];for(const d of shuffle([0,1,2,3,4,5]).slice(0,k)){let row=null;for(let t=0;t<1800;t++){const S=pdSeq(),seq=[...Array(6)].map((_,i)=>S.f(i)),next=pdRuleSolutions(seq,S.r);if(next.length===1&&next[0]===S.f(6)){row={d,seq,next:S.f(6),bad:-1,rule:S.r};break}}if(!row)break;dr.push(row)}if(dr.length!==k)continue;
+    const candidates=dr.map(x=>{const all=[];for(let i=1;i<x.seq.length;i++)for(let v=0;v<6;v++){if(v===x.seq[i])continue;const seq=x.seq.slice();seq[i]=v;if(pdRuleSolutions(seq,x.rule).length!==0)continue;const fixes=pdRepairOptions(seq,x.rule);if(fixes.length===1&&fixes[0].index===i&&fixes[0].value===x.seq[i]&&fixes[0].next===x.next)all.push({index:i,value:v})}return all});
+    const eligible=candidates.map((a,i)=>a.length?i:-1).filter(i=>i>=0);if(eligible.length<ex)continue;for(const j of shuffle(eligible).slice(0,ex)){const fix=pick(candidates[j]);dr[j].bad=fix.index;dr[j].seq[fix.index]=fix.value}
+    return{k,ex,dr,level:lv};}
+  return null;
+}
 function runPDragon(){return pzPlay('pz_pdragon',api=>{
   const P=pdMake(api.lv);const ans=P.dr.map(()=>-1),mark=P.dr.map(()=>-1);let sel=-1,miss=0,busy=false;
   api.body.innerHTML=xSheet(`${xHead(XS_.dragon.replace('viewBox="0 0 120 70"','viewBox="0 0 120 70" width="50"'),'لغة التنانين')}<ol class="xnote"><li>كل تنين ينفث رموزًا بنمط ثابت. اختر الرمز التالي لكل تنين.</li>${P.dr.some(x=>x.bad>=0)?'<li>بعض التنانين أخطأت في رمز واحد من نمطها! اضغط الرمز الخاطئ لتكشفه.</li>':''}</ol>
-   <div class="pdl">${P.dr.map((x,j)=>`<div class="pdrow" style="--dc:${PD_C[x.d]}"><b>${PD_N[x.d]}</b><div class="pdseq ltr">${x.seq.map((r,i)=>`<button class="pdr" data-j="${j}" data-i="${i}">${xRune(r)}</button>`).join('')}<button class="pdnx" data-j="${j}">؟</button></div></div>`).join('')}</div>
+   <div class="pdl">${P.dr.map((x,j)=>`<div class="pdrow" style="--dc:${PD_C[x.d]}"><b>${PD_N[x.d]}</b><small class="pdrule">${PD_RULE_NAME[x.rule]}</small><div class="pdseq ltr">${x.seq.map((r,i)=>`<button class="pdr" data-j="${j}" data-i="${i}">${xRune(r)}</button>`).join('')}<button class="pdnx" data-j="${j}">؟</button></div></div>`).join('')}</div>
    <div class="pdpick ltr" id="pdp">${[0,1,2,3,4,5].map(r=>`<button data-r="${r}">${xRune(r)}</button>`).join('')}</div><div class="xkbtns"><button class="go-btn xsm" id="pdgo">كلّم التنانين</button></div>`,820,401);
   const draw=()=>{api.body.querySelectorAll('.pdnx').forEach(b=>{const j=+b.dataset.j;b.innerHTML=ans[j]>=0?xRune(ans[j]):'؟';b.classList.toggle('sel',sel===j)});api.body.querySelectorAll('.pdr').forEach(b=>b.classList.toggle('bad',mark[+b.dataset.j]===+b.dataset.i))};
   api.body.querySelectorAll('.pdnx').forEach(b=>b.onclick=()=>{sel=+b.dataset.j;sfx.pop();draw()});api.body.querySelectorAll('.pdr').forEach(b=>b.onclick=()=>{const j=+b.dataset.j,i=+b.dataset.i;mark[j]=mark[j]===i?-1:i;tone(300,.05);draw()});
@@ -8459,6 +8485,7 @@ applyMode();if(!MODE)showModePick();
 <script src="watercolor/manifest.js"></script>
 <script src="watercolor/sprite-boxes.js"></script>
 <script src="watercolor/app.js"></script>
+<script src="watercolor/castle-ink.js"></script>
 <link rel="stylesheet" href="ui/style.css">
 <script src="ui/rules.js"></script>
 <script src="ui/app.js"></script>

@@ -10,8 +10,6 @@ const ML_GAME_ART = ['dual','juggle','crash','loci','faces','cards','mylist','pm
   'mmap','compass','nav','fold','dx_pack','dx_turn','matrix','series','xw','deduce','dx_route','dx_balance','dx_order',
   'hawk','glance','dd','dx_signal','racer','steps','radar','mot','brake','dx_search','conf','sw','dx_sort'];
 const ML_CAT_ART = { mem: 'memory', spa: 'space', log: 'logic', spd: 'speed', foc: 'attention', flx: 'flexibility' };
-// Prevent the legacy random switch task from being launched before its 5.5.4 replacement is ready.
-try { if (typeof GM !== 'undefined' && GM.sw) GM.sw.hidden = true; } catch (e) {}
 try {
   ML_GAME_ART.forEach(id => {
     if (typeof I === 'object' && I && id in I) I[id] = `<img class="ml-art" src="ui/art/games/${id}.webp" alt="" width="512" height="512" loading="lazy" decoding="async" draggable="false">`;
@@ -147,24 +145,85 @@ try {
 })();
 
 
-/* 5.5.4 — independent cognitive-game layers. Core engines remain untouched. */
-(function loadMindLabAddons() {
-  if (window.__MINDLAB_ADDONS_LOADING || window.MINDLAB_HASAD_RUNTIME) return;
-  window.__MINDLAB_ADDONS_LOADING = true;
-  const addStyle = (href, marker) => {
-    if (document.querySelector(`link[${marker}]`)) return;
-    const link = document.createElement('link'); link.rel = 'stylesheet'; link.href = new URL(href, document.baseURI).href; link.setAttribute(marker, '1'); document.head.append(link);
+/* 5.5.3 — حصاد الكلمات: additive game/data layer; no changes to the core engine or index.html. */
+(function loadHasadLayer() {
+  if (window.__MINDLAB_HASAD_LOADING || window.MINDLAB_HASAD_RUNTIME) return;
+  window.__MINDLAB_HASAD_LOADING = true;
+  const addStyle = () => {
+    if (document.querySelector('link[data-hasad-style]')) return;
+    const link = document.createElement('link'); link.rel = 'stylesheet'; link.href = new URL('../hasad/style.css', document.currentScript && document.currentScript.src || document.baseURI).href; link.dataset.hasadStyle = '1'; document.head.append(link);
   };
   const load = src => new Promise((resolve, reject) => {
     const script = document.createElement('script'); script.src = new URL(src, document.baseURI).href;
     script.onload = resolve; script.onerror = () => reject(new Error('Failed to load ' + src)); document.body.append(script);
   });
-  addStyle('cognition/signal-guard.css', 'data-signal-guard-style');
-  addStyle('hasad/style.css', 'data-hasad-style');
-  addStyle('cognition/ear-alert.css', 'data-ear-alert-style');
-  load('cognition/signal-guard.js').catch(error => {
-    console.error('تعذر تحميل حارس الإشارة', error);
-  }).then(() => load('hasad/data.js')).then(() => load('hasad/engine.js')).then(() => load('hasad/game.js'))
-    .then(() => load('cognition/ear-alert.js'))
-    .catch(error => { window.__MINDLAB_ADDONS_LOADING = false; console.error('تعذر تحميل طبقات الألعاب الإضافية', error); });
+  addStyle();
+  load('hasad/data.js').then(() => load('hasad/engine.js')).then(() => load('hasad/game.js'))
+    .catch(error => { window.__MINDLAB_HASAD_LOADING = false; console.error('تعذر تحميل طبقة حصاد الكلمات', error); });
+})();
+
+/* 5.5.7 additive puzzle quality layer.
+   The historical inline game engine remains fingerprint-stable; this replaces only
+   its shared puzzle-play coordinator with the audited hint/restart handling. */
+(function installPuzzleQualityLayer() {
+  if (typeof window.pzPlay !== 'function' || window.__MINDLAB_PZ_QUALITY_557) return;
+  window.__MINDLAB_PZ_QUALITY_557 = true;
+  const pzPlay = function(id, build) {
+return done=>{
+  const g=GM[id],kid=!!g.kid,mx=pzMax(id),daily=!!(RUN&&RUN.daily)&&!kid,isRid=id==='pz_rid';
+  const rp=RUN&&RUN.replay&&RUN.replay.id===id?RUN.replay:null;if(RUN)RUN.replay=null;
+  const stg=rp?null:txStageOf(id),lv=rp?rp.lv:stg?stg.lv:pzLv(id),seed=rp?rp.seed:(Math.random()*2147483646|0)+1;if(RUN&&!isRid)RUN.last={id,lv,seed};
+  const st=$('#stage');const base=kid?0:(isRid?40:20+lv*10)*(daily?2:1);let pts=base,hints=0,wrongs=0,ended=false,P={};
+  const canRe=!PZ_NORESTART.includes(id);
+  st.innerHTML=`<div class="pzhud">${kid?`<span class="pzlv">المستوى <b class="num">${lv}</b></span>`:`<span class="pzlv">${daily?'<span class="badge">لغز اليوم ×2</span> ':''}${isRid?'':stg?`المرحلة <b class="num">${stg.k}</b> من 3`:`المستوى <b class="num">${lv}</b> من ${mx}`}</span><span class="pzcoin" title="العملات المتاحة">${COIN}<b class="num" id="pzp">${pts}</b></span>`}${canRe?`<button class="pzhb pzre" id="pzr" aria-label="إعادة اللغز من البداية">${RE_SVG}<span>إعادة</span></button>`:''}<button class="pzhb" id="pzh">${BULB}<span>تلميح</span><i class="num" id="pzhn">3</i></button></div><div class="pzhint" id="pzt" hidden></div><div class="msg" id="m"></div><div class="pzbody" id="pzb"></div><div class="pzfoot"><button class="pzgive" id="pzq">${kid?'رجوع':'استسلم'}</button></div>`;
+  const setP=v=>{pts=Math.max(Math.round(base*.25),v);const e=$('#pzp');if(e)e.textContent=pts};
+  const fin=(won,detail)=>{ended=true;stopAll();const p=pzState(),cur=pzLv(id);let nl=cur;
+    if(!isRid&&!stg)nl=won?Math.min(mx,cur+1):Math.max(1,cur-1);if(!isRid&&!stg)pzSetLv(id,nl);if(won&&stg&&stg.replay){S.st.stgR=S.st.stgR||{};S.st.stgR[id]=stg.k%3}
+    if(won&&!kid){p.pts+=pts;p.n[id]=(p.n[id]||0)+1;if(daily)p.daily=dayKey()}if(RUN){RUN.daily=false;if(isRid)RUN.rid=null}
+    const lvTxt=isRid||stg?'':nl>cur?` المرحلة التالية: المستوى ${nl}.`:nl<cur?` رجعنا للمستوى ${nl} لتثبيت المهارة.`:'';
+    const hTxt=kid?'':won?(hints?` استخدمت ${arN(hints,AN.hint)}.`:' بدون أي تلميح!'):'';
+    if(won){sfx.win();$('#pzb').classList.add('solved');pzStamp(kid?'أحسنت!':'محلول!')}
+    later(()=>done({pts:won?pts:0,metric:won?clamp(1000-hints*150-wrongs*100,250,1000):0,detail:(detail||'')+hTxt+lvTxt}),won?1500:300)};
+  const api={lv,kid,id,body:$('#pzb'),msg:h=>{const m=$('#m');if(m)m.innerHTML=h},get ended(){return ended},get hints(){return hints},get wrongs(){return wrongs},
+    wrong(){if(ended)return;wrongs++;sfx.bad();if(!kid)setP(pts-Math.round(base*.1))},
+    win(detail){if(!ended)fin(true,detail)},over(detail){if(!ended)fin(false,detail)}};
+  const mount=()=>{const R=Math.random;Math.random=seeded(seed);try{P=build(api)||{};if(typeof XOLD!=='undefined'&&XOLD.has(id)&&id!=='pz_pipe')try{xWrapOld(api.body,id)}catch(e){}}finally{Math.random=R}};
+  mount();
+  const hb=$('#pzh');if(!P.hint)hb.hidden=true;
+  hb.onclick=()=>{if(ended||hints>=3||!P.hint)return;const before=pts;hints++;if(!kid)setP(pts-Math.round(base*.2));const t=P.hint(hints);if(t==null){hints--;if(!kid)setP(before);return}$('#pzhn').textContent=3-hints;
+    const box=$('#pzt');box.hidden=false;box.innerHTML=`<b>تلميح ${hints}:</b> ${t}`;sfx.lit();if(hints>=3||ended)hb.disabled=true};
+  const rb=$('#pzr');if(rb)rb.onclick=()=>{if(ended)return;stopAll();const b=$('#pzb');b.className='pzbody';b.innerHTML='';const hintBox=$('#pzt');hintBox.hidden=true;hintBox.innerHTML='';api.msg('');
+    pts=base;hints=0;wrongs=0;setP(pts);$('#pzhn').textContent='3';hb.disabled=false;hb.hidden=false;
+    rb.classList.remove('spin');void rb.offsetWidth;rb.classList.add('spin');sfx.flip();mount();hb.hidden=!P.hint;hb.disabled=!P.hint;b.classList.add('rebuilt')};
+  let arm=0;$('#pzq').onclick=()=>{if(ended)return;if(kid){closePlay();return}const q=$('#pzq');
+    if(!arm){arm=1;q.textContent='متأكد؟ اضغط مرة ثانية';q.classList.add('arm');setTimeout(()=>{arm=0;if(!ended&&q.isConnected){q.textContent='استسلم';q.classList.remove('arm')}},3000);return}
+    api.over(P.reveal?P.reveal():'استسلمت هذه المرة.')};
+}
+  };
+  window.pzPlay = pzPlay;
+})();
+
+
+/* 5.5.8 — unified logic-grid and river-crossing presentation layer. */
+(function loadPuzzleDesign558() {
+  if (window.__MINDLAB_PUZZLE_DESIGN_LOADING_558 || window.__MINDLAB_PUZZLE_DESIGN_558) return;
+  window.__MINDLAB_PUZZLE_DESIGN_LOADING_558 = true;
+  const script = document.createElement('script');
+  script.src = new URL('ui/puzzle-design.js', document.baseURI).href;
+  script.dataset.release = '5.5.8-puzzle-design';
+  script.onload = () => { window.__MINDLAB_PUZZLE_DESIGN_LOADING_558 = false; };
+  script.onerror = () => { window.__MINDLAB_PUZZLE_DESIGN_LOADING_558 = false; console.error('تعذر تحميل طبقة تصميم ألعاب المنطق وعبور النهر'); };
+  document.body.append(script);
+})();
+
+/* 5.5.9 — additive pirate, wreck and temple puzzle presentation/audio layer. */
+(function loadAdventureDesign559() {
+  if (window.__MINDLAB_ADVENTURE_DESIGN_LOADING_559 || window.__MINDLAB_ADVENTURE_DESIGN_559) return;
+  window.__MINDLAB_ADVENTURE_DESIGN_LOADING_559 = true;
+  const script = document.createElement('script');
+  script.src = new URL('ui/adventure-design.js', document.baseURI).href;
+  script.dataset.release = '5.5.9-adventure-design';
+  script.onload = () => { window.__MINDLAB_ADVENTURE_DESIGN_LOADING_559 = false; };
+  script.onerror = () => { window.__MINDLAB_ADVENTURE_DESIGN_LOADING_559 = false; console.error('تعذر تحميل طبقة تصميم ألغاز المغامرة'); };
+  document.body.append(script);
 })();
