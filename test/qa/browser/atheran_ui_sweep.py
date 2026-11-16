@@ -54,9 +54,9 @@ async def main():
     async with async_playwright() as p:
         browser = await (p.webkit.launch() if ENGINE == 'webkit' else p.chromium.launch(executable_path='/usr/bin/google-chrome', args=['--no-sandbox']))
         seen_frames = set(); asset_urls = set()
-        for w, h in ((320, 640), (390, 844), (768, 1024)):
+        for w, h in ((320, 640), (390, 844), (430, 932), (768, 1024)):
             tag = f'{ENGINE}-{w}'
-            ctx = await browser.new_context(viewport={'width': w, 'height': h}, has_touch=True, locale='ar-SA', **({'is_mobile': True} if ENGINE == 'chromium' else {}))
+            ctx = await browser.new_context(viewport={'width': w, 'height': h}, screen={'width': w, 'height': h}, has_touch=True, locale='ar-SA', is_mobile=True)
             await ctx.add_init_script('window.__test={}')
             await ctx.add_init_script(f"if(!localStorage.getItem('__seeded')){{const s={json.dumps(SAVE, ensure_ascii=False)};for(const k in s)localStorage.setItem(k,s[k]);localStorage.setItem('__seeded','1')}}")
             pg = await ctx.new_page(); errs = []

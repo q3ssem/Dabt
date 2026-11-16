@@ -53,7 +53,8 @@ async def main():
     async with async_playwright() as p:
         engine = os.environ.get('ENGINE', 'chromium')  # ENGINE=webkit runs the same journey in Safari's engine
         browser = await (p.webkit.launch() if engine == 'webkit' else p.chromium.launch(**({'executable_path': CHROME} if CHROME else {}), args=['--no-sandbox']))
-        ctx = await browser.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True, device_scale_factor=1, locale='ar-SA')
+        VW, VH = (int(x) for x in os.environ.get('VIEWPORT', '390x844').split('x'))  # VIEWPORT=430x932 = iPhone 16 Plus
+        ctx = await browser.new_context(viewport={'width': VW, 'height': VH}, screen={'width': VW, 'height': VH}, is_mobile=True, has_touch=True, device_scale_factor=1, locale='ar-SA')
         page = await ctx.new_page(); errors = []
         page.on('pageerror', lambda e: errors.append(str(e)[:200]))
         await page.add_init_script('window.__test={}')

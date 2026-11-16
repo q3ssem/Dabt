@@ -1,4 +1,20 @@
 'use strict';
+/* 5.5.28 athran-assets-2 — larger phones (iPhone Plus / Pro Max, 400–600 pt wide in portrait): lay the page out at 375 pt,
+   the width every screen is designed and tested at, and let the phone scale it to the full width. On a 430-pt
+   iPhone 16 Plus everything (text, buttons, boards) is ~15 % larger and stays sharp. Pointer coordinates stay
+   in CSS pixels, so no game needs a change. Tablets, landscape and narrower phones keep the normal layout. */
+(function () {
+  const m = document.querySelector('meta[name=viewport]'); if (!m) return;
+  const base = m.getAttribute('content'), DESIGN = 375;
+  const fit = () => {
+    const sw = Math.min(screen.width, screen.height), portrait = matchMedia('(orientation: portrait)').matches;
+    let c = base;
+    if (portrait && sw >= 400 && sw < 600) { const k = (sw / DESIGN).toFixed(4); c = `width=${DESIGN},initial-scale=${k},minimum-scale=${k},maximum-scale=${k},user-scalable=no,viewport-fit=cover`; }
+    if (m.getAttribute('content') !== c) m.setAttribute('content', c);
+    document.documentElement.dataset.phoneFit = c === base ? 'off' : DESIGN;
+  };
+  fit(); addEventListener('orientationchange', () => setTimeout(fit, 120)); matchMedia('(orientation: portrait)').addEventListener?.('change', fit);
+})();
 /* 5.1–5.3 presentation layer (loaded last): games page in sections, faster game start, «مستواي» dashboard,
    kids layout and river decorations. Game engines, scores and saves are untouched. */
 // 5.5: white theme by default — set before first paint; release54.js keeps it in sync afterwards.
