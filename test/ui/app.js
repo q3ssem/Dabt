@@ -110,7 +110,8 @@ try {
     const g = (() => { try { return curGame(); } catch (e) { return null; } })(), r = g && RULES[g.id], body = $('#pzb');
     if (!r || !body) return;
     const ol = body.querySelector('.xpin ol, .xpaper ol'); if (!ol || ol.closest('.ui-rules')) return;
-    if (!(g.id in ruleOpen)) ruleOpen[g.id] = !played(g.id);
+    // 5.5.28: in Atheran stations the rule line stays visible and the numbered details start folded, so the board is on screen.
+    if (!(g.id in ruleOpen)) ruleOpen[g.id] = !played(g.id) && !/^pz_[aw][a-z]/.test(g.id);
     const d = E('details', { class: 'ui-rules' }), sum = E('summary', {}, E('b', { text: 'القاعدة' }), E('span', { text: r[0] }), E('i', { text: 'التفاصيل' }));
     d.open = ruleOpen[g.id]; d.addEventListener('toggle', () => { ruleOpen[g.id] = d.open; });
     ol.replaceWith(d); d.append(sum, ol);
@@ -142,6 +143,16 @@ try {
 (function(){
   if(document.querySelector('script[data-release="5.5.2-mini"]'))return;
   const s=document.createElement('script');s.src=new URL('ui/mini.js',document.baseURI).href;s.dataset.release='5.5.2-mini';document.body.append(s);
+})();
+/* 5.5.28 — غلاف حملة أَثْرَان وقصتها (بعد طبقة المكتبة، لأن الحملة تلتف حول renderPuz). */
+(function(){
+  if(document.querySelector('script[data-release="5.5.28-atheran"]'))return;
+  const css=document.createElement('link');css.rel='stylesheet';css.href=new URL('atheran/campaign.css',document.baseURI).href;document.head.append(css);
+  const load=(src,next)=>{const s=document.createElement('script');s.src=new URL(src,document.baseURI).href;s.dataset.release='5.5.28-atheran';s.onload=next||null;document.body.append(s);};
+  const go=()=>load('atheran/assets-runtime.js',()=>load('atheran/story.js',()=>load('atheran/campaign.js',()=>load('atheran/athran-bindings.js'))));
+  const css2=document.createElement('link');css2.rel='stylesheet';css2.href=new URL('atheran/athran-bindings.css',document.baseURI).href;document.head.append(css2);
+  const mini=document.querySelector('script[data-release="5.5.2-mini"]');
+  if(mini&&!window.LA?.miniReady)mini.addEventListener('load',go,{once:true});else go();
 })();
 
 

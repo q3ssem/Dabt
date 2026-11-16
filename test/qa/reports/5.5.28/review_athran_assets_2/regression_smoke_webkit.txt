@@ -1,0 +1,21 @@
+{
+  "status": "passed",
+  "games": 32,
+  "puzzles": 88,
+  "stations": 21,
+  "skipped": [
+    "delay: internal helper"
+  ],
+  "assessment_status": {
+    "assessment/dashboard.html": 200,
+    "assessment/rule-switch.html": 200
+  },
+  "manifest_backgrounds_checked": 46,
+  "screenshot_widths": [
+    320,
+    390,
+    430,
+    768
+  ],
+  "problems": []
+}

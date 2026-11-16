@@ -2,6 +2,42 @@
   "reason": "Approved scoped Atheran campaign progression, stage-scoring, migration, secret-unlock and engine changes through release 5.5.19. Reverse exact patches in descending release order before comparing the original inline engine fingerprint.",
   "patches": [
     {
+      "reason": "5.5.28 Atheran hint wording (pz_aport hint 2): no more «بـ٠ خطوة»; Arabic number agreement only, same hint content",
+      "before": "ابحث عن ساعة تسبق هذه القراءة بـ${XAR(i)} خطوة.`",
+      "after": "${i?`ابحث عن ساعة تسبق هذه القراءة بـ${i===1?'خطوة واحدة':i===2?'خطوتين':XAR(i)+(i<=10?' خطوات':' خطوة')}.`:'الساعة التي يبلغ فيها المد هذه القراءة هي نفسها ساعة الإبحار.'}`",
+      "occurrences": 1
+    },
+    {
+      "reason": "5.5.28 Atheran hint wording (pz_aecho hint 2): number agreement «١ خانات» → «خانة واحدة»",
+      "before": "بعد شرطه تبقى ${XAR(best.c)} خانات مرشحة.",
+      "after": "بعد شرطه ${best.c===1?'تبقى خانة واحدة مرشحة':best.c===2?'تبقى خانتان مرشحتان':'تبقى '+XAR(best.c)+(best.c<=10?' خانات مرشحة':' خانة مرشحة')}.",
+      "occurrences": 1
+    },
+    {
+      "reason": "5.5.28 Atheran hint wording (pz_aflow hint 2): number agreement «٦ قنديلًا» → «٦ قناديل»",
+      "before": "الفرع الأيسر يحمل ${XAR(f[sample.id])} قنديلًا.",
+      "after": "الفرع الأيسر يحمل ${(q=>q===0?'لا شيء':q===1?'قنديلًا واحدًا':q===2?'قنديلين':XAR(q)+(q<=10?' قناديل':' قنديلًا'))(f[sample.id])}.",
+      "occurrences": 1
+    },
+    {
+      "reason": "5.5.28 Atheran hint wording (pz_aflow hint 3): number agreement",
+      "before": "وصله ${XAR(j.v)} قنديلًا.",
+      "after": "وصله ${(q=>q===0?'لا شيء':q===1?'قنديل واحد':q===2?'قنديلان':XAR(q)+(q<=10?' قناديل':' قنديلًا'))(j.v)}.",
+      "occurrences": 1
+    },
+    {
+      "reason": "5.5.28 Atheran hint escalation (pz_acity): hint 3 repeated hint 2 word for word; hint 3 now names the answer like the other stations' final hints",
+      "before": "const ex=[...Array(n).keys()].filter(i=>!P.al[i]&&i!==P.gone)",
+      "after": "if(k>=3)return`الفرض الصحيح: ${nm(P.gone)} اختفى أولًا. اختره ثم اضغط «هذا اختفى أولًا».`;const ex=[...Array(n).keys()].filter(i=>!P.al[i]&&i!==P.gone)",
+      "occurrences": 1
+    },
+    {
+      "reason": "5.5.28 Atheran hint (pz_wfirst): when every ring is already right the hint returned nothing; it now says so",
+      "before": "const r=u.findIndex((v,q)=>v!==P.rot[q]);if(r<0)return null;",
+      "after": "const r=u.findIndex((v,q)=>v!==P.rot[q]);if(r<0)return'كل الحلقات في مكانها الآن. اضغط «ثبّت العجلة».';",
+      "occurrences": 1
+    },
+    {
       "before": "function aState(){const t=txState();t.a5=t.a5||{prog:0,done:{},atlas:{},logs:[],seen:{},stars:{}};const a=t.a5;a.atlas=a.atlas||{};a.logs=a.logs||[];a.seen=a.seen||{};a.stars=a.stars||{};return a}",
       "after": "function aState(){const t=txState();t.a5=t.a5||{prog:0,done:{},atlas:{},logs:[],seen:{},stars:{}};const a=t.a5;a.done=a.done||{};a.atlas=a.atlas||{};a.logs=a.logs||[];a.seen=a.seen||{};a.stars=a.stars||{};a.perfect=a.perfect||{};a.perfect3=a.perfect3||{};if(!a.starJourneyV2){Object.keys(a.stars).forEach(k=>{a.stars[k]=Math.max(0,Math.min(2,Number(a.stars[k])||0))});a.starJourneyV2=1}if(!a.campaignIntegrityV3){a.perfect3={};a.campaignIntegrityV3=1}if(!a.campaignPathV4){if(typeof ASTN!=='undefined'){let p=0;while(p<ASTN.length&&a.done[ASTN[p].id])p++;a.prog=p}if(typeof ATR!=='undefined'&&Array.isArray(a.tr))a.tr=[...new Set(a.tr.filter(k=>Number.isInteger(k)&&k>=0&&k<ATR.length))];a.campaignPathV4=1}return a}",
       "occurrences": 1,

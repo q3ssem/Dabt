@@ -1,0 +1,10 @@
+{
+  "status": "passed",
+  "pageErrors": [],
+  "viewport": {
+    "w": 390,
+    "sw": 390,
+    "body": 374
+  },
+  "completedNewStages": 5
+}

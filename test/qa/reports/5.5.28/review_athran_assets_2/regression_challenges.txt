@@ -1,0 +1,13 @@
+{
+ "status": "passed",
+ "stars_total": 71,
+ "daily": {
+  "2026-11-16": {
+   "moves": 12,
+   "min": 12,
+   "hints": 0
+  }
+ },
+ "helper_gaps": null,
+ "problems": []
+}

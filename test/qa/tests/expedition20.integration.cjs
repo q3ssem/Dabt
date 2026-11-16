@@ -7,8 +7,8 @@ const pkg=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
 const app=fs.readFileSync(path.join(root,'expedition10/app.js'),'utf8');
 const logic=fs.readFileSync(path.join(root,'expedition10/logic.js'),'utf8');
 assert(html.includes('expedition10/style.css')&&html.includes('expedition10/logic.js')&&html.includes('expedition10/app.js'),'chapter scripts and styles are wired');
-assert.strictEqual(pkg.version,'5.5.25','package version is 5.5.25');
-assert(sw.includes("const VERSION='5.5.25'"),'service worker cache version is 5.5.25');
+assert.strictEqual(pkg.version,'5.5.28','package version is 5.5.28');
+assert(sw.includes("const VERSION='5.5.28'"),'service worker cache version is 5.5.28');
 assert(offline.includes('expedition10/art/world-map.webp'),'world map is precached');
 for(const f of ['roaa.webp','noha.webp','ward.webp'])assert(offline.includes('expedition10/art/crew/'+f),'main heroine asset precached: '+f);
 for(let i=1;i<=25;i++){

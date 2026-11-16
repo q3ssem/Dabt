@@ -1,0 +1,144 @@
+{
+ "forced": {
+  "pz_aswarm": {
+   "state": "disabled",
+   "newly": [
+    "pz_aswarm_swarm_cell_disabled"
+   ]
+  },
+  "pz_aherd": {
+   "state": "disabled",
+   "newly": []
+  }
+ },
+ "engine": "webkit",
+ "registry": 80,
+ "shown": 79,
+ "missing": [
+  "pz_aswarm_swarm_cell_disabled"
+ ],
+ "errors": [],
+ "per": {
+  "pz_aarch": [
+   "pz_aarch_archive_card_correct",
+   "pz_aarch_archive_card_default",
+   "pz_aarch_archive_card_selected",
+   "pz_aarch_archive_card_wrong"
+  ],
+  "pz_aport": [
+   "pz_aport_tide_gate_active",
+   "pz_aport_tide_gate_disabled",
+   "pz_aport_tide_gate_success"
+  ],
+  "pz_alight": [
+   "pz_alight_lens_ring_slot_active",
+   "pz_alight_lens_ring_slot_default",
+   "pz_alight_lens_ring_slot_selected",
+   "pz_alight_lens_ring_slot_success"
+  ],
+  "pz_acur": [
+   "pz_acur_drift_token_correct",
+   "pz_acur_drift_token_default",
+   "pz_acur_drift_token_selected",
+   "pz_acur_drift_token_wrong"
+  ],
+  "pz_ashell": [
+   "pz_ashell_music_shell_active",
+   "pz_ashell_music_shell_default",
+   "pz_ashell_music_shell_selected",
+   "pz_ashell_music_shell_success"
+  ],
+  "pz_aroot": [
+   "pz_aroot_root_tile_active",
+   "pz_aroot_root_tile_default",
+   "pz_aroot_root_tile_disabled"
+  ],
+  "pz_aring": [
+   "pz_aring_tree_ring_band_correct",
+   "pz_aring_tree_ring_band_default",
+   "pz_aring_tree_ring_band_selected"
+  ],
+  "pz_ashade": [
+   "pz_ashade_glass_pillar_correct",
+   "pz_ashade_glass_pillar_selected",
+   "pz_ashade_glass_pillar_wrong"
+  ],
+  "pz_aswarm": [
+   "pz_aswarm_swarm_cell_active",
+   "pz_aswarm_swarm_cell_default",
+   "pz_aswarm_swarm_cell_success"
+  ],
+  "pz_aecho": [
+   "pz_aecho_echo_node_correct",
+   "pz_aecho_echo_node_default",
+   "pz_aecho_echo_node_selected",
+   "pz_aecho_echo_node_wrong"
+  ],
+  "pz_avsong": [
+   "pz_avsong_echo_bird_note_active",
+   "pz_avsong_echo_bird_note_default",
+   "pz_avsong_echo_bird_note_selected",
+   "pz_avsong_echo_bird_note_success"
+  ],
+  "pz_agiant": [
+   "pz_agiant_giant_marker_correct",
+   "pz_agiant_giant_marker_default",
+   "pz_agiant_giant_marker_selected",
+   "pz_agiant_giant_marker_wrong"
+  ],
+  "pz_aherd": [
+   "pz_aherd_herd_path_tile_active",
+   "pz_aherd_herd_path_tile_default",
+   "pz_aherd_herd_path_tile_disabled",
+   "pz_aherd_herd_path_tile_wrong"
+  ],
+  "pz_abridge": [
+   "pz_abridge_fog_pillar_correct",
+   "pz_abridge_fog_pillar_default",
+   "pz_abridge_fog_pillar_selected",
+   "pz_abridge_fog_pillar_wrong"
+  ],
+  "pz_asilent": [
+   "pz_asilent_silent_event_token_correct",
+   "pz_asilent_silent_event_token_default",
+   "pz_asilent_silent_event_token_selected",
+   "pz_asilent_silent_event_token_wrong"
+  ],
+  "pz_alayer": [
+   "pz_alayer_strata_slab_correct",
+   "pz_alayer_strata_slab_selected",
+   "pz_alayer_strata_slab_wrong"
+  ],
+  "pz_acity": [
+   "pz_acity_city_lantern_node_active",
+   "pz_acity_city_lantern_node_correct",
+   "pz_acity_city_lantern_node_default",
+   "pz_acity_city_lantern_node_disabled",
+   "pz_acity_city_lantern_node_wrong"
+  ],
+  "pz_asong": [
+   "pz_asong_whale_song_crest_correct",
+   "pz_asong_whale_song_crest_default",
+   "pz_asong_whale_song_crest_selected",
+   "pz_asong_whale_song_crest_wrong"
+  ],
+  "pz_aflow": [
+   "pz_aflow_jelly_fork_gate_correct",
+   "pz_aflow_jelly_fork_gate_default",
+   "pz_aflow_jelly_fork_gate_selected",
+   "pz_aflow_jelly_fork_gate_wrong"
+  ],
+  "pz_arelic": [
+   "pz_arelic_chronicle_tablet_correct",
+   "pz_arelic_chronicle_tablet_default",
+   "pz_arelic_chronicle_tablet_selected",
+   "pz_arelic_chronicle_tablet_wrong"
+  ],
+  "pz_aheart": [
+   "pz_aheart_coast_stone_tile_active",
+   "pz_aheart_coast_stone_tile_default",
+   "pz_aheart_coast_stone_tile_selected",
+   "pz_aheart_coast_stone_tile_success"
+  ]
+ }
+}

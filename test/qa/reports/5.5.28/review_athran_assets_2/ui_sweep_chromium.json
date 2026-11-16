@@ -1,0 +1,22 @@
+{
+ "status": "passed",
+ "checks": 154,
+ "problems": [],
+ "frames_seen": [
+  "ui_athran_campaign_cover",
+  "ui_epilogue_frame",
+  "ui_gameplay_hud_frame",
+  "ui_hint_modal_frame",
+  "ui_journal_book_frame",
+  "ui_perfect_win_frame",
+  "ui_region_card_frame",
+  "ui_relics_screen_frame",
+  "ui_retry_screen_frame",
+  "ui_secret_worlds_frame",
+  "ui_stage_entry_frame",
+  "ui_station_card_frame",
+  "ui_win_screen_frame",
+  "ui_world_map_frame"
+ ],
+ "assets_requested": 80
+}

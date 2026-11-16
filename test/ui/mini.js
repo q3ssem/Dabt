@@ -8,7 +8,12 @@
   LA.miniReady = true;
   const MINI = 'ألعاب القراصنة المصغّرة';
   const SOURCES = ['مغامرة القرصان', 'الحطام والمعبد'];
-  const HIDDEN = new Set(['pz_pobs', 'pz_aflow', 'pz_zstars']);
+  // 5.5.28: pz_aflow (محطة إلزامية في حملة أَثْران) و pz_pobs (المحطة 11 في قصر الملوك، وشرط فتح أَثْران) عادا بلوحة فاتحة.
+  const HIDDEN = new Set(['pz_zstars']);
+  // العوالم السرية لا تظهر في المكتبة حتى يكتشفها اللاعب داخل الحملة (a5.sw[k]).
+  const SECRET = { pz_wbone: 'bones', pz_wspore: 'spores', pz_wlog: 'ship', pz_wlake: 'lake', pz_wfirst: 'first' };
+  const secretFound = id => { try { const k = SECRET[id]; if (!k) return true; const t = S.st.tx || {}, a = t.a5 || {}; return !!(a.sw && a.sw[k]); } catch (e) { return false; } };
+  LA.secretFound = secretFound;
   const ROUND = 3;
   const AR = n => String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
   const el = (tag, attrs, ...kids) => {
@@ -24,7 +29,7 @@
   LA.librarySections = function () {
     const out = []; let mini = null;
     sections0().forEach(([name, list]) => {
-      const kept = list.filter(g => !HIDDEN.has(g.id));
+      const kept = list.filter(g => !HIDDEN.has(g.id) && secretFound(g.id));
       if (SOURCES.includes(name)) {
         if (!mini) { mini = [MINI, []]; out.push(mini); }
         mini[1].push(...kept);

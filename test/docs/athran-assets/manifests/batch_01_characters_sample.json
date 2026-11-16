@@ -1,0 +1,83 @@
+{
+  "batch": "01_characters_sample",
+  "assets": [
+    {
+      "asset_id": "char_rawaa_sample",
+      "file_name": "rawaa_fullbody.png",
+      "relative_path": "characters/rawaa/rawaa_fullbody.png",
+      "format": "PNG",
+      "width": 800,
+      "height": 1000,
+      "has_alpha": true,
+      "character_id": "rawaa",
+      "asset_type": "character_sample",
+      "state": "default",
+      "status": "sample_ready_for_review"
+    },
+    {
+      "asset_id": "char_noha_sample",
+      "file_name": "noha_fullbody.png",
+      "relative_path": "characters/noha/noha_fullbody.png",
+      "format": "PNG",
+      "width": 800,
+      "height": 1000,
+      "has_alpha": true,
+      "character_id": "noha",
+      "asset_type": "character_sample",
+      "state": "default",
+      "status": "sample_ready_for_review"
+    },
+    {
+      "asset_id": "char_ward_sample",
+      "file_name": "ward_fullbody.png",
+      "relative_path": "characters/ward/ward_fullbody.png",
+      "format": "PNG",
+      "width": 800,
+      "height": 1000,
+      "has_alpha": true,
+      "character_id": "ward",
+      "asset_type": "character_sample",
+      "state": "default",
+      "status": "sample_ready_for_review"
+    },
+    {
+      "asset_id": "char_layan_sample",
+      "file_name": "layan_default.png",
+      "relative_path": "characters/layan/layan_default.png",
+      "format": "PNG",
+      "width": 600,
+      "height": 800,
+      "has_alpha": true,
+      "character_id": "layan",
+      "asset_type": "character_sample",
+      "state": "default",
+      "status": "sample_ready_for_review"
+    },
+    {
+      "asset_id": "char_badr_sample",
+      "file_name": "badr_default.png",
+      "relative_path": "characters/badr/badr_default.png",
+      "format": "PNG",
+      "width": 600,
+      "height": 800,
+      "has_alpha": true,
+      "character_id": "badr",
+      "asset_type": "character_sample",
+      "state": "default",
+      "status": "sample_ready_for_review"
+    },
+    {
+      "asset_id": "char_uncle_nawwar_sample",
+      "file_name": "uncle_nawwar_default.png",
+      "relative_path": "characters/uncle_nawwar/uncle_nawwar_default.png",
+      "format": "PNG",
+      "width": 600,
+      "height": 800,
+      "has_alpha": true,
+      "character_id": "uncle_nawwar",
+      "asset_type": "character_sample",
+      "state": "default",
+      "status": "sample_ready_for_review"
+    }
+  ]
+}

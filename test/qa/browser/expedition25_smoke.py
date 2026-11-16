@@ -1,24 +1,30 @@
-import asyncio, json, pathlib
+import asyncio, json, os, pathlib, shutil, sys
 from playwright.async_api import async_playwright
 
 ROOT=pathlib.Path(__file__).resolve().parents[2]
+# 5.5.28: the browser and the server address are configurable; the old copy hard-coded /usr/bin/chromium and port 8765.
+URL=os.environ.get('MINDLAB_URL') or (sys.argv[1] if len(sys.argv)>1 else 'http://127.0.0.1:8765/index.html')
+CHROME=os.environ.get('CHROME') or next((c for c in ('/usr/bin/chromium','/usr/bin/google-chrome','/usr/bin/chromium-browser') if os.path.exists(c)),None) or shutil.which('chromium') or shutil.which('google-chrome')
 async def main():
   errors=[]
   async with async_playwright() as p:
-    browser=await p.chromium.launch(executable_path='/usr/bin/chromium',args=['--no-sandbox'])
+    browser=await p.chromium.launch(**({'executable_path':CHROME} if CHROME else {}),args=['--no-sandbox'])
     ctx=await browser.new_context(viewport={'width':390,'height':844},device_scale_factor=1,is_mobile=True,has_touch=True,locale='ar-SA')
     page=await ctx.new_page();page.on('pageerror',lambda e:errors.append(str(e)))
     done={f'ml10_{i:02d}':True for i in range(1,21)}
     await page.add_init_script("localStorage.setItem('mindlab:expedition10:v1',"+json.dumps(json.dumps({'done':done,'stars':{},'best':{},'totalStars':60},ensure_ascii=False))+")")
-    await page.goto('http://127.0.0.1:8765/index.html',wait_until='load',timeout=60000)
+    await page.goto(URL,wait_until='load',timeout=60000)
     await page.wait_for_timeout(1200)
+    # A fresh profile first shows the mode picker; the old script never dismissed it.
+    pick=page.locator('.mpc[data-m=main]')
+    if await pick.count(): await pick.click()
     tab=page.locator('.tab[data-tab=puz]')
     if await tab.count(): await tab.click()
     await page.wait_for_timeout(400)
     await page.locator('.ex10-launch-go').click(timeout=15000)
     await page.wait_for_timeout(200)
-    # Open stage 21 (zero-based index 20).
-    await page.locator('[data-ex10-node="20"]').first.click()
+    # Open stage 21 (zero-based index 20) by tapping its node on the map, as a player would.
+    await page.locator('.ex10-map [data-ex10-node="20"]').click()
     await page.locator('[data-ex10="start"]').click()
     path=await page.evaluate('ML10Logic.mazeAudit().path')
     for cell in path[1:]:

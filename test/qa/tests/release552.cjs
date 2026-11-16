@@ -12,7 +12,7 @@ ok(read('ui/app.js').includes("ui/mini.js"),'mini layer loaded');
 ok(read('release54.js').includes(".concat(['ds/play-kit.css'])"),'play kit loaded after the design system');
 ok(om.includes('"ui/mini.js"')&&om.includes('"ds/play-kit.css"'),'offline files');
 ok(mini.includes("'ألعاب القراصنة المصغّرة'")&&mini.includes("['مغامرة القرصان', 'الحطام والمعبد']"),'pirate + wreck merged');
-ok(/HIDDEN = new Set\(\['pz_pobs', 'pz_aflow', 'pz_zstars'\]\)/.test(mini),'dark boards out of the library only');
+ok(/HIDDEN = new Set\(\['pz_zstars'\]\)/.test(mini),'5.5.28: pz_aflow and pz_pobs returned with light boards (campaign stations); only pz_zstars stays out of the library');
 ok(!/delete|removeItem|S\.st\.(lv|best)\s*=/.test(mini),'mini layer never touches saves');
 ok(kit.includes('#play[data-la-puzzle="false"]:not([data-la-game^="dx_"])'),'kit scoped to classic brain games');
 console.log('release552 ok',n);
