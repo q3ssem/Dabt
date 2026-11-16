@@ -1,0 +1,24 @@
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.resolve(__dirname,'../..');
+const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');
+const offline=fs.readFileSync(path.join(root,'offline-manifest.js'),'utf8');
+const pkg=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
+const app=fs.readFileSync(path.join(root,'expedition10/app.js'),'utf8');
+const logic=fs.readFileSync(path.join(root,'expedition10/logic.js'),'utf8');
+assert(html.includes('expedition10/style.css')&&html.includes('expedition10/logic.js')&&html.includes('expedition10/app.js'),'new chapter scripts and stylesheet are wired after existing engines');
+assert(offline.includes('expedition10/art/world-map.webp'),'world map is precached');
+for(const f of ['roaa.webp','noha.webp','ward.webp'])assert(offline.includes('expedition10/art/crew/'+f),'main character asset precached: '+f);
+for(let i=1;i<=10;i++){const f=`${String(i).padStart(2,'0')}-`;assert(fs.readdirSync(path.join(root,'expedition10/art/scenes')).some(x=>x.startsWith(f)),'stage scene exists: '+f);}
+assert(app.includes("const SAVE_KEY='mindlab:expedition10:v1'"),'experimental chapter uses an isolated save namespace');
+assert(!/S\.st\.[^;]*ml10/.test(app),'new chapter does not write into legacy campaign state');
+assert.strictEqual((app.match(/id:'ml10_\d\d'/g)||[]).length,10,'exactly ten stages are registered');
+assert(app.includes('قصر المرايا')&&app.includes('غير قابلة للعب'),'later worlds are visible as future locked regions, not playable stages');
+assert(app.includes('function renderMap()')&&app.includes('function renderIntro(i)')&&app.includes('function renderEpilogue()'),'world map, puzzle intro, and chapter epilogue exist');
+assert(app.includes('ex10-stage-prop')&&app.includes('ex10-game-scene'),'stage-specific hand-painted scene and prop assets are used during play');
+assert(app.includes('function gameArchiveGrid(i)')&&app.includes('data-cell'),'stage nine uses an interactive 4x4 deduction grid, not another ordering game');
+assert(app.includes('data-ex10-node')&&app.includes('data-ex10="start"'),'stage entry buttons are wired');
+assert(logic.includes('function solveCode()')&&logic.includes('function countPaths(')&&logic.includes('function mapArrangements()'),'independent solver/audit functions exist');
+assert(sw.includes("const VERSION='5.5.20'"),'service worker cache version advanced');
+assert(pkg.version==='5.5.20','package version advanced');
+console.log('Expedition 10 integration: 10 scene assets, world map, three hero assets, independent persistence and offline precache passed.');

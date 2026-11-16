@@ -58,5 +58,5 @@ const lake = block('runWLake');
 ok(lake.includes('sel=P.ans;draw();return`حددت الكوكبة المطابقة'), 'sky-lake final hint marks the correct option');
 ok(lake.includes('استبعد الكوكبة رقم'), 'sky-lake second hint only excludes a decoy');
 const sw = fs.readFileSync('sw.js', 'utf8');
-ok(sw.includes("const VERSION='5.5.19'"), 'hint release cache is versioned 5.5.19');
+ok(sw.includes("const VERSION='5.5.20'"), 'hint release cache is versioned 5.5.20');
 console.log(`Atheran progressive hints: ${checks} assertions passed; 15 puzzle experiences audited.`);
