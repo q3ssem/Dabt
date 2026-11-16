@@ -1,0 +1,41 @@
+'use strict';
+const assert=require('node:assert/strict');
+const fs=require('node:fs');
+const path=require('node:path');
+const vm=require('node:vm');
+const root=path.resolve(__dirname,'../..');
+const read=p=>fs.readFileSync(path.join(root,p),'utf8');
+const app=read('expedition10/app.js');
+const css=read('expedition10/style.css');
+const sw=read('sw.js');
+const pkg=JSON.parse(read('package.json'));
+const manifestContext={self:{}};
+vm.createContext(manifestContext);
+vm.runInContext(read('offline-manifest.js'),manifestContext);
+const offline=manifestContext.self.MINDLAB_OFFLINE_FILES;
+const checks=[];
+function ok(condition,message){assert.ok(condition,message);checks.push(message);}
+ok(pkg.version==='5.5.25','package release is 5.5.25');
+ok(sw.includes("const VERSION='5.5.25'"),'service worker cache uses 5.5.25');
+ok(app.includes("const SAVE_KEY='mindlab:expedition10:v1'"),'expedition save namespace preserved');
+ok(!/localStorage\.setItem\(['"]miran:v2/.test(app),'expedition module does not write to miran:v2');
+ok(app.includes('function poseForMood(mood)'),'mood-to-pose mapping exists');
+ok(app.includes("if(mood==='curious')return'curious'")&&app.includes("if(mood==='happy'||mood==='celebrate')return'happy'"),'curious and celebration use dedicated pose art');
+ok(app.includes('function heroPoseSrc(key,mood)'),'hero pose assets are selected by heroine and mood');
+ok(app.includes('function preloadCrewPoses()'),'all heroine poses are preloaded for smoother transitions');
+ok(app.includes('function setHeroinePose(el,mood)')&&app.includes('img.dataset.poseSrc===src'),'character image changes only when a real pose changes');
+ok(app.includes('function updateCrew(moods,words)')&&app.includes("'.ex10-crew-mini, .ex10-crew'"),'character reactions update in game and intro strips');
+ok(app.includes('ex10-live-dialogue')&&app.includes('role="status" aria-live="polite"'),'stage dialogue and feedback are announced accessibly');
+ok(app.includes('ex10-stage-progress')&&app.includes('aria-valuemax="25"'),'current stage progress is exposed accessibly');
+ok(css.includes('@media(prefers-reduced-motion:reduce)'),'reduced-motion preference is respected');
+ok(css.includes('@media(max-width:380px)'),'small-phone breakpoint exists');
+ok(css.includes('.ex10-crew-mini .ex10-heroine img{width:50px;height:64px'),'mini character sprites have legible mobile-friendly sizing');
+const poses=['roaa','noha','ward'].flatMap(k=>['welcome','thinking','worried','curious','happy'].map(p=>`expedition10/art/crew/poses/${k}-${p}.webp`));
+for(const p of poses){ok(fs.existsSync(path.join(root,p)),`pose asset exists: ${path.basename(p)}`);ok(offline.includes(p),`pose asset is precached offline: ${path.basename(p)}`);}
+const idMatches=[...app.matchAll(/id:'(ml10_\d{2})'/g)].map(m=>m[1]);
+ok(idMatches.length===25,'25 fixed stage identifiers remain in source');
+ok(new Set(idMatches).size===25,'all 25 stage identifiers remain unique');
+const sceneMatches=[...app.matchAll(/scene:'([^']+\.webp)'/g)].map(m=>m[1]);
+ok(sceneMatches.length===25,'25 unique stage scene references remain in registry');
+for(const scene of new Set(sceneMatches)){ok(fs.existsSync(path.join(root,'expedition10/art/scenes',scene)),`stage art exists: ${scene}`);}
+console.log(JSON.stringify({status:'passed',checks:checks.length,version:pkg.version,poseAssets:poses.length,stageIDs:idMatches.length,scenes:new Set(sceneMatches).size},null,2));

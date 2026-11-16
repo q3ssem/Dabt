@@ -1,0 +1,21 @@
+const fs=require('fs'),path=require('path'),assert=require('assert');
+const root=path.resolve(__dirname,'../..');
+const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');
+const offline=fs.readFileSync(path.join(root,'offline-manifest.js'),'utf8');
+const pkg=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
+const app=fs.readFileSync(path.join(root,'expedition10/app.js'),'utf8');
+const logic=fs.readFileSync(path.join(root,'expedition10/logic.js'),'utf8');
+assert(html.includes('expedition10/style.css')&&html.includes('expedition10/logic.js')&&html.includes('expedition10/app.js'),'expedition module remains wired into the application');
+assert.strictEqual(pkg.version,'5.5.25','package is 5.5.25');
+assert(sw.includes("const VERSION='5.5.25'"),'service worker cache is versioned 5.5.25');
+assert.strictEqual((app.match(/id:'ml10_\d\d'/g)||[]).length,25,'exactly twenty-five stages are registered');
+assert(app.includes("const SAVE_KEY='mindlab:expedition10:v1'"),'the same independent save namespace is retained');
+assert(app.includes('من ٢٥')&&app.includes('/ ٧٥'),'progress display covers 25 stages and 75 stars');
+assert(app.includes('success&&i<24')&&app.includes('success&&i===24'),'stage 25 closes the current chapter');
+for(const fn of ['gameLanternMaze','gameWaterJugs','gameSignalTowers','gameHanoi','gameFivefoldSeal'])assert(app.includes('function '+fn+'('),'interactive stage exists: '+fn);
+for(let n=1;n<=25;n++){const prefix=String(n).padStart(2,'0')+'-';const f=fs.readdirSync(path.join(root,'expedition10/art/scenes')).find(x=>x.startsWith(prefix));assert(f,'scene exists for stage '+n);assert(offline.includes('expedition10/art/scenes/'+f),'scene precached '+f);}
+for(const f of ['21-lantern-maze.webp','22-waterworks.webp','23-signal-towers.webp','24-disk-temple.webp','25-fivefold-seal.webp'])assert(fs.existsSync(path.join(root,'expedition10/art/scenes',f)),'new stage art exists '+f);
+for(const token of ['mazeAudit','jugAudit','signalSolutions','hanoiAudit','sealSolutions'])assert(logic.includes(token),'solver/audit is implemented: '+token);
+assert(!/S\.st\.[^;]*ml10/.test(app),'expedition keeps data out of the legacy campaign save');
+console.log('Expedition 25 integration: stage registry, art, offline cache, solvers, progression and isolated save passed.');

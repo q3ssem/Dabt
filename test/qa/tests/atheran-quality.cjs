@@ -149,5 +149,5 @@ for (let ix = 0; ix < names.length; ix++) {
 }
 eq(c.WBO_J.length, 11, 'bone joint icon library supports the longest unique chain');
 const sw = fs.readFileSync('sw.js', 'utf8');
-ok(sw.includes("const VERSION='5.5.20'"), 'service worker cache is versioned 5.5.20');
+ok(sw.includes("const VERSION='5.5.25'"), 'service worker cache is versioned 5.5.25');
 console.log(`Atheran mechanics: ${checks.toLocaleString('en-US')} assertions; 26 generators × 8 levels × ${samplesPerLevel} samples; solution integrity and level features verified.`);

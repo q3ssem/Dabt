@@ -29,8 +29,8 @@ ok(layer.includes("state.audioPrimed") && layer.includes("event.target.closest(\
 ok(app.includes('loadPuzzleDesign558') && app.includes('ui/puzzle-design.js'), 'presentation layer is loaded additively');
 ok(css.includes('#play[data-ml-puzzle="logic"]') && css.includes('#play[data-ml-puzzle="river"]'), 'both mobile game themes have dedicated responsive styles');
 ok(manifest.includes('"ui/puzzle-design.js"'), 'presentation layer is included in offline cache');
-ok(sw.includes("const VERSION='5.5.20'"), 'service-worker cache is versioned 5.5.20');
-ok(pkg.version === '5.5.20', 'package version is 5.5.20');
+ok(sw.includes("const VERSION='5.5.25'"), 'service-worker cache is versioned 5.5.25');
+ok(pkg.version === '5.5.25', 'package version is 5.5.25');
 ok(html.includes("id:'pz_grid'") && html.includes("id:'pz_river'"), 'both original puzzle registrations remain in the core');
 ok(!html.includes('puzzle-design.js'), 'historical index.html remains untouched by the new presentation layer');
 

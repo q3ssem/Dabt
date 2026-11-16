@@ -17,3 +17,21 @@ assert.strictEqual(A.starRoute.count,1,'final constellation has exactly one rout
 assert(A.balanceCases.every(x=>x.ok),'two weighings identify each of nine possible heavy coins');
 assert.strictEqual(A.mirrorConfigurations,64,'mirror stage has 64 possible states and one target state');
 console.log('Expedition 10: all 10 stage logic invariants passed.');
+assert.deepStrictEqual(A.pipeSolutions,[[2,0,0,1,3,0,1]],'seven fixed pipe pieces have exactly one leak-free orientation state');
+assert.strictEqual(A.ice.distance,7,'ice channel has a seven-slide shortest solution');
+assert.strictEqual(A.ice.count,1,'ice channel has exactly one shortest route');
+assert.deepStrictEqual(A.ice.path,['right','up','left','down','right','up','right'],'ice solver returns the designed seven-slide route');
+assert.deepStrictEqual(A.nimWinningMoves,[{pile:2,take:3,remaining:[1,3,2]}],'Nim opening has exactly one winning move');
+assert.deepStrictEqual(A.shadowSolutions,[[2,0,3]],'shadow lamp relationships produce one orientation tuple');
+assert.deepStrictEqual(A.cipher.solutions,[4],'Arabic bottle cipher has exactly one Caesar shift');
+assert.strictEqual(L.shiftArabic(A.cipher.text,-4),'الميناء','cipher wheel decodes to the harbor clue');
+console.log('Expedition 15 extension: pipes, ice, Nim strategy, shadow logic and Arabic cipher invariants passed.');
+// The Nim rival must make legal unrestricted-Nim moves; a perfect first move leaves the player able to force a win.
+const opening=L.nimWinningMoves([1,3,5]);assert.strictEqual(opening.length,1,'Nim has one winning opening');
+let heaps=opening[0].remaining.slice(),playerTurn=false,playerWins=false,guard=0;
+while(heaps.some(n=>n>0)&&guard++<20){
+  if(!playerTurn){const m=L.nimBestMove(heaps);assert(m&&m.take>=1&&m.take<=heaps[m.pile],'AI move is legal');heaps=m.remaining;playerTurn=true;}
+  else{const wins=L.nimWinningMoves(heaps);assert(wins.length>0,'player always has a preserving response after the unique winning opening');heaps=wins[0].remaining;playerTurn=false;if(!heaps.some(n=>n>0))playerWins=true;}
+}
+assert(playerWins,'optimal player wins against the Nim rival');
+console.log('Nim rival: all AI moves legal and the unique winning player strategy is verified end-to-end.');
