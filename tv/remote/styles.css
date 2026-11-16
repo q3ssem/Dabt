@@ -12,3 +12,12 @@ button:focus-visible,input:focus,textarea:focus,select:focus{outline-color:var(-
 #brand .logo{background:var(--accent);color:#1B1407}
 nav button.active,#nav .active{background:linear-gradient(180deg,#F0CD78,var(--accent));color:#1B1407;border-color:#F2D58E}
 html{background:#0A1428;min-height:100%}body{min-height:100vh;min-height:100dvh;background-attachment:fixed}
+/* 2.2.0 */
+.answers.people{grid-template-columns:1fr 1fr}
+.answer.person{--oc:#182C52;background:#182C52;border:2px solid rgba(227,188,98,.35);min-height:72px;flex-direction:row;justify-content:flex-start;font-size:16px}
+.answer em{font-style:normal;margin-inline-start:auto;background:rgba(255,255,255,.2);border-radius:99px;padding:0 .6em}
+.help-bar{display:flex;flex-wrap:wrap;gap:8px;margin:12px 0}
+.help-bar button{flex:1 1 30%}
+.bet-grid{display:grid;grid-template-columns:1fr 1fr;gap:10px;margin:12px 0}
+.bet-grid button{min-height:64px;font-size:18px}
+@media (min-width:600px){.answers.people{grid-template-columns:repeat(3,1fr)}}
