@@ -56,9 +56,13 @@
         const cell = e => { const b = svg.getBoundingClientRect(); return [(e.clientX - b.left) / b.width * n, (e.clientY - b.top) / b.height * n]; };
         svg.addEventListener('pointerdown', e => { if (api.ended || busy) return; const [cx, cy] = cell(e), [w, h] = ext(r);
           if (cx < dx - .2 || cy < dy - .2 || cx > dx + w + 1.2 || cy > dy + h + 1.2) return; e.preventDefault(); svg.setPointerCapture(e.pointerId); start = [cx, cy]; ghost = [dx, dy]; draw(); });
-        svg.addEventListener('pointermove', e => { if (!start) return; const [cx, cy] = cell(e); const g = clampXY(Math.round(dx + cx - start[0]), Math.round(dy + cy - start[1])); if (g[0] !== ghost[0] || g[1] !== ghost[1]) { ghost = g; tone(520, .02); draw(); } });
+        // the sheet can only travel as many cells as the moves left: a drag never costs more than the budget allows
+        const reach = g => { const left = lim - moves; let [x, y] = [dx, dy];
+          for (let k = 0; k < left && (x !== g[0] || y !== g[1]); k++) { const ex = g[0] - x, ey = g[1] - y; if (Math.abs(ex) >= Math.abs(ey)) x += Math.sign(ex); else y += Math.sign(ey); }
+          return [x, y]; };
+        svg.addEventListener('pointermove', e => { if (!start) return; const [cx, cy] = cell(e); const g = reach(clampXY(Math.round(dx + cx - start[0]), Math.round(dy + cy - start[1]))); if (g[0] !== ghost[0] || g[1] !== ghost[1]) { ghost = g; tone(520, .02); draw(); } });
         const end = () => { if (!start) return; const [gx, gy] = ghost; start = null; ghost = null; const steps = Math.abs(gx - dx) + Math.abs(gy - dy);
-          if (!steps) { draw(); return; } dx = gx; dy = gy; moves = Math.min(lim, moves + steps); after(); };
+          if (!steps || api.ended || busy) { draw(); return; } dx = gx; dy = gy; moves += steps; after(); };
         svg.addEventListener('pointerup', end); svg.addEventListener('pointercancel', () => { start = null; ghost = null; draw(); });
         $('#pob').tabIndex = 0; $('#pob').addEventListener('keydown', e => { const m = { ArrowUp: 'u', ArrowDown: 'd', ArrowLeft: 'l', ArrowRight: 'r', r: 't', ' ': 't' }[e.key]; if (m) { e.preventDefault(); mv(m); } });
         draw(); api.msg('طابق الخريطتين.');
