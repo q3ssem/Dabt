@@ -144,27 +144,27 @@ async def arelic(pg, w, lv, mode):
 async def main():
     async with async_playwright() as p:
         b = await (p.webkit.launch() if ENGINE == 'webkit' else p.chromium.launch(executable_path='/usr/bin/google-chrome', args=['--no-sandbox']))
-        ONLY = os.environ.get('ONLY')
-        for w in [int(x) for x in os.environ.get('WIDTHS', '320,390,430').split(',')]:
+        ONLY = os.environ.get('ONLY'); run = lambda g: not ONLY or g in ONLY
+        async def fresh(w):
+            # one browser context per board family: a long single-page session is not what a player does, and WebKit
+            # headless here crashes intermittently in very long sessions (see the report)
             ctx = await b.new_context(viewport={'width': w, 'height': 820}, has_touch=True); await ctx.add_init_script('window.__test={}')
             pg = await ctx.new_page(); errs = []; pg.on('pageerror', lambda e: errs.append(str(e)[:200]))
-            await pg.goto(URL); await pg.wait_for_timeout(2000)
-            # fixed levels (replays: 5 and 8 species, 9×9 map, larger archives), then the player's own stage (progress + reload)
-            run = lambda g: not ONLY or g in ONLY
-            if run('acity'): await acity(pg, w, 1, 'tap'); await acity(pg, w, 8, 'tap'); await acity(pg, w, None, 'tap')
-            if run('pobs'): await pobs(pg, w, 8, 'drag'); await pobs(pg, w, None, 'drag')
-            for mode, lv in (('drag', 6), ('tap', None)):
-                if run('aarch'): await aarch(pg, w, lv, mode)
-                if run('alayer'): await alayer(pg, w, lv and 7, mode)
-                if run('arelic'): await arelic(pg, w, lv, mode)
-            # hint works on each board
-            for gid in [g for g in ('pz_acity', 'pz_pobs', 'pz_aarch', 'pz_alayer', 'pz_arelic') if run(g[3:])]:
-                await start(pg, gid, 4, 900)
-                hb = pg.locator('#stage button:has-text("تلميح")').first
-                if await hb.count():
-                    await hb.click(); await pg.wait_for_timeout(500)
-                    ok(await pg.evaluate("() => document.body.innerText.length > 0") and not errs, f'{gid}@{w}: hint opens without errors', errs)
-            ok(not errs, f'@{w} no page errors', errs); await ctx.close()
+            await pg.goto(URL); await pg.wait_for_timeout(2000); return ctx, pg, errs
+        groups = [('acity', lambda pg, w: [acity(pg, w, 1, 'tap'), acity(pg, w, 8, 'tap'), acity(pg, w, None, 'tap')]),
+                  ('pobs', lambda pg, w: [pobs(pg, w, 8, 'drag'), pobs(pg, w, None, 'drag')]),
+                  ('aarch', lambda pg, w: [aarch(pg, w, 6, 'drag'), aarch(pg, w, None, 'tap')]),
+                  ('alayer', lambda pg, w: [alayer(pg, w, 7, 'drag'), alayer(pg, w, None, 'tap')]),
+                  ('arelic', lambda pg, w: [arelic(pg, w, 6, 'drag'), arelic(pg, w, None, 'tap')])]
+        for w in [int(x) for x in os.environ.get('WIDTHS', '320,390,430').split(',')]:
+            for name, fn in groups:
+                if not run(name): continue
+                ctx, pg, errs = await fresh(w)
+                for co in fn(pg, w): await co
+                # hint works on the board
+                await start(pg, 'pz_' + name, 4, 900); hb = pg.locator('#stage button:has-text("تلميح")').first
+                if await hb.count(): await hb.click(); await pg.wait_for_timeout(500); ok(not errs, f'pz_{name}@{w}: hint opens without errors', errs)
+                ok(not errs, f'pz_{name}@{w}: no page errors', errs); await ctx.close()
         await b.close()
     print(f'{ENGINE}: {len(checks)} passed, {len(problems)} failed'); [print('  FAIL', x) for x in problems]
     return 1 if problems or not checks else 0

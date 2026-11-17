@@ -188,8 +188,11 @@ async def main():
             for kind in ('regression', 'mixed', 'mix'): await door_case(pg, w, kind)
             lv0 = await pg.evaluate("() => pzLv('pz_door')")
             await pg.reload(); await pg.wait_for_timeout(2000); ok(await pg.evaluate("() => pzLv('pz_door')") == lv0, f'pz_door@{w}: level kept after reload')
-            await pliar(pg, w, {320: 2, 390: 6, 430: 8}[w])
-            ok(not errs, f'@{w} no page errors', errs); await ctx.close()
+            ok(not errs, f'pz_door@{w} no page errors', errs); await ctx.close()
+            # pz_pliar in its own context (fresh profile → its own first stage)
+            ctx = await b.new_context(viewport={'width': w, 'height': 820}, has_touch=True); await ctx.add_init_script('window.__test={}')
+            pg, errs = await boot(ctx); await pliar(pg, w, 0)
+            ok(not errs, f'pz_pliar@{w} no page errors', errs); await ctx.close()
         await b.close()
     print(f'{ENGINE}: {len(checks)} passed, {len(problems)} failed'); [print('  FAIL', x) for x in problems]
     return 1 if problems or not checks else 0

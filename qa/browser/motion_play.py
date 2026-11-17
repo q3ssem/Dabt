@@ -21,8 +21,8 @@ async def drag(pg, src, dst):
     await pg.mouse.move(x0, y0); await pg.mouse.down(); await pg.mouse.move(x0 + 8, y0 + 8, steps=3)
     for _ in range(80):
         b = await pg.locator(dst).first.bounding_box()
-        if b['y'] >= 20 and b['y'] + b['height'] <= H - 70: break
-        await pg.mouse.move(x0, 12 if b['y'] < 20 else H - 12, steps=2); await pg.wait_for_timeout(60)
+        if b['y'] >= 150 and b['y'] + b['height'] <= H - 130: break  # out of the edge auto-scroll zones
+        await pg.mouse.move(x0, 12 if b['y'] < 150 else H - 12, steps=2); await pg.wait_for_timeout(60)
     b = await pg.locator(dst).first.bounding_box()
     await pg.mouse.move(b['x'] + b['width'] / 2, b['y'] + b['height'] / 2, steps=10); await pg.mouse.up(); await pg.wait_for_timeout(60)
 async def tap(pg, src, dst):
