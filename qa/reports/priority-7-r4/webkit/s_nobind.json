@@ -1,0 +1,1 @@
+{"variant": "nobind", "puzzle": "pz_aarch", "rounds": 0, "result": "CRASH: Locator.click: Timeout 8000ms exceeded.\nCall log:\n  - waiting for locator(\"#stag", "secs": 9, "new_segfaults": 0}

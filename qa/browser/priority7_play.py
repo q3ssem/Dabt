@@ -93,6 +93,23 @@ async def pobs(pg, w, lv, mode):
     if SHOTS and w == 390 and mode == 'drag': await pg.screenshot(path=f'{SHOTS}/pz_pobs_after_390.png', full_page=True)
     before = await stage(pg, 'pz_pobs'); ok(await result(pg) is True, f'{lab}: matching wins')
     if lv is None: await kept(pg, 'pz_pobs', before, lab)
+    if lv is None or w != 390: return
+    # move budget in the browser: 23 moves spent, then a long drag to the answer must not win and must stop at 24
+    await start(pg, 'pz_pobs', lv, 460 + lv); P = await pg.evaluate("() => { const P = window.__test.pz.P; return { n: P.n, R: P.R, ans: P.ans } }")
+    k = P['R']
+    while k + 4 <= 23: k += 4
+    for _ in range(k): await tap(pg, '.po-pad [data-m="t"]')
+    for i in range(23 - k): await tap(pg, '.po-pad [data-m="%s"]' % ('d' if i % 2 == 0 else 'u'))
+    s = await pg.evaluate("() => window.__test.pz.state()")
+    if s['moves'] == 23 and abs(P['ans'][0] - s['dx']) + abs(P['ans'][1] - s['dy']) >= 2:
+        box = await center(pg, '#pos'); cell = box['width'] / P['n']; x0 = box['x'] + (s['dx'] + .5) * cell; y0 = box['y'] + (s['dy'] + .5) * cell
+        await pg.mouse.move(x0, y0); await pg.mouse.down(); await pg.mouse.move(x0 + (P['ans'][0] - s['dx']) * cell, y0 + (P['ans'][1] - s['dy']) * cell, steps=12); await pg.mouse.up(); await pg.wait_for_timeout(400)
+        s2 = await pg.evaluate("() => window.__test.pz.state()")
+        ok(s2['moves'] == 24 and abs(s2['dx'] - s['dx']) + abs(s2['dy'] - s['dy']) == 1, f'pz_pobs {w}: with one move left a long drag travels one cell, counter 24', s2)
+        await pg.wait_for_timeout(2500); txt = await pg.evaluate("() => document.querySelector('#stage').innerText")
+        ok('خلصت الحركات' in txt and 'محلول' not in txt, f'pz_pobs {w}: no win past the 24-move budget (the board ends as out of moves)', txt[:160])
+    else: ok(False, f'pz_pobs {w}: budget scenario set up', s)
+    return
 
 async def aarch(pg, w, lv, mode):
     persist = lv is None

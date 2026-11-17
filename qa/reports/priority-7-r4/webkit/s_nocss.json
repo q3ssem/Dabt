@@ -1,0 +1,1 @@
+{"variant": "nocss", "puzzle": "pz_aarch", "rounds": 63, "result": "CRASH: Page.wait_for_timeout: Page crashed", "secs": 211, "new_segfaults": 2}
