@@ -1,5 +1,5 @@
 """motion-batch-1 — real play of the converted puzzles at 320/390/430 (no QA solve shortcuts for the moves).
-Atheran: pz_aarch, pz_alayer, pz_acity, pz_arelic — pointer drag (mouse with steps) AND the tap alternative (tap piece, tap slot).
+Atheran: pz_aarch, pz_alayer, pz_arelic — pointer drag (mouse with steps) AND the tap alternative (tap piece, tap slot); pz_acity — touch a species on the web.
 Side journey: ml10_07 (shelf drag + 45 s timer expiry), ml10_10 (finger drawing across the stars), ml10_16 (docks), ml10_25 (seal).
 Also: no horizontal overflow, no page errors, saves kept after reload.
 Usage: python3 qa/browser/motion_play.py http://127.0.0.1:8150/   (ENGINE=webkit; SHOTS=dir for 390 screenshots)"""
@@ -56,7 +56,8 @@ async def atheran(pg, w):
                     j = P['items'].index(e); await mv(pg, f'.mk-tray [data-tok="{j}"], [data-tray] [data-tok="{j}"]', f'.mk-slot.tl[data-slot="{q}"]')
                 ok(await pg.evaluate("() => { const h = window.__test.pz; return JSON.stringify(h.state()) === JSON.stringify(h.P.ev.map(e => h.P.items.indexOf(e))) }"), f'{gid}@{w} {mode}: timeline filled by hand'); go = '#alygo'
             elif gid == 'pz_acity':
-                await mv(pg, f'[data-tray] [data-tok="{P["gone"]}"]', '[data-slot="sim"]'); go = '#actgo'
+                # priority-7 R4: the hypothesis is chosen by touching the dark species on the web itself (no simulation stone)
+                await pg.locator(f'#actweb [data-sp="{P["gone"]}"]').scroll_into_view_if_needed(); await pg.locator(f'#actweb [data-sp="{P["gone"]}"]').click(); go = '#actgo'
             else:
                 await mv(pg, f'[data-tray="s"] [data-tok="{P["tr"]}"]', '[data-slot="cmp"]')
                 ok(await pg.evaluate("() => document.querySelector('#arlcmp').classList.contains('good')"), f'{gid}@{w} {mode}: comparison lights the true source')

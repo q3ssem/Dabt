@@ -230,3 +230,4 @@
 .mk-tok.src .mk-strip{margin-bottom:10px}
 .arl-tline{display:block;font-weight:800;color:#1F6E66;font-size:13px;margin-bottom:4px}
 .mk-slot.truth.full{background:#E8F6F3;border-color:#2E8A80}
+@media (max-width:360px){.po-board{width:calc(100% + 24px);max-width:none;margin-inline:-12px;padding:2px;border-radius:10px}}

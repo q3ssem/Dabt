@@ -51,14 +51,18 @@ async def main():
         for k in ('prog', 'done', 'stars', 'arts', 'aopen', 'lv', 'a5', 'ex10'): ok(new[k] == old[k], f'old save → new build: {k} unchanged', [old[k], new[k]])
         await pg.reload(); await pg.wait_for_timeout(2200); again = await pg.evaluate(SNAP)
         ok(again == new, 'old save survives a reload on the new build', [new, again])
-        # ---- 3. Atheran opens after the palace, through the new statues screen
-        await pg.evaluate("() => { const a = pState(); const i = PW.findIndex(w => w.id === 'pz_pliar'); a.done = Object.fromEntries(PW.filter(w => w.id && w.id !== 'pz_pliar').map(w => [w.id, 1])); a.prog = i; S.save() }")
-        ok(not await pg.evaluate("() => aOpen()"), 'Atheran closed while pz_pliar is not done')
+        # ---- 3. Atheran opens after the palace, through pz_pobs (two maps) and pz_pliar (statues) on the new boards
+        await pg.evaluate("() => { const a = pState(); a.done = Object.fromEntries(PW.filter(w => w.id && w.id !== 'pz_pliar' && w.id !== 'pz_pobs').map(w => [w.id, 1])); a.prog = PW.findIndex(w => w.id === 'pz_pliar'); S.save() }")
+        ok(not await pg.evaluate("() => aOpen()"), 'Atheran closed while pz_pobs and pz_pliar are not done')
+        for st in range(3):
+            await start(pg, 'pz_pobs'); await pg.evaluate("() => window.__test.pz.solve()"); await wait_res(pg); await pg.wait_for_timeout(700)
+        ok(await pg.evaluate("() => !!pState().done.pz_pobs"), 'pz_pobs (three stages on the two-layer board) counts for the palace')
+        ok(not await pg.evaluate("() => aOpen()"), 'Atheran still closed: pz_pliar is left')
         for st in range(3):
             await start(pg, 'pz_pliar')
             ok(not await pg.evaluate("() => aOpen()"), f'Atheran still closed before stage {st + 1} of pz_pliar')
-            for r in range(2):
-                await pg.evaluate("() => window.__test.pz.set()"); await pg.click('#pmgo'); await pg.wait_for_timeout(1300)
+            for r in range(2):  # the door entrance, then the pqMake hall (priority-7 R4 board)
+                await pg.evaluate("() => window.__test.pz.set()"); await pg.click('#plgo'); await pg.wait_for_timeout(1300)
             await wait_res(pg); await pg.wait_for_timeout(600)
         ok(await pg.evaluate("() => !!pState().done.pz_pliar"), 'pz_pliar won on the statues screen counts for the palace')
         ok(await pg.evaluate("() => aOpen()"), 'Atheran opens after the palace is completed')
