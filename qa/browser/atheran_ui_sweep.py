@@ -140,7 +140,7 @@ async def main():
                 await pg.wait_for_timeout(4000)  # background warm of the opened station
                 warm = await pg.evaluate("() => window.__ahWarm || {}")
                 cached = await pg.evaluate("async () => { const ks = await caches.keys(); const out = {}; for (const k of ks) out[k] = (await (await caches.open(k)).keys()).length; return out; }")
-                ok(any('athran-assets-3-core' in k for k in cached), 'service worker installed the 5.5.28 athran-assets-2 core cache', cached)
+                ok(any('motion-batch-1-core' in k for k in cached), 'service worker installed the 5.5.28 athran-assets-2 core cache', cached)
                 await ctx.set_offline(True)
                 await pg.reload(); await pg.wait_for_timeout(2000)
                 if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')

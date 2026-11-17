@@ -188,12 +188,12 @@ function gameStars(i){const nodes=[['N','الشمال',50,11,false,'✦'],['W','
  root.innerHTML=commonGame(i,board);bindCommon(i);
  const sf=$('#ex10-sf',root),pt=id=>{const n=nodes.find(x=>x[0]===id);return n[2]+','+n[3];};
  function paint(){root.querySelectorAll('[data-star]').forEach(b=>{b.classList.toggle('visited',gameState.path.includes(b.dataset.star));b.classList.toggle('head',gameState.path.at(-1)===b.dataset.star);});root.querySelectorAll('[data-star-edge]').forEach(l=>{const [a,b]=l.dataset.starEdge.split('-'),p=gameState.path,ia=p.indexOf(a),ib=p.indexOf(b);l.classList.toggle('route-done',ia>=0&&ib>=0&&Math.abs(ia-ib)===1);});$('#ex10-trail',root).setAttribute('points',gameState.path.map(pt).join(' '));root.querySelectorAll('.mk-cdir').forEach((c,k)=>c.classList.toggle('done',k<gameState.path.length));}
- function visit(n,silent){const p=gameState.path,last=p.at(-1);if(gameState.finished||n===last)return;if(p.length>1&&n===p[p.length-2]){p.pop();paint();return;}
+ function visit(n,silent){const p=gameState.path,last=p.at(-1);if(gameState.finished||n===last)return;if(p.length>1&&n===p[p.length-2]){if(silent)return;p.pop();paint();return;}
   if(edges.some(([a,b])=>a===last&&b===n)&&!p.includes(n)){p.push(n);gameState.moves++;paint();if(p.length===solution.length){if(p.join('|')===solution.join('|'))winStage(i,'اكتمل مسار النجوم وأضاء قلب أَثْران.');else feedback('المسار لا يطابق أسهم البوصلة. تراجع عن آخر وصلة وجرّب.','bad');}}
   else if(!silent)feedback('هذا النجم لا يتصل بآخر نجم في مسارك.','bad');}
  let drawing=false;
  sf.addEventListener('pointerdown',e=>{const b=e.target.closest('[data-star]');if(!b)return;drawing=true;try{sf.setPointerCapture(e.pointerId);}catch(_){}if(b.dataset.star!==gameState.path.at(-1))visit(b.dataset.star);e.preventDefault();});
- sf.addEventListener('pointermove',e=>{if(!drawing)return;const el=document.elementFromPoint(e.clientX,e.clientY),b=el&&el.closest&&el.closest('[data-star]');if(b&&sf.contains(b))visit(b.dataset.star,true);});
+ sf.addEventListener('pointermove',e=>{if(!drawing)return;const el=document.elementFromPoint(e.clientX,e.clientY),b=el&&el.closest&&el.closest('[data-star]');if(b&&sf.contains(b)){/* a sliding finger links a star only near its centre, so grazing a neighbour on the way does not add or undo a link */const r=b.getBoundingClientRect();if(Math.hypot(e.clientX-r.left-r.width/2,e.clientY-r.top-r.height/2)<=r.width*.34)visit(b.dataset.star,true);}});
  const stop=()=>{drawing=false;};sf.addEventListener('pointerup',stop);sf.addEventListener('pointercancel',stop);
  root.querySelector('[data-ex10="undo-star"]').onclick=()=>{if(gameState.path.length>1){gameState.path.pop();paint();}};root.querySelector('[data-ex10="reset-star"]').onclick=()=>{gameState.path=['N'];paint();};
  gameState.solve=()=>solution.slice(1).forEach(n=>visit(n));paint();}

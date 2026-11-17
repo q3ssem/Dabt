@@ -8,7 +8,14 @@
   const svgNS = 'http://www.w3.org/2000/svg';
   function attach(root, opt) {
     // opt: { drop(tokId, slotId|null, tokEl, slotEl), canDrag(tokEl), onPick(tokId) }
-    let sel = null, drag = null;
+    let sel = null, drag = null, auto = 0, last = null;
+    // edge auto-scroll while dragging: near the top/bottom edge of the screen (or of the scrolling stage) the page follows the finger
+    const scroller = () => { for (let e = root.parentElement; e && e !== document.body; e = e.parentElement) { const cs = getComputedStyle(e); if (/(auto|scroll)/.test(cs.overflowY) && e.scrollHeight > e.clientHeight + 2) return e; } return document.scrollingElement || document.documentElement; };
+    const tick = () => { auto = 0; if (!drag || !drag.moved || !last) return; const sc = scroller(), top = sc === document.scrollingElement || sc === document.documentElement ? 0 : sc.getBoundingClientRect().top,
+        bot = sc === document.scrollingElement || sc === document.documentElement ? innerHeight : sc.getBoundingClientRect().bottom, E = 64; let v = 0;
+      if (last.y < top + E) v = -Math.ceil((top + E - last.y) / 5); else if (last.y > bot - E) v = Math.ceil((last.y - (bot - E)) / 5);
+      if (v) { const before = sc.scrollTop; sc.scrollTop += v; if (sc.scrollTop !== before) { mark(last.x, last.y); auto = requestAnimationFrame(tick); } } };
+    const mark = (x, y) => { root.querySelectorAll('.mk-over').forEach(q => q.classList.remove('mk-over')); if (!drag || !drag.ghost) return; drag.ghost.style.visibility = 'hidden'; const t = target(x, y); drag.ghost.style.visibility = ''; if (t && root.contains(t)) t.classList.add('mk-over'); };
     const clearSel = () => { root.querySelectorAll('.mk-sel').forEach(e => e.classList.remove('mk-sel')); root.classList.remove('mk-picking'); sel = null; };
     const target = (x, y) => { const el = document.elementFromPoint(x, y); return el && (el.closest('[data-slot]') || el.closest('[data-tray]')); };
     const place = (tok, dst) => { if (!dst || !root.contains(dst)) return false; const sid = dst.dataset.slot != null ? dst.dataset.slot : null; opt.drop(tok.dataset.tok, sid, tok, dst); return true; };
@@ -30,16 +37,17 @@
       }
       e.preventDefault();
       drag.ghost.style.transform = `translate(${e.clientX - drag.ox}px,${e.clientY - drag.oy}px)`;
-      root.querySelectorAll('.mk-over').forEach(x => x.classList.remove('mk-over'));
-      drag.ghost.style.visibility = 'hidden'; const t = target(e.clientX, e.clientY); drag.ghost.style.visibility = '';
-      if (t && root.contains(t)) t.classList.add('mk-over');
+      last = { x: e.clientX, y: e.clientY }; mark(e.clientX, e.clientY); if (!auto) auto = requestAnimationFrame(tick);
     }, { passive: false });
     const end = e => {
       if (!drag || (e && e.pointerId !== drag.id)) return;
-      const d = drag; drag = null; root.querySelectorAll('.mk-over').forEach(x => x.classList.remove('mk-over'));
+      const d = drag; drag = null; last = null; if (auto) { cancelAnimationFrame(auto); auto = 0; } root.querySelectorAll('.mk-over').forEach(x => x.classList.remove('mk-over'));
       if (d.moved) { d.tok.classList.remove('mk-lift'); if (d.ghost) d.ghost.remove(); if (e && e.type === 'pointerup') place(d.tok, target(e.clientX, e.clientY)); return; }
       // a tap: select the token, or place the selected token on a tapped slot
       if (sel === d.tok) { clearSel(); return; }
+      // a piece is picked and the player taps a slot that already holds a piece: place (swap) instead of re-picking
+      const hold = sel && d.tok.parentElement && d.tok.parentElement.closest('[data-slot]');
+      if (hold && root.contains(hold)) { const t = sel; clearSel(); place(t, hold); return; }
       clearSel(); sel = d.tok; d.tok.classList.add('mk-sel'); root.classList.add('mk-picking'); if (opt.onPick) opt.onPick(d.tok.dataset.tok);
     };
     root.addEventListener('pointerup', end); root.addEventListener('pointercancel', end);
@@ -51,6 +59,8 @@
     root.addEventListener('keydown', e => {
       if (e.key !== 'Enter' && e.key !== ' ') return;
       const tok = e.target.closest('[data-tok]'), dst = e.target.closest('[data-slot]') || e.target.closest('[data-tray]');
+      const holdK = tok && sel && sel !== tok && tok.parentElement && tok.parentElement.closest('[data-slot]');
+      if (holdK && root.contains(holdK)) { e.preventDefault(); const t = sel; clearSel(); place(t, holdK); return; }
       if (tok) { e.preventDefault(); if (sel === tok) clearSel(); else { clearSel(); sel = tok; tok.classList.add('mk-sel'); root.classList.add('mk-picking'); } }
       else if (dst && sel) { e.preventDefault(); const t = sel; clearSel(); place(t, dst); }
     });

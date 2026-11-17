@@ -11,17 +11,18 @@
   const { icon } = MK;
   const STATUE = 'treasure/art/story5/ch2_s3_piece_bird_statue.webp';
   const DOOR_SVG = c => `<svg viewBox="0 0 40 50" aria-hidden="true"><path d="M4 48V18q0-14 16-14t16 14v30z" fill="${c}" stroke="#3A2616" stroke-width="1.6"/><path d="M20 4v44" stroke="#3A2616" stroke-width="1.2" opacity=".5"/><circle cx="15" cy="29" r="1.6" fill="#F2C553"/><circle cx="25" cy="29" r="1.6" fill="#F2C553"/></svg>`;
-  const DCOL = ['#8E5F3A', '#3F6F8C', '#5E8A4E', '#9A6A2A', '#7A4E8C'];
+  const DCOL = ['#C9493B', '#3F7CC0', '#5E9550', '#D99A1E', '#8E5F8E'];   // the door colours of the original card
+  const DOOR = c => (typeof SPR !== 'undefined' && SPR.door) ? SPR.door(c) : DOOR_SVG(c);  // approved door art first
   const DNAME = ['الأيمن', 'الأوسط', 'الأيسر', 'البعيد'];
   const MASK = '<path d="M8 14q12-8 24 0v6q-12 12-24 0z"/><path d="M14 18h4M22 18h4"/>';
-  const doorMini = d => `<span class="pm-door" style="--c:${DCOL[d]}">${DOOR_SVG(DCOL[d])}<b>${['١', '٢', '٣', '٤', '٥'][d]}</b></span>`;
+  const doorMini = d => `<span class="pm-door" style="--c:${DCOL[d]}">${DOOR(DCOL[d])}<b>${['١', '٢', '٣', '٤', '٥'][d]}</b></span>`;
 
   /* ---------------------------------------------------------- the hall: statues + doors + beams */
   function hall(api, opt) {
     // opt: { D, k, names[], plaque(i) html, solved(dir[]) -> bool, onWin(), title, lead }
     const D = opt.D, k = opt.k, dir = Array(k).fill(D);   // D = turned away
     const wrap = document.createElement('div'); wrap.className = 'pm-hall';
-    wrap.innerHTML = `<div class="pm-doors" style="--d:${D}">${[...Array(D)].map((_, d) => `<div class="pm-dw" data-door="${d}">${DOOR_SVG(DCOL[d])}<small>${['١', '٢', '٣', '٤', '٥'][d]}</small></div>`).join('')}</div>
+    wrap.innerHTML = `<div class="pm-doors" style="--d:${D}">${[...Array(D)].map((_, d) => `<div class="pm-dw" data-door="${d}">${DOOR(DCOL[d])}<small>${['١', '٢', '٣', '٤', '٥'][d]}</small></div>`).join('')}</div>
       <svg class="pm-beams" viewBox="0 0 100 40" preserveAspectRatio="none" aria-hidden="true"></svg>
       <div class="pm-statues" style="--k:${k}">${[...Array(k)].map((_, i) => `<div class="pm-st" data-st="${i}">
         <button class="pm-turn" data-turn="${i}" aria-label="دوّر ${opt.names[i]}"><img alt="" src="${STATUE}"><i class="pm-face"></i></button>
