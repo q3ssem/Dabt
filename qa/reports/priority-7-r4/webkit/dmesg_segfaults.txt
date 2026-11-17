@@ -4,3 +4,4 @@
 [ 1940.929476] eadedCompositor[9561]: segfault at 0 ip 00007facaa6a0f8a sp 00007fac2adf93d0 error 4 in libWPEWebKit-2.0.so.1.12.0[60a0f8a,7faca4e08000+5edd000] likely on CPU 1 (core 1, socket 0)
 [ 1953.963571] eadedCompositor[9558]: segfault at 0 ip 00007fd17a4a0f8a sp 00007fd0fc9fa3d0 error 4 in libWPEWebKit-2.0.so.1.12.0[60a0f8a,7fd174c08000+5edd000] likely on CPU 0 (core 0, socket 0)
 [ 2382.966779] eadedCompositor[11830]: segfault at 0 ip 00007fe0a4ca0f8a sp 00007fe031ff63d0 error 4 in libWPEWebKit-2.0.so.1.12.0[60a0f8a,7fe09f408000+5edd000] likely on CPU 0 (core 0, socket 0)
+[ 5720.648185] eadedCompositor[16889]: segfault at 0 ip 00007f462aca0f8a sp 00007f45ab5fa3d0 error 4 in libWPEWebKit-2.0.so.1.12.0[60a0f8a,7f4625408000+5edd000] likely on CPU 0 (core 0, socket 0)
