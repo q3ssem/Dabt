@@ -4772,10 +4772,20 @@ function loMake(lv){const n=[3,4,4,5,5,5,6,6][lv-1],k=[3,3,5,5,7,9,9,12][lv-1];f
 
 /* ---- untangle: a planar graph (greedy non-crossing edges), then scrambled ---- */
 const segX=(a,b,c,d)=>{if(a===c||a===d||b===c||b===d)return false;const o=(p,q,r)=>Math.sign((q[0]-p[0])*(r[1]-p[1])-(q[1]-p[1])*(r[0]-p[0]));return o(a,b,c)*o(a,b,d)<0&&o(c,d,a)*o(c,d,b)<0};
-function unCross(P,pos){let c=0;const bad=new Set();for(let i=0;i<P.e.length;i++)for(let j=i+1;j<P.e.length;j++){const[a,b]=P.e[i],[x,y]=P.e[j];if(a===x||a===y||b===x||b===y)continue;if(segX(pos[a],pos[b],pos[x],pos[y])){c++;bad.add(i);bad.add(j)}}return{c,bad}}
+function unCross(P,pos){let c=0;const bad=new Set(),E=P.e,N=pos.length;
+  const near=(p,a,b)=>{const dx=b[0]-a[0],dy=b[1]-a[1],L=dx*dx+dy*dy;if(!L)return Math.hypot(p[0]-a[0],p[1]-a[1]);const t=Math.max(0,Math.min(1,((p[0]-a[0])*dx+(p[1]-a[1])*dy)/L));return Math.hypot(p[0]-a[0]-t*dx,p[1]-a[1]-t*dy)};
+  for(let i=0;i<E.length;i++)for(let j=i+1;j<E.length;j++){const[a,b]=E[i],[x,y]=E[j];const shared=a===x||a===y||b===x||b===y;
+    if(shared){/* edges meeting at their common node are fine, unless they lie on top of each other */const s=a===x||a===y?a:b,o1=s===a?b:a,o2=s===x?y:x;const v1=[pos[o1][0]-pos[s][0],pos[o1][1]-pos[s][1]],v2=[pos[o2][0]-pos[s][0],pos[o2][1]-pos[s][1]];const l1=Math.hypot(...v1),l2=Math.hypot(...v2);
+      if(l1&&l2&&(v1[0]*v2[0]+v1[1]*v2[1])/(l1*l2)>.9995){c++;bad.add(i);bad.add(j)}continue}
+    if(segX(pos[a],pos[b],pos[x],pos[y])||near(pos[a],pos[x],pos[y])<1.2||near(pos[b],pos[x],pos[y])<1.2||near(pos[x],pos[a],pos[b])<1.2||near(pos[y],pos[a],pos[b])<1.2){c++;bad.add(i);bad.add(j)}}
+  /* a node stacked on another node, or sitting on an edge it does not belong to, is not an untangled drawing */
+  for(let k=0;k<N;k++){for(let m=k+1;m<N;m++)if(Math.hypot(pos[k][0]-pos[m][0],pos[k][1]-pos[m][1])<6){c++;E.forEach(([a,b],i)=>{if(a===k||b===k||a===m||b===m)bad.add(i)})}
+    E.forEach(([a,b],i)=>{if(a!==k&&b!==k&&near(pos[k],pos[a],pos[b])<3.4){c++;bad.add(i)}})}
+  return{c,bad}}
 function unMake(lv){const n=[6,7,8,9,10,12,14,16][lv-1];for(let t=0;t<60;t++){const pts=[];while(pts.length<n){const p=[10+Math.random()*80,10+Math.random()*80];if(pts.every(q=>Math.hypot(q[0]-p[0],q[1]-p[1])>14))pts.push(p)}
     const cand=[];for(let i=0;i<n;i++)for(let j=i+1;j<n;j++)cand.push([i,j,Math.hypot(pts[i][0]-pts[j][0],pts[i][1]-pts[j][1])]);cand.sort((a,b)=>a[2]-b[2]);const e=[],deg=new Array(n).fill(0);
-    for(const[i,j]of cand){if(deg[i]>=4||deg[j]>=4)continue;if(e.some(([a,b])=>segX(pts[i],pts[j],pts[a],pts[b])))continue;e.push([i,j]);deg[i]++;deg[j]++}if(deg.some(d=>d<2))continue;
+    const thru=(i,j)=>pts.some((q,k)=>{if(k===i||k===j)return false;const a=pts[i],b=pts[j],dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((q[0]-a[0])*dx+(q[1]-a[1])*dy)/(dx*dx+dy*dy)));return Math.hypot(q[0]-a[0]-t*dx,q[1]-a[1]-t*dy)<5});
+    for(const[i,j]of cand){if(deg[i]>=4||deg[j]>=4)continue;if(thru(i,j))continue;if(e.some(([a,b])=>segX(pts[i],pts[j],pts[a],pts[b])))continue;e.push([i,j]);deg[i]++;deg[j]++}if(deg.some(d=>d<2))continue;
     const P={n,e,sol:pts};const ord=shuffle([...Array(n).keys()]),pos=[];ord.forEach((v,k)=>{const a=k/n*6.283;pos[v]=[50+38*Math.cos(a),50+38*Math.sin(a)]});const c=unCross(P,pos).c;if(c<Math.max(2,lv))continue;P.pos=pos;return P}return unMake(Math.max(1,lv-1))}
 
 /* ---- peg solitaire: built backwards from a single peg ---- */
@@ -4943,7 +4953,7 @@ function runBinary(){return pzPlay('pz_binary',api=>{
 function runIce(){return pzPlay('pz_ice',api=>{
   const P=icMake(api.lv),{w,h}=P;let pos=P.start,moves=0,busy=false;
   api.body.innerHTML=`<div class="icw2 ltr" id="icw"><div class="icb2" id="icb" style="--w:${w};--h:${h}">${gridBtns(w,h,i=>P.rock[i]?`<span class="icc2 rock">${SPR.boulder}</span>`:i===P.goal?`<span class="icc2 goal">${SPR.igloo}</span>`:`<span class="icc2${(i*7)%11===0?' glint':''}"></span>`)}</div><div class="ictok2" id="ict">${SPR.penguin2}</div></div>${arrowPad()}<div class="row skbtns"><button class="pzgive" id="icre">↺ من جديد</button></div>`;
-  api.msg(`البطريق ينزلق حتى يصطدم بصخرة أو بالحافة. أوصله إلى الكوخ الجليدي. أقل حل: <b class="num">${P.min}</b>`);
+  api.msg(`البطريق ينزلق حتى يصطدم بصخرة أو بالحافة، ويتوقف أيضًا عند الكوخ إذا مرّ به في طريقه. أوصله إلى الكوخ الجليدي. أقل حل: <b class="num">${P.min}</b>`);
   const put=(p,ms)=>{const t=$('#ict');t.style.transitionDuration=(ms||0)+'ms';t.style.left=(p%w)*100/w+'%';t.style.top=(p/w|0)*100/h+'%';t.style.width=100/w+'%';t.style.height=100/h+'%'};
   function spray(from,to,d,ms){const n=Math.abs(to%w-from%w)+Math.abs((to/w|0)-(from/w|0));for(let k=1;k<=n;k++){const c=from+k*(D4[d][1]*w+D4[d][0]);setTimeout(()=>{const e=document.createElement('i');e.className='icspray';e.style.left=(c%w+.5)*100/w+'%';e.style.top=(((c/w|0)+.8))*100/h+'%';$('#icw')&&$('#icw').appendChild(e);setTimeout(()=>e.remove(),600)},k*ms/n)}}
   function step(d){if(api.ended||busy)return;const m=icSlide(P,pos,d);const t=$('#ict');if(m===pos){sfx.bad();t.classList.remove('bump');void t.offsetWidth;t.classList.add('bump');return}const dist=Math.abs(m%w-pos%w)+Math.abs((m/w|0)-(pos/w|0)),ms=75*dist+80;busy=true;moves++;
@@ -4962,7 +4972,7 @@ const PZ_NEW2=[
  {id:'pz_untangle',maxLv:8,col:['#7FE3F0','#3F7CC0'],name:'فك التشابك',lab:'Untangle',why:'تصوّر مكاني: تعيد ترتيب الشبكة ذهنيًا حتى تختفي التقاطعات.',how:['اسحب النقاط.','الخطوط الحمراء متقاطعة.','اجعلها كلها خضراء.'],run:runUntangle},
  {id:'pz_stroke',maxLv:8,col:['#8BE36A','#3FBF6A'],name:'بخط واحد',lab:'One stroke',why:'من أشهر ألغاز لايتون: ارسم الشكل دون رفع القلم، وسره في نقاط البداية.',how:['اضغط نقطة البداية.','ثم النقاط المتصلة واحدة واحدة.','لا تمر على خط مرتين.'],run:runStroke},
  {id:'pz_binary',maxLv:8,col:['#F2B03C','#5B6FB8'],name:'شمس وقمر',lab:'Takuzu',why:'لغز منطق ثنائي: استنتاجات صغيرة متتالية حتى تمتلئ اللوحة.',how:['شموس وأقمار بالتساوي في كل صف وعمود.','لا ثلاثة متشابهة متجاورة.','اضغط للتبديل.'],run:runBinary},
- {id:'pz_ice',maxLv:8,col:['#BFE3F2','#3F7CC0'],name:'الجليد المنزلق',lab:'Ice slide',why:'لغز الانزلاق على الجليد: تخطط بالعكس من الهدف لأنك لا تستطيع التوقف أينما تريد.',how:['اسحب أو استخدم الأسهم.','البطريق ينزلق حتى يصطدم.','أوصله إلى العلم.'],run:runIce}];
+ {id:'pz_ice',maxLv:8,col:['#BFE3F2','#3F7CC0'],name:'الجليد المنزلق',lab:'Ice slide',why:'لغز الانزلاق على الجليد: تخطط بالعكس من الهدف لأنك لا تستطيع التوقف أينما تريد.',how:['اسحب أو استخدم الأسهم.','البطريق ينزلق حتى يصطدم بصخرة أو بالحافة، ويتوقف عند الكوخ إذا مرّ به.','أوصله إلى الكوخ.'],run:runIce}];
 PZ_NEW2.forEach(g=>{Object.assign(g,{cat:'log',puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g});
 PZ_TYPES.splice(PZ_TYPES.indexOf('tol'),0,...PZ_NEW2.map(g=>g.id));
 
@@ -5528,7 +5538,9 @@ const xbWheel=(id,k,label)=>{const R1=47,R2=32.5;let out='',inn='';for(let i=0;i
 function runXBottle(){return pzPlay('pz_xbottle',api=>{
   const P=xbMake(api.lv);let k1=0,k2=0,miss=0,read=false;
   const dec=()=>P.shown.map((w,i)=>xbDec(w,P.two&&i%2?k2:k1));
-  const draw=()=>{$('#xbtxt').innerHTML=dec().map((w,i)=>`<span class="${P.two?(i%2?'w2':'w1'):''}">${w}</span>`).join(' ');$('#xbw1').closest('.xbwheel').querySelector('b').textContent=XAR(k1);if(P.two)$('#xbw2').closest('.xbwheel').querySelector('b').textContent=XAR(k2)};
+  /* the destination can only be chosen once the message is actually decoded (every wheel on its key) */
+  const isRead=()=>k1===P.s1&&(!P.two||k2===P.s2);const gate=()=>{read=isRead();api.body.querySelectorAll(".xbo2").forEach(b=>{if(!b.classList.contains("no")){b.style.opacity=read?"":".45";b.setAttribute("aria-disabled",read?"false":"true")}})};
+  const draw=()=>{gate();$('#xbtxt').innerHTML=dec().map((w,i)=>`<span class="${P.two?(i%2?'w2':'w1'):''}">${w}</span>`).join(' ');$('#xbw1').closest('.xbwheel').querySelector('b').textContent=XAR(k1);if(P.two)$('#xbw2').closest('.xbwheel').querySelector('b').textContent=XAR(k2)};
   const rules=P.rev?'<li>القرصان كتب كل كلمة بالمقلوب: اقرأها من اليسار.</li>':'';
   api.body.innerHTML=xSheet(`${xHead(XS_.bottle,'رسالة في زجاجة')}<div class="xbcode">${P.shown.map((w,i)=>`<span class="${P.two?(i%2?'w2':'w1'):''}">${w}</span>`).join(' ')}</div>
    <ol class="xnote"><li>كل حرف في الرسالة مُزاح بعدد ثابت على عجلة الحروف. لفّ الحلقة الداخلية حتى تصير الرسالة مفهومة.</li>${P.two?'<li>الكلمات الذهبية لها مفتاح، والكلمات الفضية لها مفتاح آخر: عجلتان.</li>':''}${rules}${P.crib==='first'?`<li>أول كلمة في الرسالة: «${P.words[0]}».</li>`:P.crib==='word'?`<li>في الرسالة كلمة «${P.cw}».</li>`:''}</ol>
@@ -5538,7 +5550,7 @@ function runXBottle(){return pzPlay('pz_xbottle',api=>{
   draw();api.msg('لفّ العجلة حتى تقرأ الرسالة، ثم اختر المكان.');
   api.body.querySelectorAll('.xbwheel').forEach((w,wi)=>w.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{if(api.ended)return;const d=+b.dataset.r;if(wi===0)k1=(k1+d+28)%28;else k2=(k2+d+28)%28;
     const g=w.querySelector('.xbi');g.style.transform=`rotate(${-(wi?k2:k1)*360/28}deg)`;tone(700+((wi?k2:k1)%7)*40,.03);draw()}));
-  function answer(p,b){if(api.ended)return;if(p===P.place){b.classList.add('ok');k1=P.s1;k2=P.s2;draw();$('#xbtxt').classList.add('solved');sfx.ok(2);later(()=>xWin(api,'pz_xbottle',`فككت شيفرة القرصان: «${P.words.join(' ')}».`),700);return}
+  function answer(p,b){if(api.ended)return;if(!isRead()){gate();api.msg("فكّ الرسالة أولًا: لفّ العجلة حتى تصير كل كلماتها مفهومة، ثم اختر المكان.");if(b){b.classList.remove("xbnudge");void b.offsetWidth;b.classList.add("xbnudge")}return}if(p===P.place){b.classList.add('ok');k1=P.s1;k2=P.s2;draw();$('#xbtxt').classList.add('solved');sfx.ok(2);later(()=>xWin(api,'pz_xbottle',`فككت شيفرة القرصان: «${P.words.join(' ')}».`),700);return}
     miss++;b.classList.add('no');b.disabled=true;api.wrong();if(miss>=2){k1=P.s1;k2=P.s2;draw();api.over(`الرسالة كانت: «${P.words.join(' ')}». المفتاح ${XAR(P.s1)}${P.two?` و${XAR(P.s2)}`:''}.`);return}api.msg('ليس هذا المكان. اقرأ الرسالة جيدًا: باقي محاولة واحدة.')}
   api.body.querySelectorAll('.xbo2').forEach(b=>b.onclick=()=>answer(b.dataset.p,b));pzHook({P,answer:p=>answer(p,api.body.querySelector(`.xbo2[data-p="${p}"]`)),setK:(a,b)=>{k1=a;k2=b||0;draw()},dec});
   return{hint:k=>{if(k===1)return'ابحث عن كلمة قصيرة متكررة مثل «ال»: الحرفان المشفّران الأولان في كثير من الكلمات يمثلان «ا» و«ل».';
@@ -5797,7 +5809,11 @@ function runTDig(){return pzPlay('pz_tdig',api=>{
   api.body.querySelectorAll('#xb .xc[data-i]').forEach(b=>b.onclick=()=>tap(+b.dataset.i));pzHook({P,tap,cand:()=>cand,left:()=>left,dug});
   return{hint:k=>{if(k===1)return'كل رقم يرسم حول الحفرة «ماسة» من المربعات على نفس البعد. حفرتان في زاويتين متباعدتين تتقاطع ماستاهما في مكان واحد أو مكانين.';
     if(k===2){cand.forEach(c=>{const e=cell(c);if(e)e.classList.add('cand')});return`الكنز في واحد من المربعات المضيئة (${XAR(cand.length)}).`}
-    const c=tdBest(P,cand,left,dug);if(c==null)return null;cell(c).classList.add('hl');return'احفر في المربع المضيء: يضمن لك الوصول بالحفر الباقية.'},
+    const c=tdBest(P,cand,left,dug);if(c==null)return null;cell(c).classList.add('hl');
+    /* claim a guarantee only when it is proven for the digs left; otherwise say it is the most informative dig */
+    const parts=new Map();for(const t of cand){if(t===c)continue;const d=tiMd(c,t,n);(parts.get(d)||parts.set(d,[]).get(d)).push(t)}
+    const sure=[...parts.values()].every(a=>tdCan(a,left-1,P.dig,n,new Map()));
+    return sure?'احفر في المربع المضيء: يضمن لك الوصول بالحفر الباقية.':'احفر في المربع المضيء: هو الأكثر كشفًا الآن، لكنه لا يضمن الفوز بالحفر الباقية. قد تحتاج قليلًا من الحظ.'},
    reveal:()=>{xFoundFx(n,P.T);return'هنا كان الكنز.'}}})}
 
 /* ---------- 9) قفل الصندوق: crack the symbol lock, open the chest ---------- */
@@ -6602,7 +6618,7 @@ Object.assign(PART,{page1:{n:'صفحة من يوميات القبطان',d:'«ب
 const PLB_S=['بنيت هذا القصر لأحرس سرًا أثمن من كل ذهب البحار السبعة','الملوك السبعة تقاتلوا على تاج واحد فقسمته سبع قطع ونثرتها في الجزر','من يقرأ هذه اليوميات سيعرف أن البحر يحتاج حارسًا لا ملكًا','الجسر والكهف والمرصد كلها أجزاء من ميزان واحد يحفظ توازن الممالك','لا تثق بالتماثيل التي تتكلم كثيرًا فالصادق منها قليل الكلام','وضعت القلب الأخير خلف العروش لأن من يصل إليه يكون قد فهم كل شيء'];
 const PLB_LV=[[4,1],[5,1],[5,1],[6,1],[6,2],[7,1],[7,2],[8,2]];
 function plbMake(lv){const[k,ov]=PLB_LV[lv-1];for(let t=0;t<100;t++){const w=pick(PLB_S).split(' ');const step=Math.max(2,Math.floor((w.length-ov)/k));if(step*k+ov>w.length+step)continue;const pages=[];
-  for(let i=0;i<k;i++){const a=i*step,b=Math.min(w.length,a+step+ov);if(a>=w.length)break;pages.push(w.slice(a,b).join(' '))}if(pages.length<3)continue;return{pages,order:shuffle(pages.map((_,i)=>i)),ov,full:w.join(' ')}}return plbMake(1)}
+  for(let i=0;i<k;i++){const a=i*step,b=Math.min(w.length,a+step+ov);if(a>=w.length)break;pages.push(w.slice(a,b).join(' '))}if(pages.length<3)continue;const order=shuffle(pages.map((_,i)=>i));if(order.every((p,i)=>p===i))continue;return{pages,order,ov,full:w.join(' ')}}return plbMake(1)}
 function runPLib(){return pzPlay('pz_plib',api=>{
   const P=plbMake(api.lv);let cur=P.order.slice(),sel=-1,moves=0,busy=false;const lim=P.pages.length*3;
   api.body.innerHTML=xSheet(`<div class="pbk"><i>${XS_.librarian}</i><div><b>أمينة المكتبة</b><p>«آخر ${P.ov===1?'كلمة':'كلمتين'} في كل صفحة ${P.ov===1?'هي':'هما'} أول الصفحة التي بعدها. رتّبها لي، أرجوك».</p></div></div>
@@ -6742,7 +6758,7 @@ function runPJail(){return pzPlay('pz_pjail',api=>{
 const PO_LV=[[6,4,0],[6,5,0],[7,5,1],[7,6,1],[8,6,1],[8,7,1],[9,7,1],[9,8,1]];
 function poMake(lv){const[n,k,rot]=PO_LV[lv-1];for(let t=0;t<200;t++){const bot=new Set();while(bot.size<k+4)bot.add(rnd(n*n));const sub=shuffle([...bot]).slice(0,k).map(i=>[i%n,(i/n)|0]);
   const mx=Math.min(...sub.map(a=>a[0])),my=Math.min(...sub.map(a=>a[1])),shape=sub.map(([x,y])=>[x-mx,y-my]);const R=rot?rnd(4):0;const top=paRot(shape,(4-R)%4);
-  const w=Math.max(...top.map(a=>a[0]))+1,h=Math.max(...top.map(a=>a[1]))+1;if(w>n||h>n)continue;const P={n,bot:[...bot],top,R,ans:[mx,my],shape};if(poCountSolutions(P)!==1)continue;return P}return poMake(Math.max(1,lv-1))}
+  const w=Math.max(...top.map(a=>a[0]))+1,h=Math.max(...top.map(a=>a[1]))+1;if(w>n||h>n)continue;const P={n,bot:[...bot],top,R,ans:[mx,my],shape};if(poCountSolutions(P)!==1)continue;if(top.every(([x,y])=>bot.has(y*n+x)))continue;return P}return poMake(Math.max(1,lv-1))}
 function runPObs(){return pzPlay('pz_pobs',api=>{
   const P=poMake(api.lv),n=P.n;let r=0,dx=0,dy=0,moves=0,busy=false;const lim=24;
   const cur=()=>paRot(P.top,r).map(([x,y])=>[x+dx,y+dy]);const bset=new Set(P.bot);
@@ -8133,7 +8149,7 @@ function wlkMake(lv){const[no,ns,shift,miss]=WLK_LV[lv-1];for(let t=0;t<300;t++)
   const keys=opts.map(wlkNorm);if(new Set(keys).size<no)continue;
   let refl=truth.map(([x,y])=>[x,4-y]);const dx=shift?pick([-1,1]):0;refl=refl.map(([x,y])=>[x+dx,y]);let hide=-1;if(miss){hide=rnd(ns)}const shown=refl.filter((_,i)=>i!==hide);
   const matches=opts.filter(o=>{const r=o.map(([x,y])=>[x,4-y]);const rk=r.map(p=>p.join());const sh=shown;for(let ox=-6;ox<=6;ox++)for(let oy=-5;oy<=5;oy++){const S2=new Set(r.map(([x,y])=>(x+ox)+','+(y+oy)));if(sh.every(([x,y])=>S2.has(x+','+y))&&sh.length>=r.length-(miss?1:0))return true}return false});
-  if(matches.length!==1||matches[0]!==truth)continue;const order=shuffle([...Array(no).keys()]);return{opts:order.map(i=>opts[i]),ans:order.indexOf(0),shown,miss}}return wlkMake(Math.max(1,lv-1))}
+  if(matches.length!==1||matches[0]!==truth)continue;const order=shuffle([...Array(no).keys()]);return{opts:order.map(i=>opts[i]),ans:order.indexOf(0),shown,miss,shift:!!shift}}return wlkMake(Math.max(1,lv-1))}
 function runWLake(){return pzPlay('pz_wlake',api=>{
   const P=wlkMake(api.lv);let sel=-1,miss=0,busy=false;
   const sky=(pts,cls)=>`<svg viewBox="-1 -1 8 7" class="${cls}"><rect x="-1" y="-1" width="8" height="7" fill="${cls==='wlkr'?'#3D6E80':'#1E2A44'}"/>${pts.map(([x,y])=>`<circle cx="${x+.5}" cy="${y+.5}" r=".28" fill="#F2E7B8"/>`).join('')}</svg>`;
