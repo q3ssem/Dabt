@@ -433,3 +433,18 @@
 .ex10 .ex10-level-card.done .ex10-state-badge svg{width:11px;height:11px}
 .ex10 .ex10-level-card.locked img{filter:brightness(.6)}
 .ex10 .ex10-level-card b{font-size:13px}.ex10 .ex10-level-card small{font-size:11px;margin-top:2px}
+
+/* ===== motion-batch-1: stages 07 · 10 · 16 · 25 rebuilt as drag boards (pictogram clues) ===== */
+.ex10 .ex10-mk-clues{margin:8px 0}
+.ex10 .ex10-mk .mk-line{grid-template-columns:repeat(var(--n,5),minmax(0,1fr))}
+.ex10 .ex10-mk .mk-line.ltr{direction:ltr}
+.ex10 .ex10-mk .mk-slot.tl{min-height:64px}
+.ex10 .ex10-mk .mk-tok .mk-chip{flex-direction:column;gap:2px;padding:4px 5px}
+.ex10 .ex10-mk .mk-tok .mk-chip svg{width:30px;height:30px}
+.ex10 .mk-compass{display:flex;justify-content:center;gap:6px;margin:6px 0 8px;direction:rtl}
+.ex10 .mk-cdir{display:grid;place-items:center;min-width:40px;padding:3px 4px;border-radius:10px;border:1.5px solid #C9A568;background:#FFF8E8}
+.ex10 .mk-cdir b{font-size:10.5px;color:#6B5236}.ex10 .mk-cdir i{font-style:normal;font-size:20px;font-weight:900;color:#7A3D1A;line-height:1}
+.ex10 .mk-cdir.done{background:#FFE9A8;border-color:#C8932F}
+.ex10 .ex10-starfield{touch-action:none}
+.ex10 .ex10-star.head{box-shadow:0 0 0 4px #F2C553,0 0 16px #F2C553}
+@media (max-width:360px){.ex10 .ex10-mk .mk-tok .mk-chip small{font-size:10px}.ex10 .mk-cdir{min-width:34px}}

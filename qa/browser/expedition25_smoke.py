@@ -46,7 +46,8 @@ async def main():
     assert await page.get_by_text('نجاح!',exact=True).count(), 'stage 24 did not win'
     await page.locator('[data-ex10="next"]').click(); await page.locator('[data-ex10="start"]').click()
     solution=await page.evaluate('ML10Logic.audit().seal[0]')
-    for i,v in enumerate(solution): await page.locator(f'[data-seal-slot="{i}"]').select_option(label={'قمر':'☾ قمر','ورقة':'❧ ورقة','ماء':'≈ ماء','نجمة':'✦ نجمة','نار':'♨ نار'}[v])
+    # motion-batch-1: the seal is a drag board now — drag each rune from the tray onto its slot
+    for i,v in enumerate(solution): await page.locator(f'#ex10-seal [data-tray] [data-tok="{v}"]').drag_to(page.locator(f'#ex10-seal [data-slot="{i}"]'))
     await page.locator('[data-ex10="check-seal"]').click()
     assert await page.get_by_text('نجاح!',exact=True).count(), 'stage 25 did not win'
     dims=await page.evaluate('({w:document.documentElement.clientWidth,sw:document.documentElement.scrollWidth,body:document.body.scrollWidth})')
