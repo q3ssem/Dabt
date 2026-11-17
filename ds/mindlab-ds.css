@@ -293,3 +293,16 @@ html[data-skin="dark"] #v-games .ui-gmain .ico>img.ml-art,html[data-skin="dark"]
 :is(.wk-row,.card,.cp,.pzcard) .ico:has(>img.ml-art){border-radius:0!important}
 /* رؤوس المجالات في صفحة الألعاب */
 #v-games .ui-cat>h2 .ml-cat-art{width:40px;height:40px;object-fit:contain;flex:none;filter:drop-shadow(0 3px 4px rgba(29,39,41,.14))}
+
+/* 10. 5.5.2 — ألعاب العقل: ثلاث بطاقات في كل سطر، وإخفاء الرسم الصغير القديم في بطاقة البداية حين يوجد رسم اللعبة الجديد */
+#v-games .ui-grid{grid-template-columns:repeat(3,minmax(0,1fr))!important;gap:8px!important}
+#v-games .ui-gmain{min-height:150px!important;padding:10px 6px 9px!important;gap:4px!important}
+#v-games .ui-gmain>b{font-size:var(--ml-t-sm)!important;line-height:1.3!important}
+#v-games .ui-gmain>small{font-size:11px!important;gap:4px!important}
+#v-games{--ml-game-art:76px;--ml-card-art:64px}
+@media (max-width:359px){#v-games{--ml-game-art:64px;--ml-card-art:56px}#v-games .ui-gmain{min-height:136px!important}}
+@media (min-width:700px){#v-games .ui-grid{gap:14px!important}#v-games{--ml-game-art:112px;--ml-card-art:96px}#v-games .ui-gmain{min-height:190px!important;padding:14px 10px 12px!important}}
+#stage .intro:has(img.ml-art) .la-intro-art>:not(span){display:none!important}
+#stage .intro:has(img.ml-art) .la-intro-art{min-height:0!important;width:auto!important;padding:12px 18px!important;justify-content:center;text-align:center;border-radius:var(--ml-r-lg)!important;margin:0 auto 6px!important;max-width:100%}
+#stage .intro:has(img.ml-art) .la-intro-art>span{gap:2px!important;justify-items:center}
+#stage .intro:has(img.ml-art) .la-intro-art b{font-size:17px!important}

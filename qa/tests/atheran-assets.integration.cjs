@@ -1,0 +1,35 @@
+const fs = require('fs');
+const path = require('path');
+const crypto = require('crypto');
+const root = path.resolve(__dirname, '../..');
+const base = path.join(root, 'atheran', 'assets');
+const manifest = JSON.parse(fs.readFileSync(path.join(base, 'asset_inventory_master.json'), 'utf8'));
+const assert = (v, m) => { if (!v) throw new Error(m); };
+assert(manifest.completed_count === 546, 'manifest count must be 546');
+assert(manifest.completed_assets.length === 546, 'completed asset record count mismatch');
+const ids = new Set(), paths = new Set();
+for (const a of manifest.completed_assets) {
+  assert(!ids.has(a.asset_id), `duplicate asset_id: ${a.asset_id}`); ids.add(a.asset_id);
+  assert(!paths.has(a.relative_path), `duplicate relative_path: ${a.relative_path}`); paths.add(a.relative_path);
+  const file = path.join(base, a.relative_path);
+  assert(fs.existsSync(file), `missing asset: ${a.relative_path}`);
+  const digest = crypto.createHash('sha256').update(fs.readFileSync(file)).digest('hex');
+  assert(digest === a.sha256, `SHA-256 mismatch: ${a.relative_path}`);
+}
+const runtime = fs.readFileSync(path.join(root,'atheran','runtime','assets-runtime.js'),'utf8');
+for (const hook of ['MINDLAB_ATHRAN_ASSETS','map_layer_01_bg','map_layer_04_markers_base','ah-station-map-markers','puzzleState','puzzleStates','regionParts','secretWorld','aStation','aScene','aRegionInfo','aTraces','aSwList','aSwOpen','aFinale','aFinalePanels','stationBackground','characterPose','spriteSheet']) assert(runtime.includes(hook), `missing runtime integration hook ${hook}`);
+const app = fs.readFileSync(path.join(root,'ui','app.js'),'utf8');
+assert(app.indexOf("load('atheran/runtime/assets-runtime.js'") < app.indexOf("load('atheran/campaign/story.js'"), 'assets runtime must load before campaign scripts');
+assert(runtime.includes("const puzzle=id=>byPuzzle[id]||byStation[id]||[]"), 'puzzle asset lookup must support station-index fallback');
+assert(runtime.includes("wrap('aFinale'"), 'finale art must bind to finale open action');
+assert(!runtime.includes('finalObs.observe(document.body'), 'finale observer must not watch the entire document');
+assert(!runtime.includes('finalObs.observe(document.body'), 'finale observer must not watch the entire document');
+assert(!runtime.includes("'map_layer_08_relic_pins','map_layer_09_fog_shadows'"), '96px relic pin artwork must not be stretched as a full map layer');
+assert(runtime.includes("puzzle(id)||byStation[id]") || runtime.includes('byPuzzle[id]||byStation[id]'), 'puzzle lookup must support both puzzle_id and station_id');
+const campaign = fs.readFileSync(path.join(root,'atheran','campaign','campaign.js'),'utf8');
+assert(campaign.includes('heroSrc(k)'), 'campaign header should use approved hero assets');
+const counts = manifest.completed_assets.reduce((o,a)=>(o[a.asset_type]=(o[a.asset_type]||0)+1,o),{});
+assert(counts.puzzle_piece_state === 80, '80 puzzle-state sprites must be indexed');
+assert(counts.station_stage_bg === 63, '63 stage backgrounds must be indexed');
+assert(counts.epilogue_panel === 5, 'five epilogue panels must be indexed');
+console.log(`Atheran assets integration: PASS — ${manifest.completed_assets.length} files SHA-256 verified; ${counts.station_stage_bg} stage backgrounds, ${counts.puzzle_piece_state} puzzle-state sprites, and runtime bindings verified.`);

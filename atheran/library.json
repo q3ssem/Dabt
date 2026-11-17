@@ -1,0 +1,362 @@
+{
+ "title": "مكتبة ألغاز أَثْرَان — الفهرس",
+ "note": "فهرس فقط: لا يُحمَّل في التطبيق. المحركات داخل index.html المحمي، والأصول في atheran/assets بمساراتها الأصلية.",
+ "folders": {
+  "atheran/campaign": "القصة والحملة: story.js (نصوص المحطات والخاتمة)، campaign.js (الأطلس، المحطات، العوالم السرية، ترتيب المكتبة)، campaign.css",
+  "atheran/runtime": "مشغّل مكتبة الرسوم: assets-runtime.js (السجل الكامل للـ546 أصلاً)، assets.css",
+  "atheran/bindings": "ربط الرسوم بالواجهة: bindings.js/.css (حالات القطع الـ80، الإطارات الـ14، المؤثرات، الخريطة، العمل دون اتصال)، frames/ (حواف 9-slice مشتقة)",
+  "atheran/assets": "الأصول المعتمدة الـ546 — لا تُنقل ولا تُعاد تسميتها",
+  "expedition10": "رحلة أسرار أَثْرَان الجانبية — مستقلة بحفظها وأصولها، غير مدموجة"
+ },
+ "chapter": {
+  "stations": [
+   {
+    "n": 1,
+    "id": "pz_aarch",
+    "name": "أرشيف الرحلات",
+    "stages": 3,
+    "piece_art": "archive_card",
+    "engine": "index.html · GM[\"pz_aarch\"] (protected)"
+   },
+   {
+    "n": 2,
+    "id": "pz_aport",
+    "name": "ميناء ما وراء المد",
+    "stages": 3,
+    "piece_art": "tide_gate",
+    "engine": "index.html · GM[\"pz_aport\"] (protected)"
+   },
+   {
+    "n": 3,
+    "id": "pz_alight",
+    "name": "المنارة الأخيرة",
+    "stages": 3,
+    "piece_art": "lens_ring_slot",
+    "engine": "index.html · GM[\"pz_alight\"] (protected)"
+   },
+   {
+    "n": 4,
+    "id": "pz_acur",
+    "name": "حيث تعود الأشياء",
+    "stages": 3,
+    "piece_art": "drift_token",
+    "engine": "index.html · GM[\"pz_acur\"] (protected)"
+   },
+   {
+    "n": 5,
+    "id": "pz_ashell",
+    "name": "أغنية الأصداف",
+    "stages": 3,
+    "piece_art": "music_shell",
+    "engine": "index.html · GM[\"pz_ashell\"] (protected)"
+   },
+   {
+    "n": 6,
+    "id": "pz_aroot",
+    "name": "ممرات راعي الجذور",
+    "stages": 3,
+    "piece_art": "root_tile",
+    "engine": "index.html · GM[\"pz_aroot\"] (protected)"
+   },
+   {
+    "n": 7,
+    "id": "pz_aring",
+    "name": "شجرة الأسماء",
+    "stages": 3,
+    "piece_art": "tree_ring_band",
+    "engine": "index.html · GM[\"pz_aring\"] (protected)"
+   },
+   {
+    "n": 8,
+    "id": "pz_ashade",
+    "name": "ساعة الظل",
+    "stages": 3,
+    "piece_art": "glass_pillar",
+    "engine": "index.html · GM[\"pz_ashade\"] (protected)"
+   },
+   {
+    "n": 9,
+    "id": "pz_aswarm",
+    "name": "سرب البياض",
+    "stages": 3,
+    "piece_art": "swarm_cell",
+    "engine": "index.html · GM[\"pz_aswarm\"] (protected)"
+   },
+   {
+    "n": 10,
+    "id": "pz_aecho",
+    "name": "مصدر الصوت",
+    "stages": 3,
+    "piece_art": "echo_node",
+    "engine": "index.html · GM[\"pz_aecho\"] (protected)"
+   },
+   {
+    "n": 11,
+    "id": "pz_avsong",
+    "name": "الوادي يغني",
+    "stages": 3,
+    "piece_art": "echo_bird_note",
+    "engine": "index.html · GM[\"pz_avsong\"] (protected)"
+   },
+   {
+    "n": 12,
+    "id": "pz_agiant",
+    "name": "عادات العمالقة",
+    "stages": 3,
+    "piece_art": "giant_marker",
+    "engine": "index.html · GM[\"pz_agiant\"] (protected)"
+   },
+   {
+    "n": 13,
+    "id": "pz_aherd",
+    "name": "عبور القطيع",
+    "stages": 3,
+    "piece_art": "herd_path_tile",
+    "engine": "index.html · GM[\"pz_aherd\"] (protected)"
+   },
+   {
+    "n": 14,
+    "id": "pz_abridge",
+    "name": "جسور الضباب",
+    "stages": 3,
+    "piece_art": "fog_pillar",
+    "engine": "index.html · GM[\"pz_abridge\"] (protected)"
+   },
+   {
+    "n": 15,
+    "id": "pz_asilent",
+    "name": "الماء الصافي",
+    "stages": 3,
+    "piece_art": "silent_event_token",
+    "engine": "index.html · GM[\"pz_asilent\"] (protected)"
+   },
+   {
+    "n": 16,
+    "id": "pz_alayer",
+    "name": "طبقات الزمن",
+    "stages": 3,
+    "piece_art": "strata_slab",
+    "engine": "index.html · GM[\"pz_alayer\"] (protected)"
+   },
+   {
+    "n": 17,
+    "id": "pz_acity",
+    "name": "المدينة الحية",
+    "stages": 3,
+    "piece_art": "city_lantern_node",
+    "engine": "index.html · GM[\"pz_acity\"] (protected)"
+   },
+   {
+    "n": 18,
+    "id": "pz_asong",
+    "name": "أغاني الأعماق",
+    "stages": 3,
+    "piece_art": "whale_song_crest",
+    "engine": "index.html · GM[\"pz_asong\"] (protected)"
+   },
+   {
+    "n": 19,
+    "id": "pz_aflow",
+    "name": "مفترقات التيار",
+    "stages": 3,
+    "piece_art": "jelly_fork_gate",
+    "engine": "index.html · GM[\"pz_aflow\"] (protected)"
+   },
+   {
+    "n": 20,
+    "id": "pz_arelic",
+    "name": "أرشيف الآثار الأولى",
+    "stages": 3,
+    "piece_art": "chronicle_tablet",
+    "engine": "index.html · GM[\"pz_arelic\"] (protected)"
+   },
+   {
+    "n": 21,
+    "id": "pz_aheart",
+    "name": "قلب أَثْرَان",
+    "stages": 3,
+    "piece_art": "coast_stone_tile",
+    "engine": "index.html · GM[\"pz_aheart\"] (protected)"
+   }
+  ],
+  "secret_worlds": [
+   {
+    "id": "pz_wbone",
+    "key": "bones",
+    "name": "وادي الهياكل"
+   },
+   {
+    "id": "pz_wspore",
+    "key": "spores",
+    "name": "حديقة الأبواغ"
+   },
+   {
+    "id": "pz_wlog",
+    "key": "ship",
+    "name": "السفينة التي لم تُبحر"
+   },
+   {
+    "id": "pz_wlake",
+    "key": "lake",
+    "name": "بحيرة السماء"
+   },
+   {
+    "id": "pz_wfirst",
+    "key": "first",
+    "name": "موطن الأثر الأول"
+   }
+  ]
+ },
+ "side_journey_expedition10": [
+  {
+   "n": 1,
+   "id": "ml10_01",
+   "name": "قفل المنارة",
+   "kind": "استنتاج رقمي"
+  },
+  {
+   "n": 2,
+   "id": "ml10_02",
+   "name": "معبر النهر",
+   "kind": "تخطيط مسار"
+  },
+  {
+   "n": 3,
+   "id": "ml10_03",
+   "name": "الخريطة الممزقة",
+   "kind": "تركيب مكاني"
+  },
+  {
+   "n": 4,
+   "id": "ml10_04",
+   "name": "ميزان القراصنة",
+   "kind": "استدلال وقياس"
+  },
+  {
+   "n": 5,
+   "id": "ml10_05",
+   "name": "ذاكرة البلورات",
+   "kind": "ذاكرة تسلسلية"
+  },
+  {
+   "n": 6,
+   "id": "ml10_06",
+   "name": "مرايا الكهف",
+   "kind": "اتجاهات مكانية"
+  },
+  {
+   "n": 7,
+   "id": "ml10_07",
+   "name": "ساعة الرمل",
+   "kind": "ترتيب تحت ضغط الوقت"
+  },
+  {
+   "n": 8,
+   "id": "ml10_08",
+   "name": "شبكة الجزر",
+   "kind": "تصميم شبكة بأقل كلفة"
+  },
+  {
+   "n": 9,
+   "id": "ml10_09",
+   "name": "المكتبة المفقودة",
+   "kind": "استنتاج نمط شبكي"
+  },
+  {
+   "n": 10,
+   "id": "ml10_10",
+   "name": "بوابة قلب أَثْران",
+   "kind": "مواجهة استنتاجية"
+  },
+  {
+   "n": 11,
+   "id": "ml10_11",
+   "name": "أنابيب المد",
+   "kind": "تركيب مسار مائي"
+  },
+  {
+   "n": 12,
+   "id": "ml10_12",
+   "name": "ممر الجليد",
+   "kind": "تخطيط انزلاقي من سبع حركات"
+  },
+  {
+   "n": 13,
+   "id": "ml10_13",
+   "name": "رهان حراشف التنين",
+   "kind": "استراتيجية نيم"
+  },
+  {
+   "n": 14,
+   "id": "ml10_14",
+   "name": "مسرح الظلال",
+   "kind": "استنتاج ظلي واتجاهي"
+  },
+  {
+   "n": 15,
+   "id": "ml10_15",
+   "name": "رسالة الزجاجة",
+   "kind": "فك شفرة قيصرية عربية"
+  },
+  {
+   "n": 16,
+   "id": "ml10_16",
+   "name": "سجل الحمولة",
+   "kind": "استنتاج وربط قيود"
+  },
+  {
+   "n": 17,
+   "id": "ml10_17",
+   "name": "ساعة المدّ",
+   "kind": "توقيت واستجابة متتابعة"
+  },
+  {
+   "n": 18,
+   "id": "ml10_18",
+   "name": "رقع رواق المرايا",
+   "kind": "تركيب مكاني وتسلسل حركات"
+  },
+  {
+   "n": 19,
+   "id": "ml10_19",
+   "name": "صندوق القبطان",
+   "kind": "تخطيط دفع وتحريك مكاني"
+  },
+  {
+   "n": 20,
+   "id": "ml10_20",
+   "name": "اختبار حارس المرايا",
+   "kind": "تخطيط قفزات الفارس"
+  },
+  {
+   "n": 21,
+   "id": "ml10_21",
+   "name": "متاهة الفوانيس",
+   "kind": "تخطيط مسار في متاهة"
+  },
+  {
+   "n": 22,
+   "id": "ml10_22",
+   "name": "أحواض المعبد",
+   "kind": "استدلال كمي ونقل السوائل"
+  },
+  {
+   "n": 23,
+   "id": "ml10_23",
+   "name": "أبراج الإشارة",
+   "kind": "منطق تبديل الحالات"
+  },
+  {
+   "n": 24,
+   "id": "ml10_24",
+   "name": "أقراص الحارس",
+   "kind": "تخطيط تسلسلي وقواعد نقل"
+  },
+  {
+   "n": 25,
+   "id": "ml10_25",
+   "name": "الختم الخماسي",
+   "kind": "استنتاج ترتيبي متعدد القيود"
+  }
+ ]
+}
