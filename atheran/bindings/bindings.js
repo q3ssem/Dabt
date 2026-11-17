@@ -16,7 +16,7 @@
      Priority when several apply: wrong > correct/success > selected > active > disabled > default.
      "solved" = #pzb.solved (set by the runner on a win); "wrong" = the 700 ms after sfx.bad() (every api.wrong()). */
   const PIECES = {
-    pz_aarch: { piece: '.aarb', art: 'archive_card', states: { selected: '.set' } },
+    pz_aarch: { piece: '.mk-slot[data-slot]', art: 'archive_card', states: { selected: '.full' } },  // motion-batch-1: slots of the drag board
     pz_aport: { piece: '.aptb', art: 'tide_gate', mode: 'cap', base: null, states: { disabled: '.shut', active: ':not(.shut)' }, win: 'success', winOn: ':not(.shut)' },
     pz_alight: { piece: '.altw', order: ['active', 'selected'], art: 'lens_ring_slot', states: { active: ':has(#altl[opacity="1"])', selected: ':has(.altw-s.cur)' }, win: 'success' },
     pz_acur: { piece: '[data-s]', art: 'drift_token', states: { selected: ':has(em svg)' } },
@@ -31,11 +31,11 @@
     pz_aherd: { piece: '#ahew i', art: 'herd_path_tile', mode: 'fill', states: { active: '.goal', disabled: '.orb' }, wrongOn: ':has(.me)', noWin: true },
     pz_abridge: { piece: '#abrtop g[data-i]', art: 'fog_pillar', mode: 'svg', states: { selected: ':has(circle[stroke="#9B2B1F"])' } },
     pz_asilent: { piece: '[data-o]', art: 'silent_event_token', states: { selected: '.ah-pressed,.ah-last' }, winOn: '.ah-last', wrongOn: '.ah-last' },
-    pz_alayer: { piece: '[data-j]', art: 'strata_slab', base: null, states: { selected: '.used' }, winOn: '.used', wrongOn: '.used' },
-    pz_acity: { piece: '[data-i]', art: 'city_lantern_node', states: { active: '.lit', disabled: '.dark:not(.sel):not(.relit)' }, winOn: '.relit,.lit', corrOn: '.relit' },
+    pz_alayer: { piece: '.mk-slot.tl', art: 'strata_slab', base: null, states: { selected: '.full' }, winOn: '.full', wrongOn: '.mk-wrong' },
+    pz_acity: { piece: '#actweb .mk-sp', art: 'city_lantern_node', mode: 'svg', svgAt: [14, -14, 9], states: { active: '.lit', disabled: '.dark:not(.cause):not(.relit)', selected: '.cause' }, winOn: '.relit,.lit', corrOn: '.relit', wrongOn: '.cause' },
     pz_asong: { piece: '[data-i]', art: 'whale_song_crest', states: { selected: '.sel' }, winOn: '.sel', wrongOn: '.sel' },
     pz_aflow: { piece: '[data-b]', art: 'jelly_fork_gate', states: { selected: '.sel' }, winOn: '.sel', wrongOn: '.sel' },
-    pz_arelic: { piece: '[data-j]', art: 'chronicle_tablet', states: { selected: '.set' } },
+    pz_arelic: { piece: '.mk-tok.src', art: 'chronicle_tablet', states: { selected: '[data-slot="cmp"] .mk-tok' }, winOn: '[data-slot="cmp"] .mk-tok', wrongOn: '[data-slot="cmp"] .mk-tok' },
     pz_aheart: { piece: '[data-i]', art: 'coast_stone_tile', states: { active: '.work-match', selected: '.sel' }, win: 'success', winOn: '.sel', noWrong: true }
   };
   const has = id => !!(REG.get ? REG.get(id) : url(id));
@@ -65,7 +65,7 @@
         if (!u) { if (im) im.remove(); return; }
         const c = el.querySelector('circle'); if (!c) return;
         if (!im) { im = document.createElementNS(SVGNS, 'image'); im.setAttribute('class', 'ah-pc'); im.setAttribute('pointer-events', 'none'); const t = el.querySelector('text'); el.insertBefore(im, t || null); }
-        const cx = +c.getAttribute('cx'), cy = +c.getAttribute('cy'), r = 13;
+        const at = cfg.svgAt || [0, 0, 13], cx = +c.getAttribute('cx') + at[0], cy = +c.getAttribute('cy') + at[1], r = at[2];
         im.setAttribute('x', cx - r); im.setAttribute('y', cy - r); im.setAttribute('width', 2 * r); im.setAttribute('height', 2 * r);
         if (im.getAttribute('href') !== u) im.setAttribute('href', u);
         im.dataset.state = st; im.dataset.asset = id; return;

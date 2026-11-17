@@ -13,7 +13,7 @@ ok(sw.includes("const VERSION='5.5.28'"), 'service worker cache 5.5.28');
 ['atheran/campaign/story.js', 'atheran/campaign/campaign.js', 'atheran/campaign/campaign.css'].forEach(f => { ok(fs.existsSync(f), f + ' exists'); ok(man.includes(`"${f}"`), f + ' cached offline'); });
 const ui = read('ui/app.js');
 ok(ui.includes("load('atheran/campaign/story.js',()=>load('atheran/campaign/campaign.js'"), 'story loads before the campaign cover');
-ok(/load\('atheran\/campaign\/campaign\.js',\(\)=>load\('atheran\/bindings\/bindings\.js'\)\)/.test(ui), '5.5.28 athran-assets-2 bindings load after the campaign cover');
+ok(/load\('atheran\/campaign\/campaign\.js',\(\)=>load\('atheran\/bindings\/bindings\.js'/.test(ui), '5.5.28 athran-assets-2 bindings load after the campaign cover');
 ok(ui.indexOf('5.5.2-mini') < ui.indexOf('5.5.28-atheran'), 'cover loads after the library layer');
 
 // identifiers and saves untouched

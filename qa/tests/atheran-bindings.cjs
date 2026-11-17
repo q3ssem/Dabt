@@ -50,7 +50,7 @@ for (const r of inv) {
 }
 // wiring + offline
 ok(man.includes('"atheran/bindings/bindings.js"') && man.includes('"atheran/bindings/bindings.css"'), 'bindings cached offline');
-ok(/load\('atheran\/bindings\/bindings\.js'\)/.test(fs.readFileSync('ui/app.js', 'utf8')), 'bindings loaded by ui/app.js');
+ok(/load\('atheran\/bindings\/bindings\.js'/.test(fs.readFileSync('ui/app.js', 'utf8')), 'bindings loaded by ui/app.js');
 ok(!/localStorage\.setItem|S\.save\(|txSave/.test(src), 'bindings never write the save');
 const app = fs.readFileSync('ui/app.js', 'utf8');
 ok(/DESIGN = 375/.test(app) && /sw >= 400 && sw < 600/.test(app) && /portrait/.test(app), 'large phones (400–600 pt, portrait) lay out at 375 pt and scale up; tablets/landscape untouched');

@@ -165,8 +165,9 @@ try {
   if(document.querySelector('script[data-release="5.5.28-atheran"]'))return;
   const css=document.createElement('link');css.rel='stylesheet';css.href=new URL('atheran/campaign/campaign.css',document.baseURI).href;document.head.append(css);
   const load=(src,next)=>{const s=document.createElement('script');s.src=new URL(src,document.baseURI).href;s.dataset.release='5.5.28-atheran';s.onload=next||null;document.body.append(s);};
-  const go=()=>load('atheran/runtime/assets-runtime.js',()=>load('atheran/campaign/story.js',()=>load('atheran/campaign/campaign.js',()=>load('atheran/bindings/bindings.js'))));
+  const go=()=>load('atheran/runtime/assets-runtime.js',()=>load('atheran/campaign/story.js',()=>load('atheran/campaign/campaign.js',()=>load('atheran/bindings/bindings.js',()=>load('motion/kit.js',()=>load('motion/atheran-motion.js',()=>load('motion/palace-motion.js')))))));
   const css2=document.createElement('link');css2.rel='stylesheet';css2.href=new URL('atheran/bindings/bindings.css',document.baseURI).href;document.head.append(css2);
+  const css3=document.createElement('link');css3.rel='stylesheet';css3.href=new URL('motion/motion.css',document.baseURI).href;document.head.append(css3);
   const mini=document.querySelector('script[data-release="5.5.2-mini"]');
   if(mini&&!window.LA?.miniReady)mini.addEventListener('load',go,{once:true});else go();
 })();
