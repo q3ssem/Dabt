@@ -67,8 +67,25 @@
         $('#pob').tabIndex = 0; $('#pob').addEventListener('keydown', e => { const m = { ArrowUp: 'u', ArrowDown: 'd', ArrowLeft: 'l', ArrowRight: 'r', r: 't', ' ': 't' }[e.key]; if (m) { e.preventDefault(); mv(m); } });
         draw(); api.msg('طابق الخريطتين.');
         pzHook({ P, mv, state: () => ({ r, dx, dy, moves }), solve: () => { r = P.R; dx = P.ans[0]; dy = P.ans[1]; draw(); if (ok()) { busy = true; pWin(api, 'pz_pobs', 'الخريطتان انطبقتا.'); } } });
-        return { hint: k => { if (k === 1) return 'ابدأ بالدوران: قارن شكل النجوم الذهبية بمجموعات النجوم الزرقاء، أيها يشبهها؟'; if (k === 2) { r = P.R; [dx, dy] = clampXY(dx, dy); draw(); return 'دوّرت لك الشفافة للاتجاه الصحيح.'; }
-            r = P.R; [dx, dy] = clampXY(P.ans[0], P.ans[1] - 1); if (dx === P.ans[0] && dy === P.ans[1]) [dx, dy] = clampXY(P.ans[0], P.ans[1] + 1); draw(); return 'قرّبت لك الشفافة: باقي خطوة واحدة.'; },
+        // hints never leave the board solved-but-unscored: «one move left» only on a legal, unsolved neighbour of the answer
+        // from which ONE pad move wins (a sheet as tall or as wide as the board has no neighbour on that axis, and
+        // clamping is never allowed to pull it back onto the answer). Otherwise a descriptive hint, board untouched.
+        const solvedAt = (rr, x, y) => cur(rr, x, y).every(([a, b]) => inb(a, b, n, n) && bset.has(b * n + a));
+        const nearAnswer = () => [[0, -1, 'd'], [0, 1, 'u'], [1, 0, 'l'], [-1, 0, 'r']].map(([ox, oy, m]) => ({ x: P.ans[0] + ox, y: P.ans[1] + oy, m }))
+          .filter(c => { const [cx, cy] = clampXY(c.x, c.y, P.R); if (cx !== c.x || cy !== c.y || solvedAt(P.R, c.x, c.y)) return false;
+            const [tx, ty] = clampXY(c.x + (c.m === 'r') - (c.m === 'l'), c.y + (c.m === 'd') - (c.m === 'u'), P.R);
+            return tx === P.ans[0] && ty === P.ans[1] && solvedAt(P.R, tx, ty); });
+        const turnsLeft = () => (P.R - r + 4) % 4, turnTxt = t => t === 1 ? 'مرة واحدة' : t === 2 ? 'مرتين' : 'ثلاث مرات';
+        const describe = () => `${turnsLeft() ? `دوّر الشفافة ${turnTxt(turnsLeft())}، ثم ` : ''}ضع زاويتها العليا على الصف ${XAR(P.ans[1] + 1)} من الأعلى والعمود ${XAR(P.ans[0] + 1)} من اليسار.`;
+        return { hint: k => { if (k === 1) return 'ابدأ بالدوران: قارن شكل النجوم الذهبية بمجموعات النجوم الزرقاء، أيها يشبهها؟';
+            if (busy || api.ended) return describe();
+            if (k === 2) { const [x, y] = clampXY(dx, dy, P.R);
+              if (!solvedAt(P.R, x, y)) { r = P.R; dx = x; dy = y; draw(); return 'دوّرت لك الشفافة للاتجاه الصحيح.'; }
+              // turning in place would complete the map for the player: turn it and leave it one honest move away instead
+              const c = nearAnswer()[0]; if (!c) return `الاتجاه الصحيح: دوّر الشفافة ${turnTxt(turnsLeft())}.`;
+              r = P.R; dx = c.x; dy = c.y; draw(); return 'دوّرت لك الشفافة للاتجاه الصحيح، وباقي خطوة واحدة.'; }
+            const c = nearAnswer()[0]; if (!c) return describe();
+            r = P.R; dx = c.x; dy = c.y; draw(); return 'قرّبت لك الشفافة: باقي خطوة واحدة.'; },
           reveal: () => { r = P.R; dx = P.ans[0]; dy = P.ans[1]; draw(); return 'هذا الانطباق.'; } };
       });
     };

@@ -111,6 +111,31 @@ async def pobs(pg, w, lv, mode):
     else: ok(False, f'pz_pobs {w}: budget scenario set up', s)
     return
 
+FULL = r"""(want) => { const R = Math.random; for (let s = 1; s < 60000; s++) { Math.random = seeded(s); const P = poMake(8); Math.random = R;
+    const sh = paRot(P.top, P.R), w = Math.max(...sh.map(a => a[0])) + 1, h = Math.max(...sh.map(a => a[1])) + 1;
+    if (want === 'h' && h === P.n && w < P.n && P.ans[0] + P.ans[1] > 0) return s; if (want === 'w' && w === P.n && h < P.n && P.ans[0] + P.ans[1] > 0) return s; } return -1 }"""
+async def pobs_hint(pg, w, want):
+    """hint 3 through the screen's hint button on a sheet as tall (h) or as wide (w) as the board"""
+    lab = f'pz_pobs {w} hint3 full-{"height" if want == "h" else "width"}'
+    await pg.goto(URL); await pg.wait_for_timeout(1500)
+    if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
+    s = await pg.evaluate(FULL, want)
+    if not ok(s > 0, f'{lab}: such a board exists in poMake(8)', s): return
+    await start(pg, 'pz_pobs', 8, s)
+    hb = pg.locator('#stage button:has-text("تلميح")').first
+    for k in range(3):
+        await hb.scroll_into_view_if_needed(); await hb.click(); await pg.wait_for_timeout(500)
+        for sel in ('button:has-text("نعم")', 'button:has-text("اكشف")', 'button:has-text("تلميح بـ")'):
+            if await pg.locator(sel).count() and await pg.locator(sel).first.is_visible(): await pg.locator(sel).first.click(); await pg.wait_for_timeout(400); break
+    txt = await pg.evaluate("() => document.querySelector('#stage').innerText")
+    st = await pg.evaluate("() => window.__test.pz.state()"); P = await pg.evaluate("() => { const P = window.__test.pz.P; return { ans: P.ans, R: P.R } }")
+    ok('باقي خطوة واحدة' in txt, f'{lab}: the third hint says one move is left', txt[-200:])
+    ok(not await pg.evaluate("() => /تطابق كامل/.test(document.querySelector('#pom').innerText)") and abs(st['dx'] - P['ans'][0]) + abs(st['dy'] - P['ans'][1]) == 1 and st['r'] == P['R'], f'{lab}: after the hint the map is not yet matched and is one cell away', st)
+    m = 'r' if P['ans'][0] > st['dx'] else 'l' if P['ans'][0] < st['dx'] else 'd' if P['ans'][1] > st['dy'] else 'u'
+    await tap(pg, f'.po-pad [data-m="{m}"]')
+    ok(await result(pg) is True and (await pg.evaluate("() => window.__test.pz.state()"))['moves'] == st['moves'] + 1, f'{lab}: the next move wins once')
+    ok(await pg.evaluate("() => document.querySelectorAll('#stage .res').length") == 1, f'{lab}: a single result screen')
+
 async def aarch(pg, w, lv, mode):
     persist = lv is None
     lab = f'pz_aarch {w} lv{lv or "-own"} {mode}'; await start(pg, 'pz_aarch', lv, 550 + (lv or 0)); mv = drag if mode == 'drag' else tapmove
@@ -168,7 +193,8 @@ async def main():
             ctx = await b.new_context(viewport={'width': w, 'height': 820}, has_touch=True); await ctx.add_init_script('window.__test={}')
             pg = await ctx.new_page(); errs = []; pg.on('pageerror', lambda e: errs.append(str(e)[:200]))
             await pg.goto(URL); await pg.wait_for_timeout(2000); return ctx, pg, errs
-        groups = [('acity', lambda pg, w: [acity(pg, w, 1, 'tap'), acity(pg, w, 8, 'tap'), acity(pg, w, None, 'tap')]),
+        groups = [('pobshint', lambda pg, w: [pobs_hint(pg, w, 'h'), pobs_hint(pg, w, 'w')]),
+                  ('acity', lambda pg, w: [acity(pg, w, 1, 'tap'), acity(pg, w, 8, 'tap'), acity(pg, w, None, 'tap')]),
                   ('pobs', lambda pg, w: [pobs(pg, w, 8, 'drag'), pobs(pg, w, None, 'drag')]),
                   ('aarch', lambda pg, w: [aarch(pg, w, 6, 'drag'), aarch(pg, w, None, 'tap')]),
                   ('alayer', lambda pg, w: [alayer(pg, w, 7, 'drag'), alayer(pg, w, None, 'tap')]),
@@ -179,6 +205,7 @@ async def main():
                 ctx, pg, errs = await fresh(w)
                 for co in fn(pg, w): await co
                 # hint works on the board
+                if name == 'pobshint': ok(not errs, f'pz_pobs@{w} hint: no page errors', errs); await ctx.close(); continue
                 await start(pg, 'pz_' + name, 4, 900); hb = pg.locator('#stage button:has-text("تلميح")').first
                 if await hb.count(): await hb.click(); await pg.wait_for_timeout(500); ok(not errs, f'pz_{name}@{w}: hint opens without errors', errs)
                 ok(not errs, f'pz_{name}@{w}: no page errors', errs); await ctx.close()
