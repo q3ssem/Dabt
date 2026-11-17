@@ -2,6 +2,73 @@
   "reason": "Approved scoped Atheran campaign progression, stage-scoring, migration, secret-unlock and engine changes through release 5.5.19. Reverse exact patches in descending release order before comparing the original inline engine fingerprint.",
   "patches": [
     {
+      "reason": "motion-batch-1: pz_wlake: the generator passes its horizontal shift to the screen, so levels 2-8 explain it",
+      "before": "return{opts:order.map(i=>opts[i]),ans:order.indexOf(0),shown,miss}}",
+      "after": "return{opts:order.map(i=>opts[i]),ans:order.indexOf(0),shown,miss,shift:!!shift}}",
+      "occurrences": 1
+    },
+    {
+      "reason": "motion-batch-1: pz_plib never starts with the pages already in order",
+      "before": "if(pages.length<3)continue;return{pages,order:shuffle(pages.map((_,i)=>i)),ov,full:w.join(' ')}}",
+      "after": "if(pages.length<3)continue;const order=shuffle(pages.map((_,i)=>i));if(order.every((p,i)=>p===i))continue;return{pages,order,ov,full:w.join(' ')}}",
+      "occurrences": 1
+    },
+    {
+      "reason": "motion-batch-1: pz_ice: card rules mention the igloo stop",
+      "before": "how:['اسحب أو استخدم الأسهم.','البطريق ينزلق حتى يصطدم.','أوصله إلى العلم.']",
+      "after": "how:['اسحب أو استخدم الأسهم.','البطريق ينزلق حتى يصطدم بصخرة أو بالحافة، ويتوقف عند الكوخ إذا مرّ به.','أوصله إلى الكوخ.']",
+      "occurrences": 1
+    },
+    {
+      "reason": "motion-batch-1: pz_ice: the rule text states the penguin also stops on the igloo (same rule for arrows and swipe)",
+      "before": "api.msg(`البطريق ينزلق حتى يصطدم بصخرة أو بالحافة. أوصله إلى الكوخ الجليدي. أقل حل:",
+      "after": "api.msg(`البطريق ينزلق حتى يصطدم بصخرة أو بالحافة، ويتوقف أيضًا عند الكوخ إذا مرّ به في طريقه. أوصله إلى الكوخ الجليدي. أقل حل:",
+      "occurrences": 1
+    },
+    {
+      "reason": "motion-batch-1: pz_tdig: hint 3 claims a guaranteed win only when proven for the digs left",
+      "before": "const c=tdBest(P,cand,left,dug);if(c==null)return null;cell(c).classList.add('hl');return'احفر في المربع المضيء: يضمن لك الوصول بالحفر الباقية.'}",
+      "after": "const c=tdBest(P,cand,left,dug);if(c==null)return null;cell(c).classList.add('hl');\n    /* claim a guarantee only when it is proven for the digs left; otherwise say it is the most informative dig */\n    const parts=new Map();for(const t of cand){if(t===c)continue;const d=tiMd(c,t,n);(parts.get(d)||parts.set(d,[]).get(d)).push(t)}\n    const sure=[...parts.values()].every(a=>tdCan(a,left-1,P.dig,n,new Map()));\n    return sure?'احفر في المربع المضيء: يضمن لك الوصول بالحفر الباقية.':'احفر في المربع المضيء: هو الأكثر كشفًا الآن، لكنه لا يضمن الفوز بالحفر الباقية. قد تحتاج قليلًا من الحظ.'}",
+      "occurrences": 1
+    },
+    {
+      "reason": "motion-batch-1: pz_xbottle: destination gated on a decoded message (3)",
+      "before": "const draw=()=>{$('#xbtxt').innerHTML=dec()",
+      "after": "const draw=()=>{gate();$('#xbtxt').innerHTML=dec()",
+      "occurrences": 1
+    },
+    {
+      "reason": "motion-batch-1: pz_xbottle: destination gated on a decoded message (2)",
+      "before": "function answer(p,b){if(api.ended)return;if(p===P.place){b.classList.add(",
+      "after": "function answer(p,b){if(api.ended)return;if(!isRead()){gate();api.msg(\"فكّ الرسالة أولًا: لفّ العجلة حتى تصير كل كلماتها مفهومة، ثم اختر المكان.\");if(b){b.classList.remove(\"xbnudge\");void b.offsetWidth;b.classList.add(\"xbnudge\")}return}if(p===P.place){b.classList.add(",
+      "occurrences": 1
+    },
+    {
+      "reason": "motion-batch-1: pz_xbottle: destination gated on a decoded message (1)",
+      "before": "const P=xbMake(api.lv);let k1=0,k2=0,miss=0,read=false;\n  const dec=()=>P.shown.map((w,i)=>xbDec(w,P.two&&i%2?k2:k1));",
+      "after": "const P=xbMake(api.lv);let k1=0,k2=0,miss=0,read=false;\n  const dec=()=>P.shown.map((w,i)=>xbDec(w,P.two&&i%2?k2:k1));\n  /* the destination can only be chosen once the message is actually decoded (every wheel on its key) */\n  const isRead=()=>k1===P.s1&&(!P.two||k2===P.s2);const gate=()=>{read=isRead();api.body.querySelectorAll(\".xbo2\").forEach(b=>{if(!b.classList.contains(\"no\")){b.style.opacity=read?\"\":\".45\";b.setAttribute(\"aria-disabled\",read?\"false\":\"true\")}})};",
+      "occurrences": 1
+    },
+    {
+      "reason": "motion-batch-1: pz_untangle generator: no edge of the reference solution passes through a third node",
+      "before": "for(const[i,j]of cand){if(deg[i]>=4||deg[j]>=4)continue;if(e.some(([a,b])=>segX(pts[i],pts[j],pts[a],pts[b])))continue;e.push([i,j]);deg[i]++;deg[j]++}",
+      "after": "const thru=(i,j)=>pts.some((q,k)=>{if(k===i||k===j)return false;const a=pts[i],b=pts[j],dx=b[0]-a[0],dy=b[1]-a[1],t=Math.max(0,Math.min(1,((q[0]-a[0])*dx+(q[1]-a[1])*dy)/(dx*dx+dy*dy)));return Math.hypot(q[0]-a[0]-t*dx,q[1]-a[1]-t*dy)<5});\n    for(const[i,j]of cand){if(deg[i]>=4||deg[j]>=4)continue;if(thru(i,j))continue;if(e.some(([a,b])=>segX(pts[i],pts[j],pts[a],pts[b])))continue;e.push([i,j]);deg[i]++;deg[j]++}",
+      "occurrences": 1
+    },
+    {
+      "reason": "motion-batch-1: pz_untangle: stacked nodes, overlapping edges and edges through a foreign node no longer count as untangled",
+      "before": "function unCross(P,pos){let c=0;const bad=new Set();for(let i=0;i<P.e.length;i++)for(let j=i+1;j<P.e.length;j++){const[a,b]=P.e[i],[x,y]=P.e[j];if(a===x||a===y||b===x||b===y)continue;if(segX(pos[a],pos[b],pos[x],pos[y])){c++;bad.add(i);bad.add(j)}}return{c,bad}}",
+      "after": "function unCross(P,pos){let c=0;const bad=new Set(),E=P.e,N=pos.length;\n  const near=(p,a,b)=>{const dx=b[0]-a[0],dy=b[1]-a[1],L=dx*dx+dy*dy;if(!L)return Math.hypot(p[0]-a[0],p[1]-a[1]);const t=Math.max(0,Math.min(1,((p[0]-a[0])*dx+(p[1]-a[1])*dy)/L));return Math.hypot(p[0]-a[0]-t*dx,p[1]-a[1]-t*dy)};\n  for(let i=0;i<E.length;i++)for(let j=i+1;j<E.length;j++){const[a,b]=E[i],[x,y]=E[j];const shared=a===x||a===y||b===x||b===y;\n    if(shared){/* edges meeting at their common node are fine, unless they lie on top of each other */const s=a===x||a===y?a:b,o1=s===a?b:a,o2=s===x?y:x;const v1=[pos[o1][0]-pos[s][0],pos[o1][1]-pos[s][1]],v2=[pos[o2][0]-pos[s][0],pos[o2][1]-pos[s][1]];const l1=Math.hypot(...v1),l2=Math.hypot(...v2);\n      if(l1&&l2&&(v1[0]*v2[0]+v1[1]*v2[1])/(l1*l2)>.9995){c++;bad.add(i);bad.add(j)}continue}\n    if(segX(pos[a],pos[b],pos[x],pos[y])||near(pos[a],pos[x],pos[y])<1.2||near(pos[b],pos[x],pos[y])<1.2||near(pos[x],pos[a],pos[b])<1.2||near(pos[y],pos[a],pos[b])<1.2){c++;bad.add(i);bad.add(j)}}\n  /* a node stacked on another node, or sitting on an edge it does not belong to, is not an untangled drawing */\n  for(let k=0;k<N;k++){for(let m=k+1;m<N;m++)if(Math.hypot(pos[k][0]-pos[m][0],pos[k][1]-pos[m][1])<6){c++;E.forEach(([a,b],i)=>{if(a===k||b===k||a===m||b===m)bad.add(i)})}\n    E.forEach(([a,b],i)=>{if(a!==k&&b!==k&&near(pos[k],pos[a],pos[b])<3.4){c++;bad.add(i)}})}\n  return{c,bad}}",
+      "occurrences": 1
+    },
+    {
+      "reason": "motion-batch-1: pz_pobs never starts already aligned (the gold map must be moved or turned)",
+      "before": "if(poCountSolutions(P)!==1)continue;return P}return poMake(Math.max(1,lv-1))}",
+      "after": "if(poCountSolutions(P)!==1)continue;if(top.every(([x,y])=>bot.has(y*n+x)))continue;return P}return poMake(Math.max(1,lv-1))}",
+      "occurrences": 1,
+      "reverse_before_mirror_palace": true
+    },
+    {
       "reason": "5.5.28 Atheran hint wording (pz_aport hint 2): no more «بـ٠ خطوة»; Arabic number agreement only, same hint content",
       "before": "ابحث عن ساعة تسبق هذه القراءة بـ${XAR(i)} خطوة.`",
       "after": "${i?`ابحث عن ساعة تسبق هذه القراءة بـ${i===1?'خطوة واحدة':i===2?'خطوتين':XAR(i)+(i<=10?' خطوات':' خطوة')}.`:'الساعة التي يبلغ فيها المد هذه القراءة هي نفسها ساعة الإبحار.'}`",

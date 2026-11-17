@@ -11,6 +11,7 @@ URL = sys.argv[1] if len(sys.argv) > 1 else 'http://127.0.0.1:8150/'
 ENGINE = os.environ.get('ENGINE', 'chromium')
 checks, problems = [], []
 def ok(c, label, extra=None):
+    if os.environ.get('FORCE_FAIL') and label == os.environ['FORCE_FAIL']: c = False  # proves a failing check gives a non-zero exit
     (checks if c else problems).append(label if c else f'{label} :: {extra}'); return c
 
 GEN = r"""() => { const R = Math.random, run = (s, f) => { Math.random = seeded(s); try { return f() } finally { Math.random = R } }; const o = {};

@@ -8,6 +8,7 @@ URL = sys.argv[1] if len(sys.argv) > 1 else 'http://127.0.0.1:8150/'
 ENGINE = os.environ.get('ENGINE', 'chromium'); SHOTS = os.environ.get('SHOTS')
 checks, problems = [], []
 def ok(c, label, extra=None):
+    if os.environ.get('FORCE_FAIL') and label == os.environ['FORCE_FAIL']: c = False  # proves a failing check gives a non-zero exit
     (checks if c else problems).append(label if c else f'{label} :: {extra}'); return c
 GEN = r"""() => { const R = Math.random, o = {notUnique: 0, allTruth: 0, n: 0};
   for (let s = 1; s <= 1500; s++) { Math.random = seeded(s); const lv = 1 + s % 8; const P = PALACE_MOTION.dsMake(lv); Math.random = R; o.n++;
@@ -65,4 +66,5 @@ async def main():
             ok(not errs, f'@{w} no page errors', errs); await ctx.close()
         await b.close()
     print(f'{ENGINE}: {len(checks)} passed, {len(problems)} failed'); [print('  FAIL', x) for x in problems]
-asyncio.run(main())
+    return 1 if problems or not checks else 0
+sys.exit(asyncio.run(main()))

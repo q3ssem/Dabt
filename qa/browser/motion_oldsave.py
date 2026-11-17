@@ -8,6 +8,7 @@ from playwright.async_api import async_playwright
 NEW, OLD = sys.argv[1], sys.argv[2]; ENGINE = os.environ.get('ENGINE', 'chromium')
 checks, problems = [], []
 def ok(c, label, extra=None):
+    if os.environ.get('FORCE_FAIL') and label == os.environ['FORCE_FAIL']: c = False  # proves a failing check gives a non-zero exit
     (checks if c else problems).append(label if c else f'{label} :: {extra}'); return c
 SNAP = """() => { const t = txState(), a = pState(); return { prog: a.prog, done: a.done, stars: a.stars || {}, arts: a.arts, aopen: aOpen(),
   lv: Object.fromEntries(['pz_door', 'pz_pliar', 'pz_aarch', 'pz_plib', 'pz_untangle'].map(g => [g, pzLv(g)])), a5: JSON.stringify(t.a5 && t.a5.stars || {}),
@@ -67,4 +68,5 @@ async def main():
         ok(await pg.evaluate("() => aOpen()"), 'Atheran still open after reload', [st1, st2])
         ok(not errs, 'no page errors', errs); await b.close()
     print(f'{ENGINE}: {len(checks)} passed, {len(problems)} failed'); [print('  FAIL', x) for x in problems]
-asyncio.run(main())
+    return 1 if problems or not checks else 0
+sys.exit(asyncio.run(main()))
