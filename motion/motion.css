@@ -77,3 +77,43 @@
 .mk-web .mk-lbl{paint-order:stroke;stroke:#FFF8E8;stroke-width:4px;stroke-linejoin:round}
 .mk-pic small{overflow-wrap:anywhere}
 .mk-pic small,.mk-chip .mk-pic small{white-space:normal;font-size:9.5px;max-width:100%}
+
+/* ---------- motion-batch-1: xbottle gate ---------- */
+.xbnudge{animation:mkshake .35s}
+@keyframes mkshake{20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
+
+/* ---------- motion-batch-1: palace hall of statues ---------- */
+.pm-rules{display:flex;flex-direction:column;gap:4px;background:#FBF4E4;border:1.5px solid #D9C49A;border-radius:12px;padding:8px 10px;margin:6px 0;font-size:14px;line-height:1.7}
+.pm-rules svg{width:26px;flex:none}
+.pm-key{display:flex;flex-wrap:wrap;gap:6px;align-items:center;font-size:12px;margin-top:4px}
+.pm-hall{position:relative;background:linear-gradient(#2E2540,#4A3A5E);border-radius:14px;padding:10px 6px 8px;margin:6px 0;transition:opacity .5s}
+.pm-hall.passed{opacity:.35}
+.pm-doors{display:grid;grid-template-columns:repeat(var(--d),1fr);gap:6px;justify-items:center}
+.pm-dw{width:min(62px,100%);text-align:center;color:#EADFC8;font-weight:700;transition:filter .2s,transform .3s}
+.pm-dw svg{width:100%;height:auto;display:block}
+.pm-dw.lit{filter:drop-shadow(0 0 8px #F2C553)}
+.pm-dw.open{transform:scale(1.12)}
+.pm-beams{display:block;width:100%;height:46px}
+.pm-statues{display:grid;grid-template-columns:repeat(var(--k),1fr);gap:4px}
+.pm-st{display:flex;flex-direction:column;align-items:center;gap:3px;color:#F5EEDC;text-align:center;min-width:0}
+.pm-st>b{font-size:12px;line-height:1.2}
+.pm-turn{all:unset;cursor:pointer;width:min(68px,100%);aspect-ratio:1;border-radius:50%;background:radial-gradient(#6A5880,#3A2E4C);display:grid;place-items:center;position:relative;touch-action:none;outline-offset:3px}
+.pm-turn:focus-visible{outline:3px solid #F2C553}
+.pm-turn img{width:82%;height:82%;object-fit:contain;transition:transform .25s;pointer-events:none}
+.pm-st.away .pm-turn{background:radial-gradient(#4A3A3A,#2A2020)}
+.pm-st.away .pm-turn img{opacity:.6}
+.pm-face{position:absolute;bottom:-4px;font-style:normal;font-size:11px;font-weight:700;background:#F2C553;color:#2F2A24;border-radius:8px;padding:0 5px;white-space:nowrap}
+.pm-st.away .pm-face{background:#7A6A6A;color:#fff}
+.pm-arrows{display:flex;gap:6px;margin-top:4px}
+.pm-arrows button{min-width:34px;min-height:34px;border-radius:10px;border:0;background:#EADFC8;color:#2F2A24;font-size:18px;font-weight:700;cursor:pointer}
+.pm-plaque{background:#EADFC8;color:#2F2A24;border-radius:10px;padding:4px;min-height:40px;display:flex;align-items:center;justify-content:center;width:100%;box-sizing:border-box}
+.pm-pq{display:inline-flex;align-items:center;gap:2px;font-weight:700;border-radius:8px;padding:2px 4px;background:#fff}
+.pm-pq i{font-style:normal;font-size:18px;line-height:1}
+.pm-pq.yes i{color:#2E7D32}.pm-pq.no i{color:#C62828}.pm-pq.same i{color:#3F51B5}
+.pm-pq.cnt{flex-wrap:wrap;justify-content:center}.pm-pq.cnt small{width:100%;font-size:10px}
+.pm-pq .m svg{width:24px;height:24px}
+.pm-door{display:inline-flex;align-items:center;position:relative;width:30px}
+.pm-door svg{width:30px;height:auto}
+.pm-door b{position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-size:15px;padding-top:8px;text-shadow:0 0 3px #000}
+.pm-who{display:inline-grid;place-items:center;width:20px;height:20px;border-radius:50%;background:#4A3A5E;color:#fff;font-size:12px}
+@media (max-width:360px){.pm-turn{width:min(58px,100%)}.pm-pq i{font-size:16px}.pm-st>b{font-size:11px}}
