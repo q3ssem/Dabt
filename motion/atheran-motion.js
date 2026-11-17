@@ -30,26 +30,36 @@
     GM.pz_aarch.run = function runAArchMotion() {
       return pzPlay('pz_aarch', api => {
         const P = aarMake(api.lv), n = P.n, uc = Array(n).fill(-1), uf = Array(n).fill(-1); let miss = 0, busy = false;
-        const capChip = (x, small) => `<span class="mk-chip cap${small ? ' sm' : ''}" style="--c:${CAP_ICON[x % 6][0]}">${icon(CAP_ICON[x % 6][1], CAP_ICON[x % 6][0])}<small>${P.caps[x]}</small></span>`;
-        const fateChip = (f, small) => `<span class="mk-chip fate${small ? ' sm' : ''}">${icon(FATE_ICON[P.fates[f]] || '<circle cx="20" cy="20" r="10"/>')}<small>${P.fates[f]}</small></span>`;
-        const shipChip = r => `<span class="mk-chip ship sm">${icon(SHIP, '#2C4A5A')}<small>${P.ships[r]} · ${XAR(P.years[r])}</small></span>`;
+        // R4 art bound to generator values: ship picture by AAR_SHIP index (ship / rowboat), captain seal = scroll with the
+        // captain's own seal mark, fate = rune by AAR_F index (rune_flame = AAR_F[4] per the manifest).
+        const ART = 'motion/art/', SHIP_ART = i => AAR_SHIP.indexOf(P.ships[i]) % 2 ? 'prop_rowboat' : 'prop_ship';
+        const FATE_ART = { 'عادت': 'rune_wave', 'اختفت': 'rune_moon', 'بقيت هناك': 'rune_star', 'أنكرت ما رأت': 'rune_flame' };
+        const capChip = (x, small) => `<span class="mk-chip cap aa-cap${small ? ' sm' : ''}" style="--c:${CAP_ICON[AAR_CAP.indexOf(P.caps[x]) % 6][0]}"><span class="aa-scroll"><img src="${ART}prop_manifest.webp" alt="" draggable="false">${icon(CAP_ICON[AAR_CAP.indexOf(P.caps[x]) % 6][1], CAP_ICON[AAR_CAP.indexOf(P.caps[x]) % 6][0])}</span><small>${P.caps[x]}</small></span>`;
+        const fateChip = (f, small) => { const a = FATE_ART[P.fates[f]]; return `<span class="mk-chip fate aa-fate${small ? ' sm' : ''}">${a ? `<img class="aa-rune" src="${ART}${a}.webp" alt="" draggable="false">` : `<span class="aa-rune drawn">${icon(FATE_ICON[P.fates[f]] || '<circle cx="20" cy="20" r="10"/>', '#7A4E2C')}</span>`}<small>${P.fates[f]}</small></span>`; };
+        const shipChip = r => `<span class="mk-chip ship sm aa-shipc"><img src="${ART}${SHIP_ART(r)}.webp" alt="" draggable="false"><small>${P.ships[r]}</small></span>`;
+        // relations as pictures: = same row · ✗ not · dotted path = sailed earlier (older row first) · two touching slots = the very next ship
+        const SEQ = '<span class="mk-rel aa-seq" title="أبحر قبل" aria-label="قبل"><svg viewBox="0 0 44 16" aria-hidden="true"><path d="M40 8H8" stroke="#5A4630" stroke-width="2.4" stroke-dasharray="4 3"/><path d="M12 3L5 8l7 5" fill="none" stroke="#5A4630" stroke-width="2.4" stroke-linejoin="round"/></svg></span>';
+        const NEXT = '<span class="mk-rel aa-next" title="السفينة التالية مباشرة" aria-label="التالية مباشرة"><svg viewBox="0 0 44 18" aria-hidden="true"><rect x="23" y="2" width="18" height="14" rx="3" fill="#F2C553" stroke="#5A4630" stroke-width="1.8"/><rect x="4" y="2" width="18" height="14" rx="3" fill="#fff" stroke="#5A4630" stroke-width="1.8"/></svg></span>';
+        const NOT = '<span class="mk-rel aa-not" title="ليس" aria-label="ليس"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16" stroke="#B6382A" stroke-width="3" stroke-linecap="round"/></svg></span>';
         const clueHTML = c => {
           switch (c.t) {
             case 'eq': return shipChip(c.r) + REL.eq + capChip(c.c, 1);
-            case 'cn': return shipChip(c.r) + REL.ne + capChip(c.c, 1);
-            case 'cy': return capChip(c.a, 1) + '<span class="mk-rel seq">أبحر قبل</span>' + capChip(c.b, 1);
+            case 'cn': return shipChip(c.r) + NOT + capChip(c.c, 1);
+            case 'cy': return capChip(c.a, 1) + SEQ + capChip(c.b, 1);
             case 'fc': return capChip(c.c, 1) + REL.eq + fateChip(c.f, 1);
-            case 'fn': return capChip(c.c, 1) + REL.ne + fateChip(c.f, 1);
+            case 'fn': return capChip(c.c, 1) + NOT + fateChip(c.f, 1);
             case 'fr': return shipChip(c.r) + REL.eq + fateChip(c.f, 1);
-            case 'fy': return fateChip(c.f, 1) + '<span class="mk-rel seq">بعد</span>' + shipChip(c.r);
-            case 'adj': return capChip(c.c, 1) + '<span class="mk-rel nx">مباشرة بعد</span>' + fateChip(c.f, 1);
+            case 'fy': return shipChip(c.r) + SEQ + fateChip(c.f, 1);
+            case 'adj': return fateChip(c.f, 1) + NEXT + capChip(c.c, 1);
           } return '';
         };
+        const clueSay = c => aarText(c, P);
         api.body.innerHTML = xSheet(`${xHead(XS_.navigator.replace('viewBox="0 0 60 80"', 'viewBox="0 0 60 80" width="28" height="36"'), 'أرشيف الرحلات')}
-          <p class="mk-lead">اسحب ختم كل قائد ورمز كل مصير إلى سفينته. السفن مرتبة بسنة إبحارها. كل نقش يضيء أخضر حين يتحقق وأحمر حين يُخالَف.</p>
-          <div class="mk-clues" id="aarcl">${P.clues.map((c, i) => `<div class="mk-clue" data-cl="${i}"><i class="mk-dot"></i>${clueHTML(c)}</div>`).join('')}</div>
+          <p class="mk-lead">اسحب ختم كل قائد ورمز كل مصير إلى سفينته. السفن مرتبة بسنة إبحارها، الأقدم أولًا. كل قرينة تضيء أخضر حين تتحقق وأحمر حين تُخالَف.</p>
+          <div class="aa-key">${REL.eq}نفسه · ${NOT}ليس · ${SEQ}أقدم من · ${NEXT}التالية مباشرة</div>
+          <div class="mk-clues" id="aarcl">${P.clues.map((c, i) => `<div class="mk-clue" data-cl="${i}" role="note" aria-label="${clueSay(c)}"><i class="mk-dot"></i>${clueHTML(c)}</div>`).join('')}</div>
           <div class="mk-board aar-board" id="aarboard">
-            <div class="mk-rows">${P.ships.map((s, r) => `<div class="mk-row"><div class="mk-ship">${icon(SHIP, '#2C4A5A')}<b>${s}</b><small>سنة ${XAR(P.years[r])}</small></div><div class="mk-slot" data-slot="c${r}" tabindex="0" aria-label="قائد ${s}"></div><div class="mk-slot" data-slot="f${r}" tabindex="0" aria-label="مصير ${s}"></div></div>`).join('')}</div>
+            <div class="mk-rows">${P.ships.map((s, r) => `<div class="mk-row"><div class="mk-ship aa-ship"><img src="${ART}${SHIP_ART(r)}.webp" alt="" draggable="false"><b>${s}</b><small>سنة ${XAR(P.years[r])}</small></div><div class="mk-slot" data-slot="c${r}" tabindex="0" aria-label="قائد ${s}"></div><div class="mk-slot" data-slot="f${r}" tabindex="0" aria-label="مصير ${s}"></div></div>`).join('')}</div>
             <div class="mk-tray" data-tray="c" aria-label="أختام القادة"></div><div class="mk-tray" data-tray="f" aria-label="رموز المصائر"></div>
           </div>
           <div class="xkbtns"><button class="go-btn xsm alt2" id="aarclr">أعد القطع</button><button class="go-btn xsm" id="aargo">رتّب الأرشيف</button></div>`, 620 + n * 110, 501);
@@ -110,13 +120,18 @@
           svg += `<path data-ev="L${e.i}" d="M${pts.map(p => p.join(' ')).join('L')}L${pb.reverse().map(p => p.join(' ')).join('L')}Z" fill="${ALY_C[e.i]}" stroke="#3A2616" stroke-width="1"/>${[...Array(5)].map((_, q) => `<path d="M${20 + q * 60} ${y + 12 + (q % 2) * 10}h14" stroke="#3A2616" stroke-width=".6" opacity=".4"/>`).join('')}<text x="10" y="${y + Hh / 2 + 5}" font-size="14" fill="#3A2616" font-family="'Aref Ruqaa',serif">${'أبجدهوز'[e.i]}</text>`; });
         P.ev.filter(e => e.t === 'V').forEach(v => { const x = v.x * W, top = H - (v.top + 1) * Hh; svg += `<path data-ev="V${v.i}" d="M${x - 6} ${H}q8-${(H - top) / 3} -2 -${(H - top) * .6}t6 -${(H - top) * .4}h8q-8 ${(H - top) * .4} 2 ${(H - top) * .6}t-2 ${(H - top) * .4}z" fill="${ALY_V[v.i]}" stroke="#3A2616" stroke-width=".8" opacity=".9"/><circle cx="${x + 4}" cy="${top + 10}" r="9" fill="#F4E9CC" stroke="#3A2616"/><text x="${x + 4}" y="${top + 14}" font-size="11" text-anchor="middle" fill="#3A2616">${XAR(v.i + 1)}</text>`; });
         fs.forEach(f => { const x = f.x * W, top = H - (f.top + 1) * Hh; svg += `<path data-ev="F${f.i}" d="M${x} ${H}L${x - 6} ${top}" stroke="#1E1712" stroke-width="2.4" stroke-dasharray="6 3"/><rect x="${x - 20}" y="${top - 4}" width="26" height="14" rx="3" fill="#F4E9CC" stroke="#3A2616"/><text x="${x - 7}" y="${top + 7}" font-size="9.5" text-anchor="middle" fill="#3A2616">شق ${XAR(f.i + 1)}</text>`; });
-        svg += '</svg>';
+        // anchors where a placed card's position number appears on the section itself
+        const anc = {}; lay.forEach(e => anc['L' + e.i] = [16, H - (e.i + 1) * Hh + Hh / 2 - off(e.i, 16)]);
+        P.ev.filter(e => e.t === 'V').forEach(v => anc['V' + v.i] = [v.x * W + 10, H - (v.top + 1) * Hh + Hh * .55]);
+        fs.forEach(f => anc['F' + f.i] = [f.x * W + 12, H - (f.top + 1) * Hh + Hh * .55]);
+        svg += '<g id="alynums"></g></svg>';
         const mark = e => e.t === 'L' ? `<svg viewBox="0 0 40 40"><rect x="4" y="12" width="32" height="16" rx="2" fill="${ALY_C[e.i]}" stroke="#3A2616" stroke-width="1.6"/><text x="20" y="25" font-size="12" text-anchor="middle" fill="#3A2616" font-family="'Aref Ruqaa',serif">${'أبجدهوز'[e.i]}</text></svg>`
           : e.t === 'V' ? `<svg viewBox="0 0 40 40"><path d="M16 36q6-10 0-18t6-14h6q-8 6-2 14t-2 18z" fill="${ALY_V[e.i]}" stroke="#3A2616" stroke-width="1.4"/></svg>`
           : `<svg viewBox="0 0 40 40"><path d="M24 36L16 4" stroke="#1E1712" stroke-width="3" stroke-dasharray="6 3"/></svg>`;
         const tok = j => `<button class="mk-tok" data-tok="${j}"><span class="mk-chip ev">${mark(P.items[j])}<small>${alyName(P.items[j])}</small></span></button>`;
         api.body.innerHTML = xSheet(`${xHead('', 'طبقات الزمن')}
           <div class="mk-rules"><span>${icon('<path d="M20 34V8M12 16l8-8 8 8"/>')}<small>الأعلى أحدث</small></span><span>${icon('<path d="M18 36q6-10 0-18t6-14" stroke-width="3"/><path d="M6 20h28" opacity=".45"/>')}<small>العرق أحدث مما يشقه</small></span>${fs.length ? `<span>${icon('<path d="M24 36L16 4" stroke-dasharray="5 3"/><path d="M6 14h10M20 22h14" opacity=".45"/>')}<small>الشق أحدث مما أزاحه</small></span>` : ''}</div>
+          <div class="aly-top"><img src="motion/art/prop_strata.webp" alt="" width="40" height="38"><span class="aly-stat" id="alystat" aria-live="polite"></span></div>
           ${svg}
           <div class="mk-time"><span class="mk-end">الأقدم</span><div class="mk-line">${[...Array(N).keys()].map(q => `<div class="mk-slot tl" data-slot="${q}" tabindex="0" aria-label="الموضع ${q + 1}"><i>${XAR(q + 1)}</i></div>`).join('')}</div><span class="mk-end">الأحدث</span></div>
           <div class="mk-tray" data-tray="t" aria-label="الأحداث"></div>
@@ -125,6 +140,11 @@
         const draw = () => {
           root.querySelectorAll('[data-slot]').forEach(s => { const q = +s.dataset.slot; s.innerHTML = u[q] < 0 ? `<i>${XAR(q + 1)}</i>` : tok(u[q]); s.classList.toggle('full', u[q] >= 0); });
           root.querySelector('[data-tray="t"]').innerHTML = [...Array(N).keys()].filter(j => !u.includes(j)).map(tok).join('');
+          // the time line updates the section as cards are placed, and shows whether it is complete (not whether it is right)
+          root.querySelector('#alynums').innerHTML = u.map((j, q) => { if (j < 0) return ''; const e = P.items[j], a = anc[e.t + e.i]; return a ? `<g class="aly-num"><circle cx="${a[0]}" cy="${a[1]}" r="9"/><text x="${a[0]}" y="${a[1] + 4}" text-anchor="middle">${XAR(q + 1)}</text></g>` : ''; }).join('');
+          const placed = u.filter(j => j >= 0).length, st = root.querySelector('#alystat');
+          st.textContent = placed === N ? `الخط الزمني مكتمل · ${XAR(N)} من ${XAR(N)}` : `ترتيب ناقص · ${XAR(placed)} من ${XAR(N)}`; st.classList.toggle('done', placed === N);
+          root.querySelector('.mk-line').style.setProperty('--fill', placed / N);
         };
         const flash = j => { const e = P.items[j], el = root.querySelector(`[data-ev="${e.t}${e.i}"]`); if (!el) return; el.classList.remove('mk-flash'); void el.getBBox(); el.classList.add('mk-flash'); };
         attach(root, {
@@ -151,56 +171,76 @@
     };
   }
 
-  /* ================================================================ 3. المدينة الحية — pz_acity
-     The text list of "who lives on whom" becomes a drawn food web. Drag a dark species onto the simulation stone:
-     the dimming spreads along the web, and every node where the hypothesis disagrees with the scene is ringed. */
+  /* ================================================================ 3. المدينة الحية — pz_acity  (priority-7 R4)
+     The food web is drawn from the generator itself (actMake: n = 5..8 species, P.req = needs, req.or = «any one is enough»).
+     Food sits above the species that live on it. Solid line = it needs ALL of these; dashed line = ANY ONE of them is enough.
+     Each species is its approved picture (ACT_SP index → R4 art). The scene shows which species are dark now.
+     Tap a dark species to make it the hypothesis: the dimming spreads from it, generation by generation, and every
+     species where the simulation and the scene disagree is ringed. Same rule and win path (actAudit exact → aWin). */
   if (has('pz_acity') && typeof actMake === 'function') {
+    const ART = 'motion/art/';
+    const SP_ART = ['rune_leaf', 'rune_wave', 'prop_sporebone', 'rune_moon', 'prop_biolantern', 'prop_torch', 'prop_tent', 'rune_star']; // ACT_SP[0..7]
     GM.pz_acity.run = function runACityMotion() {
       return pzPlay('pz_acity', api => {
-        const P = actMake(api.lv), n = P.n, nm = i => ACT_SP[P.ord[i]][0], col = i => ACT_SP[P.ord[i]][1]; let sel = -1, miss = 0, busy = false, sim = null;
-        // layout: depth = longest chain of needs; lower depth at the bottom (roots), dependants above
+        const P = actMake(api.lv), n = P.n, nm = i => ACT_SP[P.ord[i]][0], col = i => ACT_SP[P.ord[i]][1];
+        let sel = -1, miss = 0, busy = false, sim = null, view = 'scene';
+        // layout: rank = longest chain of food below it. Food on top, dependants underneath.
         const depth = Array(n).fill(0); for (let pass = 0; pass < n; pass++) for (let i = 0; i < n; i++) for (const r of P.req[i]) depth[i] = Math.max(depth[i], depth[r] + 1);
-        const D = Math.max(...depth) + 1, W = 320, Hh = 84, H = D * Hh + 20, pos = [];
-        for (let d = 0; d < D; d++) { const row = [...Array(n).keys()].filter(i => depth[i] === d); row.forEach((i, q) => pos[i] = [(q + .5) * W / row.length + (row.length > 1 && d % 2 ? 10 : 0), H - 40 - d * Hh]); }
-        const edge = (a, b, dash) => { const [x1, y1] = pos[a], [x2, y2] = pos[b]; const dx = x2 - x1, dy = y2 - y1, L = Math.hypot(dx, dy) || 1, ux = dx / L, uy = dy / L; return `<path d="M${x1 + ux * 22} ${y1 + uy * 22}L${x2 - ux * 26} ${y2 - uy * 26}" stroke="#6B5236" stroke-width="2.2" ${dash ? 'stroke-dasharray="5 4"' : ''} marker-end="url(#mkarr)" fill="none"/>`; };
-        const web = () => { let s = `<svg viewBox="0 0 ${W} ${H}" class="mk-web" id="actweb"><defs><marker id="mkarr" viewBox="0 0 10 10" refX="8" refY="5" markerWidth="5" markerHeight="5" markerUnits="strokeWidth" orient="auto"><path d="M0 0L10 5L0 10z" fill="#6B5236"/></marker></defs>`;
+        // rows of at most three, so names never collide on 320 (same rank never links to itself, so a split row keeps food above)
+        const rows = []; for (let d = 0; d <= Math.max(...depth); d++) { const r = [...Array(n).keys()].filter(i => depth[i] === d); for (let q = 0; q < r.length; q += 3) rows.push(r.slice(q, q + 3)); }
+        const D = rows.length, W = 300, rowH = D > 3 ? 86 : 98, R = n > 6 ? 25 : 28, H = D * rowH + 16, pos = [];
+        rows.forEach((row, d) => { const gap = W / row.length; row.forEach((i, q) => pos[i] = [W - (q + .5) * gap + (row.length < 3 && d % 2 ? 14 : 0), 14 + R + d * rowH]); }); // RTL: first on the right
+        const edge = (a, b, any) => { const [x1, y1] = pos[a], [x2, y2] = pos[b], L = Math.hypot(x2 - x1, y2 - y1) || 1, ux = (x2 - x1) / L, uy = (y2 - y1) / L;
+          return `<path class="ae ${any ? 'any' : 'all'}" data-e="${a}-${b}" d="M${(x1 + ux * (R + 3)).toFixed(1)} ${(y1 + uy * (R + 3)).toFixed(1)}L${(x2 - ux * (R + 3)).toFixed(1)} ${(y2 - uy * (R + 3)).toFixed(1)}"/>`; };
+        const web = () => { let s = `<svg viewBox="0 0 ${W} ${H + 22}" class="mk-web ac-web" id="actweb" role="group" aria-label="شبكة الغذاء">`;
           for (let i = 0; i < n; i++) for (const r of P.req[i]) s += edge(r, i, P.req[i].or);
-          for (let i = 0; i < n; i++) { const [x, y] = pos[i]; s += `<g class="mk-sp ${P.al[i] ? 'lit' : 'dark'}" data-sp="${i}"><circle class="halo" cx="${x}" cy="${y}" r="21"/><circle cx="${x}" cy="${y}" r="16" fill="${col(i)}" stroke="#3A2616" stroke-width="1.6"/><text class="mk-lbl" x="${x}" y="${y + 32}" text-anchor="middle" font-size="11" font-weight="700" fill="#3A2616">${nm(i)}</text></g>`; }
+          for (let i = 0; i < n; i++) { const [x, y] = pos[i];
+            s += `<g class="mk-sp ${P.al[i] ? 'lit' : 'dark'}" data-sp="${i}" tabindex="0" role="button" aria-label="${nm(i)}: ${P.al[i] ? 'مضيء' : 'منطفئ'}">
+              <circle class="halo" cx="${x}" cy="${y}" r="${R + 4}"/><circle class="disc" cx="${x}" cy="${y}" r="${R}" style="--c:${col(i)}"/>
+              <image href="${ART}${SP_ART[P.ord[i]]}.webp" x="${x - R * .78}" y="${y - R * .78}" width="${R * 1.56}" height="${R * 1.56}"/>
+              <text class="mk-lbl" x="${x}" y="${y + R + 15}" text-anchor="middle">${nm(i)}</text><text class="ac-mark" x="${x + R * .72}" y="${y - R * .6}" text-anchor="middle"></text></g>`; }
           return s + '</svg>'; };
-        const darkToks = () => [...Array(n).keys()].filter(i => !P.al[i] && i !== sel).map(i => `<button class="mk-tok" data-tok="${i}"><span class="mk-chip sp"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="13" fill="${col(i)}" stroke="#3A2616" stroke-width="2"/></svg><small>${nm(i)}</small></span></button>`).join('');
         api.body.innerHTML = xSheet(`${xHead('', 'المدينة الحية')}
-          <div class="mk-rules"><span><svg viewBox="0 0 60 20"><path d="M4 10H50" stroke="#6B5236" stroke-width="2"/><path d="M48 5l8 5-8 5z" fill="#6B5236"/></svg><small>يحتاج إلى</small></span><span><svg viewBox="0 0 60 20"><path d="M4 10H50" stroke="#6B5236" stroke-width="2" stroke-dasharray="5 4"/><path d="M48 5l8 5-8 5z" fill="#6B5236"/></svg><small>يكفيه أحدها</small></span><span><svg viewBox="0 0 40 20"><circle cx="20" cy="10" r="8" fill="#F2C553" stroke="#3A2616"/></svg><small>مضيء</small></span><span><svg viewBox="0 0 40 20"><circle cx="20" cy="10" r="8" fill="#3A3A40" stroke="#3A2616"/></svg><small>منطفئ</small></span></div>
-          <p class="mk-lead">نوع واحد اختفى أولًا وأطفأ غيره. اسحب نوعًا منطفئًا إلى حجر المحاكاة لترى سلسلة الانطفاء التي يسببها، وقارنها بالمشهد.</p>
+          <div class="ac-top"><b>${XAR(n)} أنواع</b><button class="ac-mode" id="acmode" type="button" aria-pressed="false">المشهد الآن</button></div>
+          <div class="ac-key"><span><svg viewBox="0 0 34 8" aria-hidden="true"><path d="M2 4H32" stroke="#3A2616" stroke-width="3"/></svg>يحتاج <b>الكل</b></span><span><svg viewBox="0 0 34 8" aria-hidden="true"><path d="M2 4H32" stroke="#2E8A80" stroke-width="3" stroke-dasharray="6 4"/></svg><b>أحدها</b> يكفي</span><span><svg viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="#EEE9E2" stroke="#8C8478" stroke-width="2"/></svg>منطفئ</span></div>
+          <p class="mk-lead">نوع واحد اختفى أولًا وأطفأ غيره. المس نوعًا منطفئًا لتحاكي اختفاءه، وقارن الانتشار بالمشهد.</p>
           ${web()}
-          <div class="mk-simrow"><div class="mk-slot sim" data-slot="sim" tabindex="0" aria-label="حجر المحاكاة"><em>حجر المحاكاة</em></div><div class="mk-simout" id="actsim" aria-live="polite">لا فرضية بعد.</div></div>
-          <div class="mk-tray" data-tray="d" aria-label="الأنواع المنطفئة"></div>
+          <div class="mk-simout" id="actsim" aria-live="polite">لا فرضية بعد.</div>
           <div class="xkbtns"><button class="go-btn xsm" id="actgo">هذا اختفى أولًا</button></div>`, 980, 711);
         const root = api.body.querySelector('.xpaper') || api.body;
         const paint = () => {
-          root.querySelectorAll('.mk-sp').forEach(g => { const i = +g.dataset.sp; g.classList.remove('sim-off', 'mis', 'cause'); if (sim) { if (!sim.predicted[i]) g.classList.add('sim-off'); if (sim.extra.includes(i) || sim.missing.includes(i)) g.classList.add('mis'); if (i === sel) g.classList.add('cause'); } });
-          const slot = root.querySelector('[data-slot="sim"]'); slot.innerHTML = sel < 0 ? '<em>حجر المحاكاة</em>' : `<button class="mk-tok" data-tok="${sel}"><span class="mk-chip sp"><svg viewBox="0 0 40 40"><circle cx="20" cy="20" r="13" fill="${col(sel)}" stroke="#3A2616" stroke-width="2"/></svg><small>${nm(sel)}</small></span></button>`; slot.classList.toggle('full', sel >= 0);
-          root.querySelector('[data-tray="d"]').innerHTML = darkToks();
+          const showSim = sim && view === 'sim';
+          root.querySelectorAll('.mk-sp').forEach(g => { const i = +g.dataset.sp; g.classList.remove('sim-off', 'mis', 'cause');
+            g.classList.toggle('dark', showSim ? !sim.predicted[i] : !P.al[i]); g.classList.toggle('lit', showSim ? sim.predicted[i] : P.al[i]);
+            if (sim && (sim.extra.includes(i) || sim.missing.includes(i))) g.classList.add('mis');
+            if (i === sel) g.classList.add('cause'); g.querySelector('.ac-mark').textContent = sim && (sim.extra.includes(i) || sim.missing.includes(i)) ? '!' : ''; });
+          const al = showSim ? sim.predicted : P.al;
+          root.querySelectorAll('.ae').forEach(e => { const [a] = e.dataset.e.split('-').map(Number); e.classList.toggle('cut', !al[a]); });
+          const m = $('#acmode'); m.disabled = !sim; m.textContent = view === 'sim' ? 'بعد الانطفاء' : 'المشهد الآن'; m.setAttribute('aria-pressed', view === 'sim');
+          m.classList.toggle('sim', view === 'sim');
           const out = $('#actsim'); out.classList.toggle('good', !!(sim && sim.exact)); out.classList.toggle('bad', !!(sim && !sim.exact));
-          out.innerHTML = !sim ? 'لا فرضية بعد.' : sim.exact ? `<b>تطابق كامل</b> · الحلقات المنطفئة كلها كما في المشهد.` : `<b>${XAR(sim.mismatch)} اختلاف</b> · الأنواع المحاطة بحلقة حمراء لا تطابق المشهد.`;
+          out.innerHTML = !sim ? 'لا فرضية بعد.' : sim.exact ? `<b>أول نوع اختفى: ${nm(sel)}</b> · الانتشار يطابق المشهد تمامًا.` : `<b>لو اختفى ${nm(sel)} أولًا</b> · ${XAR(sim.mismatch)} ${sim.mismatch === 1 ? 'نوع لا يطابق' : 'أنواع لا تطابق'} المشهد (عليها !).`;
         };
-        const simulate = () => { if (sel < 0) { sim = null; paint(); return; } sim = actAudit(P, sel); paint();
+        const simulate = () => { if (sel < 0) { sim = null; view = 'scene'; paint(); return; } sim = actAudit(P, sel); view = 'sim'; paint();
           // the dimming spreads along the web, one generation at a time
-          const gens = []; const al = Array(n).fill(true); al[sel] = false; let cur = [sel]; while (cur.length) { gens.push(cur); const nx = []; for (let i = 0; i < n; i++) { if (!al[i]) continue; const R = P.req[i]; const ok = !R.length || (R.or ? R.some(r => al[r]) : R.every(r => al[r])); if (!ok) { al[i] = false; nx.push(i); } } cur = nx; }
-          gens.forEach((g, q) => later(() => g.forEach(i => { const el = root.querySelector(`[data-sp="${i}"]`); if (el) { el.classList.remove('pulse'); void el.getBBox(); el.classList.add('pulse'); } }), q * 320)); tone(240, .05); };
-        attach(root, {
-          canDrag: () => !api.ended && !busy,
-          drop: (t, slot) => { const i = +t; if (slot === 'sim') { sel = i; simulate(); } else if (slot == null && i === sel) { sel = -1; sim = null; paint(); } }
-        });
-        function check() { if (api.ended || busy) return; if (sel < 0) { api.msg('ضع نوعًا على حجر المحاكاة أولًا.'); return; } const audit = actAudit(P, sel);
-          if (audit.exact) { busy = true; sfx.lvl(); root.querySelectorAll('.mk-sp.dark').forEach((g, q) => later(() => { if (+g.dataset.sp !== P.gone) g.classList.add('relit'); }, 300 + q * 250)); later(() => aWin(api, 'pz_acity', 'عرفت ما اختفى. وحين أعادت الفوانيس توزيع الضوء، فهمت: هذه ليست غابة… هذه مدينة.'), 1200); return; }
-          miss++; api.wrong(); if (miss >= 3) { busy = true; sel = P.gone; sim = actAudit(P, sel); paint(); api.over(`اختفى أولًا: ${nm(P.gone)}.`); return; } simulate(); api.msg('الفرضية لا تعيد إنتاج سلسلة الانطفاء كاملة.'); }
+          const gens = [], al = Array(n).fill(true); al[sel] = false; let cur = [sel];
+          while (cur.length) { gens.push(cur); const nx = []; for (let i = 0; i < n; i++) { if (!al[i]) continue; const Rq = P.req[i]; const ok = !Rq.length || (Rq.or ? Rq.some(r => al[r]) : Rq.every(r => al[r])); if (!ok) { al[i] = false; nx.push(i); } } cur = nx; }
+          root.querySelectorAll('.mk-sp').forEach(g => g.classList.remove('pulse'));
+          gens.forEach((g, q) => later(() => g.forEach(i => { const el = root.querySelector(`[data-sp="${i}"]`); if (el) { el.classList.remove('pulse'); void el.getBBox(); el.classList.add('pulse'); } }), q * 340)); tone(240, .05); };
+        const pick = i => { if (api.ended || busy) return; if (P.al[i]) { api.msg(`«${nm(i)}» ما زال مضيئًا في المشهد: الأول اختفى، فهو منطفئ.`); return; } sel = sel === i ? -1 : i; sfx.pop(); simulate(); };
+        root.querySelector('#actweb').addEventListener('click', e => { const g = e.target.closest('.mk-sp'); if (g) pick(+g.dataset.sp); });
+        root.querySelector('#actweb').addEventListener('keydown', e => { const g = e.target.closest('.mk-sp'); if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pick(+g.dataset.sp); } });
+        $('#acmode').onclick = () => { if (!sim) return; view = view === 'sim' ? 'scene' : 'sim'; paint(); };
+        function check() { if (api.ended || busy) return; if (sel < 0) { api.msg('المس نوعًا منطفئًا أولًا.'); return; } const audit = actAudit(P, sel);
+          if (audit.exact) { busy = true; sfx.lvl(); view = 'scene'; paint(); root.querySelectorAll('.mk-sp.dark').forEach((g, q) => later(() => { if (+g.dataset.sp !== P.gone) g.classList.add('relit'); }, 300 + q * 250)); later(() => aWin(api, 'pz_acity', 'عرفت ما اختفى. وحين أعادت الفوانيس توزيع الضوء، فهمت: هذه ليست غابة… هذه مدينة.'), 1200); return; }
+          miss++; api.wrong(); if (miss >= 3) { busy = true; sel = P.gone; simulate(); api.over(`اختفى أولًا: ${nm(P.gone)}.`); return; } simulate(); api.msg('الفرضية لا تعيد إنتاج سلسلة الانطفاء كاملة.'); }
         $('#actgo').onclick = check; paint(); api.msg('من اختفى أولًا؟');
-        pzHook({ P, pick: i => { sel = i; simulate(); }, check, simulate });
+        pzHook({ P, pick: i => { sel = i; simulate(); }, tap: pick, check, simulate, state: () => ({ sel, view, sim }) });
         return {
-          hint: kk => { if (kk === 1) return 'ضع على حجر المحاكاة نوعًا منطفئًا: الفرضية الصحيحة وحدها تطفئ الأنواع المنطفئة نفسها، ولا تطفئ أي نوع مضيء.';
+          hint: kk => { if (kk === 1) return 'الفرضية الصحيحة وحدها تطفئ الأنواع المنطفئة نفسها، ولا تطفئ أي نوع مضيء. الخط المتقطع: يكفي أن يبقى واحد منها.';
             if (kk >= 3) return `الفرض الصحيح: ${nm(P.gone)}.`;
             const ex = [...Array(n).keys()].filter(i => !P.al[i] && i !== P.gone).map(i => ({ i, d: actAudit(P, i).mismatch })).sort((a, b) => b.d - a.d)[0]; if (!ex) return null; return `لو كان ${nm(ex.i)} هو الأول، لاختلف ${XAR(ex.d)} من الأنواع عن المشهد: استبعده.`; },
-          reveal: () => { sel = P.gone; sim = actAudit(P, sel); paint(); return `اختفى ${nm(P.gone)}.`; }
+          reveal: () => { sel = P.gone; simulate(); return `اختفى ${nm(P.gone)}.`; }
         };
       });
     };
@@ -220,31 +260,39 @@
     GM.pz_arelic.run = function runARelicMotion() {
       return pzPlay('pz_arelic', api => {
         const P = arlMake(api.lv), u = Array(P.na).fill(-1); let miss = 0, busy = false, cmp = -1;
-        const pic = (j, v, cls = '') => `<span class="mk-pic ${cls}" title="${P.A[j].n}: ${P.A[j].v[v]}">${icon(AT_ICON[j][v])}<small>${P.A[j].v[v]}</small></span>`;
+        // R4 art: every source is a diary page (prop_diary); each piece shows its value picture with the rune of its
+        // attribute (arlMake.A[0] moon, A[1] wave, A[2] star per the manifest; A[3] keeps a drawn ring).
+        const ART = 'motion/art/', RUNE = ['rune_moon', 'rune_wave', 'rune_star'];
+        const pic = (j, v, cls = '') => `<span class="mk-pic arl-pic ${cls}" title="${P.A[j].n}: ${P.A[j].v[v]}">${RUNE[j] ? `<img class="arl-rune" src="${ART}${RUNE[j]}.webp" alt="" draggable="false">` : '<i class="arl-rune ring"></i>'}${icon(AT_ICON[j][v])}<small>${P.A[j].v[v]}</small>${cls.includes('diff') ? '<em class="arl-x">تناقض</em>' : ''}</span>`;
         const strip = (i, diffMask) => `<span class="mk-strip" style="--na:${P.na}">${P.S[i].map((v, j) => pic(j, v, diffMask && diffMask[j] ? 'diff' : '')).join('')}</span>`;
-        const srcTok = i => `<button class="mk-tok src" data-tok="${i}"><span class="mk-chip src"><b>${ARL_SRC[i]}</b>${strip(i)}</span></button>`;
+        const LBL = ['أ', 'ب', 'ج', 'د', 'هـ'];
+        const srcHead = (i, extra = '') => `<b class="arl-src"><img src="${ART}prop_diary.webp" alt="" draggable="false"><span>المصدر ${LBL[i]}<small>${ARL_SRC[i]}</small></span>${extra}</b>`;
+        const srcTok = (i, extra = '', mask) => `<button class="mk-tok src" data-tok="${i}"><span class="mk-chip src">${srcHead(i, extra)}${strip(i, mask)}</span></button>`;
         api.body.innerHTML = xSheet(`${xHead('', 'أرشيف الآثار الأولى')}
-          <div class="mk-rules"><span><small>مصدر واحد صادق في كل شيء · كل مصدر آخر يخطئ في صورة واحدة فقط</small></span></div>
-          <div class="mk-attr" style="--na:${P.na}">${P.A.map(a => `<small>${a.n}</small>`).join('')}</div>
-          ${P.ev.length ? `<div class="mk-evid"><b>${icon('<rect x="10" y="16" width="20" height="16" rx="2"/><path d="M14 16v-4a6 6 0 0 1 12 0v4"/>')} دليل لا يُجادَل</b>${P.ev.map(e => pic(e.k, e.v, 'fixed')).join('')}</div>` : ''}
-          <div class="mk-cmp"><div class="mk-slot cmp" data-slot="cmp" tabindex="0" aria-label="منصة المقارنة"><em>منصة المقارنة: ضع مصدرًا هنا</em></div><div id="arlcmp" class="mk-cmpout" aria-live="polite"></div></div>
+          <div class="arl-top"><span class="arl-stat" id="arlstat">أضف مصدرًا</span></div>
+          <div class="mk-rules"><span><small>مصدر واحد صادق في كل شيء · كل مصدر آخر يخطئ في قطعة واحدة فقط</small></span></div>
+          <div class="mk-attr" style="--na:${P.na}">${P.A.map((a, j) => `<small>${RUNE[j] ? `<img src="${ART}${RUNE[j]}.webp" alt="" width="16" height="16">` : ''}${a.n}</small>`).join('')}</div>
+          ${P.ev.length ? `<div class="mk-evid"><b>${icon('<rect x="10" y="16" width="20" height="16" rx="2"/><path d="M14 16v-4a6 6 0 0 1 12 0v4"/>')} دليل مؤكد</b>${P.ev.map(e => pic(e.k, e.v, 'fixed')).join('')}</div>` : ''}
           <div class="mk-tray srcs" data-tray="s" aria-label="المصادر"></div>
-          <div class="mk-truth"><b>الحقيقة</b><div class="mk-slot truth" data-slot="truth" tabindex="0" aria-label="الحقيقة"><em>اسحب المصدر الصادق إلى هنا</em></div></div>
-          <div class="xkbtns"><button class="go-btn xsm" id="arlgo">هذه الحقيقة</button></div>`, 1040, 741);
+          <div class="mk-cmp"><div class="mk-slot cmp" data-slot="cmp" tabindex="0" aria-label="منصة المقارنة"><em>منصة المقارنة: اسحب مصدرًا هنا</em></div><div id="arlcmp" class="mk-cmpout" aria-live="polite"></div></div>
+          <div class="mk-truth"><b>صف الحقيقة المعتمد</b><div class="mk-slot truth" data-slot="truth" tabindex="0" aria-label="الحقيقة"><em>اسحب المصدر الصادق من المنصة إلى هنا</em></div></div>
+          <div class="xkbtns"><button class="go-btn xsm" id="arlgo">ثبّت الاستنتاج</button></div>`, 1040, 741);
         const root = api.body.querySelector('.xpaper') || api.body;
         const truthSrc = () => P.S.findIndex(s => s.every((v, j) => v === u[j]));
         const draw = () => {
-          const t = truthSrc(), slotT = root.querySelector('[data-slot="truth"]'), slotC = root.querySelector('[data-slot="cmp"]');
-          slotT.innerHTML = u.includes(-1) ? '<em>اسحب المصدر الصادق إلى هنا</em>' : `<span class="mk-strip" style="--na:${P.na}">${u.map((v, j) => pic(j, v)).join('')}</span>`; slotT.classList.toggle('full', !u.includes(-1));
-          slotC.innerHTML = cmp < 0 ? '<em>منصة المقارنة: ضع مصدرًا هنا</em>' : srcTok(cmp); slotC.classList.toggle('full', cmp >= 0);
+          const t = truthSrc(), slotT = root.querySelector('[data-slot="truth"]'), slotC = root.querySelector('[data-slot="cmp"]'), full = !u.includes(-1);
+          slotT.innerHTML = !full ? '<em>اسحب المصدر الصادق من المنصة إلى هنا</em>' : `<span class="arl-tline">${t >= 0 ? `المصدر ${LBL[t]}` : ''}</span><span class="mk-strip big" style="--na:${P.na}">${u.map((v, j) => pic(j, v)).join('')}</span>`; slotT.classList.toggle('full', full);
+          // the source on the stone shows its pieces large; every other source marks, inside its own story, where it contradicts it
+          slotC.innerHTML = cmp < 0 ? '<em>منصة المقارنة: اسحب مصدرًا هنا</em>' : `<button class="mk-tok src on" data-tok="${cmp}"><span class="mk-chip src">${srcHead(cmp, '<i class="arl-added">على المنصة</i>')}<span class="mk-strip big" style="--na:${P.na}">${P.S[cmp].map((v, j) => pic(j, v)).join('')}</span></span></button>`; slotC.classList.toggle('full', cmp >= 0);
           root.querySelector('[data-tray="s"]').innerHTML = P.S.map((_, i) => i).filter(i => i !== cmp).map(i => {
             if (cmp < 0) return srcTok(i);
             const mask = P.S[i].map((v, j) => v !== P.S[cmp][j]), d = mask.filter(Boolean).length;
-            return `<button class="mk-tok src ${d === 1 ? 'one' : 'many'}" data-tok="${i}"><span class="mk-chip src"><b>${ARL_SRC[i]} <i>${XAR(d)} اختلاف</i></b>${strip(i, mask)}</span></button>`;
+            return srcTok(i, `<i class="arl-n ${d === 1 ? 'one' : 'many'}">${XAR(d)} تناقض</i>`, mask).replace('mk-tok src"', `mk-tok src ${d === 1 ? 'one' : 'many'}"`);
           }).join('');
-          const out = $('#arlcmp'); if (cmp < 0) { out.innerHTML = ''; return; }
+          const st = root.querySelector('#arlstat'); st.textContent = full ? `ثبّت الاستنتاج · المصدر ${t >= 0 ? LBL[t] : ''}` : cmp >= 0 ? `على المنصة · المصدر ${LBL[cmp]}` : 'أضف مصدرًا'; st.className = 'arl-stat ' + (full ? 'lock' : cmp >= 0 ? 'add' : '');
+          const out = $('#arlcmp'); if (cmp < 0) { out.innerHTML = ''; out.className = 'mk-cmpout'; return; }
           const evBad = P.ev.filter(e => P.S[cmp][e.k] !== e.v).length, diffs = P.S.map((r, j) => j === cmp ? 0 : r.filter((v, k) => v !== P.S[cmp][k]).length).filter((_, j) => j !== cmp), ok = !evBad && diffs.every(d => d === 1);
-          out.className = 'mk-cmpout ' + (ok ? 'good' : 'bad'); out.innerHTML = ok ? '<b>متسق</b> · يطابق الدليل، وكل مصدر آخر يختلف عنه في صورة واحدة.' : `<b>غير متسق</b> · ${evBad ? 'يخالف الدليل' : ''}${evBad && diffs.some(d => d !== 1) ? ' و' : ''}${diffs.some(d => d !== 1) ? 'بعض المصادر تختلف عنه في أكثر من صورة' : ''}.`;
+          out.className = 'mk-cmpout ' + (ok ? 'good' : 'bad'); out.innerHTML = ok ? '<b>متسق</b> · يطابق الدليل، وكل مصدر آخر يناقضه في قطعة واحدة.' : `<b>غير متسق</b> · ${evBad ? 'يخالف الدليل المؤكد' : ''}${evBad && diffs.some(d => d !== 1) ? ' و' : ''}${diffs.some(d => d !== 1) ? 'بعض المصادر تناقضه في أكثر من قطعة' : ''}.`;
         };
         attach(root, {
           canDrag: () => !api.ended && !busy,
