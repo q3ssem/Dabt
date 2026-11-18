@@ -38,8 +38,20 @@ jobs:
         run: npm test
       - name: Verify Gemini design manifests, routing and river geometry
         run: node qa/tests/design-integration.cjs
-      - name: Install Chromium browser with dependencies
-        run: python3 -m playwright install --with-deps chromium
+      - name: Select a compatible Chromium browser
+        shell: bash
+        run: |
+          set -euo pipefail
+          if command -v google-chrome >/dev/null 2>&1; then
+            echo "Using GitHub runner preinstalled Google Chrome"
+            google-chrome --version
+          elif command -v chromium >/dev/null 2>&1; then
+            echo "Using runner Chromium"
+            chromium --version
+          else
+            echo "Installing Playwright Chromium without redundant apt dependencies"
+            python3 -m playwright install chromium
+          fi
       - name: Test actual maps, boat animation and return crossing in mobile Chromium
         shell: bash
         env:
