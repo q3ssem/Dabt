@@ -74,8 +74,8 @@ async def main():
         js=r"""() => {
           const vessel=document.querySelector('#stage .rv10-boat'),scene=document.querySelector('#stage .rv10');
           const r=vessel.getBoundingClientRect(),b=scene.getBoundingClientRect();
-          const hook=window.__test && window.__test.pz;
-          return {x:r.left+r.width/2,board:b.width,state:hook&&hook.s(),at1:scene.classList.contains('at1'),
+          return {x:r.left+r.width/2,board:b.width,rightBank:document.querySelectorAll('#stage #rvb1 [data-tok]').length,
+            at1:scene.classList.contains('at1'),
             parent:vessel.parentElement===scene,spriteCount:vessel.querySelectorAll('img').length,
             facing:[...vessel.querySelectorAll('img')].map(x=>x.getAttribute('src')).filter(Boolean),
             busy:vessel.getAttribute('aria-busy')};
@@ -83,36 +83,42 @@ async def main():
         before=await page.evaluate(js)
         check(before['parent'],'boat lives in the river scene coordinate space')
         check(before['spriteCount']>=6,'painted boat hull, shadow, farmer, oar and wake layers are present')
-        check(before['state'] is not None,'original river QA state hook is available')
+        check(before['rightBank']==0,'all passengers start on the left bank')
         check(before['at1'] is False,'boat begins at left dock')
         await page.screenshot(path=str(OUT/'05-river-left.png'))
 
         get_move=r"""() => {
-          const h=window.__test && window.__test.pz;
-          if(!h || typeof rvPath!=='function')return null;
-          const path=rvPath(h.P.it.length,h.P.cap,h.P.conf,h.s());
-          if(!path||path.length<2)return null;
-          const mask=(path[0]^path[1])&((1<<h.P.it.length)-1);
-          return h.P.it.map((_,i)=>i).filter(i=>mask>>i&1);
+          // Read the visible bank placements, then ask the original public solver.
+          // No test-only or debug hooks are necessary in production builds.
+          if(typeof rvPath!=='function' || typeof rvMake!=='function')return null;
+          const P=rvMake(typeof pzLv==='function'?pzLv('pz_river'):1),n=P.it.length,F=1<<n;
+          const scene=document.querySelector('#stage .rv10');
+          let state=scene.classList.contains('at1')?F:0;
+          for(const el of document.querySelectorAll('#stage #rvb1 [data-tok]'))
+            state|=1<<(+el.dataset.tok);
+          const path=rvPath(n,P.cap,P.conf,state);
+          if(!path || path.length<2)return null;
+          const mask=(path[0]^path[1])&(F-1);
+          return P.it.map((_,i)=>i).filter(i=>mask>>i&1);
         }"""
         first_move=await page.evaluate(get_move)
         check(first_move is not None,'original solver produces a legal crossing')
         if first_move is None: raise RuntimeError('Cannot inspect boat without legal solver step')
-        await page.evaluate('(ids) => ids.forEach(i=>window.__test.pz.tap(i))',first_move)
+        for i in first_move: await page.locator('#stage #rvb0 [data-tok="'+str(i)+'"]').click()
         await page.locator('#stage #lbgo').click()
         await page.wait_for_timeout(75)
         check(await page.locator('#stage .rv10.sail').count()>0,'sailing animation state is active mid-crossing')
         await page.wait_for_timeout(800)
         after=await page.evaluate(js)
         check(after['at1'] is True,'outbound crossing reaches opposite dock')
-        check(after['state'] != before['state'],'crossing updates actual game state')
+        check(after['rightBank']>before['rightBank'],'crossing moves actual passengers to right bank')
         check(after['x']-before['x']>before['board']*.12,'boat visibly travels across water, not a few pixels')
         check(any('farmer_return.png' in s for s in after['facing']),'boat swaps to return-facing drawn farmer')
         await page.screenshot(path=str(OUT/'06-river-right.png'))
         second_move=await page.evaluate(get_move)
         check(second_move is not None,'solver produces return crossing')
         if second_move is None: raise RuntimeError('No legal return move')
-        await page.evaluate('(ids) => ids.forEach(i=>window.__test.pz.tap(i))',second_move)
+        for i in second_move: await page.locator('#stage #rvb1 [data-tok="'+str(i)+'"]').click()
         await page.locator('#stage #lbgo').click()
         await page.wait_for_timeout(800)
         returned=await page.evaluate(js)
