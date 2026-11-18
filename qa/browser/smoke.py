@@ -50,7 +50,7 @@ async def visual_checks(page, gid, problems):
         if 'url(' in result['image'] or wrong_tone or result['alpha'] < 0.9:
             problems.append(f'{gid}: play surface is not a solid {skin} panel: {result}')
     if gid=='pz_grid':
-        ratios=await page.locator('.lgt th').evaluate_all(r"""els=>{
+        ratios=await page.locator('.lgt th, .lg10-t th').evaluate_all(r"""els=>{
           const rgb=s=>s.match(/[\d.]+/g).slice(0,3).map(Number);
           const lum=c=>c.map(x=>{x/=255;return x<=.04045?x/12.92:((x+.055)/1.055)**2.4}).reduce((v,x,i)=>v+x*[.2126,.7152,.0722][i],0);
           return els.filter(e=>e.textContent.trim()).map(e=>{const s=getComputedStyle(e),a=lum(rgb(s.color)),b=lum(rgb(s.backgroundColor));return (Math.max(a,b)+.05)/(Math.min(a,b)+.05)});
