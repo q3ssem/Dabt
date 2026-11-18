@@ -93,24 +93,97 @@
     render();
   }
 
-  function triggerChapter(chId) {
-    const v = $('#v-puz');
-    if (!v) return;
-    if (chId === 'seven_seas') {
-      $('.v5-hubcard', v)?.click();
-    } else if (chId === 'palace') {
-      const title = [...v.querySelectorAll('.la-section-title span')]
-        .find(el => el.textContent === 'قصر المرايا');
-      const heading = title?.closest('h2');
-      if (heading) {
-        heading.tabIndex = -1;
-        heading.focus({ preventScroll: true });
-        heading.scrollIntoView({ block: 'start' });
+  // Use the existing playable atlas for each chapter. Palace alone lacks a chapter
+  // atlas in the legacy engine, so display its illustrated station map here.
+  function openPalaceMap() {
+    const sections = window.LA && typeof LA.librarySections === 'function' ? LA.librarySections() : [];
+    const section = sections.find(([name]) => name === 'قصر المرايا');
+    const stations = section && section[1];
+    if (!stations || !stations.length) {
+      console.warn('[MindLab] Palace stations unavailable; chapter map was not opened.');
+      return false;
+    }
+    const previous = document.activeElement;
+    const old = $('#mlj-palace-map');
+    if (old) old.remove();
+    const modal = document.createElement('div');
+    modal.id = 'mlj-palace-map';
+    modal.className = 'mlj-modal mlj-palace-map';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'خريطة فصل قصر المرايا');
+    modal.innerHTML = '<section class="mlj-modal-card mlj-palace-card">' +
+      '<div class="mlj-head"><h2>قصر المرايا · خريطة المحطات</h2>' +
+      '<button class="mlj-palace-close" type="button" aria-label="إغلاق خريطة قصر المرايا">إغلاق</button></div>' +
+      '<div class="mlj-palace-scene" role="img" aria-label="رسم قصر المرايا"></div>' +
+      '<p class="mlj-palace-note">اختر محطة لفتح لغزها من المكتبة. تقدمك محفوظ كما هو.</p>' +
+      '<div class="mlj-palace-stations" role="group" aria-label="محطات قصر المرايا"></div></section>';
+    const slots = $('.mlj-palace-stations', modal);
+    stations.forEach((p, i) => {
+      const button = document.createElement('button');
+      button.type = 'button';
+      button.className = 'mlj-palace-station';
+      button.dataset.mljPuzzle = p.id;
+      const num = document.createElement('span');
+      num.className = 'mlj-palace-number';
+      num.textContent = i + 1;
+      const label = document.createElement('span');
+      label.textContent = p.name;
+      button.append(num, label);
+      slots.append(button);
+    });
+    function close() {
+      modal.remove();
+      if (previous && previous.isConnected && typeof previous.focus === 'function')
+        previous.focus({ preventScroll: true });
+    }
+    $('.mlj-palace-close', modal).onclick = close;
+    modal.querySelectorAll('[data-mlj-puzzle]').forEach(button => {
+      button.onclick = () => {
+        const id = button.dataset.mljPuzzle;
+        close();
+        // Route through the original library tile to preserve level/save/lock rules.
+        let tile = [...document.querySelectorAll('#v-puz [data-legacy-puzzle]')]
+          .find(el => el.dataset.legacyPuzzle === id);
+        if (!tile && window.LA && typeof LA.library === 'function') {
+          LA.library();
+          tile = [...document.querySelectorAll('#v-puz [data-legacy-puzzle]')]
+            .find(el => el.dataset.legacyPuzzle === id);
+        }
+        if (tile) tile.click();
+        else console.warn('[MindLab] Palace puzzle launcher unavailable:', id);
+      };
+    });
+    modal.addEventListener('click', event => { if (event.target === modal) close(); });
+    modal.addEventListener('keydown', event => {
+      if (event.key === 'Escape') { event.preventDefault(); close(); }
+      if (event.key === 'Tab') {
+        const targets = [...modal.querySelectorAll('button:not([disabled])')];
+        if (!targets.length) return;
+        const first = targets[0], last = targets[targets.length - 1];
+        if (event.shiftKey && document.activeElement === first) {
+          event.preventDefault(); last.focus();
+        } else if (!event.shiftKey && document.activeElement === last) {
+          event.preventDefault(); first.focus();
+        }
       }
+    });
+    document.body.append(modal);
+    $('.mlj-palace-close', modal).focus({ preventScroll: true });
+    return true;
+  }
+
+  function triggerChapter(chId) {
+    if (chId === 'seven_seas') {
+      if (window.T7 && typeof T7.map === 'function') T7.map();
+    } else if (chId === 'palace') {
+      openPalaceMap();
     } else if (chId === 'atheran') {
-      $('.ah-launch-go', v)?.click();
+      if (window.ATHERAN_CAMPAIGN && typeof window.ATHERAN_CAMPAIGN.open === 'function')
+        window.ATHERAN_CAMPAIGN.open();
     } else if (chId === 'side') {
-      $('.ex10-launch-go', v)?.click();
+      if (typeof window.mindlabSideJourneyMap === 'function') window.mindlabSideJourneyMap();
+      else $('#v-puz .ex10-launch-go')?.click();
     }
   }
 
