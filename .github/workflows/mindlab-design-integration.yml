@@ -164,6 +164,24 @@ jobs:
           set -euo pipefail
           python3 tools/build_light_theme.py
           python3 tools/build_light_theme.py --check
+          # Legacy sprite URLs in the source are relative to legacy/style.css.
+          # The generated file lives under ds/, so rebase these exact URLs.
+          python3 - <<'PY'
+          from pathlib import Path
+          import re
+          sheet = Path('ds/light-auto.css')
+          css = sheet.read_text(encoding='utf-8')
+          for name in ('rooms.webp', 'surfaces.webp', 'boards.webp'):
+              path = Path('legacy/art') / name
+              if not path.is_file():
+                  raise SystemExit(f'Missing legacy art referenced by generated CSS: {path}')
+              pattern = re.compile(r"url\((['\"]?)art/" + re.escape(name) + r"\1\)")
+              css, count = pattern.subn(lambda m: 'url(' + m.group(1) + '../legacy/art/' + name + m.group(1) + ')', css)
+              print(f'Rebased {count} generated CSS references for {name}')
+              if count == 0:
+                  raise SystemExit(f'Expected generated CSS references for {name}')
+          sheet.write_text(css, encoding='utf-8')
+          PY
 
       - name: Run all project Node tests
         shell: bash
