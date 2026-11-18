@@ -362,7 +362,7 @@
     }
   }
 
-  window.mindlabJourneyHub = { openTransitions: openTransitionsModal, beforeStation, mountUnifiedHub, applyBoardArt };
+  window.mindlabJourneyHub = { openChapter: triggerChapter, openTransitions: openTransitionsModal, beforeStation, mountUnifiedHub, applyBoardArt };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchAll);
   else watchAll();
 })();
