@@ -3,6 +3,10 @@ run-name: MindLab design integration from release
 on:
   release:
     types: [published]
+  push:
+    branches: [main]
+    paths:
+      - '.github/workflows/mindlab-design-integration.yml'
   workflow_dispatch:
     inputs:
       release_tag:
@@ -22,7 +26,7 @@ jobs:
     name: Validate package, test, and fast-forward main
     runs-on: ubuntu-latest
     timeout-minutes: 60
-    if: github.event_name == 'workflow_dispatch' || github.event.release.tag_name == 'mindlab-design-5.5.28'
+    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.release.tag_name == 'mindlab-design-5.5.28'
     steps:
       - name: Checkout main with history
         uses: actions/checkout@v4
@@ -145,6 +149,13 @@ jobs:
           print('Patched JS syntax, JSON and app-loader dependencies OK')
           PY
 
+      - name: Regenerate white-theme stylesheet from patched sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          python3 tools/build_light_theme.py
+          python3 tools/build_light_theme.py --check
+
       - name: Run all project Node tests
         shell: bash
         run: npm test
@@ -167,7 +178,7 @@ jobs:
           set -euo pipefail
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A -- offline-manifest.js ui/app.js ui/fit.css ui/fit.js \
+          git add -A -- ds/light-auto.css offline-manifest.js ui/app.js ui/fit.css ui/fit.js \
             ui/openings-data.js ui/openings.js ui/openings.css \
             ui/journey-story-data.js ui/board-art-data.js \
             ui/journey-hub.js ui/journey-hub.css ui/designs_art
