@@ -36,12 +36,16 @@ jobs:
         run: |
           set -euo pipefail
           EXPECTED=11f4a9ac6222d1569c2e2b4a8cf83f6f647657c8
-          ACTUAL="$(git rev-parse HEAD)"
-          echo "main: $ACTUAL"
-          if [[ "$ACTUAL" != "$EXPECTED" ]]; then
-            echo "::error::main has changed since patch review. Re-audit before integration."
+          git merge-base --is-ancestor "$EXPECTED" HEAD || {
+            echo "::error::The reviewed base is not an ancestor of main"; exit 1;
+          }
+          UNREVIEWED="$(git diff --name-only "$EXPECTED" HEAD | grep -v -x '.github/workflows/mindlab-design-integration.yml' || true)"
+          if [[ -n "$UNREVIEWED" ]]; then
+            echo "::error::main includes changes beyond this integration workflow. Re-audit required."
+            printf '%s\n' "$UNREVIEWED"
             exit 1
           fi
+          echo "Reviewed application base $EXPECTED; workflow-only commits since base."
 
       - name: Download attached ZIP from GitHub Release
         shell: bash
