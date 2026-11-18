@@ -71,6 +71,12 @@ async def main():
             if await page.locator('#stage .rv10-boat').count(): break
             await page.wait_for_timeout(400)
         await page.locator('#stage .rv10-boat').wait_for(state='visible',timeout=20000)
+        # The official 80-puzzle opening may appear after the game intro. Dismiss
+        # it through its real button before interacting with bank passengers.
+        opening=page.locator('#fit-opening-overlay')
+        if await opening.count() and await opening.is_visible():
+            await opening.locator('#fit-op-start').click()
+            await opening.wait_for(state='detached',timeout=10000)
         js=r"""() => {
           const vessel=document.querySelector('#stage .rv10-boat'),scene=document.querySelector('#stage .rv10');
           const r=vessel.getBoundingClientRect(),b=scene.getBoundingClientRect();
