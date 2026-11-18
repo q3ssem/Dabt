@@ -1,7 +1,7 @@
 [
   {
     "before": "      E('p', { class: 'v5-challenge-note', text: challengeNotes[at.c] || challengeNotes[0] }),\n",
-    "after": "      at.c > 0 ? E('p', { class: 'v5-challenge-note', text: challengeNotes[at.c] }) : null,\n"
+    "after": "      at.c > 0 ? E('p', { class: 'v5-challenge-note', text: challengeNotes[at.c] }) : '',\n"
   },
   {
     "before": "      button('محاولة جديدة', () => startAttempt(ctx, at.c)), button('دفتر الرحلة', () => ctx.notebook()), button('الخريطة', () => ctx.map())));\n",

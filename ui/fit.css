@@ -1,0 +1,109 @@
+/* fit-ui — one screen per puzzle (see ui/fit.js). Presentation only. */
+#play.fit:not(.xframe){overflow:hidden}
+#play.fit:not(.xframe)>.pin{height:100dvh;min-height:0;flex:none;padding-block:calc(6px + env(safe-area-inset-top,0px)) calc(4px + env(safe-area-inset-bottom,0px));padding-inline:max(6px,env(safe-area-inset-left,0px)) max(6px,env(safe-area-inset-right,0px))}
+#play.fit:not(.xframe) .pbar{margin:0 0 4px!important;padding-block:0!important;gap:6px}
+#play.fit:not(.xframe) .pbar .x{width:34px!important;height:34px!important}
+#play.fit:not(.xframe) .pbar #pt{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
+#play.fit:not(.xframe){overflow:clip}
+#play.fit:not(.xframe) #stage{gap:4px;min-height:0}
+#play.fit:not(.xframe) #stage>*{flex-shrink:0}
+
+/* HUD: one row of icons */
+#play.fit:not(.xframe) .pzhud{flex-wrap:nowrap!important;gap:4px!important;margin:0!important;min-height:0;align-items:center}
+#play.fit .pzlv[data-short]{font-size:0!important;white-space:nowrap}
+#play.fit .pzlv[data-short]>*{display:none!important}
+#play.fit .pzlv[data-short]::after{content:attr(data-short);font-size:13px;font-weight:900;direction:ltr;display:inline-block;background:#fffaf0;border:1px solid #d9c9a8;border-radius:999px;padding:4px 9px;color:#5a4528}
+#play.fit .pzcoin{font-size:15px!important;padding:2px 8px!important;min-height:32px!important;gap:4px!important}
+#play.fit .pzcoin svg,#play.fit .pzcoin img{width:18px;height:18px}
+#play.fit .pzhud .pzhb,#play.fit .fit-tools .pzgive{position:relative;flex:none;width:36px;height:36px;min-height:0!important;padding:0!important;justify-content:center;border-radius:12px;gap:0}
+#play.fit .pzhud .pzhb>span{display:none}
+#play.fit .pzhud .pzhb svg{width:20px;height:20px}
+#play.fit .pzhud #pzhn{position:absolute;top:-5px;inset-inline-end:-5px;min-width:17px;height:17px;font-size:10.5px;line-height:17px;padding:0 3px;border-radius:9px;font-style:normal;text-align:center}
+#play.fit .pzhud .mla-music-toggle{flex:none;width:36px;height:36px;min-height:0!important;padding:0!important;font-size:0!important;border-radius:12px;position:relative}
+#play.fit .pzhud .mla-music-toggle::before{content:'♪';font-size:19px;line-height:1}
+#play.fit .pzhud .mla-music-toggle[aria-pressed="false"]::after{content:'';position:absolute;inset:8px 17px;border-left:2px solid currentColor;transform:rotate(45deg)}
+#play.fit .fit-tools{display:flex;gap:4px;margin-inline-start:auto}
+#play.fit .fit-journal i{position:absolute;bottom:-6px;inset-inline-start:50%;transform:translateX(50%);font-style:normal;font-size:9px;font-weight:900;background:#fffaf0;border:1px solid #d9c9a8;border-radius:6px;padding:0 3px;white-space:nowrap;direction:ltr}
+#play.fit .fit-tools .pzgive{display:flex;align-items:center;font-size:0!important;margin:0;background:#fffaf0;border:1.5px solid #d9c9a8;color:#7a5a32}
+#play.fit .fit-tools .pzgive::before{content:'';width:20px;height:20px;background:currentColor;-webkit-mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 21V4M5 4h11l-2 4 2 4H5'/%3E%3C/svg%3E") center/contain no-repeat;mask:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' viewBox='0 0 24 24' fill='none' stroke='black' stroke-width='2.2' stroke-linecap='round' stroke-linejoin='round'%3E%3Cpath d='M5 21V4M5 4h11l-2 4 2 4H5'/%3E%3C/svg%3E") center/contain no-repeat}
+#play.fit .fit-tools .pzgive.arm{background:#C0392B;border-color:#C0392B;color:#fff}
+#play.fit .fit-tools .pzgive.arm::after{content:'اضغط مرة ثانية للاستسلام';position:absolute;top:42px;inset-inline-end:0;z-index:45;white-space:nowrap;font-size:12px;font-weight:800;background:#C0392B;color:#fff;border-radius:8px;padding:4px 8px}
+#play.fit .pzfoot{display:none!important}
+
+/* messages: a slim line; hints float over the bottom of the board */
+#play.fit:not(.xframe) #m{margin:0!important;padding:4px 10px!important;min-height:0!important;font-size:13px!important;line-height:1.5!important;border-radius:10px}
+#play.fit:not(.xframe) #m:empty{display:none!important}
+#play.fit:not(.xframe) #pzt{position:fixed;left:10px;right:10px;bottom:calc(12px + env(safe-area-inset-bottom,0px));z-index:40;max-width:460px;margin:0 auto!important;box-shadow:0 8px 24px rgba(60,40,10,.25);background:#FFF6DC!important;color:#3a2614;cursor:pointer;padding-inline-end:28px!important}
+#play.fit:not(.xframe) #pzt::after{content:'×';position:absolute;top:4px;inset-inline-end:9px;font-size:18px;color:#8a6a3a}
+
+/* story, lore, lead sentences and duplicate titles leave the board (ⓘ shows them) */
+#play.fit :is(.mla-adventure-intro,.castle-lore,.atheran-story,.lb-intro,.lb-lead,.lb-rule,.fit-dup){display:none!important}
+#play.fit #pzb :is(.mk-lead,.pl-lead){display:none!important}
+#play.fit details.ui-rules>summary{display:none!important}
+#play.fit details.ui-rules{margin:2px 0 4px!important;padding:4px 6px}
+#play.fit details.ui-rules>ol{margin:0!important;font-size:13px;line-height:1.55}
+#play.fit .xnote>h3,#play.fit .xnote .xcarv{display:none!important}
+#play.fit .pbk i{width:38px!important}
+#play.fit .pbk b{display:none}
+#play.fit .pbk p{font-size:13px!important;line-height:1.5!important;padding:4px 8px!important}
+
+/* board surface: less padding and frame */
+#play.fit:not(.xframe) #pzb{zoom:var(--fit-z,1);overflow:hidden;margin:0!important;padding:4px!important;gap:6px!important;border-radius:14px;flex:none}
+#play.fit:not(.xframe) #pzb.fit-scroll{overflow-y:auto;overscroll-behavior:contain}
+#play.fit #pzb .xpaper.xsheet{padding:6px!important;margin:0!important}
+#play.fit #pzb .xpin{padding:4px!important}
+#play.fit #pzb .ah-framed{border-width:3px!important;padding:2px!important}
+#play.fit #pzb .lb{gap:6px}
+
+/* rule bubble (first time a puzzle opens) and the info sheet */
+#play .fit-bubble{position:fixed;left:12px;right:12px;top:var(--fit-bt,120px);z-index:41;max-width:460px;margin:0 auto;display:flex;gap:8px;align-items:flex-start;background:#1F6E66;color:#fff;border-radius:14px;padding:10px 12px;box-shadow:0 10px 28px rgba(20,50,45,.3);pointer-events:none;transition:opacity .3s,transform .3s}
+#play .fit-bubble p{margin:0;font-size:14px;line-height:1.6;font-weight:700}
+#play .fit-bubble svg{width:20px;height:20px}
+#play .fit-bubble.gone{opacity:0;transform:translateY(-8px)}
+.fit-sheet{position:fixed;inset:0;z-index:60;background:rgba(30,22,10,.45);display:flex;align-items:flex-end;justify-content:center}
+.fit-sheet-card{width:min(100%,480px);max-height:80dvh;overflow:auto;background:#FFFBF2;color:#2F2A24;border-radius:20px 20px 0 0;padding:16px 16px calc(16px + env(safe-area-inset-bottom,0px));box-shadow:0 -10px 30px rgba(0,0,0,.2)}
+.fit-sheet-card h3{margin:0 0 10px;font-size:18px}
+.fit-sh-rule{background:#E6F2F1;border-radius:12px;padding:8px 12px;margin-bottom:10px}
+.fit-sh-rule b{color:#1F6E66;font-size:13px}
+.fit-sh-rule p,.fit-sh-story p{margin:4px 0;font-size:14.5px;line-height:1.7}
+.fit-sh-story{background:#F1E7D5;border-radius:12px;padding:8px 12px;margin-bottom:12px;color:#5a4528}
+.fit-sh-go{width:100%;min-height:46px;border:0;border-radius:14px;background:#1F6E66;color:#fff;font-weight:800;font-size:16px}
+/* talking statues: three in a row so the hall fits */
+#play.fit .pl-statues{grid-template-columns:repeat(auto-fit,minmax(max(100px,31%),1fr))!important;gap:5px!important}
+#play.fit .pl-range i{width:12px}#play.fit .pl-range i.ref,#play.fit .pl-range i.ref img{width:20px;height:20px}#play.fit .pl-plaque{padding:3px;gap:3px;min-width:0}#play.fit .pl-range{flex-wrap:wrap;justify-content:center;max-width:100%}
+#play.fit .pl-turn{height:74px!important}
+/* spare height: centre the board vertically (collapses to nothing when the board scrolls) */
+#play.fit:not(.xframe) #pzb::before,#play.fit:not(.xframe) #pzb::after{content:'';flex:1 1 0;min-height:0}
+#play.fit #pzb .ridbanner{display:none!important}
+/* echo valley song: shorter staves so the whole lab fits */
+#play.fit .avsr>button svg,#play.fit .avsr .avsu svg{height:78px!important;width:100%!important}
+#play.fit #avsprobe svg{height:84px!important;width:100%!important}
+
+/* ---- Treasure Island stations and the Expedition: same one-screen rules ---- */
+html.fit-page .fit-pinfo{flex:none;width:44px;height:44px;border-radius:12px;border:1.5px solid #d9c9a8;background:#fffaf0;color:#5a4528;display:grid;place-items:center;padding:0}
+html.fit-page .fit-pinfo svg{width:22px;height:22px}
+.fit-pbubble{position:fixed;left:12px;right:12px;top:var(--fit-bt,120px);z-index:41;max-width:460px;margin:0 auto;display:flex;gap:8px;align-items:flex-start;background:#1F6E66;color:#fff;border-radius:14px;padding:10px 12px;box-shadow:0 10px 28px rgba(20,50,45,.3);pointer-events:none;transition:opacity .3s,transform .3s}
+.fit-pbubble p{margin:0;font-size:14px;line-height:1.6;font-weight:700}.fit-pbubble svg{width:20px;height:20px}
+.fit-pbubble.gone{opacity:0;transform:translateY(-8px)}
+html.fit-t7 #v-puz.t7 .t7-puzzle-pane,html.fit-ex10 #v-puz .ex10-game-content{zoom:var(--fit-z,1)}
+/* the station picture becomes a faint backdrop instead of a banner */
+html.fit-t7 #v-puz.t7 .t7-puzzle-layout{position:relative;isolation:isolate}
+html.fit-t7 #v-puz.t7 .t7-puzzle-scene{position:absolute!important;inset:0;height:auto!important;max-height:none!important;z-index:-1;opacity:.16;border-radius:16px!important;pointer-events:none}
+html.fit-t7 #v-puz.t7 .t7-puzzle-scene .t7-location{display:none}
+html.fit-t7 #v-puz.t7 .t7-puzzle-pane{background:rgba(255,253,247,.86)}
+html.fit-t7 #v-puz.t7 .t7-compact-top{margin-bottom:6px}
+html.fit-t7 #v-puz.t7 .v5-goal{display:none}
+html.fit-t7 #v-puz.t7 .v5-head{display:flex;align-items:center;gap:6px;flex-wrap:nowrap}
+html.fit-t7 #v-puz.t7 .v5-chips{flex:1;flex-wrap:nowrap;overflow-x:auto;scrollbar-width:none}
+html.fit-t7 #v-puz.t7 .v5-chip{min-height:34px;padding:2px 8px;font-size:11px;white-space:nowrap;flex:none}
+html.fit-t7 #v-puz.t7 .v5-counter{flex:none;margin:0;padding:2px 8px;width:auto}
+html.fit-t7 #v-puz.t7 .v5-challenge-note{margin:4px 0;font-size:12px}
+html.fit-ex10 #v-puz .ex10-header{display:none}
+html.fit-ex10 #v-puz .ex10-game-shell{position:relative;isolation:isolate}
+html.fit-ex10 #v-puz .ex10 .ex10-game-scene{position:absolute;inset:0;height:auto!important;z-index:-1;opacity:.14!important;animation:none!important;pointer-events:none}
+html.fit-ex10 #v-puz .ex10-game-scene>span{display:none}
+html.fit-ex10 #v-puz .ex10-brief{display:none}
+html.fit-ex10 #v-puz .ex10-objective{font-size:13px;line-height:1.55;margin-block:4px}
+html.fit-ex10 #v-puz .ex10-stage-progress{padding-block:2px}
+html.fit-ex10 #v-puz .ex10-top-right{display:flex;flex-direction:row;gap:6px;align-items:center}
+html.fit-ex10 #v-puz .ex10-back{white-space:nowrap}

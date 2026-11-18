@@ -66,7 +66,7 @@
       limit ? E('small', { text: '/ ' + limit }) : null,
       at.c >= 2 ? E('small', { class: 'v5-nohint', text: at.c === 4 ? 'لغز اليوم' : at.c === 3 ? 'لوحة الخبير' : at.hint ? 'استُعمل تلميح' : 'بلا تلميح' }) : null);
     host.append(E('div', { class: 'v5-head' }, chips, counter),
-      at.c > 0 ? E('p', { class: 'v5-challenge-note', text: challengeNotes[at.c] }) : null,
+      at.c > 0 ? E('p', { class: 'v5-challenge-note', text: challengeNotes[at.c] }) : '',
       E('p', { class: 'v5-goal', text: s.goal + (at.c === 2 && base.alt ? ' (ترتيب مختلف عن المحاولة الأولى)' : at.c === 3 && !base.expert.goal ? ' لوحة الخبير أكبر من لوحة القصة.' : at.c === 4 ? ' لغز اليوم: ترتيب جديد كل يوم.' : '') }));
     host.append(E('div', { class: 'v5-board v5-k-' + s.kind, id: 'v5-board' }));
     host.append(E('div', { class: 'v5-crew', id: 'v5-crew', role: 'status', 'aria-live': 'polite' }));
