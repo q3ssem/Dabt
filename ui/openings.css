@@ -53,12 +53,19 @@ html[data-skin="dark"] .fit-opening-card {
   pointer-events: none;
 }
 
-.fit-opening-hero {
+.fit-opening-crew {
   position: absolute;
+  inset-inline: 12px;
   bottom: 0;
-  inset-inline-start: 14px;
-  width: 112px;
-  height: 112px;
+  display: flex;
+  align-items: end;
+  justify-content: center;
+  gap: clamp(4px, 2vw, 12px);
+}
+.fit-opening-hero {
+  display: block;
+  width: min(28%, 92px);
+  aspect-ratio: 1;
   border-radius: 18px 18px 0 0;
   border: 2px solid rgba(255, 251, 242, 0.92);
   border-bottom: 0;
@@ -68,6 +75,8 @@ html[data-skin="dark"] .fit-opening-card {
   box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
   pointer-events: none;
 }
+
+.fit-opening-hero.speaking { width: min(32%, 112px); border-color: #F4D17F; }
 
 html[data-skin="dark"] .fit-opening-hero {
   border-color: rgba(238, 241, 255, 0.35);
@@ -182,8 +191,6 @@ html[data-skin="dark"] .fit-op-skip {
     min-height: 130px;
     max-height: 170px;
   }
-  .fit-opening-hero {
-    width: 88px;
-    height: 88px;
-  }
+  .fit-opening-hero { width: min(26%, 72px); }
+  .fit-opening-hero.speaking { width: min(30%, 88px); }
 }

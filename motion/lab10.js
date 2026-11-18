@@ -4,13 +4,17 @@
      06 pz_grid lgMake/lgText    07 pz_sudo sdMake/sdBox          08 pz_flow flMake   09 pz_tan tgMake/tgRot/tgFlip
      10 pz_tent tnMake
    Ids, levels, rules, keys (miran:v2) and the hint/restart/surrender chrome of pzPlay are unchanged.
-   01 pz_rid (the crates riddle) is NOT changed here: its design is a separate preview (motion/preview/pz_rid.html)
-   until its display is approved. Art: motion/art10 (asset_manifest.csv of the pack). */
+   01 pz_rid uses several questions and renders crate artwork only for the matching question
+   in the original layer. The crate-specific presentation below reuses the existing story riddle. */
 (function () {
   'use strict';
   if (typeof GM === 'undefined' || typeof pzPlay !== 'function' || !window.MK) return;
   const A = 'motion/art10/', im = (k, c = '', alt = '') => `<img class="${c}" src="${A}${k}.webp" alt="${alt}" draggable="false">`;
   const N = v => (typeof XAR === 'function' ? XAR(v) : String(v));
+  const DESIGNS = 'ui/designs_art/';
+  const png = (path, cls = '') => `<img class="${cls}" src="${DESIGNS}${path}.png" alt="" aria-hidden="true" draggable="false">`;
+  const piece = (board, asset, cls = '') => png(`four_puzzles/pz_${board}/sprites/${asset}`, cls);
+  const riverPiece = (folder, asset, cls = '') => png(`river_stage1/${folder}/${asset}`, cls);
 
   const OPENINGS = {
     pz_river: ['rawaa', 'رواء', 'قبل ما نحرّك القارب، شوفي مين بيبقى على الضفة.'],
@@ -55,6 +59,40 @@
   }
   const flash = (el, cls = 'lb-bad', ms = 900) => { if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(() => el.classList.remove(cls), ms); };
 
+  /* The original riddle entry serves several different questions. Only the crate question uses the crate artwork. */
+  if (GM.pz_rid) {
+    const runRiddle = GM.pz_rid.run;
+    GM.pz_rid.run = function () {
+      const run = runRiddle.apply(this, arguments);
+      return function (done) {
+        const result = run(done), board = document.getElementById('pzb');
+        if (board?.querySelector('.ridq')?.textContent === RIDDLES[0][0]) {
+          const art = document.createElement('div');
+          art.className = 'rid-crates';
+          art.setAttribute('aria-hidden', 'true');
+          const fruit = label => label === 'مختلط'
+            ? piece('rid', 'fruit_apple') + piece('rid', 'fruit_orange')
+            : piece('rid', label === 'تفاح' ? 'fruit_apple' : 'fruit_orange');
+          art.innerHTML = ['تفاح', 'برتقال', 'مختلط'].map(label => `
+            <span class="rid-crate">
+              ${piece('rid', 'crate_base')}${piece('rid', 'crate_lid_closed', 'rid-lid')}
+              <span class="rid-crate-label">${fruit(label)}<b>${label}</b></span>
+            </span>`).join('');
+          board.querySelector('.ridbanner')?.replaceWith(art);
+          const options = board.querySelector('.ridopts');
+          options.addEventListener('click', event => {
+            const choice = event.target.closest('.ridopt');
+            if (choice?.classList.contains('ok')) {
+              art.classList.add('solved');
+              art.lastElementChild.querySelector('.rid-lid').src = DESIGNS + 'four_puzzles/pz_rid/sprites/crate_lid_open.png';
+            }
+          });
+        }
+        return result;
+      };
+    };
+  }
+
   /* ================================================================ 02 عبور النهر — pz_river */
   if (GM.pz_river && typeof rvMake === 'function') GM.pz_river.run = function () {
     return pzPlay('pz_river', api => {
@@ -63,19 +101,56 @@
       const root = frame(api, { id: 'river', main: 'اعبر النهر',
         lead: `انقل الجميع إلى المرج الأخضر. أقل حل: ${N(P.min)} رحلات.`,
         top: `<p class="lb-rule">${eats}. حمولة القارب: المزارع ومعه حتى ${N(P.cap)}.</p>` });
+      const layers = [
+        ['01_background/01_sky_and_mountains', 'sky'], ['05_sky_anim/cloud_01', 'cloud one'],
+        ['05_sky_anim/cloud_02', 'cloud two'], ['05_sky_anim/cloud_03', 'cloud three'],
+        ['03_water/04_water_surface', 'water'], ['03_water/05_water_reflections', 'water reflections'],
+        ['03_water/06_water_waves', 'water waves'], ['02_banks/02_bank_left', 'bank left'],
+        ['02_banks/03_bank_right', 'bank right'], ['04_props/07_prop_cottage', 'cottage'],
+        ['04_props/08_prop_tree_left', 'tree'], ['04_props/09_prop_trees_right', 'trees'],
+        ['04_props/10_prop_stones', 'stones'], ['04_props/11_prop_wood_logs', 'logs'],
+        ['04_props/12_prop_plants_flowers', 'flowers'], ['04_props/13_prop_reeds_bushes', 'reeds'],
+        ...[1, 2, 3].map(n => [`05_sky_anim/bird_fly_0${n}`, `bird bird-${n}`])
+      ];
       $('#lbb').innerHTML = `<div class="rv10">
+        <div class="rv10-landscape" aria-hidden="true">${layers.map(([file, cls]) => png('river_v2/' + file, cls)).join('')}</div>
         <section class="rv10-bank" data-slot="bank0" aria-label="الضفة اليسرى"><h4>الضفة اليسرى</h4><div class="rv10-items" id="rvb0"></div></section>
-        <section class="rv10-water"><h4>المزارع</h4><div class="rv10-boat" data-slot="boat" aria-label="القارب">${im('river_boat', 'rv10-hull')}<div class="rv10-load" id="rvld"></div></div><small id="rvside"></small></section>
+        <section class="rv10-water"><h4>المزارع</h4><div class="rv10-boat" data-slot="boat" aria-label="القارب"><div class="rv10-rig" aria-hidden="true"></div><div class="rv10-load" id="rvld"></div></div><small id="rvside"></small></section>
         <section class="rv10-bank goal" data-slot="bank1" aria-label="المرج الأخضر"><h4>المرج الأخضر</h4><div class="rv10-items" id="rvb1"></div></section></div>`;
-      const fs = () => (s & F ? 1 : 0), tok = (i, on) => `<button class="mk-tok rv10-it${on ? ' inb' : ''}" data-tok="${i}" aria-label="${RVN[P.it[i]]}${on ? ' في القارب' : ''}">${im('river_' + P.it[i])}</button>`;
+      const fs = () => (s & F ? 1 : 0);
+      const stageOne = ['wolf', 'sheep', 'grass'];
+      const rig = root.querySelector('.rv10-rig');
+      function boatArt() {
+        const facing = fs() ? 'return' : 'go';
+        rig.innerHTML = riverPiece('02_boat_and_farmer', 'boat_shadow_' + facing) +
+          riverPiece('04_effects', 'fx_wake_' + facing, 'rv10-wake') +
+          riverPiece('02_boat_and_farmer', 'boat_hull_' + facing) +
+          (boat.size ? '' : riverPiece('02_boat_and_farmer', 'boat_seat_empty')) +
+          riverPiece('02_boat_and_farmer', 'farmer_' + facing) +
+          riverPiece('02_boat_and_farmer', 'boat_oar_' + facing) +
+          riverPiece('04_effects', 'fx_rope', 'rv10-rope') +
+          riverPiece('04_effects', 'fx_splash', 'rv10-splash');
+      }
+      function tok(i, on) {
+        const animal = P.it[i], state = on ? (animal === 'grass' ? 'cargo' : 'seated') : 'bank';
+        const art = stageOne.includes(animal) ? riverPiece('03_passengers', `${animal}_${state}`) : im('river_' + animal);
+        return `<button class="mk-tok rv10-it${on ? ' inb' : ''}" data-tok="${i}" aria-label="${RVN[animal]}${on ? ' في القارب' : ''}">${art}</button>`;
+      }
       function draw() { const f = fs();
         for (const side of [0, 1]) $('#rvb' + side).innerHTML = P.it.map((k, i) => (s >> i & 1) === side && !boat.has(i) ? tok(i, false) : '').join('');
-        $('#rvld').innerHTML = [...boat].map(i => tok(i, true)).join(''); $('#rvside').textContent = f ? 'عند اليمين' : 'عند اليسار';
+        $('#rvld').innerHTML = [...boat].map(i => tok(i, true)).join(''); boatArt(); $('#rvside').textContent = f ? 'عند اليمين' : 'عند اليسار';
         root.querySelector('.rv10').classList.toggle('at1', !!f);
         root.querySelectorAll('.rv10-bank .rv10-it').forEach(e => { const i = +e.dataset.tok; e.setAttribute('aria-disabled', (s >> i & 1) !== f ? 'true' : 'false'); }); }
       function tap(i) { if (busy || api.ended) return; if (boat.has(i)) boat.delete(i); else { if ((s >> i & 1) !== fs()) { api.msg('القارب على الضفة الأخرى.'); return; }
           if (boat.size >= P.cap) { api.msg(`القارب يتسع للمزارع و${P.cap === 1 ? 'واحد فقط' : P.cap === 2 ? 'اثنين فقط' : 'ثلاثة فقط'}.`); sfx.bad(); flash(root.querySelector('.rv10-boat')); return; } boat.add(i); }
-        sfx.pop(); draw(); }
+        sfx.pop(); draw();
+        const key = P.it[i];
+        if (boat.has(i) && stageOne.includes(key)) {
+          const sprite = root.querySelector(`#rvld [data-tok="${i}"] img`);
+          const seated = sprite.getAttribute('src');
+          sprite.src = DESIGNS + `river_stage1/03_passengers/${key}_boarding.png`;
+          later(() => { if (sprite.isConnected) sprite.src = seated; }, 180);
+        } }
       const mk = MK.attach(root.querySelector('.rv10'), { canDrag: () => !busy && !api.ended, onPick: id => { mk.clear(); tap(+id); },
         drop: (id, slot) => { const i = +id; if (slot === 'boat' ? !boat.has(i) : boat.has(i)) tap(i); } });
       function cross() { if (busy || api.ended) return; let m = 0; boat.forEach(i => m |= 1 << i); const t = s ^ F ^ m; moves++; busy = true;
@@ -96,8 +171,10 @@
   /* ================================================================ 03 موقف السيارات — pz_rush
      rushEngine keeps the moves, drag, tap + arrows, hint and win; only the vehicle art and the board frame change. */
   if (GM.pz_rush && typeof rushEngine === 'function' && typeof rhMake === 'function') {
-    const RUSH_ART = (v, red, i) => red ? 'rush_car_red_2x1' : v.len === 3 ? (i % 2 ? 'rush_bus_3x1' : 'rush_truck_3x1') : ['rush_car_van_2x1', 'rush_car_taxi_2x1', 'rush_car_coupe_2x1', 'rush_car_teal_2x1'][i % 4];
-    const paintCar = (v, red, i) => `<span class="rh10" style="--len:${v.len}">${im(RUSH_ART(v, red, i), 'rh10-img')}</span>`;
+    const paintCar = (v, red) => {
+      const asset = red ? 'car_rescue_2x1' : v.len === 3 ? 'truck_heavy_3x1' : 'cart_cargo_2x1';
+      return `<span class="rh10">${piece('rush', asset + (v.h ? '_h' : '_v'), 'rh10-img')}</span>`;
+    };
     GM.pz_rush.run = function () {
       return pzPlay('pz_rush', api => {
         const P = rhMake(api.lv), oldPainter = window.carSVG;
@@ -129,12 +206,31 @@
       frame(api, { id: 'stat', lead: `طابق مؤشر اتجاه التمثال الأخضر مع الماسة الذهبية. ${rule}${P.ring ? '، والتماثيل في حلقة مغلقة' : ''}.` });
       const Rr = 37, pos = [...Array(n)].map((_, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / n; return [50 + Rr * Math.cos(a), 50 + Rr * Math.sin(a)]; }), sz = n <= 4 ? 26 : n <= 5 ? 24 : 21;
       const pairs = []; for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) if (i !== j && P.R[i][j]) { const k = i < j ? i + '-' + j : j + '-' + i; if (!pairs.includes(k)) pairs.push(k); }
-      $('#lbb').innerHTML = `<div class="st10" id="st10"><svg class="st10-links" viewBox="0 0 100 100" aria-hidden="true">${pairs.map(k => { const [a, b] = k.split('-').map(Number); return `<line data-a="${a}" data-b="${b}" x1="${pos[a][0]}" y1="${pos[a][1]}" x2="${pos[b][0]}" y2="${pos[b][1]}"/>`; }).join('')}</svg>
-        ${pos.map(([x, y], i) => `<button class="st10-s" data-i="${i}" style="left:${x}%;top:${y}%;width:${sz}%" aria-label="تمثال ${N(i + 1)}">${im('stat_pedestal', 'st10-ped')}<i class="st10-tgt" style="--a:${P.tgt[i] * 90}deg"></i><span class="st10-head">${im('stat_guardian_top', 'st10-g')}<i class="st10-dot"></i></span></button>`).join('')}</div>`;
+      const links = pairs.map(k => {
+        const [a, b] = k.split('-').map(Number), [x, y] = pos[a], [endX, endY] = pos[b];
+        const length = Math.hypot(endX - x, endY - y);
+        const angle = Math.atan2(endY - y, endX - x) * 180 / Math.PI;
+        return `<image class="st10-stone-link" href="${DESIGNS}four_puzzles/pz_stat/sprites/fx_stone_link.png" x="${x}" y="${y - 3}"
+          width="${length}" height="6" transform="rotate(${angle} ${x} ${y})" preserveAspectRatio="none"/>
+          <line data-a="${a}" data-b="${b}" x1="${x}" y1="${y}" x2="${endX}" y2="${endY}"/>`;
+      }).join('');
+      $('#lbb').innerHTML = `<div class="st10" id="st10">${piece('stat', 'door_closed', 'st10-door')}${piece('stat', 'door_open', 'st10-open')}<svg class="st10-links" viewBox="0 0 100 100" aria-hidden="true">${links}</svg>
+        ${pos.map(([x, y], i) => `<button class="st10-s" data-i="${i}" style="left:${x}%;top:${y}%;width:${sz}%" aria-label="تمثال ${N(i + 1)}"> ${piece('stat', 'guardian_body_' + ['sun', 'anchor', 'wave'][i % 3], 'st10-ped')}<i class="st10-tgt" style="--a:${P.tgt[i] * 90}deg"></i><span class="st10-head">${piece('stat', 'head_north', 'st10-g')}</span><span class="st10-current"><i class="st10-dot"></i></span></button>`).join('')}</div>`;
       const btns = [...$('#st10').querySelectorAll('.st10-s')], lines = [...$('#st10').querySelectorAll('line')];
-      function draw() { btns.forEach((b, i) => { b.querySelector('.st10-head').style.transform = `rotate(${ang[i]}deg)`; b.classList.toggle('ok', s[i] === 0); b.setAttribute('aria-label', `تمثال ${N(i + 1)}: ${s[i] === 0 ? 'يطابق ماسته' : 'لا يطابق'}`); }); $('#st10').classList.toggle('all', s.every(d => d === 0)); }
+      function draw() { btns.forEach((b, i) => {
+        const heading = ((ang[i] / 90) % 4 + 4) % 4;
+        const facing = ['north', 'east', 'south', 'west'][heading];
+        b.querySelector('.st10-g').src = DESIGNS + `four_puzzles/pz_stat/sprites/head_${facing}.png`;
+        b.querySelector('.st10-current').style.transform = `rotate(${ang[i]}deg)`;
+        b.classList.toggle('ok', s[i] === 0); b.setAttribute('aria-label', `تمثال ${N(i + 1)}: ${s[i] === 0 ? 'يطابق ماسته' : 'لا يطابق'}`); }); $('#st10').classList.toggle('all', s.every(d => d === 0)); }
       function press(i) { if (api.ended) return; P.R[i].forEach((r, j) => { if (r) { s[j] = (s[j] + r) % 4; ang[j] += r * 90; } }); presses++;
-        btns.forEach((b, j) => { b.classList.remove('hint'); if (P.R[i][j]) flash(b, 'press', 400); }); lines.forEach(l => { if (+l.dataset.a === i || +l.dataset.b === i) flash(l, 'zap', 500); });
+        btns.forEach((b, j) => {
+          b.classList.remove('hint');
+          if (P.R[i][j]) {
+            b.dataset.turn = P.R[i][j] === 2 ? 'half' : 'quarter';
+            flash(b, j === i ? 'turned' : 'linked', 400);
+          }
+        }); lines.forEach(l => { if (+l.dataset.a === i || +l.dataset.b === i) flash(l, 'zap', 500); });
         tone(180 + i * 30, .18, 'triangle', .05); draw();
         if (s.every(d => d === 0)) api.win(`طابقت اتجاهات التماثيل في ${arN(presses, AN.press)}، والأقل ${arN(P.min, AN.press)}.`); else api.msg(`الضغطات: ${N(presses)} · أقل حل: ${N(P.min)}`); }
       btns.forEach((b, i) => b.onclick = () => press(i)); draw(); api.msg(`أقل حل: ${N(P.min)} ضغطات.`); pzHook({ P, press, s: () => s, presses: () => presses });
@@ -149,13 +245,29 @@
     return pzPlay('pz_pipe', api => {
       const P = ppMake(api.lv), lock = new Set(), deg = m => [1, 2, 4, 8].filter(b => m & b).length, base = P.cur.slice(), turn = P.cur.map(() => 0); let taps = 0;
       // art and the clockwise quarter turns that bring its drawn mask onto the cell's starting mask
-      const KIND = { 10: 'pipe_straight', 6: 'pipe_elbow', 14: 'pipe_tee', 15: 'pipe_cross', 8: 'pipe_end' };
-      const fit = m => { for (const [bm, art] of Object.entries(KIND)) { let r = +bm; for (let k = 0; k < 4; k++) { if (r === m) return [art, k]; r = ppRot(r); } } return ['pipe_end', 0]; };
+      const KIND = [[5, 'straight', 0], [6, 'corner', -90], [7, 'tee', -90], [15, 'cross', 0], [4, 'end', -90]];
+      const fit = mask => {
+        for (const [painted, shape, waterAngle] of KIND) {
+          let rotated = painted;
+          for (let k = 0; k < 4; k++, rotated = ppRot(rotated)) {
+            if (rotated === mask) return [shape, k, waterAngle];
+          }
+        }
+        throw new Error(`Unsupported pipe mask: ${mask}`);
+      };
       frame(api, { id: 'pipe', lead: 'اضغط القطعة لتدويرها ربع لفة. تتحقق اللعبة تلقائيًا عند الاكتمال.' });
-      $('#lbb').innerHTML = `<div class="pp10" id="pp10" style="--w:${P.w}">${base.map((m, i) => { const [art, k] = fit(m), src = i === P.src, house = !src && deg(P.sol[i]) === 1;
-        return `<button class="pp10-c${src ? ' src' : ''}${house ? ' house' : ''}" data-i="${i}" aria-label="${src ? 'النبع' : house ? 'بيت' : 'أنبوب'}"><span class="pp10-rot" style="--k:${k}">${im(art, 'pp10-pipe')}</span>${src ? im('pipe_source_spring', 'pp10-spring') : house ? im('pipe_house', 'pp10-house') : ''}</button>`; }).join('')}</div>`;
+      $('#lbb').innerHTML = `<div class="pp10" id="pp10" style="--w:${P.w}">${base.map((m, i) => { const [shape, k, waterAngle] = fit(m), src = i === P.src, house = !src && deg(P.sol[i]) === 1;
+        return `<button class="pp10-c${src ? ' src' : ''}${house ? ' house' : ''}" data-i="${i}" aria-label="${src ? 'النبع' : house ? 'بيت' : 'أنبوب'}"><span class="pp10-rot" style="--k:${k};--flow-angle:${waterAngle}deg">${piece('pipe', 'pipe_' + shape, 'pp10-pipe')}${piece('pipe', 'water_' + shape, 'pp10-flow')}</span>${src ? piece('pipe', 'spring_source', 'pp10-spring') : house ? piece('pipe', 'cottage_dry', 'pp10-house') + piece('pipe', 'cottage_watered', 'pp10-house wet') : ''}</button>`; }).join('')}</div>`;
       const cells = [...$('#pp10').children];
-      function draw() { const on = ppPowered(P); cells.forEach((b, i) => { b.querySelector('.pp10-rot').style.transform = `rotate(${(+b.querySelector('.pp10-rot').style.getPropertyValue('--k') + turn[i]) * 90}deg)`; b.classList.toggle('on', on.has(i)); b.classList.toggle('lock', lock.has(i)); });
+      const ports = [[0, -1, 1, 4], [1, 0, 2, 8], [0, 1, 4, 1], [-1, 0, 8, 2]];
+      function hasLeak(i) {
+        const x = i % P.w, y = Math.floor(i / P.w);
+        return ports.some(([dx, dy, bit, reciprocal]) => {
+          const nx = x + dx, ny = y + dy;
+          return (P.cur[i] & bit) && (nx < 0 || nx >= P.w || ny < 0 || ny >= P.h || !(P.cur[ny * P.w + nx] & reciprocal));
+        });
+      }
+      function draw() { const on = ppPowered(P); cells.forEach((b, i) => { b.querySelector('.pp10-rot').style.transform = `rotate(${(+b.querySelector('.pp10-rot').style.getPropertyValue('--k') + turn[i]) * 90}deg)`; b.classList.toggle('on', on.has(i)); b.classList.toggle('leak', on.has(i) && hasLeak(i)); b.classList.toggle('lock', lock.has(i)); });
         const homes = P.sol.filter((m, i) => deg(m) === 1 && i !== P.src).length, lit = P.sol.filter((m, i) => deg(m) === 1 && i !== P.src && on.has(i)).length; api.msg(`البيوت التي وصلها الماء: ${N(lit)} من ${N(homes)}`); }
       function rot(i) { if (api.ended || lock.has(i)) return; P.cur[i] = ppRot(P.cur[i]); turn[i]++; taps++; tone(500, .04); draw(); if (ppSolved(P)) { $('#pp10').classList.add('won'); api.win(`وصل الماء لكل البيوت بلا أطراف مفتوحة بعد ${arN(taps, AN.press)}.`); } }
       cells.forEach((b, i) => b.onclick = () => rot(i)); draw(); pzHook({ P, rot, turn: () => turn.slice() });

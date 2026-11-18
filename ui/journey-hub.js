@@ -7,12 +7,6 @@
   window.__MINDLAB_JOURNEY_HUB = true;
 
   const SEEN_KEY = 'mindlab:openings:journey:v1';
-  const EXPR_POS = {
-    welcome: '0% 0%',
-    thinking: '100% 0%',
-    success: '0% 100%',
-    concerned: '100% 100%'
-  };
 
   const $ = (s, r = document) => r.querySelector(s);
   const readSeen = () => { try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); } catch (_) { return {}; } };
@@ -36,16 +30,11 @@
     let atheranDone = 0;
     let secretsUnlocked = 0;
     try {
-      const st = typeof S !== 'undefined' && S.st ? S.st : {};
-      if (st.t7 && st.t7.done) {
-        seaDone = Object.keys(st.t7.done).filter(k => st.t7.done[k]).length;
-      }
-      if (typeof aState === 'function') {
-        const a = aState();
-        atheranDone = Math.max(0, Number(a && a.prog) || 0);
-        if (a && a.sw) {
-          secretsUnlocked = Object.keys(a.sw).filter(k => a.sw[k]).length;
-        }
+      if (window.T7) seaDone = Object.values(window.T7.state().done).filter(Boolean).length;
+      if (window.ATHERAN_CAMPAIGN) {
+        const summary = window.ATHERAN_CAMPAIGN.summary();
+        atheranDone = summary.done;
+        secretsUnlocked = summary.found;
       }
     } catch (_) {}
     return { seaDone, atheranDone, secretsUnlocked };
@@ -105,25 +94,30 @@
   }
 
   function triggerChapter(chId) {
+    const v = $('#v-puz');
+    if (!v) return;
     if (chId === 'seven_seas') {
-      const btn = $('#v-puz .t7-open-map, #v-puz .t7-go, #v-puz button[data-t7-open]');
-      if (btn) btn.click();
+      $('.v5-hubcard', v)?.click();
     } else if (chId === 'palace') {
-      const btn = $('#v-puz [data-series="mirrors"], #v-puz .la-series-card[data-k="mirrors"]');
-      if (btn) btn.click();
+      const title = [...v.querySelectorAll('.la-section-title span')]
+        .find(el => el.textContent === 'قصر المرايا');
+      const heading = title?.closest('h2');
+      if (heading) {
+        heading.tabIndex = -1;
+        heading.focus({ preventScroll: true });
+        heading.scrollIntoView({ block: 'start' });
+      }
     } else if (chId === 'atheran') {
-      const btn = $('#v-puz .ah-enter, #v-puz [data-series="athran"]');
-      if (btn) btn.click();
+      $('.ah-launch-go', v)?.click();
     } else if (chId === 'side') {
-      const btn = $('#v-puz .ex10-entry-btn, #v-puz .ex10-launch button');
-      if (btn) btn.click();
+      $('.ex10-launch-go', v)?.click();
     }
   }
 
   function mountUnifiedHub() {
     const v = $('#v-puz');
-    if (!v || v.classList.contains('t7') || v.classList.contains('ah-view')) return;
-    if ($('.ex10-game-shell', v) || $('.t7-puzzle-layout', v)) return;
+    const entry = v && $('.v5-hubcard', v);
+    if (!entry || !$('.v5-hublib', v) || v.classList.contains('ah-view')) return;
     if ($('#mlj-unified-hub', v)) return;
     const data = window.__MINDLAB_JOURNEY_STORY;
     if (!data) return;
@@ -167,13 +161,7 @@
       </div>
     `;
 
-    // Place official Journey Hub above the side-journey entry (.ex10-launch) if present
-    const exLaunch = $('.ex10-launch, .ex10-entry', v);
-    if (exLaunch && exLaunch.parentElement) {
-      exLaunch.parentElement.insertBefore(sec, exLaunch);
-    } else {
-      v.prepend(sec);
-    }
+    ($('.t7-top', v) || entry).after(sec);
 
     const trBtn = $('#mlj-open-trans', sec);
     if (trBtn) trBtn.onclick = () => openTransitionsModal(0);
@@ -183,17 +171,12 @@
   }
 
   /* ---- 46 Non-Library Openings (21 Treasure Island + 25 Side Journey) ---- */
-  function showStationOpening(key, info, force) {
-    if (!info) return;
-    const seen = readSeen();
-    if (!force && seen[key]) return;
+  function showStationOpening(key, info, start) {
     const prev = document.activeElement;
     const old = $('#fit-opening-overlay');
     if (old) old.remove();
 
-    const heroUrl = new URL(`ui/designs_art/characters/${info.hero}_expressions.png`, document.baseURI).href;
     const bgUrl = info.bg ? new URL(info.bg, document.baseURI).href : new URL('ui/designs_art/journey/journey_map.png', document.baseURI).href;
-    const exprPos = EXPR_POS[info.expr] || EXPR_POS.welcome;
 
     const ov = document.createElement('div');
     ov.id = 'fit-opening-overlay';
@@ -206,7 +189,7 @@
         <div class="fit-opening-scene" style="background-image:url('${bgUrl}');background-size:cover;background-position:center">
           <div class="fit-opening-scrim"></div>
           <span class="fit-opening-badge">${info.badge}</span>
-          <div class="fit-opening-hero" aria-hidden="true" style="background-image:url('${heroUrl}');background-position:${exprPos}"></div>
+          ${window.fitOpenings.crewMarkup(info.hero, info.expr)}
         </div>
         <div class="fit-opening-body">
           <h3 class="fit-opening-title">${info.title}</h3>
@@ -215,92 +198,60 @@
             <span>${info.dialogue}</span>
           </div>
           <div class="fit-opening-actions">
-            <button type="button" class="fit-op-start" id="fit-op-start">${force ? 'متابعة المحطة' : 'ابدأ المحطة'}</button>
-            ${seen[key] ? '<button type="button" class="fit-op-skip" id="fit-op-skip">تخطي</button>' : ''}
+            <button type="button" class="fit-op-start" id="fit-op-start">ابدأ المحطة</button>
+            <button type="button" class="fit-op-skip" id="fit-op-skip">رجوع</button>
           </div>
         </div>
       </div>
     `;
 
-    const dismiss = e => {
-      if (e) { e.preventDefault(); e.stopPropagation(); }
-      markSeen(key);
+    const dismiss = (event, play) => {
+      event.preventDefault();
+      event.stopPropagation();
       ov.remove();
+      if (play) {
+        markSeen(key);
+        start();
+        return;
+      }
       if (prev && typeof prev.focus === 'function' && prev.isConnected) {
         try { prev.focus({ preventScroll: true }); } catch (_) {}
       }
     };
     ov.addEventListener('pointerdown', e => { if (e.target === ov) e.stopPropagation(); });
-    ov.addEventListener('click', e => { if (e.target === ov) dismiss(e); });
-    ov.addEventListener('keydown', e => { if (e.key === 'Escape') dismiss(e); });
+    ov.addEventListener('click', e => { if (e.target === ov) dismiss(e, false); });
+    const sBtn = $('#fit-op-start', ov), back = $('#fit-op-skip', ov);
+    ov.addEventListener('keydown', e => {
+      if (e.key === 'Escape') dismiss(e, false);
+      if (e.key === 'Tab' && ((e.shiftKey && document.activeElement === sBtn) || (!e.shiftKey && document.activeElement === back))) {
+        e.preventDefault();
+        (e.shiftKey ? back : sBtn).focus();
+      }
+    });
     document.body.append(ov);
-    const sBtn = $('#fit-op-start', ov), kBtn = $('#fit-op-skip', ov);
-    if (sBtn) { sBtn.onclick = dismiss; sBtn.focus({ preventScroll: true }); }
-    if (kBtn) kBtn.onclick = dismiss;
+    sBtn.onclick = e => dismiss(e, true);
+    back.onclick = e => dismiss(e, false);
+    sBtn.focus({ preventScroll: true });
   }
 
-  let lastStationKey = '';
-  function checkNonLibraryStation() {
-    const data = window.__MINDLAB_JOURNEY_STORY;
-    if (!data) return;
+  function beforeStation(id, scene, start) {
+    const story = window.__MINDLAB_JOURNEY_STORY;
+    const sea = story?.treasureStations.find(st => st.saveKey === id);
+    const expedition = story?.expeditionStations.find(st => st.stageId === id);
+    const station = sea || expedition;
+    const key = `${sea ? 't7' : 'ex10'}:${id}`;
+    if (!station || readSeen()[key]) return start();
 
-    const t7Title = $('#v-puz.t7 .t7-puzzle-layout') && $('#v-puz.t7 .t7-top h1');
-    if (t7Title) {
-      const titleText = (t7Title.textContent || '').trim();
-      const st = data.treasureStations.find(s => s.engineTitle === titleText || s.storyTitle === titleText);
-      if (st) {
-        const key = 't7:' + st.saveKey;
-        if (key !== lastStationKey) {
-          lastStationKey = key;
-          showStationOpening(key, {
-            title: `${st.storyTitle} · ${st.location}`,
-            badge: `البحر ${st.sea} · ${st.heroName}`,
-            hero: st.hero,
-            heroName: st.heroName,
-            expr: st.expr,
-            dialogue: st.dialogue,
-            bg: 'ui/designs_art/journey/journey_map.png',
-          }, false);
-        }
-      }
-      return;
-    }
-
-    const exTitle = $('#v-puz .ex10 .ex10-game-shell') && $('.ex10-game-top b');
-    if (exTitle) {
-      const titleText = (exTitle.textContent || '').trim();
-      const st = data.expeditionStations.find(s => titleText.includes(s.title) || s.title === titleText);
-      if (st) {
-        const key = 'ex10:' + st.stageId;
-        if (key !== lastStationKey) {
-          lastStationKey = key;
-          showStationOpening(key, {
-            title: `${st.title} · ${st.location}`,
-            badge: `${st.stageId.toUpperCase()} · ${st.heroName}`,
-            hero: st.hero,
-            heroName: st.heroName,
-            expr: st.expr,
-            dialogue: st.dialogue,
-            bg: st.scene,
-          }, false);
-        }
-      }
-      return;
-    }
-
-    lastStationKey = '';
+    showStationOpening(key, {
+      title: `${sea ? sea.storyTitle : expedition.title} · ${station.location}`,
+      badge: sea ? `البحر ${sea.sea} · ${station.heroName}` : station.heroName,
+      hero: station.hero,
+      heroName: station.heroName,
+      expr: station.expr,
+      dialogue: station.dialogue,
+      bg: scene || station.scene,
+    }, start);
   }
-
-  /* ---- Board Art Accents (Four Puzzles Art + Priority 7 Revision 4) ---- */
-  const P7_LEAD_ICON = {
-    pz_door: { icon: 'ui/designs_art/priority7/door_closed.png', label: 'رموز الأبواب المعتمدة' },
-    pz_pliar: { icon: 'ui/designs_art/priority7/badge_1.png', label: 'أختام القصر المعتمدة' },
-    pz_acity: { icon: 'ui/designs_art/priority7/prop_biolantern.png', label: 'فانوس المدينة الغارقة' },
-    pz_pobs: { icon: 'ui/designs_art/priority7/prop_clock.png', label: 'عدسة المرصد' },
-    pz_aarch: { icon: 'ui/designs_art/priority7/prop_manifest.png', label: 'سجل الأرشيف' },
-    pz_alayer: { icon: 'ui/designs_art/priority7/prop_strata.png', label: 'طبقات الأرض' },
-    pz_arelic: { icon: 'ui/designs_art/priority7/prop_diary.png', label: 'مخطوطة الأثر' },
-  };
 
   function applyBoardArt() {
     const pzb = $('#stage #pzb');
@@ -314,14 +265,7 @@
     } else {
       delete pzb.dataset.boardArt;
     }
-    const p7 = P7_LEAD_ICON[id];
-    if (p7 && !$('.mlj-p7-ribbon', pzb)) {
-      const rib = document.createElement('div');
-      rib.className = 'mlj-p7-ribbon';
-      const src = new URL(p7.icon, document.baseURI).href;
-      rib.innerHTML = `<img src="${src}" alt="" aria-hidden="true"><span>${p7.label}</span>`;
-      pzb.prepend(rib);
-    }
+
   }
 
   function watchAll() {
@@ -333,7 +277,6 @@
         raf = requestAnimationFrame(() => {
           raf = 0;
           mountUnifiedHub();
-          checkNonLibraryStation();
         });
       };
       new MutationObserver(onPuz).observe(vp, { childList: true, subtree: true });
@@ -346,7 +289,7 @@
     }
   }
 
-  window.mindlabJourneyHub = { openTransitions: openTransitionsModal, showStationOpening, mountUnifiedHub, applyBoardArt };
+  window.mindlabJourneyHub = { openTransitions: openTransitionsModal, beforeStation, mountUnifiedHub, applyBoardArt };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchAll);
   else watchAll();
 })();

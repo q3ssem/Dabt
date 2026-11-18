@@ -14,6 +14,15 @@
   };
 
   const $ = (s, r = document) => r.querySelector(s);
+  const HEROES = [['rawaa', 'رواء'], ['nuha', 'نهى'], ['ward', 'ورد']];
+  function crewMarkup(speaker, expression) {
+    return `<div class="fit-opening-crew" aria-label="رواء ونهى وورد">${HEROES.map(([id, name]) => {
+      const response = expression === 'concerned' ? 'thinking' : expression;
+      const position = EXPR_POS[id === speaker ? expression : response] || EXPR_POS.welcome;
+      return `<span class="fit-opening-hero${id === speaker ? ' speaking' : ''}" role="img" aria-label="${name}"
+        style="background-image:url('ui/designs_art/characters/${id}_expressions.png');background-position:${position}"></span>`;
+    }).join('')}</div>`;
+  }
   const readSeen = () => {
     try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); } catch (_) { return {}; }
   };
@@ -65,9 +74,11 @@
 
     const seen = readSeen();
     const alreadySeen = !!seen[id];
-    const bgUrl = new URL(`ui/designs_art/openings/${entry.bg}`, document.baseURI).href;
-    const heroUrl = new URL(`ui/designs_art/characters/${entry.hero}_expressions.png`, document.baseURI).href;
-    const exprPos = EXPR_POS[entry.expr] || EXPR_POS.welcome;
+    const river = id === 'pz_river';
+    const background = river ? 'ui/designs_art/river_stage1/05_opening_and_icon/05_opening_scene.png' : `ui/designs_art/openings/${entry.bg}`;
+    const bgUrl = new URL(background, document.baseURI).href;
+    const size = river ? 'cover' : bgSizeForRect(entry.rect);
+    const position = river ? 'center' : bgPositionForRect(entry.rect);
 
     const ov = document.createElement('div');
     ov.id = 'fit-opening-overlay';
@@ -78,10 +89,10 @@
 
     ov.innerHTML = `
       <div class="fit-opening-card">
-        <div class="fit-opening-scene" style="background-image:url('${bgUrl}');background-size:${bgSizeForRect(entry.rect)};background-position:${bgPositionForRect(entry.rect)}">
+        <div class="fit-opening-scene" style="background-image:url('${bgUrl}');background-size:${size};background-position:${position}">
           <div class="fit-opening-scrim"></div>
           <span class="fit-opening-badge">${entry.heroName}</span>
-          <div class="fit-opening-hero" aria-hidden="true" style="background-image:url('${heroUrl}');background-position:${exprPos}"></div>
+          ${crewMarkup(entry.hero, entry.expr)}
         </div>
         <div class="fit-opening-body">
           <h3 class="fit-opening-title">${entry.name}</h3>
@@ -173,7 +184,7 @@
     checkMount();
   }
 
-  window.fitOpenings = { open: openOpening, close: closeOpening };
+  window.fitOpenings = { open: openOpening, close: closeOpening, crewMarkup };
   if (document.readyState === 'loading') {
     document.addEventListener('DOMContentLoaded', watch);
   } else {

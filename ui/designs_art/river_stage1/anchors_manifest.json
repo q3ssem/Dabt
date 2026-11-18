@@ -1,0 +1,108 @@
+{
+  "puzzle_id": "pz_river",
+  "stage": 1,
+  "title_ar": "عبور النهر — رصيف الصفصاف",
+  "device_target": "iPhone 16 Plus (430x936 pt, @2x 860x1872 px)",
+  "scene_canvas_px": {
+    "width": 860,
+    "height": 844,
+    "scale": "2x"
+  },
+  "ui_reserved_zones_px": {
+    "top_header_objective_rules": {
+      "y": 0,
+      "height": 440
+    },
+    "river_scene_play_area": {
+      "y": 440,
+      "height": 844
+    },
+    "bottom_status_and_controls": {
+      "y": 1284,
+      "height": 588
+    }
+  },
+  "scene_anchors_px": {
+    "dock_start": {
+      "x": 430,
+      "y": 620,
+      "note": "نقطة الرسو عند ضفة الانطلاق (الرصيف الخشبي)"
+    },
+    "dock_arrival": {
+      "x": 430,
+      "y": 258,
+      "note": "نقطة الرسو عند ضفة الوصول (الحجارة والصفصافة)"
+    },
+    "bank_start_slots": [
+      {
+        "id": "slot_0_wolf",
+        "x": 150,
+        "y": 775
+      },
+      {
+        "id": "slot_1_sheep",
+        "x": 270,
+        "y": 785
+      },
+      {
+        "id": "slot_2_grass",
+        "x": 690,
+        "y": 775
+      }
+    ],
+    "bank_arrival_slots": [
+      {
+        "id": "slot_0_wolf",
+        "x": 160,
+        "y": 215
+      },
+      {
+        "id": "slot_1_sheep",
+        "x": 285,
+        "y": 225
+      },
+      {
+        "id": "slot_2_grass",
+        "x": 665,
+        "y": 220
+      }
+    ]
+  },
+  "boat_local_anchors_px": {
+    "canvas": {
+      "width": 280,
+      "height": 220,
+      "pivot": [
+        140,
+        110
+      ]
+    },
+    "farmer_seat": {
+      "x": 178,
+      "y": 115
+    },
+    "passenger_cargo_slot": {
+      "x": 102,
+      "y": 118
+    },
+    "rope_attach": {
+      "x": 140,
+      "y": 182
+    },
+    "wake_offset": {
+      "x": 0,
+      "y": 48
+    }
+  },
+  "passenger_sprite_anchors_px": {
+    "canvas": {
+      "width": 180,
+      "height": 180
+    },
+    "foot_seat_pivot": [
+      90,
+      155
+    ],
+    "note": "جميع حالات الذئب والخروف والعشب تشترك في نقطة الارتكاز (90, 155) لضمان الحركة دون قفز"
+  }
+}

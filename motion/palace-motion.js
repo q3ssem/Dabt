@@ -12,10 +12,10 @@
 (function () {
   'use strict';
   if (!window.MK || typeof GM === 'undefined' || typeof pzPlay !== 'function') return;
-  const ART = 'motion/art/', img = (k, cls = '', alt = '') => `<img class="${cls}" src="${ART}${k}.webp" alt="${alt}" draggable="false">`;
+  const ART = 'ui/designs_art/priority7/', img = (k, cls = '', alt = '') => `<img class="${cls}" src="${ART}${k}.png" alt="${alt}" draggable="false">`;
   const AR = ['١', '٢', '٣', '٤', '٥'], LET = ['أ', 'ب', 'ج', 'د', 'هـ'];
   // door numbers use the approved numbered badges (badge_1..5 = display order of drMake.n); letters and counts use a drawn ring
-  const badge = (lab, cls = '') => { const d = AR.indexOf(lab); return d >= 0 && !/cnt|xs/.test(cls) ? `<span class="pl-badge img ${cls}"><img src="${ART}badge_${d + 1}.webp" alt="${lab}" draggable="false"></span>` : `<span class="pl-badge ${cls}"><b>${lab}</b></span>`; };
+  const badge = (lab, cls = '') => { const d = AR.indexOf(lab); return d >= 0 && !/cnt|xs/.test(cls) ? `<span class="pl-badge img ${cls}"><img src="${ART}badge_${d + 1}.png" alt="${lab}" draggable="false"></span>` : `<span class="pl-badge ${cls}"><b>${lab}</b></span>`; };
   const TICK = '<i class="pl-yes" aria-hidden="true">✓</i>', CROSS = '<i class="pl-no" aria-hidden="true">✗</i>';
 
   /* ================================================================ pz_pobs — الخريطتان الشفافتان (priority-7 R4)
@@ -31,7 +31,7 @@
         const ok = () => cur().every(([x, y]) => inb(x, y, n, n) && bset.has(y * n + x));
         const ext = rr => { const s = paRot(P.top, rr); return [Math.max(...s.map(a => a[0])), Math.max(...s.map(a => a[1]))]; };
         const clampXY = (x, y, rr = r) => { const [w, h] = ext(rr); return [Math.max(0, Math.min(n - 1 - w, x)), Math.max(0, Math.min(n - 1 - h, y))]; };
-        api.body.innerHTML = xSheet(`${xHead(`<img src="motion/art/prop_starchart.webp" alt="" width="30" height="30">`, 'الخريطتان الشفافتان')}
+        api.body.innerHTML = xSheet(`${xHead(`<img src="ui/designs_art/priority7/prop_starchart.png" alt="" width="30" height="30">`, 'الخريطتان الشفافتان')}
           <div class="po-top"><span class="po-key"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="#3E73B5"/></svg>نجوم الخريطة الزرقاء</span><span class="po-key"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3l7 13H3z" fill="#C8932F"/></svg>نجوم الشفافة الذهبية</span></div>
           <p class="mk-lead">اسحب الشفافة الذهبية ودوّرها حتى تقع كل نجمة ذهبية على نجمة زرقاء.</p>
           <div class="po-board" id="pob"><svg viewBox="-.5 -.5 ${n} ${n}" id="pos" role="img" aria-label="الخريطتان"><g id="pobot"></g><g id="potop"></g></svg></div>
@@ -113,7 +113,7 @@
       return Math.abs(dx) < Math.max(28, b.width * .55) ? 'statue_front' : dx < 0 ? 'statue_side_right' : 'statue_side_left'; };  // art names are the statue's own side: side_left looks to the screen's right
     const paint = () => {
       dir.forEach((d, i) => { const c = el.querySelector(`.pl-st[data-st="${i}"]`); c.classList.toggle('neutral', d < 0); c.classList.toggle('back', d === BACK); c.classList.toggle('faces', d >= 0 && d < BACK);
-        c.querySelector('.pl-pose').src = ART + pose(i) + '.webp';
+        c.querySelector('.pl-pose').src = ART + pose(i) + '.png';
         const t = d < 0 ? 'محايد' : d === BACK ? 'يدير ظهره' : `يواجه ${opt.labels[d]}`; c.querySelector('.pl-face').textContent = t;
         c.querySelector('.pl-turn').setAttribute('aria-label', `${opt.names[i]}: ${t}. المس للتدوير.`); });
       for (let d = 0; d < D; d++) { const e = doorEl(d); e.classList.toggle('faced', dir.includes(d)); e.classList.toggle('haskey', keyAt === d);
@@ -138,7 +138,7 @@
   /* ---------------------------------------------------------------- pz_door pictograms (8 inscriptions, 6 rules) */
   const gem = img('treasure_gem', 'pl-ic', 'الكنز'), arrow = img('clue_arrow', 'pl-ic arr', 'عند'), stop = img('clue_prohibit', 'pl-ic', 'ليس عند');
   const statueMini = (lab, ok) => `<span class="pl-smini">${img('statue_front', 'pl-ic st')}${badge(lab, 'xs')}${ok ? TICK : CROSS}</span>`;
-  const sideRow = (s, n) => `<span class="pl-range" aria-hidden="true">${[...Array(n)].map((_, d) => `<i class="${d === s.d ? 'ref' : (s.x < s.d ? d < s.d : d > s.d) ? 'in' : ''}">${d === s.d ? `<img src="${ART}badge_${d + 1}.webp" alt="">` : ''}</i>`).join('')}</span>`;
+  const sideRow = (s, n) => `<span class="pl-range" aria-hidden="true">${[...Array(n)].map((_, d) => `<i class="${d === s.d ? 'ref' : (s.x < s.d ? d < s.d : d > s.d) ? 'in' : ''}">${d === s.d ? `<img src="${ART}badge_${d + 1}.png" alt="">` : ''}</i>`).join('')}</span>`;
   const drPlaque = (s, n) => { switch (s.k) {
     case 'here': return gem + arrow + badge(AR[s.d], 'self');            case 'at': return gem + arrow + badge(AR[s.x]);
     case 'nothere': return gem + stop + badge(AR[s.d], 'self');          case 'notat': return gem + stop + badge(AR[s.x]);
@@ -154,7 +154,7 @@
     one: [countB(1, true), 'لافتة واحدة فقط صادقة'], onef: [countB(1, false), 'لافتة واحدة فقط كاذبة'], two: [countB(2, true), 'لافتتان فقط صادقتان'], none: [countB(0, true), 'لا صادق: كل اللافتات كاذبة'],
     lady: [`<span class="pl-count">${gem}${TICK}</span>${trapGroup(true)}`, 'لافتة باب الكنز صادقة، ولافتات أبواب الفخ كلها كاذبة'],
     mix: [`<span class="pl-count">${gem}${TICK}</span>${trapGroup(false)}`, 'لافتة باب الكنز صادقة، ولافتة باب فخ واحد على الأقل كاذبة'] };
-  const KEY_ROWS = [[gem + arrow + badge('٣'), 'الكنز عند الباب ٣'], [gem + stop + badge('٣'), 'الكنز ليس عند الباب ٣'], [`<span class="pl-range"><i class="in"></i><i class="ref"><img src="${ART}badge_3.webp" alt=""></i><i></i></span>`, 'الكنز في أحد الأبواب المضيئة (قبل الباب المرجعي أو بعده)'],
+  const KEY_ROWS = [[gem + arrow + badge('٣'), 'الكنز عند الباب ٣'], [gem + stop + badge('٣'), 'الكنز ليس عند الباب ٣'], [`<span class="pl-range"><i class="in"></i><i class="ref"><img src="${ART}badge_3.png" alt=""></i><i></i></span>`, 'الكنز في أحد الأبواب المضيئة (قبل الباب المرجعي أو بعده)'],
     [badge('٢') + '<i class="pl-or">/</i>' + badge('٤'), 'أحد البابين'], [statueMini('٢', true), 'التمثال ٢ صادق'], [statueMini('٢', false), 'التمثال ٢ كاذب'], [badge('٣', 'self'), 'رقم بإطار ذهبي: باب هذا التمثال نفسه']];
 
   /* a door board from drMake: rule strip + key + doors + statues */
@@ -175,7 +175,7 @@
     return { el: wrap, h, check, target, solve: () => h.set(target(P.t), P.t) };
   }
   const why = (P, t) => { const v = drVals(P, t); return P.st.map((_, i) => `${AR[i]} ${v[i] ? 'صادق' : 'كاذب'}`).join('، '); };
-  const openDoor = (h, d) => { const e = h.doorEl(d); e.querySelector('.pl-dimg').src = ART + 'door_open.webp'; e.classList.add('open'); };
+  const openDoor = (h, d) => { const e = h.doorEl(d); e.querySelector('.pl-dimg').src = ART + 'door_open.png'; e.classList.add('open'); };
 
   /* ================================================================ pz_door — أبواب القصر */
   if (GM.pz_door && typeof drMake === 'function' && typeof drVals === 'function') {

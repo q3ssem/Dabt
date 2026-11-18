@@ -85,7 +85,14 @@ const SECTIONS=[['منطق وأرقام',['pz_rid','pz_lock','pz_grid','pz_sudo'
  ['حركة ومسارات',['pz_river','pz_rush','pz_stat','pz_pipe','pz_laser','pz_soko','pz_flow','pz_tan','pz_untangle','pz_stroke','pz_ice']],
  ['مغامرة القرصان',g=>/^pz_[xt]/.test(g)],['الحطام والمعبد',g=>/^pz_[yz]/.test(g)],['قصر المرايا',g=>/^pz_p/.test(g)],['أرض أثران',g=>/^pz_[aw]/.test(g)]];
 LA.librarySections=()=>{const puzzles=G.filter(g=>g.puz&&!g.kid&&!RETIRED.has(g.id)),used=new Set();return SECTIONS.map(([name,m])=>{const list=puzzles.filter(g=>!used.has(g.id)&&(typeof m==='function'?m(g.id):m.includes(g.id)));list.forEach(g=>used.add(g.id));return[name,list];}).concat([['ألغاز أخرى',puzzles.filter(g=>!used.has(g.id))]]).filter(x=>x[1].length);};
-function tileFor(g){const c=settings(g),tile=E('button',{class:'la-library-card',type:'button','data-legacy-puzzle':g.id,onclick:()=>startRun([g.id])});tile.innerHTML=`<span class="la-library-image">${LA.object(c[1])||LA.sprite('puzzle-parts',1)}</span><b>${escape(g.name)}</b><small>المستوى ${A(typeof pzLv==='function'?pzLv(g.id):1)}</small>`;return tile;}
+const DESIGN_ICONS = {
+  pz_rid: 'ui/designs_art/four_puzzles/pz_rid/icon_pz_rid.png',
+  pz_rush: 'ui/designs_art/four_puzzles/pz_rush/icon_pz_rush.png',
+  pz_stat: 'ui/designs_art/four_puzzles/pz_stat/icon_pz_stat.png',
+  pz_pipe: 'ui/designs_art/four_puzzles/pz_pipe/icon_pz_pipe.png',
+  pz_river: 'ui/designs_art/river_stage1/05_opening_and_icon/06_puzzle_icon.png'
+};
+function tileFor(g){const c=settings(g),designIcon=DESIGN_ICONS[g.id],tile=E('button',{class:'la-library-card',type:'button','data-legacy-puzzle':g.id,onclick:()=>startRun([g.id])});tile.innerHTML=`<span class="la-library-image">${designIcon?`<img src="${designIcon}" alt="" loading="lazy" decoding="async">`:LA.object(c[1])||LA.sprite('puzzle-parts',1)}</span><b>${escape(g.name)}</b><small>المستوى ${A(typeof pzLv==='function'?pzLv(g.id):1)}</small>`;return tile;}
 LA.libraryInto=function(host){const input=E('input',{class:'dx-search',type:'search',placeholder:'ابحث عن لغز…','aria-label':'ابحث عن لغز'}),box=E('div',{class:'la-sections'});host.append(input,box);const secs=LA.librarySections();LA.puzzleCount=secs.reduce((n,s)=>n+s[1].length,0);
  const fill=()=>{const q=input.value?.trim()||'';box.innerHTML='';let any=false;secs.forEach(([name,list])=>{const found=list.filter(g=>g.name.includes(q));if(!found.length)return;any=true;const grid=E('div',{class:'la-library-grid'});found.forEach(g=>grid.append(tileFor(g)));box.append(E('section',{class:'la-section'},secHead(name,found.length),grid));});if(!any)box.append(E('p',{class:'t7-help',text:'لا توجد ألغاز مطابقة.'}));};input.oninput=fill;fill();};
 function library(){const v=$('#v-puz');v.classList.remove('trip');v.classList.add('t7');v.innerHTML='';v.append(E('header',{class:'t7-top'},E('div',{},E('span',{class:'t7-kicker',text:'نفس الألغاز · رسم متجدد'}),E('h1',{text:'مكتبة الألغاز'})),E('button',{class:'t7-btn',type:'button',text:'كل الألغاز',onclick:()=>{LA.view=null;T7.hub?T7.hub():T7.map();}})));LA.libraryInto(v);}

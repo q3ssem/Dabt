@@ -137,10 +137,3 @@ html[data-skin="dark"] .fit-sh-replay{border-color:#5CE0D2;color:#5CE0D2}
 html.fit-t7 #v-puz.t7 .t7-puzzle-pane svg,html.fit-ex10 #v-puz .ex10-game-content svg{max-width:100%;height:auto}
 html.fit-ex10 #v-puz .ex10-game-content{max-height:calc(100dvh - 84px);overflow-y:auto;overscroll-behavior:contain}
 html.fit-t7 #v-puz.t7 .v5-chip,html.fit-ex10 #v-puz .ex10-game-content button{min-height:44px}
-
-/* River Environment V2 layered backdrop on #rv3 */
-#play.fit .mlp-river-board #rv3{
-  background-image:url('designs_art/river_v2/01_background/01_sky_and_mountains.png');
-  background-size:cover;
-  background-position:center top;
-}

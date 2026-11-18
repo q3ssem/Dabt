@@ -16,6 +16,18 @@
 @keyframes lb-shake{20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}}
 .lb img{-webkit-user-drag:none;user-select:none}
 
+/* 01 crate riddle */
+.rid-crates{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:6px;padding:8px 5px;background:url(../ui/designs_art/four_puzzles/pz_rid/sprites/clue_shelf.png) center bottom/100% 28% no-repeat}
+.rid-crate{position:relative;display:grid;aspect-ratio:1;place-items:center;isolation:isolate}
+.rid-crate>img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.rid-crate>.rid-lid{top:-16%}
+.rid-crate-label{position:relative;display:flex;justify-content:center;align-items:center;flex-wrap:wrap;width:88%;min-height:44%;padding:3px;background:url(../ui/designs_art/four_puzzles/pz_rid/sprites/label_card_blank.png) center/100% 100%;color:#392519;font-size:clamp(11px,3vw,15px)}
+.rid-crate-label img{width:21%;aspect-ratio:1;object-fit:contain}
+.rid-crate-label b{width:100%;text-align:center;line-height:1}
+.rid-crates.solved .rid-crate:last-child::after{content:'';position:absolute;inset:0;background:url(../ui/designs_art/four_puzzles/pz_rid/sprites/fx_success_seal.png) center top/38% auto no-repeat}
+#pzb:has(.rid-crates) .ridopt:focus-visible{outline:3px solid #A57528;background-image:url(../ui/designs_art/four_puzzles/pz_rid/sprites/fx_selection_glow.png);background-position:center;background-size:contain;background-repeat:no-repeat}
+#pzb:has(.rid-crates) .ridopt.no{background-image:url(../ui/designs_art/four_puzzles/pz_rid/sprites/fx_error_x.png);background-position:left 8px center;background-repeat:no-repeat;background-size:18px}
+
 /* 02 river */
 .rv10{display:grid;grid-template-columns:1fr .86fr 1fr;gap:0;border-radius:12px;overflow:hidden;min-height:180px}
 .rv10>section{padding:6px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
@@ -31,10 +43,56 @@
 .rv10-hull{width:46px;height:auto;max-height:84px;object-fit:contain;pointer-events:none}
 .rv10-load{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:-30px}
 .rv10-water small{font-size:11px;color:#355862;margin-top:auto}
-.rv10.sail .rv10-boat{transform:translateY(-6px)}
+
 .rv10 .mk-over{box-shadow:0 0 0 3px var(--lb-teal) inset}
 .rv10.won .rv10-bank.goal{box-shadow:0 0 0 3px var(--lb-ok) inset}
 @media (max-width:360px){.rv10-it{width:40px;height:40px}.rv10-it img{width:33px;height:33px}}
+
+.rv10{position:relative;isolation:isolate;direction:ltr;min-height:215px;padding-top:28px}
+.rv10-landscape{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
+.rv10-landscape img{position:absolute;object-fit:contain}
+.rv10-landscape .sky{inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 28%}
+.rv10-landscape .water{top:14%;left:23%;width:54%;height:86%;object-fit:cover}
+.rv10-landscape .bank{top:14%;width:38%;height:86%;object-fit:cover}
+.rv10-landscape .left{left:0;object-position:right}
+.rv10-landscape .right{right:0;object-position:left}
+.rv10-landscape .cloud{width:24%;top:1%;animation:rv10-drift 16s ease-in-out infinite alternate}
+.rv10-landscape .cloud.one{left:4%}
+.rv10-landscape .cloud.two{left:42%;animation-delay:-6s}
+.rv10-landscape .cloud.three{right:3%;width:13%;top:-10%;animation-delay:-10s}
+.rv10-landscape .cottage{left:2%;top:21%;width:23%}
+.rv10-landscape .tree{left:14%;top:23%;width:16%}
+.rv10-landscape .trees{right:0;top:19%;width:26%}
+.rv10-landscape .stones{right:5%;bottom:6%;width:17%}
+.rv10-landscape .logs{left:3%;bottom:17%;width:14%}
+.rv10-landscape .flowers{right:0;bottom:0;width:13%}
+.rv10-landscape .reeds{left:17%;bottom:0;width:25%}
+.rv10-landscape .bird{width:11%;right:30%;top:0;animation:rv10-wing .66s steps(1,end) infinite}
+.rv10-landscape .bird-2{animation-delay:-.22s}
+.rv10-landscape .bird-3{animation-delay:-.44s}
+.rv10-landscape .waves{animation:rv10-shimmer 3s ease-in-out infinite alternate}
+@keyframes rv10-wing{0%{opacity:1}33.34%,100%{opacity:0}}
+@keyframes rv10-drift{to{transform:translateX(18%)}}
+@keyframes rv10-shimmer{from{opacity:.32}to{opacity:.85}}
+.rv10 .rv10-bank,.rv10 .rv10-bank.goal,.rv10 .rv10-water{background:transparent}
+.rv10 h4,.rv10-water small{color:#34241b;background:rgba(255,251,242,.94);padding:2px 5px;border-radius:6px;text-align:center;direction:rtl}
+.rv10-boat{min-height:0;transition:transform .6s ease-in-out;transform:translateX(-14%)}
+.rv10.at1 .rv10-boat,.rv10:not(.at1).sail .rv10-boat{transform:translateX(14%)}
+.rv10.at1.sail .rv10-boat{transform:translateX(-14%)}
+.rv10-rig{width:min(100%,124px);aspect-ratio:280/220;position:relative;pointer-events:none}
+.rv10-rig img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
+.rv10-rig .rv10-rope{top:28%;transform:scale(.5)}
+.rv10-rig :is(.rv10-wake,.rv10-splash),.rv10.sail .rv10-rig .rv10-rope{visibility:hidden}
+.rv10.sail .rv10-rig :is(.rv10-wake,.rv10-splash){visibility:visible}
+.rv10-rig .rv10-wake{top:23%}
+.rv10-rig .rv10-splash{top:16%;transform:scale(.52)}
+.rv10-load{margin-top:-12%;position:relative}
+.rv10-it.eat{background-image:url(../ui/designs_art/river_stage1/04_effects/fx_danger_bank.png)!important;background-size:contain!important}
+@media(prefers-reduced-motion:reduce){
+  .rv10-landscape img{animation:none!important}
+  .rv10-landscape :is(.bird-2,.bird-3){display:none}
+  .rv10-boat{transition:none}
+}
 
 /* 03 rush (rushEngine board, re-skinned) */
 .lb[data-lb="rush"] .rhwrap2{background:none}
@@ -44,16 +102,21 @@
 .lb[data-lb="rush"] .rhb2{background:#EADFC8;border:2px solid #CDB993;border-radius:10px}
 .lb[data-lb="rush"] .rhb2>i{border-color:#D8C7A6!important;background:#F1E7D5!important}
 .rh10{position:absolute;inset:0;display:block;pointer-events:none}
-.rh10-img{position:absolute;inset:4%;width:92%;height:92%;object-fit:fill}
-.rhcar.v .rh10{container-type:size}
-.rhcar.v .rh10-img{inset:auto;left:50%;top:50%;width:92cqh;height:92cqw;transform:translate(-50%,-50%) rotate(90deg);transform-origin:center}
+.rh10-img{position:absolute;inset:4%;width:92%;height:92%;object-fit:contain}
 .rhcar.red{filter:drop-shadow(0 0 3px rgba(192,57,43,.45))}
 .rhcar.sel{outline:3px solid var(--lb-teal);outline-offset:-2px;border-radius:8px}
+
+#pzb[data-board-art="pz_rush"] .rhexit{background:#236641 url(../ui/designs_art/four_puzzles/pz_rush/sprites/gate_closed.png) center/contain no-repeat}
+#pzb[data-board-art="pz_rush"].solved .rhexit{background-image:url(../ui/designs_art/four_puzzles/pz_rush/sprites/gate_open.png)}
+#pzb[data-board-art="pz_rush"] .rhbar{visibility:hidden}
+#pzb[data-board-art="pz_rush"] .rh10{background:url(../ui/designs_art/four_puzzles/pz_rush/sprites/vehicle_shadow.png) center/contain no-repeat}
+#pzb[data-board-art="pz_rush"] .rhcar.sel .rh10{background-image:url(../ui/designs_art/four_puzzles/pz_rush/sprites/fx_selection_tile.png)}
+#pzb[data-board-art="pz_rush"] .rhcar.red:focus-visible .rh10{background-image:url(../ui/designs_art/four_puzzles/pz_rush/sprites/fx_target_tile.png)}
 
 /* 04 statues */
 .st10{position:relative;width:100%;aspect-ratio:1;max-width:340px;margin:0 auto}
 .st10-links{position:absolute;inset:0;width:100%;height:100%}
-.st10-links line{stroke:#B49A6B;stroke-width:.9;transition:stroke .2s}.st10-links line.zap{stroke:#C8932F;stroke-width:1.6}
+.st10-stone-link{opacity:.6}.st10-links line{stroke:#B49A6B;stroke-width:.9;transition:stroke .2s}.st10-links line.zap{stroke:#C8932F;stroke-width:1.6}
 .st10-s{all:unset;cursor:pointer;position:absolute;aspect-ratio:1;transform:translate(-50%,-50%);display:grid;place-items:center;border-radius:50%}
 .st10-ped{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
 .st10-head{position:relative;width:62%;height:62%;display:grid;place-items:center;transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
@@ -66,6 +129,19 @@
 .st10.all .st10-s{box-shadow:0 0 0 3px var(--lb-ok)}
 @keyframes lb-pop{50%{transform:translate(-50%,-50%) scale(1.07)}}@keyframes lb-pulse{50%{box-shadow:0 0 0 7px #F2C55366}}
 
+.st10-door,.st10-open{position:absolute;left:40%;top:40%;width:20%;height:20%;object-fit:contain;pointer-events:none}
+.st10-open,.st10.all .st10-door{display:none}
+.st10.all .st10-open{display:block}
+.st10-head{width:55%;height:55%;transform:translateY(-28%)}
+.st10-ped{height:84%;top:20%}
+.st10-current{position:absolute;inset:7%;pointer-events:none;transition:transform .3s}
+.st10-s.ok{background:url(../ui/designs_art/four_puzzles/pz_stat/sprites/fx_rune_aligned.png) center/contain no-repeat}
+.st10-s.turned{background-image:url(../ui/designs_art/four_puzzles/pz_stat/sprites/fx_ring_selected.png)}
+.st10-s.linked{background-image:url(../ui/designs_art/four_puzzles/pz_stat/sprites/fx_ring_affected.png)}
+.st10-s:is(.turned,.linked){background-position:center;background-size:contain;background-repeat:no-repeat}
+.st10-s:is(.turned,.linked)::after{content:'';position:absolute;inset:0;background:url(../ui/designs_art/four_puzzles/pz_stat/sprites/fx_turn_quarter.png) center/75% no-repeat;pointer-events:none}
+.st10-s[data-turn="half"]:is(.turned,.linked)::after{background-image:url(../ui/designs_art/four_puzzles/pz_stat/sprites/fx_turn_half.png)}
+
 /* 05 pipes */
 .pp10{display:grid;grid-template-columns:repeat(var(--w),minmax(0,1fr));gap:4px;max-width:340px;margin:0 auto;direction:ltr}
 .pp10-c{all:unset;cursor:pointer;position:relative;aspect-ratio:1;border-radius:8px;background:#F4ECDD;border:1.5px solid #E2D3B6;overflow:hidden}
@@ -75,6 +151,14 @@
 .pp10-pipe{width:100%;height:100%;object-fit:contain;pointer-events:none}
 .pp10-spring,.pp10-house{position:absolute;inset:14%;width:72%;height:72%;object-fit:contain;pointer-events:none}
 .pp10.won .pp10-c{border-color:var(--lb-ok)}
+
+.pp10-flow{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;transform:rotate(var(--flow-angle));visibility:hidden;pointer-events:none;opacity:.66}
+.pp10-c.on .pp10-flow{visibility:visible}
+.pp10-house.wet,.pp10-c.house.on .pp10-house:not(.wet){visibility:hidden}
+.pp10-c.on .pp10-house.wet{visibility:visible}
+.pp10-c.leak::after{content:'';position:absolute;right:0;top:0;width:29%;height:29%;background:url(../ui/designs_art/four_puzzles/pz_pipe/sprites/fx_leak_badge.png) center/contain no-repeat;pointer-events:none}
+.pp10-c.leak::before{content:'';position:absolute;inset:0;background:url(../ui/designs_art/four_puzzles/pz_pipe/sprites/fx_leak_bubbles.png) center/contain no-repeat;pointer-events:none;z-index:1}
+.pp10.won .pp10-rot{background:url(../ui/designs_art/four_puzzles/pz_pipe/sprites/fx_water_shimmer.png) center/contain no-repeat}
 
 /* 06 logic grid */
 .lg10{display:flex;flex-direction:column;gap:8px}

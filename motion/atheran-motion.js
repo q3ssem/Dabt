@@ -32,11 +32,11 @@
         const P = aarMake(api.lv), n = P.n, uc = Array(n).fill(-1), uf = Array(n).fill(-1); let miss = 0, busy = false;
         // R4 art bound to generator values: ship picture by AAR_SHIP index (ship / rowboat), captain seal = scroll with the
         // captain's own seal mark, fate = rune by AAR_F index (rune_flame = AAR_F[4] per the manifest).
-        const ART = 'motion/art/', SHIP_ART = i => AAR_SHIP.indexOf(P.ships[i]) % 2 ? 'prop_rowboat' : 'prop_ship';
+        const ART = 'ui/designs_art/priority7/', SHIP_ART = i => AAR_SHIP.indexOf(P.ships[i]) % 2 ? 'prop_rowboat' : 'prop_ship';
         const FATE_ART = { 'عادت': 'rune_wave', 'اختفت': 'rune_moon', 'بقيت هناك': 'rune_star', 'أنكرت ما رأت': 'rune_flame' };
-        const capChip = (x, small) => `<span class="mk-chip cap aa-cap${small ? ' sm' : ''}" style="--c:${CAP_ICON[AAR_CAP.indexOf(P.caps[x]) % 6][0]}"><span class="aa-scroll"><img src="${ART}prop_manifest.webp" alt="" draggable="false">${icon(CAP_ICON[AAR_CAP.indexOf(P.caps[x]) % 6][1], CAP_ICON[AAR_CAP.indexOf(P.caps[x]) % 6][0])}</span><small>${P.caps[x]}</small></span>`;
-        const fateChip = (f, small) => { const a = FATE_ART[P.fates[f]]; return `<span class="mk-chip fate aa-fate${small ? ' sm' : ''}">${a ? `<img class="aa-rune" src="${ART}${a}.webp" alt="" draggable="false">` : `<span class="aa-rune drawn">${icon(FATE_ICON[P.fates[f]] || '<circle cx="20" cy="20" r="10"/>', '#7A4E2C')}</span>`}<small>${P.fates[f]}</small></span>`; };
-        const shipChip = r => `<span class="mk-chip ship sm aa-shipc"><img src="${ART}${SHIP_ART(r)}.webp" alt="" draggable="false"><small>${P.ships[r]}</small></span>`;
+        const capChip = (x, small) => `<span class="mk-chip cap aa-cap${small ? ' sm' : ''}" style="--c:${CAP_ICON[AAR_CAP.indexOf(P.caps[x]) % 6][0]}"><span class="aa-scroll"><img src="${ART}prop_manifest.png" alt="" draggable="false">${icon(CAP_ICON[AAR_CAP.indexOf(P.caps[x]) % 6][1], CAP_ICON[AAR_CAP.indexOf(P.caps[x]) % 6][0])}</span><small>${P.caps[x]}</small></span>`;
+        const fateChip = (f, small) => { const a = FATE_ART[P.fates[f]]; return `<span class="mk-chip fate aa-fate${small ? ' sm' : ''}">${a ? `<img class="aa-rune" src="${ART}${a}.png" alt="" draggable="false">` : `<span class="aa-rune drawn">${icon(FATE_ICON[P.fates[f]] || '<circle cx="20" cy="20" r="10"/>', '#7A4E2C')}</span>`}<small>${P.fates[f]}</small></span>`; };
+        const shipChip = r => `<span class="mk-chip ship sm aa-shipc"><img src="${ART}${SHIP_ART(r)}.png" alt="" draggable="false"><small>${P.ships[r]}</small></span>`;
         // relations as pictures: = same row · ✗ not · dotted path = sailed earlier (older row first) · two touching slots = the very next ship
         const SEQ = '<span class="mk-rel aa-seq" title="أبحر قبل" aria-label="قبل"><svg viewBox="0 0 44 16" aria-hidden="true"><path d="M40 8H8" stroke="#5A4630" stroke-width="2.4" stroke-dasharray="4 3"/><path d="M12 3L5 8l7 5" fill="none" stroke="#5A4630" stroke-width="2.4" stroke-linejoin="round"/></svg></span>';
         const NEXT = '<span class="mk-rel aa-next" title="السفينة التالية مباشرة" aria-label="التالية مباشرة"><svg viewBox="0 0 44 18" aria-hidden="true"><rect x="23" y="2" width="18" height="14" rx="3" fill="#F2C553" stroke="#5A4630" stroke-width="1.8"/><rect x="4" y="2" width="18" height="14" rx="3" fill="#fff" stroke="#5A4630" stroke-width="1.8"/></svg></span>';
@@ -59,7 +59,7 @@
           <div class="aa-key">${REL.eq}نفسه · ${NOT}ليس · ${SEQ}أقدم من · ${NEXT}التالية مباشرة</div>
           <div class="mk-clues" id="aarcl">${P.clues.map((c, i) => `<div class="mk-clue" data-cl="${i}" role="note" aria-label="${clueSay(c)}"><i class="mk-dot"></i>${clueHTML(c)}</div>`).join('')}</div>
           <div class="mk-board aar-board" id="aarboard">
-            <div class="mk-rows">${P.ships.map((s, r) => `<div class="mk-row"><div class="mk-ship aa-ship"><img src="${ART}${SHIP_ART(r)}.webp" alt="" draggable="false"><b>${s}</b><small>سنة ${XAR(P.years[r])}</small></div><div class="mk-slot" data-slot="c${r}" tabindex="0" aria-label="قائد ${s}"></div><div class="mk-slot" data-slot="f${r}" tabindex="0" aria-label="مصير ${s}"></div></div>`).join('')}</div>
+            <div class="mk-rows">${P.ships.map((s, r) => `<div class="mk-row"><div class="mk-ship aa-ship"><img src="${ART}${SHIP_ART(r)}.png" alt="" draggable="false"><b>${s}</b><small>سنة ${XAR(P.years[r])}</small></div><div class="mk-slot" data-slot="c${r}" tabindex="0" aria-label="قائد ${s}"></div><div class="mk-slot" data-slot="f${r}" tabindex="0" aria-label="مصير ${s}"></div></div>`).join('')}</div>
             <div class="mk-tray" data-tray="c" aria-label="أختام القادة"></div><div class="mk-tray" data-tray="f" aria-label="رموز المصائر"></div>
           </div>
           <div class="xkbtns"><button class="go-btn xsm alt2" id="aarclr">أعد القطع</button><button class="go-btn xsm" id="aargo">رتّب الأرشيف</button></div>`, 620 + n * 110, 501);
@@ -131,7 +131,7 @@
         const tok = j => `<button class="mk-tok" data-tok="${j}"><span class="mk-chip ev">${mark(P.items[j])}<small>${alyName(P.items[j])}</small></span></button>`;
         api.body.innerHTML = xSheet(`${xHead('', 'طبقات الزمن')}
           <div class="mk-rules"><span>${icon('<path d="M20 34V8M12 16l8-8 8 8"/>')}<small>الأعلى أحدث</small></span><span>${icon('<path d="M18 36q6-10 0-18t6-14" stroke-width="3"/><path d="M6 20h28" opacity=".45"/>')}<small>العرق أحدث مما يشقه</small></span>${fs.length ? `<span>${icon('<path d="M24 36L16 4" stroke-dasharray="5 3"/><path d="M6 14h10M20 22h14" opacity=".45"/>')}<small>الشق أحدث مما أزاحه</small></span>` : ''}</div>
-          <div class="aly-top"><img src="motion/art/prop_strata.webp" alt="" width="40" height="38"><span class="aly-stat" id="alystat" aria-live="polite"></span></div>
+          <div class="aly-top"><img src="ui/designs_art/priority7/prop_strata.png" alt="" width="40" height="38"><span class="aly-stat" id="alystat" aria-live="polite"></span></div>
           ${svg}
           <div class="mk-time"><span class="mk-end">الأقدم</span><div class="mk-line">${[...Array(N).keys()].map(q => `<div class="mk-slot tl" data-slot="${q}" tabindex="0" aria-label="الموضع ${q + 1}"><i>${XAR(q + 1)}</i></div>`).join('')}</div><span class="mk-end">الأحدث</span></div>
           <div class="mk-tray" data-tray="t" aria-label="الأحداث"></div>
@@ -178,7 +178,7 @@
      Tap a dark species to make it the hypothesis: the dimming spreads from it, generation by generation, and every
      species where the simulation and the scene disagree is ringed. Same rule and win path (actAudit exact → aWin). */
   if (has('pz_acity') && typeof actMake === 'function') {
-    const ART = 'motion/art/';
+    const ART = 'ui/designs_art/priority7/';
     const SP_ART = ['rune_leaf', 'rune_wave', 'prop_sporebone', 'rune_moon', 'prop_biolantern', 'prop_torch', 'prop_tent', 'rune_star']; // ACT_SP[0..7]
     GM.pz_acity.run = function runACityMotion() {
       return pzPlay('pz_acity', api => {
@@ -197,7 +197,7 @@
           for (let i = 0; i < n; i++) { const [x, y] = pos[i];
             s += `<g class="mk-sp ${P.al[i] ? 'lit' : 'dark'}" data-sp="${i}" tabindex="0" role="button" aria-label="${nm(i)}: ${P.al[i] ? 'مضيء' : 'منطفئ'}">
               <circle class="halo" cx="${x}" cy="${y}" r="${R + 4}"/><circle class="disc" cx="${x}" cy="${y}" r="${R}" style="--c:${col(i)}"/>
-              <image href="${ART}${SP_ART[P.ord[i]]}.webp" x="${x - R * .78}" y="${y - R * .78}" width="${R * 1.56}" height="${R * 1.56}"/>
+              <image href="${ART}${SP_ART[P.ord[i]]}.png" x="${x - R * .78}" y="${y - R * .78}" width="${R * 1.56}" height="${R * 1.56}"/>
               <text class="mk-lbl" x="${x}" y="${y + R + 15}" text-anchor="middle">${nm(i)}</text><text class="ac-mark" x="${x + R * .72}" y="${y - R * .6}" text-anchor="middle"></text></g>`; }
           return s + '</svg>'; };
         api.body.innerHTML = xSheet(`${xHead('', 'المدينة الحية')}
@@ -262,16 +262,16 @@
         const P = arlMake(api.lv), u = Array(P.na).fill(-1); let miss = 0, busy = false, cmp = -1;
         // R4 art: every source is a diary page (prop_diary); each piece shows its value picture with the rune of its
         // attribute (arlMake.A[0] moon, A[1] wave, A[2] star per the manifest; A[3] keeps a drawn ring).
-        const ART = 'motion/art/', RUNE = ['rune_moon', 'rune_wave', 'rune_star'];
-        const pic = (j, v, cls = '') => `<span class="mk-pic arl-pic ${cls}" title="${P.A[j].n}: ${P.A[j].v[v]}">${RUNE[j] ? `<img class="arl-rune" src="${ART}${RUNE[j]}.webp" alt="" draggable="false">` : '<i class="arl-rune ring"></i>'}${icon(AT_ICON[j][v])}<small>${P.A[j].v[v]}</small>${cls.includes('diff') ? '<em class="arl-x">تناقض</em>' : ''}</span>`;
+        const ART = 'ui/designs_art/priority7/', RUNE = ['rune_moon', 'rune_wave', 'rune_star'];
+        const pic = (j, v, cls = '') => `<span class="mk-pic arl-pic ${cls}" title="${P.A[j].n}: ${P.A[j].v[v]}">${RUNE[j] ? `<img class="arl-rune" src="${ART}${RUNE[j]}.png" alt="" draggable="false">` : '<i class="arl-rune ring"></i>'}${icon(AT_ICON[j][v])}<small>${P.A[j].v[v]}</small>${cls.includes('diff') ? '<em class="arl-x">تناقض</em>' : ''}</span>`;
         const strip = (i, diffMask) => `<span class="mk-strip" style="--na:${P.na}">${P.S[i].map((v, j) => pic(j, v, diffMask && diffMask[j] ? 'diff' : '')).join('')}</span>`;
         const LBL = ['أ', 'ب', 'ج', 'د', 'هـ'];
-        const srcHead = (i, extra = '') => `<b class="arl-src"><img src="${ART}prop_diary.webp" alt="" draggable="false"><span>المصدر ${LBL[i]}<small>${ARL_SRC[i]}</small></span>${extra}</b>`;
+        const srcHead = (i, extra = '') => `<b class="arl-src"><img src="${ART}prop_diary.png" alt="" draggable="false"><span>المصدر ${LBL[i]}<small>${ARL_SRC[i]}</small></span>${extra}</b>`;
         const srcTok = (i, extra = '', mask) => `<button class="mk-tok src" data-tok="${i}"><span class="mk-chip src">${srcHead(i, extra)}${strip(i, mask)}</span></button>`;
         api.body.innerHTML = xSheet(`${xHead('', 'أرشيف الآثار الأولى')}
           <div class="arl-top"><span class="arl-stat" id="arlstat">أضف مصدرًا</span></div>
           <div class="mk-rules"><span><small>مصدر واحد صادق في كل شيء · كل مصدر آخر يخطئ في قطعة واحدة فقط</small></span></div>
-          <div class="mk-attr" style="--na:${P.na}">${P.A.map((a, j) => `<small>${RUNE[j] ? `<img src="${ART}${RUNE[j]}.webp" alt="" width="16" height="16">` : ''}${a.n}</small>`).join('')}</div>
+          <div class="mk-attr" style="--na:${P.na}">${P.A.map((a, j) => `<small>${RUNE[j] ? `<img src="${ART}${RUNE[j]}.png" alt="" width="16" height="16">` : ''}${a.n}</small>`).join('')}</div>
           ${P.ev.length ? `<div class="mk-evid"><b>${icon('<rect x="10" y="16" width="20" height="16" rx="2"/><path d="M14 16v-4a6 6 0 0 1 12 0v4"/>')} دليل مؤكد</b>${P.ev.map(e => pic(e.k, e.v, 'fixed')).join('')}</div>` : ''}
           <div class="mk-tray srcs" data-tray="s" aria-label="المصادر"></div>
           <div class="mk-cmp"><div class="mk-slot cmp" data-slot="cmp" tabindex="0" aria-label="منصة المقارنة"><em>منصة المقارنة: اسحب مصدرًا هنا</em></div><div id="arlcmp" class="mk-cmpout" aria-live="polite"></div></div>

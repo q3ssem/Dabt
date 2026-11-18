@@ -177,11 +177,15 @@ function renderStory(){
   E('div',{class:'t7-speech'},E('b',{text:guide.name}),E('p',{text:OPENING_CREW[s.i][1]})));
  const story=E('details',{class:'t7-story-more'},E('summary',{text:'مشهد القصة'}),...lines);
  const card=E('section',{class:'t7-dialog v5-intro t7-compact-intro'},E('h2',{class:'v5-intro-title',text:s.title}),bubble,
-  button('ابدأ اللغز',()=>{view='puzzle';render();window.scrollTo(0,0);},'primary v5-intro-go'),story);
+  button('ابدأ اللغز',()=>{
+    const begin=()=>{view='puzzle';render();window.scrollTo(0,0);};
+    const opening=window.mindlabJourneyHub;
+    if(opening)opening.beforeStation(s.id,ART+s.scene+'.webp',begin);else begin();
+  },'primary v5-intro-go'),story);
  v.append(E('div',{class:'t7-story-layout'},scene(s),card));
 }
 function renderPuzzle(){const s=D.stations[active],v=shell(),x=state();top(v,`الفصل ${A(s.ch+1)} · المحطة ${A(active+1)}`,s.title);const sc=scene(s);sc.classList.add('t7-puzzle-scene');
- const host=E('section',{class:'t7-puzzle-pane v5-pane'});v.append(E('div',{class:'t7-puzzle-layout v5-layout'},sc,host));
+ const host=E('section',{class:'t7-puzzle-pane v5-pane'});v.append(E('div',{class:'t7-puzzle-layout v5-layout','data-station-id':s.id},sc,host));
  const ctx={s,x,E,button,A,save,done:()=>!!x.done[s.id],sealed:()=>done(sealIndex(s.ch)),work:current,setWork:w=>{x.work[s.id]=w},onFirstWin:win,onDaily:dailyDone,map,guide:stationGuide(s).name,rerender:()=>B.render(host,ctx)};B.render(host,ctx);}
 function win(){const s=D.stations[active],x=state();if(!L.solved(live(),current()))return;
  x.done[s.id]=x.done[s.id]||{at:Date.now(),moves:x.moves[s.id]||0,hints:x.hints[s.id]||0};const T=B.v5state(x);if(s.gives&&!T.tools[s.gives])T.tools[s.gives]='new';
