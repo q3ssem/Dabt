@@ -21,29 +21,53 @@
   const I_INFO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>';
   const I_BOOK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5.5C6.5 4 9.5 4 12 6c2.5-2 5.5-2 8-.5V19c-2.5-1.5-5.5-1.5-8 .5-2.5-2-5.5-2-8-.5z"/><path d="M12 6v13.5"/></svg>';
 
-  let body = null, mo = null, raf = 0, fitting = false;
+  let body = null, mo = null, raf = 0, fitting = false, sheetPrevFocus = null;
 
   function sheetHTML() {
     const story = $$(STORY, body).map(e => { const c = e.cloneNode(true); $$('button', c).forEach(b => b.remove()); return txt(c); }).filter(Boolean);
     const rules = $$(RULE, body).map(e => { const c = e.cloneNode(true); $$('i', c).forEach(i => { if (/التفاصيل/.test(i.textContent)) i.remove(); }); return txt(c).replace(/^القاعدة\s*/, ''); }).filter(Boolean);
     const title = txt($('#pt'));
-    return `<div class="fit-sheet-card" role="dialog" aria-modal="true" aria-label="${title}"><h3>${title}</h3>${rules.length ? `<div class="fit-sh-rule"><b>القاعدة</b>${rules.map(r => `<p>${r}</p>`).join('')}</div>` : ''}${story.length ? `<div class="fit-sh-story">${story.map(s => `<p>${s}</p>`).join('')}</div>` : ''}<button class="fit-sh-go" type="button">فهمت</button></div>`;
+    const id = gid();
+    const hasOpening = !!(id && window.__MINDLAB_OPENINGS_DATA && window.__MINDLAB_OPENINGS_DATA[id] && window.fitOpenings);
+    return `<div class="fit-sheet-card" role="dialog" aria-modal="true" aria-label="${title}"><h3>${title}</h3>${rules.length ? `<div class="fit-sh-rule"><b>القاعدة</b>${rules.map(r => `<p>${r}</p>`).join('')}</div>` : ''}${story.length ? `<div class="fit-sh-story">${story.map(s => `<p>${s}</p>`).join('')}</div>` : ''}${hasOpening ? '<button class="fit-sh-replay" type="button">عرض مشهد الافتتاحية</button>' : ''}<button class="fit-sh-go" type="button">فهمت</button></div>`;
   }
   function openSheet() {
-    closeSheet(); const d = document.createElement('div'); d.className = 'fit-sheet'; d.innerHTML = sheetHTML();
-    d.addEventListener('click', e => { if (e.target === d || e.target.closest('.fit-sh-go')) closeSheet(); });
+    closeSheet(); sheetPrevFocus = document.activeElement;
+    const d = document.createElement('div'); d.className = 'fit-sheet'; d.innerHTML = sheetHTML();
+    d.addEventListener('click', e => {
+      if (e.target.closest('.fit-sh-replay')) { const id = gid(); closeSheet(); if (id && window.fitOpenings) window.fitOpenings.open(id, true); return; }
+      if (e.target === d || e.target.closest('.fit-sh-go')) closeSheet();
+    });
+    d.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { e.preventDefault(); closeSheet(); return; }
+      if (e.key === 'Tab') {
+        const fb = $$('button:not([disabled])', d); if (!fb.length) return;
+        const first = fb[0], last = fb[fb.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
     ($('#play') || document.body).append(d); $('.fit-sh-go', d).focus({ preventScroll: true });
   }
-  function closeSheet() { $$('.fit-sheet').forEach(e => e.remove()); }
+  function closeSheet() {
+    $$('.fit-sheet').forEach(e => e.remove());
+    if (sheetPrevFocus && typeof sheetPrevFocus.focus === 'function' && sheetPrevFocus.isConnected) {
+      try { sheetPrevFocus.focus({ preventScroll: true }); } catch (_) {}
+    }
+    sheetPrevFocus = null;
+  }
 
   function bubble() {
     const id = gid(); if (!id || seen()[id]) return;
+    if (window.__MINDLAB_OPENINGS_DATA && window.__MINDLAB_OPENINGS_DATA[id]) return;
     const r = $$(RULE, body).map(e => txt(e).replace(/^القاعدة\s*/, '').replace(/التفاصيل$/, '').trim()).filter(Boolean)[0];
     if (!r) return; markSeen(id);
-    const b = document.createElement('div'); b.className = 'fit-bubble'; b.innerHTML = `<span>${I_INFO}</span><p>${r}</p>`;
+    const b = document.createElement('div'); b.className = 'fit-bubble'; b.innerHTML = `<span>${I_INFO}</span><p>${r}</p><button type="button" class="fit-bubble-x" aria-label="إغلاق">×</button>`;
     b.style.setProperty('--fit-bt', `${Math.round(body.getBoundingClientRect().top) + 4}px`); $('#stage').append(b);
-    const off = () => { b.classList.add('gone'); setTimeout(() => b.remove(), 300); document.removeEventListener('pointerdown', off, true); };
-    setTimeout(() => document.addEventListener('pointerdown', off, true), 50); setTimeout(off, 5000);
+    const off = e => { if (e) { e.preventDefault(); e.stopPropagation(); } b.classList.add('gone'); setTimeout(() => b.remove(), 300); };
+    b.addEventListener('pointerdown', e => e.stopPropagation());
+    b.addEventListener('click', off);
+    setTimeout(() => off(), 6000);
   }
 
   function hud() {
@@ -162,6 +186,7 @@
   }
   window.addEventListener('resize', pageSchedule);
   window.addEventListener('resize', schedule); window.addEventListener('orientationchange', () => setTimeout(schedule, 200));
+  if (window.visualViewport) { window.visualViewport.addEventListener('resize', schedule); window.visualViewport.addEventListener('resize', pageSchedule); }
   window.fitUI = { fit, openSheet, closeSheet, get body() { return body; } };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { watch(); pageWatch(); }); else { watch(); pageWatch(); }
 })();

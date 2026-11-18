@@ -1,0 +1,281 @@
+/* 5.5.28 — Unified Journey Map Hub («رحلة الكنز»), 12 Transitions Viewer & Board Art Accents */
+
+.mlj-hub {
+  margin: 0 0 14px;
+  padding: 14px;
+  border-radius: 20px;
+  background: #FFFBF2;
+  border: 1.5px solid #D9C9A8;
+  color: #2F2A24;
+  box-shadow: 0 8px 24px rgba(58, 42, 20, 0.08);
+}
+
+html[data-skin="dark"] .mlj-hub {
+  background: #141B31;
+  border-color: rgba(255, 255, 255, 0.14);
+  color: #EEF1FF;
+}
+
+.mlj-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 8px;
+  margin-bottom: 10px;
+}
+
+.mlj-head h2 {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+}
+
+.mlj-trans-btn {
+  min-height: 44px;
+  padding: 6px 12px;
+  border-radius: 12px;
+  background: #E6F2F1;
+  color: #1F6E66;
+  border: 1px solid rgba(31, 110, 102, 0.25);
+  font-size: 13px;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+html[data-skin="dark"] .mlj-trans-btn {
+  background: rgba(92, 224, 210, 0.14);
+  color: #5CE0D2;
+  border-color: rgba(92, 224, 210, 0.3);
+}
+
+.mlj-map-wrap {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 9;
+  border-radius: 14px;
+  overflow: hidden;
+  border: 1px solid #DECAA3;
+  background: #EADEC6;
+  margin-bottom: 12px;
+}
+
+.mlj-map-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  display: block;
+}
+
+.mlj-pin {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  min-height: 36px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 251, 242, 0.94);
+  color: #2F2A24;
+  border: 1.5px solid #1F6E66;
+  font-size: 11.5px;
+  font-weight: 800;
+  white-space: nowrap;
+  box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
+  cursor: pointer;
+}
+
+html[data-skin="dark"] .mlj-pin {
+  background: rgba(20, 27, 49, 0.92);
+  color: #EEF1FF;
+  border-color: #5CE0D2;
+}
+
+.mlj-chapters {
+  display: grid;
+  grid-template-columns: repeat(auto-fit, minmax(132px, 1fr));
+  gap: 8px;
+}
+
+.mlj-ch-card {
+  display: flex;
+  flex-direction: column;
+  gap: 4px;
+  padding: 10px 12px;
+  border-radius: 14px;
+  background: #F7EFE0;
+  border: 1px solid #DFCCA8;
+  text-align: start;
+  min-height: 44px;
+  cursor: pointer;
+}
+
+html[data-skin="dark"] .mlj-ch-card {
+  background: rgba(255, 255, 255, 0.06);
+  border-color: rgba(255, 255, 255, 0.14);
+}
+
+.mlj-ch-order {
+  font-size: 11px;
+  font-weight: 800;
+  color: #1F6E66;
+}
+
+html[data-skin="dark"] .mlj-ch-order {
+  color: #5CE0D2;
+}
+
+.mlj-ch-name {
+  font-size: 13.5px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.mlj-ch-meta {
+  font-size: 11.5px;
+  opacity: 0.78;
+}
+
+.mlj-foot {
+  margin-top: 10px;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 6px;
+  font-size: 12px;
+}
+
+.mlj-pill {
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: #F4EAD5;
+  border: 1px solid #DECAA3;
+  font-weight: 700;
+}
+
+html[data-skin="dark"] .mlj-pill {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+/* Transitions modal */
+.mlj-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 78;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 14px;
+  background: rgba(18, 22, 34, 0.65);
+  backdrop-filter: blur(4px);
+}
+
+.mlj-modal-card {
+  width: min(100%, 460px);
+  max-height: 88dvh;
+  overflow-y: auto;
+  border-radius: 20px;
+  background: #FFFBF2;
+  color: #2F2A24;
+  border: 1.5px solid #D9C9A8;
+  padding: 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+html[data-skin="dark"] .mlj-modal-card {
+  background: #141B31;
+  color: #EEF1FF;
+  border-color: rgba(255, 255, 255, 0.18);
+}
+
+.mlj-tr-scene {
+  width: 100%;
+  aspect-ratio: 2 / 1;
+  border-radius: 14px;
+  background-repeat: no-repeat;
+  background-color: #E7DEC8;
+  border: 1px solid #DECAA3;
+}
+
+.mlj-tr-nav {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.mlj-tr-nav button {
+  min-height: 44px;
+  min-width: 44px;
+  padding: 8px 12px;
+  border-radius: 12px;
+  border: 1.5px solid #D9C9A8;
+  background: transparent;
+  font-weight: 800;
+  cursor: pointer;
+}
+
+.mlj-tr-nav .mlj-tr-close {
+  margin-inline-start: auto;
+  background: #1F6E66;
+  color: #fff;
+  border-color: #1F6E66;
+}
+
+/* Non-destructive board art backdrops for Four Puzzles & Priority 7 */
+#play.fit #pzb[data-board-art] {
+  position: relative;
+  background-size: cover;
+  background-position: center;
+  background-repeat: no-repeat;
+}
+
+#play.fit #pzb[data-board-art="pz_rid"] {
+  background-image: linear-gradient(rgba(255, 251, 242, 0.86), rgba(255, 251, 242, 0.90)), url('designs_art/four_puzzles/pz_rid/bg_warehouse.png');
+}
+#play.fit #pzb[data-board-art="pz_rush"] {
+  background-image: linear-gradient(rgba(255, 251, 242, 0.84), rgba(255, 251, 242, 0.88)), url('designs_art/four_puzzles/pz_rush/bg_dock_grid_6x6.png');
+}
+#play.fit #pzb[data-board-art="pz_stat"] {
+  background-image: linear-gradient(rgba(255, 251, 242, 0.84), rgba(255, 251, 242, 0.88)), url('designs_art/four_puzzles/pz_stat/bg_guardian_hall.png');
+}
+#play.fit #pzb[data-board-art="pz_pipe"] {
+  background-image: linear-gradient(rgba(255, 251, 242, 0.84), rgba(255, 251, 242, 0.88)), url('designs_art/four_puzzles/pz_pipe/bg_village_hillside.png');
+}
+
+html[data-skin="dark"] #play.fit #pzb[data-board-art="pz_rid"] {
+  background-image: linear-gradient(rgba(16, 22, 42, 0.84), rgba(16, 22, 42, 0.90)), url('designs_art/four_puzzles/pz_rid/bg_warehouse.png');
+}
+html[data-skin="dark"] #play.fit #pzb[data-board-art="pz_rush"] {
+  background-image: linear-gradient(rgba(16, 22, 42, 0.84), rgba(16, 22, 42, 0.90)), url('designs_art/four_puzzles/pz_rush/bg_dock_grid_6x6.png');
+}
+html[data-skin="dark"] #play.fit #pzb[data-board-art="pz_stat"] {
+  background-image: linear-gradient(rgba(16, 22, 42, 0.84), rgba(16, 22, 42, 0.90)), url('designs_art/four_puzzles/pz_stat/bg_guardian_hall.png');
+}
+html[data-skin="dark"] #play.fit #pzb[data-board-art="pz_pipe"] {
+  background-image: linear-gradient(rgba(16, 22, 42, 0.84), rgba(16, 22, 42, 0.90)), url('designs_art/four_puzzles/pz_pipe/bg_village_hillside.png');
+}
+
+.mlj-p7-ribbon {
+  display: inline-flex;
+  align-items: center;
+  gap: 6px;
+  padding: 3px 10px;
+  margin-bottom: 4px;
+  border-radius: 999px;
+  background: rgba(255, 251, 242, 0.92);
+  border: 1px solid #DECAA3;
+  font-size: 11.5px;
+  font-weight: 800;
+  color: #5A4528;
+}
+
+.mlj-p7-ribbon img {
+  width: 22px;
+  height: 22px;
+  object-fit: contain;
+}
+
+html[data-skin="dark"] .mlj-p7-ribbon {
+  background: rgba(20, 27, 49, 0.9);
+  border-color: rgba(255, 255, 255, 0.18);
+  color: #EEF1FF;
+}

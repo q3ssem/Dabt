@@ -1,0 +1,189 @@
+/* 5.5.28 — Pre-play visual openings (80 official + 8 extra library IDs)
+   Separate pre-play layer: background atlas crop + approved heroine + HTML speech bubble.
+   Does not alter puzzle IDs, rules, generators, or save state. */
+
+.fit-opening-overlay {
+  position: fixed;
+  inset: 0;
+  z-index: 75;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: max(12px, env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) max(14px, env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
+  background: rgba(18, 22, 34, 0.62);
+  backdrop-filter: blur(4px);
+  -webkit-backdrop-filter: blur(4px);
+}
+
+.fit-opening-card {
+  width: min(100%, 440px);
+  max-height: 92dvh;
+  overflow-y: auto;
+  display: flex;
+  flex-direction: column;
+  border-radius: 22px;
+  background: #FFFBF2;
+  color: #2F2A24;
+  border: 1.5px solid #D9C9A8;
+  box-shadow: 0 18px 46px rgba(16, 18, 28, 0.34);
+}
+
+html[data-skin="dark"] .fit-opening-card {
+  background: #141B31;
+  color: #EEF1FF;
+  border-color: rgba(255, 255, 255, 0.16);
+}
+
+.fit-opening-scene {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  min-height: 170px;
+  max-height: 240px;
+  overflow: hidden;
+  border-radius: 20px 20px 0 0;
+  background-color: #E7DEC8;
+  background-repeat: no-repeat;
+}
+
+.fit-opening-scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(16, 20, 32, 0.08) 0%, rgba(16, 20, 32, 0.42) 100%);
+  pointer-events: none;
+}
+
+.fit-opening-hero {
+  position: absolute;
+  bottom: 0;
+  inset-inline-start: 14px;
+  width: 112px;
+  height: 112px;
+  border-radius: 18px 18px 0 0;
+  border: 2px solid rgba(255, 251, 242, 0.92);
+  border-bottom: 0;
+  background-color: rgba(255, 251, 242, 0.92);
+  background-repeat: no-repeat;
+  background-size: 200% 200%;
+  box-shadow: 0 6px 20px rgba(0, 0, 0, 0.25);
+  pointer-events: none;
+}
+
+html[data-skin="dark"] .fit-opening-hero {
+  border-color: rgba(238, 241, 255, 0.35);
+  background-color: rgba(20, 27, 49, 0.88);
+}
+
+.fit-opening-badge {
+  position: absolute;
+  top: 10px;
+  inset-inline-end: 10px;
+  padding: 4px 10px;
+  border-radius: 999px;
+  background: rgba(255, 251, 242, 0.92);
+  color: #2F2A24;
+  font-size: 12px;
+  font-weight: 800;
+  box-shadow: 0 2px 8px rgba(0, 0, 0, 0.16);
+}
+
+html[data-skin="dark"] .fit-opening-badge {
+  background: rgba(20, 27, 49, 0.9);
+  color: #EEF1FF;
+}
+
+.fit-opening-body {
+  padding: 14px 16px 16px;
+  display: flex;
+  flex-direction: column;
+  gap: 12px;
+}
+
+.fit-opening-title {
+  margin: 0;
+  font-size: 18px;
+  font-weight: 800;
+  line-height: 1.3;
+}
+
+.fit-opening-bubble {
+  position: relative;
+  padding: 12px 14px;
+  border-radius: 14px;
+  background: #F4EAD5;
+  border: 1px solid #DECAA3;
+  color: #3A2A1A;
+  font-size: 15px;
+  line-height: 1.7;
+  font-weight: 600;
+}
+
+html[data-skin="dark"] .fit-opening-bubble {
+  background: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.16);
+  color: #EEF1FF;
+}
+
+.fit-opening-speaker {
+  display: block;
+  font-size: 12.5px;
+  font-weight: 800;
+  color: #1F6E66;
+  margin-bottom: 4px;
+}
+
+html[data-skin="dark"] .fit-opening-speaker {
+  color: #5CE0D2;
+}
+
+.fit-opening-actions {
+  display: flex;
+  gap: 8px;
+  align-items: center;
+}
+
+.fit-op-start {
+  flex: 1;
+  min-height: 46px;
+  padding: 10px 16px;
+  border-radius: 14px;
+  background: #1F6E66;
+  color: #FFFFFF;
+  font-size: 16px;
+  font-weight: 800;
+  border: 0;
+  cursor: pointer;
+}
+
+.fit-op-start:hover {
+  background: #195952;
+}
+
+.fit-op-skip {
+  min-width: 72px;
+  min-height: 46px;
+  padding: 10px 14px;
+  border-radius: 14px;
+  background: transparent;
+  color: #5A4528;
+  border: 1.5px solid #D9C9A8;
+  font-size: 14px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+html[data-skin="dark"] .fit-op-skip {
+  color: #CBD3F5;
+  border-color: rgba(255, 255, 255, 0.2);
+}
+
+@media (max-height: 620px) {
+  .fit-opening-scene {
+    min-height: 130px;
+    max-height: 170px;
+  }
+  .fit-opening-hero {
+    width: 88px;
+    height: 88px;
+  }
+}

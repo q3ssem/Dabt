@@ -1,0 +1,31 @@
+{
+  "puzzle_id": "pz_rid",
+  "title_ar": "صندوق الرسائل المضللة",
+  "board_px": {
+    "width": 860,
+    "height": 1146
+  },
+  "crate_slots_px": [
+    {
+      "id": "crate_0",
+      "x": 185,
+      "y": 650
+    },
+    {
+      "id": "crate_1",
+      "x": 430,
+      "y": 650
+    },
+    {
+      "id": "crate_2",
+      "x": 675,
+      "y": 650
+    }
+  ],
+  "clue_shelf_slot_px": {
+    "x": 430,
+    "y": 320
+  },
+  "anchor": "center (0.5, 0.5)",
+  "note": "كل صندوق يتكوّن من crate_base + crate_lid_closed/open + label_card_blank. النصوص والملصقات تُركب برمجياً."
+}

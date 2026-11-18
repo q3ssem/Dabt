@@ -1,0 +1,104 @@
+{
+  "version": 2,
+  "heroes": {
+    "rawaa": {
+      "name": "رواء",
+      "full": "assets/rawaa_full.png",
+      "atlas": "assets/rawaa_expressions.png",
+      "atlasWidth": 1254,
+      "atlasHeight": 1254,
+      "regions": {
+        "welcome": {
+          "x": 0,
+          "y": 0,
+          "width": 627,
+          "height": 627
+        },
+        "thinking": {
+          "x": 627,
+          "y": 0,
+          "width": 627,
+          "height": 627
+        },
+        "success": {
+          "x": 0,
+          "y": 627,
+          "width": 627,
+          "height": 627
+        },
+        "concerned": {
+          "x": 627,
+          "y": 627,
+          "width": 627,
+          "height": 627
+        }
+      }
+    },
+    "nuha": {
+      "name": "نهى",
+      "full": "assets/nuha_full.png",
+      "atlas": "assets/nuha_expressions.png",
+      "atlasWidth": 1254,
+      "atlasHeight": 1254,
+      "regions": {
+        "welcome": {
+          "x": 0,
+          "y": 0,
+          "width": 627,
+          "height": 627
+        },
+        "thinking": {
+          "x": 627,
+          "y": 0,
+          "width": 627,
+          "height": 627
+        },
+        "success": {
+          "x": 0,
+          "y": 627,
+          "width": 627,
+          "height": 627
+        },
+        "concerned": {
+          "x": 627,
+          "y": 627,
+          "width": 627,
+          "height": 627
+        }
+      }
+    },
+    "ward": {
+      "name": "ورد",
+      "full": "assets/ward_full.png",
+      "atlas": "assets/ward_expressions.png",
+      "atlasWidth": 1254,
+      "atlasHeight": 1254,
+      "regions": {
+        "welcome": {
+          "x": 0,
+          "y": 0,
+          "width": 627,
+          "height": 627
+        },
+        "thinking": {
+          "x": 627,
+          "y": 0,
+          "width": 627,
+          "height": 627
+        },
+        "success": {
+          "x": 0,
+          "y": 627,
+          "width": 627,
+          "height": 627
+        },
+        "concerned": {
+          "x": 627,
+          "y": 627,
+          "width": 627,
+          "height": 627
+        }
+      }
+    }
+  }
+}

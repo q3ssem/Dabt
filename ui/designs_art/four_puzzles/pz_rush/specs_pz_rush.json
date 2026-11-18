@@ -1,0 +1,38 @@
+{
+  "puzzle_id": "pz_rush",
+  "title_ar": "موقف السيارات — مرآب الميناء",
+  "board_px": {
+    "width": 860,
+    "height": 860
+  },
+  "grid": {
+    "cols": 6,
+    "rows": 6,
+    "origin_px": [
+      172,
+      86
+    ],
+    "cell_px": 100,
+    "exit_row_index": 2,
+    "exit_col_x": 772
+  },
+  "vehicle_sizes_px": {
+    "2x1_h": [
+      200,
+      100
+    ],
+    "2x1_v": [
+      100,
+      200
+    ],
+    "3x1_h": [
+      300,
+      100
+    ],
+    "3x1_v": [
+      100,
+      300
+    ]
+  },
+  "anchor": "top-left cell snap (grid.origin_px + col*cell_px, grid.origin_px + row*cell_px)"
+}

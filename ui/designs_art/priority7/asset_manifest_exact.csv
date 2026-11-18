@@ -1,0 +1,58 @@
+asset_key,puzzle_id,display_key,generator_field,state,binding_status,exact_dimensions_px,pivot_xy,file_path
+badge_1,"pz_door,pz_pliar",ui.door_badge_1,drMake.n (index 0),door_badge_1,VERIFIED,160x160,"80,80",assets/badge_1.png
+badge_2,"pz_door,pz_pliar",ui.door_badge_2,drMake.n (index 1),door_badge_2,VERIFIED,160x160,"80,80",assets/badge_2.png
+badge_3,"pz_door,pz_pliar",ui.door_badge_3,drMake.n (index 2),door_badge_3,VERIFIED,160x160,"80,80",assets/badge_3.png
+badge_4,"pz_door,pz_pliar",ui.door_badge_4,drMake.n (index 3),door_badge_4,VERIFIED,160x160,"80,80",assets/badge_4.png
+badge_5,"pz_door,pz_pliar",ui.door_badge_5,drMake.n (index 4),door_badge_5,VERIFIED,160x160,"80,80",assets/badge_5.png
+badge_frame,"pz_door,pz_pliar",ui.door_badge_frame,drMake.n (UI container),base_frame,VERIFIED,160x160,"80,80",assets/badge_frame.png
+char_nuha,01-80_intro,ui.intro_nuha,N/A (UI intro),portrait_analytical,VERIFIED,220x260,"110,130",assets/char_nuha.png
+char_rawaa,01-80_intro,ui.intro_rawaa,N/A (UI intro),portrait_navigator,VERIFIED,220x260,"110,130",assets/char_rawaa.png
+char_ward,01-80_intro,ui.intro_ward,N/A (UI intro),portrait_energetic,VERIFIED,220x260,"110,130",assets/char_ward.png
+chest_compass,"pz_xlock,ml10_16",ui.cargo_compass,manifestItems[1],cargo_or_lock,VERIFIED,160x140,"80,70",assets/chest_compass.png
+chest_crystal,"pz_zthrone,pz_pqueen,ml10_16",ui.cargo_crystal,manifestItems[2],cargo_crystal,VERIFIED,160x140,"80,70",assets/chest_crystal.png
+chest_pearl,"pz_xloot,ml10_16",ui.cargo_pearl,manifestItems[0],cargo_pearl,VERIFIED,160x140,"80,70",assets/chest_pearl.png
+chest_spice,"pz_xloot,ml10_16",ui.cargo_spice,manifestItems[3],cargo_spice,VERIFIED,160x140,"80,70",assets/chest_spice.png
+clue_arrow,"pz_door,pz_pliar",ui.clue_arrow,drMake.st (here/at),rtl_arrow,VERIFIED,160x100,"80,50",assets/clue_arrow.png
+clue_prohibit,"pz_door,pz_pliar",ui.clue_prohibit,drMake.st (nothere/notat),prohibit_circle,VERIFIED,160x160,"80,80",assets/clue_prohibit.png
+door_closed,"pz_door,pz_pliar",ui.door_closed,drMake.n / drMake.t (unselected),closed,VERIFIED,256x280,"128,268",assets/door_closed.png
+door_open,"pz_door,pz_pliar",ui.door_open,drMake.t (selected/win),open_win,VERIFIED,256x280,"128,268",assets/door_open.png
+key,pz_door,ui.key_token,drMake.t (hypothesis_target),tray_and_placed,VERIFIED,160x160,"80,80",assets/key.png
+padlock,"pz_door,pz_xlock",ui.padlock_icon,drMake.rule (UI lock),locked,VERIFIED,160x160,"80,80",assets/padlock.png
+prop_biolantern,pz_acity,ui.species_lantern,ACT_SP[4] / actMake.ord,alive_and_extinct,VERIFIED,140x160,"70,80",assets/prop_biolantern.png
+prop_bottle,pz_xbottle,ui.bottle_token,xbMake (UI prop),cipher_bottle,PROVISIONAL_UI_TOKEN,150x160,"75,80",assets/prop_bottle.png
+prop_cart,pz_rush,ui.cart_token,rsMake (UI vehicle),movable_vehicle,PROVISIONAL_UI_TOKEN,180x140,"90,70",assets/prop_cart.png
+prop_clock,"pz_pclock,pz_pboss1,pz_peng",ui.clock_dial,pcMake (UI dial),clock_dial,PROVISIONAL_UI_TOKEN,150x160,"75,80",assets/prop_clock.png
+prop_compass,"pz_zcomp,pz_tpath,pz_tmap",ui.compass_token,zcMake (UI compass),navigation_compass,PROVISIONAL_UI_TOKEN,150x150,"75,75",assets/prop_compass.png
+prop_diary,"pz_arelic,pz_plib,pz_pjail",ui.source_narrative,arlMake.S / arlMake.A,source_narrative_scroll,VERIFIED,150x160,"75,80",assets/prop_diary.png
+prop_harp,"pz_zharp,pz_ashell,pz_avsong",ui.harp_prop,zhMake (UI instrument),musical_instrument,PROVISIONAL_UI_TOKEN,150x160,"75,80",assets/prop_harp.png
+prop_hourglass,ml10_07,ui.hourglass_45s,timedItems (45s timer),countdown_active,VERIFIED,140x160,"70,80",assets/prop_hourglass.png
+prop_manifest,pz_aarch,ui.captain_seal_scroll,aarMake.caps / AAR_CAP,captain_seal_scroll,VERIFIED,150x160,"75,80",assets/prop_manifest.png
+prop_mapshovel,"pz_tdig,pz_tmap",ui.shovel_map,tdMake (UI prop),shovel_and_map,PROVISIONAL_UI_TOKEN,160x150,"80,75",assets/prop_mapshovel.png
+prop_mirror,"pz_pmirror,pz_pqueen",ui.mirror_prop,pmMake (UI mirror),rotatable_mirror,PROVISIONAL_UI_TOKEN,160x160,"80,80",assets/prop_mirror.png
+prop_moon,pz_binary,ui.cell_moon,bnMake (UI cell),cell_moon,PROVISIONAL_UI_TOKEN,128x128,"64,64",assets/prop_moon.png
+prop_pipe,"pz_pipe,pz_pgarden",ui.pipe_tile,ppMake (UI tile),rotatable_pipe,PROVISIONAL_UI_TOKEN,180x140,"90,70",assets/prop_pipe.png
+prop_rowboat,"pz_river,pz_aarch",ui.rowboat_token,aarMake.ships / AAR_SHIP,boat_token,VERIFIED,180x140,"90,70",assets/prop_rowboat.png
+prop_scale_tri,"pz_znim,pz_pdragon",ui.scale_trident,znMake (UI token),dragon_scale_and_trident,PROVISIONAL_UI_TOKEN,160x150,"80,75",assets/prop_scale_tri.png
+prop_ship,"pz_aarch,pz_xreef,pz_aport",ui.ship_token,aarMake.ships / AAR_SHIP,ship_token,VERIFIED,180x150,"90,75",assets/prop_ship.png
+prop_sled,pz_ice,ui.sled_token,icMake (UI sled),sliding_sled,PROVISIONAL_UI_TOKEN,180x140,"90,70",assets/prop_sled.png
+prop_sporebone,"pz_acity,pz_wbone,pz_wspore",ui.species_mushroom,ACT_SP[2] / actMake.ord,mushroom_and_bone,VERIFIED,160x160,"80,80",assets/prop_sporebone.png
+prop_spyglass,"pz_zroute,pz_abridge,ml10_07",ui.spyglass_token,timedItems[3],spyglass_token,VERIFIED,160x140,"80,70",assets/prop_spyglass.png
+prop_starchart,"pz_pobs,pz_zstars,pz_wlake",ui.star_disc,poMake.top / poMake.bot,transparent_star_disc,VERIFIED,160x160,"80,80",assets/prop_starchart.png
+prop_strata,"pz_alayer,pz_aring",ui.strata_cross_section,alyMake.ev (t===L|F),geological_strata,VERIFIED,160x150,"80,75",assets/prop_strata.png
+prop_sun,pz_binary,ui.cell_sun,bnMake (UI cell),cell_sun,PROVISIONAL_UI_TOKEN,128x128,"64,64",assets/prop_sun.png
+prop_sundial,"pz_ashade,pz_zshadow",ui.sundial_obelisk,ashMake (UI pillar),sundial_obelisk,PROVISIONAL_UI_TOKEN,150x160,"75,80",assets/prop_sundial.png
+prop_tangram,"pz_tan,pz_sudo,pz_pcrypt",ui.tangram_tile,tnMake (UI tile),geometric_tile,PROVISIONAL_UI_TOKEN,160x140,"80,70",assets/prop_tangram.png
+prop_tent,"pz_tent,pz_acity",ui.species_moss_tent,ACT_SP[6] / actMake.ord,explorer_tent,VERIFIED,160x140,"80,70",assets/prop_tent.png
+prop_torch,"pz_xcave,pz_xbridge,pz_acity",ui.species_cavern_torch,ACT_SP[5] / actMake.ord,lit_torch_and_plank,VERIFIED,150x160,"75,80",assets/prop_torch.png
+prop_valve,"pz_pvalve,pz_ydoor,pz_yhold",ui.valve_wheel,pvMake (UI wheel),rotatable_valve,PROVISIONAL_UI_TOKEN,160x160,"80,80",assets/prop_valve.png
+prop_whirlpool,"pz_xreef,pz_ytide,pz_acur",ui.whirlpool_token,xrMake (UI vortex),ocean_whirlpool,PROVISIONAL_UI_TOKEN,160x150,"80,75",assets/prop_whirlpool.png
+rune_flame,"pz_aarch,ml10_25",ui.fate_or_rune_flame,aarMake.fates / AAR_F[4],fate_or_rune_flame,VERIFIED,128x128,"64,64",assets/rune_flame.png
+rune_leaf,"pz_acity,pz_aroot,ml10_25",ui.species_sap_leaf,ACT_SP[0] / actMake.ord,species_or_rune_leaf,VERIFIED,128x128,"64,64",assets/rune_leaf.png
+rune_moon,"pz_acity,pz_arelic,pz_aarch,ml10_25",ui.attr_or_species_moon,ACT_SP[3] / arlMake.A[0],species_or_attr_moon,VERIFIED,128x128,"64,64",assets/rune_moon.png
+rune_star,"pz_acity,pz_arelic,pz_aarch,ml10_25",ui.attr_or_species_star,ACT_SP[7] / arlMake.A[2],species_or_attr_star,VERIFIED,128x128,"64,64",assets/rune_star.png
+rune_wave,"pz_acity,pz_arelic,pz_aarch,ml10_25",ui.attr_or_species_wave,ACT_SP[1] / arlMake.A[1],species_or_attr_wave,VERIFIED,128x128,"64,64",assets/rune_wave.png
+statue_back,"pz_door,pz_pliar",ui.statue_pose_back,"drVals(P,t)===false / pqMake.sts",facing_away_lie,VERIFIED,220x300,"110,288",assets/statue_back.png
+statue_front,"pz_door,pz_pliar",ui.statue_pose_front,"drVals(P,t)===true / pqMake.sts",facing_front_truth,VERIFIED,220x300,"110,288",assets/statue_front.png
+statue_side_left,"pz_door,pz_pliar",ui.statue_pose_left,UI rotation transition,facing_left,VERIFIED,220x300,"110,288",assets/statue_side_left.png
+statue_side_right,"pz_door,pz_pliar",ui.statue_pose_right,UI rotation transition,facing_right,VERIFIED,220x300,"110,288",assets/statue_side_right.png
+treasure_gem,"pz_door,pz_pliar",ui.treasure_gem,drMake.t (clue target),treasure_icon,VERIFIED,160x160,"80,80",assets/treasure_gem.png

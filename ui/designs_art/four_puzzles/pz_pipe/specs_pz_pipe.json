@@ -1,0 +1,49 @@
+{
+  "puzzle_id": "pz_pipe",
+  "title_ar": "الأنابيب — قناة القرية",
+  "board_px": {
+    "width": 860,
+    "height": 1146
+  },
+  "tile_master_px": {
+    "width": 160,
+    "height": 160,
+    "center_pivot": [
+      80,
+      80
+    ],
+    "edge_port_midpoints": {
+      "N": [
+        80,
+        0
+      ],
+      "E": [
+        160,
+        80
+      ],
+      "S": [
+        80,
+        160
+      ],
+      "W": [
+        0,
+        80
+      ]
+    }
+  },
+  "sample_3x3_grid": {
+    "origin_px": [
+      190,
+      330
+    ],
+    "cell_px": 160
+  },
+  "max_7x8_grid": {
+    "origin_px": [
+      115,
+      220
+    ],
+    "cell_px": 90,
+    "note": "تبقى الفتحات مقروءة حتى 7×8 على iPhone 16 Plus"
+  }
+}

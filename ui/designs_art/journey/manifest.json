@@ -1,0 +1,1282 @@
+{
+  "version": 1,
+  "scope": "design only; no application changes",
+  "journey_title": "رحلة الكنز",
+  "chapter_order": [
+    "seven_seas",
+    "palace",
+    "atheran"
+  ],
+  "side_branch": "side",
+  "map": "art/journey_map.png",
+  "seas": [
+    "من أعاد الضوء؟",
+    "أصوات خلف الضباب",
+    "الماء الذي يعود",
+    "ذاكرة المرصد",
+    "إصلاح آلة الريح",
+    "العهد تحت القبة",
+    "الطريق الذي عاد"
+  ],
+  "chapters": [
+    {
+      "id": "seven_seas",
+      "name": "حكايات البحار السبعة",
+      "order": 1,
+      "x": 0.23,
+      "y": 0.72,
+      "stations": [
+        {
+          "station": 1,
+          "location": "بحر المرجان",
+          "name": "صندوق المرجان",
+          "sea": 1
+        },
+        {
+          "station": 2,
+          "location": "مملكة اللؤلؤ",
+          "name": "شفرة المخزن",
+          "sea": 1
+        },
+        {
+          "station": 3,
+          "location": "جزيرة المنارة",
+          "name": "توجيه الشعاع",
+          "sea": 1
+        },
+        {
+          "station": 4,
+          "location": "بحر الضباب",
+          "name": "قصاصات الساحل",
+          "sea": 2
+        },
+        {
+          "station": 5,
+          "location": "مملكة الأجراس",
+          "name": "نداء القوارب",
+          "sea": 2
+        },
+        {
+          "station": 6,
+          "location": "جزيرة الصدى",
+          "name": "الطيور المترابطة",
+          "sea": 2
+        },
+        {
+          "station": 7,
+          "location": "بحر الرمال",
+          "name": "زورق المد",
+          "sea": 3
+        },
+        {
+          "station": 8,
+          "location": "مملكة القوافل",
+          "name": "الحجر الأثقل",
+          "sea": 3
+        },
+        {
+          "station": 9,
+          "location": "جزيرة النخيل",
+          "name": "شبكة الماء",
+          "sea": 3
+        },
+        {
+          "station": 10,
+          "location": "بحر الجليد",
+          "name": "الخريطة المنزلقة",
+          "sea": 4
+        },
+        {
+          "station": 11,
+          "location": "مملكة البلور",
+          "name": "جارات البلورة",
+          "sea": 4
+        },
+        {
+          "station": 12,
+          "location": "جزيرة الشتاء",
+          "name": "موازين المعايرة",
+          "sea": 4
+        },
+        {
+          "station": 13,
+          "location": "بحر العواصف",
+          "name": "فك الأوتاد",
+          "sea": 5
+        },
+        {
+          "station": 14,
+          "location": "مملكة الرياح",
+          "name": "تعشيق التروس",
+          "sea": 5
+        },
+        {
+          "station": 15,
+          "location": "جزيرة البركان",
+          "name": "منافذ الحرارة",
+          "sea": 5
+        },
+        {
+          "station": 16,
+          "location": "بحر الظلال",
+          "name": "دفع الحجارة",
+          "sea": 6
+        },
+        {
+          "station": 17,
+          "location": "مملكة القمر",
+          "name": "الخط الواحد",
+          "sea": 6
+        },
+        {
+          "station": 18,
+          "location": "جزيرة الجمجمة",
+          "name": "حلقات العهد",
+          "sea": 6
+        },
+        {
+          "station": 19,
+          "location": "البحر الأخير",
+          "name": "عبور المرسى",
+          "sea": 7
+        },
+        {
+          "station": 20,
+          "location": "مملكة الفجر",
+          "name": "قناة الزوارق",
+          "sea": 7
+        },
+        {
+          "station": 21,
+          "location": "جزيرة الكنز",
+          "name": "باب الطريق الثامن",
+          "sea": 7
+        }
+      ]
+    },
+    {
+      "id": "palace",
+      "name": "قصر المرايا",
+      "order": 2,
+      "x": 0.33,
+      "y": 0.43,
+      "stations": [
+        {
+          "puzzle_id": "pz_plock",
+          "name": "أقفال البوابة"
+        },
+        {
+          "puzzle_id": "pz_pliar",
+          "name": "التماثيل المتكلمة"
+        },
+        {
+          "puzzle_id": "pz_pclock",
+          "name": "برج الساعات"
+        },
+        {
+          "puzzle_id": "pz_pboss1",
+          "name": "اختبار حارس البوابة"
+        },
+        {
+          "puzzle_id": "pz_plib",
+          "name": "صفحات اليوميات"
+        },
+        {
+          "puzzle_id": "pz_pmirror",
+          "name": "مرايا الألوان"
+        },
+        {
+          "puzzle_id": "pz_pgarden",
+          "name": "قنوات الحديقة"
+        },
+        {
+          "puzzle_id": "pz_pqueen",
+          "name": "تحدي ملكة المرايا"
+        },
+        {
+          "puzzle_id": "pz_parm",
+          "name": "تركيب الأدوات"
+        },
+        {
+          "puzzle_id": "pz_pjail",
+          "name": "شهادات السجناء"
+        },
+        {
+          "puzzle_id": "pz_pobs",
+          "name": "الخريطتان الشفافيتان"
+        },
+        {
+          "puzzle_id": "pz_peng",
+          "name": "اختبار مهندس الساعات"
+        },
+        {
+          "puzzle_id": "pz_pmaze",
+          "name": "المتاهة الدوّارة"
+        },
+        {
+          "puzzle_id": "pz_pcrypt",
+          "name": "النقش المخفي"
+        },
+        {
+          "puzzle_id": "pz_pvalve",
+          "name": "صمامات الأعماق"
+        },
+        {
+          "puzzle_id": "pz_plast",
+          "name": "تحدي السجين الأخير"
+        },
+        {
+          "puzzle_id": "pz_pdragon",
+          "name": "لغة التنانين"
+        },
+        {
+          "puzzle_id": "pz_phall",
+          "name": "قاعة الملوك السبعة"
+        },
+        {
+          "puzzle_id": "pz_pheart",
+          "name": "القلب الأخير"
+        }
+      ]
+    },
+    {
+      "id": "atheran",
+      "name": "أَثْرَان · أطلس المجهول",
+      "order": 3,
+      "x": 0.23,
+      "y": 0.15,
+      "stations": [
+        {
+          "puzzle_id": "pz_aarch",
+          "name": "أرشيف الرحلات"
+        },
+        {
+          "puzzle_id": "pz_aport",
+          "name": "ميناء ما وراء المد"
+        },
+        {
+          "puzzle_id": "pz_alight",
+          "name": "المنارة الأخيرة"
+        },
+        {
+          "puzzle_id": "pz_acur",
+          "name": "حيث تعود الأشياء"
+        },
+        {
+          "puzzle_id": "pz_ashell",
+          "name": "أغنية الأصداف"
+        },
+        {
+          "puzzle_id": "pz_aroot",
+          "name": "ممرات راعي الجذور"
+        },
+        {
+          "puzzle_id": "pz_aring",
+          "name": "شجرة الأسماء"
+        },
+        {
+          "puzzle_id": "pz_ashade",
+          "name": "ساعة الظل"
+        },
+        {
+          "puzzle_id": "pz_aswarm",
+          "name": "سرب البياض"
+        },
+        {
+          "puzzle_id": "pz_aecho",
+          "name": "مصدر الصوت"
+        },
+        {
+          "puzzle_id": "pz_avsong",
+          "name": "الوادي يغني"
+        },
+        {
+          "puzzle_id": "pz_agiant",
+          "name": "عادات العمالقة"
+        },
+        {
+          "puzzle_id": "pz_aherd",
+          "name": "عبور القطيع"
+        },
+        {
+          "puzzle_id": "pz_abridge",
+          "name": "جسور الضباب"
+        },
+        {
+          "puzzle_id": "pz_asilent",
+          "name": "الماء الصافي"
+        },
+        {
+          "puzzle_id": "pz_alayer",
+          "name": "طبقات الزمن"
+        },
+        {
+          "puzzle_id": "pz_acity",
+          "name": "المدينة الحية"
+        },
+        {
+          "puzzle_id": "pz_asong",
+          "name": "أغاني الأعماق"
+        },
+        {
+          "puzzle_id": "pz_aflow",
+          "name": "مفترقات التيار"
+        },
+        {
+          "puzzle_id": "pz_arelic",
+          "name": "أرشيف الآثار الأولى"
+        },
+        {
+          "puzzle_id": "pz_aheart",
+          "name": "قلب أَثْرَان"
+        }
+      ]
+    },
+    {
+      "id": "side",
+      "name": "رحلة أسرار أَثْرَان",
+      "order": null,
+      "x": 0.79,
+      "y": 0.38,
+      "save_key": "mindlab:expedition10:v1",
+      "stations": [
+        {
+          "puzzle_id": "ml10_01",
+          "name": "محطة الرحلة الجانبية 1"
+        },
+        {
+          "puzzle_id": "ml10_02",
+          "name": "محطة الرحلة الجانبية 2"
+        },
+        {
+          "puzzle_id": "ml10_03",
+          "name": "محطة الرحلة الجانبية 3"
+        },
+        {
+          "puzzle_id": "ml10_04",
+          "name": "محطة الرحلة الجانبية 4"
+        },
+        {
+          "puzzle_id": "ml10_05",
+          "name": "محطة الرحلة الجانبية 5"
+        },
+        {
+          "puzzle_id": "ml10_06",
+          "name": "محطة الرحلة الجانبية 6"
+        },
+        {
+          "puzzle_id": "ml10_07",
+          "name": "محطة الرحلة الجانبية 7"
+        },
+        {
+          "puzzle_id": "ml10_08",
+          "name": "محطة الرحلة الجانبية 8"
+        },
+        {
+          "puzzle_id": "ml10_09",
+          "name": "محطة الرحلة الجانبية 9"
+        },
+        {
+          "puzzle_id": "ml10_10",
+          "name": "محطة الرحلة الجانبية 10"
+        },
+        {
+          "puzzle_id": "ml10_11",
+          "name": "محطة الرحلة الجانبية 11"
+        },
+        {
+          "puzzle_id": "ml10_12",
+          "name": "محطة الرحلة الجانبية 12"
+        },
+        {
+          "puzzle_id": "ml10_13",
+          "name": "محطة الرحلة الجانبية 13"
+        },
+        {
+          "puzzle_id": "ml10_14",
+          "name": "محطة الرحلة الجانبية 14"
+        },
+        {
+          "puzzle_id": "ml10_15",
+          "name": "محطة الرحلة الجانبية 15"
+        },
+        {
+          "puzzle_id": "ml10_16",
+          "name": "محطة الرحلة الجانبية 16"
+        },
+        {
+          "puzzle_id": "ml10_17",
+          "name": "محطة الرحلة الجانبية 17"
+        },
+        {
+          "puzzle_id": "ml10_18",
+          "name": "محطة الرحلة الجانبية 18"
+        },
+        {
+          "puzzle_id": "ml10_19",
+          "name": "محطة الرحلة الجانبية 19"
+        },
+        {
+          "puzzle_id": "ml10_20",
+          "name": "محطة الرحلة الجانبية 20"
+        },
+        {
+          "puzzle_id": "ml10_21",
+          "name": "محطة الرحلة الجانبية 21"
+        },
+        {
+          "puzzle_id": "ml10_22",
+          "name": "محطة الرحلة الجانبية 22"
+        },
+        {
+          "puzzle_id": "ml10_23",
+          "name": "محطة الرحلة الجانبية 23"
+        },
+        {
+          "puzzle_id": "ml10_24",
+          "name": "محطة الرحلة الجانبية 24"
+        },
+        {
+          "puzzle_id": "ml10_25",
+          "name": "محطة الرحلة الجانبية 25"
+        }
+      ]
+    }
+  ],
+  "secret_worlds": [
+    {
+      "puzzle_id": "pz_wbone",
+      "name": "وادي الهياكل"
+    },
+    {
+      "puzzle_id": "pz_wspore",
+      "name": "حديقة الأبواغ"
+    },
+    {
+      "puzzle_id": "pz_wlog",
+      "name": "السفينة التي لم تُبحر"
+    },
+    {
+      "puzzle_id": "pz_wlake",
+      "name": "بحيرة السماء"
+    },
+    {
+      "puzzle_id": "pz_wfirst",
+      "name": "موطن الأثر الأول"
+    }
+  ],
+  "shared_props": [
+    {
+      "id": "map",
+      "name": "الخريطة",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 0,
+      "normalized_rect": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 0,
+        "y": 0,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "journal",
+      "name": "دفتر الرحلة",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 1,
+      "normalized_rect": {
+        "x": 0.25,
+        "y": 0.0,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 256,
+        "y": 0,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "treasure",
+      "name": "الكنوز",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 2,
+      "normalized_rect": {
+        "x": 0.5,
+        "y": 0.0,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 512,
+        "y": 0,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "compass",
+      "name": "البوصلة",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 3,
+      "normalized_rect": {
+        "x": 0.75,
+        "y": 0.0,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 768,
+        "y": 0,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "key",
+      "name": "المفتاح",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 4,
+      "normalized_rect": {
+        "x": 0.0,
+        "y": 0.16666666666666666,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 0,
+        "y": 256,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "lock",
+      "name": "قفل",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 5,
+      "normalized_rect": {
+        "x": 0.25,
+        "y": 0.16666666666666666,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 256,
+        "y": 256,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "lantern",
+      "name": "الفانوس",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 6,
+      "normalized_rect": {
+        "x": 0.5,
+        "y": 0.16666666666666666,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 512,
+        "y": 256,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "anchor",
+      "name": "المرساة",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 7,
+      "normalized_rect": {
+        "x": 0.75,
+        "y": 0.16666666666666666,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 768,
+        "y": 256,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "star",
+      "name": "نجمة",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 8,
+      "normalized_rect": {
+        "x": 0.0,
+        "y": 0.3333333333333333,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 0,
+        "y": 512,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "seal",
+      "name": "ختم",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 9,
+      "normalized_rect": {
+        "x": 0.25,
+        "y": 0.3333333333333333,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 256,
+        "y": 512,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "boat",
+      "name": "قارب",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 10,
+      "normalized_rect": {
+        "x": 0.5,
+        "y": 0.3333333333333333,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 512,
+        "y": 512,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "mooring",
+      "name": "وتد المرسى",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 11,
+      "normalized_rect": {
+        "x": 0.75,
+        "y": 0.3333333333333333,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 768,
+        "y": 512,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "undo",
+      "name": "تراجع",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 12,
+      "normalized_rect": {
+        "x": 0.0,
+        "y": 0.5,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 0,
+        "y": 768,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "restart",
+      "name": "إعادة",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 13,
+      "normalized_rect": {
+        "x": 0.25,
+        "y": 0.5,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 256,
+        "y": 768,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "hint",
+      "name": "تلميح",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 14,
+      "normalized_rect": {
+        "x": 0.5,
+        "y": 0.5,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 512,
+        "y": 768,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "quill",
+      "name": "ريشة وورقة",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 15,
+      "normalized_rect": {
+        "x": 0.75,
+        "y": 0.5,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 768,
+        "y": 768,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "clockwise",
+      "name": "تدوير مع العقارب",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 16,
+      "normalized_rect": {
+        "x": 0.0,
+        "y": 0.6666666666666666,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 0,
+        "y": 1024,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "counterclockwise",
+      "name": "تدوير عكسي",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 17,
+      "normalized_rect": {
+        "x": 0.25,
+        "y": 0.6666666666666666,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 256,
+        "y": 1024,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "gear",
+      "name": "ترس",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 18,
+      "normalized_rect": {
+        "x": 0.5,
+        "y": 0.6666666666666666,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 512,
+        "y": 1024,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "crate",
+      "name": "صندوق",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 19,
+      "normalized_rect": {
+        "x": 0.75,
+        "y": 0.6666666666666666,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 768,
+        "y": 1024,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "circle",
+      "name": "دائرة",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 20,
+      "normalized_rect": {
+        "x": 0.0,
+        "y": 0.8333333333333334,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 0,
+        "y": 1280,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "triangle",
+      "name": "مثلث",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 21,
+      "normalized_rect": {
+        "x": 0.25,
+        "y": 0.8333333333333334,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 256,
+        "y": 1280,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "diamond",
+      "name": "معيّن",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 22,
+      "normalized_rect": {
+        "x": 0.5,
+        "y": 0.8333333333333334,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 512,
+        "y": 1280,
+        "width": 256,
+        "height": 256
+      }
+    },
+    {
+      "id": "square",
+      "name": "مربع",
+      "status": "draft_requires_small_size_art_review",
+      "atlas": "art/shared_props_atlas_draft.png",
+      "columns": 4,
+      "rows": 6,
+      "cell": 23,
+      "normalized_rect": {
+        "x": 0.75,
+        "y": 0.8333333333333334,
+        "width": 0.25,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 768,
+        "y": 1280,
+        "width": 256,
+        "height": 256
+      }
+    }
+  ],
+  "transitions": [
+    {
+      "id": "departure",
+      "title": "رسالة عند المرسى",
+      "speaker": "رواء",
+      "hero": "rawaa",
+      "expression": "thinking",
+      "dialogue": "وصلتنا رسالة، لكن الطريق الذي تصفه ناقص. سنبدأ من المرسى، ونترك للأدلة أن تقودنا.",
+      "status": "adaptation_draft_against_story",
+      "atlas": "art/transitions_atlas.png",
+      "columns": 2,
+      "rows": 6,
+      "cell": 0,
+      "normalized_rect": {
+        "x": 0.0,
+        "y": 0.0,
+        "width": 0.5,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 0,
+        "y": 0,
+        "width": 512,
+        "height": 256
+      }
+    },
+    {
+      "id": "coral_light",
+      "title": "عودة الضوء",
+      "speaker": "ورد",
+      "hero": "ward",
+      "expression": "success",
+      "dialogue": "عاد الشعاع إلى البحر. الطريق الآمن صار أوضح، لكن إشاراته لم تكتمل بعد.",
+      "status": "adaptation_draft_against_story",
+      "atlas": "art/transitions_atlas.png",
+      "columns": 2,
+      "rows": 6,
+      "cell": 1,
+      "normalized_rect": {
+        "x": 0.5,
+        "y": 0.0,
+        "width": 0.5,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 512,
+        "y": 0,
+        "width": 512,
+        "height": 256
+      }
+    },
+    {
+      "id": "mist_bells",
+      "title": "أصوات خلف الضباب",
+      "speaker": "ورد",
+      "hero": "ward",
+      "expression": "thinking",
+      "dialogue": "لا نرى القوارب كلها من هنا. سنحتاج إلى الإصغاء بقدر ما نحتاج إلى النظر.",
+      "status": "adaptation_draft_against_story",
+      "atlas": "art/transitions_atlas.png",
+      "columns": 2,
+      "rows": 6,
+      "cell": 2,
+      "normalized_rect": {
+        "x": 0.0,
+        "y": 0.16666666666666666,
+        "width": 0.5,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 0,
+        "y": 256,
+        "width": 512,
+        "height": 256
+      }
+    },
+    {
+      "id": "oasis_water",
+      "title": "الماء الذي يعود",
+      "speaker": "نهى",
+      "hero": "nuha",
+      "expression": "success",
+      "dialogue": "وصل الماء إلى القنوات. ما أصلحناه هنا يذكّرنا بأن الطريق يحتاج من يحافظ عليه.",
+      "status": "adaptation_draft_against_story",
+      "atlas": "art/transitions_atlas.png",
+      "columns": 2,
+      "rows": 6,
+      "cell": 3,
+      "normalized_rect": {
+        "x": 0.5,
+        "y": 0.16666666666666666,
+        "width": 0.5,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 512,
+        "y": 256,
+        "width": 512,
+        "height": 256
+      }
+    },
+    {
+      "id": "ice_observatory",
+      "title": "ذاكرة المرصد",
+      "speaker": "رواء",
+      "hero": "rawaa",
+      "expression": "thinking",
+      "dialogue": "المرصد يحتفظ بآثار القياس القديم. لنقارنها قبل أن نعيد ضبط أجهزته.",
+      "status": "adaptation_draft_against_story",
+      "atlas": "art/transitions_atlas.png",
+      "columns": 2,
+      "rows": 6,
+      "cell": 4,
+      "normalized_rect": {
+        "x": 0.0,
+        "y": 0.3333333333333333,
+        "width": 0.5,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 0,
+        "y": 512,
+        "width": 512,
+        "height": 256
+      }
+    },
+    {
+      "id": "wind_engine",
+      "title": "إصلاح آلة الريح",
+      "speaker": "نهى",
+      "hero": "nuha",
+      "expression": "success",
+      "dialogue": "عادت الآلة تعمل. لم يكن العطل في جزء واحد؛ فهم العلاقة بين الأجزاء هو ما ساعدنا.",
+      "status": "adaptation_draft_against_story",
+      "atlas": "art/transitions_atlas.png",
+      "columns": 2,
+      "rows": 6,
+      "cell": 5,
+      "normalized_rect": {
+        "x": 0.5,
+        "y": 0.3333333333333333,
+        "width": 0.5,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 512,
+        "y": 512,
+        "width": 512,
+        "height": 256
+      }
+    },
+    {
+      "id": "moon_vow",
+      "title": "العهد تحت القبة",
+      "speaker": "رواء",
+      "hero": "rawaa",
+      "expression": "thinking",
+      "dialogue": "العلامات هنا ليست زينة. سنقرأها معًا قبل أن نفتح الممر التالي.",
+      "status": "adaptation_draft_against_story",
+      "atlas": "art/transitions_atlas.png",
+      "columns": 2,
+      "rows": 6,
+      "cell": 6,
+      "normalized_rect": {
+        "x": 0.0,
+        "y": 0.5,
+        "width": 0.5,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 0,
+        "y": 768,
+        "width": 512,
+        "height": 256
+      }
+    },
+    {
+      "id": "eighth_route",
+      "title": "الطريق الثامن",
+      "speaker": "ورد",
+      "hero": "ward",
+      "expression": "welcome",
+      "dialogue": "هناك ممر لم نره على الخرائط الأولى. وصلنا إليه بما جمعناه من أدلة، خطوة بعد خطوة.",
+      "status": "adaptation_draft_against_story",
+      "atlas": "art/transitions_atlas.png",
+      "columns": 2,
+      "rows": 6,
+      "cell": 7,
+      "normalized_rect": {
+        "x": 0.5,
+        "y": 0.5,
+        "width": 0.5,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 512,
+        "y": 768,
+        "width": 512,
+        "height": 256
+      }
+    },
+    {
+      "id": "letter",
+      "title": "رسالة الجد",
+      "speaker": "رواء",
+      "hero": "rawaa",
+      "expression": "thinking",
+      "dialogue": "صارت الأختام أمامنا، وصارت الرسالة أوضح. لنتوقف قليلًا ونقرأ ما تركه لنا الجد.",
+      "status": "adaptation_draft_against_story",
+      "atlas": "art/transitions_atlas.png",
+      "columns": 2,
+      "rows": 6,
+      "cell": 8,
+      "normalized_rect": {
+        "x": 0.0,
+        "y": 0.6666666666666666,
+        "width": 0.5,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 0,
+        "y": 1024,
+        "width": 512,
+        "height": 256
+      }
+    },
+    {
+      "id": "palace",
+      "title": "نحو قصر المرايا",
+      "speaker": "نهى",
+      "hero": "nuha",
+      "expression": "welcome",
+      "dialogue": "القصر أمامنا. تبدو آلاته ساكنة، لكن كل باب فيه ينتظر من يفهم طريقته.",
+      "status": "adaptation_draft_against_story",
+      "atlas": "art/transitions_atlas.png",
+      "columns": 2,
+      "rows": 6,
+      "cell": 9,
+      "normalized_rect": {
+        "x": 0.5,
+        "y": 0.6666666666666666,
+        "width": 0.5,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 512,
+        "y": 1024,
+        "width": 512,
+        "height": 256
+      }
+    },
+    {
+      "id": "atheran",
+      "title": "ما وراء المد",
+      "speaker": "ورد",
+      "hero": "ward",
+      "expression": "welcome",
+      "dialogue": "ها هي أَثْرَان. سنبدأ من الميناء، ونرسم ما نكتشفه بدل ملء المجهول بالتخمين.",
+      "status": "adaptation_draft_against_story",
+      "atlas": "art/transitions_atlas.png",
+      "columns": 2,
+      "rows": 6,
+      "cell": 10,
+      "normalized_rect": {
+        "x": 0.0,
+        "y": 0.8333333333333334,
+        "width": 0.5,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 0,
+        "y": 1280,
+        "width": 512,
+        "height": 256
+      }
+    },
+    {
+      "id": "return",
+      "title": "من المرسى إلى المرسى",
+      "speaker": "رواء",
+      "hero": "rawaa",
+      "expression": "success",
+      "dialogue": "عدنا بخريطة أكمل، وبأسئلة جديدة. أجمل ما في الرحلة أننا تعلمنا كيف نبحث معًا.",
+      "status": "adaptation_draft_against_story",
+      "atlas": "art/transitions_atlas.png",
+      "columns": 2,
+      "rows": 6,
+      "cell": 11,
+      "normalized_rect": {
+        "x": 0.5,
+        "y": 0.8333333333333334,
+        "width": 0.5,
+        "height": 0.16666666666666666
+      },
+      "source_rect": {
+        "x": 512,
+        "y": 1280,
+        "width": 512,
+        "height": 256
+      }
+    }
+  ],
+  "save_keys": [
+    "miran:v2",
+    "mindlab:expedition10:v1"
+  ],
+  "unlock_status": "not implemented; preserve real save and existing gates at integration",
+  "station_mapping_note": "Seven-seas station story titles retained; mapping to actual level engines must be verified after Claude delivery"
+}

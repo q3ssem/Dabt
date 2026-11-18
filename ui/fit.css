@@ -2,7 +2,7 @@
 #play.fit:not(.xframe){overflow:hidden}
 #play.fit:not(.xframe)>.pin{height:100dvh;min-height:0;flex:none;padding-block:calc(6px + env(safe-area-inset-top,0px)) calc(4px + env(safe-area-inset-bottom,0px));padding-inline:max(6px,env(safe-area-inset-left,0px)) max(6px,env(safe-area-inset-right,0px))}
 #play.fit:not(.xframe) .pbar{margin:0 0 4px!important;padding-block:0!important;gap:6px}
-#play.fit:not(.xframe) .pbar .x{width:34px!important;height:34px!important}
+#play.fit:not(.xframe) .pbar .x{width:44px!important;height:44px!important;min-width:44px;min-height:44px}
 #play.fit:not(.xframe) .pbar #pt{font-size:16px;white-space:nowrap;overflow:hidden;text-overflow:ellipsis}
 #play.fit:not(.xframe){overflow:clip}
 #play.fit:not(.xframe) #stage{gap:4px;min-height:0}
@@ -15,13 +15,13 @@
 #play.fit .pzlv[data-short]::after{content:attr(data-short);font-size:13px;font-weight:900;direction:ltr;display:inline-block;background:#fffaf0;border:1px solid #d9c9a8;border-radius:999px;padding:4px 9px;color:#5a4528}
 #play.fit .pzcoin{font-size:15px!important;padding:2px 8px!important;min-height:32px!important;gap:4px!important}
 #play.fit .pzcoin svg,#play.fit .pzcoin img{width:18px;height:18px}
-#play.fit .pzhud .pzhb,#play.fit .fit-tools .pzgive{position:relative;flex:none;width:36px;height:36px;min-height:0!important;padding:0!important;justify-content:center;border-radius:12px;gap:0}
+#play.fit .pzhud .pzhb,#play.fit .fit-tools .pzgive{position:relative;flex:none;width:44px;height:44px;min-width:44px!important;min-height:44px!important;padding:0!important;justify-content:center;border-radius:12px;gap:0}
 #play.fit .pzhud .pzhb>span{display:none}
 #play.fit .pzhud .pzhb svg{width:20px;height:20px}
 #play.fit .pzhud #pzhn{position:absolute;top:-5px;inset-inline-end:-5px;min-width:17px;height:17px;font-size:10.5px;line-height:17px;padding:0 3px;border-radius:9px;font-style:normal;text-align:center}
-#play.fit .pzhud .mla-music-toggle{flex:none;width:36px;height:36px;min-height:0!important;padding:0!important;font-size:0!important;border-radius:12px;position:relative}
+#play.fit .pzhud .mla-music-toggle{flex:none;width:44px;height:44px;min-width:44px!important;min-height:44px!important;padding:0!important;font-size:0!important;border-radius:12px;position:relative}
 #play.fit .pzhud .mla-music-toggle::before{content:'♪';font-size:19px;line-height:1}
-#play.fit .pzhud .mla-music-toggle[aria-pressed="false"]::after{content:'';position:absolute;inset:8px 17px;border-left:2px solid currentColor;transform:rotate(45deg)}
+#play.fit .pzhud .mla-music-toggle[aria-pressed="false"]::after{content:'';position:absolute;inset:10px 21px;border-left:2px solid currentColor;transform:rotate(45deg)}
 #play.fit .fit-tools{display:flex;gap:4px;margin-inline-start:auto}
 #play.fit .fit-journal i{position:absolute;bottom:-6px;inset-inline-start:50%;transform:translateX(50%);font-style:normal;font-size:9px;font-weight:900;background:#fffaf0;border:1px solid #d9c9a8;border-radius:6px;padding:0 3px;white-space:nowrap;direction:ltr}
 #play.fit .fit-tools .pzgive{display:flex;align-items:center;font-size:0!important;margin:0;background:#fffaf0;border:1.5px solid #d9c9a8;color:#7a5a32}
@@ -56,7 +56,7 @@
 #play.fit #pzb .lb{gap:6px}
 
 /* rule bubble (first time a puzzle opens) and the info sheet */
-#play .fit-bubble{position:fixed;left:12px;right:12px;top:var(--fit-bt,120px);z-index:41;max-width:460px;margin:0 auto;display:flex;gap:8px;align-items:flex-start;background:#1F6E66;color:#fff;border-radius:14px;padding:10px 12px;box-shadow:0 10px 28px rgba(20,50,45,.3);pointer-events:none;transition:opacity .3s,transform .3s}
+#play .fit-bubble{position:fixed;left:12px;right:12px;top:var(--fit-bt,120px);z-index:41;max-width:460px;margin:0 auto;display:flex;gap:8px;align-items:flex-start;background:#1F6E66;color:#fff;border-radius:14px;padding:10px 12px;box-shadow:0 10px 28px rgba(20,50,45,.3);pointer-events:auto;transition:opacity .3s,transform .3s}
 #play .fit-bubble p{margin:0;font-size:14px;line-height:1.6;font-weight:700}
 #play .fit-bubble svg{width:20px;height:20px}
 #play .fit-bubble.gone{opacity:0;transform:translateY(-8px)}
@@ -82,7 +82,7 @@
 /* ---- Treasure Island stations and the Expedition: same one-screen rules ---- */
 html.fit-page .fit-pinfo{flex:none;width:44px;height:44px;border-radius:12px;border:1.5px solid #d9c9a8;background:#fffaf0;color:#5a4528;display:grid;place-items:center;padding:0}
 html.fit-page .fit-pinfo svg{width:22px;height:22px}
-.fit-pbubble{position:fixed;left:12px;right:12px;top:var(--fit-bt,120px);z-index:41;max-width:460px;margin:0 auto;display:flex;gap:8px;align-items:flex-start;background:#1F6E66;color:#fff;border-radius:14px;padding:10px 12px;box-shadow:0 10px 28px rgba(20,50,45,.3);pointer-events:none;transition:opacity .3s,transform .3s}
+.fit-pbubble{position:fixed;left:12px;right:12px;top:var(--fit-bt,120px);z-index:41;max-width:460px;margin:0 auto;display:flex;gap:8px;align-items:flex-start;background:#1F6E66;color:#fff;border-radius:14px;padding:10px 12px;box-shadow:0 10px 28px rgba(20,50,45,.3);pointer-events:auto;transition:opacity .3s,transform .3s}
 .fit-pbubble p{margin:0;font-size:14px;line-height:1.6;font-weight:700}.fit-pbubble svg{width:20px;height:20px}
 .fit-pbubble.gone{opacity:0;transform:translateY(-8px)}
 html.fit-t7 #v-puz.t7 .t7-puzzle-pane,html.fit-ex10 #v-puz .ex10-game-content{zoom:var(--fit-z,1)}
@@ -107,3 +107,40 @@ html.fit-ex10 #v-puz .ex10-objective{font-size:13px;line-height:1.55;margin-bloc
 html.fit-ex10 #v-puz .ex10-stage-progress{padding-block:2px}
 html.fit-ex10 #v-puz .ex10-top-right{display:flex;flex-direction:row;gap:6px;align-items:center}
 html.fit-ex10 #v-puz .ex10-back{white-space:nowrap}
+
+/* 5.5.28 P1/P2 mobile playability & touch-target fixes */
+@media (max-width:360px){
+  #play.fit:not(.xframe) .pzhud{gap:2px!important}
+  #play.fit .fit-tools{gap:2px}
+  #play.fit .pzcoin{padding:2px 5px!important;font-size:13px!important}
+}
+#play .fit-bubble-x{flex:none;width:44px;height:44px;margin:-8px -8px -8px 0;border-radius:10px;color:#fff;font-size:20px;font-weight:800;display:grid;place-items:center}
+#play.fit .fit-sh-replay{width:100%;min-height:44px;margin-bottom:8px;border:1.5px solid #1F6E66;border-radius:14px;background:transparent;color:#1F6E66;font-weight:800;font-size:15px}
+html[data-skin="dark"] .fit-sheet-card{background:#141B31;color:#EEF1FF}
+html[data-skin="dark"] .fit-sh-rule{background:rgba(92,224,210,.14)}
+html[data-skin="dark"] .fit-sh-rule b{color:#5CE0D2}
+html[data-skin="dark"] .fit-sh-story{background:rgba(255,255,255,.08);color:#CBD3F5}
+html[data-skin="dark"] .fit-sh-replay{border-color:#5CE0D2;color:#5CE0D2}
+
+/* P1 pz_avsong: redistribute staves & buttons cleanly for short/narrow viewports */
+#play.fit .avsr{grid-template-columns:62px 1fr;gap:3px 6px;margin:4px 0}
+#play.fit .avsr>button svg,#play.fit .avsr .avsu svg{height:60px!important;width:100%!important}
+#play.fit #avsprobe svg{height:64px!important;width:100%!important}
+#play.fit .xkbtns{display:flex;flex-wrap:wrap;gap:6px}
+#play.fit .xkbtns button,#play.fit #avsreset,#play.fit #avsplayprobe{min-height:44px;min-width:44px;padding:6px 10px}
+
+/* P1 pz_aport & P2 controls (pz_pgarden, pz_peng, pz_plast, pz_zshadow, pz_ashade): >=44px touch targets */
+#play.fit #pzb .aptr button,#play.fit #pzb [data-h],#play.fit #pzb .opt,#play.fit #pzb #zsw button,#play.fit #pzb .go-btn{min-height:44px;min-width:44px}
+#play.fit #pzb .aptr{display:flex;flex-wrap:wrap;gap:6px;justify-content:center}
+
+/* P1 Treasure station 02 & ml10_08: prevent page overflow and keep controls accessible */
+html.fit-t7 #v-puz.t7 .t7-puzzle-pane svg,html.fit-ex10 #v-puz .ex10-game-content svg{max-width:100%;height:auto}
+html.fit-ex10 #v-puz .ex10-game-content{max-height:calc(100dvh - 84px);overflow-y:auto;overscroll-behavior:contain}
+html.fit-t7 #v-puz.t7 .v5-chip,html.fit-ex10 #v-puz .ex10-game-content button{min-height:44px}
+
+/* River Environment V2 layered backdrop on #rv3 */
+#play.fit .mlp-river-board #rv3{
+  background-image:url('designs_art/river_v2/01_background/01_sky_and_mountains.png');
+  background-size:cover;
+  background-position:center top;
+}
