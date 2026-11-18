@@ -182,7 +182,7 @@
       if (window.ATHERAN_CAMPAIGN && typeof window.ATHERAN_CAMPAIGN.open === 'function')
         window.ATHERAN_CAMPAIGN.open();
     } else if (chId === 'side') {
-      if (typeof window.mindlabSideJourneyMap === 'function') window.mindlabSideJourneyMap();
+      if (window.ML10 && typeof window.ML10.renderMap === 'function') window.ML10.renderMap();
       else $('#v-puz .ex10-launch-go')?.click();
     }
   }
