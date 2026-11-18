@@ -115,8 +115,9 @@
       $('#lbb').innerHTML = `<div class="rv10">
         <div class="rv10-landscape" aria-hidden="true">${layers.map(([file, cls]) => png('river_v2/' + file, cls)).join('')}</div>
         <section class="rv10-bank" data-slot="bank0" aria-label="الضفة اليسرى"><h4>الضفة اليسرى</h4><div class="rv10-items" id="rvb0"></div></section>
-        <section class="rv10-water"><h4>المزارع</h4><div class="rv10-boat" data-slot="boat" aria-label="القارب"><div class="rv10-rig" aria-hidden="true"></div><div class="rv10-load" id="rvld"></div></div><small id="rvside"></small></section>
-        <section class="rv10-bank goal" data-slot="bank1" aria-label="المرج الأخضر"><h4>المرج الأخضر</h4><div class="rv10-items" id="rvb1"></div></section></div>`;
+        <section class="rv10-water"><h4>المزارع</h4><small id="rvside" role="status" aria-live="polite"></small></section>
+        <section class="rv10-bank goal" data-slot="bank1" aria-label="المرج الأخضر"><h4>المرج الأخضر</h4><div class="rv10-items" id="rvb1"></div></section>
+        <div class="rv10-boat" data-slot="boat" aria-label="القارب"><div class="rv10-rig" aria-hidden="true"></div><div class="rv10-load" id="rvld"></div></div></div>`;
       const fs = () => (s & F ? 1 : 0);
       const stageOne = ['wolf', 'sheep', 'grass'];
       const rig = root.querySelector('.rv10-rig');
@@ -154,8 +155,9 @@
       const mk = MK.attach(root.querySelector('.rv10'), { canDrag: () => !busy && !api.ended, onPick: id => { mk.clear(); tap(+id); },
         drop: (id, slot) => { const i = +id; if (slot === 'boat' ? !boat.has(i) : boat.has(i)) tap(i); } });
       function cross() { if (busy || api.ended) return; let m = 0; boat.forEach(i => m |= 1 << i); const t = s ^ F ^ m; moves++; busy = true;
-        root.querySelector('.rv10').classList.add('sail'); sfx.tick();
-        later(() => { s = t; boat.clear(); busy = false; root.querySelector('.rv10').classList.remove('sail'); const f = fs(), eat = P.conf.find(([a, c]) => (s >> a & 1) === (s >> c & 1) && (s >> a & 1) !== f); draw();
+        const scene = root.querySelector('.rv10'), vessel = root.querySelector('.rv10-boat');
+        scene.classList.add('sail'); vessel.setAttribute('aria-busy', 'true'); sfx.tick();
+        later(() => { s = t; boat.clear(); busy = false; scene.classList.remove('sail'); vessel.removeAttribute('aria-busy'); const f = fs(), eat = P.conf.find(([a, c]) => (s >> a & 1) === (s >> c & 1) && (s >> a & 1) !== f); draw();
           if (eat) { busy = true; eat.forEach(i => { const e = root.querySelector(`.rv10-bank [data-tok="${i}"]`); if (e) e.classList.add('lb-bad', 'eat'); });
             api.msg(`${RVN[P.it[eat[0]]]} ${P.it[eat[0]] === 'hen' ? 'أكلت' : 'أكل'} ${RVN[P.it[eat[1]]]}! تُرك معه دون المزارع. نبدأ من جديد.`); api.wrong();
             later(() => { s = 0; moves = 0; busy = false; draw(); api.msg(`حاول مرة ثانية. أقل حل: ${N(P.min)} رحلات.`); }, 1700); return; }
