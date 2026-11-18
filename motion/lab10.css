@@ -36,7 +36,10 @@
 @media (max-width:360px){.rv10-it{width:40px;height:40px}.rv10-it img{width:33px;height:33px}}
 
 /* 03 rush (rushEngine board, re-skinned) */
-.lb[data-lb="rush"] .rhwrap2,.lb[data-lb="rush"] .rhlot{background:none;border:0;padding:0;box-shadow:none}
+.lb[data-lb="rush"] .rhwrap2{background:none}
+.lb[data-lb="rush"] .rhlot{background:none;border:0;box-shadow:none;padding:4px 30px 4px 4px}
+.lb[data-lb="rush"] .rhexit{right:-24px;width:22px;background:#2E8A4E;border-radius:0 8px 8px 0;box-shadow:none}
+.lb[data-lb="rush"] .rhexit::after{content:'→';position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-weight:900;font-size:14px}
 .lb[data-lb="rush"] .rhb2{background:#EADFC8;border:2px solid #CDB993;border-radius:10px}
 .lb[data-lb="rush"] .rhb2>i{border-color:#D8C7A6!important;background:#F1E7D5!important}
 .rh10{position:absolute;inset:0;display:block;pointer-events:none}
