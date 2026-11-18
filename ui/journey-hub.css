@@ -160,6 +160,25 @@ html[data-skin="dark"] .mlj-pill {
   border-color: rgba(255, 255, 255, 0.16);
 }
 
+/* Palace chapter: accessible illustrated station map rather than scrolling to a library heading. */
+.mlj-palace-card{width:min(100%,540px)}
+.mlj-palace-card .mlj-head{align-items:start}
+.mlj-palace-close{min-width:66px;min-height:44px;padding:7px 12px;background:#E6F2F1;color:#1F6E66;border:1px solid #B4D9CE;border-radius:12px;font:800 13px Tajawal,system-ui,sans-serif;cursor:pointer}
+.mlj-palace-scene{width:100%;aspect-ratio:16/9;border-radius:14px;border:1px solid #D9C9A8;
+  background:linear-gradient(180deg,rgba(255,251,242,.02),rgba(32,31,45,.18)),url('art/series_mirrors.webp') center/cover no-repeat}
+.mlj-palace-note{margin:0;font-size:13px;line-height:1.6;color:#61533E}
+.mlj-palace-stations{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px;direction:rtl}
+.mlj-palace-station{display:flex;gap:8px;align-items:center;text-align:start;min-width:0;min-height:48px;
+  padding:7px 9px;border:1px solid #DAC9AA;border-radius:12px;background:#F8F0E0;color:#33291D;
+  font:800 12.5px/1.4 Tajawal,system-ui,sans-serif;cursor:pointer}
+.mlj-palace-station:focus-visible,.mlj-palace-close:focus-visible{outline:3px solid #1F6E66;outline-offset:2px}
+.mlj-palace-number{display:grid;place-items:center;min-width:26px;height:26px;border-radius:50%;background:#1F6E66;color:white;flex:none;font-variant-numeric:tabular-nums}
+html[data-skin="dark"] .mlj-palace-station{background:#24304A;color:#EEF1FF;border-color:#526173}
+html[data-skin="dark"] .mlj-palace-note{color:#DAE2ED}
+html[data-skin="dark"] .mlj-palace-close{background:#233A43;color:#5CE0D2;border-color:#5CE0D2}
+@media(min-width:540px){.mlj-palace-stations{grid-template-columns:repeat(3,minmax(0,1fr))}}
+@media(max-width:350px){.mlj-palace-station{font-size:11.5px;padding:6px;gap:5px}.mlj-palace-number{min-width:23px;height:23px}}
+
 /* Transitions modal */
 .mlj-modal {
   position: fixed;

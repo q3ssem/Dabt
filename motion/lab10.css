@@ -76,9 +76,15 @@
 @keyframes rv10-shimmer{from{opacity:.32}to{opacity:.85}}
 .rv10 .rv10-bank,.rv10 .rv10-bank.goal,.rv10 .rv10-water{background:transparent}
 .rv10 h4,.rv10-water small{color:#34241b;background:rgba(255,251,242,.94);padding:2px 5px;border-radius:6px;text-align:center;direction:rtl}
-.rv10-boat{min-height:0;transition:transform .6s ease-in-out;transform:translateX(-14%)}
-.rv10.at1 .rv10-boat,.rv10:not(.at1).sail .rv10-boat{transform:translateX(14%)}
-.rv10.at1.sail .rv10-boat{transform:translateX(-14%)}
+/* Dock points come from river_v2/env_anchors_manifest.json: 345/860 and 515/860.
+   Keep the vessel in the scene coordinate system rather than the narrow middle grid cell. */
+.rv10{--rv-dock-left:40.116%;--rv-dock-right:59.884%}
+.rv10-boat{position:absolute;top:50%;left:var(--rv-dock-left);width:clamp(88px,26%,130px);min-height:0;z-index:4;
+  transform:translate(-50%,-50%);transition:left .65s ease-in-out;pointer-events:auto}
+.rv10.at1 .rv10-boat,.rv10:not(.at1).sail .rv10-boat{left:var(--rv-dock-right)}
+.rv10.at1.sail .rv10-boat{left:var(--rv-dock-left)}
+.rv10-boat .rv10-it{width:36px;height:36px;background:rgba(255,251,242,.65);border:1px solid rgba(101,78,41,.35)}
+.rv10-boat .rv10-it img{width:34px;height:34px}
 .rv10-rig{width:min(100%,124px);aspect-ratio:280/220;position:relative;pointer-events:none}
 .rv10-rig img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 .rv10-rig .rv10-rope{top:28%;transform:scale(.5)}
@@ -86,7 +92,7 @@
 .rv10.sail .rv10-rig :is(.rv10-wake,.rv10-splash){visibility:visible}
 .rv10-rig .rv10-wake{top:23%}
 .rv10-rig .rv10-splash{top:16%;transform:scale(.52)}
-.rv10-load{margin-top:-12%;position:relative}
+.rv10-load{position:absolute;left:36.4%;top:53.6%;width:46%;margin:0;z-index:5;transform:translate(-50%,-50%);justify-content:center;align-items:center}
 .rv10-it.eat{background-image:url(../ui/designs_art/river_stage1/04_effects/fx_danger_bank.png)!important;background-size:contain!important}
 @media(prefers-reduced-motion:reduce){
   .rv10-landscape img{animation:none!important}
