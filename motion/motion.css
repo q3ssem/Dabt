@@ -231,3 +231,114 @@
 .arl-tline{display:block;font-weight:800;color:#1F6E66;font-size:13px;margin-bottom:4px}
 .mk-slot.truth.full{background:#E8F6F3;border-color:#2E8A80}
 @media (max-width:360px){.po-board{width:calc(100% + 24px);max-width:none;margin-inline:-12px;padding:2px;border-radius:10px}}
+
+
+/* Keep navigation out of the board and give every Treasure station the same compact layout. */
+#v-puz.t7 .t7-compact-top {
+  display:flex; flex-direction:row; flex-wrap:wrap; align-items:center;
+  gap:8px; margin-bottom:10px;
+}
+#v-puz.t7 .t7-compact-top > div:first-child { flex:1 1 132px; min-width:0; }
+#v-puz.t7 .t7-compact-top h1 { font-size:clamp(20px,5.2vw,28px); }
+#v-puz.t7 .t7-compact-top .t7-tools { width:auto; display:flex; gap:4px; }
+#v-puz.t7 .t7-compact-top .t7-tool-icon {
+  display:grid; place-items:center; flex:0 0 44px; width:44px; height:44px;
+  padding:0; border-radius:12px; font-size:0;
+}
+#v-puz.t7 .t7-tool-icon img { width:26px; height:26px; object-fit:contain; }
+#v-puz.t7 .t7-puzzle-layout { grid-template-columns:minmax(0,1fr); gap:8px; }
+#v-puz.t7 .t7-puzzle-scene.v5-scene {
+  aspect-ratio:auto!important; height:clamp(76px,24vw,112px)!important; max-height:none;
+  border-radius:12px!important;
+}
+#v-puz.t7 .t7-puzzle-scene .t7-location { top:8px; right:8px; padding:3px 8px; font-size:12px; }
+#v-puz.t7 .t7-puzzle-pane { padding:8px!important; overflow:visible; }
+#v-puz.t7 .v5-board { width:100%; max-width:680px; min-height:0; padding:0; overflow:visible; }
+#v-puz.t7 .v5-goal { margin:7px 0; padding:6px 8px; font-size:14px; line-height:1.55; }
+#v-puz.t7 .v5-chips { gap:4px; }
+#v-puz.t7 .v5-chip { min-height:44px; padding:4px 8px; font-size:12px; }
+#v-puz.t7 .v5-bar {
+  display:flex; flex-wrap:wrap; gap:6px; margin-top:8px;
+}
+#v-puz.t7 .v5-bar .t7-btn { flex:1 1 90px; min-height:44px; padding:6px; font-size:13px; }
+#v-puz.t7 .v5-hint, #v-puz.t7 .v5-crew { margin-block:7px; padding:7px 9px; }
+#v-puz.t7 .v5-crew .v5-crew-face { width:32px; height:32px; }
+#v-puz.t7 .t7-compact-intro { padding:12px!important; }
+#v-puz.t7 .t7-hero-intro { display:flex; align-items:center; gap:12px; margin:8px 0 12px; }
+#v-puz.t7 .t7-hero-intro img { width:clamp(68px,23vw,96px); height:114px; object-fit:contain; }
+#v-puz.t7 .t7-speech {
+  position:relative; flex:1; min-width:0; color:#282d31; background:#fffdf7;
+  padding:9px 12px; border:1px solid #bdaf91; border-radius:14px;
+}
+#v-puz.t7 .t7-speech::before {
+  content:''; position:absolute; inset-inline-start:-6px; top:22px;
+  width:10px; height:10px; background:inherit; transform:rotate(45deg);
+  border-top:1px solid #bdaf91; border-right:1px solid #bdaf91;
+}
+#v-puz.t7 .t7-speech p { margin:2px 0 0; font-size:15px; }
+#v-puz.t7 .t7-story-more { margin-top:10px; font-size:14px; }
+#v-puz.t7 .t7-story-more summary { cursor:pointer; min-height:44px; align-content:center; }
+
+#v-puz.t7 .t7-station { grid-template-columns:minmax(0,1fr); grid-template-rows:auto 1fr; }
+#v-puz.t7 .t7-station .t7-thumb { height:auto!important; aspect-ratio:3/1!important; }
+#v-puz.t7 .t7-station .t7-station-label { min-width:0; padding:7px 10px!important; overflow-wrap:anywhere; }
+#v-puz.t7 .t7-station .t7-station-label > * { min-width:0; }
+
+#v-puz.t7 .v5-bclues { gap:8px; padding:3px; margin:4px 0 8px; }
+#v-puz.t7 .v5-bclues figure {
+  min-height:0; min-width:0; padding:5px 4px 6px; align-content:start;
+  background:transparent; color:var(--ml-ink,#f7e7cc);
+  border:1px solid var(--ml-line,#b9a989); border-radius:10px;
+}
+#v-puz.t7 .v5-bclues figcaption { font-size:12px; line-height:1.4; margin:3px 0 0; overflow-wrap:anywhere; }
+#v-puz.t7 .v5-bclues .v5-pair, #v-puz.t7 .v5-bclues .v5-time {
+  gap:3px; height:auto; min-height:29px; margin:0; border:0; color:inherit;
+}
+#v-puz.t7 .v5-bclues .v5-badge { width:24px; height:24px; flex:0 0 24px; }
+#v-puz.t7 .v5-bclues .v5-slots4 { height:29px; gap:3px; min-width:0; }
+#v-puz.t7 .v5-bclues .v5-slots4 i {
+  flex:0 1 19px; min-width:0; height:20px; border:1px solid currentColor; border-radius:4px;
+}
+#v-puz.t7 .v5-bclues .v5-slots4 i .v5-badge { width:100%; height:auto; }
+#v-puz.t7 .v5-k-chime .v5-badge svg { display:block; stroke:#45301c; }
+#v-puz.t7 .v5-k-chime .v5-bclues .v5-badge svg { stroke:currentColor; }
+#v-puz.t7 .v5-k-chime .v5-strip { width:100%; max-width:420px; gap:4px; margin:4px auto 7px; padding:5px; }
+#v-puz.t7 .v5-k-chime .v5-strip::before { left:0; width:5px; }
+#v-puz.t7 .v5-k-chime .v5-bells { gap:4px; }
+#v-puz.t7 .v5-k-chime .v5-bell { min-height:44px; max-height:64px; aspect-ratio:auto; border-radius:10px; }
+#v-puz.t7 .v5-k-chime .on-bell { top:50%; width:24px; }
+
+@media(max-width:699px) {
+  #v-puz.t7 .t7-station {
+    grid-template-columns:minmax(0,34%) minmax(0,1fr); grid-template-rows:auto;
+  }
+  #v-puz.t7 .t7-station .t7-thumb {
+    width:100%; min-width:0; min-height:80px; aspect-ratio:auto!important;
+  }
+  #play:has(#pzb) > .pin {
+    padding-left:max(6px,env(safe-area-inset-left,0px));
+    padding-right:max(6px,env(safe-area-inset-right,0px));
+  }
+  #app > .shell:has(#v-puz:not([hidden]) .t7-puzzle-layout),
+  #app > .shell:has(#v-puz:not([hidden]) .ex10-game-shell) {
+    padding-left:max(6px,env(safe-area-inset-left,0px));
+    padding-right:max(6px,env(safe-area-inset-right,0px));
+    padding-block:8px max(12px,env(safe-area-inset-bottom,0px));
+  }
+  #app:has(#v-puz:not([hidden]) :is(.t7-puzzle-layout,.ex10-game-shell)) > .tabs { display:none; }
+  #v-puz.t7:has(.t7-puzzle-layout), #v-puz .ex10:has(.ex10-game-shell) { padding-bottom:0; }
+  #v-puz .ex10:has(.ex10-game-shell) { padding-inline:0; }
+  #v-puz .ex10 .ex10-game-scene { height:86px; }
+  #play.xframe { background:var(--ml-surface,#f6ebd3)!important; }
+  #play.xframe #xft { display:none; }
+  #play.xframe > .pin .pbar .t { visibility:visible; }
+  #play.xframe > .pin #stage {
+    left:max(8px,env(safe-area-inset-left,0px))!important;
+    right:max(8px,env(safe-area-inset-right,0px))!important;
+    top:calc(54px + env(safe-area-inset-top,0px));
+    bottom:max(8px,env(safe-area-inset-bottom,0px)); padding-inline:0;
+  }
+  #play.xframe > .pin #stage .pzhud {
+    position:static; height:auto; min-height:44px; flex-wrap:wrap;
+  }
+}

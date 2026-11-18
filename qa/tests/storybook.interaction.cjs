@@ -54,7 +54,17 @@ function drive(s){drive.sel=null;const work=()=>c.T7.state().work[s.id];if(s.var
   if(s.kind==='frogs'){const i=d.find(i=>a[i]!==0);t.aria('زورق في الخانة '+(i+1)+' ');}
   if(s.kind==='path'){t.aria('تجويف '+(d[0]+1)+':');t.aria('تجويف '+(d[1]+1)+':');}}}
 /* Play every station through its real board controls (tool gate, taps) — no state writes. */
-function playV5(s){c.T7.open(s.i);t.click('ابدأ اللغز');ok(!!t.byid('v5-board'),'5.0 board '+s.id);
+function playV5(s){c.T7.open(s.i);
+ ok(t.nodes().filter(n=>n.className==='t7-hero-intro').length===1,'single illustrated opening '+s.id);
+ t.click('ابدأ اللغز');ok(!!t.byid('v5-board'),'5.0 board '+s.id);
+ for(const action of ['الخريطة','دفتر الرحلة','الكنوز']){
+  const matches=t.buttons().filter(n=>n.textContent===action);
+  ok(matches.length===1&&matches[0].attrs['aria-label']===action,'single accessible toolbar action '+action+' '+s.id);
+ }
+ if(s.kind==='chime'){
+  const star=t.buttons().find(n=>n.attrs['aria-label']==='جرس النجمة');
+  ok(star&&star.children.some(n=>typeof n==='object'&&n.innerHTML.includes('<path')&&!n.innerHTML.includes('undefined')),'star bell has its own shape');
+ }
  if(s.needs){for(const nd of [].concat(s.needs)){ok(t.buttons().some(n=>n.textContent==='ضع '+D.SEA1_TOOLS[nd].name),'tool gate shown '+s.id+' '+nd);t.click('ضع '+D.SEA1_TOOLS[nd].name);}}
  const work=()=>c.T7.state().work[s.id];drive(s);
  ok(L.solved(s,work())||!!c.T7.state().done[s.id],'5.0 solved via real controls '+s.id);ok(!!c.T7.state().done[s.id],'5.0 reward saved '+s.id);ok(c.T7.state().v5.ch[s.id][0],'challenge 1 star '+s.id);

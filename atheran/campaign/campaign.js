@@ -65,13 +65,13 @@
 
   /* ---------- بطاقة الدخول في تبويب الألغاز ---------- */
   function launchCard() {
-    const v = document.getElementById('v-puz'); if (!v || LA.view || v.querySelector('.ah-launch')) return;
+    const v = document.getElementById('v-puz'); if (!v || LA.view || !v.querySelector('.v5-hublib') || v.querySelector('.ah-launch')) return;
     const s = summary();
     const card = document.createElement('section'); card.className = 'ah-launch';
     const state = !s.open ? `مقفلة حتى إكمال قصر الملوك السبعة · ${AR(s.palace)}/${AR(PW.length)}` : s.done >= ASTN.length ? 'اكتملت المحطات · عُد للأسرار والخاتمة' : `${AR(s.done)} من ${AR(ASTN.length)} محطة · ${AR(s.cleared)} من ${AR(ASW.length)} عوالم سرية`;
     card.innerHTML = `<div class="ah-launch-crew">${HEROINES.map(([k]) => `<img src="${heroSrc(k)}" alt="" loading="lazy" decoding="async">`).join('')}</div>
       <div class="ah-launch-text"><span class="ah-kicker">الفصل الرسمي · ٢١ محطة · ٦٣ مرحلة</span><h2>أَثْرَان: أطلس المجهول</h2><p>${esc(state)}</p></div>
-      <button class="ah-launch-go" type="button">${s.open ? 'افتح الأطلس' : 'اعرض الأطلس'}</button>`;
+      <button class="ah-launch-go" type="button">اعرض الأطلس</button>`;
     card.querySelector('button').onclick = open;
     const anchor = v.querySelector('.ex10-launch');
     if (anchor) anchor.before(card); else v.insertBefore(card, v.querySelector('.pzstory') || v.children[1] || null);

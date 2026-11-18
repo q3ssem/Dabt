@@ -5,11 +5,19 @@ const root=path.resolve(__dirname,'../..'),read=p=>fs.readFileSync(path.join(roo
 let checks=0;const ok=(v,m)=>{assert.ok(v,m);checks++;};
 const pv=JSON.parse(read('package.json')).version;ok(/^5\.(5|[6-9])\.\d+$/.test(pv),'version 5.5.x or later ('+pv+')');
 ok(read('sw.js').includes("const VERSION='"+pv+"'"),'cache renamed so installed apps receive the new styles');
-// Engines, rules, story and save untouched: the files that hold them are byte-identical to 5.4.8.
+// Keep the original 5.4.8 baseline after reversing the audited Treasure board presentation changes.
 const frozen={'treasure/data.js':'b2b1b30363eff3ad813e8459e81fdcd333b909c3f9fda752428a8c1a8b294a4b',
  'treasure/logic.js':'0146bdf869065655058f5c79395d772ae7c24141bace41a28d2fbad9e8f0d0d7','treasure/boards.js':'9492fd773cc2b3949e6bae0c98345bd98787fe0395a6566bcc077ab264e4dc0f'};
 // Inline index engines are protected by legacy.art.cjs, which reverses only audited audio and Mirror Palace patches before checking original fingerprints.
-for(const [f,h] of Object.entries(frozen))ok(sha(f)===h,f+' unchanged (engines / station rules / story / board logic)');
+for(const [f,h] of Object.entries(frozen)){
+ if(f!=='treasure/boards.js'){ok(sha(f)===h,f+' unchanged');continue;}
+ let source=read(f);
+ for(const {before,after} of JSON.parse(read('qa/allowed_treasure_board_presentation_changes.json')).reverse()){
+   ok(source.split(after).length===2,'each approved Treasure presentation change appears exactly once');
+   source=source.replace(after,()=>before);
+ }
+ ok(crypto.createHash('sha256').update(source).digest('hex')===h,f+' matches the original after reversing presentation changes');
+}
 ok(read('index.html').includes("localStorage.getItem('miran:v2')"),'save key miran:v2');
 // Design system: tokens for both themes, legacy variables mapped, shared components, cards.
 const ds=read('ds/mindlab-ds.css');

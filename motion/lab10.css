@@ -1,9 +1,10 @@
 /* design-01-10 — مختبر العقل 02–10 (light theme of the pack: cream paper, teal actions, coral errors, green wins) */
 .lb{--lb-paper:#FFFBF2;--lb-line:#E2D3B6;--lb-sand:#F1E7D5;--lb-ink:#2F2A24;--lb-teal:#1F6E66;--lb-ok:#2E7D4F;--lb-bad:#C0392B;display:flex;flex-direction:column;gap:8px;color:var(--lb-ink)}
-.lb-trio{display:flex;align-items:center;gap:10px;background:var(--lb-sand);border:1.5px solid var(--lb-line);border-radius:14px;padding:6px 10px;transition:opacity .3s,max-height .3s;max-height:120px;overflow:hidden}
-.lb-trio.gone{opacity:0;max-height:0;padding:0 10px;border-width:0;margin-top:-8px}
-.lb-trioimg{width:96px;height:auto;flex:none}
-.lb-trio p{margin:0;font-size:13px;line-height:1.6}
+#stage .lb-intro{width:min(100%,440px);display:flex;align-items:center;gap:12px;text-align:start;direction:rtl}
+#stage .lb-intro-art{width:clamp(64px,19vw,96px);height:100px;object-fit:contain;flex:none}
+#stage .lb-intro p{position:relative;margin:0;flex:1;min-width:0;background:#FFFBF2;color:#2F2A24;border:1px solid #C2AE84;border-radius:14px;padding:9px 12px;font-size:15px;line-height:1.6}
+#stage .lb-intro p::before{content:'';position:absolute;inset-inline-start:-6px;top:24px;width:10px;height:10px;background:inherit;transform:rotate(45deg);border-top:1px solid #C2AE84;border-right:1px solid #C2AE84}
+@media(max-width:460px){#stage .pzbody:has(.lb){padding-inline:4px}#stage .lb-board{padding:5px}}
 .lb-lead{margin:0;background:#E6F2F1;border:1.5px solid #C5E0DD;border-radius:12px;padding:8px 10px;font-size:13.5px;line-height:1.7}
 .lb-rule{margin:0;background:var(--lb-paper);border:1.5px solid var(--lb-line);border-radius:12px;padding:8px 10px;font-size:13.5px;line-height:1.7}
 .lb-board{background:var(--lb-paper);border:1.5px solid var(--lb-line);border-radius:16px;padding:8px;touch-action:manipulation}

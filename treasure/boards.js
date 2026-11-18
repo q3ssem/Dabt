@@ -66,7 +66,7 @@
       limit ? E('small', { text: '/ ' + limit }) : null,
       at.c >= 2 ? E('small', { class: 'v5-nohint', text: at.c === 4 ? 'لغز اليوم' : at.c === 3 ? 'لوحة الخبير' : at.hint ? 'استُعمل تلميح' : 'بلا تلميح' }) : null);
     host.append(E('div', { class: 'v5-head' }, chips, counter),
-      E('p', { class: 'v5-challenge-note', text: challengeNotes[at.c] || challengeNotes[0] }),
+      at.c > 0 ? E('p', { class: 'v5-challenge-note', text: challengeNotes[at.c] }) : null,
       E('p', { class: 'v5-goal', text: s.goal + (at.c === 2 && base.alt ? ' (ترتيب مختلف عن المحاولة الأولى)' : at.c === 3 && !base.expert.goal ? ' لوحة الخبير أكبر من لوحة القصة.' : at.c === 4 ? ' لغز اليوم: ترتيب جديد كل يوم.' : '') }));
     host.append(E('div', { class: 'v5-board v5-k-' + s.kind, id: 'v5-board' }));
     host.append(E('div', { class: 'v5-crew', id: 'v5-crew', role: 'status', 'aria-live': 'polite' }));
@@ -78,7 +78,7 @@
     const hintBtn = button(at.hint >= 3 ? 'استُعملت التلميحات' : at.hint === 2 ? 'أرني حركة' : at.hint ? 'التلميح الثاني' : 'تلميح', () => useHint(ctx), 'v5-hintbtn');
     hintBtn.disabled = at.hint >= 3;
     host.append(E('div', { class: 'v5-bar' }, hintBtn, NO_UNDO.includes(s.kind) ? null : undo,
-      button('محاولة جديدة', () => startAttempt(ctx, at.c)), button('دفتر الرحلة', () => ctx.notebook()), button('الخريطة', () => ctx.map())));
+      button('محاولة جديدة', () => startAttempt(ctx, at.c))));
     paint(ctx);
   }
 
@@ -158,12 +158,12 @@
     paint(ctx);
     if (L().solved(s, next)) { const b = $('#v5-board'); if (b) b.classList.add('win'); try { sfx.puzzleWin(); } catch (e) {} later(() => solvedNow(ctx), 900); return; }
     if (s.kind === 'tide' && at.moves >= s.target.budget) { say(ctx, 'انتهت الأفعال قبل الوصول. ابدأ محاولة جديدة.'); return; }
-    if (at.c === 1 && s.kind !== 'weigh' && at.moves === s.target.min + 1) { crew(ctx, 'نَبض', 'تجاوزت أقل عدد من الحركات. أكمل الحل، أو ابدأ محاولة جديدة لنيل النجمة.'); return; }
+    if (at.c === 1 && s.kind !== 'weigh' && at.moves === s.target.min + 1) { crew(ctx, ctx.guide || crewOf(base), 'تجاوزت أقل عدد من الحركات. أكمل الحل، أو ابدأ محاولة جديدة لنيل النجمة.'); return; }
     // The crew talks during the story attempt only, so the challenges stay clean.
     if (at.c === 0 && d !== null) {
-      if (d < 0) crew(ctx, crewOf(base), 'لا أرى طريقًا من هنا. جرّب «تراجع».');
-      else if (d > 0 && d <= 2 && (lastD === undefined || lastD === null || lastD > 2)) crew(ctx, 'شِبل', d === 1 ? 'حركة واحدة فقط!' : 'اقتربنا! حركتان فقط.');
-      else if (opt.undo) crew(ctx, crewOf(base), 'رجعنا خطوة. فكّر قبل الحركة التالية.');
+      if (d < 0) crew(ctx, ctx.guide || crewOf(base), 'لا أرى طريقًا من هنا. جرّب «تراجع».');
+      else if (d > 0 && d <= 2 && (lastD === undefined || lastD === null || lastD > 2)) crew(ctx, ctx.guide || crewOf(base), d === 1 ? 'حركة واحدة فقط!' : 'اقتربنا! حركتان فقط.');
+      else if (opt.undo) crew(ctx, ctx.guide || crewOf(base), 'رجعنا خطوة. فكّر قبل الحركة التالية.');
     }
   }
 
@@ -191,7 +191,7 @@
     const next = at.c === 4 ? -1 : c.findIndex((d, k) => !d && k < 4 && (k !== 3 || base.expert) && opens(ctx, c, k));
     host.append(E('div', { class: 'v5-done' }, E('b', { text: earned ? '★ تحقق التحدي' : 'انحل اللغز' }), E('p', { text: why }),
       E('div', { class: 'v5-bar' }, next >= 0 ? button('التحدي التالي: ' + names[next], () => startAttempt(ctx, next), 'primary') : null,
-        button('محاولة جديدة', () => startAttempt(ctx, at.c)), button('الخريطة', () => ctx.map()))));
+        button('محاولة جديدة', () => startAttempt(ctx, at.c)))));
   }
 
   /* ---------- painting: motion (FLIP), drag and long-press preview are shared by every board ---------- */
@@ -377,7 +377,8 @@
   };
   const BADGE = {
     circle: '<circle cx="20" cy="20" r="11" fill="none" stroke-width="5"/>', triangle: '<path d="M20 7 L33 31 L7 31Z" fill="none" stroke-width="4.5" stroke-linejoin="round"/>',
-    diamond: '<path d="M20 5 L34 20 L20 35 L6 20Z" fill="none" stroke-width="4.5" stroke-linejoin="round"/>', wave: '<path d="M4 22 Q10 12 16 20 T28 20 T38 18" fill="none" stroke-width="5" stroke-linecap="round"/>'
+    diamond: '<path d="M20 5 L34 20 L20 35 L6 20Z" fill="none" stroke-width="4.5" stroke-linejoin="round"/>', wave: '<path d="M4 22 Q10 12 16 20 T28 20 T38 18" fill="none" stroke-width="5" stroke-linecap="round"/>',
+    star: '<path d="M20 5l4.6 9.6 10.5 1.4-7.6 7.4 1.8 10.5L20 29l-9.3 4.9 1.8-10.5-7.6-7.4 10.5-1.4z" fill="none" stroke-width="3.5" stroke-linejoin="round"/>'
   };
   const svg = (inner, cls, vb = '0 0 40 40') => { const e = DX.el('span', { class: cls, 'aria-hidden': 'true' }); e.innerHTML = `<svg viewBox="${vb}">${inner}</svg>`; return e; };
   const ring = (cls, pulse) => cls + (pulse ? ' pulse' : '');
@@ -416,7 +417,7 @@
     const NM = { circle: 'الدائرة', triangle: 'المثلث', diamond: 'المعين', wave: 'الموجة', star: 'النجمة' };
     const badge = (i, cls = 'v5-badge') => svg(BADGE[t.badges[i]], cls);
     const card = (r, k) => { const [kind, a, c] = r;
-      const pic = kind === 'adj' ? E('div', { class: 'v5-pair' }, badge(a), E('b', { text: '→' }), badge(c)) : kind === 'before' ? E('div', { class: 'v5-time' }, E('i', { class: 'v5-start' }), badge(a), E('b', { text: '…→' }), badge(c))
+      const pic = kind === 'adj' ? E('div', { class: 'v5-pair' }, badge(a), E('b', { text: '→' }), badge(c)) : kind === 'before' ? E('div', { class: 'v5-time' }, badge(a), E('b', { text: '…→' }), badge(c))
         : kind === 'apart' ? E('div', { class: 'v5-pair apart' }, badge(a), E('b', { text: '✕' }), badge(c)) : E('div', { class: 'v5-slots4' }, ...Array.from({ length: n }, (_, k2) => E('i', { class: k2 === 0 || k2 === n - 1 ? 'no' : '' }, k2 === 0 || k2 === n - 1 ? badge(a, 'v5-badge sm') : null)));
       const txt = kind === 'adj' ? `${NM[t.badges[a]]} ثم ${NM[t.badges[c]]} مباشرة` : kind === 'before' ? `${NM[t.badges[a]]} قبل ${NM[t.badges[c]]}` : kind === 'apart' ? `${NM[t.badges[a]]} و${NM[t.badges[c]]} لا يتجاوران` : `${NM[t.badges[a]]} ليست أولًا ولا أخيرًا`;
       return E('figure', { class: at.hint >= 1 && k === 0 ? 'pulse' : '' }, pic, E('figcaption', { text: txt })); };

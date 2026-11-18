@@ -32,7 +32,7 @@ function dailyDone(moves,min,hints){const x=state();x.daily=x.daily&&typeof x.da
 function open(i){if(!unlocked(i))return;D.stations.forEach(q=>{delete q.daily;});const x=state(),a=B.v5state(x).att[D.stations[i].id];if(a&&a.c===4)delete B.v5state(x).att[D.stations[i].id];active=i;dialogAt=0;view='story';state().resume=i;save();go();}
 function continueJourney(){const target=active+1;if(target>=D.stations.length){map();return;}const from=D.stations[active],to=D.stations[target];if(from.ch!==to.ch&&sealHere(from)&&done(from.i)){passageTarget=target;view='passage';try{sfx.seaTransition();}catch(e){}render();window.scrollTo(0,0);return;}open(target);}
 function map(){view='map';if(window.LA)LA.view=null;render();window.scrollTo(0,0);}
-function hub(){view='hub';if(window.LA)LA.view=null;render();window.scrollTo(0,0);}
+function hub(){view='hub';if(window.LA)LA.view=null;renderPuz();window.scrollTo(0,0);}
 function openSecret(ch){if(!done(sealIndex(ch)))return;active=sealIndex(ch);letterCh=ch;view='letter';go();}
 function go(){if(curTab!=='puz')tab('puz');else render();window.scrollTo(0,0);}
 
@@ -40,7 +40,23 @@ function go(){if(curTab!=='puz')tab('puz');else render();window.scrollTo(0,0);}
 function sprite(n,cls=''){return E('span',{class:'t7-sprite '+cls,style:`--sx:${(n%4)*100/3}%;--sy:${Math.floor(n/4)*50}%`,'aria-hidden':'true'});}
 function button(text,fn,cls=''){return E('button',{type:'button',class:'t7-btn '+cls,text,onclick:fn});}
 function shell(){const v=$('#v-puz');v.classList.remove('trip');v.innerHTML='';v.classList.add('t7');return v;}
-function top(v,sub,title){v.append(E('header',{class:'t7-top'},E('div',{},E('span',{class:'t7-kicker',text:sub}),E('h1',{text:title})),E('div',{class:'t7-tools'},view==='map'?button('كل الألغاز',hub):button('الخريطة',map),button('دفتر الرحلة',()=>modal('notebook')),button('الكنوز',()=>modal('treasures')))));}
+function toolIcon(text, fn, src) {
+ const el=E('button',{type:'button',class:'t7-btn t7-tool-icon',text,onclick:fn,'aria-label':text,title:text});
+ el.prepend(E('img',{src,alt:''}));
+ return el;
+}
+function top(v,sub,title){
+ const focus=view==='story'||view==='puzzle';
+ const tools=focus?[
+  toolIcon('الخريطة',map,'watercolor/art/icons54/map.webp'),
+  toolIcon('دفتر الرحلة',()=>modal('notebook'),ART+'icon_journal.webp'),
+  toolIcon('الكنوز',()=>modal('treasures'),'watercolor/art/icons54/chest.webp')
+ ]:[
+  view==='map'?button('كل الألغاز',hub):button('الخريطة',map),
+  button('دفتر الرحلة',()=>modal('notebook')),button('الكنوز',()=>modal('treasures'))
+ ];
+ v.append(E('header',{class:'t7-top'+(focus?' t7-compact-top':'')},E('div',{},E('span',{class:'t7-kicker',text:sub}),E('h1',{text:title})),E('div',{class:'t7-tools'},...tools)));
+}
 function scene(s,celebrate=false){const el=E('div',{class:'t7-scene v5-scene'+(celebrate?' celebrate':''),style:`background-image:url('${ART}${s.scene}.webp')`},E('span',{class:'t7-location',text:s.name}));
  if(celebrate)el.append(E('div',{class:'t7-reveal'},E('b',{text:sealHere(s)?'اكتمل ختم البحر':s.finale?'انفتح الطريق الثامن':'انفتح الطريق'})));return el;}
 const img=(name,alt='')=>E('img',{src:ART+name+'.webp',alt});
@@ -97,7 +113,7 @@ function renderMap(){const v=shell(),x=state(),count=Object.keys(x.done).length;
   D.stations.slice(ch*3,ch*3+3).forEach(s=>{const available=unlocked(s.i);list.append(E('button',{type:'button',class:'t7-station '+(done(s.i)?'complete':available?'available':'locked'),disabled:!available,'aria-label':`${s.name} · ${done(s.i)?'مكتملة':available?'متاحة':'مغلقة'}`,onclick:()=>open(s.i)},
    E('div',{class:'t7-thumb',style:`background-image:url('${ART}thumbs/${s.scene}.webp');background-size:cover;background-position:center`},E('span',{class:'t7-badge',text:done(s.i)?'مكتملة ✓':available?'متاحة الآن':'بعد السابقة'})),
    E('div',{class:'t7-station-label'},E('small',{text:['إبحار','مملكة','جزيرة'][s.zone]}),E('strong',{text:s.name}),E('small',{text:s.title}),
-    E('span',{class:'v5-station-guide'},E('img',{src:ART+'crew_'+crewGuide(s).key+'.webp',alt:'',loading:'lazy'}),E('span',{text:crewGuide(s).name})))));});
+    E('span',{class:'v5-station-guide'},E('img',{src:ART+'crew_'+stationGuide(s).key+'.webp',alt:'',loading:'lazy'}),E('span',{text:stationGuide(s).name})))));});
   const secret=D.secrets[ch],ready=done(sealIndex(ch));
   const chapterDone=D.stations.slice(ch*3,ch*3+3).filter(q=>!!x.done[q.id]).length;
   const chapterArt=E('div',{class:'v544-chapter-art'},E('img',{src:ART+D.SECRETS5[ch].art+'.webp',alt:'مشهد '+c[0],loading:'lazy'}));
@@ -128,18 +144,45 @@ function renderPassage(){const target=D.stations[passageTarget],p=SEA_PASSAGES[t
  v.append(E('div',{class:'t7-story-layout v545-passage-layout'},art,card));}
 
 /* ---------- story → puzzle → reward ---------- */
-// Intro on one page: scene, the speaker's portrait centred, the whole story, and one button.
-function renderStory(){const s=D.stations[active],v=shell();top(v,`الفصل ${A(s.ch+1)} · المحطة ${A(active+1)}`,s.name);
- const guide=crewGuide(s);
- const lines=s.dialog.map(([who,text])=>who==='الراوي'?E('p',{class:'v5-story-line',text}):E('div',{class:'v5-story-say'+(who===s.speaker?' main':'')},E('span',{class:'v5-say-face',style:portrait(who),'aria-hidden':'true'}),E('p',{},E('b',{text:who+': '}),text)));
- const crewFeature=E('div',{class:'v5-intro-crew'},E('div',{class:'v5-intro-crew-art'},E('img',{src:ART+'crew_full_'+guide.key+'.webp',alt:guide.name+'، '+guide.role,loading:'eager'})),
-  E('div',{class:'v5-intro-crew-copy'},E('span',{class:'t7-kicker',text:'معك في هذه المحطة'}),E('b',{text:guide.name}),E('strong',{text:guide.role}),E('p',{text:guide.task})));
- const card=E('section',{class:'t7-dialog v5-intro'},E('div',{class:'v5-intro-face',style:portrait(s.speaker),'aria-hidden':'true'}),E('span',{class:'t7-kicker v5-intro-who',text:s.speaker}),E('h2',{class:'v5-intro-title',text:s.title}),crewFeature,...lines,
-  E('div',{class:'v5-intro-goal'},E('b',{text:'المهمة: '}),s.goal),button('ابدأ اللغز',()=>{view='puzzle';render();window.scrollTo(0,0);},'primary v5-intro-go'));
- v.append(E('div',{class:'t7-story-layout'},scene(s),card));}
+// One heroine introduces each station; the complete scene remains available in the story panel.
+const OPENING_CREW=[
+ ['nuha','شوفي نافذة القفل. تقول لنا وش نضبط قبل ما نسحبه.'],
+ ['ward','خلّينا نقارن الرموز بقرائن المخزن قبل ما نبدّلها.'],
+ ['nuha','نتتبّع الشعاع من مصدره ونشوف وين نحتاج نغيّر اتجاهه.'],
+ ['rawaa','خلّينا نوصل علامات الحواف حتى تتضح خريطة الساحل.'],
+ ['ward','فيه فرق بين «قبل» و«مباشرة بعد». قارني النقوش قبل أول ضربة.'],
+ ['nuha','كل طائر ممكن يحرّك اللي بجنبه. راقبي الروابط أول.'],
+ ['rawaa','وقت وصولنا للرصيف أهم من وقت انطلاقنا.'],
+ ['ward','كل وزنة تساعدنا نستبعد مجموعة من الحجارة.'],
+ ['nuha','نتتبّع الماء من المنبع ونشوف وين يتفرّع.'],
+ ['rawaa','خلّينا نحرّك الألواح ونقارنها بالخريطة.'],
+ ['nuha','كل لمسة تقلب البلورة وجاراتها. خلّينا نحسب الأثر.'],
+ ['ward','البطاقات تقول لنا وين نحط القطع قبل ما نجرّب الميزان.'],
+ ['rawaa','اتبعي الحبل وشوفي أي حلقة تعلو الثانية.'],
+ ['nuha','الترس الأول يدور. مهمتنا نوصل دورانه للأخير.'],
+ ['nuha','راقبي أثر اللفة على كل منفذ قبل اللفة التالية.'],
+ ['rawaa','قبل ما ندفع الحجر، شيّكي المساحة قدّامه وخلفه.'],
+ ['rawaa','نبغى نمر بكل وصلة مرة واحدة. خلّينا نتتبّعها من البداية.'],
+ ['ward','كل حلقة تحتاج مكانًا يستوعب حجمها.'],
+ ['ward','قبل ما نبحر، شيّكي مين بيبقى على الضفة.'],
+ ['rawaa','خلّينا ننتبه لاتجاه كل زورق والفراغ اللي قدّامه.'],
+ ['ward','الرسائل السبع معنا. خلّينا نطابق كل ختم مع دليله.']
+];
+function stationGuide(s){return CREW_INFO.find(c=>c.key===OPENING_CREW[s.i][0]);}
+function renderStory(){
+ const s=D.stations[active],v=shell(),guide=stationGuide(s);
+ top(v,`الفصل ${A(s.ch+1)} · المحطة ${A(active+1)}`,s.name);
+ const lines=s.dialog.map(([who,text])=>E('p',{class:'v5-story-line'},who==='الراوي'?null:E('b',{text:who+': '}),text));
+ const bubble=E('div',{class:'t7-hero-intro'},E('img',{src:ART+'crew_full_'+guide.key+'.webp',alt:guide.name}),
+  E('div',{class:'t7-speech'},E('b',{text:guide.name}),E('p',{text:OPENING_CREW[s.i][1]})));
+ const story=E('details',{class:'t7-story-more'},E('summary',{text:'مشهد القصة'}),...lines);
+ const card=E('section',{class:'t7-dialog v5-intro t7-compact-intro'},E('h2',{class:'v5-intro-title',text:s.title}),bubble,
+  button('ابدأ اللغز',()=>{view='puzzle';render();window.scrollTo(0,0);},'primary v5-intro-go'),story);
+ v.append(E('div',{class:'t7-story-layout'},scene(s),card));
+}
 function renderPuzzle(){const s=D.stations[active],v=shell(),x=state();top(v,`الفصل ${A(s.ch+1)} · المحطة ${A(active+1)}`,s.title);const sc=scene(s);sc.classList.add('t7-puzzle-scene');
  const host=E('section',{class:'t7-puzzle-pane v5-pane'});v.append(E('div',{class:'t7-puzzle-layout v5-layout'},sc,host));
- const ctx={s,x,E,button,A,save,done:()=>!!x.done[s.id],sealed:()=>done(sealIndex(s.ch)),work:current,setWork:w=>{x.work[s.id]=w},onFirstWin:win,onDaily:dailyDone,map,notebook:()=>modal('notebook'),rerender:()=>B.render(host,ctx)};B.render(host,ctx);}
+ const ctx={s,x,E,button,A,save,done:()=>!!x.done[s.id],sealed:()=>done(sealIndex(s.ch)),work:current,setWork:w=>{x.work[s.id]=w},onFirstWin:win,onDaily:dailyDone,map,guide:stationGuide(s).name,rerender:()=>B.render(host,ctx)};B.render(host,ctx);}
 function win(){const s=D.stations[active],x=state();if(!L.solved(live(),current()))return;
  x.done[s.id]=x.done[s.id]||{at:Date.now(),moves:x.moves[s.id]||0,hints:x.hints[s.id]||0};const T=B.v5state(x);if(s.gives&&!T.tools[s.gives])T.tools[s.gives]='new';
  if(sealHere(s)){if(!x.rewards.includes(s.ch))x.rewards.push(s.ch);const q=D.secrets[s.ch];if(!x.bonus[q.id])x.bonus[q.id]={at:Date.now(),moves:0,hints:0,tool:false};}

@@ -31,6 +31,10 @@ async def start(pg, gid, lv=None, seed=1, inject=None):
             if (name === 'stMake') { const P = real(lv); return Object.assign(P, { s: d.s.slice(), tgt: d.tgt.slice(), min: d.min }); }
             return JSON.parse(JSON.stringify(d)); } }""", [name, data])
     await pg.evaluate("([g, lv, s]) => { startRun([g]); if (lv) RUN.replay = { id: g, lv, seed: s } }", [gid, lv, seed]); await pg.wait_for_timeout(300)
+    if gid in {'pz_' + key for key in GEN}:
+        opening = pg.locator('#stage .lb-intro')
+        ok(await opening.count() == 1 and await opening.locator('img').count() == 1, f'{gid}: one heroine before starting')
+        ok(await pg.locator('#stage #go').text_content() == 'ابدأ اللغز', f'{gid}: start action after the heroine')
     if await pg.locator('#stage #go').count(): await pg.click('#stage #go')
     for _ in range(30):
         if await pg.evaluate("() => !!(window.__test.pz && window.__test.pz.P)"): break
@@ -229,13 +233,13 @@ async def main():
             for key, fn in DRIVERS.items():
                 if ONLY and key not in ONLY.split(','): continue
                 gid = 'pz_' + key
-                ctx = await b.new_context(viewport={'width': w, 'height': 820}, has_touch=True); await ctx.add_init_script('window.__test={}')
+                ctx = await b.new_context(viewport={'width': w, 'height': 932 if w == 430 else 820}, has_touch=True); await ctx.add_init_script('window.__test={}')
                 pg = await ctx.new_page(); errs = []; pg.on('pageerror', lambda e: errs.append(str(e)[:200]))
                 # 1) reference boards of the pack (replays: they record nothing)
                 for lvk in LV[key]:
                     d = B[key][lvk]; lab = f'{gid}@{w} {lvk} seed {d["seed"]}'
                     await start(pg, gid, d['level'], d['seed'], (GEN[key], d))
-                    if lvk == LV[key][0]: ok(await pg.evaluate("() => !!document.querySelector('.lb-trio img[src*=intro_trio]')"), f'{lab}: the trio card opens the board')
+                    if lvk == LV[key][0]: ok(await pg.locator('#stage .lb-intro').count() == 0, f'{lab}: the introduction gives way to the board')
                     Pd = await P(pg); mode = 'drag' if w != 430 else 'tap'
                     if lvk == LV[key][0] or key in ('river', 'rush', 'sudo', 'tent', 'tan', 'flow', 'grid', 'pipe', 'stat'):
                         await fn(pg, lab, Pd, mode)

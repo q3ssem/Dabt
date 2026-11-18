@@ -12,19 +12,45 @@
   const A = 'motion/art10/', im = (k, c = '', alt = '') => `<img class="${c}" src="${A}${k}.webp" alt="${alt}" draggable="false">`;
   const N = v => (typeof XAR === 'function' ? XAR(v) : String(v));
 
+  const OPENINGS = {
+    pz_river: ['rawaa', 'رواء', 'قبل ما نحرّك القارب، شوفي مين بيبقى على الضفة.'],
+    pz_rush: ['rawaa', 'رواء', 'أي مركبة تفتح مجال للسيارة الحمراء إذا حرّكناها على مسارها؟'],
+    pz_stat: ['nuha', 'نهى', 'لمسة وحدة تغيّر أكثر من تمثال. شوفي الروابط قبل ما تدوّرينه.'],
+    pz_pipe: ['nuha', 'نهى', 'خلّينا نتتبّع الماء من المنبع. وين أول وصلة توقفه؟'],
+    pz_grid: ['ward', 'ورد', 'كل قرينة تضيّق الخيارات. خلّينا نشوف مين يطابقها كلها.'],
+    pz_sudo: ['ward', 'ورد', 'قبل ما تحطين الشكل، شيّكي صفّه وعموده ومجموعته.'],
+    pz_flow: ['rawaa', 'رواء', 'كل زوج يحتاج طريقه، وكل خانة لازم تمر فيها وصلة.'],
+    pz_tan: ['nuha', 'نهى', 'جرّبي تدوّرين القطعة عشان تناسب الحافة.'],
+    pz_tent: ['ward', 'ورد', 'خلّينا نقرأ رقم الصف قبل ما نحط خيمة.']
+  };
+  const showIntro0 = showIntro;
+  showIntro = function () {
+    showIntro0.apply(this, arguments);
+    const opening = OPENINGS[curGame()?.id];
+    const intro = document.querySelector('#stage > .intro');
+    const start = document.getElementById('go');
+    if (!opening || !intro || !start) return;
+    const [art, name, speech] = opening;
+    const bubble = document.createElement('div');
+    bubble.className = 'lb-intro';
+    bubble.innerHTML = `${im('char_' + art, 'lb-intro-art')}<p><b>${name}</b><br>«${speech}»</p>`;
+    intro.querySelector('.arthero')?.remove();
+    intro.querySelector('.la-intro-art')?.remove();
+    intro.prepend(bubble);
+    start.textContent = 'ابدأ اللغز';
+  };
+
   /* ---------------------------------------------------------------- shared frame
-     trio card (رواء ونهى وورد) until the first move · lead line · board · bottom bar (تلميح + main action).
+     lead line · board · bottom bar (تلميح + main action).
      The bottom «تلميح» and «إعادة اللغز» press the existing pzPlay buttons, so cost, count and remount stay the same. */
   function frame(api, o) {
     api.body.innerHTML = `<div class="lb" data-lb="${o.id}">
-      ${o.trio ? `<div class="lb-trio">${im('intro_trio', 'lb-trioimg', 'رواء ونهى وورد')}<p><b>رواء ونهى وورد:</b> «${o.trio}»</p></div>` : ''}
       ${o.lead ? `<p class="lb-lead">${o.lead}</p>` : ''}${o.top || ''}
       <div class="lb-board" id="lbb"></div>${o.under || ''}
       <div class="lb-bar"><button class="lb-hint" type="button">تلميح</button>${o.main ? `<button class="lb-main go" type="button" id="lbgo">${o.main}</button>` : `<button class="lb-main" type="button" id="lbre">إعادة اللغز</button>`}</div></div>`;
     const root = api.body.querySelector('.lb');
     root.querySelector('.lb-hint').onclick = () => { const h = document.getElementById('pzh'); if (h && !h.hidden && !h.disabled) h.click(); };
     const re = root.querySelector('#lbre'); if (re) re.onclick = () => { const r = document.getElementById('pzr'); if (r) r.click(); };
-    root.moved = () => { const t = root.querySelector('.lb-trio'); if (t) t.classList.add('gone'); };
     return root;
   }
   const flash = (el, cls = 'lb-bad', ms = 900) => { if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(() => el.classList.remove(cls), ms); };
@@ -34,7 +60,7 @@
     return pzPlay('pz_river', api => {
       const P = rvMake(api.lv), n = P.it.length, F = 1 << n, goal = (1 << (n + 1)) - 1; let s = 0, boat = new Set(), moves = 0, busy = false;
       const eats = P.conf.map(([a, b]) => `${RVN[P.it[a]]} ${P.it[a] === 'hen' ? 'تأكل' : 'يأكل'} ${RVN[P.it[b]]}`).join('، ');
-      const root = frame(api, { id: 'river', main: 'اعبر النهر', trio: 'المزارع يعبر في كل رحلة، ولا نترك آكلًا مع من يأكله.',
+      const root = frame(api, { id: 'river', main: 'اعبر النهر',
         lead: `انقل الجميع إلى المرج الأخضر. أقل حل: ${N(P.min)} رحلات.`,
         top: `<p class="lb-rule">${eats}. حمولة القارب: المزارع ومعه حتى ${N(P.cap)}.</p>` });
       $('#lbb').innerHTML = `<div class="rv10">
@@ -49,10 +75,10 @@
         root.querySelectorAll('.rv10-bank .rv10-it').forEach(e => { const i = +e.dataset.tok; e.setAttribute('aria-disabled', (s >> i & 1) !== f ? 'true' : 'false'); }); }
       function tap(i) { if (busy || api.ended) return; if (boat.has(i)) boat.delete(i); else { if ((s >> i & 1) !== fs()) { api.msg('القارب على الضفة الأخرى.'); return; }
           if (boat.size >= P.cap) { api.msg(`القارب يتسع للمزارع و${P.cap === 1 ? 'واحد فقط' : P.cap === 2 ? 'اثنين فقط' : 'ثلاثة فقط'}.`); sfx.bad(); flash(root.querySelector('.rv10-boat')); return; } boat.add(i); }
-        root.moved(); sfx.pop(); draw(); }
+        sfx.pop(); draw(); }
       const mk = MK.attach(root.querySelector('.rv10'), { canDrag: () => !busy && !api.ended, onPick: id => { mk.clear(); tap(+id); },
         drop: (id, slot) => { const i = +id; if (slot === 'boat' ? !boat.has(i) : boat.has(i)) tap(i); } });
-      function cross() { if (busy || api.ended) return; let m = 0; boat.forEach(i => m |= 1 << i); const t = s ^ F ^ m; moves++; busy = true; root.moved();
+      function cross() { if (busy || api.ended) return; let m = 0; boat.forEach(i => m |= 1 << i); const t = s ^ F ^ m; moves++; busy = true;
         root.querySelector('.rv10').classList.add('sail'); sfx.tick();
         later(() => { s = t; boat.clear(); busy = false; root.querySelector('.rv10').classList.remove('sail'); const f = fs(), eat = P.conf.find(([a, c]) => (s >> a & 1) === (s >> c & 1) && (s >> a & 1) !== f); draw();
           if (eat) { busy = true; eat.forEach(i => { const e = root.querySelector(`.rv10-bank [data-tok="${i}"]`); if (e) e.classList.add('lb-bad', 'eat'); });
@@ -71,18 +97,23 @@
      rushEngine keeps the moves, drag, tap + arrows, hint and win; only the vehicle art and the board frame change. */
   if (GM.pz_rush && typeof rushEngine === 'function' && typeof rhMake === 'function') {
     const RUSH_ART = (v, red, i) => red ? 'rush_car_red_2x1' : v.len === 3 ? (i % 2 ? 'rush_bus_3x1' : 'rush_truck_3x1') : ['rush_car_van_2x1', 'rush_car_taxi_2x1', 'rush_car_coupe_2x1', 'rush_car_teal_2x1'][i % 4];
-    window.carSVG = function (v, red, i) { return `<span class="rh10" style="--len:${v.len}">${im(RUSH_ART(v, red, i), 'rh10-img')}</span>`; };
+    const paintCar = (v, red, i) => `<span class="rh10" style="--len:${v.len}">${im(RUSH_ART(v, red, i), 'rh10-img')}</span>`;
     GM.pz_rush.run = function () {
       return pzPlay('pz_rush', api => {
-        const P = rhMake(api.lv); const R = rushEngine(api, P, m => api.win(`أخرجت السيارة في ${arN(m, AN.mv)}، والحل الأمثل ${arN(P.min, AN.mv)}.`));
+        const P = rhMake(api.lv), oldPainter = window.carSVG;
+        let R;
+        window.carSVG = paintCar;
+        try {
+          R = rushEngine(api, P, m => api.win(`أخرجت السيارة في ${arN(m, AN.mv)}، والحل الأمثل ${arN(P.min, AN.mv)}.`));
+        } finally {
+          window.carSVG = oldPainter;
+        }
         const lot = api.body.firstElementChild; const holder = document.createElement('div'); holder.className = 'lb'; holder.dataset.lb = 'rush';
-        holder.innerHTML = `<div class="lb-trio">${im('intro_trio', 'lb-trioimg', 'رواء ونهى وورد')}<p><b>رواء ونهى وورد:</b> «كل مركبة تتحرك على محورها فقط. افتحوا الطريق للحمراء.»</p></div>
-          <p class="lb-lead">اسحب كل مركبة على محورها. المخرج يمين صف السيارة الحمراء. أقل حل: ${N(P.min)} حركة.</p><div class="lb-board" id="lbb"></div>
+        holder.innerHTML = `<p class="lb-lead">اسحب كل مركبة على محورها. المخرج يمين صف السيارة الحمراء. أقل حل: ${N(P.min)} حركة.</p><div class="lb-board" id="lbb"></div>
           <div class="lb-bar"><button class="lb-hint" type="button">تلميح</button><button class="lb-main" type="button" id="lbre">إعادة اللغز</button></div>`;
         api.body.prepend(holder); holder.querySelector('#lbb').append(lot);
         holder.querySelector('.lb-hint').onclick = () => { const h = document.getElementById('pzh'); if (h && !h.hidden && !h.disabled) h.click(); };
         holder.querySelector('#lbre').onclick = () => { const r = document.getElementById('pzr'); if (r) r.click(); };
-        lot.addEventListener('pointerdown', () => { const t = holder.querySelector('.lb-trio'); if (t) t.classList.add('gone'); }, { once: true });
         return R;
       });
     };
@@ -95,14 +126,14 @@
     return pzPlay('pz_stat', api => {
       const P = stMake(api.lv), n = P.n; let s = P.s.slice(), presses = 0; const ang = P.s.map((d, i) => (P.tgt[i] + d) * 90);
       const rule = P.twist ? 'الضغط يدير التمثال يمينًا وجيرانه المرتبطين يسارًا ربع لفة' : P.R.some(v => v.includes(2)) ? 'الضغط يدير التمثال ربع لفة، وجاره المرتبط نصف لفة' : 'الضغط يدير التمثال وجيرانه المرتبطين ربع لفة في الاتجاه نفسه';
-      const root = frame(api, { id: 'stat', trio: 'طابقوا مؤشر كل تمثال مع ماسته الذهبية.', lead: `طابق مؤشر اتجاه التمثال الأخضر مع الماسة الذهبية. ${rule}${P.ring ? '، والتماثيل في حلقة مغلقة' : ''}.` });
+      frame(api, { id: 'stat', lead: `طابق مؤشر اتجاه التمثال الأخضر مع الماسة الذهبية. ${rule}${P.ring ? '، والتماثيل في حلقة مغلقة' : ''}.` });
       const Rr = 37, pos = [...Array(n)].map((_, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / n; return [50 + Rr * Math.cos(a), 50 + Rr * Math.sin(a)]; }), sz = n <= 4 ? 26 : n <= 5 ? 24 : 21;
       const pairs = []; for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) if (i !== j && P.R[i][j]) { const k = i < j ? i + '-' + j : j + '-' + i; if (!pairs.includes(k)) pairs.push(k); }
       $('#lbb').innerHTML = `<div class="st10" id="st10"><svg class="st10-links" viewBox="0 0 100 100" aria-hidden="true">${pairs.map(k => { const [a, b] = k.split('-').map(Number); return `<line data-a="${a}" data-b="${b}" x1="${pos[a][0]}" y1="${pos[a][1]}" x2="${pos[b][0]}" y2="${pos[b][1]}"/>`; }).join('')}</svg>
         ${pos.map(([x, y], i) => `<button class="st10-s" data-i="${i}" style="left:${x}%;top:${y}%;width:${sz}%" aria-label="تمثال ${N(i + 1)}">${im('stat_pedestal', 'st10-ped')}<i class="st10-tgt" style="--a:${P.tgt[i] * 90}deg"></i><span class="st10-head">${im('stat_guardian_top', 'st10-g')}<i class="st10-dot"></i></span></button>`).join('')}</div>`;
       const btns = [...$('#st10').querySelectorAll('.st10-s')], lines = [...$('#st10').querySelectorAll('line')];
       function draw() { btns.forEach((b, i) => { b.querySelector('.st10-head').style.transform = `rotate(${ang[i]}deg)`; b.classList.toggle('ok', s[i] === 0); b.setAttribute('aria-label', `تمثال ${N(i + 1)}: ${s[i] === 0 ? 'يطابق ماسته' : 'لا يطابق'}`); }); $('#st10').classList.toggle('all', s.every(d => d === 0)); }
-      function press(i) { if (api.ended) return; root.moved(); P.R[i].forEach((r, j) => { if (r) { s[j] = (s[j] + r) % 4; ang[j] += r * 90; } }); presses++;
+      function press(i) { if (api.ended) return; P.R[i].forEach((r, j) => { if (r) { s[j] = (s[j] + r) % 4; ang[j] += r * 90; } }); presses++;
         btns.forEach((b, j) => { b.classList.remove('hint'); if (P.R[i][j]) flash(b, 'press', 400); }); lines.forEach(l => { if (+l.dataset.a === i || +l.dataset.b === i) flash(l, 'zap', 500); });
         tone(180 + i * 30, .18, 'triangle', .05); draw();
         if (s.every(d => d === 0)) api.win(`طابقت اتجاهات التماثيل في ${arN(presses, AN.press)}، والأقل ${arN(P.min, AN.press)}.`); else api.msg(`الضغطات: ${N(presses)} · أقل حل: ${N(P.min)}`); }
@@ -120,13 +151,13 @@
       // art and the clockwise quarter turns that bring its drawn mask onto the cell's starting mask
       const KIND = { 10: 'pipe_straight', 6: 'pipe_elbow', 14: 'pipe_tee', 15: 'pipe_cross', 8: 'pipe_end' };
       const fit = m => { for (const [bm, art] of Object.entries(KIND)) { let r = +bm; for (let k = 0; k < 4; k++) { if (r === m) return [art, k]; r = ppRot(r); } } return ['pipe_end', 0]; };
-      const root = frame(api, { id: 'pipe', trio: 'المسي القطع لتدويرها نحو البيوت.', lead: 'اضغط القطعة لتدويرها ربع لفة. تتحقق اللعبة تلقائيًا عند الاكتمال.' });
+      frame(api, { id: 'pipe', lead: 'اضغط القطعة لتدويرها ربع لفة. تتحقق اللعبة تلقائيًا عند الاكتمال.' });
       $('#lbb').innerHTML = `<div class="pp10" id="pp10" style="--w:${P.w}">${base.map((m, i) => { const [art, k] = fit(m), src = i === P.src, house = !src && deg(P.sol[i]) === 1;
         return `<button class="pp10-c${src ? ' src' : ''}${house ? ' house' : ''}" data-i="${i}" aria-label="${src ? 'النبع' : house ? 'بيت' : 'أنبوب'}"><span class="pp10-rot" style="--k:${k}">${im(art, 'pp10-pipe')}</span>${src ? im('pipe_source_spring', 'pp10-spring') : house ? im('pipe_house', 'pp10-house') : ''}</button>`; }).join('')}</div>`;
       const cells = [...$('#pp10').children];
       function draw() { const on = ppPowered(P); cells.forEach((b, i) => { b.querySelector('.pp10-rot').style.transform = `rotate(${(+b.querySelector('.pp10-rot').style.getPropertyValue('--k') + turn[i]) * 90}deg)`; b.classList.toggle('on', on.has(i)); b.classList.toggle('lock', lock.has(i)); });
         const homes = P.sol.filter((m, i) => deg(m) === 1 && i !== P.src).length, lit = P.sol.filter((m, i) => deg(m) === 1 && i !== P.src && on.has(i)).length; api.msg(`البيوت التي وصلها الماء: ${N(lit)} من ${N(homes)}`); }
-      function rot(i) { if (api.ended || lock.has(i)) return; root.moved(); P.cur[i] = ppRot(P.cur[i]); turn[i]++; taps++; tone(500, .04); draw(); if (ppSolved(P)) { $('#pp10').classList.add('won'); api.win(`وصل الماء لكل البيوت بلا أطراف مفتوحة بعد ${arN(taps, AN.press)}.`); } }
+      function rot(i) { if (api.ended || lock.has(i)) return; P.cur[i] = ppRot(P.cur[i]); turn[i]++; taps++; tone(500, .04); draw(); if (ppSolved(P)) { $('#pp10').classList.add('won'); api.win(`وصل الماء لكل البيوت بلا أطراف مفتوحة بعد ${arN(taps, AN.press)}.`); } }
       cells.forEach((b, i) => b.onclick = () => rot(i)); draw(); pzHook({ P, rot, turn: () => turn.slice() });
       return { hint: k => { if (k === 1) return 'ابدأ من الأطراف والزوايا: القطعة في الزاوية لها اتجاهات قليلة ممكنة، والبيت دائمًا نهاية طريق.'; const bad = P.cur.map((m, i) => i).filter(i => !lock.has(i) && P.cur[i] !== P.sol[i]), c = bad.length ? pick(bad) : -1; if (c < 0) return null;
           while (P.cur[c] !== P.sol[c]) { P.cur[c] = ppRot(P.cur[c]); turn[c]++; } lock.add(c); draw(); if (ppSolved(P)) api.win('اكتمل الماء.'); return 'ثبّتُّ لك قطعة في مكانها الصحيح (عليها إطار ذهبي).'; },
@@ -140,7 +171,7 @@
   if (GM.pz_grid && typeof lgMake === 'function') GM.pz_grid.run = function () {
     return pzPlay('pz_grid', api => {
       const P = lgMake(api.lv), ans = [...Array(P.a)].map(() => Array(P.n).fill(-1)), fixed = new Set(); let mark = null;
-      const root = frame(api, { id: 'grid', main: 'تحقق من الحل', trio: 'كل قرينة صحيحة. ابدؤوا بالنفي.', lead: `اضغط الخانة لتغيير القيمة. لكل شخص قيمة واحدة من كل فئة، ولا تتكرر القيمة في العمود.` });
+      const root = frame(api, { id: 'grid', main: 'تحقق من الحل', lead: `اضغط الخانة لتغيير القيمة. لكل شخص قيمة واحدة من كل فئة، ولا تتكرر القيمة في العمود.` });
       $('#lbb').innerHTML = `<div class="lg10"><div class="lg10-clues"><h4>القرائن</h4><ol id="lgcl">${P.clues.map((c, i) => `<li data-c="${i}"><span>${lgText(c, P)}</span><i class="lg10-st"></i></li>`).join('')}</ol></div><div class="lg10-tw"><table class="lg10-t" id="lg10t"></table></div></div>`;
       const holds = c => { const g = (k, p) => ans[k][p], who = (k, v) => ans[k].indexOf(v);
         if (c.t === 'pos') return g(c.k, c.p) === c.v; if (c.t === 'neg') return g(c.k, c.p) !== c.v; const p1 = who(c.k1, c.v1); if (p1 < 0) return c.t === 'nlk'; return c.t === 'lnk' ? g(c.k2, p1) === c.v2 : g(c.k2, p1) !== c.v2; };
@@ -148,8 +179,8 @@
       function draw() { const T = $('#lg10t');
         T.innerHTML = `<tr><th scope="col">الاسم</th>${P.cats.map(k => `<th scope="col">${LG_C[k].n}</th>`).join('')}</tr>` + LG_P.slice(0, P.n).map((nm, p) => `<tr><th scope="row">${nm}</th>${P.cats.map((k, ci) => { const v = ans[ci][p], bad = mark && mark.cells.some(([a, b]) => a === ci && b === p);
           return `<td><button class="lg10-c${fixed.has(ci + '.' + p) ? ' fix' : ''}${v >= 0 ? ' set' : ''}${bad ? ' lb-badc' : ''}" data-c="${ci}" data-p="${p}" aria-label="${nm}، ${LG_C[k].n}: ${v >= 0 ? LG_C[k].it[v] : 'فارغة'}">${v >= 0 ? LG_C[k].it[v] : '؟'}</button></td>`; }).join('')}</tr>`).join('');
-        T.querySelectorAll('.lg10-c').forEach(b => b.onclick = () => { const c = +b.dataset.c, p = +b.dataset.p; if (api.ended || fixed.has(c + '.' + p)) return; root.moved(); mark = null; root.querySelectorAll('#lgcl li').forEach(l => l.className = ''); ans[c][p] = ans[c][p] + 1 >= P.n ? -1 : ans[c][p] + 1; tone(520, .04); draw(); }); }
-      $('#lbgo').onclick = () => { if (api.ended) return; root.moved(); if (ans.some(r => r.includes(-1))) { api.msg('أكمل كل الخانات أولًا.'); return; }
+        T.querySelectorAll('.lg10-c').forEach(b => b.onclick = () => { const c = +b.dataset.c, p = +b.dataset.p; if (api.ended || fixed.has(c + '.' + p)) return; mark = null; root.querySelectorAll('#lgcl li').forEach(l => l.className = ''); ans[c][p] = ans[c][p] + 1 >= P.n ? -1 : ans[c][p] + 1; tone(520, .04); draw(); }); }
+      $('#lbgo').onclick = () => { if (api.ended) return; if (ans.some(r => r.includes(-1))) { api.msg('أكمل كل الخانات أولًا.'); return; }
         if (ans.every((r, c) => r.every((v, p) => v === P.sol[c][p]))) { root.querySelectorAll('#lgcl li').forEach(l => l.className = 'ok'); api.win('تطابق القيم جميع القرائن.'); return; }
         api.wrong(); const cl = [...root.querySelectorAll('#lgcl li')];
         const dup = []; ans.forEach((r, c) => r.forEach((v, p) => { if (r.indexOf(v) !== p || r.lastIndexOf(v) !== p) dup.push([c, p]); }));
@@ -169,14 +200,14 @@
     return pzPlay('pz_sudo', api => {
       const SH = ['sudo_circle_coral', 'sudo_square_teal', 'sudo_triangle_sage', 'sudo_diamond_gold', 'sudo_hex_plum', 'sudo_star_amber'], NM = ['دائرة', 'مربع', 'مثلث', 'ماسة', 'سداسي', 'نجمة'];
       const P = sdMake(api.lv), n = P.n, [bh, bw] = sdBox(n), g = P.puz.slice(), giv = new Set(P.puz.map((v, i) => v >= 0 ? i : -1).filter(i => i >= 0)), lock = new Set(); let sel = 0;
-      const root = frame(api, { id: 'sudo', trio: 'المعطيات ثابتة، أكملي الفارغة.', lead: `كل شكل مرة واحدة في كل صف وعمود ومجموعة ${N(bh)}×${N(bw)}. اختر شكلًا من الأسفل ثم اضغط الخانة الفارغة، أو اسحبه إليها.` });
+      const root = frame(api, { id: 'sudo', lead: `كل شكل مرة واحدة في كل صف وعمود ومجموعة ${N(bh)}×${N(bw)}. اختر شكلًا من الأسفل ثم اضغط الخانة الفارغة، أو اسحبه إليها.` });
       $('#lbb').innerHTML = `<div class="sd10" id="sd10" style="--n:${n}"></div><div class="sd10-pal" id="sd10p" data-tray="pal"></div>`;
       function dup() { const b = new Set(); for (let i = 0; i < n * n; i++) { if (g[i] < 0) continue; const r = i / n | 0, c = i % n; for (let j = 0; j < n * n; j++) { if (j === i || g[j] !== g[i]) continue; const r2 = j / n | 0, c2 = j % n; if (r === r2 || c === c2 || (Math.floor(r / bh) === Math.floor(r2 / bh) && Math.floor(c / bw) === Math.floor(c2 / bw))) b.add(i); } } return b; }
       function draw() { const d = dup();
         $('#sd10').innerHTML = [...Array(n * n).keys()].map(i => { const r = i / n | 0, c = i % n, v = g[i];
           return `<button class="sd10-c${giv.has(i) ? ' giv' : ''}${lock.has(i) ? ' lock' : ''}${d.has(i) && !giv.has(i) ? ' bad' : ''}${d.has(i) && giv.has(i) ? ' clash' : ''}${c % bw === bw - 1 && c < n - 1 ? ' br' : ''}${r % bh === bh - 1 && r < n - 1 ? ' bb' : ''}" data-i="${i}" data-slot="c${i}" aria-label="${v >= 0 ? NM[v] : 'خانة فارغة'}${giv.has(i) ? '، ثابتة' : ''}">${v >= 0 ? im(SH[v]) : ''}</button>`; }).join('');
         $('#sd10p').innerHTML = [...Array(n).keys()].map(v => `<button class="mk-tok sd10-p${v === sel ? ' on' : ''}" data-tok="${v}" aria-label="${NM[v]}" aria-pressed="${v === sel}">${im(SH[v])}</button>`).join(''); }
-      function put(i, v = sel) { if (api.ended || giv.has(i) || lock.has(i)) return; root.moved(); g[i] = g[i] === v ? -1 : v; tone(560, .04); draw(); const d = dup(); if ([...d].some(x => !giv.has(x)) && g[i] >= 0) api.msg('تكرار في صف أو عمود أو مجموعة: الخانة المعلّمة بالأحمر.'); else api.msg('');
+      function put(i, v = sel) { if (api.ended || giv.has(i) || lock.has(i)) return; g[i] = g[i] === v ? -1 : v; tone(560, .04); draw(); const d = dup(); if ([...d].some(x => !giv.has(x)) && g[i] >= 0) api.msg('تكرار في صف أو عمود أو مجموعة: الخانة المعلّمة بالأحمر.'); else api.msg('');
         if (g.every((x, k) => x === P.sol[k])) { $('#sd10').classList.add('won'); api.win(`أكملت سودوكو الأشكال ${N(n)}×${N(n)}.`); } }
       const mk = MK.attach(root.querySelector('.lb-board'), { canDrag: () => !api.ended, onPick: id => { mk.clear(); sel = +id; tone(600, .03); draw(); },
         drop: (id, slot) => { if (slot && slot[0] === 'c') { sel = +id; put(+slot.slice(1), +id); } } });
@@ -193,7 +224,7 @@
     return pzPlay('pz_flow', api => {
       const COL = ['#FF5F7A', '#3FD0E8', '#8BE36A', '#FFD45A', '#B48CFF', '#FF8A3D', '#5EE6C0', '#FF8FD1', '#7DA2FF'], ART = ['coral', 'teal', 'sage', 'gold', 'plum', 'amber', 'mint', 'pink', 'blue'];
       const P = flMake(api.lv), n = P.n, K = P.ends.length, paths = P.ends.map(() => []), endOf = new Map(); P.ends.forEach(([a, b], k) => { endOf.set(a, k); endOf.set(b, k); }); let cur = -1, drag = false; const lockK = new Set();
-      const root = frame(api, { id: 'flow', trio: 'لكل زوج لون ورمز يميّزه.', lead: 'وصّل كل رمزين متطابقين بخط متصل واملأ اللوحة كلها. الخطوط لا تتقاطع.' });
+      frame(api, { id: 'flow', lead: 'وصّل كل رمزين متطابقين بخط متصل واملأ اللوحة كلها. الخطوط لا تتقاطع.' });
       $('#lbb').innerHTML = `<div class="fl10" id="fl10" style="--n:${n}"></div>`;
       const owner = c => paths.findIndex(p => p.includes(c)), adj = (a, b) => Math.abs(a % n - b % n) + Math.abs((a / n | 0) - (b / n | 0)) === 1;
       const done = k => { const p = paths[k]; return p.length > 1 && endOf.get(p[0]) === k && endOf.get(p[p.length - 1]) === k && p[0] !== p[p.length - 1]; };
@@ -207,7 +238,7 @@
         const all = paths.reduce((a, p) => a + p.length, 0), nd = [...Array(K).keys()].filter(done).length; if (!api.ended) api.msg(`وصلت ${N(nd)} من ${N(K)} أزواج · ${N(all)} من ${N(n * n)} خانة`);
         if (!api.ended && all === n * n && paths.every((_, k) => done(k))) { $('#fl10').classList.add('won'); api.win(`وصّلت ${N(K)} أزواج وملأت اللوحة كلها.`); } }
       const G = $('#fl10'), cellAt = e => { const el = document.elementFromPoint(e.clientX, e.clientY), b = el && el.closest && el.closest('.fl10-c'); return b && G.contains(b) ? +b.dataset.i : null; };
-      G.addEventListener('pointerdown', e => { const c = cellAt(e); if (c == null || api.ended) return; e.preventDefault(); root.moved(); if (start(c)) { drag = true; draw(); } else if (cur >= 0) touch(c); });
+      G.addEventListener('pointerdown', e => { const c = cellAt(e); if (c == null || api.ended) return; e.preventDefault(); if (start(c)) { drag = true; draw(); } else if (cur >= 0) touch(c); });
       G.addEventListener('pointermove', e => { if (!drag) return; const c = cellAt(e); if (c != null) touch(c); });
       const up = () => { drag = false; }; document.addEventListener('pointerup', up); if (typeof cleanup !== 'undefined' && cleanup.push) cleanup.push(() => document.removeEventListener('pointerup', up));
       G.addEventListener('click', e => { if (e.detail !== 0) return; const b = e.target.closest('.fl10-c'); if (!b) return; const c = +b.dataset.i; if (endOf.has(c) || owner(c) >= 0 && owner(c) !== cur) { start(c); draw(); } else touch(c); });
@@ -225,7 +256,7 @@
     return pzPlay('pz_tan', api => {
       const TILE = ['tan_tile_0_coral', 'tan_tile_1_teal', 'tan_tile_2_gold', 'tan_tile_3_sage', 'tan_tile_4_plum', 'tan_tile_5_amber', 'tan_tile_6_navy', 'tan_tile_7_crimson'];
       const P = tgMake(api.lv), n = P.n, R = new Set(P.reg), pcs = P.pieces.map((p, i) => ({ i, shape: shuffle([p.shape, tgRot(p.shape), tgRot(tgRot(p.shape)), tgFlip(p.shape)])[0], at: null, lock: false })); let sel = 0;
-      const root = frame(api, { id: 'tan', trio: 'ابدئي بالأطراف الضيقة من الشكل.', lead: 'غطِّ المحيط المنقّط كله بالقطع. اختر قطعة ودوّرها، ثم اسحبها أو اضغط الخانة التي يقع عليها مربعها المعلَّم.' });
+      const root = frame(api, { id: 'tan', lead: 'غطِّ المحيط المنقّط كله بالقطع. اختر قطعة ودوّرها، ثم اسحبها أو اضغط الخانة التي يقع عليها مربعها المعلَّم.' });
       $('#lbb').innerHTML = `<div class="tg10" id="tg10" style="--n:${n}"></div><div class="tg10-ctl"><button type="button" id="tgf">قلب</button><button type="button" id="tgr">تدوير</button></div><div class="tg10-tray" id="tg10t" data-tray="tray"></div>`;
       const cellsOf = p => p.at == null ? [] : p.shape.map(([x, y]) => [x + p.at[0] - p.shape[0][0], y + p.at[1] - p.shape[0][1]]);
       const occ = () => { const m = new Map(); pcs.forEach(p => cellsOf(p).forEach(([x, y]) => m.set(y * n + x, p.i))); return m; };
@@ -234,15 +265,15 @@
         const left = pcs.filter(p => p.at == null);
         $('#tg10t').innerHTML = left.length ? left.map(p => { const w = Math.max(...p.shape.map(c => c[0])) + 1, h = Math.max(...p.shape.map(c => c[1])) + 1, S = new Set(p.shape.map(([x, y]) => y * w + x));
           return `<button class="mk-tok tg10-p${p.i === sel ? ' on' : ''}" data-tok="${p.i}" style="--w:${w}" aria-label="قطعة ${N(p.i + 1)}" aria-pressed="${p.i === sel}">${[...Array(w * h)].map((_, k) => `<i class="${S.has(k) ? 'f' : ''}${k === p.shape[0][1] * w + p.shape[0][0] ? ' a' : ''}">${S.has(k) ? im(TILE[p.i % 8]) : ''}</i>`).join('')}</button>`; }).join('') : '<p class="tg10-empty">الصينية فارغة، تم تركيب كل القطع!</p>'; }
-      function tap(i, k = sel) { if (api.ended) return; root.moved(); const o = occ(); if (o.has(i) && k === sel) { const p = pcs[o.get(i)]; if (p.lock) return; p.at = null; sel = p.i; draw(); return; }
+      function tap(i, k = sel) { if (api.ended) return; const o = occ(); if (o.has(i) && k === sel) { const p = pcs[o.get(i)]; if (p.lock) return; p.at = null; sel = p.i; draw(); return; }
         const p = pcs[k]; if (!p || p.at != null) return; sel = k; p.at = [i % n, i / n | 0]; const cs = cellsOf(p);
         if (cs.some(([x, y]) => !inb(x, y, n, n) || !R.has(y * n + x) || o.has(y * n + x))) { const bad = cs.filter(([x, y]) => inb(x, y, n, n)).map(([x, y]) => y * n + x); p.at = null; sfx.bad(); api.msg('القطعة لا تدخل هنا! جرّب تدويرها أو مكانًا آخر.'); draw(); bad.forEach(c => flash($('#tg10').querySelector(`[data-i="${c}"]`), 'lb-bad', 800)); return; }
         tone(480, .06, 'triangle'); const nx = pcs.find(q => q.at == null); if (nx) sel = nx.i; api.msg(''); draw(); if (pcs.every(q => q.at != null)) { $('#tg10').classList.add('won'); api.win(`ركّبت الشكل بـ ${N(pcs.length)} قطع كاملة، وفرغت الصينية.`); } }
       const mk = MK.attach(root.querySelector('.lb-board'), { canDrag: () => !api.ended, onPick: id => { mk.clear(); sel = +id; tone(600, .03); draw(); },
         drop: (id, slot) => { if (slot && slot[0] === 'c') tap(+slot.slice(1), +id); } });
       $('#tg10').addEventListener('click', e => { const b = e.target.closest('.tg10-c'); if (b) tap(+b.dataset.i); });
-      $('#tgr').onclick = () => { const p = pcs[sel]; if (p && p.at == null) { root.moved(); p.shape = tgRot(p.shape); tone(520, .03); draw(); } };
-      $('#tgf').onclick = () => { const p = pcs[sel]; if (p && p.at == null) { root.moved(); p.shape = tgFlip(p.shape); tone(520, .03); draw(); } };
+      $('#tgr').onclick = () => { const p = pcs[sel]; if (p && p.at == null) { p.shape = tgRot(p.shape); tone(520, .03); draw(); } };
+      $('#tgf').onclick = () => { const p = pcs[sel]; if (p && p.at == null) { p.shape = tgFlip(p.shape); tone(520, .03); draw(); } };
       draw(); pzHook({ P, pcs, tap, draw, sel: k => { sel = k; draw(); } });
       return { hint: k => { if (k === 1) return 'ابدأ بالأطراف الضيقة من الشكل: قطع قليلة فقط تدخلها.'; const c = pcs.filter(p => !p.lock); if (!c.length) return null; const p = pick(c); pcs.forEach(q => { if (q !== p && !q.lock && cellsOf(q).some(([x, y]) => P.pieces[p.i].sol.includes(y * n + x))) q.at = null; });
           const sol = P.pieces[p.i].sol.map(c => [c % n, c / n | 0]); p.shape = tgNorm(sol); p.at = [p.shape[0][0] + Math.min(...sol.map(c => c[0])), p.shape[0][1] + Math.min(...sol.map(c => c[1]))]; p.lock = true; draw(); if (pcs.every(q => q.at != null)) api.win('اكتمل الشكل.'); return 'ثبّتُّ لك قطعة في مكانها الصحيح.'; },
@@ -255,7 +286,7 @@
   if (GM.pz_tent && typeof tnMake === 'function') GM.pz_tent.run = function () {
     return pzPlay('pz_tent', api => {
       const P = tnMake(api.lv), n = P.n, T = new Set(P.trees), S = new Set(P.sol), st = Array(n * n).fill(0), lock = new Set();
-      const root = frame(api, { id: 'tent', trio: 'الصف ذو الرقم 0 كله عشب!', lead: 'اضغط مرة للعشب ومرتين للخيمة بجانب كل شجرة، دون تلامس ولو قطريًا. الأرقام عدد الخيام في كل صف وعمود.' });
+      frame(api, { id: 'tent', lead: 'اضغط مرة للعشب ومرتين للخيمة بجانب كل شجرة، دون تلامس ولو قطريًا. الأرقام عدد الخيام في كل صف وعمود.' });
       $('#lbb').innerHTML = `<div class="tn10" id="tn10" style="--n:${n}"><i class="tn10-corner"></i>${P.cols.map((v, j) => `<b class="tn10-h col" data-c="${j}">${v}</b>`).join('')}
         ${[...Array(n).keys()].map(r => `<b class="tn10-h row" data-r="${r}">${P.rows[r]}</b>${[...Array(n).keys()].map(c => { const i = r * n + c; return T.has(i) ? `<span class="tn10-c tree">${im('tent_tree')}</span>` : `<button class="tn10-c" data-i="${i}" aria-label="خانة"></button>`; }).join('')}`).join('')}</div>`;
       const cnt = (a, i) => [...Array(n).keys()].filter(j => st[a ? j * n + i : i * n + j] === 2).length;
@@ -266,7 +297,7 @@
         $('#tn10').querySelectorAll('.tn10-h.row').forEach(e => { const r = +e.dataset.r, k = cnt(0, r); e.classList.toggle('done', k === P.rows[r]); e.classList.toggle('over', k > P.rows[r]); });
         return touching; }
       const won = () => { const tent = st.map((v, k) => v === 2 ? k : -1).filter(k => k >= 0); return tent.length === S.size && tent.every(k => S.has(k)); };
-      function tap(i) { if (api.ended || lock.has(i)) return; root.moved(); st[i] = (st[i] + 1) % 3; tone(st[i] === 2 ? 520 : 340, .06, st[i] === 2 ? 'triangle' : 'sine'); cell(i); const t = marks();
+      function tap(i) { if (api.ended || lock.has(i)) return; st[i] = (st[i] + 1) % 3; tone(st[i] === 2 ? 520 : 340, .06, st[i] === 2 ? 'triangle' : 'sine'); cell(i); const t = marks();
         api.msg(t ? 'خيمتان تتلامسان! الخيام لا تتلامس ولو قطريًا.' : '');
         if (won()) { $('#tn10').classList.add('won'); api.win(`نصبت ${N(S.size)} خيمة بجانب الأشجار وطابقت كل الأرقام.`); } }
       $('#tn10').querySelectorAll('button.tn10-c').forEach(b => b.onclick = () => tap(+b.dataset.i)); marks(); pzHook({ P, tap, st });
