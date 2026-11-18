@@ -149,6 +149,15 @@ jobs:
           print('Patched JS syntax, JSON and app-loader dependencies OK')
           PY
 
+      - name: Set up Python for CSS generation
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install the CSS parser used by the existing theme generator
+        shell: bash
+        run: python3 -m pip install --disable-pip-version-check 'tinycss2==1.4.0'
+
       - name: Regenerate white-theme stylesheet from patched sources
         shell: bash
         run: |
