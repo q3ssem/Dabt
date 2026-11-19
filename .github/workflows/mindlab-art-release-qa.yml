@@ -52,9 +52,12 @@ jobs:
           elif [ "$SUITE" = inventory ]; then
             python qa/browser/display_audio_review.py "$MINDLAB_URL" "$OUT" --engine "$ENGINE" --label "$ENGINE" --all --check
           else
-            MODE=scenes python qa/browser/journey_completion.py
-            python qa/browser/atheran_campaign.py
-            python qa/browser/expedition25_smoke.py
+            rc=0
+            MODE=scenes python qa/browser/journey_completion.py || rc=1
+            MODE=palace python qa/browser/journey_completion.py || rc=1
+            python qa/browser/atheran_campaign.py || rc=1
+            python qa/browser/expedition25_smoke.py || rc=1
+            exit "$rc"
           fi
       - uses: actions/upload-artifact@v4
         if: always()

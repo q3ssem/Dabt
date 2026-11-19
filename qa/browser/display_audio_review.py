@@ -30,20 +30,20 @@ METRICS = """(selector)=>{
 
 async def open_round(page, game, level=1):
     await page.evaluate("""([g, level])=>{startRun([g]);if(GM[g].puz)RUN.replay={id:g,lv:level,seed:8127};window.__test.pz=null;}""", [game, level])
-    await page.locator('#stage #go').click(timeout=3000)
+    await page.locator('#stage #go').click(timeout=12000)
     await dismiss_opening(page)
     await page.wait_for_function("()=>!document.querySelector('#stage .cd')", timeout=5000)
 
 async def visit(browser, args, size, skin, ids):
     w,h=size
     ctx=await browser.new_context(viewport={'width': w,'height': h},screen={'width':w,'height':h},
-                                  is_mobile=args.engine=='chromium',has_touch=True,locale='ar-SA',reduced_motion='reduce')
+                                  is_mobile=args.engine=='chromium',has_touch=True,locale='ar-SA',reduced_motion='reduce',service_workers='block')
     await ctx.add_init_script('window.__test={}')
     pg=await ctx.new_page()
     errors=[]
     pg.on('pageerror', lambda e: errors.append(str(e)))
     await pg.goto(args.url, wait_until='domcontentloaded')
-    await pg.wait_for_function("()=>typeof startRun==='function' && typeof MK==='object'")
+    await pg.wait_for_function("()=>typeof startRun==='function' && typeof MK==='object' && !!window.mindlabJourneyHub && !!window.fitOpenings")
     profile=pg.locator('.mpc[data-m=main]')
     if await profile.is_visible():
         await profile.click()
@@ -56,6 +56,7 @@ async def visit(browser, args, size, skin, ids):
             await pg.evaluate("(s)=>document.documentElement.dataset.skin=s",skin)
             await pg.wait_for_timeout(240)
             if gid in SAMPLES:
+                await pg.wait_for_function("(sel)=>[...(document.querySelector(sel)?.querySelectorAll('img')||[])].every(e=>e.complete)", arg=SAMPLES[gid], timeout=5000)
                 record['layout']=await pg.evaluate(METRICS,SAMPLES[gid])
                 if not args.all:
                     await pg.screenshot(path=args.out / f'{args.label}_{gid}_{w}x{h}_{skin}.jpg', quality=84)
@@ -67,7 +68,8 @@ async def visit(browser, args, size, skin, ids):
                 controls:[...container.querySelectorAll('button')].filter(e=>e.offsetWidth).length,
                 scroll:!!b?.classList.contains('fit-scroll'),fit:b?.dataset.fitZoom,text:container.innerText.slice(0,600)};
             }"""))
-            if not args.all and gid in SAMPLES and record.get('layout') and args.check:
+            if not args.all and gid in SAMPLES and args.check:
+                assert record.get('layout'), 'expected scene did not mount'
                 layout=record['layout']
                 assert layout['duplicateActions'] == 0, 'duplicate hint or retry'
                 assert layout['clippedTargets'] == 0, 'clipped controls'
@@ -80,7 +82,7 @@ async def visit(browser, args, size, skin, ids):
                     assert await pg.locator('#rhb > i').count() == 36
 
         except Exception as e:
-            record['error']=str(e).splitlines()[0]
+            record['error']=str(e)[:1700]
         record['pageErrors']=errors[start:]
         out.append(record)
         await pg.evaluate("()=>{if(RUN)closePlay();}")
@@ -102,6 +104,9 @@ async def main():
         rows=[r for group in await asyncio.gather(*jobs) for r in group]
         (args.out / f'{args.label}_metrics.json').write_text(json.dumps(rows,ensure_ascii=False,indent=2))
         print(f'{args.label}: {len(rows)} rows, {sum(bool(r.get("error") or r["pageErrors"]) for r in rows)} with script errors')
+        for r in rows:
+            if r.get('error') or r['pageErrors']:
+                print(json.dumps({k:r.get(k) for k in ('id','size','skin','error','pageErrors')},ensure_ascii=False),flush=True)
         await browser.close()
         if args.check and any(r.get('error') or r['pageErrors'] for r in rows):
             raise SystemExit(1)
