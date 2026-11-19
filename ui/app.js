@@ -1,20 +1,4 @@
 'use strict';
-/* 5.5.28 athran-assets-2 — larger phones (iPhone Plus / Pro Max, 400–600 pt wide in portrait): lay the page out at 375 pt,
-   the width every screen is designed and tested at, and let the phone scale it to the full width. On a 430-pt
-   iPhone 16 Plus everything (text, buttons, boards) is ~15 % larger and stays sharp. Pointer coordinates stay
-   in CSS pixels, so no game needs a change. Tablets, landscape and narrower phones keep the normal layout. */
-(function () {
-  const m = document.querySelector('meta[name=viewport]'); if (!m) return;
-  const base = m.getAttribute('content'), DESIGN = 375;
-  const fit = () => {
-    const sw = Math.min(screen.width, screen.height), portrait = matchMedia('(orientation: portrait)').matches;
-    let c = base;
-    if (portrait && sw >= 400 && sw < 600) { const k = (sw / DESIGN).toFixed(4); c = `width=${DESIGN},initial-scale=${k},minimum-scale=${k},maximum-scale=${k},user-scalable=no,viewport-fit=cover`; }
-    if (m.getAttribute('content') !== c) m.setAttribute('content', c);
-    document.documentElement.dataset.phoneFit = c === base ? 'off' : DESIGN;
-  };
-  fit(); addEventListener('orientationchange', () => setTimeout(fit, 120)); matchMedia('(orientation: portrait)').addEventListener?.('change', fit);
-})();
 /* 5.1–5.3 presentation layer (loaded last): games page in sections, faster game start, «مستواي» dashboard,
    kids layout and river decorations. Game engines, scores and saves are untouched. */
 // 5.5: white theme by default — set before first paint; release54.js keeps it in sync afterwards.
@@ -167,7 +151,7 @@ try {
   const load=(src,next)=>{const s=document.createElement('script');s.src=new URL(src,document.baseURI).href;s.dataset.release='5.5.28-atheran';s.onload=next||null;document.body.append(s);};
   const go=()=>load('atheran/runtime/assets-runtime.js',()=>load('atheran/campaign/story.js',()=>load('atheran/campaign/campaign.js',()=>load('atheran/bindings/bindings.js',()=>load('motion/kit.js',()=>load('motion/atheran-motion.js',()=>load('motion/palace-motion.js',()=>load('motion/lab10.js',()=>load('motion/pirate-routes.js',()=>load('ui/fit.js',()=>load('ui/openings-data.js',()=>load('ui/openings.js',()=>load('ui/journey-story-data.js',()=>load('ui/board-art-data.js',()=>load('ui/designs_art/journey/v3/stations.js',()=>load('ui/journey-hub.js'))))))))))))))));
   const css2=document.createElement('link');css2.rel='stylesheet';css2.href=new URL('atheran/bindings/bindings.css',document.baseURI).href;document.head.append(css2);
-  const css3=document.createElement('link');css3.rel='stylesheet';css3.href=new URL('motion/motion.css',document.baseURI).href;document.head.append(css3);const css4=document.createElement('link');css4.rel='stylesheet';css4.href=new URL('motion/lab10.css',document.baseURI).href;document.head.append(css4);const css5=document.createElement('link');css5.rel='stylesheet';css5.href=new URL('ui/fit.css',document.baseURI).href;document.head.append(css5);const css6=document.createElement('link');css6.rel='stylesheet';css6.href=new URL('ui/openings.css',document.baseURI).href;document.head.append(css6);const css7=document.createElement('link');css7.rel='stylesheet';css7.href=new URL('ui/journey-hub.css',document.baseURI).href;document.head.append(css7);
+  const css3=document.createElement('link');css3.rel='stylesheet';css3.href=new URL('motion/motion.css',document.baseURI).href;document.head.append(css3);const css4=document.createElement('link');css4.rel='stylesheet';css4.href=new URL('motion/lab10.css',document.baseURI).href;document.head.append(css4);const css5=document.createElement('link');css5.rel='stylesheet';css5.href=new URL('ui/fit.css',document.baseURI).href;document.head.append(css5);const css6=document.createElement('link');css6.rel='stylesheet';css6.href=new URL('ui/openings.css',document.baseURI).href;document.head.append(css6);const css7=document.createElement('link');css7.rel='stylesheet';css7.href=new URL('ui/journey-hub.css',document.baseURI).href;document.head.append(css7);const art=document.createElement('link');art.rel='stylesheet';art.href=new URL('motion/correction-art.css',document.baseURI).href;document.head.append(art);const expeditionArt=document.createElement('link');expeditionArt.rel='stylesheet';expeditionArt.href=new URL('motion/expedition-art.css',document.baseURI).href;document.head.append(expeditionArt);
   const mini=document.querySelector('script[data-release="5.5.2-mini"]');
   if(mini&&!window.LA?.miniReady)mini.addEventListener('load',go,{once:true});else go();
 })();
@@ -196,6 +180,7 @@ try {
 (function installPuzzleQualityLayer() {
   if (typeof window.pzPlay !== 'function' || window.__MINDLAB_PZ_QUALITY_557) return;
   window.__MINDLAB_PZ_QUALITY_557 = true;
+  const warmedArt = new Set();
   const pzPlay = function(id, build) {
 return done=>{
   const g=GM[id],kid=!!g.kid,mx=pzMax(id),daily=!!(RUN&&RUN.daily)&&!kid,isRid=id==='pz_rid';
@@ -203,24 +188,36 @@ return done=>{
   const stg=rp?null:txStageOf(id),lv=rp?rp.lv:stg?stg.lv:pzLv(id),seed=rp?rp.seed:(Math.random()*2147483646|0)+1;if(RUN&&!isRid)RUN.last={id,lv,seed};
   const st=$('#stage');const base=kid?0:(isRid?40:20+lv*10)*(daily?2:1);let pts=base,hints=0,wrongs=0,ended=false,P={};
   const canRe=!PZ_NORESTART.includes(id);
-  st.innerHTML=`<div class="pzhud">${kid?`<span class="pzlv">المستوى <b class="num">${lv}</b></span>`:`<span class="pzlv">${daily?'<span class="badge">لغز اليوم ×2</span> ':''}${isRid?'':stg?`المرحلة <b class="num">${stg.k}</b> من 3`:`المستوى <b class="num">${lv}</b> من ${mx}`}</span><span class="pzcoin" title="العملات المتاحة">${COIN}<b class="num" id="pzp">${pts}</b></span>`}${canRe?`<button class="pzhb pzre" id="pzr" aria-label="إعادة اللغز من البداية">${RE_SVG}<span>إعادة</span></button>`:''}<button class="pzhb" id="pzh">${BULB}<span>تلميح</span><i class="num" id="pzhn">3</i></button></div><div class="pzhint" id="pzt" hidden></div><div class="msg" id="m"></div><div class="pzbody" id="pzb"></div><div class="pzfoot"><button class="pzgive" id="pzq">${kid?'رجوع':'استسلم'}</button></div>`;
+  st.innerHTML=`<div class="pzhud">${kid?`<span class="pzlv">المستوى <b class="num">${lv}</b></span>`:`<span class="pzlv">${daily?'<span class="badge">لغز اليوم ×2</span> ':''}${isRid?'':stg?`المرحلة <b class="num">${stg.k}</b> من 3`:`المستوى <b class="num">${lv}</b> من ${mx}`}</span><span class="pzcoin" title="العملات المتاحة">${COIN}<b class="num" id="pzp">${pts}</b></span>`}${canRe?`<button class="pzhb pzre" id="pzr" aria-label="إعادة اللغز من البداية">${RE_SVG}<span>إعادة</span></button>`:''}<button class="pzhb" id="pzh" aria-label="تلميح">${BULB}<span>تلميح</span><i class="num" id="pzhn">3</i></button></div><div class="pzhint" id="pzt" hidden></div><div class="msg" id="m"></div><div class="pzbody" id="pzb"></div><div class="pzfoot"><button class="pzgive" id="pzq">${kid?'رجوع':'استسلم'}</button></div>`;
+  const paintState = state => { st.dataset.expState = state; };
+  const board = $('#pzb');
+  board.addEventListener('click', event => {
+    const input = event.target.closest('button,[data-i],[data-tok],[data-drag],[role="button"]');
+    if (!ended && input && !input.disabled && input.getAttribute('aria-disabled') !== 'true') paintState('selected');
+  }, { capture: true });
+  delete st.dataset.expState;
   const setP=v=>{pts=Math.max(Math.round(base*.25),v);const e=$('#pzp');if(e)e.textContent=pts};
   const fin=(won,detail)=>{ended=true;stopAll();const p=pzState(),cur=pzLv(id);let nl=cur;
     if(!isRid&&!stg)nl=won?Math.min(mx,cur+1):Math.max(1,cur-1);if(!isRid&&!stg)pzSetLv(id,nl);if(won&&stg&&stg.replay){S.st.stgR=S.st.stgR||{};S.st.stgR[id]=stg.k%3}
     if(won&&!kid){p.pts+=pts;p.n[id]=(p.n[id]||0)+1;if(daily)p.daily=dayKey()}if(RUN){RUN.daily=false;if(isRid)RUN.rid=null}
     const lvTxt=isRid||stg?'':nl>cur?` المرحلة التالية: المستوى ${nl}.`:nl<cur?` رجعنا للمستوى ${nl} لتثبيت المهارة.`:'';
     const hTxt=kid?'':won?(hints?` استخدمت ${arN(hints,AN.hint)}.`:' بدون أي تلميح!'):'';
-    if(won){sfx.win();$('#pzb').classList.add('solved');pzStamp(kid?'أحسنت!':'محلول!')}
+    if(won){paintState('solved');sfx.win();$('#pzb').classList.add('solved');pzStamp(kid?'أحسنت!':'محلول!')}
     later(()=>done({pts:won?pts:0,metric:won?clamp(1000-hints*150-wrongs*100,250,1000):0,detail:(detail||'')+hTxt+lvTxt}),won?1500:300)};
   const api={lv,kid,id,body:$('#pzb'),msg:h=>{const m=$('#m');if(m)m.innerHTML=h},get ended(){return ended},get hints(){return hints},get wrongs(){return wrongs},
-    wrong(){if(ended)return;wrongs++;sfx.bad();if(!kid)setP(pts-Math.round(base*.1))},
+    wrong(){if(ended)return;paintState('wrong');wrongs++;sfx.bad();if(!kid)setP(pts-Math.round(base*.1))},
     win(detail){if(!ended)fin(true,detail)},over(detail){if(!ended)fin(false,detail)}};
   const mount=()=>{const R=Math.random;Math.random=seeded(seed);try{P=build(api)||{};if(typeof XOLD!=='undefined'&&XOLD.has(id)&&id!=='pz_pipe')try{xWrapOld(api.body,id)}catch(e){}}finally{Math.random=R}};
   mount();
+  const worker = navigator.serviceWorker?.controller;
+  if (worker && !warmedArt.has(id) && !navigator.connection?.saveData) {
+    worker.postMessage({type:'warm-puzzle-art', puzzleId:id});
+    warmedArt.add(id);
+  }
   const hb=$('#pzh');if(!P.hint)hb.hidden=true;
   hb.onclick=()=>{if(ended||hints>=3||!P.hint)return;const before=pts;hints++;if(!kid)setP(pts-Math.round(base*.2));const t=P.hint(hints);if(t==null){hints--;if(!kid)setP(before);return}$('#pzhn').textContent=3-hints;
     const box=$('#pzt');box.hidden=false;box.innerHTML=`<b>تلميح ${hints}:</b> ${t}`;sfx.lit();if(hints>=3||ended)hb.disabled=true};
-  const rb=$('#pzr');if(rb)rb.onclick=()=>{if(ended)return;stopAll();const b=$('#pzb');b.className='pzbody';b.innerHTML='';const hintBox=$('#pzt');hintBox.hidden=true;hintBox.innerHTML='';api.msg('');
+  const rb=$('#pzr');if(rb)rb.onclick=()=>{if(ended)return;stopAll();delete st.dataset.expState;const b=$('#pzb');b.className='pzbody';b.innerHTML='';const hintBox=$('#pzt');hintBox.hidden=true;hintBox.innerHTML='';api.msg('');
     pts=base;hints=0;wrongs=0;setP(pts);$('#pzhn').textContent='3';hb.disabled=false;hb.hidden=false;
     rb.classList.remove('spin');void rb.offsetWidth;rb.classList.add('spin');sfx.flip();mount();hb.hidden=!P.hint;hb.disabled=!P.hint;b.classList.add('rebuilt')};
   let arm=0;$('#pzq').onclick=()=>{if(ended)return;if(kid){closePlay();return}const q=$('#pzq');

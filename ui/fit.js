@@ -17,7 +17,7 @@
   const seen = () => { try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); } catch (e) { return {}; } };
   const markSeen = id => { try { const s = seen(); s[id] = 1; localStorage.setItem(SEEN_KEY, JSON.stringify(s)); } catch (e) {} };
   const gid = () => { try { return typeof curGame === 'function' ? (curGame() || {}).id : null; } catch (e) { return null; } };
-  const txt = e => (e && e.innerText || '').replace(/\s+/g, ' ').trim();
+  const txt = e => (e && (e.innerText || e.textContent) || '').replace(/\s+/g, ' ').trim();
   const arabic = n => String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
   function waterAmount(n) {
     if (!Number.isFinite(n)) return '—';
@@ -40,9 +40,11 @@
     });
   }
   const I_INFO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>';
+  const I_SOUND = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h4l5-4v14l-5-4H3zM16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12"/></svg>';
   const I_BOOK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5.5C6.5 4 9.5 4 12 6c2.5-2 5.5-2 8-.5V19c-2.5-1.5-5.5-1.5-8 .5-2.5-2-5.5-2-8-.5z"/><path d="M12 6v13.5"/></svg>';
 
   let body = null, mo = null, raf = 0, fitting = false, sheetPrevFocus = null;
+  const layoutObserver = typeof ResizeObserver === 'function' ? new ResizeObserver(() => schedule()) : null;
 
   function sheetHTML() {
     const story = $$(STORY, body).map(e => { const c = e.cloneNode(true); $$('button', c).forEach(b => b.remove()); return txt(c); }).filter(Boolean);
@@ -106,6 +108,25 @@
       const n = (txt(jb).match(/[\d٠-٩]+\s*\/\s*[\d٠-٩]+/) || [])[0]; if (n) pb.insertAdjacentHTML('beforeend', `<i>${n}</i>`);
       pb.onclick = () => jb.click(); (($('.fit-info', tools) || {}).after ? $('.fit-info', tools).after(pb) : tools.prepend(pb));
     }
+    const hint = $('#pzh', h);
+    if (hint) hint.setAttribute('aria-label', 'تلميح');
+    if ($('.lb[data-layout]', body) && !$('.fit-sound', tools)) {
+      const sound = document.createElement('button');
+      sound.type = 'button'; sound.className = 'pzhb fit-sound'; sound.innerHTML = I_SOUND;
+      sound.setAttribute('aria-label', 'المؤثرات الصوتية');
+      const sync = () => sound.setAttribute('aria-pressed', String(!S.st.mute));
+      sound.onclick = () => {
+        S.st.mute = !S.st.mute; S.save();
+        if (S.st.mute) { sfx.silenceRound?.(); sleepAudio(); }
+        else unlockAudio();
+        sync();
+      };
+      sync(); tools.append(sound);
+    }
+    const main = $('[data-fit-primary]', body);
+    const prior = $('[data-fit-primary]', tools);
+    if (main && prior) prior.remove();
+    if (main && main.parentElement !== tools) tools.append(main);
     const q = $('#pzq'); if (q && q.parentElement !== tools) { q.setAttribute('aria-label', q.textContent.trim() === 'رجوع' ? 'رجوع' : 'استسلم'); tools.append(q); }
     const t = $('#pzt'); if (t && !t.dataset.fit) { t.dataset.fit = '1'; t.addEventListener('click', () => { t.hidden = true; }); }
   }
@@ -157,11 +178,24 @@
     try {
       gardenAmounts();
       const pl = $('#play'); if (pl) pl.scrollTop = 0;
-      const top = body.getBoundingClientRect().top, safe = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fit-safe-b')) || 0;
-      const avail = Math.max(160, window.innerHeight - top - 6 - safe);
+      const bounds = pl.querySelector('.pin').getBoundingClientRect();
+      const safe = parseFloat(getComputedStyle(pl.querySelector('.pin')).paddingBottom) || 0;
+      const vv = window.visualViewport;
+      const viewportBottom = vv ? vv.offsetTop + vv.height : window.innerHeight;
+      const avail = Math.max(1, Math.min(bounds.bottom - safe, viewportBottom - safe) - body.getBoundingClientRect().top);
+      if ($('.lb[data-layout]', body)) {
+        const minHeight = $('.lb[data-layout="adventure"]', body) ? 215 : 200;
+        body.style.removeProperty('--fit-z');
+        body.style.setProperty('--fit-room', `${Math.max(minHeight, avail - 8)}px`);
+        body.style.height = `${avail}px`;
+        body.dataset.fitZoom = '1.00';
+        body.classList.toggle('fit-scroll', avail < minHeight + 8);
+        return;
+      }
+      body.style.removeProperty('--fit-room');
       const keep = body.scrollTop;
       const natural = () => { body.scrollTop = 0; const r0 = body.getBoundingClientRect().top; let b = 0; for (const c of body.children) { const r = c.getBoundingClientRect(); if (r.height) b = Math.max(b, r.bottom); } return b - r0 + 4; };
-      const floor = ['pz_avsong','pz_ashade'].includes(gid()) ? 1 : ['pz_river','pz_grid','pz_xbottle','pz_tpath','pz_door'].includes(gid()) ? 0.85 : MIN_ZOOM;
+      const floor = ['pz_avsong','pz_ashade'].includes(gid()) ? 1 : ['pz_grid','pz_xbottle','pz_tpath','pz_door'].includes(gid()) ? 0.85 : MIN_ZOOM;
       let z = 1; body.style.removeProperty('--fit-z'); body.style.height = ''; let need = natural();
       for (let i = 0; i < 5 && need > avail + 1; i++) {
         z = Math.max(floor, Math.min(1, z * avail / need)); body.style.setProperty('--fit-z', String(z)); need = natural();
@@ -176,11 +210,12 @@
   function mount() {
     const b = $('#stage #pzb');
     if (b === body) return;
-    if (mo) mo.disconnect(); body = b; closeSheet();
+    if (mo) mo.disconnect(); layoutObserver?.disconnect(); body = b; closeSheet();
     if (!b) { const p = $('#play'); if (p) p.classList.remove('fit'); return; }
-    arrange(); hud(); schedule(); setTimeout(() => { hud(); schedule(); }, 120); setTimeout(() => { hud(); schedule(); }, 600);
+    arrange(); hud(); schedule();
+    for (const el of $$('#play .pbar, #stage .pzhud, #stage #m')) layoutObserver?.observe(el); setTimeout(() => { hud(); schedule(); }, 120); setTimeout(() => { hud(); schedule(); }, 600);
     setTimeout(() => { if (body === b) bubble(); }, 250);
-    mo = new MutationObserver(() => { pageClues(b); $$('details.ui-rules:not([open])', b).forEach(d => { d.open = true; }); schedule(); });
+    mo = new MutationObserver(() => { hud(); pageClues(b); $$('details.ui-rules:not([open])', b).forEach(d => { d.open = true; }); schedule(); });
     mo.observe(b, { childList: true, subtree: true });
     b.addEventListener('load', schedule, true); b.addEventListener('toggle', schedule, true);
   }

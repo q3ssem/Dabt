@@ -53,7 +53,8 @@ ok(man.includes('"atheran/bindings/bindings.js"') && man.includes('"atheran/bind
 ok(/load\('atheran\/bindings\/bindings\.js'/.test(fs.readFileSync('ui/app.js', 'utf8')), 'bindings loaded by ui/app.js');
 ok(!/localStorage\.setItem|S\.save\(|txSave/.test(src), 'bindings never write the save');
 const app = fs.readFileSync('ui/app.js', 'utf8');
-ok(/DESIGN = 375/.test(app) && /sw >= 400 && sw < 600/.test(app) && /portrait/.test(app), 'large phones (400–600 pt, portrait) lay out at 375 pt and scale up; tablets/landscape untouched');
-ok(app.indexOf('DESIGN = 375') < 1200, 'the phone fit runs first in ui/app.js');
+const viewport = fs.readFileSync('index.html', 'utf8').match(/<meta name="viewport" content="([^"]+)">/)?.[1] || '';
+ok(viewport.includes('width=device-width'), 'native viewport width is retained');
+ok(!/meta\[name=viewport\]|DESIGN = 375/.test(app), 'app avoids overriding the viewport on rotation or resize');
 ok(/prefers-reduced-motion/.test(fs.readFileSync('atheran/bindings/bindings.css', 'utf8')), 'VFX respect reduced motion');
 console.log(`Atheran bindings: ${n} checks passed — 80/80 piece states, 14/14 frames, ${vfxIds.length} VFX ids, 546 assets unchanged.`);

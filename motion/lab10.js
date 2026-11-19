@@ -44,18 +44,13 @@
     start.textContent = 'ابدأ اللغز';
   };
 
-  /* ---------------------------------------------------------------- shared frame
-     lead line · board · bottom bar (تلميح + main action).
-     The bottom «تلميح» and «إعادة اللغز» press the existing pzPlay buttons, so cost, count and remount stay the same. */
-  function frame(api, o) {
-    api.body.innerHTML = `<div class="lb" data-lb="${o.id}">
-      ${o.lead ? `<p class="lb-lead">${o.lead}</p>` : ''}${o.top || ''}
-      <div class="lb-board" id="lbb"></div>${o.under || ''}
-      <div class="lb-bar"><button class="lb-hint" type="button">تلميح</button>${o.main ? `<button class="lb-main go" type="button" id="lbgo">${o.main}</button>` : `<button class="lb-main" type="button" id="lbre">إعادة اللغز</button>`}</div></div>`;
-    const root = api.body.querySelector('.lb');
-    root.querySelector('.lb-hint').onclick = () => { const h = document.getElementById('pzh'); if (h && !h.hidden && !h.disabled) h.click(); };
-    const re = root.querySelector('#lbre'); if (re) re.onclick = () => { const r = document.getElementById('pzr'); if (r) r.click(); };
-    return root;
+  const boatIcon = '<svg viewBox="0 0 24 24" aria-hidden="true" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round"><path d="M3 12h18l-3 5H6zM12 4v8m0-8 5 6h-5M3 21c1.5-1 3-1 4.5 0s3 1 4.5 0 3-1 4.5 0 3 1 4.5 0"/></svg>';
+  function frame(api, { id, layout, lead, top, under, main }) {
+    api.body.innerHTML = `<div class="lb" data-lb="${id}"${layout ? ` data-layout="${layout}"` : ''}>
+      ${lead ? `<p class="lb-lead">${lead}</p>` : ''}${top || ''}
+      <div class="lb-board" id="lbb"></div>${under || ''}
+      ${main ? `<div class="lb-bar"><button class="lb-main go" type="button" id="lbgo">${main}</button></div>` : ''}</div>`;
+    return api.body.querySelector('.lb');
   }
   const flash = (el, cls = 'lb-bad', ms = 900) => { if (!el) return; el.classList.remove(cls); void el.offsetWidth; el.classList.add(cls); setTimeout(() => el.classList.remove(cls), ms); };
 
@@ -98,28 +93,24 @@
     return pzPlay('pz_river', api => {
       const P = rvMake(api.lv), n = P.it.length, F = 1 << n, goal = (1 << (n + 1)) - 1; let s = 0, boat = new Set(), moves = 0, busy = false;
       const eats = P.conf.map(([a, b]) => `${RVN[P.it[a]]} ${P.it[a] === 'hen' ? 'تأكل' : 'يأكل'} ${RVN[P.it[b]]}`).join('، ');
-      const root = frame(api, { id: 'river', main: 'اعبر النهر',
+      const root = frame(api, { id: 'river', layout: 'adventure',
         lead: `انقل الجميع إلى المرج الأخضر. أقل حل: ${N(P.min)} رحلات.`,
         top: `<p class="lb-rule">${eats}. حمولة القارب: المزارع ومعه حتى ${N(P.cap)}.</p>` });
-      const layers = [
-        ['01_background/01_sky_and_mountains', 'sky'], ['05_sky_anim/cloud_01', 'cloud one'],
-        ['05_sky_anim/cloud_02', 'cloud two'], ['05_sky_anim/cloud_03', 'cloud three'],
-        ['03_water/04_water_surface', 'water'], ['03_water/05_water_reflections', 'water reflections'],
-        ['03_water/06_water_waves', 'water waves'], ['02_banks/02_bank_left', 'bank left'],
-        ['02_banks/03_bank_right', 'bank right'], ['04_props/07_prop_cottage', 'cottage'],
-        ['04_props/08_prop_tree_left', 'tree'], ['04_props/09_prop_trees_right', 'trees'],
-        ['04_props/10_prop_stones', 'stones'], ['04_props/11_prop_wood_logs', 'logs'],
-        ['04_props/12_prop_plants_flowers', 'flowers'], ['04_props/13_prop_reeds_bushes', 'reeds'],
-        ...[1, 2, 3].map(n => [`05_sky_anim/bird_fly_0${n}`, `bird bird-${n}`])
-      ];
+      const sound = sfx.roundScene?.();
+      const reduceMotion = matchMedia('(prefers-reduced-motion: reduce)');
       $('#lbb').innerHTML = `<div class="rv10">
-        <div class="rv10-landscape" aria-hidden="true">${layers.map(([file, cls]) => png('river_v2/' + file, cls)).join('')}</div>
+        <div class="rv10-landscape" aria-hidden="true"></div>
         <section class="rv10-bank" data-slot="bank0" aria-label="الضفة اليسرى"><h4>الضفة اليسرى</h4><div class="rv10-items" id="rvb0"></div></section>
         <section class="rv10-water"><h4>المزارع</h4><small id="rvside" role="status" aria-live="polite"></small></section>
+        <button type="button" id="lbgo" class="pzhb rv10-cross" data-fit-primary aria-label="اعبر النهر" title="اعبر النهر">${boatIcon}</button>
         <section class="rv10-bank goal" data-slot="bank1" aria-label="المرج الأخضر"><h4>المرج الأخضر</h4><div class="rv10-items" id="rvb1"></div></section>
         <div class="rv10-boat" data-slot="boat" aria-label="القارب"><div class="rv10-rig" aria-hidden="true"></div><div class="rv10-load" id="rvld"></div></div></div>`;
+      const crossButton = $('#lbgo');
       const fs = () => (s & F ? 1 : 0);
       const stageOne = ['wolf', 'sheep', 'grass'];
+      const passengerPath = (animal, state) => DESIGNS + (stageOne.includes(animal)
+        ? `river_stage1/03_passengers/${animal}_${state}.png`
+        : `river_stage2/passengers/${animal}_${state}.png`);
       const rig = root.querySelector('.rv10-rig');
       function boatArt() {
         const facing = fs() ? 'return' : 'go';
@@ -134,7 +125,7 @@
       }
       function tok(i, on) {
         const animal = P.it[i], state = on ? (animal === 'grass' ? 'cargo' : 'seated') : 'bank';
-        const art = stageOne.includes(animal) ? riverPiece('03_passengers', `${animal}_${state}`) : im('river_' + animal);
+        const art = `<img src="${passengerPath(animal, state)}" alt="" draggable="false">`;
         return `<button class="mk-tok rv10-it${on ? ' inb' : ''}" data-tok="${i}" aria-label="${RVN[animal]}${on ? ' في القارب' : ''}">${art}</button>`;
       }
       function draw() { const f = fs();
@@ -144,26 +135,34 @@
         root.querySelectorAll('.rv10-bank .rv10-it').forEach(e => { const i = +e.dataset.tok; e.setAttribute('aria-disabled', (s >> i & 1) !== f ? 'true' : 'false'); }); }
       function tap(i) { if (busy || api.ended) return; if (boat.has(i)) boat.delete(i); else { if ((s >> i & 1) !== fs()) { api.msg('القارب على الضفة الأخرى.'); return; }
           if (boat.size >= P.cap) { api.msg(`القارب يتسع للمزارع و${P.cap === 1 ? 'واحد فقط' : P.cap === 2 ? 'اثنين فقط' : 'ثلاثة فقط'}.`); sfx.bad(); flash(root.querySelector('.rv10-boat')); return; } boat.add(i); }
-        sfx.pop(); draw();
+        sound?.play(boat.has(i) ? 'river.board' : 'river.unboard'); draw();
         const key = P.it[i];
-        if (boat.has(i) && stageOne.includes(key)) {
+        if (boat.has(i) && !reduceMotion.matches) {
           const sprite = root.querySelector(`#rvld [data-tok="${i}"] img`);
           const seated = sprite.getAttribute('src');
-          sprite.src = DESIGNS + `river_stage1/03_passengers/${key}_boarding.png`;
-          later(() => { if (sprite.isConnected) sprite.src = seated; }, 180);
+          sprite.src = passengerPath(key, 'boarding');
+          sprite.classList.add('boarding');
+          later(() => { if (sprite.isConnected) { sprite.src = seated; sprite.classList.remove('boarding'); } }, 180);
         } }
       const mk = MK.attach(root.querySelector('.rv10'), { canDrag: () => !busy && !api.ended, onPick: id => { mk.clear(); tap(+id); },
         drop: (id, slot) => { const i = +id; if (slot === 'boat' ? !boat.has(i) : boat.has(i)) tap(i); } });
       function cross() { if (busy || api.ended) return; let m = 0; boat.forEach(i => m |= 1 << i); const t = s ^ F ^ m; moves++; busy = true;
         const scene = root.querySelector('.rv10'), vessel = root.querySelector('.rv10-boat');
-        scene.classList.add('sail'); vessel.setAttribute('aria-busy', 'true'); sfx.tick();
+        scene.classList.add('sail'); vessel.setAttribute('aria-busy', 'true'); crossButton.disabled = true;
+        sound?.play('river.cross');
         later(() => { s = t; boat.clear(); busy = false; scene.classList.remove('sail'); vessel.removeAttribute('aria-busy'); const f = fs(), eat = P.conf.find(([a, c]) => (s >> a & 1) === (s >> c & 1) && (s >> a & 1) !== f); draw();
+          if (s !== goal) sound?.play('river.dock');
           if (eat) { busy = true; eat.forEach(i => { const e = root.querySelector(`.rv10-bank [data-tok="${i}"]`); if (e) e.classList.add('lb-bad', 'eat'); });
             api.msg(`${RVN[P.it[eat[0]]]} ${P.it[eat[0]] === 'hen' ? 'أكلت' : 'أكل'} ${RVN[P.it[eat[1]]]}! تُرك معه دون المزارع. نبدأ من جديد.`); api.wrong();
-            later(() => { s = 0; moves = 0; busy = false; draw(); api.msg(`حاول مرة ثانية. أقل حل: ${N(P.min)} رحلات.`); }, 1700); return; }
-          if (s === goal) { root.querySelector('.rv10').classList.add('won'); api.win(`عبرت الجميع في ${arN(moves, AN.trip)}، وأقل حل ممكن ${arN(P.min, AN.trip)}.`); }
-          else api.msg(`الرحلات: ${N(moves)} · أقل حل: ${N(P.min)}`); }, 650); }
-      $('#lbgo').onclick = cross; draw(); api.msg(`أقل حل: ${N(P.min)} رحلات.`); pzHook({ P, tap, cross, s: () => s, boat: () => [...boat], moves: () => moves });
+            later(() => { s = 0; moves = 0; busy = false; crossButton.disabled = false; draw(); api.msg(`حاول مرة ثانية. أقل حل: ${N(P.min)} رحلات.`); }, 1700); return; }
+          if (s === goal) {
+            root.querySelector('.rv10').classList.add('won');
+            api.win(`عبرت الجميع في ${arN(moves, AN.trip)}، وأقل حل ممكن ${arN(P.min, AN.trip)}.`);
+            sfx.roundScene?.().play('river.dock');
+          }
+          else { crossButton.disabled = false; api.msg(`الرحلات: ${N(moves)} · أقل حل: ${N(P.min)}`); }
+        }, reduceMotion.matches ? 120 : 650); }
+      crossButton.onclick = cross; draw(); api.msg(`أقل حل: ${N(P.min)} رحلات.`); pzHook({ P, tap, cross, s: () => s, boat: () => [...boat], moves: () => moves });
       return { hint: k => { if (k === 1) return `أقل عدد رحلات للحل ${arN(P.min, AN.trip)}، والرجوع يُحسب رحلة. أحيانًا لازم ترجع بأحدهم معك.`; const p = rvPath(n, P.cap, P.conf, s); if (!p || p.length < 2) return 'أنت قريب جدًا!';
           const d = (p[0] ^ p[1]) & (F - 1), names = P.it.filter((_, i) => d >> i & 1).map(k => RVN[k]); return `الخطوة التالية من وضعك الحالي: ${names.length ? 'اعبر ومعك ' + names.join(' و') : 'اعبر وحدك بدون أحد'}.`; },
         reveal: () => `أقل حل كان ${arN(P.min, AN.trip)}.` };
@@ -179,20 +178,18 @@
     };
     GM.pz_rush.run = function () {
       return pzPlay('pz_rush', api => {
-        const P = rhMake(api.lv), oldPainter = window.carSVG;
-        let R;
-        window.carSVG = paintCar;
-        try {
-          R = rushEngine(api, P, m => api.win(`أخرجت السيارة في ${arN(m, AN.mv)}، والحل الأمثل ${arN(P.min, AN.mv)}.`));
-        } finally {
-          window.carSVG = oldPainter;
-        }
-        const lot = api.body.firstElementChild; const holder = document.createElement('div'); holder.className = 'lb'; holder.dataset.lb = 'rush';
-        holder.innerHTML = `<p class="lb-lead">اسحب كل مركبة على محورها. المخرج يمين صف السيارة الحمراء. أقل حل: ${N(P.min)} حركة.</p><div class="lb-board" id="lbb"></div>
-          <div class="lb-bar"><button class="lb-hint" type="button">تلميح</button><button class="lb-main" type="button" id="lbre">إعادة اللغز</button></div>`;
-        api.body.prepend(holder); holder.querySelector('#lbb').append(lot);
-        holder.querySelector('.lb-hint').onclick = () => { const h = document.getElementById('pzh'); if (h && !h.hidden && !h.disabled) h.click(); };
-        holder.querySelector('#lbre').onclick = () => { const r = document.getElementById('pzr'); if (r) r.click(); };
+        const P = rhMake(api.lv), sound = sfx.roundScene?.();
+        const R = rushEngine(api, P, m => api.win(`أخرجت السيارة في ${arN(m, AN.mv)}، والحل الأمثل ${arN(P.min, AN.mv)}.`), {
+          paintCar,
+          play(event, vehicle, delay) {
+            const clip = event === 'move' ? (vehicle.len === 3 ? 'rush.truck' : 'rush.car') : 'rush.' + event;
+            sound?.play(clip, delay);
+          }
+        });
+        const lot = api.body.firstElementChild;
+        const holder = frame(api, { id: 'rush', layout: 'square',
+          lead: `اسحب كل مركبة على محورها. المخرج يمين صف السيارة الحمراء. أقل حل: ${N(P.min)} حركة.` });
+        holder.querySelector('#lbb').append(lot);
         return R;
       });
     };
@@ -205,8 +202,11 @@
     return pzPlay('pz_stat', api => {
       const P = stMake(api.lv), n = P.n; let s = P.s.slice(), presses = 0; const ang = P.s.map((d, i) => (P.tgt[i] + d) * 90);
       const rule = P.twist ? 'الضغط يدير التمثال يمينًا وجيرانه المرتبطين يسارًا ربع لفة' : P.R.some(v => v.includes(2)) ? 'الضغط يدير التمثال ربع لفة، وجاره المرتبط نصف لفة' : 'الضغط يدير التمثال وجيرانه المرتبطين ربع لفة في الاتجاه نفسه';
-      frame(api, { id: 'stat', lead: `طابق مؤشر اتجاه التمثال الأخضر مع الماسة الذهبية. ${rule}${P.ring ? '، والتماثيل في حلقة مغلقة' : ''}.` });
-      const Rr = 37, pos = [...Array(n)].map((_, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / n; return [50 + Rr * Math.cos(a), 50 + Rr * Math.sin(a)]; }), sz = n <= 4 ? 26 : n <= 5 ? 24 : 21;
+      const sound = sfx.roundScene?.();
+      const poses = ['north', 'east', 'south', 'west'].map(pose => DESIGNS + `work_review/pz_stat/guardian--${pose}.png`);
+      poses.forEach(path => { new Image().src = path; });
+      frame(api, { id: 'stat', layout: 'mechanical', lead: `طابق مؤشر اتجاه التمثال الأخضر مع الماسة الذهبية. ${rule}${P.ring ? '، والتماثيل في حلقة مغلقة' : ''}.` });
+      const Rr = 34, pos = [...Array(n)].map((_, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / n; return [50 + Rr * Math.cos(a), 50 + Rr * Math.sin(a)]; }), sz = n <= 4 ? 26 : n <= 5 ? 24 : 21;
       const pairs = []; for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) if (i !== j && P.R[i][j]) { const k = i < j ? i + '-' + j : j + '-' + i; if (!pairs.includes(k)) pairs.push(k); }
       const links = pairs.map(k => {
         const [a, b] = k.split('-').map(Number), [x, y] = pos[a], [endX, endY] = pos[b];
@@ -217,15 +217,14 @@
           <line data-a="${a}" data-b="${b}" x1="${x}" y1="${y}" x2="${endX}" y2="${endY}"/>`;
       }).join('');
       $('#lbb').innerHTML = `<div class="st10" id="st10">${piece('stat', 'door_closed', 'st10-door')}${piece('stat', 'door_open', 'st10-open')}<svg class="st10-links" viewBox="0 0 100 100" aria-hidden="true">${links}</svg>
-        ${pos.map(([x, y], i) => `<button class="st10-s" data-i="${i}" style="left:${x}%;top:${y}%;width:${sz}%" aria-label="تمثال ${N(i + 1)}"> ${piece('stat', 'guardian_body_' + ['sun', 'anchor', 'wave'][i % 3], 'st10-ped')}<i class="st10-tgt" style="--a:${P.tgt[i] * 90}deg"></i><span class="st10-head">${piece('stat', 'head_north', 'st10-g')}</span><span class="st10-current"><i class="st10-dot"></i></span></button>`).join('')}</div>`;
+        ${pos.map(([x, y], i) => `<button class="st10-s" data-i="${i}" style="left:${x}%;top:${y}%;width:${sz}%" aria-label="تمثال ${N(i + 1)}"> <i class="st10-tgt" style="--a:${P.tgt[i] * 90}deg"></i><img class="st10-g" src="${poses[0]}" alt="" draggable="false"><span class="st10-current"><i class="st10-dot"></i></span></button>`).join('')}</div>`;
       const btns = [...$('#st10').querySelectorAll('.st10-s')], lines = [...$('#st10').querySelectorAll('line')];
       function draw() { btns.forEach((b, i) => {
         const heading = ((ang[i] / 90) % 4 + 4) % 4;
-        const facing = ['north', 'east', 'south', 'west'][heading];
-        b.querySelector('.st10-g').src = DESIGNS + `four_puzzles/pz_stat/sprites/head_${facing}.png`;
+        b.querySelector('.st10-g').src = poses[heading];
         b.querySelector('.st10-current').style.transform = `rotate(${ang[i]}deg)`;
         b.classList.toggle('ok', s[i] === 0); b.setAttribute('aria-label', `تمثال ${N(i + 1)}: ${s[i] === 0 ? 'يطابق ماسته' : 'لا يطابق'}`); }); $('#st10').classList.toggle('all', s.every(d => d === 0)); }
-      function press(i) { if (api.ended) return; P.R[i].forEach((r, j) => { if (r) { s[j] = (s[j] + r) % 4; ang[j] += r * 90; } }); presses++;
+      function press(i) { if (api.ended) return; const matchedBefore = s.filter(d => d === 0).length; P.R[i].forEach((r, j) => { if (r) { s[j] = (s[j] + r) % 4; ang[j] += r === 3 ? -90 : r * 90; } }); presses++;
         btns.forEach((b, j) => {
           b.classList.remove('hint');
           if (P.R[i][j]) {
@@ -233,8 +232,17 @@
             flash(b, j === i ? 'turned' : 'linked', 400);
           }
         }); lines.forEach(l => { if (+l.dataset.a === i || +l.dataset.b === i) flash(l, 'zap', 500); });
-        tone(180 + i * 30, .18, 'triangle', .05); draw();
-        if (s.every(d => d === 0)) api.win(`طابقت اتجاهات التماثيل في ${arN(presses, AN.press)}، والأقل ${arN(P.min, AN.press)}.`); else api.msg(`الضغطات: ${N(presses)} · أقل حل: ${N(P.min)}`); }
+        draw();
+        const matched = s.filter(d => d === 0).length;
+        if (matched === n) {
+          api.win(`طابقت اتجاهات التماثيل في ${arN(presses, AN.press)}، والأقل ${arN(P.min, AN.press)}.`);
+          sfx.roundScene?.().play('stat.open');
+        } else {
+          sound?.play('stat.turn');
+          if (matched > matchedBefore) sound?.play('stat.match', .14);
+          api.msg(`الضغطات: ${N(presses)} · أقل حل: ${N(P.min)}`);
+        }
+      }
       btns.forEach((b, i) => b.onclick = () => press(i)); draw(); api.msg(`أقل حل: ${N(P.min)} ضغطات.`); pzHook({ P, press, s: () => s, presses: () => presses });
       return { hint: k => { if (k === 1) return `أقل حل ${arN(P.min, AN.press)}. ترتيب الضغطات لا يهم، المهم عدد مرات ضغط كل تمثال. الخطوط تريك من يحرّك من.`; const i = P.nxt[P.enc(s)]; if (i < 0) return null; btns[i].classList.add('hint'); return 'اضغط التمثال المضيء.'; },
         reveal: () => `كان أقل حل ${arN(P.min, AN.press)}.` };

@@ -81,3 +81,90 @@
   /* Existing brain-game tick calls now resolve to a skill/game-specific tactile sound. */
   sfx.tick=()=>sfx.brainMove();
 })();
+
+/* Short procedural effects for mechanics with distinct motion and contact events.
+   The palette is rendered lazily into the application's shared AudioContext. */
+(function installMechanicAudio(){
+  const clips = {
+    'river.board':   [.16, .18, 520, 122, 5, .06],
+    'river.unboard': [.13, .14, 410, 153, 7, .05],
+    'river.cross':   [.61, .21, 670, 246, 3, .26],
+    'river.dock':    [.19, .19, 480, 98, 11, .08],
+    'rush.car':      [.24, .15, 455, 113, 6, .19],
+    'rush.truck':    [.32, .21, 280, 56, 9, .20],
+    'rush.stop':     [.11, .12, 820, 140, 12, .08],
+    'rush.gate':     [.33, .19, 870, 380, 19, .07],
+    'rush.exit':     [.38, .15, 575, 200, 6, .28],
+    'stat.turn':     [.25, .24, 290, 66, 26, .08],
+    'stat.match':    [.27, .13, 540, 283, 1, .68],
+    'stat.open':     [.44, .22, 200, 55, 19, .12]
+  };
+  const bank = new Map();
+  const active = new Set();
+  const stop = source => { try { source.stop(); } catch (_) {} };
+  const silence = () => active.forEach(stop);
+  sfx.silenceRound = silence;
+  window.addEventListener('pagehide', silence);
+  document.addEventListener('visibilitychange', () => { if (document.hidden) silence(); });
+
+  function buffer(key) {
+    if (bank.has(key)) return bank.get(key);
+    const [duration, , cutoff, fundamental, texture, mix] = clips[key];
+    const rate = AC.sampleRate;
+    const sample = AC.createBuffer(1, Math.round(duration * rate), rate);
+    const data = sample.getChannelData(0);
+    const tau = 2 * Math.PI;
+    const coefficient = 1 - Math.exp(-tau * cutoff / rate);
+    const attack = key === 'river.cross' ? .045 : .01;
+    let grit = 0, seed = 19;
+    for (let i = 0; i < data.length; i++) {
+      const t = i / rate, p = i / data.length;
+      seed = (Math.imul(seed, 1664525) + 1013904223) >>> 0;
+      grit += coefficient * (seed / 2147483648 - 1 - grit);
+      const variations = .62 + .38 * Math.cos(tau * texture * t);
+      const phase = tau * fundamental * t * (1 - .24 * p);
+      const ring = .68 * Math.sin(phase) + .24 * Math.sin(phase * 2.54);
+      const env = Math.min(1, t / attack) * Math.pow(1 - p, 1.5);
+      data[i] = (grit * 2.8 * variations * (1 - mix) + ring * mix) * env;
+    }
+    bank.set(key, sample);
+    return sample;
+  }
+
+  sfx.roundScene = function () {
+    const sources = new Set();
+    const last = new Map();
+    let closed = false;
+    cleanup.push(() => {
+      closed = true;
+      sources.forEach(stop);
+    });
+    return {
+      play(key, delay = 0) {
+        if (closed || !clips[key] || S.st.mute || active.size >= 4) return false;
+        try {
+          if (!audioOK()) return false;
+          const now = AC.currentTime;
+          if (now - (last.get(key) ?? -1) < .045) return false;
+          const source = AC.createBufferSource(), gain = AC.createGain();
+          source.buffer = buffer(key);
+          source.playbackRate.value = 1 + (Math.random() - .5) * .06;
+          gain.gain.value = clips[key][1];
+          source.connect(gain);
+          gain.connect(MASTER);
+          source.onended = () => {
+            active.delete(source);
+            sources.delete(source);
+            source.disconnect();
+            gain.disconnect();
+          };
+          source.start(now + .008 + delay);
+          active.add(source);
+          sources.add(source);
+          last.set(key, now);
+          return true;
+        } catch (_) { return false; }
+      }
+    };
+  };
+})();

@@ -10,7 +10,7 @@
 .lb-board{background:var(--lb-paper);border:1.5px solid var(--lb-line);border-radius:16px;padding:8px;touch-action:manipulation}
 .lb-bar{display:flex;gap:8px}
 .lb-bar button{min-height:48px;border-radius:14px;font-weight:800;font-size:15px;font-family:inherit;border:1.5px solid var(--lb-line);background:var(--lb-sand);color:var(--lb-ink)}
-.lb-hint{flex:0 0 76px}.lb-main{flex:1}.lb-main.go{background:var(--lb-teal);border-color:var(--lb-teal);color:#fff}
+.lb-main{flex:1}.lb-main.go{background:var(--lb-teal);border-color:var(--lb-teal);color:#fff}
 .lb-bad{animation:lb-shake .4s;box-shadow:0 0 0 3px var(--lb-bad) inset!important;background:#FBE3E0!important}
 .lb-badc{box-shadow:0 0 0 2.5px var(--lb-bad) inset!important;background:#FBE3E0!important}
 @keyframes lb-shake{20%{transform:translateX(-4px)}40%{transform:translateX(4px)}60%{transform:translateX(-2px)}80%{transform:translateX(2px)}}
@@ -29,74 +29,55 @@
 #pzb:has(.rid-crates) .ridopt.no{background-image:url(../ui/designs_art/four_puzzles/pz_rid/sprites/fx_error_x.png);background-position:left 8px center;background-repeat:no-repeat;background-size:18px}
 
 /* 02 river */
-.rv10{display:grid;grid-template-columns:1fr .86fr 1fr;gap:0;border-radius:12px;overflow:hidden;min-height:180px}
-.rv10>section{padding:6px 4px 8px;display:flex;flex-direction:column;align-items:center;gap:4px;min-width:0}
+.rv10{display:grid;grid-template-columns:1fr .76fr 1fr;gap:0;border-radius:12px;overflow:hidden;
+  position:relative;isolation:isolate;direction:ltr;min-height:215px;
+  background:#a6c9cb;border:1px solid #52685e}
+.rv10>section{padding:clamp(8px,3dvh,24px) 3px 8px;display:flex;flex-direction:column;align-items:center;gap:5px;min-width:0}
 .rv10 h4{margin:0;font-size:13px;font-weight:800}
-.rv10-bank{background:#EFD9B4}.rv10-bank.goal{background:#DCEAC8}
-.rv10-water{background:#B9DCE5;position:relative}
-.rv10-items{display:flex;flex-wrap:wrap;gap:5px;justify-content:center;align-content:flex-start;min-height:60px;width:100%}
-.rv10-it{all:unset;cursor:pointer;width:46px;height:46px;border-radius:10px;background:#FFFBF2;border:1.5px solid #D8C7A6;display:grid;place-items:center;touch-action:none}
-.rv10-it img{width:38px;height:38px;object-fit:contain;pointer-events:none}
-.rv10-it[aria-disabled="true"]{opacity:.55}
-.rv10-it.mk-sel{outline:3px solid var(--lb-teal)}
-.rv10-boat{position:relative;width:100%;display:flex;flex-direction:column;align-items:center;min-height:120px;border-radius:10px;transition:transform .6s}
-.rv10-hull{width:46px;height:auto;max-height:84px;object-fit:contain;pointer-events:none}
-.rv10-load{display:flex;flex-wrap:wrap;gap:4px;justify-content:center;margin-top:-30px}
-.rv10-water small{font-size:11px;color:#355862;margin-top:auto}
-
+.rv10-items{display:grid;grid-template-columns:repeat(2,44px);gap:4px;justify-content:center;align-content:start;min-height:60px;width:100%}
+.rv10-it{all:unset;box-sizing:border-box;cursor:pointer;width:44px;height:44px;border-radius:10px;
+  background:#fffbf2e8;border:1px solid #8a7a56;display:grid;place-items:center;touch-action:none}
+.rv10-it img{width:40px;height:40px;object-fit:contain;pointer-events:none}
+.rv10-it[aria-disabled="true"]{opacity:.70}
+.rv10-it:is(.mk-sel,:focus-visible){outline:3px solid var(--lb-teal)}
+.rv10-water small{font-size:12px;color:#355862;margin-top:auto}
 .rv10 .mk-over{box-shadow:0 0 0 3px var(--lb-teal) inset}
 .rv10.won .rv10-bank.goal{box-shadow:0 0 0 3px var(--lb-ok) inset}
-@media (max-width:360px){.rv10-it{width:40px;height:40px}.rv10-it img{width:33px;height:33px}}
-
-.rv10{position:relative;isolation:isolate;direction:ltr;min-height:215px;padding-top:28px}
+.rv10-cross{color:#123f43}
+.rv10-cross svg{color:currentColor}
+#lbb .rv10-cross{position:absolute;bottom:6px;left:50%;transform:translateX(-50%);z-index:6;min-width:44px;min-height:44px}
+@media(max-width:350px){.rv10>section{padding-inline:0}.rv10 h4{font-size:11px}.rv10-items{gap:2px}}
 .rv10-landscape{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
-.rv10-landscape img{position:absolute;object-fit:contain}
-.rv10-landscape .sky{inset:0;width:100%;height:100%;object-fit:cover;object-position:50% 28%}
-.rv10-landscape .water{top:14%;left:23%;width:54%;height:86%;object-fit:cover}
-.rv10-landscape .bank{top:14%;width:38%;height:86%;object-fit:cover}
-.rv10-landscape .left{left:0;object-position:right}
-.rv10-landscape .right{right:0;object-position:left}
-.rv10-landscape .cloud{width:24%;top:1%;animation:rv10-drift 16s ease-in-out infinite alternate}
-.rv10-landscape .cloud.one{left:4%}
-.rv10-landscape .cloud.two{left:42%;animation-delay:-6s}
-.rv10-landscape .cloud.three{right:3%;width:13%;top:-10%;animation-delay:-10s}
-.rv10-landscape .cottage{left:2%;top:21%;width:23%}
-.rv10-landscape .tree{left:14%;top:23%;width:16%}
-.rv10-landscape .trees{right:0;top:19%;width:26%}
-.rv10-landscape .stones{right:5%;bottom:6%;width:17%}
-.rv10-landscape .logs{left:3%;bottom:17%;width:14%}
-.rv10-landscape .flowers{right:0;bottom:0;width:13%}
-.rv10-landscape .reeds{left:17%;bottom:0;width:25%}
-.rv10-landscape .bird{width:11%;right:30%;top:0;animation:rv10-wing .66s steps(1,end) infinite}
-.rv10-landscape .bird-2{animation-delay:-.22s}
-.rv10-landscape .bird-3{animation-delay:-.44s}
-.rv10-landscape .waves{animation:rv10-shimmer 3s ease-in-out infinite alternate}
-@keyframes rv10-wing{0%{opacity:1}33.34%,100%{opacity:0}}
-@keyframes rv10-drift{to{transform:translateX(18%)}}
-@keyframes rv10-shimmer{from{opacity:.32}to{opacity:.85}}
 .rv10 .rv10-bank,.rv10 .rv10-bank.goal,.rv10 .rv10-water{background:transparent}
 .rv10 h4,.rv10-water small{color:#34241b;background:rgba(255,251,242,.94);padding:2px 5px;border-radius:6px;text-align:center;direction:rtl}
-/* Dock points come from river_v2/env_anchors_manifest.json: 345/860 and 515/860.
-   Keep the vessel in the scene coordinate system rather than the narrow middle grid cell. */
-.rv10{--rv-dock-left:40.116%;--rv-dock-right:59.884%}
-.rv10-boat{position:absolute;top:50%;left:var(--rv-dock-left);width:clamp(88px,26%,130px);min-height:0;z-index:4;
-  transform:translate(-50%,-50%);transition:left .65s ease-in-out;pointer-events:auto}
-.rv10.at1 .rv10-boat,.rv10:not(.at1).sail .rv10-boat{left:var(--rv-dock-right)}
-.rv10.at1.sail .rv10-boat{left:var(--rv-dock-left)}
-.rv10-boat .rv10-it{width:36px;height:36px;background:rgba(255,251,242,.65);border:1px solid rgba(101,78,41,.35)}
+/* Keep the complete 1600×1120 scene visible and calculate both mooring points on its fitted plane. */
+.rv10{container-type:size;--river-paint:url(../ui/designs_art/work_review/pz_river/river-base--light.webp);
+  background:linear-gradient(#fbf4e1 0 46%,#cfe5dc 72%,#9bbfc0)}
+html[data-skin="dark"] .rv10{--river-paint:url(../ui/designs_art/work_review/pz_river/river-base--dark-corrected.webp);
+  background:linear-gradient(#33362e 0 46%,#354746 72%,#2b484c)}
+.rv10-landscape{background:var(--river-paint) center/contain no-repeat}
+.rv10-boat{--rv-image-width:min(100cqw,142.857143cqh);--rv-image-height:min(70cqw,100cqh);
+  --rv-dock-left:calc(50% - var(--rv-image-width)*.14);--rv-dock-right:calc(50% + var(--rv-image-width)*.14);
+  --rv-dock-height:calc(50% + var(--rv-image-height)*.085714286);
+  --rv-dock-return-height:calc(50% + var(--rv-image-height)*.092857143)}
+.rv10-boat{position:absolute;top:var(--rv-dock-height,50%);left:var(--rv-dock-left);width:clamp(100px,29%,146px);min-height:0;z-index:4;
+  transform:translate(-50%,-50%);transition:left .65s ease-in-out,top .65s ease-in-out;pointer-events:auto}
+.rv10.at1 .rv10-boat,.rv10:not(.at1).sail .rv10-boat{left:var(--rv-dock-right);top:var(--rv-dock-return-height)}
+.rv10.at1.sail .rv10-boat{left:var(--rv-dock-left);top:var(--rv-dock-height)}
+.rv10-boat .rv10-it{background:#fffbf2dc;border-color:#8a7a56}
 .rv10-boat .rv10-it img{width:34px;height:34px}
-.rv10-rig{width:min(100%,124px);aspect-ratio:280/220;position:relative;pointer-events:none}
+.rv10-rig{width:100%;aspect-ratio:280/220;position:relative;pointer-events:none}
 .rv10-rig img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
 .rv10-rig .rv10-rope{top:28%;transform:scale(.5)}
 .rv10-rig :is(.rv10-wake,.rv10-splash),.rv10.sail .rv10-rig .rv10-rope{visibility:hidden}
 .rv10.sail .rv10-rig :is(.rv10-wake,.rv10-splash){visibility:visible}
 .rv10-rig .rv10-wake{top:23%}
 .rv10-rig .rv10-splash{top:16%;transform:scale(.52)}
-.rv10-load{position:absolute;left:36.4%;top:53.6%;width:46%;margin:0;z-index:5;transform:translate(-50%,-50%);justify-content:center;align-items:center}
+.rv10-load{position:absolute;left:36.4%;top:53.6%;width:max-content;max-width:132px;margin:0;z-index:5;transform:translate(-35%,-15%);display:flex;justify-content:center;align-items:center}
+.rv10-it .boarding{animation:rv-board .18s ease-out}
+@keyframes rv-board{from{transform:translateY(-15%) rotate(-8deg)}to{transform:none}}
 .rv10-it.eat{background-image:url(../ui/designs_art/river_stage1/04_effects/fx_danger_bank.png)!important;background-size:contain!important}
 @media(prefers-reduced-motion:reduce){
-  .rv10-landscape img{animation:none!important}
-  .rv10-landscape :is(.bird-2,.bird-3){display:none}
   .rv10-boat{transition:none}
 }
 
@@ -105,15 +86,20 @@
 .lb[data-lb="rush"] .rhlot{background:none;border:0;box-shadow:none;padding:4px 30px 4px 4px}
 .lb[data-lb="rush"] .rhexit{right:-24px;width:22px;background:#2E8A4E;border-radius:0 8px 8px 0;box-shadow:none}
 .lb[data-lb="rush"] .rhexit::after{content:'→';position:absolute;inset:0;display:grid;place-items:center;color:#fff;font-weight:900;font-size:14px}
-.lb[data-lb="rush"] .rhb2{background:#EADFC8;border:2px solid #CDB993;border-radius:10px}
-.lb[data-lb="rush"] .rhb2>i{border-color:#D8C7A6!important;background:#F1E7D5!important}
+.lb[data-lb="rush"] .rhb.rhb2{border:1px solid #887951;border-radius:8px;
+  background:#e7d9bc url(../ui/designs_art/work_review/pz_rush/lot-surface-gridless-860--light.webp) center/123.56% 123.56% no-repeat}
+.lb[data-lb="rush"] .rhb2>i{border:1px solid #77654355;background:#f9ebd01f;box-shadow:none}
+html[data-skin="dark"] .lb[data-lb="rush"] .rhb.rhb2{background-color:#343c47;background-image:url(../ui/designs_art/work_review/pz_rush/lot-surface-gridless-860--dark-supported.webp);border-color:#8b8169}
+html[data-skin="dark"] .lb[data-lb="rush"] .rhb2>i{background:#141b2426;border-color:#af9a6e55}
+.lb[data-lb="rush"] .rhcar::before,.lb[data-lb="rush"] .rhcar.red::after{content:none}
+.lb[data-lb="rush"] .rhb2 .rhcar.out{opacity:0;transition:left .65s ease-in,opacity .45s ease-in}
 .rh10{position:absolute;inset:0;display:block;pointer-events:none}
 .rh10-img{position:absolute;inset:4%;width:92%;height:92%;object-fit:contain}
 .rhcar.red{filter:drop-shadow(0 0 3px rgba(192,57,43,.45))}
 .rhcar.sel{outline:3px solid var(--lb-teal);outline-offset:-2px;border-radius:8px}
 
-#pzb[data-board-art="pz_rush"] .rhexit{background:#236641 url(../ui/designs_art/four_puzzles/pz_rush/sprites/gate_closed.png) center/contain no-repeat}
-#pzb[data-board-art="pz_rush"].solved .rhexit{background-image:url(../ui/designs_art/four_puzzles/pz_rush/sprites/gate_open.png)}
+#pzb[data-board-art="pz_rush"] .rhexit{background:#236641 url(../ui/designs_art/work_review/pz_rush/exit-gate--closed.png) center/contain no-repeat}
+#pzb[data-board-art="pz_rush"] .rhlot.won .rhexit{background-image:url(../ui/designs_art/work_review/pz_rush/exit-gate--open.png)}
 #pzb[data-board-art="pz_rush"] .rhbar{visibility:hidden}
 #pzb[data-board-art="pz_rush"] .rh10{background:url(../ui/designs_art/four_puzzles/pz_rush/sprites/vehicle_shadow.png) center/contain no-repeat}
 #pzb[data-board-art="pz_rush"] .rhcar.sel .rh10{background-image:url(../ui/designs_art/four_puzzles/pz_rush/sprites/fx_selection_tile.png)}
@@ -124,9 +110,12 @@
 .st10-links{position:absolute;inset:0;width:100%;height:100%}
 .st10-stone-link{opacity:.6}.st10-links line{stroke:#B49A6B;stroke-width:.9;transition:stroke .2s}.st10-links line.zap{stroke:#C8932F;stroke-width:1.6}
 .st10-s{all:unset;cursor:pointer;position:absolute;aspect-ratio:1;transform:translate(-50%,-50%);display:grid;place-items:center;border-radius:50%}
-.st10-ped{position:absolute;inset:0;width:100%;height:100%;object-fit:contain;pointer-events:none}
-.st10-head{position:relative;width:62%;height:62%;display:grid;place-items:center;transition:transform .35s cubic-bezier(.3,1.4,.5,1)}
-.st10-g{width:100%;height:100%;object-fit:contain;pointer-events:none}
+.st10-g{position:absolute;width:67%;height:78%;bottom:16%;object-fit:contain;object-position:center bottom;pointer-events:none;transform-origin:center 94%}
+.st10-s::before{content:'';position:absolute;pointer-events:none;inset:auto 8% 7%;height:23%;
+  background:url(../ui/designs_art/work_review/pz_stat/guardian-base--normal.png) center/contain no-repeat}
+.st10-s:is(.ok,.turned,.linked)::before{background-image:url(../ui/designs_art/work_review/pz_stat/guardian-base--active.png)}
+.st10-s:is(.turned,.linked) .st10-g{animation:stat-turn .24s ease-out}
+@keyframes stat-turn{from{transform:scaleX(.84)}to{transform:none}}
 .st10-dot{position:absolute;top:-4%;left:50%;width:14%;height:14%;margin-left:-7%;border-radius:50%;background:#2E9E5B;border:2px solid #fff;box-shadow:0 0 0 1px #1F6E44}
 .st10-tgt{position:absolute;inset:0;transform:rotate(var(--a));pointer-events:none}
 .st10-tgt::before{content:'';position:absolute;top:-6%;left:50%;width:15%;height:15%;margin-left:-7.5%;background:#E0A93A;border:1.5px solid #8A5A1C;transform:rotate(45deg)}
@@ -138,8 +127,6 @@
 .st10-door,.st10-open{position:absolute;left:40%;top:40%;width:20%;height:20%;object-fit:contain;pointer-events:none}
 .st10-open,.st10.all .st10-door{display:none}
 .st10.all .st10-open{display:block}
-.st10-head{width:55%;height:55%;transform:translateY(-28%)}
-.st10-ped{height:84%;top:20%}
 .st10-current{position:absolute;inset:7%;pointer-events:none;transition:transform .3s}
 .st10-s.ok{background:url(../ui/designs_art/four_puzzles/pz_stat/sprites/fx_rune_aligned.png) center/contain no-repeat}
 .st10-s.turned{background-image:url(../ui/designs_art/four_puzzles/pz_stat/sprites/fx_ring_selected.png)}
@@ -229,3 +216,5 @@
 .tn10-c.tree{background:#EAF4E2;cursor:default}.tn10-c.grass{background:#F3F8EC}.tn10-c.tent{background:#FFF6E2}
 .tn10-c.bad{background:#FBE3E0;box-shadow:0 0 0 2px var(--lb-bad) inset}.tn10-c.lock{box-shadow:0 0 0 2px #C8932F inset}
 .tn10.won .tn10-c.tent{box-shadow:0 0 0 2px var(--lb-ok) inset}
+
+#pzb[data-board-art="pz_rush"] .rhlot.won .rhexit::after{content:none}

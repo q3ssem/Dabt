@@ -266,9 +266,6 @@ html[data-skin="dark"] .mlj-modal-card {
 #play.fit #pzb[data-board-art="pz_rid"] {
   background-image: linear-gradient(rgba(255, 251, 242, 0.86), rgba(255, 251, 242, 0.90)), url('designs_art/four_puzzles/pz_rid/bg_warehouse.png');
 }
-#play.fit #pzb[data-board-art="pz_rush"] {
-  background-image: linear-gradient(rgba(255, 251, 242, 0.84), rgba(255, 251, 242, 0.88)), url('designs_art/four_puzzles/pz_rush/bg_dock_grid_6x6.png');
-}
 #play.fit #pzb[data-board-art="pz_stat"] {
   background-image: linear-gradient(rgba(255, 251, 242, 0.84), rgba(255, 251, 242, 0.88)), url('designs_art/four_puzzles/pz_stat/bg_guardian_hall.png');
 }
@@ -278,9 +275,6 @@ html[data-skin="dark"] .mlj-modal-card {
 
 html[data-skin="dark"] #play.fit #pzb[data-board-art="pz_rid"] {
   background-image: linear-gradient(rgba(16, 22, 42, 0.84), rgba(16, 22, 42, 0.90)), url('designs_art/four_puzzles/pz_rid/bg_warehouse.png');
-}
-html[data-skin="dark"] #play.fit #pzb[data-board-art="pz_rush"] {
-  background-image: linear-gradient(rgba(16, 22, 42, 0.84), rgba(16, 22, 42, 0.90)), url('designs_art/four_puzzles/pz_rush/bg_dock_grid_6x6.png');
 }
 html[data-skin="dark"] #play.fit #pzb[data-board-art="pz_stat"] {
   background-image: linear-gradient(rgba(16, 22, 42, 0.84), rgba(16, 22, 42, 0.90)), url('designs_art/four_puzzles/pz_stat/bg_guardian_hall.png');
