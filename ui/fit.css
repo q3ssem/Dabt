@@ -139,7 +139,8 @@ html.fit-ex10 #v-puz .ex10-game-content{max-height:calc(100dvh - 84px);overflow-
 html.fit-t7 #v-puz.t7 .v5-chip,html.fit-ex10 #v-puz .ex10-game-content button{min-height:44px}
 
 /* Leave room for the light source beside the mirror grid on narrow phones. */
-html.fit-t7 #v-puz.t7 .v5-grid{width:calc(100% - 52px);max-width:330px;margin-inline:auto}
+html.fit-t7 #v-puz.t7 .v5-grid{width:calc(100% - 52px);max-width:330px;margin-inline:auto;grid-template-columns:repeat(var(--n),minmax(0,1fr))}
+html.fit-t7 #v-puz.t7 .v5-cell{min-width:0;min-height:0}
 /* The final light channel may start beyond its viewBox; keep that decoration inside its board. */
 html.fit-t7 #v-puz.t7 .v5-dsvg,html.fit-t7 #v-puz.t7 .v5-dsvg svg{overflow:hidden}
 /* Long reward/finale pages must keep their last actions above the fixed tab bar. */

@@ -92,7 +92,7 @@ function renderHub(){const v=shell(),x=state(),count=Object.keys(x.done).length,
  v.append(E('header',{class:'t7-top'},E('div',{},E('span',{class:'t7-kicker',text:'قصص وألغاز'}),E('h1',{text:'الألغاز'}))));
  v.append(E('button',{type:'button',class:'v5-hubcard',onclick:map,'aria-label':'جزيرة الكنز: افتح الخريطة'},E('span',{class:'v5-hubart'}),E('span',{class:'v5-hubtext'},E('span',{class:'t7-kicker',text:'حكايات البحار السبعة'}),E('b',{text:'جزيرة الكنز'}),
   E('small',{text:`${A(count)} / ٢١ محطة · ${A(x.rewards.length)} / ٧ أختام · ${A(stars)} نجمة`}),E('span',{class:'t7-btn primary',text:count?'تابع الرحلة':'ابدأ الرحلة'}))));
- v.append(dailyCard());
+
  const lib=E('section',{class:'v5-hublib'},E('h2',{class:'la-section-head',text:'مكتبة الألغاز'}));v.append(lib);if(window.LA&&LA.libraryInto)LA.libraryInto(lib);}
 
 /* ---------- map ---------- */

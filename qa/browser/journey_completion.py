@@ -27,6 +27,7 @@ async def scenes(browser):
     for w,h in [(320,640),(390,844),(430,932)]:
         ctx,pg=await boot(browser,w,h);errors=[];pg.on('pageerror',lambda e:errors.append(str(e)))
         ev=pg.evaluate
+        check(await pg.locator('.v5-daily').count()==0,f'{w}: retired daily tile stays removed')
         check(await ev('()=>mindlabJourneyHub.discoveredTransitions().map(t=>t.id)')==['departure'],f'{w}: fresh profile reveals only departure')
         await pg.click('#mlj-open-trans')
         await pg.wait_for_function('()=>!document.querySelector(".mlj-tr-scene[aria-busy]")')
