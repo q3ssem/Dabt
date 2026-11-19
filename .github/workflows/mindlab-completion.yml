@@ -2,6 +2,11 @@ name: MindLab completion acceptance
 on:
   push:
     branches: [review/completion-20261119]
+    paths:
+      - '**/*.js'
+      - 'index.html'
+      - 'qa/tests/**'
+      - 'package.json'
   workflow_dispatch:
 permissions:
   contents: read

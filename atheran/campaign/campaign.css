@@ -76,3 +76,13 @@
 #v-puz .ex10-launch.ah-side p{font-size:12px;line-height:1.55;display:-webkit-box;-webkit-line-clamp:2;-webkit-box-orient:vertical;overflow:hidden;margin:0}
 #v-puz .ex10-launch.ah-side .ex10-launch-go{padding:8px 12px;font-size:13px}
 @media (max-width:420px){#v-puz .ex10-launch.ah-side{grid-template-columns:1fr}#v-puz .ex10-launch.ah-side .ex10-launch-go{justify-self:start}}
+
+/* The selected secondary theme also applies to the campaign cover and atlas header. */
+html[data-skin="dark"] .ah-launch,
+html[data-skin="dark"] #v-puz.ah-view .ah-top{background:#171F31;color:#EEF1FF;border-color:#7D6A49}
+html[data-skin="dark"] :is(.ah-title,.ah-launch h2,.ah-hero b,.ah-stats dd){color:#EEF1FF}
+html[data-skin="dark"] :is(.ah-lead,.ah-launch p,.ah-hero small,.ah-stats dt,.ah-side-head){color:#CED8E8}
+html[data-skin="dark"] .ah-kicker{color:#E8C778}
+html[data-skin="dark"] :is(.ah-hero,.ah-stats div){background:#243148;border-color:#526173}
+html[data-skin="dark"] .ah-lock{background:#302A1F;color:#F2DBA3;border-color:#D0AD5F}
+html[data-skin="dark"] .ah-lock b{color:#FFE3A0}

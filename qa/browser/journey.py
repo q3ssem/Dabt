@@ -223,7 +223,7 @@ async def main(a):
         await page.wait_for_timeout(400); st1 = await page.evaluate('()=>AC&&AC.state')
         c3 = await page.evaluate(nodes); await page.evaluate("()=>{sfx.puzzleMove('locks');sfx.puzzleWin();sfx.brainMove()}"); c4 = await page.evaluate(nodes)
         await page.evaluate("()=>{delete document.hidden;delete document.visibilityState;document.dispatchEvent(new Event('visibilitychange'))}")
-        await page.locator('.v5-goal').first.tap(); await page.wait_for_timeout(400)  # any tap wakes the sound
+        await page.locator('#v5-board').tap(position={'x':5,'y':5}); await page.wait_for_timeout(400)  # tap the visible board to wake sound (the goal text now lives in the info sheet)
         st2 = await page.evaluate('()=>AC&&AC.state')
         c5 = await page.evaluate(nodes); await tap(); c6 = await page.evaluate(nodes)
         log['background'] = {'before': st0, 'hidden': st1, 'hidden_move_nodes': c4 - c3, 'after_return': st2, 'after_return_nodes': c6 - c5}
