@@ -192,7 +192,7 @@ function win(){const s=D.stations[active],x=state();if(!L.solved(live(),current(
  if(sealHere(s)){if(!x.rewards.includes(s.ch))x.rewards.push(s.ch);const q=D.secrets[s.ch];if(!x.bonus[q.id])x.bonus[q.id]={at:Date.now(),moves:0,hints:0,tool:false};}
  x.resume=Math.min(20,active+1);save();view='reward';try{sfx.ok(2);}catch(e){}render();window.scrollTo(0,0);
  if(firstWin&&typeof window.dispatchEvent==='function'&&typeof CustomEvent==='function')window.dispatchEvent(new CustomEvent('mindlab:journey-progress',{detail:{chapter:'seven_seas',station:active}}));}
-function stars(s){return 'التحديات: '+B.chal(state(),s.id).slice(0,s.expert?4:3).map(d=>d?'★':'☆').join(' ');}
+function stars(s){return 'التحديات: '+B.chal(state(),s.id).slice(0,3).map(d=>d?'★':'☆').join(' ');}
 function renderReward(){const s=D.stations[active];if(s.finale)return renderFinale();const v=shell(),T=s.gives?D.SEA1_TOOLS[s.gives]:null,Q=D.SECRETS5[s.ch],seal=sealHere(s);top(v,'أثر الحل',s.name);
  const fig=(art,cap)=>E('figure',{},img(art),E('figcaption',{text:cap}));
  const guide=crewGuide(s),crewNote=(s.dialog&&s.dialog[s.dialog.length-1])||[guide.name,guide.task];

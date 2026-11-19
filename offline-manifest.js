@@ -26,3 +26,17 @@ self.MINDLAB_OFFLINE_FILES.push(
   "ui/designs_art/journey/v3/stations.js",
   "ui/designs_art/journey/v3/ui/btn_compass_return.webp"
 );
+
+// Watercolor artwork for the Journey polish update.
+self.MINDLAB_OFFLINE_FILES.push(
+  "motion/pirate-routes.js",
+  "motion/art-polish/atheran.webp",
+  "motion/art-polish/bridge.webp",
+  "motion/art-polish/cave.webp",
+  "motion/art-polish/parchment.webp",
+  "motion/art-polish/reef.webp",
+  "motion/art-polish/statue_back.webp",
+  "motion/art-polish/statue_front.webp",
+  "motion/art-polish/statue_side_left.webp",
+  "motion/art-polish/statue_side_right.webp"
+);

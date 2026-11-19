@@ -368,6 +368,8 @@
     side: 'markers/marker_side.webp'
   };
   let lastStationId = null;
+  let previousStationStatuses = null;
+  const newlyCompletedStations = new Set();
 
   function palaceTile(id) {
     const find = () => [...document.querySelectorAll('#v-puz [data-legacy-puzzle]')]
@@ -449,6 +451,7 @@
         <nav class="mlj-v3-chapters" aria-label="فصول الرحلة"></nav>
         <div class="mlj-v3-map-scroll"><div class="mlj-v3-map">
           <img class="mlj-map-img" src="${artV3}map/world_map_vertical.webp" alt="الخريطة الكبرى لرحلة الكنز" width="1152" height="2064">
+          <canvas class="mlj-v3-trail" aria-hidden="true"></canvas>
           <div class="mlj-v3-markers"></div>
         </div></div>
         <footer class="mlj-v3-tools">
@@ -514,6 +517,11 @@
         return [st.id, !allowed ? 'locked' : done ? 'done' : 'current'];
       }));
 
+      if (previousStationStatuses) for (const [id, status] of statuses) {
+        if (status === 'done' && previousStationStatuses.get(id) !== 'done') newlyCompletedStations.add(id);
+      }
+      previousStationStatuses = statuses;
+
       const list = $('div', extras);
       list.replaceChildren();
       const actions = window.ATHERAN_CAMPAIGN?.journeyActions() || [];
@@ -555,11 +563,75 @@
       (play.hidden ? $('.mlj-v3-dismiss', preview) : play).focus({ preventScroll: true });
     }
 
+    const trail = $('.mlj-v3-trail', atlas);
+    let trailFrame = 0;
+    function drawTrail(width) {
+      if (trailFrame) cancelAnimationFrame(trailFrame);
+      trail.hidden = !expanded;
+      if (!expanded) return;
+      const height = width * 2064 / 1152;
+      const density = Math.min(2, window.devicePixelRatio || 1);
+      trail.width = Math.ceil(width * density);
+      trail.height = Math.ceil(height * density);
+      const pen = trail.getContext('2d');
+      if (!pen) return;
+      pen.scale(density, density);
+      const segments = [];
+      for (let i = 1; i < data.stations.length; i++) {
+        const from = data.stations[i - 1], to = data.stations[i];
+        if (from.chapter !== to.chapter || statuses.get(from.id) !== 'done' || statuses.get(to.id) === 'locked') continue;
+        segments.push({ from, to, fresh: newlyCompletedStations.has(from.id) });
+      }
+      const moving = segments.some(segment => segment.fresh) && !matchMedia('(prefers-reduced-motion: reduce)').matches;
+
+      function draw(reveal) {
+        pen.clearRect(0, 0, width, height);
+        pen.lineCap = 'round';
+        for (const { from, to, fresh } of segments) {
+          const x = from.x * width, y = from.y * height;
+          const dx = (to.x - from.x) * width, dy = (to.y - from.y) * height;
+          const amount = fresh ? reveal : 1;
+          const distance = Math.hypot(dx, dy);
+          if (amount * distance < 1) continue;
+          const bend = Math.max(-12, Math.min(12, dy / 9));
+          pen.beginPath();
+          pen.moveTo(x, y);
+          pen.quadraticCurveTo(x + dx * amount / 2 + bend * amount, y + dy * amount / 2, x + dx * amount, y + dy * amount);
+          pen.setLineDash([5, 8]);
+          pen.lineWidth = 5;
+          pen.strokeStyle = '#fff5d6';
+          pen.stroke();
+          pen.lineWidth = 2.5;
+          pen.strokeStyle = from.chapter === 'side' ? '#92512c' : '#21575a';
+          pen.stroke();
+        }
+      }
+      if (!moving) {
+        draw(1);
+        segments.forEach(({from}) => newlyCompletedStations.delete(from.id));
+        return;
+      }
+      const start = performance.now();
+      const tick = time => {
+        if (atlas.hidden || !atlas.isConnected) { trailFrame = 0; return; }
+        const progress = Math.min(1, (time - start) / 620);
+        draw(1 - (1 - progress) ** 2);
+        if (progress < 1) trailFrame = requestAnimationFrame(tick);
+        else {
+          trailFrame = 0;
+          segments.forEach(({from}) => newlyCompletedStations.delete(from.id));
+        }
+      };
+      trailFrame = requestAnimationFrame(tick);
+    }
+
     function renderMap(point) {
       const width = Math.max(320, scroll.clientWidth);
       const vp = data.viewports.find(size => width <= size.mapWidth);
       const artworkWidth = expanded ? Math.max(600, Math.round(width * (vp?.expandedZoom || 1))) : width;
       map.style.width = artworkWidth + 'px';
+      drawTrail(artworkWidth);
+      const currentId = currentStation()?.id;
       toggle.textContent = expanded ? 'عرض التجمعات' : 'عرض المحطات';
       toggle.setAttribute('aria-pressed', String(expanded));
       markers.replaceChildren();
@@ -576,6 +648,7 @@
           const status = statuses.get(item.id);
           button.dataset.stationId = item.id;
           button.dataset.status = status;
+          if (status === 'current' && item.id === currentId) button.setAttribute('aria-current', 'step');
           button.setAttribute('aria-label', `${item.title}، ${stationLabels[status]}`);
           icon.src = artV3 + (item.chapter === 'side' ? chapterIcons.side : `markers/marker_${status === 'done' ? 'completed' : status}.webp`);
           if (item.chapter === 'side') {
@@ -631,7 +704,8 @@
       launch.setAttribute('aria-expanded', 'true');
       expanded = !!lastStationId;
       refreshProgress();
-      renderMap(data.stations.find(st => st.id === lastStationId) || currentStation());
+      const recent = data.stations.find(st => st.id === lastStationId);
+      renderMap(recent && statuses.get(recent.id) !== 'done' ? recent : currentStation());
       close.focus({ preventScroll: true });
     };
     close.onclick = closeAtlas;

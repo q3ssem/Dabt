@@ -1,7 +1,7 @@
 'use strict';
 /* 5.5.0 — visual identity: white theme by default, central design system, new cards. Presentation only. */
 const fs=require('node:fs'),path=require('node:path'),assert=require('node:assert/strict'),crypto=require('node:crypto'),cp=require('node:child_process');
-const root=path.resolve(__dirname,'../..'),read=p=>fs.readFileSync(path.join(root,p),'utf8'),sha=p=>crypto.createHash('sha256').update(fs.readFileSync(path.join(root,p))).digest('hex');
+const root=path.resolve(__dirname,'../..'),read=p=>fs.readFileSync(path.join(root,p),'utf8');
 let checks=0;const ok=(v,m)=>{assert.ok(v,m);checks++;};
 const pv=JSON.parse(read('package.json')).version;ok(/^5\.(5|[6-9])\.\d+$/.test(pv),'version 5.5.x or later ('+pv+')');
 ok(read('sw.js').includes("const VERSION='"+pv+"'"),'cache renamed so installed apps receive the new styles');
@@ -9,14 +9,18 @@ ok(read('sw.js').includes("const VERSION='"+pv+"'"),'cache renamed so installed 
 const frozen={'treasure/data.js':'b2b1b30363eff3ad813e8459e81fdcd333b909c3f9fda752428a8c1a8b294a4b',
  'treasure/logic.js':'0146bdf869065655058f5c79395d772ae7c24141bace41a28d2fbad9e8f0d0d7','treasure/boards.js':'9492fd773cc2b3949e6bae0c98345bd98787fe0395a6566bcc077ab264e4dc0f'};
 // Inline index engines are protected by legacy.art.cjs, which reverses only audited audio and Mirror Palace patches before checking original fingerprints.
+const challenges=JSON.parse(read('qa/allowed_treasure_challenge_changes.json')).files;
 for(const [f,h] of Object.entries(frozen)){
- if(f!=='treasure/boards.js'){ok(sha(f)===h,f+' unchanged');continue;}
  let source=read(f);
- for(const {before,after} of JSON.parse(read('qa/allowed_treasure_board_presentation_changes.json')).reverse()){
+ for(const {before,after} of [...challenges[f]].reverse()){
+   ok(source.split(after).length===2,'approved three-challenge change appears exactly once in '+f);
+   source=source.replace(after,()=>before);
+ }
+ if(f==='treasure/boards.js')for(const {before,after} of JSON.parse(read('qa/allowed_treasure_board_presentation_changes.json')).reverse()){
    ok(source.split(after).length===2,'each approved Treasure presentation change appears exactly once');
    source=source.replace(after,()=>before);
  }
- ok(crypto.createHash('sha256').update(source).digest('hex')===h,f+' matches the original after reversing presentation changes');
+ ok(crypto.createHash('sha256').update(source).digest('hex')===h,f+' matches the original after reversing audited changes');
 }
 ok(read('index.html').includes("localStorage.getItem('miran:v2')"),'save key miran:v2');
 // Design system: tokens for both themes, legacy variables mapped, shared components, cards.

@@ -13,6 +13,8 @@
   'use strict';
   if (!window.MK || typeof GM === 'undefined' || typeof pzPlay !== 'function') return;
   const ART = 'ui/designs_art/priority7/', img = (k, cls = '', alt = '') => `<img class="${cls}" src="${ART}${k}.png" alt="${alt}" draggable="false">`;
+  const statueAsset = pose => 'motion/art-polish/' + pose + '.webp';
+
   const AR = ['١', '٢', '٣', '٤', '٥'], LET = ['أ', 'ب', 'ج', 'د', 'هـ'];
   // door numbers use the approved numbered badges (badge_1..5 = display order of drMake.n); letters and counts use a drawn ring
   const badge = (lab, cls = '') => { const d = AR.indexOf(lab); return d >= 0 && !/cnt|xs/.test(cls) ? `<span class="pl-badge img ${cls}"><img src="${ART}badge_${d + 1}.png" alt="${lab}" draggable="false"></span>` : `<span class="pl-badge ${cls}"><b>${lab}</b></span>`; };
@@ -102,7 +104,7 @@
         ${img('door_closed', 'pl-dimg')}${badge(opt.labels[d], 'sm')}<i class="pl-lock">${img('padlock')}</i><span class="pl-keyspot"></span></div>`).join('')}</div>
       <div class="pl-statues">${[...Array(k)].map((_, i) => `<div class="pl-st" data-st="${i}">
         <div class="pl-sthead"><b>${opt.names[i]}</b><span class="pl-face" aria-live="polite">محايد</span></div>
-        <button class="pl-turn" data-turn="${i}">${img('statue_front', 'pl-pose')}</button>
+        <button class="pl-turn" data-turn="${i}"><img class="pl-pose" src="${statueAsset('statue_front')}" alt="" draggable="false"></button>
         <div class="pl-strow"><button class="pl-rot" data-rot="${i}" data-by="1" aria-label="دوّر إلى الباب التالي">↻</button><button class="pl-rot" data-rot="${i}" data-by="-1" aria-label="دوّر إلى الباب السابق">↺</button></div>
         <div class="pl-plaque" role="note" data-k="${opt.kind ? opt.kind(i) : ''}" aria-label="${opt.plaqueText(i)}">${opt.plaque(i)}</div></div>`).join('')}</div>`;
     const doorEl = d => el.querySelector(`.pl-door[data-door="${d}"]`);
@@ -113,14 +115,28 @@
       return Math.abs(dx) < Math.max(28, b.width * .55) ? 'statue_front' : dx < 0 ? 'statue_side_right' : 'statue_side_left'; };  // art names are the statue's own side: side_left looks to the screen's right
     const paint = () => {
       dir.forEach((d, i) => { const c = el.querySelector(`.pl-st[data-st="${i}"]`); c.classList.toggle('neutral', d < 0); c.classList.toggle('back', d === BACK); c.classList.toggle('faces', d >= 0 && d < BACK);
-        c.querySelector('.pl-pose').src = ART + pose(i) + '.png';
+        c.querySelector('.pl-pose').src = statueAsset(pose(i));
         const t = d < 0 ? 'محايد' : d === BACK ? 'يدير ظهره' : `يواجه ${opt.labels[d]}`; c.querySelector('.pl-face').textContent = t;
         c.querySelector('.pl-turn').setAttribute('aria-label', `${opt.names[i]}: ${t}. المس للتدوير.`); });
       for (let d = 0; d < D; d++) { const e = doorEl(d); e.classList.toggle('faced', dir.includes(d)); e.classList.toggle('haskey', keyAt === d);
         e.querySelector('.pl-keyspot').innerHTML = keyAt === d ? `<button class="mk-tok pl-key on" data-tok="key" aria-label="المفتاح على الباب ${opt.labels[d]}">${img('key')}</button>` : ''; }
       const tray = el.querySelector('.pl-tray'); if (tray) { tray.querySelector('.pl-key').style.visibility = keyAt < 0 ? '' : 'hidden'; tray.classList.toggle('empty', keyAt >= 0); }
     };
-    const turn = (i, by) => { if (api.ended || opt.busy()) return; const cur = dir[i]; dir[i] = cur < 0 ? (by > 0 ? 0 : BACK) : (cur + by + D + 1) % (D + 1); tone(460 + (dir[i] % 6) * 45, .04); paint(); };
+    const turn = (i, by) => {
+      if (api.ended || opt.busy()) return;
+      const cur = dir[i];
+      dir[i] = cur < 0 ? (by > 0 ? 0 : BACK) : (cur + by + D + 1) % (D + 1);
+      tone(460 + (dir[i] % 6) * 45, .04);
+      paint();
+      const statue = el.querySelector(`.pl-st[data-st="${i}"] .pl-pose`);
+      if (statue.animate && !matchMedia('(prefers-reduced-motion: reduce)').matches) {
+        statue.getAnimations?.().forEach(animation => animation.cancel());
+        statue.animate([
+          { transform: `perspective(400px) rotateY(${-by * 62}deg)` },
+          { transform: 'perspective(400px) rotateY(0deg)' }
+        ], { duration: 290, easing: 'cubic-bezier(.2,.6,.3,1)' });
+      }
+    };
     // tap = one step; horizontal swipe on the statue turns it towards that side
     let sw = null;
     el.addEventListener('pointerdown', e => { const t = e.target.closest('.pl-turn'); if (t) sw = { x: e.clientX, i: +t.dataset.turn, id: e.pointerId }; });

@@ -6,7 +6,7 @@ const equal=(a,b)=>JSON.stringify(a)===JSON.stringify(b);
 const sw=(a,i,j)=>{const n=a.slice();[n[i],n[j]]=[n[j],n[i]];return n;};
 const pairs=n=>{const o=[];for(let i=0;i<n;i++)for(let j=i+1;j<n;j++)o.push([i,j]);return o;};
 const pairSwaps=a=>pairs(a.length).map(([i,j])=>sw(a,i,j));
-const variant=(s,c)=>{const v=c===2?s.alt:c===3?s.expert:c===4?s.daily:null;return v?{...s,goal:v.goal||s.goal,target:{...s.target,...v},variant:c}:s;};
+const variant=(s,c)=>{const v=c===1?s.challengeBoards?.[0]:c===2?s.challengeBoards?.[1]||s.alt:c===3?s.expert:c===4?s.daily:null;return v?{...s,goal:v.goal||s.goal,target:{...s.target,...v},variant:c}:s;};
 
 /* ----- locks (sea 1, expert: five rings) ----- */
 function locksCan(t,v,i){return t.rules[i].every(([j,want])=>v[j]===want);}
@@ -162,7 +162,7 @@ function workShape(s,v){const t=s.target;if(!Array.isArray(v)||!v.every(Number.i
   case'river':return v.length===4&&v.every(x=>x===0||x===1)&&riverSafe(t,v);
   case'frogs':return v.length===t.start.length&&v.filter(x=>x===0).length===1&&v.filter(x=>x===1).length===t.start.filter(x=>x===1).length&&v.every(x=>x>=0&&x<=2);}
  return false;}
-function workOk(s,v){return [0,2,3].some(c=>workShape(variant(s,c),v));}
+function workOk(s,v){return [0,1,2,3].some(c=>workShape(variant(s,c),v));}
 /* Daily island puzzle: walk back from the solved board with a seeded random generator; the minimum is then measured. */
 const DAILY_KINDS=['slide','lights','cipher','torn','gearfit','path','hanoi','locks','mirrors','linked','valves','drums'];
 function dailyBoard(s,seed){let r=seed>>>0||1;const rnd=()=>(r=(r*1103515245+12345)>>>0)/4294967296;const goal=shortest(s,initial(s)).pop();

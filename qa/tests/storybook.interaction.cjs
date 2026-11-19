@@ -70,14 +70,13 @@ function playV5(s){c.T7.open(s.i);
  ok(L.solved(s,work())||!!c.T7.state().done[s.id],'5.0 solved via real controls '+s.id);ok(!!c.T7.state().done[s.id],'5.0 reward saved '+s.id);ok(c.T7.state().v5.ch[s.id][0],'challenge 1 star '+s.id);
  ok(c.T7.state().v5.ch[s.id][1]===false,'stars are not granted retroactively '+s.id);
  const replay=()=>{if(s.needs)for(const nd of [].concat(s.needs))t.click('ضع '+D.SEA1_TOOLS[nd].name);drive(s);};
- t.click('العب التحدي التالي');t.aria('التحدي 2');ok(JSON.stringify(work().slice(s.kind==='weigh'?1:0))===JSON.stringify(L.initial(s).slice(s.kind==='weigh'?1:0)),'challenge 2 starts from the original board '+s.id);if(s.kind==='weigh'){const seen=new Set();for(let k=0;k<40;k++){t.click('محاولة جديدة');seen.add(work()[0]);}ok(seen.size>=5,'weigh: heavy stone moves between attempts ('+seen.size+' positions seen)');}replay();ok(c.T7.state().v5.ch[s.id][1],'min-move star '+s.id);
+ t.click('العب التحدي التالي');t.aria('التحدي 2');
+ ok(t.buttons().filter(n=>n.attrs.role==='tab').length===3,'only three challenge tabs '+s.id);
+ ok(L.equal(work(),L.initial(L.variant(s,1))),'challenge 2 starts from the redesigned board '+s.id);
+ replay();ok(c.T7.state().v5.ch[s.id][1],'min-move star '+s.id);
  t.aria('التحدي 3');t.click('تلميح');replay();ok(!c.T7.state().v5.ch[s.id][2],'a hint voids the no-hint star '+s.id);t.click('محاولة جديدة');replay();ok(c.T7.state().v5.ch[s.id][2],'no-hint star '+s.id);
  if(s.needs)for(const nd of [].concat(s.needs))ok(c.T7.state().v5.tools[nd]==='used','tool marked used '+nd);if(s.gives)ok(!!c.T7.state().v5.tools[s.gives],'tool earned '+s.gives);}
 for(const s of D.stations)playV5(s);
-/* «خبير» boards open once the sea is sealed; play each through the real controls. */
-for(const s of D.stations.filter(s=>s.expert)){c.T7.open(s.i);t.click('ابدأ اللغز');t.aria('التحدي 4');
- ok(JSON.stringify(c.T7.state().work[s.id])===JSON.stringify(s.expert.start),'expert board loaded '+s.id);if(s.needs)for(const nd of [].concat(s.needs))t.click('ضع '+D.SEA1_TOOLS[nd].name);
- drive(L.variant(s,3));ok(c.T7.state().v5.ch[s.id][3],'expert star '+s.id);}
 ok(Object.keys(c.T7.state().done).length===21,'all 21 complete');ok(c.T7.state().rewards.length===7,'7 rewards earned');
 const restored=boot(JSON.parse(c.persisted));ok(Object.keys(restored.c.T7.state().done).length===21,'reload keeps completion');ok(restored.c.S.st.hist[0].pts===77,'legacy results preserved');ok(restored.c.S.st.tx.prog===5,'legacy journey preserved');restored.c.T7.map();restored.click('الكنوز');ok(restored.nodes().filter(n=>n.className==='t7-treasure earned').length===7,'treasure cabinet');restored.click('إغلاق');restored.click('دفتر الرحلة');ok(restored.nodes().filter(n=>n.tag==='article'&&n.className==='v5-page').length===28,'notebook all clues (5.0: 21 station pages + 7 secrets)');
 const remote=JSON.parse(c.persisted);delete remote.treasureV3.done.sea7_0;remote.treasureV3.updatedAt=Date.now()+100;restored.c.S.merge(remote);ok(Object.keys(restored.c.T7.state().done).length===21,'cloud merge preserves local completed nodes');const malformed=JSON.parse(JSON.stringify(remote));malformed.treasureV3.work.sea7_0=[999];restored.c.S.merge(malformed);ok(Object.keys(restored.c.T7.state().done).length===21,'invalid remote cannot overwrite progress');

@@ -4,7 +4,7 @@
 (function (root) {
   const $ = q => DX.$(q), later = (f, ms) => root.__T7_SYNC ? f() : setTimeout(f, ms), L = () => TreasureLogic;
   const ART = 'treasure/art/story5/';
-  const CH = ['الحل', 'أقل حركات', 'بدون تلميح', 'خبير', 'لغز اليوم'];
+  const CH = ['الاستكشاف', 'الدقة', 'الإتقان'];
   const NO_UNDO = ['weigh'];
 
   function v5state(x) {
@@ -16,7 +16,16 @@
   function firstOpen(x, id, done) { const c = chal(x, id); if (!done) return 0; const i = c.slice(0, 3).findIndex((d, k) => !d && (k === 0 || c[k - 1])); return i < 0 ? 0 : i; }
   function attempt(x, s, done) {
     const v = v5state(x);
-    if (!v.att[s.id] || ![0, 1, 2, 3, 4].includes(v.att[s.id].c) || (v.att[s.id].c === 4 && !s.daily)) v.att[s.id] = { c: firstOpen(x, s.id, done), moves: 0, hint: 0, tool: !s.needs, hist: [] };
+    const prior = v.att[s.id];
+    if (prior && ([1, 2, 3].includes(prior.c) && prior.boardSet !== 1)) {
+      // Old attempts may contain a board from a different challenge. Keep earned stars.
+      if (x.work) delete x.work[s.id];
+      const c = prior.c < 3 ? prior.c : chal(x, s.id)[1] ? 2 : firstOpen(x, s.id, done);
+      v.att[s.id] = { c, boardSet: 1, moves: 0, hint: 0, tool: !s.needs, hist: [] };
+    }
+    if (!v.att[s.id] || ![0, 1, 2, 4].includes(v.att[s.id].c) || (v.att[s.id].c === 4 && !s.daily)) {
+      v.att[s.id] = { c: firstOpen(x, s.id, done), boardSet: 1, moves: 0, hint: 0, tool: !s.needs, hist: [] };
+    }
     if (!Array.isArray(v.att[s.id].hist)) v.att[s.id].hist = [];
     return v.att[s.id];
   }
@@ -32,7 +41,7 @@
     ctx.base = ctx.s;
     Object.defineProperty(ctx, 's', { configurable: true, get: () => L().variant(ctx.base, attempt(ctx.x, ctx.base, ctx.done()).c) });
   }
-  const opens = (ctx, c, k) => k === 4 ? !!ctx.base.daily : k === 0 || (k < 3 ? ctx.done() && c[k - 1] : !!ctx.base.expert && ctx.done() && (ctx.sealed ? ctx.sealed() : true));
+  const opens = (ctx, c, k) => k === 0 || (k < CH.length && ctx.done() && c[k - 1]);
 
   function render(host, ctx) {
     bind(ctx);
@@ -42,32 +51,31 @@
     host.innerHTML = '';
     host.dataset.kind = s.kind;
     if (lastId !== base.id) { sel = null; picked = null; lastId = base.id; }
-    const names = base.challenges || CH;
+    const names = CH;
     const chips = E('div', { class: 'v5-chips', role: 'tablist' });
     names.forEach((name, k) => {
-      if (k === 3 && !base.expert || k === 4 && !base.daily) return;
       const open = opens(ctx, c, k);
       chips.append(E('button', {
-        type: 'button', class: 'v5-chip' + (at.c === k ? ' on' : '') + (c[k] ? ' won' : '') + (k === 3 ? ' expert' : ''), disabled: !open, role: 'tab', 'aria-selected': at.c === k,
+        type: 'button', class: 'v5-chip' + (at.c === k ? ' on' : '') + (c[k] ? ' won' : ''), disabled: !open, role: 'tab', 'aria-selected': at.c === k,
         'aria-label': `التحدي ${k + 1}: ${name}${c[k] ? '، مكتمل' : open ? '' : '، مقفل'}`,
         onclick: () => { if (at.c !== k) startAttempt(ctx, k); }
       }, E('span', { class: 'v5-star', text: c[k] ? '★' : '☆' }), E('b', { text: name })));
     });
     const challengeNotes = [
       'تعرّف على آلية المحطة، وجرّب الوصول إلى الحل.',
-      'أعد المحاولة مع الالتزام بأقل عدد من الحركات المحدد.',
-      'حلّ المحطة دون استخدام أي تلميح.',
-      'تحدٍّ أعمق بلوحة أو شروط أكثر تعقيدًا.',
+      s.kind === 'weigh' ? 'اكتشف الحجر المختلف في ترتيب جديد دون اختيار خاطئ.' : 'لوحة جديدة: حلّها ضمن الحد الموضّح للحركات.',
+      'واجه ترتيبًا أو قواعد مختلفة، وحلّ اللوحة دون استخدام تلميح.',
+      '',
       'نسخة يومية متجددة من اللغز؛ راقب اختلاف ترتيب البداية.'
     ];
     const limit = s.kind === 'tide' ? s.target.budget : (at.c === 1 || at.c === 4) && s.kind !== 'weigh' ? s.target.min : null;
     const label = s.kind === 'weigh' ? 'الوزنات' : s.kind === 'chime' ? 'الضربات' : s.kind === 'tide' ? 'الأفعال' : s.kind === 'river' ? 'العبور' : s.kind === 'slide' ? 'الانزلاقات' : ['gearfit', 'path', 'cipher', 'torn'].includes(s.kind) ? 'التبديلات' : 'الحركات';
     const counter = E('div', { class: 'v5-counter' }, E('span', { text: label }), E('b', { id: 'v5-moves', text: String(at.moves) }),
       limit ? E('small', { text: '/ ' + limit }) : null,
-      at.c >= 2 ? E('small', { class: 'v5-nohint', text: at.c === 4 ? 'لغز اليوم' : at.c === 3 ? 'لوحة الخبير' : at.hint ? 'استُعمل تلميح' : 'بلا تلميح' }) : null);
+      at.c >= 2 ? E('small', { class: 'v5-nohint', text: at.c === 4 ? 'لغز اليوم' : at.hint ? 'استُعمل تلميح' : 'بلا تلميح' }) : null);
     host.append(E('div', { class: 'v5-head' }, chips, counter),
       at.c > 0 ? E('p', { class: 'v5-challenge-note', text: challengeNotes[at.c] }) : '',
-      E('p', { class: 'v5-goal', text: s.goal + (at.c === 2 && base.alt ? ' (ترتيب مختلف عن المحاولة الأولى)' : at.c === 3 && !base.expert.goal ? ' لوحة الخبير أكبر من لوحة القصة.' : at.c === 4 ? ' لغز اليوم: ترتيب جديد كل يوم.' : '') }));
+      E('p', { class: 'v5-goal', text: s.goal }));
     host.append(E('div', { class: 'v5-board v5-k-' + s.kind, id: 'v5-board' }));
     host.append(E('div', { class: 'v5-crew', id: 'v5-crew', role: 'status', 'aria-live': 'polite' }));
     const hintBox = E('div', { class: 'v5-hint', id: 'v5-hint', role: 'status', 'aria-live': 'polite' });
@@ -86,10 +94,9 @@
     bind(ctx); try { sfx.puzzleSelect(); } catch (e) {}
     ctx.demo = null;
     const { x } = ctx, base = ctx.base;
-    v5state(x).att[base.id] = { c: k, moves: 0, hint: 0, tool: !base.needs, wrong: 0, hist: [] };
+    v5state(x).att[base.id] = { c: k, boardSet: 1, moves: 0, hint: 0, tool: !base.needs, wrong: 0, hist: [] };
     sel = null; picked = null;
     const s = ctx.s, w = L().initial(s);
-    if (s.random && s.kind === 'weigh') w[0] = Math.floor(Math.random() * 9);
     ctx.setWork(w);
     ctx.save();
     ctx.rerender();
@@ -149,7 +156,7 @@
     ctx.setWork(next);
     at.moves++;
     x.moves[base.id] = (x.moves[base.id] || 0) + 1;
-    const d = s.kind === 'weigh' || s.kind === 'slide' && at.c === 3 ? null : L().distance(s, next);
+    const d = s.kind === 'weigh' || s.kind === 'slide' && at.c === 2 ? null : L().distance(s, next);
     const lastD = at.lastD; at.lastD = d;
     ctx.save();
     const m = $('#v5-moves');
@@ -185,10 +192,10 @@
     if (firstWin) return ctx.onFirstWin({ moves: at.moves, hints: at.hint });
     const host = $('#v5-board');
     if (!host) return;
-    const names = base.challenges || CH;
-    const why = at.c === 4 ? `حللت لغز اليوم في ${at.moves} حركة (أقل عدد ${s.target.min}). عد غدًا للغز جديد.` : earned ? (at.c === 0 ? 'أعدت حل اللغز.' : at.c === 1 ? `نجمة «أقل حركات»: ${at.moves} حركات.` : at.c === 2 ? 'نجمة «بدون تلميح».' : `نجمة «خبير» في ${at.moves} حركة (أقل عدد ${s.target.min}).`)
+    const names = CH;
+    const why = at.c === 4 ? `حللت لغز اليوم في ${at.moves} حركة (أقل عدد ${s.target.min}). عد غدًا للغز جديد.` : earned ? (at.c === 0 ? 'أعدت حل اللغز.' : at.c === 1 ? 'أكملت تحدي الدقة.' : 'أكملت تحدي الإتقان بلا تلميح.')
       : at.c === 1 ? (s.kind === 'weigh' ? 'اخترت حجرًا خاطئًا في هذه المحاولة؛ حاول من جديد.' : `حللته في ${at.moves} حركة؛ الحد ${s.target.min}. حاول من جديد.`) : 'استعملت تلميحًا في هذه المحاولة؛ حاول من جديد دون تلميح.';
-    const next = at.c === 4 ? -1 : c.findIndex((d, k) => !d && k < 4 && (k !== 3 || base.expert) && opens(ctx, c, k));
+    const next = at.c === 4 ? -1 : c.findIndex((d, k) => !d && k < CH.length && opens(ctx, c, k));
     host.append(E('div', { class: 'v5-done' }, E('b', { text: earned ? '★ تحقق التحدي' : 'انحل اللغز' }), E('p', { text: why }),
       E('div', { class: 'v5-bar' }, next >= 0 ? button('التحدي التالي: ' + names[next], () => startAttempt(ctx, next), 'primary') : null,
         button('محاولة جديدة', () => startAttempt(ctx, at.c)))));

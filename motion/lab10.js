@@ -300,7 +300,9 @@
         const dup = []; ans.forEach((r, c) => r.forEach((v, p) => { if (r.indexOf(v) !== p || r.lastIndexOf(v) !== p) dup.push([c, p]); }));
         if (dup.length) { mark = { cells: dup }; cl.forEach(l => l.className = ''); draw(); api.msg('قيمة مكررة في العمود نفسه: لكل شخص قيمة مختلفة.'); return; }
         const bi = P.clues.findIndex(c => !holds(c)); cl.forEach((l, i) => l.className = i === bi ? 'bad' : holds(P.clues[i]) ? 'ok' : '');
-        mark = { cells: bi >= 0 ? cellsOf(P.clues[bi]) : [] }; draw(); api.msg(bi >= 0 ? `القيمة المعلّمة تخالف القرينة ${N(bi + 1)}.` : 'فيه خطأ. ارجع للقرائن.'); };
+        mark = { cells: bi >= 0 ? cellsOf(P.clues[bi]) : [] };
+        if (bi >= 0) $('#lgcl').dispatchEvent(new CustomEvent('mindlab:clue', { detail: bi }));
+        draw(); api.msg(bi >= 0 ? `القيمة المعلّمة تخالف القرينة ${N(bi + 1)}.` : 'فيه خطأ. ارجع للقرائن.'); };
       draw(); pzHook({ P, ans, draw, check: () => $('#lbgo').click() });
       return { hint: k => { if (k === 1) return 'ارسم في ذهنك جدول «نعم/لا»: كل قرينة «لا» تشطب خانة، وإذا بقي خيار واحد في الصف فهو الجواب.'; const c = []; ans.forEach((r, ci) => r.forEach((v, p) => { if (!fixed.has(ci + '.' + p) && v !== P.sol[ci][p]) c.push([ci, p]); })); if (!c.length) return null;
           const [ci, p] = pick(c); ans[ci][p] = P.sol[ci][p]; fixed.add(ci + '.' + p); draw(); const C = LG_C[P.cats[ci]]; return `${LG_P[p]} ${C.v} ${C.it[P.sol[ci][p]]} (ثبّتُّها لك).`; },

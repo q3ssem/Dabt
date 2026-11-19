@@ -161,3 +161,130 @@ html.fit-t7 #v-puz.t7 .v5-dsvg,html.fit-t7 #v-puz.t7 .v5-dsvg svg{overflow:hidde
 #play.fit[data-la-game="pz_ashade"] .asdg{width:100%;max-width:360px;min-width:calc(var(--n) * 34px + 4px)}
 #play.fit[data-la-game="pz_ashade"] .asdg button{min-height:32px;min-width:32px}
 #play.fit[data-la-game="pz_ashade"] #pzb{overflow-x:auto}
+
+/* Parchment presentation and a single readable clue at a time. */
+#play .pbar #quit {
+  display: grid; place-items: center; box-sizing: border-box; flex: 0 0 44px;
+  width: 44px; height: 44px; border-radius: 13px; padding: 0;
+  border: 1px solid #9a7c53; background: #fff8e7; color: #483526;
+}
+#play .pbar #quit svg { width: 21px; height: 21px; }
+#play .pbar #quit:focus-visible, .fit-clue-controls button:focus-visible { outline: 3px solid #267771; outline-offset: 2px; }
+#play .pbar { align-items: center; }
+html[data-skin="dark"] #play .pbar #quit { background: #253538; color: #fff5d7; border-color: #9a7953; }
+#play.fit #pzb :is(.fit-clue-list) { display: block; margin-block: 0 6px; padding-inline-start: 0; list-style: none; }
+#play.fit #pzb .fit-clue-list > [hidden] { display: none !important; }
+.fit-clue-controls {
+  display: grid; grid-template-columns: 1fr auto 1fr; align-items: center;
+  gap: 5px; margin-block: 2px; color: #4c372a;
+}
+.fit-clue-controls span { font-size: 12px; font-weight: 800; text-align: center; }
+.fit-clue-controls button {
+  min-height: 44px; min-width: 44px; border-radius: 9px; padding: 1px 5px;
+  border: 1px solid #bea67d; background: #fff9e7; color: #3a382c; cursor: pointer; font: inherit;
+}
+.fit-clue-controls button:disabled { opacity: .5; cursor: default; }
+.fit-clue-current { animation: fit-clue-in .17s ease-out; }
+@keyframes fit-clue-in { from { opacity: .55; transform: translateY(3px); } to { opacity: 1; transform: none; } }
+html[data-skin="dark"] .fit-clue-controls { color: #fff6e3; }
+html[data-skin="dark"] .fit-clue-controls button { background: #193837; color: #f6e9c7; }
+#play[data-la-game="pz_grid"].fit #pzb :is(.lg10-tw,.lg10-t) { width: 100%; }
+#play[data-la-game="pz_grid"].fit #pzb .lg10-c { min-height: 43px; }
+#play[data-la-game="pz_river"].fit #pzb .rv10 {
+  min-height: clamp(210px, 43dvh, 400px);
+  background: #c8d9cf;
+}
+#play[data-la-game="pz_river"].fit #pzb .rv10-landscape .water {
+  top: 12%; height: 88%;
+  mask-image: linear-gradient(to bottom, transparent, #000 16%);
+}
+#play[data-la-game="pz_river"].fit #pzb .rv10-landscape .bank { top: 12%; height: 88%; }
+#play[data-la-game="pz_xbottle"].fit #pzb .xbwheels { gap: 6px; width: 100%; margin-inline: auto; }
+#play[data-la-game="pz_xbottle"].fit #pzb .xbwheel { flex: 1 1 0; min-width: 0; }
+#play[data-la-game="pz_xbottle"].fit #pzb .xbwheel svg { width: min(100%, 250px); height: auto; max-width: none; }
+#play[data-la-game="pz_tpath"].fit #pzb .tpbig .xpin { padding-inline: 2px !important; }
+#play[data-la-game="pz_tpath"].fit #pzb .tpbig .xbw { margin-inline: 0; }
+#play[data-la-game="pz_tpath"].fit #pzb .tpbig #tsc { max-width: 100%; }
+#play[data-la-game="pz_door"].fit #pzb .pl-turn { height: clamp(66px, 12dvh, 110px) !important; min-width: 0; }
+#play[data-la-game="pz_door"].fit #pzb .pl-pose { display: block; width: 100%; height: 100%; min-width: 0; min-height: 0; }
+#play[data-la-game="pz_door"] .pl-strow { display: grid; grid-template-columns: 44px minmax(0,1fr) 44px; gap: 4px; }
+#play[data-la-game="pz_door"] .pl-st { overflow: hidden; }
+@media (max-width: 420px) {
+  #play[data-la-game="pz_door"] .pl-turn { grid-column: 1 / -1; grid-row: 1; }
+  #play[data-la-game="pz_door"] .pl-rot:first-child { grid-column: 1; }
+  #play[data-la-game="pz_door"] .pl-rot:last-child { grid-column: 3; }
+}
+#play .res, #v-puz .v5-done, #v-puz .v5-reward {
+  border: 1px solid #b4884a; border-radius: 18px 12px 20px 14px;
+  background: radial-gradient(ellipse at 50% 8%, #f9e6a4, #fff7dc 65%);
+  color: #503523; box-shadow: 0 4px 18px #42261124;
+}
+#play .res { padding: clamp(12px,4vw,22px); }
+#play .res .bigstars { filter: drop-shadow(0 2px 3px #9e670f64); }
+#play .solved .pzstamp, #v-puz .v5-done { animation: polish-earned .37s cubic-bezier(.18,.8,.22,1); }
+@keyframes polish-earned { from { opacity: .15; transform: translateY(6px) scale(.94); } to { opacity: 1; transform: none; } }
+html[data-skin="dark"] :is(#play .res, #v-puz .v5-done, #v-puz .v5-reward) {
+  background: radial-gradient(ellipse at 50% 8%, #594327, #202e31 67%); color: #fff1cb;
+}
+@media (prefers-reduced-motion: reduce) {
+  .fit-clue-current, #play .solved .pzstamp, #v-puz .v5-done { animation: none; }
+}
+
+html:not([data-skin="dark"]) #play.fit #pzb,
+html:not([data-skin="dark"]) #v-puz :is(.t7-puzzle-pane,.la-section-title) {
+  background-color: #fff9ea;
+  background-image: linear-gradient(#fff9e975,#fff9e975), url('../motion/art-polish/parchment.webp');
+  background-size: 100% 100%;
+}
+#play[data-la-game="pz_xreef"] .xrw { background: #3d6867 url('../motion/art-polish/reef.webp') center / cover; }
+#play[data-la-game="pz_xreef"] .xrsea { opacity: .36; }
+#play[data-la-game="pz_xreef"] .xrsea2 { opacity: .22; }
+#play[data-la-game="pz_xbridge"] .xgw { background: #426d6a url('../motion/art-polish/bridge.webp') center / cover; }
+#play[data-la-game="pz_xbridge"] :is(.xgcl,.xgriver) { opacity: .38; }
+#play[data-la-game="pz_xcave"] .xcave { background: #231e23 url('../motion/art-polish/cave.webp') center / cover; }
+#play[data-la-game="pz_xcave"] .xcwall { opacity: .28; }
+
+#play[data-la-game="pz_xbottle"].fit .xbwheels .xbwheel {
+  width: min(85%, clamp(174px, 34dvh, 270px)) !important;
+  max-width: 100% !important;
+}
+#play[data-la-game="pz_xbottle"].fit .xbwheels:has(.xbwheel + .xbwheel) .xbwheel { width: 48% !important; }
+#play[data-la-game^="pz_a"] #pzb .xpaper.xsheet {
+  background: linear-gradient(#fff6e9c9, #f1e6dede), url('../motion/art-polish/atheran.webp') center / cover;
+}
+html[data-skin="dark"] #play[data-la-game^="pz_a"] #pzb .xpaper.xsheet {
+  background: linear-gradient(#203237bb, #172b2dd9), url('../motion/art-polish/atheran.webp') center / cover;
+}
+
+/* Use the real wheel diameter, not a stretched flex box reserved for it. */
+#play[data-la-game="pz_xbottle"].fit #pzb .xsheet {
+  aspect-ratio: auto !important;
+  min-height: 0 !important;
+}
+#play[data-la-game="pz_xbottle"].fit #pzb .xpin {
+  display: block;
+  padding: 4px !important;
+  height: auto !important;
+  min-height: 0 !important;
+}
+#play[data-la-game="pz_xbottle"].fit #pzb .xbwheel {
+  display: grid;
+  justify-items: center;
+  align-content: start;
+  gap: 2px;
+  height: auto !important;
+}
+#play[data-la-game="pz_xbottle"].fit #pzb .xbwheel > svg {
+  width: min(100%, clamp(155px, 26dvh, 238px)) !important;
+  height: auto !important;
+  aspect-ratio: 1;
+}
+#play[data-la-game="pz_xbottle"].fit #pzb .xbwheel .xbo text { fill: #35241c; }
+#play[data-la-game="pz_xbottle"].fit #pzb .xbwheel .xbi text { fill: #752b21; }
+#play[data-la-game="pz_xbottle"].fit #pzb .xbrot { gap: 4px; }
+#play[data-la-game="pz_xbottle"].fit #pzb .xbrot button { width: 44px; min-height: 44px; }
+#play[data-la-game="pz_xbottle"].fit #pzb :is(.xbread,.xbq) { margin-top: 2px; }
+#play[data-la-game="pz_xbottle"].fit #pzb .xbcode { font-size: 16px; margin-block: 0 4px; line-height: 1.25; }
+#play[data-la-game="pz_xbottle"].fit #pzb .xbtxt { font-size: 17px; line-height: 1.3; }
+#play[data-la-game="pz_xbottle"].fit #pzb .xbo2 { padding: 4px; min-height: 44px; font-size: 14px; }
+#play[data-la-game="pz_xbottle"].fit #pzb .xbopts { gap: 4px 6px; margin-top: 2px; }

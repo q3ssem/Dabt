@@ -110,10 +110,44 @@
     const t = $('#pzt'); if (t && !t.dataset.fit) { t.dataset.fit = '1'; t.addEventListener('click', () => { t.hidden = true; }); }
   }
 
+  const clueLists = '#lgcl, ol.xnote, .xnote ol, .pbclues, .mk-clues, .pl-clues';
+  function pageClues(board) {
+    for (const list of $$(clueLists, board)) {
+      if (list.classList.contains('fit-clue-list')) continue;
+      const clues = [...list.children].filter(el => el.matches('li, .mk-clue, .pl-clue, .pbclue'));
+      if (clues.length < 2) continue;
+      list.classList.add('fit-clue-list');
+      list.setAttribute('aria-live', 'polite');
+      const controls = document.createElement('nav');
+      controls.className = 'fit-clue-controls';
+      controls.setAttribute('aria-label', 'التنقل بين القرائن');
+      controls.innerHTML = '<button type="button">السابق</button><span></span><button type="button">التالي</button>';
+      list.before(controls);
+      const [previous, indicator, next] = controls.children;
+      let index = 0;
+      function show(value) {
+        index = Math.max(0, Math.min(clues.length - 1, value));
+        clues.forEach((clue, i) => {
+          clue.hidden = index !== i;
+          clue.classList.toggle('fit-clue-current', index === i);
+        });
+        indicator.textContent = `القرينة ${arabic(index + 1)} من ${arabic(clues.length)}`;
+        previous.disabled = index === 0;
+        next.disabled = index === clues.length - 1;
+        schedule();
+      }
+      previous.onclick = () => show(index - 1);
+      next.onclick = () => show(index + 1);
+      list.addEventListener('mindlab:clue', event => show(event.detail));
+      show(0);
+    }
+  }
+
   function arrange() {
     $$('details.ui-rules', body).forEach(d => { d.open = true; });
     $$('.xpin > h3', body).forEach(h => h.classList.add('fit-dup'));
     $('#play').classList.add('fit');
+    pageClues(body);
   }
   const framed = () => { const p = $('#play'); return !p || p.classList.contains('xframe'); };
 
@@ -127,7 +161,7 @@
       const avail = Math.max(160, window.innerHeight - top - 6 - safe);
       const keep = body.scrollTop;
       const natural = () => { body.scrollTop = 0; const r0 = body.getBoundingClientRect().top; let b = 0; for (const c of body.children) { const r = c.getBoundingClientRect(); if (r.height) b = Math.max(b, r.bottom); } return b - r0 + 4; };
-      const floor = ['pz_avsong','pz_ashade'].includes(gid()) ? 1 : MIN_ZOOM;
+      const floor = ['pz_avsong','pz_ashade'].includes(gid()) ? 1 : ['pz_river','pz_grid','pz_xbottle','pz_tpath','pz_door'].includes(gid()) ? 0.85 : MIN_ZOOM;
       let z = 1; body.style.removeProperty('--fit-z'); body.style.height = ''; let need = natural();
       for (let i = 0; i < 5 && need > avail + 1; i++) {
         z = Math.max(floor, Math.min(1, z * avail / need)); body.style.setProperty('--fit-z', String(z)); need = natural();
@@ -146,7 +180,7 @@
     if (!b) { const p = $('#play'); if (p) p.classList.remove('fit'); return; }
     arrange(); hud(); schedule(); setTimeout(() => { hud(); schedule(); }, 120); setTimeout(() => { hud(); schedule(); }, 600);
     setTimeout(() => { if (body === b) bubble(); }, 250);
-    mo = new MutationObserver(() => { $$('details.ui-rules:not([open])', b).forEach(d => { d.open = true; }); schedule(); });
+    mo = new MutationObserver(() => { pageClues(b); $$('details.ui-rules:not([open])', b).forEach(d => { d.open = true; }); schedule(); });
     mo.observe(b, { childList: true, subtree: true });
     b.addEventListener('load', schedule, true); b.addEventListener('toggle', schedule, true);
   }

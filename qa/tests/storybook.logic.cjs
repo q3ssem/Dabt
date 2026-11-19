@@ -17,6 +17,13 @@ for(const [id,bad] of [['sea7_9',[1,1,2,3,4,5,6,7,0]],['sea7_15',[0,0,0,0]],['se
 {const old=JSON.parse(JSON.stringify(p));old.work.sea7_0=[0,2,6];old.work.sea7_12=[true,false];old.work.sea7_19=[3,6,1,5,0,4,2];assert.throws(()=>L.validateProgress(old,D.stations),'older boards are rejected as-is');L.cleanWork(old,D.stations);assert.ok(L.validateProgress(old,D.stations),'older boards are dropped, progress kept');assert.ok(!old.work.sea7_0&&!!old.work.sea7_1,'only unfit boards removed');checks+=3;}
 
 /* Challenge 3 (another start) and «خبير» boards: documented minimum, exactly one finished arrangement; daily boards are legal. */
+for(const s of D.stations){
+ const boards=[0,1,2].map(c=>L.variant(s,c));
+ assert.ok(s.challengeBoards.length===2,'three challenges '+s.id);
+ const distinct=new Set(boards.map(b=>JSON.stringify(b.target)));
+ assert.equal(distinct.size,3,'all challenges differ '+s.id);
+ for(const board of boards){assert.equal(L.minMoves(board),board.target.min,'challenge cost '+s.id);checks++;}
+}
 for(const s of D.stations)for(const c of [2,3]){const v=L.variant(s,c);if(v===s)continue;assert.equal(L.minMoves(v),v.target.min,`variant ${c} minimum ${s.id}`);checks++;
  if(['locks','drums','hanoi','frogs','push','lights'].includes(s.kind)){const seen=new Set(),q=[L.initial(v)],goals=new Set();seen.add(q[0].join());for(let h=0;h<q.length;h++){const a=q[h];if(L.solved(v,a))goals.add(a.join());for(const n of L.neighbours(v,a)){const k=n.join();if(!seen.has(k)){seen.add(k);q.push(n);}}}assert.equal(goals.size,1,`variant ${c} one finished state ${s.id}`);checks++;}}
 for(const s of D.stations.filter(s=>L.DAILY_KINDS.includes(s.kind))){const d=L.dailyBoard(s,12345);assert.ok(L.workOk(s,d.start)&&d.min>=4&&L.minMoves(L.variant({...s,daily:d},4))===d.min,`daily board ${s.id}`);checks++;}

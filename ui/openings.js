@@ -16,12 +16,10 @@
   const $ = (s, r = document) => r.querySelector(s);
   const HEROES = [['rawaa', 'رواء'], ['nuha', 'نهى'], ['ward', 'ورد']];
   function crewMarkup(speaker, expression) {
-    return `<div class="fit-opening-crew" aria-label="رواء ونهى وورد">${HEROES.map(([id, name]) => {
-      const response = expression === 'concerned' ? 'thinking' : expression;
-      const position = EXPR_POS[id === speaker ? expression : response] || EXPR_POS.welcome;
-      return `<span class="fit-opening-hero${id === speaker ? ' speaking' : ''}" role="img" aria-label="${name}"
-        style="background-image:url('ui/designs_art/characters/${id}_expressions.png');background-position:${position}"></span>`;
-    }).join('')}</div>`;
+    const [id, name] = HEROES.find(([id]) => id === speaker) || HEROES[0];
+    const position = EXPR_POS[expression] || EXPR_POS.welcome;
+    return `<div class="fit-opening-crew"><span class="fit-opening-hero speaking" role="img" aria-label="${name}"
+      style="background-image:url('ui/designs_art/characters/${id}_expressions.png');background-position:${position}"></span></div>`;
   }
   const readSeen = () => {
     try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); } catch (_) { return {}; }
