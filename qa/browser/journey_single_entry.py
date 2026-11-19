@@ -1,4 +1,4 @@
-"""Stage 1: one treasure-journey gateway, ordered atlas and preserved chapter engines.
+"""Journey V3: one atlas, touch targets and guarded launches.
 Runs against real Chromium and WebKit. It never writes player progress.
 """
 import asyncio, json, os
@@ -49,45 +49,56 @@ async def run(browser, width, height):
     atlas = page.locator("#mlj-unified-hub")
     check(await atlas.is_visible(), tag + " atlas opens directly")
     check(await atlas.get_attribute("role") == "dialog", tag + " accessible dialog")
-    for ch in ("seven_seas", "palace", "atheran", "side"):
-        check(await atlas.locator(f'.mlj-ch-card[data-mlj-ch="{ch}"]').count() == 1, tag + " chapter " + ch)
-    names = await atlas.locator(".mlj-ch-card .mlj-ch-name").all_text_contents()
-    check(names == ["حكايات البحار السبعة", "قصر المرايا", "أَثْرَان · أطلس المجهول", "رحلة أسرار أَثْرَان"], tag + " chapter order")
-    check(await atlas.locator(".mlj-pin").count() == 4, tag + " four atlas markers")
-    check(await atlas.locator(".mlj-pin").evaluate_all("(els)=>els.every(e=>Math.min(e.getBoundingClientRect().width,e.getBoundingClientRect().height)>=43.5)"), tag + " 44px marker targets")
-    check(await atlas.locator(".mlj-map-img").evaluate("(img)=>img.complete&&img.naturalWidth>0"), tag + " map image loaded")
-    dim = await page.evaluate("""()=>{const r=document.querySelector('#mlj-unified-hub .mlj-atlas-content').getBoundingClientRect();
-      return {left:r.left,right:r.right,ww:innerWidth,scroll:document.querySelector('#mlj-unified-hub .mlj-atlas-content').scrollWidth,
-      client:document.querySelector('#mlj-unified-hub .mlj-atlas-content').clientWidth}}""")
-    check(dim["left"] >= -1 and dim["right"] <= dim["ww"] + 1 and dim["scroll"] <= dim["client"] + 2, tag + " atlas fits width")
+    check(await atlas.locator(".mlj-v3-chapters button").count() == 3, tag + " three chapter shortcuts")
+    clusters = atlas.locator(".mlj-v3-cluster")
+    check(await clusters.count() == 13, tag + " thirteen overview clusters")
+    check(not any(any(ch.isdigit() for ch in text) for text in await clusters.all_text_contents()), tag + " overview labels have no numbers")
+    await atlas.locator("#mlj-v3-overview").click()
+    pins = atlas.locator(".mlj-v3-pin")
+    check(await pins.count() == 86, tag + " eighty-six stations on one map")
+    for chapter, count in (("seven_seas", 21), ("palace", 19), ("atheran", 21), ("side", 25)):
+        check(await atlas.locator(f'.mlj-v3-pin[data-chapter="{chapter}"]').count() == count,
+              tag + " station count " + chapter)
+    check(await pins.evaluate_all("""els=>els.every(e=>Math.min(e.getBoundingClientRect().width,e.getBoundingClientRect().height)>=44)"""),
+          tag + " 44px station targets")
+    check(await atlas.locator(".mlj-map-img").evaluate("img=>img.complete&&img.naturalWidth>0"), tag + " map image loaded")
+    check(await atlas.locator(".mlj-v3-content").evaluate("el=>el.getBoundingClientRect().width<=innerWidth"), tag + " atlas fits viewport")
     await page.screenshot(path=str(OUT / f"{tag}-atlas.png"))
+    check(await page.evaluate("()=>!window.ATHERAN_CAMPAIGN.summary().open"), tag + " fresh Atheran locked")
+    await atlas.locator('[data-station-id="pz_aarch"]').click()
+    check(await atlas.locator(".mlj-v3-start").is_hidden(), tag + " locked Atheran station offers no start")
+    await page.keyboard.press("Escape")
+    await atlas.locator('[data-station-id="ml10_02"]').click()
+    check(await atlas.locator(".mlj-v3-start").is_hidden(), tag + " next side station stays locked")
+    await page.keyboard.press("Escape")
+
+    await atlas.locator('[data-station-id="pz_pobs"]').click()
+    await atlas.locator(".mlj-v3-start").click()
+    await page.locator("#stage .mlj-v3-opening").wait_for()
+    check(await page.evaluate("()=>curGame().id === 'pz_pobs'"), tag + " Palace opens the original library entry")
+    await page.locator("#quit").click()
+    await atlas.wait_for(state="visible")
     await page.keyboard.press("Escape")
     check(await atlas.is_hidden(), tag + " escape closes atlas")
     check(await page.locator("#mlj-journey-entry").get_attribute("aria-expanded") == "false", tag + " focus state reset")
-    # Locked Atheran stays locked: atlas must not fake completion or expose secrets.
-    check(await page.evaluate("()=>!window.ATHERAN_CAMPAIGN.summary().open"), tag + " fresh Atheran locked")
+
     await page.locator("#mlj-journey-entry").click()
-    check(await atlas.locator('.mlj-ch-card[data-mlj-ch="atheran"]').get_attribute("data-locked") == "true", tag + " Atheran lock shown")
-    await atlas.locator('.mlj-ch-card[data-mlj-ch="atheran"]').click()
-    check(await page.locator(".ah-lock").count() == 1, tag + " original Atheran gate enforced")
-    await page.evaluate("()=>T7.hub()")
-    await page.locator("#mlj-journey-entry").wait_for(state="visible")
-    await page.locator("#mlj-journey-entry").click()
-    await atlas.locator('.mlj-ch-card[data-mlj-ch="palace"]').click()
-    check(await page.locator("#mlj-palace-map .mlj-palace-station").count() == 19, tag + " 19 Palace stations")
-    await page.locator("#mlj-palace-map .mlj-palace-close").click()
-    await page.locator("#mlj-journey-entry").click()
-    await atlas.locator('.mlj-ch-card[data-mlj-ch="side"]').click()
-    check(await page.locator(".ex10-map").count() == 1, tag + " independent side map")
-    await page.evaluate("()=>T7.hub()")
-    await page.locator("#mlj-journey-entry").wait_for(state="visible")
-    await page.locator("#mlj-journey-entry").click()
-    await atlas.locator('.mlj-ch-card[data-mlj-ch="seven_seas"]').click()
-    # On first entry the existing departure scene may appear before the sea map.
-    tr = page.locator("#mlj-tr-modal")
-    if await tr.count():
-        await tr.locator("#mlj-tr-close").click()
-    check(await page.locator(".t7-atlas").count() > 0, tag + " official sea map")
+    await atlas.locator('[data-station-id="sea7_0"]').click()
+    await atlas.locator(".mlj-v3-start").click()
+    departure = page.locator("#mlj-tr-close")
+    if await departure.is_visible():
+        await departure.click()
+    opening = page.locator(".mlj-v3-opening-overlay")
+    await opening.wait_for()
+    check(await opening.locator(".mlj-v3-opening-person").count() == 1, tag + " one heroine in the station opening")
+    await opening.locator("#fit-op-start").click()
+    check(await page.locator('[data-station-id="sea7_0"].t7-puzzle-layout').is_visible(), tag + " Sea launches the original board")
+    await page.locator('.t7-tool-icon[aria-label="الخريطة"]').click()
+    await atlas.wait_for(state="visible")
+    await atlas.locator('[data-station-id="ml10_01"]').click()
+    await atlas.locator(".mlj-v3-start").click()
+    await opening.locator("#fit-op-start").click()
+    check(await page.locator('.ex10-game-shell[data-stage-id="ml10_01"]').is_visible(), tag + " side opens the original board")
     check(not errors, tag + " no page exceptions " + ";".join(errors[:2]))
     await context.close()
 

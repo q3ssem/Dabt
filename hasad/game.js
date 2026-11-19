@@ -40,10 +40,6 @@
     if (p) return p.domain_name_ar;
     return DATA.category_names[id] || `الفئة ${id}`;
   }
-  function icon() {
-    return '<svg viewBox="0 0 48 48" fill="none" stroke="currentColor" stroke-width="2.8" stroke-linecap="round" stroke-linejoin="round"><path d="M8 17h32l-3 23H11L8 17Z" fill="rgba(255,255,255,.12)"/><path d="M14 17c0-5 4-9 10-9s10 4 10 9"/><path d="M17 17V7m7 10V4m7 13V8"/><path d="M17 26h14M17 32h14"/><path d="M12 13 8 8m28 5 4-5" opacity=".55"/></svg>';
-  }
-
   function runHasad() {
     return done => {
       const level = clamp(S.st.lv.hasad || 1, 1, 10);
@@ -165,7 +161,7 @@
     };
   }
 
-  Object.assign(I, { hasad: icon() });
+  Object.assign(I, { hasad: '<img class="ui-ico-art ml-art" src="ui/designs_art/journey/v3/games/hasad.webp" alt="">' });
   G.push({
     id: GAME_ID, cat: 'flx', col: ['#78D8BA', '#3A9B88'], name: 'حصاد الكلمات', lab: 'Arabic Verbal Fluency',
     why: 'تحدٍّ للطلاقة اللفظية والتبديل بين الفئات: تستدعي كلمات من بنك عربي منظم، وتتنقل بين المجالات أو الحروف أو فئتين بالتناوب. النتيجة تصف أداءك في هذه اللعبة فقط ولا تمثل قياسًا سريريًا.',

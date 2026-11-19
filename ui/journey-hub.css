@@ -419,3 +419,186 @@ html[data-skin="dark"] #v-puz .mlj-atlas-close {background:#233A43;color:#5CE0D2
   #v-puz .mlj-atlas-content {max-height:calc(100dvh - 12px)}
   #v-puz .mlj-atlas-dialog .mlj-map-wrap {max-width:310px}
 }
+
+/* Journey V3 map and pre-play scenes */
+#v-puz .mlj-journey-entry {
+  background-image: linear-gradient(90deg, #fffdf4ed, #fffdf4f7), url('designs_art/journey/v3/map/world_map_vertical.webp');
+}
+html[data-skin="dark"] #v-puz .mlj-journey-entry {
+  background-image: linear-gradient(90deg, #141b31eb, #141b31f5), url('designs_art/journey/v3/map/world_map_vertical.webp');
+}
+#v-puz .mlj-v3-atlas {
+  padding: 0;
+  background: #13252ce8;
+  overscroll-behavior: contain;
+}
+.mlj-v3-content {
+  --journey-surface: #fffdf6;
+  --journey-ink: #203435;
+  position: relative;
+  isolation: isolate;
+  display: grid;
+  grid-template-rows: auto auto minmax(0, 1fr) auto;
+  width: min(100%, 860px);
+  height: 100dvh;
+  margin-inline: auto;
+  background: var(--journey-surface);
+  color: var(--journey-ink);
+}
+html[data-skin="dark"] .mlj-v3-content {
+  --journey-surface: #18282b;
+  --journey-ink: #fff8e5;
+}
+.mlj-v3-head, .mlj-v3-tools {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 4px;
+  padding: 4px 8px;
+}
+.mlj-v3-head { padding-top: max(4px, env(safe-area-inset-top)); }
+.mlj-v3-head h2 { margin: 0; font-size: 18px; }
+.mlj-v3-tools { padding-bottom: max(4px, env(safe-area-inset-bottom)); }
+.mlj-v3-content button:not(.mlj-v3-pin,.mlj-v3-cluster), .mlj-v3-extras summary {
+  min-width: 44px;
+  min-height: 44px;
+  border: 0;
+  border-radius: 8px;
+  background: transparent;
+  color: inherit;
+  font: inherit;
+  cursor: pointer;
+}
+.mlj-v3-chapters {
+  display: grid;
+  grid-template-columns: repeat(3, minmax(0, 1fr));
+  padding: 0 4px 4px;
+}
+.mlj-v3-chapters button {
+  display: grid;
+  justify-items: center;
+  line-height: 1.15;
+  padding: 4px 1px;
+}
+.mlj-v3-chapters img, #mlj-v3-compass img { width: 29px; height: 29px; object-fit: contain; }
+.mlj-v3-map-scroll {
+  direction: ltr;
+  overflow: auto;
+  overscroll-behavior: contain;
+  min-width: 0;
+  min-height: 0;
+  background: #174c56;
+}
+.mlj-v3-map { position: relative; aspect-ratio: 1152 / 2064; }
+#v-puz .mlj-v3-map .mlj-map-img {
+  display: block;
+  width: 100%;
+  height: auto;
+  max-width: none;
+  border-radius: 0;
+}
+.mlj-v3-markers { position: absolute; inset: 0; pointer-events: none; }
+.mlj-v3-pin, .mlj-v3-cluster {
+  position: absolute;
+  transform: translate(-50%, -50%);
+  display: grid;
+  place-items: center;
+  padding: 0;
+  cursor: pointer;
+  pointer-events: auto;
+}
+.mlj-v3-pin { width: 44px; height: 44px; background: transparent; border: 0; }
+.mlj-v3-pin img { width: 38px; height: 38px; object-fit: contain; filter: drop-shadow(0 2px 3px #142b2bbb); }
+.mlj-v3-pin span {
+  position: absolute;
+  right: 1px;
+  bottom: 1px;
+  display: grid;
+  place-items: center;
+  width: 18px;
+  height: 18px;
+  font-size: 11px;
+  border-radius: 50%;
+  background: #234e43;
+  color: #fff9dc;
+}
+.mlj-v3-pin[data-status="done"] span { background: #735120; }
+.mlj-v3-pin[data-status="locked"] span { background: #2c3d47; }
+.mlj-v3-cluster {
+  direction: rtl;
+  grid-template-rows: 22px auto;
+  align-content: center;
+  gap: 2px;
+  width: 88px;
+  height: 52px;
+  border: 2px solid #f3deb1;
+  border-radius: 22px;
+  background: #0a5e56;
+  color: #fff;
+  box-shadow: 0 3px 7px #13262088;
+  font-family: inherit; font-size: 11px; font-weight: 800; line-height: 1.15;
+}
+.mlj-v3-cluster img { width: 22px; height: 22px; object-fit: contain; }
+.mlj-v3-cluster[data-chapter="palace"] { background: #29465c; }
+.mlj-v3-cluster[data-chapter="atheran"] { background: #59456b; }
+.mlj-v3-cluster[data-chapter="side"] { background: #805021; }
+.mlj-v3-tools button, .mlj-v3-extras summary { font-size: 11px !important; }
+.mlj-v3-extras summary { display: grid; align-items: center; list-style: none; }
+.mlj-v3-extras > div, .mlj-v3-preview {
+  position: absolute;
+  z-index: 2;
+  inset-inline: 12px;
+  bottom: calc(56px + env(safe-area-inset-bottom, 0px));
+  border: 1px solid #afbdac;
+  border-radius: 12px;
+  padding: 10px;
+  background: var(--journey-surface);
+  color: var(--journey-ink);
+  box-shadow: 0 6px 20px #101f2455;
+}
+.mlj-v3-extras > div { display: flex; flex-wrap: wrap; gap: 6px; max-height: 40dvh; overflow: auto; }
+.mlj-v3-extras:not([open]) > div, .mlj-v3-preview[hidden], .mlj-v3-start[hidden] { display: none !important; }
+.mlj-v3-preview { display: grid; gap: 4px; justify-items: start; }
+.mlj-v3-content .mlj-v3-preview .mlj-v3-start {
+  padding-inline: 16px;
+  background: #0a5e56;
+  color: #fff;
+}
+.mlj-v3-opening-overlay, #mlj-tr-modal { z-index: 120; }
+.mlj-v3-opening-person {
+  position: absolute;
+  inset-inline-start: 18%;
+  bottom: 0;
+  width: 64%;
+  height: 92%;
+  object-fit: contain;
+  object-position: center bottom;
+}
+.mlj-v3-opening { display: grid; gap: 10px; width: min(100%, 460px); margin: 0 auto; }
+.mlj-v3-opening-art {
+  display: grid;
+  place-items: end center;
+  height: clamp(110px, 42dvh, 340px);
+  background-size: cover;
+  background-position: center;
+  border-radius: 14px;
+  overflow: hidden;
+}
+.mlj-v3-opening-art img { width: 54%; height: 100%; object-fit: contain; object-position: center bottom; min-height: 0; }
+.mlj-v3-opening-text h2, .mlj-v3-opening-text p { margin: 0 0 6px; }
+.mlj-v3-opening-text button { min-height: 44px; }
+
+/* Frameless library and brain-game art, including legacy art that is not photographic. */
+html #v-puz .la-sections .la-library-grid { grid-template-columns: repeat(4,minmax(0,1fr)) !important; }
+html #v-puz .la-sections .la-library-card,
+html #v-games .ui-grid article .ui-gmain {
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--ml-ink, #203435) !important;
+  min-height: 44px !important;
+}
+html #v-puz .la-sections .la-library-card b { color: inherit !important; }
+html #v-puz .la-sections .la-library-card small { color: var(--ml-ink-3, #405354) !important; }
+html #v-puz .la-sections .la-library-image { width: min(100%, 52px) !important; height: 52px !important; }
+html #v-games .ui-grid article .ui-gmain .ico { width: 60px !important; height: 60px !important; }

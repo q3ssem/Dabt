@@ -107,6 +107,54 @@
     const st = e.target.closest && e.target.closest('#stage .atheran-story');
     if (st && !e.target.closest('button')) st.classList.toggle('ah-open');
   });
-  window.ATHERAN_CAMPAIGN = { open, render, back, summary, contiguous };
+  function canOpenStation(i) {
+    return !!ASTN[i] && aOpen() && i <= aState().prog;
+  }
+
+  function openJourneyStation(i) {
+    if (canOpenStation(i)) startRun([ASTN[i].id], null, { journeyStation: true });
+  }
+
+  function finishJourneyScene() {
+    const a = aState();
+    if (!aOpen() || !a.finPend || !a.done.pz_aheart) return false;
+    a.finPend = 0;
+    aFinale();
+    return true;
+  }
+
+  // Provide the native campaign actions to the unified map, using their original gates.
+  function journeyActions() {
+    const s = summary();
+    if (!s.open) return [];
+    const a = aSwState();
+    const actions = [{ label: 'سجل بعثات أَثْرَان', open: aLogs }];
+    for (const world of ASW) {
+      if (a.sw[world.k] || world.cond(a)) {
+        actions.push({ label: a.sw[world.k] ? world.n : world.k === 'bones' ? 'آثار الطوّاف' : 'استكشف أثرًا جديدًا',
+          open: () => {
+            const current = aSwState();
+            if (aOpen() && (current.sw[world.k] || world.cond(current))) aSwOpen(world.k);
+          } });
+      }
+    }
+    const needsNight = state => state.done.pz_acity && !state.sw?.spores && !state.nightPass && aHour() >= 5 && aHour() < 19;
+    if (needsNight(a)) actions.push({ label: 'انتظر حلول الليل', open: () => {
+      const current = aSwState();
+      if (!aOpen() || !needsNight(current)) return;
+      current.nightPass = 1;
+      S.save();
+      aSwOpen('spores');
+    } });
+    if (a.done.pz_aheart) actions.push({ label: 'شاهد خاتمة أَثْرَان', open: () => {
+      const current = aState();
+      if (!aOpen() || !current.done.pz_aheart) return;
+      current.finPend = 0;
+      aFinale();
+    } });
+    return actions;
+  }
+
+  window.ATHERAN_CAMPAIGN = { open, render, back, summary, contiguous, canOpenStation, openJourneyStation, finishJourneyScene, journeyActions };
   if (typeof curTab !== 'undefined' && curTab === 'puz') renderPuz();
 })();

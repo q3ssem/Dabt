@@ -105,8 +105,12 @@ async def palace(browser):
     for i,gid in enumerate(stations):
         await ev('()=>T7.hub()');await pg.locator('#mlj-journey-entry').wait_for()
         await pg.click('#mlj-journey-entry')
-        await pg.click('#mlj-unified-hub .mlj-ch-card[data-mlj-ch=palace]');await close_transition(pg)
-        await pg.click(f'#mlj-palace-map [data-mlj-puzzle="{gid}"]')
+        hub = pg.locator('#mlj-unified-hub')
+        if await hub.locator('.mlj-v3-cluster').count():
+            await hub.locator('#mlj-v3-overview').click()
+        await hub.locator(f'[data-station-id="{gid}"]').click()
+        await hub.locator('.mlj-v3-start').click()
+        await close_transition(pg)
         for k in range(3):
             go=pg.locator('#stage #go')
             if await go.count() and await go.is_visible():await go.click()

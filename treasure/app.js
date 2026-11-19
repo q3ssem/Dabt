@@ -3,7 +3,7 @@
    Progress lives in S.st.treasureV3 (save key miran:v2). Boards are drawn by boards.js. */
 (function(){
 const D=TreasureData,L=TreasureLogic,B=TreasureBoards,E=DX.el,A=DX.AR,$=DX.$,ART=B.ART;
-let view='hub',active=0,dialogAt=0,letterCh=0,passageTarget=null;
+let view='hub',active=0,dialogAt=0,letterCh=0,passageTarget=null,journeyEntry=false;
 
 /* ---------- progress ---------- */
 // The seal + secret of a sea come with its island; in the last sea they come at the Dawn Kingdom, before the final door.
@@ -29,11 +29,11 @@ function openDaily(){const d=daily();if(!d)return;const x=state(),s=d.s;s.daily=
 function dailyDone(moves,min,hints){const x=state();x.daily=x.daily&&typeof x.daily==='object'?x.daily:{};const k=today(),old=x.daily[k];if(!old||moves<old.moves)x.daily[k]={moves,min,hints:hints||0};const keys=Object.keys(x.daily).sort();while(keys.length>30)delete x.daily[keys.shift()];save();}
 
 /* ---------- navigation ---------- */
-function open(i){if(!unlocked(i))return;D.stations.forEach(q=>{delete q.daily;});const x=state(),a=B.v5state(x).att[D.stations[i].id];if(a&&a.c===4)delete B.v5state(x).att[D.stations[i].id];active=i;dialogAt=0;view='story';state().resume=i;save();go();}
-function continueJourney(){const target=active+1;if(target>=D.stations.length){map();return;}const from=D.stations[active],to=D.stations[target];if(from.ch!==to.ch&&sealHere(from)&&done(from.i)){passageTarget=target;view='passage';try{sfx.seaTransition();}catch(e){}render();window.scrollTo(0,0);return;}open(target);}
-function map(){view='map';if(window.LA)LA.view=null;render();window.scrollTo(0,0);}
-function hub(){view='hub';if(window.LA)LA.view=null;renderPuz();window.scrollTo(0,0);}
-function openSecret(ch){if(!done(sealIndex(ch)))return;active=sealIndex(ch);letterCh=ch;view='letter';go();}
+function open(i, fromJourney=journeyEntry){if(!D.stations[i]||!unlocked(i))return;journeyEntry=fromJourney;D.stations.forEach(q=>{delete q.daily;});const x=state(),a=B.v5state(x).att[D.stations[i].id];if(a&&a.c===4)delete B.v5state(x).att[D.stations[i].id];active=i;dialogAt=0;view=fromJourney?'puzzle':'story';state().resume=i;save();go();}
+function continueJourney(){if(journeyEntry)return map();const target=active+1;if(target>=D.stations.length){map();return;}const from=D.stations[active],to=D.stations[target];if(from.ch!==to.ch&&sealHere(from)&&done(from.i)){passageTarget=target;view='passage';try{sfx.seaTransition();}catch(e){}render();window.scrollTo(0,0);return;}open(target);}
+function map(){if(journeyEntry&&window.mindlabJourneyHub?.returnToMap){hub();window.mindlabJourneyHub.returnToMap();return}view='map';if(window.LA)LA.view=null;render();window.scrollTo(0,0);}
+function hub(){journeyEntry=false;view='hub';if(window.LA)LA.view=null;renderPuz();window.scrollTo(0,0);}
+function openSecret(ch,fromJourney=false){if(!D.chapters[ch]||!done(sealIndex(ch)))return;journeyEntry=fromJourney;active=sealIndex(ch);letterCh=ch;view='letter';go();}
 function go(){if(curTab!=='puz')tab('puz');else render();window.scrollTo(0,0);}
 
 /* ---------- shared pieces ---------- */
@@ -222,6 +222,7 @@ function sealMemory(){
  );
 }
 function openFinale(){const openModal=document.querySelector('.t7-modal[open]');if(openModal)openModal.close();active=20;view='reward';render();window.scrollTo(0,0);}
+function openFinaleFromJourney(){if(!done(20))return;journeyEntry=true;openFinale();}
 function renderFinale(){const s=D.stations[active],v=shell();top(v,'اكتملت حكايات البحار السبعة','الطريق الثامن');
  const ending=E('section',{class:'t7-paper v5-reward'},E('span',{class:'t7-kicker',text:'نهاية الرحلة'}),E('h2',{text:'وجدت جدّك'}),
   E('p',{text:'اتصل الضوء عبر الأختام، وانفتح الباب على مرفأ مضيء. هناك كان جدّك، حيًّا، يرفع آخر إشارة للمسافرين. ابتسم وقال: «لم أخفِ عنك كنزًا؛ تركت لك ما يجعلك أهلًا لحراسته معي».'}),
@@ -234,7 +235,7 @@ function renderLetter(){const v=shell(),Q=D.SECRETS5[letterCh],next=letterCh===6
  const mark=E('div',{class:'v5-letter-mark'+(Q.col?' col':'')+(Q.after?' after':''),'aria-label':Q.mark},...Q.markArt.map(a=>img(a)),E('span',{text:Q.arrow}));
  v.append(E('div',{class:'t7-story-layout'},E('div',{class:'v5-letter'},img(Q.art),E('p',{text:Q.text}),mark),
   E('section',{class:'t7-paper'},E('span',{class:'t7-kicker',text:'دليل محفوظ للنهاية'}),E('h2',{text:Q.title}),E('p',{text:Q.mark+' احتفظ بها حتى تجتمع أدلة البحار السبعة.'}),
-   button('العودة إلى الخريطة',map,'primary'),next<21&&unlocked(next)?button('إلى '+(letterCh===6?D.stations[20].name:D.chapters[letterCh+1][0]),()=>open(next)):null)));}
+   button('العودة إلى الخريطة',map,'primary'),next<21&&unlocked(next)?button('إلى '+(letterCh===6?D.stations[20].name:D.chapters[letterCh+1][0]),()=>journeyEntry?map():open(next)):null)));}
 
 /* ---------- notebook & treasures ---------- */
 function modal(kind){const nb=kind==='notebook',d=E('dialog',{class:'t7-modal','aria-label':nb?'دفتر الرحلة':'خزانة الكنوز'}),x=state(),T=B.v5state(x);
@@ -250,7 +251,7 @@ function modal(kind){const nb=kind==='notebook',d=E('dialog',{class:'t7-modal','
  document.body.append(d);d.addEventListener('close',()=>d.remove());d.showModal();}
 
 function render(){({hub:renderHub,map:renderMap,story:renderStory,puzzle:renderPuzzle,reward:renderReward,letter:renderLetter,passage:renderPassage})[view]();}
-window.T7={open,openSecret,openFinale,map,hub,render,state,data:D,logic:L};
+window.T7={open,openSecret,openFinale,openFinaleFromJourney,openJournal:modal,map,hub,render,state,unlocked,data:D,logic:L};
 
 /* ---------- saves: cloud merge and backups ---------- */
 DX.KEYS.push('treasureV3');

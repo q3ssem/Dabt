@@ -175,7 +175,7 @@
     if (b === lastBody) return;
     lastBody = b;
     const id = gid();
-    if (!id) return;
+    if (!id || (typeof RUN !== 'undefined' && RUN?.journeyStation)) return;
     const data = window.__MINDLAB_OPENINGS_DATA || {};
     if (!data[id]) return;
     const seen = readSeen();
@@ -198,7 +198,7 @@
     countdown = function () {
       const id = gid(), run = typeof RUN !== 'undefined' ? RUN : null;
       const data = window.__MINDLAB_OPENINGS_DATA || {};
-      if (!id || !data[id] || readSeen()[id]) return countdown0.apply(this, arguments);
+      if (run?.journeyStation || !id || !data[id] || readSeen()[id]) return countdown0.apply(this, arguments);
       const self = this, args = arguments;
       if (typeof stopAll === 'function') stopAll();
       openOpening(id, false, () => {

@@ -92,13 +92,13 @@ const DESIGN_ICONS = {
   pz_pipe: 'ui/designs_art/four_puzzles/pz_pipe/icon_pz_pipe.png',
   pz_river: 'ui/designs_art/river_stage1/05_opening_and_icon/06_puzzle_icon.png'
 };
-function tileFor(g){const c=settings(g),designIcon=DESIGN_ICONS[g.id],tile=E('button',{class:'la-library-card',type:'button','data-legacy-puzzle':g.id,onclick:()=>startRun([g.id])});tile.innerHTML=`<span class="la-library-image">${designIcon?`<img src="${designIcon}" alt="" loading="lazy" decoding="async">`:LA.object(c[1])||LA.sprite('puzzle-parts',1)}</span><b>${escape(g.name)}</b><small>المستوى ${A(typeof pzLv==='function'?pzLv(g.id):1)}</small>`;return tile;}
+function tileFor(g){const c=settings(g),designIcon=DESIGN_ICONS[g.id],tile=E('button',{class:'la-library-card',type:'button','data-legacy-puzzle':g.id,onclick:event=>event?.journeyStation?startRun([g.id],null,{journeyStation:true}):startRun([g.id])});tile.innerHTML=`<span class="la-library-image">${designIcon?`<img src="${designIcon}" alt="" loading="lazy" decoding="async">`:LA.object(c[1])||LA.sprite('puzzle-parts',1)}</span><b>${escape(g.name)}</b><small>المستوى ${A(typeof pzLv==='function'?pzLv(g.id):1)}</small>`;return tile;}
 LA.libraryInto=function(host){const input=E('input',{class:'dx-search',type:'search',placeholder:'ابحث عن لغز…','aria-label':'ابحث عن لغز'}),box=E('div',{class:'la-sections'});host.append(input,box);const secs=LA.librarySections();LA.puzzleCount=secs.reduce((n,s)=>n+s[1].length,0);
  const fill=()=>{const q=input.value?.trim()||'';box.innerHTML='';let any=false;secs.forEach(([name,list])=>{const found=list.filter(g=>g.name.includes(q));if(!found.length)return;any=true;const grid=E('div',{class:'la-library-grid'});found.forEach(g=>grid.append(tileFor(g)));box.append(E('section',{class:'la-section'},secHead(name,found.length),grid));});if(!any)box.append(E('p',{class:'t7-help',text:'لا توجد ألغاز مطابقة.'}));};input.oninput=fill;fill();};
 function library(){const v=$('#v-puz');v.classList.remove('trip');v.classList.add('t7');v.innerHTML='';v.append(E('header',{class:'t7-top'},E('div',{},E('span',{class:'t7-kicker',text:'نفس الألغاز · رسم متجدد'}),E('h1',{text:'مكتبة الألغاز'})),E('button',{class:'t7-btn',type:'button',text:'كل الألغاز',onclick:()=>{LA.view=null;T7.hub?T7.hub():T7.map();}})));LA.libraryInto(v);}
 LA.library=()=>{LA.view='library';if(curTab!=='puz')tab('puz');else library();};
 // Prevent a previous library screen from overriding an explicit new-story entry.
-const open0=T7.open;T7.open=function(i){LA.view=null;open0(i);};
+const open0=T7.open;T7.open=function(...args){LA.view=null;return open0.apply(this,args);};
 LA.config=config;LA.puzzleConfig=puzzleConfig;LA.decorate=decorate;LA.renderers={guardian0,car0,face0,makePerson0,landmarkOriginal};
 renderAll();
 })();
