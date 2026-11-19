@@ -1,7 +1,8 @@
 """Trace the final station after actual progression through all Palace rounds."""
-import asyncio,json,sys,pathlib
+import asyncio,json,sys,pathlib,types
 sys.path.insert(0,str(pathlib.Path('qa/browser').resolve()))
-import journey_completion as suite
+suite=types.ModuleType('journey_completion_diagnostic')
+exec(pathlib.Path('qa/browser/journey_completion.py').read_text().replace('\nasyncio.run(main())',''),suite.__dict__)
 from playwright.async_api import async_playwright
 original_boot=suite.boot
 page=None
