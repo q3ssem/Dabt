@@ -1,0 +1,104 @@
+name: MindLab Gemini ZIP export
+on:
+  push:
+    branches: [audit/gemini-zips-20261119]
+    paths: ['.github/workflows/mindlab-gemini-zips.yml']
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  zip:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: aea7bd07643be0e976fe1dea8a849beaa352464a
+          persist-credentials: false
+      - name: Split exact main revision into independent ZIPs below 100 MB
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile, ZIP_DEFLATED
+          import hashlib, json
+          root=Path('.')
+          output=Path('/tmp/mindlab-archive');output.mkdir(parents=True,exist_ok=True)
+          files=sorted((p for p in root.rglob('*') if p.is_file() and '.git' not in p.parts),key=lambda p:p.as_posix())
+          cap=75_000_000
+          groups=[];group=[];size=0
+          for f in files:
+              s=f.stat().st_size+400
+              if size+s>cap and group:
+                  groups.append(group);group=[];size=0
+              group.append(f);size+=s
+          if group:groups.append(group)
+          assert len(groups)<=6, f'too many archive parts: {len(groups)}'
+          info=[]
+          for idx,group in enumerate(groups,1):
+              target=output/('MindLab_5.5.28_Gemini_part%02d.zip'%idx)
+              with ZipFile(target,'w',compression=ZIP_DEFLATED,compresslevel=4) as z:
+                  for f in group:
+                      z.write(f,f.as_posix())
+                  if idx==1:
+                      z.writestr('GEMINI_README.txt','MindLab 5.5.28 source snapshot\nCommit SHA: aea7bd07643be0e976fe1dea8a849beaa352464a\nExtract ALL part ZIP archives into the SAME directory, retaining relative paths.\nThese are independent ZIP archives, NOT split fragments. No code modifications were made.\n')
+              data=target.read_bytes()
+              rec={'filename':target.name,'bytes':len(data),'sha256':hashlib.sha256(data).hexdigest(),'files':len(group),'first_path':group[0].as_posix(),'last_path':group[-1].as_posix()}
+              assert rec['bytes']<100_000_000,rec
+              info.append(rec)
+              print(json.dumps(rec,ensure_ascii=False))
+          manifest={'repo':'q3ssem/Dabt','source_commit':'aea7bd07643be0e976fe1dea8a849beaa352464a','total_files':len(files),'parts':info}
+          (output/'MANIFEST.json').write_text(json.dumps(manifest,ensure_ascii=False,indent=2),encoding='utf-8')
+          import shutil
+          shutil.copy(output/'MANIFEST.json',Path('GEMINI_EXPORT_MANIFEST.json'))
+          for p in output.iterdir():shutil.copy(p,Path(p.name))
+          print('TOTAL',sum(x['bytes'] for x in info),'BYTES; PARTS',len(groups))
+          PY
+      - name: Deliver ZIP part 01
+        uses: actions/upload-artifact@v4
+        with:
+          name: MindLab_Gemini_part01
+          path: MindLab_5.5.28_Gemini_part01.zip
+          if-no-files-found: ignore
+          compression-level: 0
+      - name: Deliver ZIP part 02
+        uses: actions/upload-artifact@v4
+        with:
+          name: MindLab_Gemini_part02
+          path: MindLab_5.5.28_Gemini_part02.zip
+          if-no-files-found: ignore
+          compression-level: 0
+      - name: Deliver ZIP part 03
+        uses: actions/upload-artifact@v4
+        with:
+          name: MindLab_Gemini_part03
+          path: MindLab_5.5.28_Gemini_part03.zip
+          if-no-files-found: ignore
+          compression-level: 0
+      - name: Deliver ZIP part 04
+        uses: actions/upload-artifact@v4
+        with:
+          name: MindLab_Gemini_part04
+          path: MindLab_5.5.28_Gemini_part04.zip
+          if-no-files-found: ignore
+          compression-level: 0
+      - name: Deliver ZIP part 05
+        uses: actions/upload-artifact@v4
+        with:
+          name: MindLab_Gemini_part05
+          path: MindLab_5.5.28_Gemini_part05.zip
+          if-no-files-found: ignore
+          compression-level: 0
+      - name: Deliver ZIP part 06
+        uses: actions/upload-artifact@v4
+        with:
+          name: MindLab_Gemini_part06
+          path: MindLab_5.5.28_Gemini_part06.zip
+          if-no-files-found: ignore
+          compression-level: 0
+      - name: Deliver manifest
+        uses: actions/upload-artifact@v4
+        with:
+          name: MindLab_Gemini_MANIFEST
+          path: GEMINI_EXPORT_MANIFEST.json
+          compression-level: 0
