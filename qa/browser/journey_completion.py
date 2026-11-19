@@ -83,7 +83,7 @@ SOLVE=r'''async id=>{
  case 'pz_pjail':h.set();h.judge();break;
  case 'pz_pmaze':for(const m of P.sol){h.go(m);await wait(70)}break;
  case 'pz_pcrypt':h.set();h.check();break;
- case 'pz_pvalve':for(const m of P.sol){h.op(m);await wait(70)}break;
+ case 'pz_pvalve':for(const m of pvRoute(P.start,P.goal)){h.op(m);await wait(70)}break;
  case 'pz_pdragon':h.set();h.check();break;
  case 'pz_pheart':h.set(P.sol);h.release();break;
  default:throw Error('Missing Palace solver '+id);

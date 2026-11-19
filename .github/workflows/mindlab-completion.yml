@@ -5,8 +5,26 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+concurrency:
+  group: mindlab-completion-${{ github.ref }}
+  cancel-in-progress: true
 jobs:
+  retire:
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: write
+    steps:
+      - name: Retire superseded acceptance runs on this review branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for run in $(gh run list --repo "$GITHUB_REPOSITORY" --branch "$GITHUB_REF_NAME" --limit 20 --json databaseId,status,name --jq '.[] | select(.name == "MindLab completion acceptance" and .status != "completed") | .databaseId'); do
+            if [ "$run" != "$GITHUB_RUN_ID" ]; then
+              gh run cancel "$run" --repo "$GITHUB_REPOSITORY" || true
+            fi
+          done
   logic:
+    needs: retire
     runs-on: ubuntu-24.04
     steps:
       - uses: actions/checkout@v4
@@ -20,6 +38,7 @@ jobs:
       - run: npm test
       - run: node qa/tests/design-integration.cjs && node qa/tests/journey-transitions.cjs
   browser:
+    needs: retire
     runs-on: ubuntu-24.04
     timeout-minutes: 40
     strategy:
