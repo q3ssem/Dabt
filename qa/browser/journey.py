@@ -11,6 +11,7 @@ layout for every board in portrait 390/320 and landscape 844×390.
 """
 import argparse, asyncio, json, pathlib, re, sys
 from playwright.async_api import async_playwright
+from player_openings import dismiss_opening,close_transition
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 SMOKE = (ROOT / 'qa/browser/smoke.py').read_text(encoding='utf-8')
@@ -48,6 +49,7 @@ async def reveal(page, sel):
     if summ: await page.click('summary[data-q]'); await page.wait_for_timeout(250)
 
 async def solve_board(page, i):
+    await dismiss_opening(page)
     """Same tap-only solver the smoke test uses: read the next legal move, press the labelled control."""
     for _ in range(4):
         gate = page.locator('.v5-gate .t7-btn.primary')
@@ -97,7 +99,7 @@ async def main(a):
             sid = await page.evaluate(f'()=>T7.data.stations[{i}].id')
             if not await page.locator('.v5-intro-go').count():
                 problems.append(f'station {i+1}: story page not shown'); break
-            await page.click('.v5-intro-go'); await page.wait_for_timeout(300)
+            await page.click('.v5-intro-go'); await dismiss_opening(page); await page.wait_for_timeout(300)
             need = await page.evaluate(f"()=>[].concat(T7.data.stations[{i}].needs||[])")
             if need:
                 gate = await page.locator('.v5-gate').count()
@@ -112,6 +114,7 @@ async def main(a):
             sound[sid] = a1['osc'] + a1['buf'] - a0['osc'] - a0['buf']
             if moves and sound[sid] < moves: problems.append(f'station {i+1}: {moves} moves but only {sound[sid]} sound nodes')
             await page.wait_for_timeout(1300)
+            await close_transition(page)
             if not await page.evaluate(f"()=>!!T7.state().done['{sid}']"):
                 problems.append(f'station {i+1}: not marked done after tap solve'); break
             if shots: await page.screenshot(path=str(shots / f'journey_{i+1:02d}_reward.png'))

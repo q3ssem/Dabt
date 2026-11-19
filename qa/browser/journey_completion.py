@@ -61,9 +61,10 @@ async def scenes(browser):
         await close_transition(pg)
         await ev('()=>T7.hub()');await pg.locator('#mlj-unified-hub').wait_for()
         for skin in ['light','dark']:
-            await ev('(skin)=>document.documentElement.dataset.skin=skin',skin)
+            await ev('(skin)=>{S.st.skin=skin;S.save();document.documentElement.dataset.skin=skin}',skin)
             for chapter in ['seven_seas','palace','atheran','side']:
                 await ev('(id)=>mindlabJourneyHub.openChapter(id)',chapter);await close_transition(pg);await pg.wait_for_timeout(250)
+                check(await ev('()=>document.documentElement.dataset.skin')==skin,f'{w} {skin} {chapter}: requested theme remains active')
                 check(await ev('()=>document.documentElement.scrollWidth<=innerWidth+2'),f'{w} {skin} {chapter}: no horizontal page overflow')
                 await pg.screenshot(path=str(OUT/f'{w}-{skin}-{chapter}.png'))
                 await pg.keyboard.press('Escape');await ev('()=>{document.querySelector("#mlj-palace-map")?.remove();if(LA.view==="atheran")ATHERAN_CAMPAIGN.back();T7.hub()}')
