@@ -6,14 +6,14 @@ const vm = require('node:vm');
 
 const app = fs.readFileSync('ui/app.js', 'utf8');
 const css = fs.readFileSync('motion/expedition-art.css', 'utf8');
-const realm = { self: {}, URL, fetch: null, caches: null };
+const realm = { self: {}, URL, Response, fetch: null, caches: null };
 const handlers = {};
 const requested = [];
 const cached = new Map();
 realm.self.location = { href: 'https://mindlab.invalid/Dabt/sw.js' };
 realm.self.addEventListener = (name, handler) => { handlers[name] = handler; };
 realm.importScripts = path => vm.runInContext(fs.readFileSync(path, 'utf8'), realm);
-realm.fetch = async url => { requested.push(url); return { ok: true }; };
+realm.fetch = async url => { requested.push(url); return new Response('puzzle art'); };
 realm.caches = { open: async () => ({
   match: async url => cached.get(url),
   put: async (url, response) => cached.set(url, response)

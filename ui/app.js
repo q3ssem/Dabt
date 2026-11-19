@@ -148,8 +148,34 @@ try {
 (function(){
   if(document.querySelector('script[data-release="5.5.28-atheran"]'))return;
   const css=document.createElement('link');css.rel='stylesheet';css.href=new URL('atheran/campaign/campaign.css',document.baseURI).href;document.head.append(css);
-  const load=(src,next)=>{const s=document.createElement('script');s.src=new URL(src,document.baseURI).href;s.dataset.release='5.5.28-atheran';s.onload=next||null;document.body.append(s);};
-  const go=()=>load('atheran/runtime/assets-runtime.js',()=>load('atheran/campaign/story.js',()=>load('atheran/campaign/campaign.js',()=>load('atheran/bindings/bindings.js',()=>load('motion/kit.js',()=>load('motion/atheran-motion.js',()=>load('motion/palace-motion.js',()=>load('motion/lab10.js',()=>load('motion/pirate-routes.js',()=>load('ui/fit.js',()=>load('ui/openings-data.js',()=>load('ui/openings.js',()=>load('ui/journey-story-data.js',()=>load('ui/board-art-data.js',()=>load('ui/designs_art/journey/v3/stations.js',()=>load('ui/journey-hub.js'))))))))))))))));
+  const scripts = [
+    'atheran/runtime/assets-runtime.js',
+    'atheran/campaign/story.js',
+    'atheran/campaign/campaign.js',
+    'atheran/bindings/bindings.js',
+    'motion/kit.js',
+    'motion/atheran-motion.js',
+    'motion/palace-motion.js',
+    'motion/lab10.js',
+    'motion/pirate-routes.js',
+    'ui/fit.js',
+    'ui/openings-data.js',
+    'ui/openings.js',
+    'ui/journey-story-data.js',
+    'ui/board-art-data.js',
+    'ui/designs_art/journey/v3/stations.js',
+    'ui/journey-hub.js'
+  ];
+  const go = () => {
+    // Let the browser fetch these dependencies in parallel and execute them in order.
+    for (const src of scripts) {
+      const script = document.createElement('script');
+      script.async = false;
+      script.src = new URL(src, document.baseURI).href;
+      script.dataset.release = '5.5.28-atheran';
+      document.body.append(script);
+    }
+  };
   const css2=document.createElement('link');css2.rel='stylesheet';css2.href=new URL('atheran/bindings/bindings.css',document.baseURI).href;document.head.append(css2);
   const css3=document.createElement('link');css3.rel='stylesheet';css3.href=new URL('motion/motion.css',document.baseURI).href;document.head.append(css3);const css4=document.createElement('link');css4.rel='stylesheet';css4.href=new URL('motion/lab10.css',document.baseURI).href;document.head.append(css4);const css5=document.createElement('link');css5.rel='stylesheet';css5.href=new URL('ui/fit.css',document.baseURI).href;document.head.append(css5);const css6=document.createElement('link');css6.rel='stylesheet';css6.href=new URL('ui/openings.css',document.baseURI).href;document.head.append(css6);const css7=document.createElement('link');css7.rel='stylesheet';css7.href=new URL('ui/journey-hub.css',document.baseURI).href;document.head.append(css7);const art=document.createElement('link');art.rel='stylesheet';art.href=new URL('motion/correction-art.css',document.baseURI).href;document.head.append(art);const expeditionArt=document.createElement('link');expeditionArt.rel='stylesheet';expeditionArt.href=new URL('motion/expedition-art.css',document.baseURI).href;document.head.append(expeditionArt);
   const mini=document.querySelector('script[data-release="5.5.2-mini"]');
@@ -180,7 +206,6 @@ try {
 (function installPuzzleQualityLayer() {
   if (typeof window.pzPlay !== 'function' || window.__MINDLAB_PZ_QUALITY_557) return;
   window.__MINDLAB_PZ_QUALITY_557 = true;
-  const warmedArt = new Set();
   const pzPlay = function(id, build) {
 return done=>{
   const g=GM[id],kid=!!g.kid,mx=pzMax(id),daily=!!(RUN&&RUN.daily)&&!kid,isRid=id==='pz_rid';
@@ -209,11 +234,7 @@ return done=>{
     win(detail){if(!ended)fin(true,detail)},over(detail){if(!ended)fin(false,detail)}};
   const mount=()=>{const R=Math.random;Math.random=seeded(seed);try{P=build(api)||{};if(typeof XOLD!=='undefined'&&XOLD.has(id)&&id!=='pz_pipe')try{xWrapOld(api.body,id)}catch(e){}}finally{Math.random=R}};
   mount();
-  const worker = navigator.serviceWorker?.controller;
-  if (worker && !warmedArt.has(id) && !navigator.connection?.saveData) {
-    worker.postMessage({type:'warm-puzzle-art', puzzleId:id});
-    warmedArt.add(id);
-  }
+  window.mindlabOffline?.warmPuzzle(id);
   const hb=$('#pzh');if(!P.hint)hb.hidden=true;
   hb.onclick=()=>{if(ended||hints>=3||!P.hint)return;const before=pts;hints++;if(!kid)setP(pts-Math.round(base*.2));const t=P.hint(hints);if(t==null){hints--;if(!kid)setP(before);return}$('#pzhn').textContent=3-hints;
     const box=$('#pzt');box.hidden=false;box.innerHTML=`<b>تلميح ${hints}:</b> ${t}`;sfx.lit();if(hints>=3||ended)hb.disabled=true};

@@ -1,8 +1,47 @@
 'use strict';
-(function(){
-if(!('serviceWorker' in navigator)||!/^https?:$/.test(location.protocol))return;
-window.addEventListener('load',()=>{navigator.serviceWorker.register(new URL('sw.js',document.baseURI).href).then(r=>r.update()).catch(()=>{/* App still works online if installation is unavailable. */});
- // 5.4.8: once a worker controls the app, ask it to keep the island's board art for offline play (skipped on Save-Data).
- const saveData=!!(navigator.connection&&navigator.connection.saveData);
- if(!saveData)navigator.serviceWorker.ready.then(r=>setTimeout(()=>{try{const w=r.active||navigator.serviceWorker.controller;if(w)w.postMessage({type:'warm-journey'});}catch(e){}},4000)).catch(()=>{});});
+(function () {
+  if (!('serviceWorker' in navigator) || !/^https?:$/.test(location.protocol)) return;
+
+  const serviceWorker = navigator.serviceWorker;
+  function register() {
+    serviceWorker.register(new URL('sw.js', document.baseURI).href, {updateViaCache: 'none'})
+      .catch(() => { /* The online app is usable without a worker. */ });
+  }
+  if (document.readyState === 'complete') register();
+  else window.addEventListener('load', register, {once: true});
+
+  function defer(callback) {
+    if ('requestIdleCallback' in window) window.requestIdleCallback(callback, {timeout: 3000});
+    else window.setTimeout(callback, 250);
+  }
+
+  const pending = new Set();
+  function flushPuzzles() {
+    const worker = serviceWorker.controller;
+    if (!worker || navigator.connection?.saveData) return;
+    for (const puzzleId of pending) worker.postMessage({type:'warm-puzzle-art', puzzleId});
+    pending.clear();
+  }
+  serviceWorker.addEventListener('controllerchange', () => defer(flushPuzzles));
+  function warmPuzzle(puzzleId) {
+    if (!puzzleId || pending.has(puzzleId) || navigator.connection?.saveData) return;
+    pending.add(puzzleId);
+    defer(flushPuzzles);
+  }
+  window.mindlabOffline = {warmPuzzle};
+
+  let journeyRequested = false;
+  document.addEventListener('click', event => {
+    const puzzle = event.target.closest?.('[data-legacy-puzzle]');
+    if (puzzle) warmPuzzle(puzzle.dataset.legacyPuzzle);
+    if (journeyRequested || navigator.connection?.saveData ||
+        !event.target.closest?.('#mlj-journey-entry, #t7-homego')) return;
+    if (/^[23]g$|^slow-2g$/.test(navigator.connection?.effectiveType || '')) return;
+    journeyRequested = true;
+    defer(() => {
+      const worker = serviceWorker.controller;
+      if (worker) worker.postMessage({type:'warm-journey'});
+      else journeyRequested = false;
+    });
+  });
 })();
