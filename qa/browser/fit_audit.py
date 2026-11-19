@@ -72,6 +72,8 @@ async def main():
                     if r['hudH'] > 46: bad.append(f'HUD is {r["hudH"]}px tall (more than one row)')
                     if r['bottom'] > r['vh'] + 1: bad.append(f'board bottom {r["bottom"]} below screen {r["vh"]}')
                     if r['hidden']: bad.append('story banner still on the board')
+                    if w == 390 and g in {'pz_zshadow','pz_pgarden','pz_parm','pz_peng','pz_plast','pz_ashade','pz_avsong'} and r['minBtn'] is not None and r['minBtn'] < 32:
+                        bad.append(f'touch target is only {r["minBtn"]}px')
                     if r.get('sheet') is False or r.get('sheetClosed') is False: bad.append('info sheet')
                     if r.get('giveArm') is False: bad.append('give-up did not arm')
                     if r.get('hintClosed') is False: bad.append('hint did not close')

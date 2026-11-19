@@ -111,7 +111,9 @@ async def palace(browser):
             await pg.locator('#pzb').wait_for();await pg.wait_for_timeout(250)
             check(await ev('(id)=>txStageOf(id)?.k',[gid][0])==k+1,f'{gid}: stage {k+1} is the active campaign round')
             await ev(SOLVE,gid)
-            await pg.locator('#stage .res').wait_for(timeout=30000)
+            # The final narrative includes delayed panels; virtualized WebKit audio/rendering
+            # can take longer than an ordinary board. Still wait for the real result and save.
+            await pg.locator('#stage .res').wait_for(timeout=90000 if gid=='pz_pheart' else 30000)
             check(await ev('(id)=>!!pState().done[id]',gid)==(k==2),f'{gid}: completion is recorded only after round three ({k+1})')
             if k<2:
                 await pg.click('#play #ag')

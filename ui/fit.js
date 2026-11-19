@@ -11,13 +11,34 @@
   // story / framing → info sheet (hidden on the board)
   const STORY = '.mla-adventure-intro,.castle-lore,.atheran-story,.lb-intro';
   // rule sentences → info sheet (hidden on the board); clue lists inside them stay visible
-  const RULE = '.lb-lead,.lb-rule,#pzb .mk-lead,#pzb .pl-lead,details.ui-rules > summary';
+  const RULE = '.lb-lead,.lb-rule,#pzb .mk-lead,#pzb .pl-lead,details.ui-rules > summary,#play[data-la-game="pz_avsong"] #pzb .xnote';
   const JOURNAL = '.castle-book-open,.atheran-journal-open';
   const SEEN_KEY = 'mindlab:fit:seen:v1';
   const seen = () => { try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); } catch (e) { return {}; } };
   const markSeen = id => { try { const s = seen(); s[id] = 1; localStorage.setItem(SEEN_KEY, JSON.stringify(s)); } catch (e) {} };
   const gid = () => { try { return typeof curGame === 'function' ? (curGame() || {}).id : null; } catch (e) { return null; } };
   const txt = e => (e && e.innerText || '').replace(/\s+/g, ' ').trim();
+  const arabic = n => String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
+  function waterAmount(n) {
+    if (!Number.isFinite(n)) return '—';
+    // Garden flow divides an integer source by two or three, at most four times.
+    // Show the exact fraction, rather than a long floating-point decimal.
+    for (let d = 1; d <= 81; d++) {
+      const numerator = Math.round(n * d);
+      if (Math.abs(n - numerator / d) < 1e-9)
+        return arabic(numerator) + (d === 1 ? '' : '⁄' + arabic(d));
+    }
+    return '≈' + new Intl.NumberFormat('ar-SA', {maximumFractionDigits: 2}).format(n);
+  }
+  function gardenAmounts() {
+    if (gid() !== 'pz_pgarden') return;
+    $$('.pgfl > b', body).forEach(b => {
+      const pair = b.textContent.split('/'); if (pair.length !== 2) return;
+      const values = pair.map(s => Number(s.replace(/[٠-٩]/g, d => '٠١٢٣٤٥٦٧٨٩'.indexOf(d))));
+      if (!values.every(Number.isFinite)) return;
+      b.innerHTML = `<span>وصل: <bdi dir="ltr">${waterAmount(values[0])}</bdi></span><span>المطلوب: <bdi dir="ltr">${waterAmount(values[1])}</bdi></span>`;
+    });
+  }
   const I_INFO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>';
   const I_BOOK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5.5C6.5 4 9.5 4 12 6c2.5-2 5.5-2 8-.5V19c-2.5-1.5-5.5-1.5-8 .5-2.5-2-5.5-2-8-.5z"/><path d="M12 6v13.5"/></svg>';
 
@@ -100,15 +121,17 @@
   function fit() {
     raf = 0; if (!body || !body.isConnected || fitting || framed()) return; fitting = true;
     try {
+      gardenAmounts();
       const pl = $('#play'); if (pl) pl.scrollTop = 0;
       const top = body.getBoundingClientRect().top, safe = parseFloat(getComputedStyle(document.documentElement).getPropertyValue('--fit-safe-b')) || 0;
       const avail = Math.max(160, window.innerHeight - top - 6 - safe);
       const keep = body.scrollTop;
       const natural = () => { body.scrollTop = 0; const r0 = body.getBoundingClientRect().top; let b = 0; for (const c of body.children) { const r = c.getBoundingClientRect(); if (r.height) b = Math.max(b, r.bottom); } return b - r0 + 4; };
+      const floor = gid() === 'pz_avsong' ? 1 : MIN_ZOOM;
       let z = 1; body.style.removeProperty('--fit-z'); body.style.height = ''; let need = natural();
       for (let i = 0; i < 5 && need > avail + 1; i++) {
-        z = Math.max(MIN_ZOOM, Math.min(1, z * avail / need)); body.style.setProperty('--fit-z', String(z)); need = natural();
-        if (z === MIN_ZOOM) break;
+        z = Math.max(floor, Math.min(1, z * avail / need)); body.style.setProperty('--fit-z', String(z)); need = natural();
+        if (z === floor) break;
       }
       body.style.height = `${avail / z}px`; body.dataset.fitZoom = z.toFixed(2);
       body.classList.toggle('fit-scroll', need > avail + 1); if (keep) body.scrollTop = keep;
@@ -187,6 +210,6 @@
   window.addEventListener('resize', pageSchedule);
   window.addEventListener('resize', schedule); window.addEventListener('orientationchange', () => setTimeout(schedule, 200));
   if (window.visualViewport) { window.visualViewport.addEventListener('resize', schedule); window.visualViewport.addEventListener('resize', pageSchedule); }
-  window.fitUI = { fit, openSheet, closeSheet, get body() { return body; } };
+  window.fitUI = { fit, openSheet, closeSheet, waterAmount, get body() { return body; } };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', () => { watch(); pageWatch(); }); else { watch(); pageWatch(); }
 })();

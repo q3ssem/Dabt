@@ -3,7 +3,11 @@ on:
   push:
     branches: [review/completion-20261119]
     paths:
+      - '**/*.js'
       - '**/*.css'
+      - 'index.html'
+      - 'qa/tests/**'
+      - 'package.json'
       - 'qa/browser/**'
       - '.github/workflows/mindlab-presentation.yml'
   workflow_dispatch:
@@ -43,7 +47,7 @@ jobs:
           python-version: '3.12'
       - run: python3 -m pip install tinycss2==1.4.0
       - run: npm test
-      - run: node qa/tests/design-integration.cjs && node qa/tests/journey-transitions.cjs
+      - run: node qa/tests/design-integration.cjs && node qa/tests/journey-transitions.cjs && node qa/tests/phone-readability.cjs
   browser:
     needs: retire
     runs-on: ubuntu-24.04
