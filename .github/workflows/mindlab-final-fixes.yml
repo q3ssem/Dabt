@@ -1,0 +1,56 @@
+name: MindLab result regression
+on:
+  push:
+    branches: [review/final-fixes-20261119]
+  workflow_dispatch:
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+jobs:
+  logic:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install tinycss2==1.4.0
+      - run: npm test
+      - run: node qa/tests/design-integration.cjs && node qa/tests/journey-transitions.cjs && node qa/tests/phone-readability.cjs && node qa/tests/stage-gate-message.cjs
+  browser:
+    runs-on: ubuntu-24.04
+    container: mcr.microsoft.com/playwright/python:v1.58.0-noble
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+        suite: [palace, treasure]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install playwright==1.58.0
+      - env:
+          ENGINE: ${{ matrix.engine }}
+          MODE: ${{ matrix.suite }}
+          OUT: qa/browser/completion-shots
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/http.log 2>&1 &
+          sleep 2
+          if [ "$MODE" = palace ]; then
+            python3 qa/browser/journey_completion.py
+          else
+            python3 qa/browser/journey.py --url http://127.0.0.1:8765/index.html --engine "$ENGINE" --shots "$OUT"
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: result-${{ matrix.engine }}-${{ matrix.suite }}
+          path: qa/browser/completion-shots/

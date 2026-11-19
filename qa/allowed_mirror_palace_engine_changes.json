@@ -84,6 +84,12 @@
       "before": "<b>${PD_N[x.d]}</b><div class=\"pdseq ltr\">",
       "after": "<b>${PD_N[x.d]}</b><small class=\"pdrule\">${PD_RULE_NAME[x.rule]}</small><div class=\"pdseq ltr\">",
       "occurrences": 1
+    },
+    {
+      "reason": "Preserve story messages and optional result arguments through the third-round journey gate; prevents undefined success text without changing generators, scoring, station IDs or save keys.",
+      "before": "return orig.call(this,merged,id)}}",
+      "after": "return orig.call(this,merged,id,...Array.prototype.slice.call(arguments,2))}}",
+      "occurrences": 1
     }
   ]
 }
