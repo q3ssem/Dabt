@@ -38,6 +38,7 @@ async def run(browser, width, height):
     tag = f"{ENGINE}-{width}x{height}"
     context, page, errors = await fresh(browser, width, height)
     check(await page.locator("#mlj-journey-entry").count() == 1, tag + " single gateway")
+    await page.screenshot(path=str(OUT / f"{tag}-library-gateway.png"))
     check(await page.locator("#v-puz .v5-hublib").count() == 1, tag + " library retained")
     for name in (".v5-hubcard", ".ah-launch", ".ex10-launch", ".ah-side-head"):
         matches = page.locator("#v-puz " + name)
