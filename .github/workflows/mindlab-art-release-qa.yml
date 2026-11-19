@@ -1,0 +1,64 @@
+name: MindLab artwork release QA
+on:
+  push:
+    branches: [qa/mindlab-art-a14fc0c]
+permissions:
+  contents: read
+jobs:
+  logic:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install tinycss2==1.4.0
+      - run: npm test
+      - run: node qa/tests/display-audio.cjs && node qa/tests/expedition-art.cjs && node qa/tests/audio-lifecycle.cjs
+  browser:
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+        suite: [prototypes, inventory, journey]
+    runs-on: ubuntu-24.04
+    container: mcr.microsoft.com/playwright/python:v1.58.0-noble
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - run: python -m pip install playwright==1.58.0
+      - name: Run browser acceptance
+        env:
+          ENGINE: ${{ matrix.engine }}
+          SUITE: ${{ matrix.suite }}
+          MINDLAB_URL: http://127.0.0.1:8765/
+          OUT: /tmp/mindlab-shots
+        run: |
+          set -eu
+          export CHROMIUM="$(python -c 'from playwright.sync_api import sync_playwright; p=sync_playwright().start(); print(p.chromium.executable_path); p.stop()')"
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/mindlab-web.log 2>&1 &
+          server=$!
+          trap 'kill "$server" || true' EXIT
+          for i in 1 2 3 4 5; do
+            if python -c 'from urllib.request import urlopen; urlopen("http://127.0.0.1:8765/", timeout=1).close()'; then break; fi
+            sleep 1
+          done
+          if [ "$SUITE" = prototypes ]; then
+            python qa/browser/display_audio_review.py "$MINDLAB_URL" "$OUT" --engine "$ENGINE" --label "$ENGINE" --check
+          elif [ "$SUITE" = inventory ]; then
+            python qa/browser/display_audio_review.py "$MINDLAB_URL" "$OUT" --engine "$ENGINE" --label "$ENGINE" --all --check
+          else
+            MODE=scenes python qa/browser/journey_completion.py
+            python qa/browser/atheran_campaign.py
+            python qa/browser/expedition25_smoke.py
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mindlab-${{ matrix.engine }}-${{ matrix.suite }}
+          path: /tmp/mindlab-shots
+          if-no-files-found: ignore
