@@ -2,7 +2,7 @@ name: MindLab result regression
 on:
   push:
     branches: [review/final-fixes-20261119]
-    paths: ['index.html', 'ui/**', 'qa/**', 'treasure/**', 'atheran/**', 'expedition10/**', 'sw.js', 'package.json']
+    paths: ['index.html', 'ui/**', 'qa/browser/**', 'qa/tests/**', 'qa/allowed_mirror_palace_engine_changes.json', 'treasure/**', 'atheran/**', 'expedition10/**', 'sw.js', 'package.json']
   workflow_dispatch:
 permissions:
   contents: read
