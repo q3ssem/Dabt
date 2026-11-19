@@ -11,6 +11,7 @@ Exit code 0 only when every check passed.
 """
 import asyncio, json, os, pathlib, shutil, sys
 from playwright.async_api import async_playwright
+from player_openings import dismiss_opening, close_transition
 
 URL = os.environ.get('MINDLAB_URL') or (sys.argv[1] if len(sys.argv) > 1 else 'http://127.0.0.1:8765/index.html')
 CHROME = os.environ.get('CHROME') or next((c for c in ('/usr/bin/google-chrome', '/usr/bin/chromium', '/usr/bin/chromium-browser') if os.path.exists(c)), None)
@@ -88,6 +89,7 @@ async def main():
             for k in range(stages):
                 go = page.locator('#stage #go')
                 if await go.count(): await go.first.click()
+                await dismiss_opening(page)
                 await page.wait_for_timeout(3600)
                 hud = await ev("() => document.querySelector('.pzhud')?.innerText.replace(/\\s+/g, ' ') || ''")
                 if k == 0: await ev("() => { window.__ahVfxLog = []; }")
@@ -115,6 +117,7 @@ async def main():
             await close_modals()
 
         async def close_modals():
+            await close_transition(page)
             # the campaign opens its story scene a moment after a first win; read it (screenshot once) and close it
             quiet = 0
             for _ in range(24):

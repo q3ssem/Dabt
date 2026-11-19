@@ -1,6 +1,6 @@
 'use strict';
 importScripts('./offline-manifest.js');
-const VERSION='5.5.28',PATCH='design-river-maps',PREFIX='mindlab-',CORE=PREFIX+VERSION+'-'+PATCH+'-core',RUNTIME=PREFIX+VERSION+'-'+PATCH+'-images',BASE=new URL('./',self.location.href);
+const VERSION='5.5.28',PATCH='journey-completion-1',PREFIX='mindlab-',CORE=PREFIX+VERSION+'-'+PATCH+'-core',RUNTIME=PREFIX+VERSION+'-'+PATCH+'-images',BASE=new URL('./',self.location.href);
 self.addEventListener('install',event=>{event.waitUntil(caches.open(CORE).then(cache=>cache.addAll(self.MINDLAB_OFFLINE_FILES.map(p=>new URL(p,BASE).href))).then(()=>self.skipWaiting()));});
 self.addEventListener('activate',event=>{event.waitUntil(caches.keys().then(names=>Promise.all(names.filter(n=>n.startsWith(PREFIX)&&![CORE,RUNTIME].includes(n)).map(n=>caches.delete(n)))).then(()=>self.clients.claim()));});
 self.addEventListener('fetch',event=>{

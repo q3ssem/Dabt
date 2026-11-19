@@ -65,7 +65,7 @@
     lastTriggerFocus = null;
   }
 
-  function openOpening(id, forceReplay) {
+  function openOpening(id, forceReplay, begin) {
     const data = window.__MINDLAB_OPENINGS_DATA || {};
     const entry = data[id];
     if (!entry) return;
@@ -114,8 +114,11 @@
         e.preventDefault();
         e.stopPropagation();
       }
+      // A cancelled pre-play scene leaves the original intro and starts no timer.
+      if (begin && e && (e.target === ov || e.key === 'Escape')) { closeOpening(); return; }
       markSeen(id);
       closeOpening();
+      if (begin) begin();
     };
 
     ov.addEventListener('pointerdown', e => {
@@ -182,6 +185,21 @@
     if (!st) return setTimeout(watch, 300);
     new MutationObserver(checkMount).observe(st, { childList: true });
     checkMount();
+  }
+
+  // Gate the engine itself, rather than covering an already running timed board.
+  // The original countdown owns timers/cleanup and is called once after Start.
+  if (typeof countdown === 'function') {
+    const countdown0 = countdown;
+    countdown = function () {
+      const id = gid(), run = typeof RUN !== 'undefined' ? RUN : null;
+      const data = window.__MINDLAB_OPENINGS_DATA || {};
+      if (!id || !data[id] || readSeen()[id]) return countdown0.apply(this, arguments);
+      const self = this, args = arguments;
+      openOpening(id, false, () => {
+        if (typeof RUN !== 'undefined' && RUN === run && gid() === id) countdown0.apply(self, args);
+      });
+    };
   }
 
   window.fitOpenings = { open: openOpening, close: closeOpening, crewMarkup };

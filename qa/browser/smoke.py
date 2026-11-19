@@ -10,6 +10,7 @@ or horizontal overflow. Optional screenshots help the visual review.
 """
 import argparse, asyncio, json, pathlib, sys
 from playwright.async_api import async_playwright
+from player_openings import dismiss_opening
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 BACKGROUND_SURFACES = {'piano': '#pk', 'mot': '.field', 'pz_pipe': '#pzb', 'tol': '#tolb', 'pz_rush': '.rhwrap2'}
@@ -20,6 +21,7 @@ async def open_game(page, gid):
     await go.wait_for(state='visible', timeout=20000)
     start = await go.element_handle()
     await go.click()
+    await dismiss_opening(page)
     # Some games keep their own .intro container after start (cards: the player writes personal cards), and
     # racer reuses id="go" for its in-game signal button, so wait for THIS start button to leave and the countdown to end.
     await page.wait_for_function("b=>!document.querySelector('#stage .cd')&&!(b.isConnected&&b.offsetParent)", arg=start, timeout=20000)

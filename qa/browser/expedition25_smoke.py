@@ -1,5 +1,6 @@
 import asyncio, json, os, pathlib, shutil, sys
 from playwright.async_api import async_playwright
+from player_openings import dismiss_opening
 
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 # 5.5.28: the browser and the server address are configurable; the old copy hard-coded /usr/bin/chromium and port 8765.
@@ -26,25 +27,26 @@ async def main():
     # Open stage 21 (zero-based index 20) by tapping its node on the map, as a player would.
     await page.locator('.ex10-map [data-ex10-node="20"]').click()
     await page.locator('[data-ex10="start"]').click()
+    await dismiss_opening(page)
     path=await page.evaluate('ML10Logic.mazeAudit().path')
     for cell in path[1:]:
       await page.locator(f'[data-maze="{cell[0]},{cell[1]}"]').click()
     assert await page.get_by_text('نجاح!',exact=True).count(), 'stage 21 did not win'
-    await page.locator('[data-ex10="next"]').click(); await page.locator('[data-ex10="start"]').click()
+    await page.locator('[data-ex10="next"]').click(); await page.locator('[data-ex10="start"]').click(); await dismiss_opening(page)
     jug=await page.evaluate('ML10Logic.audit().jug.path')
     for action in jug: await page.locator(f'[data-jug="{action}"]').click()
     assert await page.get_by_text('نجاح!',exact=True).count(), 'stage 22 did not win'
-    await page.locator('[data-ex10="next"]').click(); await page.locator('[data-ex10="start"]').click()
+    await page.locator('[data-ex10="next"]').click(); await page.locator('[data-ex10="start"]').click(); await dismiss_opening(page)
     clicks=await page.evaluate('ML10Logic.signalSolution')
     for k in clicks: await page.locator(f'[data-signal="{k}"]').click()
     assert await page.get_by_text('نجاح!',exact=True).count(), 'stage 23 did not win'
-    await page.locator('[data-ex10="next"]').click(); await page.locator('[data-ex10="start"]').click()
+    await page.locator('[data-ex10="next"]').click(); await page.locator('[data-ex10="start"]').click(); await dismiss_opening(page)
     moves=await page.evaluate('ML10Logic.hanoiAudit().path')
     for m in moves:
       await page.locator(f'[data-hanoi-peg="{m["from"]}"]').click()
       await page.locator(f'[data-hanoi-peg="{m["to"]}"]').click()
     assert await page.get_by_text('نجاح!',exact=True).count(), 'stage 24 did not win'
-    await page.locator('[data-ex10="next"]').click(); await page.locator('[data-ex10="start"]').click()
+    await page.locator('[data-ex10="next"]').click(); await page.locator('[data-ex10="start"]').click(); await dismiss_opening(page)
     solution=await page.evaluate('ML10Logic.audit().seal[0]')
     # motion-batch-1: the seal is a drag board now — drag each rune from the tray onto its slot
     for i,v in enumerate(solution): await page.locator(f'#ex10-seal [data-tray] [data-tok="{v}"]').drag_to(page.locator(f'#ex10-seal [data-slot="{i}"]'))

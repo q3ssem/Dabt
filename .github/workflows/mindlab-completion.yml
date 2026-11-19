@@ -1,0 +1,60 @@
+name: MindLab completion acceptance
+on:
+  push:
+    branches: [review/completion-20261119]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  logic:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install tinycss2==1.4.0
+      - run: npm test
+      - run: node qa/tests/design-integration.cjs && node qa/tests/journey-transitions.cjs
+  browser:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+        suite: [scenes, palace, atlas, layout]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install playwright==1.58.0
+      - run: python3 -m playwright install --with-deps ${{ matrix.engine }}
+      - name: Run player acceptance
+        shell: bash
+        env:
+          ENGINE: ${{ matrix.engine }}
+          SUITE: ${{ matrix.suite }}
+          MINDLAB_URL: http://127.0.0.1:8765/index.html
+          OUT: qa/browser/completion-shots
+        run: |
+          set -euo pipefail
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/mindlab-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" || true' EXIT
+          sleep 2
+          case "$SUITE" in
+            scenes|palace) MODE="$SUITE" python3 qa/browser/journey_completion.py ;;
+            atlas) python3 qa/browser/atheran_campaign.py ;;
+            layout) python3 qa/browser/fit_audit.py "$MINDLAB_URL" ;;
+          esac
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: completion-${{ matrix.engine }}-${{ matrix.suite }}
+          path: qa/browser/completion-shots/
+          if-no-files-found: ignore

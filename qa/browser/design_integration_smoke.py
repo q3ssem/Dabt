@@ -4,6 +4,7 @@ Usage: MINDLAB_URL=http://127.0.0.1:8765/index.html python3 qa/browser/design_in
 """
 import asyncio, json, os, pathlib, shutil, sys
 from playwright.async_api import async_playwright
+from player_openings import close_transition
 
 ROOT=pathlib.Path(__file__).resolve().parents[2]
 URL=os.environ.get('MINDLAB_URL','http://127.0.0.1:8765/index.html')
@@ -34,6 +35,7 @@ async def main():
         async def entry(id):
             await hub.wait_for(state='visible',timeout=20000)
             await hub.locator('.mlj-ch-card[data-mlj-ch="'+id+'"]').click(timeout=20000)
+            await close_transition(page)
             await page.wait_for_timeout(150)
 
         await entry('seven_seas')

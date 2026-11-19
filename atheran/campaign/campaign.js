@@ -59,6 +59,8 @@
     try { txBind(); } catch (e) { console.warn('[atheran] bind', e); }
     v.querySelector('[data-ah="back"]').onclick = back;
     window.scrollTo(0, 0); document.body.scrollTop = 0; document.documentElement.scrollTop = 0;
+    if (s.done === ASTN.length && s.cleared === ASW.length && typeof window.dispatchEvent === 'function' && typeof CustomEvent === 'function')
+      window.dispatchEvent(new CustomEvent('mindlab:journey-progress', {detail: {chapter: 'atheran'}}));
   }
   function back() { LA.view = null; const v = document.getElementById('v-puz'); if (v) v.classList.remove('ah-view'); renderPuz(); }
   function open() { LA.view = 'atheran'; if (typeof curTab !== 'undefined' && curTab !== 'puz') tab('puz'); else render(); }
