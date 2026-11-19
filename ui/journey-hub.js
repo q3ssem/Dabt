@@ -257,11 +257,12 @@
 
     const sec = document.createElement('section');
     sec.id = 'mlj-unified-hub';
-    sec.className = 'mlj-hub';
+    sec.className = 'mlj-hub mlj-atlas-dialog';
     sec.setAttribute('aria-label', data.journeyTitle);
     sec.innerHTML = `
       <div class="mlj-head">
         <h2>${data.journeyTitle}</h2>
+        <button type="button" class="mlj-atlas-close" id="mlj-close-atlas">إغلاق الخريطة</button>
         <button type="button" class="mlj-trans-btn" id="mlj-open-trans">مشاهد الرحلة (${discoveredTransitions().length})</button>
       </div>
       <div class="mlj-map-wrap">
@@ -289,13 +290,62 @@
       </div>
     `;
 
-    ($('.t7-top', v) || entry).after(sec);
+    // Keep the existing chapter engines and save keys; only their entry is replaced.
+    const launch = document.createElement('button');
+    launch.type = 'button';
+    launch.id = 'mlj-journey-entry';
+    launch.className = 'mlj-journey-entry';
+    launch.setAttribute('aria-label', 'رحلة الكنز: افتح الخريطة حسب ترتيب الفصول');
+    launch.setAttribute('aria-expanded', 'false');
+    launch.innerHTML = '<span class="mlj-entry-copy"><small>المغامرة الرسمية · ثلاثة فصول</small><strong>رحلة الكنز</strong>' +
+      '<span>البحار السبعة ' + prog.seaDone + '/21 · أَثْرَان ' + prog.atheranDone + '/21</span></span>' +
+      '<span class="mlj-entry-action">افتح الخريطة ←</span>';
 
-    const trBtn = $('#mlj-open-trans', sec);
-    if (trBtn) trBtn.onclick = () => openTransitionsModal(0);
-    sec.querySelectorAll('[data-mlj-ch]').forEach(b => {
-      b.onclick = () => triggerChapter(b.dataset.mljCh);
+    // Make the existing illustrated hub a true dialog rather than a very long inline card.
+    const content = document.createElement('div');
+    content.className = 'mlj-atlas-content';
+    while (sec.firstChild) content.appendChild(sec.firstChild);
+    sec.appendChild(content);
+    sec.hidden = true;
+    sec.setAttribute('role', 'dialog');
+    sec.setAttribute('aria-modal', 'true');
+    sec.setAttribute('aria-label', 'خريطة رحلة الكنز');
+    sec.querySelectorAll('.mlj-pin').forEach(pin => {
+      const chapter = data.chapters.find(c => c.id === pin.dataset.mljCh);
+      if (!chapter) return;
+      pin.setAttribute('aria-label', chapter.order ? 'الفصل ' + chapter.order + ': ' + chapter.name : 'رحلة جانبية: ' + chapter.name);
+      pin.textContent = chapter.order || 'فرعي';
+      if (chapter.id === 'side') pin.classList.add('mlj-side-pin');
     });
+    function closeAtlas(restoreFocus = true) {
+      sec.hidden = true;
+      launch.setAttribute('aria-expanded', 'false');
+      if (restoreFocus && launch.isConnected) launch.focus({ preventScroll: true });
+    }
+    launch.onclick = () => {
+      sec.hidden = false;
+      launch.setAttribute('aria-expanded', 'true');
+      $('#mlj-close-atlas', sec).focus({ preventScroll: true });
+    };
+    $('#mlj-close-atlas', sec).onclick = () => closeAtlas();
+    const trBtn = $('#mlj-open-trans', sec);
+    if (trBtn) trBtn.onclick = () => { closeAtlas(false); openTransitionsModal(0); };
+    sec.querySelectorAll('[data-mlj-ch]').forEach(b => {
+      b.onclick = () => { closeAtlas(false); triggerChapter(b.dataset.mljCh); };
+    });
+    sec.addEventListener('click', e => { if (e.target === sec) closeAtlas(); });
+    sec.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { e.preventDefault(); closeAtlas(); }
+      if (e.key === 'Tab') {
+        const targets = [...sec.querySelectorAll('button:not([disabled])')];
+        const first = targets[0], last = targets[targets.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
+    v.classList.add('mlj-single-entry');
+    ($('.t7-top', v) || entry).after(launch);
+    launch.after(sec);
   }
 
   /* ---- 46 Non-Library Openings (21 Treasure Island + 25 Side Journey) ---- */
