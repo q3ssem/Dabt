@@ -155,3 +155,8 @@ html.fit-t7 #v-puz.t7 .v5-dsvg,html.fit-t7 #v-puz.t7 .v5-dsvg svg{overflow:hidde
 #play.fit[data-la-game="pz_avsong"] #pzb .xnote{display:none!important}
 #play.fit[data-la-game="pz_avsong"] .avsk{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
 #play.fit[data-la-game="pz_avsong"] .avsk button{min-height:44px;min-width:44px;font-size:14px}
+/* Shadow-clock actions and cells keep their hit areas after phone scaling. */
+#play.fit[data-la-game="pz_ashade"] #pzb .asdh button{min-width:44px;min-height:44px}
+#play.fit[data-la-game="pz_ashade"] .asdg{width:100%;max-width:360px;min-width:calc(var(--n) * 34px + 4px)}
+#play.fit[data-la-game="pz_ashade"] .asdg button{min-height:32px;min-width:32px}
+#play.fit[data-la-game="pz_ashade"] #pzb{overflow-x:auto}
