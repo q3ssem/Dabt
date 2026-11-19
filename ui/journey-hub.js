@@ -263,7 +263,6 @@
       <div class="mlj-head">
         <h2>${data.journeyTitle}</h2>
         <button type="button" class="mlj-atlas-close" id="mlj-close-atlas">إغلاق الخريطة</button>
-        <button type="button" class="mlj-trans-btn" id="mlj-open-trans">مشاهد الرحلة (${discoveredTransitions().length})</button>
       </div>
       <div class="mlj-map-wrap">
         <img class="mlj-map-img" src="${mapUrl}" alt="خريطة ${data.journeyTitle}" loading="lazy">
@@ -284,6 +283,7 @@
           </button>` : ''}
       </div>
       <div class="mlj-foot">
+        <button type="button" class="mlj-trans-btn" id="mlj-open-trans">مشاهد الرحلة (${discoveredTransitions().length})</button>
         <span class="mlj-pill">البحار السبعة: ${prog.seaDone} / 21</span>
         <span class="mlj-pill">أَثْرَان: ${prog.atheranDone} / 21</span>
         <span class="mlj-pill">${prog.secretsUnlocked > 0 ? `عوالم سرية مكتشفة: ${prog.secretsUnlocked} / 5` : 'العوالم السرية محجوبة حتى اكتشافها'}</span>
