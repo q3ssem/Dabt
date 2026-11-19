@@ -30,9 +30,18 @@ METRICS = """(selector)=>{
 
 async def open_round(page, game, level=1):
     await page.evaluate("""([g, level])=>{startRun([g]);if(GM[g].puz)RUN.replay={id:g,lv:level,seed:8127};window.__test.pz=null;}""", [game, level])
-    await page.locator('#stage #go').click(timeout=3000)
-    await dismiss_opening(page)
-    await page.wait_for_function("()=>!document.querySelector('#stage .cd')", timeout=5000)
+    # The intro overlay may mount before or after the engine-owned start button;
+    # follow the visible player controls, never force-click through a dialog.
+    for _ in range(4):
+        await dismiss_opening(page)
+        go = page.locator('#stage #go')
+        if await go.count() and await go.is_visible():
+            await go.click(timeout=5500)
+        await dismiss_opening(page)
+        await page.wait_for_timeout(100)
+        if not await page.locator('#stage .cd').count() and not await page.locator('#fit-opening-overlay').count():
+            break
+    await page.wait_for_function("()=>!document.querySelector('#stage .cd') && !document.querySelector('#fit-opening-overlay')", timeout=7000)
 
 async def visit(browser, args, size, skin, ids):
     w,h=size
@@ -55,6 +64,15 @@ async def visit(browser, args, size, skin, ids):
             await open_round(pg,gid)
             await pg.evaluate("(s)=>document.documentElement.dataset.skin=s",skin)
             await pg.wait_for_timeout(240)
+            # Allow image decoding to settle; still fail if any resolved image is broken.
+            if gid in SAMPLES:
+                try:
+                    await pg.wait_for_function("""selector => {
+                      const scene=document.querySelector(selector);
+                      return scene && [...scene.querySelectorAll('img')].every(i=>i.complete);
+                    }""", SAMPLES[gid], timeout=6000)
+                except Exception:
+                    pass
             if gid in SAMPLES:
                 record['layout']=await pg.evaluate(METRICS,SAMPLES[gid])
                 if not args.all:

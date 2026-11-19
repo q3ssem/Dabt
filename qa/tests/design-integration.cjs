@@ -83,7 +83,7 @@ const win={LA:{librarySections:()=>[['قصر المرايا',Array.from({length:
   T7:{map:()=>called.push('seven_seas')},
   ATHERAN_CAMPAIGN:{open:()=>called.push('atheran')},
   ML10:{renderMap:()=>called.push('side')}};
-vm.runInNewContext(hubJs,{window:win,document:doc,LA:win.LA,T7:win.T7,console});
+vm.runInNewContext(hubJs,{window:win,document:doc,LA:win.LA,T7:win.T7,console,showIntro(){},closePlay(){}});
 ok(typeof win.mindlabJourneyHub.openChapter==='function','chapter map dispatcher exposed for real interactions');
 win.mindlabJourneyHub.openChapter('seven_seas');
 win.mindlabJourneyHub.openChapter('atheran');
