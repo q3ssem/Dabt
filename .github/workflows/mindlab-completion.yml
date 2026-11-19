@@ -26,9 +26,14 @@ jobs:
       fail-fast: false
       matrix:
         engine: [chromium, webkit]
-        suite: [scenes, palace, atlas, layout]
+        suite: [scenes, palace, atlas, layout, oldsave, river]
     steps:
       - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        if: matrix.suite == 'oldsave'
+        with:
+          ref: 3487587737461ffa6135a2ee145977d2009b028e
+          path: .baseline
       - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
@@ -48,9 +53,10 @@ jobs:
           trap 'kill "$SERVER_PID" || true' EXIT
           sleep 2
           case "$SUITE" in
-            scenes|palace) MODE="$SUITE" python3 qa/browser/journey_completion.py ;;
+            scenes|palace|oldsave) MODE="$SUITE" python3 qa/browser/journey_completion.py ;;
             atlas) python3 qa/browser/atheran_campaign.py ;;
             layout) python3 qa/browser/fit_audit.py "$MINDLAB_URL" ;;
+            river) python3 qa/browser/design_integration_smoke.py ;;
           esac
       - uses: actions/upload-artifact@v4
         if: always()

@@ -19,7 +19,8 @@ async def main():
         print(('PASS' if value else 'FAIL')+' '+message,flush=True)
     errors=[]
     async with async_playwright() as p:
-        browser=await p.chromium.launch(**({'executable_path':CHROME} if CHROME else {}),args=['--no-sandbox'])
+        engine=os.environ.get('ENGINE','chromium')
+        browser=await (p.webkit.launch() if engine=='webkit' else p.chromium.launch(**({'executable_path':CHROME} if CHROME else {}),args=['--no-sandbox']))
         page=await browser.new_page(viewport={'width':390,'height':844},device_scale_factor=1,is_mobile=True,has_touch=True,locale='ar-SA')
         page.on('pageerror',lambda e:errors.append(str(e)))
         await page.goto(URL,wait_until='load',timeout=90000)

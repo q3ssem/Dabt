@@ -15,10 +15,10 @@ def check(value,label):
     assert value,label
     checks.append(label);print('PASS '+label,flush=True)
 
-async def boot(browser,w=390,h=844):
+async def boot(browser,w=390,h=844,url=None):
     ctx=await browser.new_context(viewport={'width':w,'height':h},has_touch=True,locale='ar-SA',**({'is_mobile':True} if ENGINE=='chromium' else {}))
     pg=await ctx.new_page();await pg.add_init_script('window.__test={}')
-    await pg.goto(URL,wait_until='load');await pg.wait_for_function('()=>!!window.mindlabJourneyHub&&!!window.fitOpenings')
+    await pg.goto(url or URL,wait_until='load');await pg.wait_for_function('()=>!!window.mindlabJourneyHub&&!!window.fitOpenings')
     pick=pg.locator('.mpc[data-m=main]')
     if await pick.count() and await pick.is_visible():await pick.click()
     await pg.click('.tab[data-tab=puz]');return ctx,pg
@@ -123,10 +123,39 @@ async def palace(browser):
     check(not errors,f'Palace has no JavaScript errors: {errors}')
     await ctx.close()
 
+SNAP=r'''()=>JSON.stringify({lv:S.st.lv,best:S.st.best,puzzle:pzState(),
+ treasure:T7.state(),palace:pState(),partial:S.st.stg,skin:S.st.skin,mute:S.st.mute,
+ side:localStorage.getItem('mindlab:expedition10:v1')})'''
+
+async def oldsave(browser):
+    oldctx,old=await boot(browser,url=os.environ.get('OLD_URL','http://127.0.0.1:8765/.baseline/index.html'))
+    await old.evaluate('''()=>{
+      S.st.skin='dark';S.st.mute=true;pzSetLv('pz_river',4);S.st.best.pz_river=72;
+      const sea=T7.state();T7.data.stations.slice(0,2).forEach(s=>sea.done[s.id]={at:100,moves:7,hints:0});
+      const palace=pState();palace.done=Object.fromEntries(PW.slice(0,3).map(s=>[s.id,1]));palace.prog=3;
+      S.st.stg={[PW[3].id]:1};S.save();
+      localStorage.setItem('mindlab:expedition10:v1',JSON.stringify({done:{ml10_01:true,ml10_02:true},stars:{ml10_01:3,ml10_02:2},best:{ml10_01:3,ml10_02:2},totalStars:5}));
+    }''')
+    # Stabilize through the old build's own migrations, then export its actual bytes.
+    await old.reload();await old.wait_for_function('()=>!!window.mindlabJourneyHub')
+    before=await old.evaluate(SNAP)
+    files=await old.evaluate("()=>({main:localStorage.getItem('miran:v2'),side:localStorage.getItem('mindlab:expedition10:v1')})")
+    check(bool(files['main']) and bool(files['side']),'old build exports both independent saves')
+    ctx,pg=await boot(browser);errors=[];pg.on('pageerror',lambda e:errors.append(str(e)))
+    await pg.evaluate("v=>{localStorage.setItem('miran:v2',v.main);localStorage.setItem('mindlab:expedition10:v1',v.side)}",files)
+    await pg.reload();await pg.wait_for_function('()=>!!window.mindlabJourneyHub')
+    check(await pg.evaluate(SNAP)==before,'old save keeps levels, best scores, stations, partial rounds, settings and side save')
+    check(await pg.evaluate('()=>!aOpen()&&pState().prog===3'),'partial old Palace save keeps Atheran locked')
+    check(await pg.evaluate('()=>mindlabJourneyHub.discoveredTransitions().map(t=>t.id)')==['departure'],'partial old sea save reveals no future scenes')
+    await pg.reload();await pg.wait_for_function('()=>!!window.mindlabJourneyHub')
+    check(await pg.evaluate(SNAP)==before,'imported old save remains unchanged on a second reload')
+    check(not errors,f'old save has no JavaScript errors: {errors}')
+    await oldctx.close();await ctx.close()
+
 async def main():
     async with async_playwright() as p:
         browser=await getattr(p,ENGINE).launch(**({'args':['--no-sandbox']} if ENGINE=='chromium' else {}))
-        try:await (palace(browser) if MODE=='palace' else scenes(browser))
+        try:await ({'palace':palace,'scenes':scenes,'oldsave':oldsave}[MODE](browser))
         finally:await browser.close()
     result={'status':'passed','engine':ENGINE,'mode':MODE,'checks':len(checks),'palaceRounds':57 if MODE=='palace' else None}
     (OUT/'result.json').write_text(json.dumps(result,ensure_ascii=False,indent=2));print(json.dumps(result))
