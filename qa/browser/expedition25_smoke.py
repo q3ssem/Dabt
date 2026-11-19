@@ -1,5 +1,8 @@
 import asyncio, json, os, pathlib, shutil, sys
 from playwright.async_api import async_playwright
+import pathlib
+sys.path.insert(0, str(pathlib.Path(__file__).parent))
+from player_openings import open_side_map, dismiss_opening
 from player_openings import dismiss_opening
 
 ROOT=pathlib.Path(__file__).resolve().parents[2]
@@ -23,7 +26,7 @@ async def main():
     if await tab.count(): await tab.click()
     await page.wait_for_timeout(400)
     official=await page.evaluate('()=>JSON.stringify({palace:pState().done,pp:pState().prog,atlas:aState().done,sea:T7.state().done})')
-    await page.locator('.ex10-launch-go').click(timeout=15000)
+    await open_side_map(page)
     await page.wait_for_timeout(200)
     # Open stage 21 (zero-based index 20) by tapping its node on the map, as a player would.
     await page.locator('.ex10-map [data-ex10-node="20"]').click()

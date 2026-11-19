@@ -8,7 +8,7 @@ import asyncio, json, os, sys, pathlib
 from playwright.async_api import async_playwright
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
 from smoke import open_game
-from player_openings import dismiss_opening
+from player_openings import dismiss_opening, open_side_map
 
 URL = sys.argv[1] if len(sys.argv) > 1 else 'http://127.0.0.1:8150/'
 ENGINE = os.environ.get('ENGINE', 'chromium'); OUT = os.environ.get('OUT')
@@ -118,7 +118,7 @@ async def pages(pg, w, res, fails, errs):
     for k in range(25):
         n = len(errs); tag = f'ex_{k + 1:02d}@{w}'
         try:
-            if not await pg.locator('.ex10-map').count(): await pg.locator('.ex10-launch-go').click(); await pg.wait_for_timeout(300)
+            if not await pg.locator('.ex10-map').count(): await open_side_map(pg)
             await pg.locator(f'.ex10-map [data-ex10-node="{k}"]').click(); await pg.locator('[data-ex10="start"]').click(); await dismiss_opening(pg); await pg.wait_for_timeout(900)
             r = await pg.evaluate(PM, '.ex10-game-content') or {'err': 'no board'}
             await pg.locator('.ex10-back').click(); await pg.wait_for_timeout(250)

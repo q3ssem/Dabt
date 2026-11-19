@@ -178,7 +178,7 @@ jobs:
               pattern = re.compile(r"url\((['\"]?)art/" + re.escape(name) + r"\1\)")
               css, count = pattern.subn(lambda m: 'url(' + m.group(1) + '../legacy/art/' + name + m.group(1) + ')', css)
               print(f'Rebased {count} generated CSS references for {name}')
-              if count == 0:
+              if count == 0 and ('../legacy/art/' + name) not in css:
                   raise SystemExit(f'Expected generated CSS references for {name}')
           sheet.write_text(css, encoding='utf-8')
           PY

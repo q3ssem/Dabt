@@ -11,3 +11,14 @@ async def close_transition(page):
         if not await close.count() or not await close.is_visible(): break
         await close.click()
         await page.wait_for_timeout(100)
+
+async def open_side_map(page):
+    """The side journey's map. 5.5.28 moved its entry into the journey hub (the old «افتح الخريطة» card is hidden),
+    so open it the way the hub's side-chapter card does: ML10.renderMap()."""
+    launch = page.locator('.ex10-launch-go')
+    if await launch.count() and await launch.first.is_visible():
+        await launch.first.click()
+    else:
+        await page.evaluate("()=>window.ML10&&ML10.renderMap()")
+    await page.wait_for_timeout(250)
+    await close_transition(page)

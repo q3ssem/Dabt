@@ -750,13 +750,16 @@ html[data-skin="dark"] #play[data-la-game="pz_zthrone"] #pzb { --exp-scene:url(.
 #play.fit #pzh:active { --exp-tool:url(../ui/designs_art/work_review/shared_controls/hint--pressed.png) }
 #play.fit #pzh:focus-visible { --exp-tool:url(../ui/designs_art/work_review/shared_controls/hint--active.png) }
 #play.fit #pzh:disabled { --exp-tool:url(../ui/designs_art/work_review/shared_controls/hint--disabled.png) }
-#play.fit #pzh { background-image:var(--exp-tool);background-position:center;background-repeat:no-repeat;background-size:22px }
+#play.fit #pzh { position:relative }
+#play.fit #pzh::after { content:"";position:absolute;inset:0;margin:auto;width:26px;height:26px;z-index:0;background:var(--exp-tool) center/contain no-repeat;pointer-events:none }
 #play.fit #pzh > svg { opacity:0 }
+#play.fit #pzh > #pzhn { z-index:1 }
 #play.fit #quit { --exp-tool:url(../ui/designs_art/work_review/shared_controls/close--normal.png) }
 #play.fit #quit:active { --exp-tool:url(../ui/designs_art/work_review/shared_controls/close--pressed.png) }
 #play.fit #quit:focus-visible { --exp-tool:url(../ui/designs_art/work_review/shared_controls/close--active.png) }
 #play.fit #quit:disabled { --exp-tool:url(../ui/designs_art/work_review/shared_controls/close--disabled.png) }
-#play.fit #quit { background-image:var(--exp-tool);background-position:center;background-repeat:no-repeat;background-size:22px }
+#play.fit #quit { position:relative }
+#play.fit #quit::after { content:"";position:absolute;inset:0;margin:auto;width:26px;height:26px;z-index:0;background:var(--exp-tool) center/contain no-repeat;pointer-events:none }
 #play.fit #quit > svg { opacity:0 }
 #play.fit #lbgo[data-fit-primary] { --exp-tool:url(../ui/designs_art/work_review/shared_controls/cross--normal.png) }
 #play.fit #lbgo[data-fit-primary]:active { --exp-tool:url(../ui/designs_art/work_review/shared_controls/cross--pressed.png) }
@@ -768,19 +771,22 @@ html[data-skin="dark"] #play[data-la-game="pz_zthrone"] #pzb { --exp-scene:url(.
 #play.fit #pzr:active { --exp-tool:url(../ui/designs_art/work_review/shared_controls/restart--pressed.png) }
 #play.fit #pzr:focus-visible { --exp-tool:url(../ui/designs_art/work_review/shared_controls/restart--active.png) }
 #play.fit #pzr:disabled { --exp-tool:url(../ui/designs_art/work_review/shared_controls/restart--disabled.png) }
-#play.fit #pzr { background-image:var(--exp-tool);background-position:center;background-repeat:no-repeat;background-size:22px }
+#play.fit #pzr { position:relative }
+#play.fit #pzr::after { content:"";position:absolute;inset:0;margin:auto;width:26px;height:26px;z-index:0;background:var(--exp-tool) center/contain no-repeat;pointer-events:none }
 #play.fit #pzr > svg { opacity:0 }
 #play.fit #fitinfo { --exp-tool:url(../ui/designs_art/work_review/shared_controls/help--normal.png) }
 #play.fit #fitinfo:active { --exp-tool:url(../ui/designs_art/work_review/shared_controls/help--pressed.png) }
 #play.fit #fitinfo:focus-visible { --exp-tool:url(../ui/designs_art/work_review/shared_controls/help--active.png) }
 #play.fit #fitinfo:disabled { --exp-tool:url(../ui/designs_art/work_review/shared_controls/help--disabled.png) }
-#play.fit #fitinfo { background-image:var(--exp-tool);background-position:center;background-repeat:no-repeat;background-size:22px }
+#play.fit #fitinfo { position:relative }
+#play.fit #fitinfo::after { content:"";position:absolute;inset:0;margin:auto;width:26px;height:26px;z-index:0;background:var(--exp-tool) center/contain no-repeat;pointer-events:none }
 #play.fit #fitinfo > svg { opacity:0 }
 #play.fit .fit-sound { --exp-tool:url(../ui/designs_art/work_review/shared_controls/sound--normal.png) }
 #play.fit .fit-sound:active { --exp-tool:url(../ui/designs_art/work_review/shared_controls/sound--pressed.png) }
 #play.fit .fit-sound:focus-visible { --exp-tool:url(../ui/designs_art/work_review/shared_controls/sound--active.png) }
 #play.fit .fit-sound:disabled { --exp-tool:url(../ui/designs_art/work_review/shared_controls/sound--disabled.png) }
-#play.fit .fit-sound { background-image:var(--exp-tool);background-position:center;background-repeat:no-repeat;background-size:22px }
+#play.fit .fit-sound { position:relative }
+#play.fit .fit-sound::after { content:"";position:absolute;inset:0;margin:auto;width:26px;height:26px;z-index:0;background:var(--exp-tool) center/contain no-repeat;pointer-events:none }
 #play.fit .fit-sound > svg { opacity:0 }
 #play.fit .fit-clue-controls button:first-child { --exp-tool:url(../ui/designs_art/work_review/shared_controls/previous--normal.png) }
 #play.fit .fit-clue-controls button:first-child:active { --exp-tool:url(../ui/designs_art/work_review/shared_controls/previous--pressed.png) }

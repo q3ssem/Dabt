@@ -10,7 +10,7 @@ or horizontal overflow. Optional screenshots help the visual review.
 """
 import argparse, asyncio, json, pathlib, sys
 from playwright.async_api import async_playwright
-from player_openings import dismiss_opening
+from player_openings import dismiss_opening, close_transition
 
 ROOT = pathlib.Path(__file__).resolve().parents[2]
 BACKGROUND_SURFACES = {'piano': '#pk', 'mot': '.field', 'pz_pipe': '#pzb', 'tol': '#tolb', 'pz_rush': '.rhwrap2'}
@@ -108,7 +108,10 @@ async def main(a):
                 # 5.0 sea 1: play with real taps on the board controls (no state writes).
                 for _ in range(6):
                     if await page.locator('#v5-board').count(): break
+                    await dismiss_opening(page); await close_transition(page)
+                    if await page.locator('#v5-board').count(): break
                     await page.locator('#v-puz .t7-btn.primary').last.click(); await page.wait_for_timeout(250)
+                    await dismiss_opening(page); await close_transition(page)
                 for _ in range(3):
                     gate = page.locator('.v5-gate .t7-btn.primary')
                     if not await gate.count(): break

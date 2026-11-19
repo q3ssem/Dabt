@@ -11,6 +11,8 @@ Exit code is non-zero when any check fails.
 Usage: python3 qa/browser/design10_play.py URL PACK_DIR   (ENGINE=webkit · WIDTHS=320,390,430 · ONLY=river,rush,…)"""
 import asyncio, json, os, sys
 from playwright.async_api import async_playwright
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from player_openings import dismiss_opening
 URL = sys.argv[1] if len(sys.argv) > 1 else 'http://127.0.0.1:8150/'
 PACK = sys.argv[2] if len(sys.argv) > 2 else '/home/claude/in/d10'
 ENGINE = os.environ.get('ENGINE', 'chromium'); ONLY = os.environ.get('ONLY'); SHOTS = os.environ.get('SHOTS')
@@ -36,6 +38,7 @@ async def start(pg, gid, lv=None, seed=1, inject=None):
         ok(await opening.count() == 1 and await opening.locator('img').count() == 1, f'{gid}: one heroine before starting')
         ok(await pg.locator('#stage #go').text_content() == 'ابدأ اللغز', f'{gid}: start action after the heroine')
     if await pg.locator('#stage #go').count(): await pg.click('#stage #go')
+    await dismiss_opening(pg)
     for _ in range(30):
         if await pg.evaluate("() => !!(window.__test.pz && window.__test.pz.P)"): break
         await pg.wait_for_timeout(150)
@@ -60,15 +63,16 @@ async def drag(pg, src, dst):
 async def overflow(pg):
     return await pg.evaluate("() => { const W = document.documentElement.clientWidth; return [...document.querySelectorAll('#stage *')].filter(e => { const b = e.getBoundingClientRect(); return b.width && (b.right > W + 1 || b.left < -1) && getComputedStyle(e).position !== 'fixed' && !e.closest('.mk-ghost') }).map(e => (e.className.baseVal ?? e.className) + '').slice(0, 4) }")
 async def hint(pg, lab):
-    await tap(pg, '.lb-hint'); await pg.wait_for_timeout(300)
-    ok(await pg.evaluate("() => { const t = document.querySelector('#pzt'); return !!t && !t.hidden && t.innerText.length > 5 }"), f'{lab}: the board\'s «تلميح» opens a hint')
+    # 5.5.28 moved the board's own «تلميح» into the shared HUD hint button (#pzh); use whichever the board shows.
+    await tap(pg, '.lb-hint' if await pg.locator('.lb-hint').count() else '#pzh'); await pg.wait_for_timeout(300)
+    ok(await pg.evaluate("() => { const t = document.querySelector('#pzt'); return !!t && !t.hidden && t.innerText.length > 5 }"), f'{lab}: the hint button opens a hint')
 async def stage(pg, gid): return await pg.evaluate("(g) => JSON.stringify([pzLv(g), pzState()])", gid)
 
 # ---------------------------------------------------------------- puzzle drivers: wrong first, then the right play
 async def river(pg, lab, P, mode):
     n = len(P['it']); F = 1 << n
     ok(await pg.evaluate("(n) => document.querySelectorAll('.rv10 [data-tok]').length === n", n), f'{lab}: {n} items from rvMake.it')
-    ok(await pg.evaluate("(it) => it.every((k, i) => document.querySelector(`.rv10 [data-tok=\"${i}\"] img`).src.includes('river_' + k))", P['it']), f'{lab}: every item is its own picture')
+    ok(await pg.evaluate("(it) => it.every((k, i) => document.querySelector(`.rv10 [data-tok=\"${i}\"] img`).src.includes('passengers/' + k + '_'))", P['it']), f'{lab}: every item is its own picture')
     # wrong: a first trip that leaves an eater with its prey on the start bank (found from the rule, not from the answer)
     bad = await pg.evaluate("""() => { const P = window.__test.pz.P, n = P.it.length, F = 1 << n;
         for (let m = 0; m < F; m++) { let c = 0; for (let x = m; x; x &= x - 1) c++; if (c > P.cap) continue; const t = F ^ m;
@@ -92,7 +96,7 @@ async def river(pg, lab, P, mode):
 
 async def rush(pg, lab, P, mode, moves=None):
     ok(await pg.evaluate("(n) => document.querySelectorAll('.rhcar').length === n && document.querySelectorAll('.rhcar img').length === n", len(P['vs'])), f'{lab}: {len(P["vs"])} vehicles drawn as pictures')
-    ok(await pg.evaluate("() => document.querySelector('.rhcar.red img').src.includes('rush_car_red')"), f'{lab}: the target car is the red car')
+    ok(await pg.evaluate("() => document.querySelector('.rhcar.red img').src.includes('car_rescue')"), f'{lab}: the target car is the red car')
     if moves is None: moves = await pg.evaluate("() => rhSolve(window.__test.pz.vs, 200000)")
     async def slide(i, np):
         v = (await pg.evaluate("() => window.__test.pz.vs"))[i]; cur = v['c'] if v['h'] else v['r']
@@ -129,8 +133,8 @@ async def pipe(pg, lab, P, mode):
     ok(await pg.evaluate("(n) => document.querySelectorAll('.pp10-c').length === n", P['w'] * P['h']), f'{lab}: {P["w"]}×{P["h"]} tiles from ppMake')
     ok(await pg.evaluate("() => document.querySelectorAll('.pp10-c.src .pp10-spring').length === 1 && document.querySelectorAll('.pp10-c.house .pp10-house').length > 0"), f'{lab}: one spring and the houses drawn')
     # every tile's drawn pipe matches its mask: (drawn kind rotated k) == cur mask
-    ok(await pg.evaluate("""() => { const P = window.__test.pz.P, base = {pipe_straight: 10, pipe_elbow: 6, pipe_tee: 14, pipe_cross: 15, pipe_end: 8};
-        return [...document.querySelectorAll('.pp10-c')].every((b, i) => { const art = b.querySelector('.pp10-pipe').src.split('/').pop().replace('.webp', ''), k = +b.querySelector('.pp10-rot').style.getPropertyValue('--k'); let m = base[art]; for (let j = 0; j < k; j++) m = ppRot(m); return m === P.cur[i] }) }"""), f'{lab}: each picture, turned, is exactly the cell\'s pipe mask')
+    ok(await pg.evaluate("""() => { const P = window.__test.pz.P, base = {pipe_straight: 5, pipe_corner: 6, pipe_tee: 7, pipe_cross: 15, pipe_end: 4};
+        return [...document.querySelectorAll('.pp10-c')].every((b, i) => { const art = b.querySelector('.pp10-pipe').src.split('/').pop().replace(/\.(webp|png)$/, ''), k = +b.querySelector('.pp10-rot').style.getPropertyValue('--k'); let m = base[art]; for (let j = 0; j < k; j++) m = ppRot(m); return m === P.cur[i] }) }"""), f'{lab}: each picture, turned, is exactly the cell\'s pipe mask')
     for i in range(P['w'] * P['h']):
         for _ in range(4):
             if await pg.evaluate("(i) => { const P = window.__test.pz.P; return P.cur[i] === P.sol[i] }", i): break

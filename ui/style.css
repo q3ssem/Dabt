@@ -48,6 +48,7 @@ html,body{overflow-x:hidden}
 .ui-bar{height:9px;border-radius:6px;background:#0f1e2b;overflow:hidden}.ui-bar i{display:block;height:100%;border-radius:6px}
 .ui-island{display:flex;align-items:center;gap:10px;margin-top:14px;padding:10px 12px;border-radius:14px;background:#0f1e2b}
 .ui-island p{margin:0;font-size:13px}
+.ui-island-ico{width:28px;height:28px;object-fit:contain;flex:none}
 .ui-best p{display:flex;justify-content:space-between;margin:4px 0;font-size:13px}.ui-best b{color:#ffd25a}
 .ui-fold{margin:10px 0;border-radius:18px;background:#14212e;border:1px solid #84b2c422;overflow:hidden}
 .ui-fold>summary{list-style:none;cursor:pointer;padding:14px 16px;font-weight:800;color:#f2ead6;display:flex;justify-content:space-between}

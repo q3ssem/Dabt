@@ -101,7 +101,16 @@ html[data-skin="dark"] .lb[data-lb="rush"] .rhb2>i{background:#141b2426;border-c
 #pzb[data-board-art="pz_rush"] .rhexit{background:#236641 url(../ui/designs_art/work_review/pz_rush/exit-gate--closed.png) center/contain no-repeat}
 #pzb[data-board-art="pz_rush"] .rhlot.won .rhexit{background-image:url(../ui/designs_art/work_review/pz_rush/exit-gate--open.png)}
 #pzb[data-board-art="pz_rush"] .rhbar{visibility:hidden}
-#pzb[data-board-art="pz_rush"] .rh10{background:url(../ui/designs_art/four_puzzles/pz_rush/sprites/vehicle_shadow.png) center/contain no-repeat}
+/* Every vehicle is on the board from the first frame (the engine's staggered fade-in hid the last ones for up
+   to a second, so a quick first move looked like cars "arriving"), and each vehicle shows the cells the engine
+   really reserves: the heavy-truck art covers only 64% of its three cells, so a footprint pad marks the rest.
+   The landscape-only shadow sprite is not used because it lay sideways under vertical vehicles. */
+.lb[data-lb="rush"] .rhcar{animation:none!important}
+#pzb[data-board-art="pz_rush"] .rh10{background:none}
+.lb[data-lb="rush"] .rh10::before{content:"";position:absolute;inset:4%;border-radius:9px;background:rgba(90,69,40,.13);border:1.5px solid rgba(90,69,40,.42)}
+.lb[data-lb="rush"] .rhcar.red .rh10::before{background:rgba(192,57,43,.12);border-color:rgba(192,57,43,.55)}
+html[data-skin="dark"] .lb[data-lb="rush"] .rh10::before{background:rgba(255,245,215,.10);border-color:rgba(255,245,215,.38)}
+.lb[data-lb="rush"] .rh10-img{z-index:1}
 #pzb[data-board-art="pz_rush"] .rhcar.sel .rh10{background-image:url(../ui/designs_art/four_puzzles/pz_rush/sprites/fx_selection_tile.png)}
 #pzb[data-board-art="pz_rush"] .rhcar.red:focus-visible .rh10{background-image:url(../ui/designs_art/four_puzzles/pz_rush/sprites/fx_target_tile.png)}
 
