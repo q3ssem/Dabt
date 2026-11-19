@@ -37,6 +37,8 @@ async def main():
     data=await asyncio.wait_for(pg.evaluate("()=>({text:(document.querySelector('#stage')?.innerText||'').slice(-900),trace:__trace.slice(-15),paused:DX.clock.paused(),hidden:document.hidden,result:!!document.querySelector('#stage .res'),solved:!!document.querySelector('#pzb.solved'),finale:!!document.querySelector('.v5-finale'),playHidden:document.querySelector('#play').hidden})"),5)
     print('SNAP',n,json.dumps(data,ensure_ascii=False),flush=True)
    except Exception as e:print('SNAP ERROR',str(e),flush=True);break
+  if MODE.startswith('heart'):assert await pg.locator('#stage .res').count()==1,'final result must render with audio enabled and muted'
+  else:assert await pg.locator('.v5-finale').count()==1,'replay must open the finale by a real click'
   try:await pg.screenshot(path=str(OUT/(MODE+'.png')),timeout=8000)
   except Exception as e:print('SCREEN ERROR',str(e),flush=True)
   await b.close()
