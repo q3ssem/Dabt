@@ -65,7 +65,7 @@
     lastTriggerFocus = null;
   }
 
-  function openOpening(id, forceReplay, begin) {
+  function openOpening(id, forceReplay, begin, cancel) {
     const data = window.__MINDLAB_OPENINGS_DATA || {};
     const entry = data[id];
     if (!entry) return;
@@ -115,7 +115,11 @@
         e.stopPropagation();
       }
       // A cancelled pre-play scene leaves the original intro and starts no timer.
-      if (begin && e && (e.target === ov || e.key === 'Escape')) { closeOpening(); return; }
+      if (begin && e && (e.target === ov || e.key === 'Escape')) {
+        closeOpening();
+        if (cancel) cancel();
+        return;
+      }
       markSeen(id);
       closeOpening();
       if (begin) begin();
@@ -196,8 +200,11 @@
       const data = window.__MINDLAB_OPENINGS_DATA || {};
       if (!id || !data[id] || readSeen()[id]) return countdown0.apply(this, arguments);
       const self = this, args = arguments;
+      if (typeof stopAll === 'function') stopAll();
       openOpening(id, false, () => {
         if (typeof RUN !== 'undefined' && RUN === run && gid() === id) countdown0.apply(self, args);
+      }, () => {
+        if (typeof RUN !== 'undefined' && RUN === run && typeof showIntro === 'function') showIntro();
       });
     };
   }

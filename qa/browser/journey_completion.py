@@ -29,6 +29,7 @@ async def scenes(browser):
         ev=pg.evaluate
         check(await ev('()=>mindlabJourneyHub.discoveredTransitions().map(t=>t.id)')==['departure'],f'{w}: fresh profile reveals only departure')
         await pg.click('#mlj-open-trans')
+        await pg.wait_for_function('()=>!document.querySelector(".mlj-tr-scene[aria-busy]")')
         check(await pg.locator('#mlj-tr-next').is_disabled(),f'{w}: future scenes cannot be browsed')
         check('رسالة الجد' not in await pg.locator('#mlj-tr-modal').inner_text(),f'{w}: finale title is not exposed')
         await pg.screenshot(path=str(OUT/f'{w}-fresh-scene.png'));await close_transition(pg)
@@ -51,6 +52,7 @@ async def scenes(browser):
         await ev("()=>window.dispatchEvent(new CustomEvent('mindlab:journey-progress',{detail:{chapter:'seven_seas',station:2}}))")
         check(await pg.locator('#mlj-tr-modal').count()==0,f'{w}: replay does not reopen an already seen scene')
         await pg.reload();await pg.wait_for_function('()=>!!window.mindlabJourneyHub')
+        await pg.click('.tab[data-tab=puz]')
         check(await ev('()=>mindlabJourneyHub.discoveredTransitions().map(t=>t.id)')==['departure','coral_light'],f'{w}: scene discovery and progress survive reload')
         await ev("()=>{const x=T7.state();T7.data.stations.forEach(s=>x.done[s.id]={at:1});S.save();window.dispatchEvent(new CustomEvent('mindlab:journey-progress',{detail:{chapter:'seven_seas',station:20}}))}")
         check(await pg.locator('#mlj-tr-modal').get_attribute('data-transition')=='eighth_route',f'{w}: final sea opens eighth route')

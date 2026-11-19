@@ -86,7 +86,7 @@ html[data-skin="dark"] .mlj-trans-btn {
   font-size: 11.5px;
   font-weight: 800;
   white-space: nowrap;
-  max-width: 58%;
+  max-width: 40%;
   white-space: normal;
   line-height: 1.4;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.22);
@@ -218,6 +218,9 @@ html[data-skin="dark"] .mlj-modal-card {
 }
 
 .mlj-tr-scene {
+  display: grid;
+  place-items: center;
+  text-align: center;
   width: 100%;
   aspect-ratio: 2 / 1;
   border-radius: 14px;
@@ -228,11 +231,13 @@ html[data-skin="dark"] .mlj-modal-card {
 
 .mlj-tr-nav {
   display: flex;
+  flex-wrap: wrap;
   gap: 8px;
   align-items: center;
 }
 
 .mlj-tr-nav button {
+  color: inherit;
   min-height: 44px;
   min-width: 44px;
   padding: 8px 12px;

@@ -107,7 +107,7 @@
             <h2>${t.title}</h2>
             <span class="mlj-pill">${idx + 1} / ${available.length}</span>
           </div>
-          <div class="mlj-tr-scene" style="background-image:url('${atlasUrl}');background-size:${bgSize(t.rect)};background-position:${bgPos(t.rect)}"></div>
+          <div class="mlj-tr-scene" role="img" aria-label="${t.title}" aria-busy="true" style="background-image:url('${atlasUrl}');background-size:${bgSize(t.rect)};background-position:${bgPos(t.rect)}"><span>جارٍ تحميل المشهد…</span></div>
           <div class="fit-opening-bubble">
             <span class="fit-opening-speaker">${t.speaker}</span>
             <span>${t.dialogue}</span>
@@ -119,6 +119,10 @@
           </div>
         </div>
       `;
+      const preview = $('.mlj-tr-scene', modal), preload = new Image();
+      preload.onload = () => { if (preview.isConnected) { preview.textContent = ''; preview.removeAttribute('aria-busy'); } };
+      preload.onerror = () => { if (preview.isConnected) { preview.textContent = 'تعذّر تحميل الرسم. يمكنك متابعة النص.'; preview.removeAttribute('aria-busy'); } };
+      preload.src = atlasUrl;
       const p = $('#mlj-tr-prev', modal), n = $('#mlj-tr-next', modal), c = $('#mlj-tr-close', modal);
       if (p) p.onclick = () => { if (idx > 0) { idx--; render(); } };
       if (n) n.onclick = () => { if (idx < available.length - 1) { idx++; render(); } };
