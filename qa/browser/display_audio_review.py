@@ -93,7 +93,7 @@ async def main():
     p.add_argument('--check',action='store_true')
     args=p.parse_args();args.out.mkdir(parents=True,exist_ok=True)
     async with async_playwright() as pw:
-        browser=await (pw.webkit.launch() if args.engine=='webkit' else pw.chromium.launch(executable_path=os.environ.get('CHROMIUM','/usr/bin/chromium'),args=['--no-sandbox']))
+        browser=await (pw.webkit.launch() if args.engine=='webkit' else pw.chromium.launch(args=['--no-sandbox'], **({'executable_path':os.environ['CHROMIUM']} if os.environ.get('CHROMIUM') else {})))
         if args.all:
             ids=[x['id'] for x in json.loads((Path(__file__).parents[2]/'legacy/inventory.json').read_text())['puzzles']]
             jobs=[visit(browser,args,SIZES[1],'light',ids[i:i+11]) for i in range(0,len(ids),11)]
@@ -102,6 +102,8 @@ async def main():
         rows=[r for group in await asyncio.gather(*jobs) for r in group]
         (args.out / f'{args.label}_metrics.json').write_text(json.dumps(rows,ensure_ascii=False,indent=2))
         print(f'{args.label}: {len(rows)} rows, {sum(bool(r.get("error") or r["pageErrors"]) for r in rows)} with script errors')
+        faults=[{'id':r['id'],'size':r['size'],'skin':r['skin'],'error':r.get('error'),'pageErrors':r.get('pageErrors',[])} for r in rows if r.get('error') or r.get('pageErrors')]
+        if faults: print('REVIEW_DIAGNOSTIC_ERRORS:',json.dumps(faults[:14],ensure_ascii=False))
         await browser.close()
         if args.check and any(r.get('error') or r['pageErrors'] for r in rows):
             raise SystemExit(1)

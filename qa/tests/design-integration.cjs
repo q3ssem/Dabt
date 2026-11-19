@@ -39,7 +39,7 @@ const total=env.full_canvas_px.width;
 const left=dock.dock_left.x/total*100,right=dock.dock_right.x/total*100;
 ok(left<right&&right-left>=15,'two physically distinct river docking positions');
 ok(Math.abs(left-40.116)<.05&&Math.abs(right-59.884)<.05,'river dock percentages match the original design');
-ok(riverCss.includes('--rv-dock-left:40.116%')&&riverCss.includes('--rv-dock-right:59.884%'),'boat uses design coordinates');
+ok(riverCss.includes('--rv-dock-left:calc(50% - var(--rv-image-width)*.14)')&&riverCss.includes('--rv-dock-right:calc(50% + var(--rv-image-width)*.14)'), 'boat uses responsive design coordinates');
 ok(riverCss.includes('.rv10:not(.at1).sail .rv10-boat')&&riverCss.includes('.rv10.at1.sail .rv10-boat'),'CSS supplies movement in both directions');
 ok(riverJs.includes('classList.add('+"'sail'"+')')&&riverJs.includes('classList.remove('+"'sail'"+')'),'board transitions in and out of sailing state');
 ok(riverJs.includes('data-slot="boat"')&&riverJs.includes('class="rv10-water"')&&
