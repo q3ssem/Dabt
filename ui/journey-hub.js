@@ -301,6 +301,23 @@
       '<span>البحار السبعة ' + prog.seaDone + '/21 · أَثْرَان ' + prog.atheranDone + '/21</span></span>' +
       '<span class="mlj-entry-action">افتح الخريطة ←</span>';
 
+    // Progress labels mirror the existing engines; a locked chapter remains visible but cannot bypass its rules.
+    try {
+      const campaign = window.ATHERAN_CAMPAIGN && window.ATHERAN_CAMPAIGN.summary();
+      const palace = sec.querySelector('.mlj-ch-card[data-mlj-ch="palace"] .mlj-ch-meta');
+      const atheran = sec.querySelector('.mlj-ch-card[data-mlj-ch="atheran"]');
+      const side = sec.querySelector('.mlj-ch-card[data-mlj-ch="side"] .mlj-ch-meta');
+      if (campaign && palace) palace.textContent = campaign.palace + ' / 19 محطة';
+      if (campaign && atheran && !campaign.open) {
+        atheran.dataset.locked = 'true';
+        atheran.querySelector('.mlj-ch-meta').textContent = 'مقفلة حتى إكمال قصر المرايا';
+      }
+      if (side && window.ML10) {
+        const saved = window.ML10.state();
+        side.textContent = Object.values(saved.done || {}).filter(Boolean).length + ' / 25 محطة · حفظ مستقل';
+      }
+    } catch (_) {}
+    
     // Make the existing illustrated hub a true dialog rather than a very long inline card.
     const content = document.createElement('div');
     content.className = 'mlj-atlas-content';
