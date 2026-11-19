@@ -9,6 +9,9 @@ on:
   workflow_dispatch:
 permissions:
   contents: read
+defaults:
+  run:
+    shell: bash
 concurrency:
   group: mindlab-presentation-${{ github.ref }}
   cancel-in-progress: true
