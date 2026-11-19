@@ -1,0 +1,26 @@
+name: MindLab final-station diagnostic
+on:
+  push:
+    branches: [review/completion-20261119]
+    paths: ['qa/diagnostics/pheart.py', '.github/workflows/mindlab-diagnostic.yml']
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    container: mcr.microsoft.com/playwright/python:v1.58.0-noble
+    timeout-minutes: 5
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 -m pip install playwright==1.58.0
+      - run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/http.log 2>&1 &
+          python3 qa/diagnostics/pheart.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: pheart-webkit-diagnostic
+          path: qa/browser/completion-shots/
