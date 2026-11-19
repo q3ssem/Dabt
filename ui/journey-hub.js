@@ -7,6 +7,7 @@
   window.__MINDLAB_JOURNEY_HUB = true;
 
   const SEEN_KEY = 'mindlab:openings:journey:v1';
+  const TRANSITIONS_KEY = 'mindlab:transitions:seen:v1';
 
   const $ = (s, r = document) => r.querySelector(s);
   const readSeen = () => { try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); } catch (_) { return {}; } };
@@ -40,11 +41,44 @@
     return { seaDone, atheranDone, secretsUnlocked };
   }
 
-  function openTransitionsModal(startIdx = 0) {
+  // Derive discovery from campaign progress, never from presentation/seen flags.
+  function discoveredTransitions() {
     const data = window.__MINDLAB_JOURNEY_STORY;
-    if (!data || !data.transitions || !data.transitions.length) return;
+    if (!data) return [];
+    let completed = 0, atlasOpen = false, returned = false;
+    try {
+      const sea = window.T7 && T7.state();
+      const stations = window.T7 && T7.data.stations;
+      while (stations && completed < stations.length && sea.done[stations[completed].id]) completed++;
+      const atlas = window.ATHERAN_CAMPAIGN && window.ATHERAN_CAMPAIGN.summary();
+      atlasOpen = !!atlas?.open;
+      returned = !!atlas && atlas.done === 21 && atlas.cleared === 5;
+    } catch (_) {}
+    const thresholds = {departure: 0, coral_light: 3, mist_bells: 6, oasis_water: 9,
+      ice_observatory: 12, wind_engine: 15, moon_vow: 18, eighth_route: 21, letter: 21, palace: 21};
+    return data.transitions.filter(t => t.id === 'atheran' ? atlasOpen :
+      t.id === 'return' ? returned : Object.hasOwn(thresholds, t.id) && completed >= thresholds[t.id]);
+  }
+  function transitionSeen() {
+    try { const v = JSON.parse(localStorage.getItem(TRANSITIONS_KEY) || '{}'); return v && typeof v === 'object' && !Array.isArray(v) ? v : {}; }
+    catch (_) { return {}; }
+  }
+  function markTransition(id) {
+    try { const s = transitionSeen(); s[id] = true; localStorage.setItem(TRANSITIONS_KEY, JSON.stringify(s)); } catch (_) {}
+  }
+  function showMilestone(ids, after) {
+    const seen = transitionSeen();
+    const fresh = discoveredTransitions().filter(t => ids.includes(t.id) && !seen[t.id]);
+    if (fresh.length) return openTransitionsModal(0, after, fresh.map(t => t.id));
+    if (after) after();
+  }
+
+  function openTransitionsModal(startIdx = 0, after, onlyIds) {
+    const data = window.__MINDLAB_JOURNEY_STORY;
+    const available = discoveredTransitions().filter(t => !onlyIds || onlyIds.includes(t.id));
+    if (!data || !available.length) { if (after) after(); return; }
     const prev = document.activeElement;
-    let idx = Math.max(0, Math.min(data.transitions.length - 1, startIdx));
+    let idx = Math.max(0, Math.min(available.length - 1, Number(startIdx) || 0));
     const old = $('#mlj-tr-modal');
     if (old) old.remove();
 
@@ -53,42 +87,63 @@
     modal.className = 'mlj-modal';
     modal.setAttribute('role', 'dialog');
     modal.setAttribute('aria-modal', 'true');
-    modal.setAttribute('aria-label', 'مختصرات انتقال رحلة الكنز');
+    modal.setAttribute('aria-label', 'مشاهد الرحلة المكتشفة');
 
     const atlasUrl = new URL(data.transitionsAtlas, document.baseURI).href;
     function close() {
       modal.remove();
+      if (after) { after(); return; }
       if (prev && typeof prev.focus === 'function' && prev.isConnected) {
         try { prev.focus({ preventScroll: true }); } catch (_) {}
       }
     }
     function render() {
-      const t = data.transitions[idx];
+      const t = available[idx];
+      markTransition(t.id);
+      modal.dataset.transition = t.id;
       modal.innerHTML = `
         <div class="mlj-modal-card">
           <div class="mlj-head">
             <h2>${t.title}</h2>
-            <span class="mlj-pill">${idx + 1} / ${data.transitions.length}</span>
+            <span class="mlj-pill">${idx + 1} / ${available.length}</span>
           </div>
-          <div class="mlj-tr-scene" style="background-image:url('${atlasUrl}');background-size:${bgSize(t.rect)};background-position:${bgPos(t.rect)}"></div>
+          <div class="mlj-tr-scene" role="img" aria-label="${t.title}" aria-busy="true" style="background-image:url('${atlasUrl}');background-size:${bgSize(t.rect)};background-position:${bgPos(t.rect)}"><span>جارٍ تحميل المشهد…</span></div>
           <div class="fit-opening-bubble">
             <span class="fit-opening-speaker">${t.speaker}</span>
             <span>${t.dialogue}</span>
           </div>
           <div class="mlj-tr-nav">
             <button type="button" id="mlj-tr-prev" ${idx === 0 ? 'disabled' : ''}>السابق</button>
-            <button type="button" id="mlj-tr-next" ${idx === data.transitions.length - 1 ? 'disabled' : ''}>التالي</button>
-            <button type="button" class="mlj-tr-close" id="mlj-tr-close">إغلاق</button>
+            <button type="button" id="mlj-tr-next" ${idx === available.length - 1 ? 'disabled' : ''}>التالي</button>
+            <button type="button" class="mlj-tr-close" id="mlj-tr-close">${after ? 'متابعة الرحلة' : 'إغلاق'}</button>
           </div>
         </div>
       `;
+      const preview = $('.mlj-tr-scene', modal), preload = new Image();
+      preload.onload = () => { if (preview.isConnected) { preview.textContent = ''; preview.removeAttribute('aria-busy'); } };
+      preload.onerror = () => { if (preview.isConnected) { preview.textContent = 'تعذّر تحميل الرسم. يمكنك متابعة النص.'; preview.removeAttribute('aria-busy'); } };
+      preload.src = atlasUrl;
       const p = $('#mlj-tr-prev', modal), n = $('#mlj-tr-next', modal), c = $('#mlj-tr-close', modal);
       if (p) p.onclick = () => { if (idx > 0) { idx--; render(); } };
-      if (n) n.onclick = () => { if (idx < data.transitions.length - 1) { idx++; render(); } };
-      if (c) { c.onclick = close; c.focus({ preventScroll: true }); }
+      if (n) n.onclick = () => { if (idx < available.length - 1) { idx++; render(); } };
+      if (c) {
+        c.onclick = () => {
+          if (onlyIds && idx < available.length - 1) { idx++; render(); }
+          else close();
+        };
+        c.focus({ preventScroll: true });
+      }
     }
     modal.addEventListener('click', e => { if (e.target === modal) close(); });
-    modal.addEventListener('keydown', e => { if (e.key === 'Escape') { e.preventDefault(); close(); } });
+    modal.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { e.preventDefault(); close(); }
+      if (e.key === 'Tab') {
+        const controls = [...modal.querySelectorAll('button:not([disabled])')];
+        const first = controls[0], last = controls[controls.length - 1];
+        if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+        else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+      }
+    });
     document.body.append(modal);
     render();
   }
@@ -175,12 +230,12 @@
 
   function triggerChapter(chId) {
     if (chId === 'seven_seas') {
-      if (window.T7 && typeof T7.map === 'function') T7.map();
+      if (window.T7 && typeof T7.map === 'function') showMilestone(['departure'], () => T7.map());
     } else if (chId === 'palace') {
-      openPalaceMap();
+      showMilestone(['palace'], openPalaceMap);
     } else if (chId === 'atheran') {
       if (window.ATHERAN_CAMPAIGN && typeof window.ATHERAN_CAMPAIGN.open === 'function')
-        window.ATHERAN_CAMPAIGN.open();
+        showMilestone(['atheran'], () => window.ATHERAN_CAMPAIGN.open());
     } else if (chId === 'side') {
       if (window.ML10 && typeof window.ML10.renderMap === 'function') window.ML10.renderMap();
       else $('#v-puz .ex10-launch-go')?.click();
@@ -207,7 +262,7 @@
     sec.innerHTML = `
       <div class="mlj-head">
         <h2>${data.journeyTitle}</h2>
-        <button type="button" class="mlj-trans-btn" id="mlj-open-trans">مختصرات الانتقال (${data.transitions.length})</button>
+        <button type="button" class="mlj-trans-btn" id="mlj-open-trans">مشاهد الرحلة (${discoveredTransitions().length})</button>
       </div>
       <div class="mlj-map-wrap">
         <img class="mlj-map-img" src="${mapUrl}" alt="خريطة ${data.journeyTitle}" loading="lazy">
@@ -221,7 +276,7 @@
             <span class="mlj-ch-meta">${c.stationCount} محطة</span>
           </button>`).join('')}
         ${side ? `
-          <button type="button" class="mlj-ch-card" data-mlj-ch="side">
+          <button type="button" class="mlj-ch-card mlj-side-card" data-mlj-ch="side">
             <span class="mlj-ch-order">فرع مستقل</span>
             <span class="mlj-ch-name">${side.name}</span>
             <span class="mlj-ch-meta">${side.stationCount} محطة · حفظ مستقل</span>
@@ -342,6 +397,14 @@
   }
 
   function watchAll() {
+    window.addEventListener('mindlab:journey-progress', e => {
+      if (e.detail?.chapter === 'seven_seas') {
+        const at = e.detail.station;
+        const scenes = {2: ['coral_light'], 5: ['mist_bells'], 8: ['oasis_water'],
+          11: ['ice_observatory'], 14: ['wind_engine'], 17: ['moon_vow'], 20: ['eighth_route', 'letter']};
+        if (scenes[at]) showMilestone(scenes[at]);
+      } else if (e.detail?.chapter === 'atheran') showMilestone(['return']);
+    });
     const vp = $('#v-puz');
     if (vp) {
       let raf = 0;
@@ -362,7 +425,7 @@
     }
   }
 
-  window.mindlabJourneyHub = { openChapter: triggerChapter, openTransitions: openTransitionsModal, beforeStation, mountUnifiedHub, applyBoardArt };
+  window.mindlabJourneyHub = { openChapter: triggerChapter, openTransitions: openTransitionsModal, discoveredTransitions, beforeStation, mountUnifiedHub, applyBoardArt };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchAll);
   else watchAll();
 })();

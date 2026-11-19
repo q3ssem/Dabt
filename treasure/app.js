@@ -92,7 +92,7 @@ function renderHub(){const v=shell(),x=state(),count=Object.keys(x.done).length,
  v.append(E('header',{class:'t7-top'},E('div',{},E('span',{class:'t7-kicker',text:'قصص وألغاز'}),E('h1',{text:'الألغاز'}))));
  v.append(E('button',{type:'button',class:'v5-hubcard',onclick:map,'aria-label':'جزيرة الكنز: افتح الخريطة'},E('span',{class:'v5-hubart'}),E('span',{class:'v5-hubtext'},E('span',{class:'t7-kicker',text:'حكايات البحار السبعة'}),E('b',{text:'جزيرة الكنز'}),
   E('small',{text:`${A(count)} / ٢١ محطة · ${A(x.rewards.length)} / ٧ أختام · ${A(stars)} نجمة`}),E('span',{class:'t7-btn primary',text:count?'تابع الرحلة':'ابدأ الرحلة'}))));
- v.append(dailyCard());
+
  const lib=E('section',{class:'v5-hublib'},E('h2',{class:'la-section-head',text:'مكتبة الألغاز'}));v.append(lib);if(window.LA&&LA.libraryInto)LA.libraryInto(lib);}
 
 /* ---------- map ---------- */
@@ -187,10 +187,11 @@ function renderStory(){
 function renderPuzzle(){const s=D.stations[active],v=shell(),x=state();top(v,`الفصل ${A(s.ch+1)} · المحطة ${A(active+1)}`,s.title);const sc=scene(s);sc.classList.add('t7-puzzle-scene');
  const host=E('section',{class:'t7-puzzle-pane v5-pane'});v.append(E('div',{class:'t7-puzzle-layout v5-layout','data-station-id':s.id},sc,host));
  const ctx={s,x,E,button,A,save,done:()=>!!x.done[s.id],sealed:()=>done(sealIndex(s.ch)),work:current,setWork:w=>{x.work[s.id]=w},onFirstWin:win,onDaily:dailyDone,map,guide:stationGuide(s).name,rerender:()=>B.render(host,ctx)};B.render(host,ctx);}
-function win(){const s=D.stations[active],x=state();if(!L.solved(live(),current()))return;
+function win(){const s=D.stations[active],x=state();if(!L.solved(live(),current()))return;const firstWin=!x.done[s.id];
  x.done[s.id]=x.done[s.id]||{at:Date.now(),moves:x.moves[s.id]||0,hints:x.hints[s.id]||0};const T=B.v5state(x);if(s.gives&&!T.tools[s.gives])T.tools[s.gives]='new';
  if(sealHere(s)){if(!x.rewards.includes(s.ch))x.rewards.push(s.ch);const q=D.secrets[s.ch];if(!x.bonus[q.id])x.bonus[q.id]={at:Date.now(),moves:0,hints:0,tool:false};}
- x.resume=Math.min(20,active+1);save();view='reward';try{sfx.ok(2);}catch(e){}render();window.scrollTo(0,0);}
+ x.resume=Math.min(20,active+1);save();view='reward';try{sfx.ok(2);}catch(e){}render();window.scrollTo(0,0);
+ if(firstWin&&typeof window.dispatchEvent==='function'&&typeof CustomEvent==='function')window.dispatchEvent(new CustomEvent('mindlab:journey-progress',{detail:{chapter:'seven_seas',station:active}}));}
 function stars(s){return 'التحديات: '+B.chal(state(),s.id).slice(0,s.expert?4:3).map(d=>d?'★':'☆').join(' ');}
 function renderReward(){const s=D.stations[active];if(s.finale)return renderFinale();const v=shell(),T=s.gives?D.SEA1_TOOLS[s.gives]:null,Q=D.SECRETS5[s.ch],seal=sealHere(s);top(v,'أثر الحل',s.name);
  const fig=(art,cap)=>E('figure',{},img(art),E('figcaption',{text:cap}));

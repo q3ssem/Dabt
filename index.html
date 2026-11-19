@@ -8595,7 +8595,7 @@ function stageGate(orig){return function(api,id){
   delete S.st[bucket][id];if(!replay){S.st.stg=S.st.stg||{};delete S.st.stg[id]}
   if(ASTN.some(x=>x.id===id)&&q.hints===0&&q.wrongs===0){const a=aState();a.perfect3=a.perfect3||{};a.perfect3[id]=1}
   S.save();const merged=new Proxy(api,{get(target,key,receiver){if(key==='hints')return q.hints;if(key==='wrongs')return q.wrongs;return Reflect.get(target,key,receiver)}});
-  return orig.call(this,merged,id)}}
+  return orig.call(this,merged,id,...Array.prototype.slice.call(arguments,2))}}
 if(typeof zWin==='function')zWin=stageGate(zWin);
 if(typeof pWin==='function')pWin=stageGate(pWin);
 if(typeof aWin==='function')aWin=stageGate(aWin);

@@ -46,7 +46,7 @@ W.iconArtUrl=name=>W.abs('watercolor/art/icons54/'+name+'.webp');
 /* 4.2.3: library icons — show the sprite itself as a square, framed by its own content (some cards reused an
    in-puzzle piece with a 30×12 box, so the icon came out tiny). */
 W.squareIcon=function(box){if(!box||box.dataset.wcSq)return;const ls=box.querySelector('svg.la-sprite');if(!ls)return;box.dataset.wcSq='1';
- ['x','y','width','height','style'].forEach(a=>ls.removeAttribute(a));const im=ls.querySelector('image'),f=(im&&(im.getAttribute('href')||'').match(/art\/([\w-]+)\.webp/)||[])[1],B=f&&window.WC_SPRITE_BOXES&&WC_SPRITE_BOXES[f],vb=(ls.getAttribute('viewBox')||'').split(' ').map(Number);
+ Object.entries({x:'0',y:'0',width:'100%',height:'100%'}).forEach(([a,v])=>ls.setAttribute(a,v));ls.removeAttribute('style');const im=ls.querySelector('image'),f=(im&&(im.getAttribute('href')||'').match(/art\/([\w-]+)\.webp/)||[])[1],B=f&&window.WC_SPRITE_BOXES&&WC_SPRITE_BOXES[f],vb=(ls.getAttribute('viewBox')||'').split(' ').map(Number);
  if(B&&vb.length===4){const i=Math.floor(vb[1]/100)*4+Math.floor(vb[0]/100),k=B[i];if(k)ls.setAttribute('viewBox',k.join(' ')+' '+k[2]);}
  if(box.firstElementChild!==ls)box.replaceChildren(ls);};
 W.cards=function(){

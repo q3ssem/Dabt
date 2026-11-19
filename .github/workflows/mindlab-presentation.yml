@@ -1,0 +1,99 @@
+name: MindLab final acceptance
+on:
+  push:
+    branches: [review/completion-20261119]
+    paths:
+      - '**/*.js'
+      - '**/*.css'
+      - 'index.html'
+      - 'qa/tests/**'
+      - 'package.json'
+      - 'qa/browser/**'
+      - '.github/workflows/mindlab-presentation.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+concurrency:
+  group: mindlab-presentation-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  retire:
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: write
+    steps:
+      - name: Retire superseded acceptance runs on this review branch
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          for run in $(gh run list --repo "$GITHUB_REPOSITORY" --branch "$GITHUB_REF_NAME" --limit 20 --json databaseId,status,name --jq '.[] | select((.name == "MindLab completion acceptance" or .name == "MindLab presentation acceptance") and .status != "completed") | .databaseId'); do
+            if [ "$run" != "$GITHUB_RUN_ID" ]; then
+              gh run cancel "$run" --repo "$GITHUB_REPOSITORY" || true
+            fi
+          done
+  logic:
+    needs: retire
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install tinycss2==1.4.0
+      - run: npm test
+      - run: node qa/tests/design-integration.cjs && node qa/tests/journey-transitions.cjs && node qa/tests/phone-readability.cjs
+  browser:
+    needs: retire
+    runs-on: ubuntu-24.04
+    container: mcr.microsoft.com/playwright/python:v1.58.0-noble
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        engine: [chromium, webkit]
+        suite: [scenes, palace, atlas, layout, oldsave, river, treasure, side]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        if: matrix.suite == 'oldsave'
+        with:
+          ref: 3487587737461ffa6135a2ee145977d2009b028e
+          path: .baseline
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 -m pip install playwright==1.58.0 tinycss2==1.4.0
+      - run: python3 tools/build_light_theme.py --check
+      - name: Verify updated presentation and player paths
+        env:
+          ENGINE: ${{ matrix.engine }}
+          SUITE: ${{ matrix.suite }}
+          MINDLAB_URL: http://127.0.0.1:8765/index.html
+          OUT: qa/browser/completion-shots
+        run: |
+          set -euo pipefail
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/mindlab-http.log 2>&1 &
+          SERVER_PID=$!
+          trap 'kill "$SERVER_PID" || true' EXIT
+          sleep 2
+          case "$SUITE" in
+            scenes|palace|oldsave) MODE="$SUITE" python3 qa/browser/journey_completion.py ;;
+            atlas) python3 qa/browser/atheran_campaign.py ;;
+            river) python3 qa/browser/design_integration_smoke.py ;;
+            treasure) python3 qa/browser/journey.py --url "$MINDLAB_URL" --engine "$ENGINE" --shots "$OUT" ;;
+            side) python3 qa/browser/expedition25_smoke.py ;;
+            layout) python3 qa/browser/fit_audit.py "$MINDLAB_URL" ;;
+          esac
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: presentation-${{ matrix.engine }}-${{ matrix.suite }}
+          path: qa/browser/completion-shots/
+          if-no-files-found: ignore

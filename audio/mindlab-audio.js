@@ -1,3 +1,44 @@
+/* Resume audio only from a user gesture. An automatic result must never wait on
+   a suspended audio device; WebKit may block when sources are started mid-resume. */
+(function installGestureAudioLifecycle(){
+  if (typeof audioOK !== 'function' || typeof unlockAudio !== 'function') return;
+  const events = ['pointerdown','touchend','keydown'], oldUnlock = unlockAudio;
+  events.forEach(event => document.removeEventListener(event, oldUnlock, true));
+  let waking = null;
+  const idle = ctx => {
+    clearTimeout(audioOK.t);
+    audioOK.t = setTimeout(() => {
+      if (ctx.state !== 'running') return;
+      const playing = typeof DX !== 'undefined' && typeof DX.inRound === 'function' && DX.inRound();
+      if (!document.hidden && !S.st.mute && playing) { idle(ctx); return; }
+      ctx.suspend().catch(() => {});
+    }, 5000);
+  };
+  unlockAudio = function(){
+    clearTimeout(audioOK.t);
+    if (document.hidden || S.st.mute) { sleepAudio(); return; }
+    const ctx = acInit();
+    if (!ctx) return;
+    if (ctx.state === 'running') { idle(ctx); return; }
+    if (ctx.state !== 'suspended' || waking) return;
+    try {
+      waking = Promise.resolve(ctx.resume()).catch(() => {}).finally(() => {
+        waking = null;
+        if ((document.hidden || S.st.mute) && ctx.state === 'running') ctx.suspend().catch(() => {});
+        else if (ctx.state === 'running') idle(ctx);
+      });
+    } catch (_) { waking = null; }
+  };
+  audioOK = function(){
+    if (document.hidden || S.st.mute) return false;
+    const ctx = acInit();
+    if (!ctx || ctx.state !== 'running') return false;
+    idle(ctx);
+    return true;
+  };
+  events.forEach(event => document.addEventListener(event, unlockAudio, {capture:true,passive:true}));
+})();
+
 /* MindLab 5.4.7 — tactile, low-volume procedural sound palette.
    Uses the existing shared AudioContext and mute preference; no downloaded media. */
 (function(){

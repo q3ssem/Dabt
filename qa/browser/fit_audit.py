@@ -8,6 +8,7 @@ import asyncio, json, os, sys, pathlib
 from playwright.async_api import async_playwright
 sys.path.insert(0, str(pathlib.Path(__file__).parent))
 from smoke import open_game
+from player_openings import dismiss_opening
 
 URL = sys.argv[1] if len(sys.argv) > 1 else 'http://127.0.0.1:8150/'
 ENGINE = os.environ.get('ENGINE', 'chromium'); OUT = os.environ.get('OUT')
@@ -71,6 +72,8 @@ async def main():
                     if r['hudH'] > 46: bad.append(f'HUD is {r["hudH"]}px tall (more than one row)')
                     if r['bottom'] > r['vh'] + 1: bad.append(f'board bottom {r["bottom"]} below screen {r["vh"]}')
                     if r['hidden']: bad.append('story banner still on the board')
+                    if w == 390 and g in {'pz_zshadow','pz_pgarden','pz_parm','pz_peng','pz_plast','pz_ashade','pz_avsong'} and r['minBtn'] is not None and r['minBtn'] < 32:
+                        bad.append(f'touch target is only {r["minBtn"]}px')
                     if r.get('sheet') is False or r.get('sheetClosed') is False: bad.append('info sheet')
                     if r.get('giveArm') is False: bad.append('give-up did not arm')
                     if r.get('hintClosed') is False: bad.append('hint did not close')
@@ -102,7 +105,7 @@ async def pages(pg, w, res, fails, errs):
             if await pg.locator('#v5-board').count(): break
             bt = pg.locator('#v-puz .t7-btn.primary').last
             if not await bt.count(): break
-            await bt.click(); await pg.wait_for_timeout(250)
+            await bt.click(); await dismiss_opening(pg); await pg.wait_for_timeout(250)
         await pg.wait_for_timeout(800)
         r = await pg.evaluate(PM, '.t7-puzzle-pane'); r = r or {'err': 'no board'}; r['errs'] = errs[n:]; res[tag] = r
         bad = [r['err']] if 'err' in r else ([] if r['bottom'] <= r['vh'] + 1 or r['z'] == '0.58' else [f'pane bottom {r["bottom"]} below {r["vh"]}']) + ([] if r['info'] else ['no ⓘ'])
@@ -116,7 +119,7 @@ async def pages(pg, w, res, fails, errs):
         n = len(errs); tag = f'ex_{k + 1:02d}@{w}'
         try:
             if not await pg.locator('.ex10-map').count(): await pg.locator('.ex10-launch-go').click(); await pg.wait_for_timeout(300)
-            await pg.locator(f'.ex10-map [data-ex10-node="{k}"]').click(); await pg.locator('[data-ex10="start"]').click(); await pg.wait_for_timeout(900)
+            await pg.locator(f'.ex10-map [data-ex10-node="{k}"]').click(); await pg.locator('[data-ex10="start"]').click(); await dismiss_opening(pg); await pg.wait_for_timeout(900)
             r = await pg.evaluate(PM, '.ex10-game-content') or {'err': 'no board'}
             await pg.locator('.ex10-back').click(); await pg.wait_for_timeout(250)
         except Exception as e:

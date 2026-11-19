@@ -13,7 +13,7 @@ for(let i=1;i<=25;i++){const f=`${String(i).padStart(2,'0')}-`;const scene=fs.re
 assert(app.includes("const SAVE_KEY='mindlab:expedition10:v1'"),'experimental chapter retains its isolated save namespace and existing first-ten progress');
 assert(!/S\.st\.[^;]*ml10/.test(app),'new chapter does not write into legacy campaign state');
 assert.strictEqual((app.match(/id:'ml10_\d\d'/g)||[]).length,25,'exactly twenty-five stages are registered');
-assert(app.includes('قصر المرايا')&&app.includes('غير قابلة للعب'),'later worlds are visible as future locked regions, not playable stages');
+assert(!app.includes('قصر المرايا')&&!app.includes('الفصل الثاني'),'side journey neither reveals nor unlocks official chapters');
 assert(app.includes('function renderMap()')&&app.includes('function renderIntro(i)')&&app.includes('function renderEpilogue()'),'world map, puzzle intro, and chapter epilogue exist');
 assert(app.includes('ex10-stage-prop')&&app.includes('ex10-game-scene'),'stage-specific painterly scene and prop assets are used during play');
 for(const fn of ['gamePipes','gameIce','gameNim','gameShadows','gameCipher'])assert(app.includes('function '+fn+'('),'interactive stage implementation exists: '+fn);

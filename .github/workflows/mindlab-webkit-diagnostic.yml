@@ -1,0 +1,33 @@
+name: MindLab WebKit diagnostics
+on:
+  push:
+    branches: [review/final-fixes-20261119]
+    paths: ['qa/diagnostics/webkit.py', '.github/workflows/mindlab-webkit-diagnostic.yml']
+permissions:
+  contents: read
+defaults:
+  run:
+    shell: bash
+jobs:
+  inspect:
+    runs-on: ubuntu-24.04
+    container: mcr.microsoft.com/playwright/python:v1.58.0-noble
+    timeout-minutes: 8
+    strategy:
+      fail-fast: false
+      matrix:
+        case: [heart, heart-muted, treasure]
+    steps:
+      - uses: actions/checkout@v4
+      - run: python3 -m pip install playwright==1.58.0
+      - env:
+          CASE: ${{ matrix.case }}
+        run: |
+          python3 -m http.server 8765 --bind 127.0.0.1 >/tmp/http.log 2>&1 &
+          sleep 2
+          python3 qa/diagnostics/webkit.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: webkit-diagnostic-${{ matrix.case }}
+          path: qa/browser/completion-shots/

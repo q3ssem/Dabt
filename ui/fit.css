@@ -137,3 +137,27 @@ html[data-skin="dark"] .fit-sh-replay{border-color:#5CE0D2;color:#5CE0D2}
 html.fit-t7 #v-puz.t7 .t7-puzzle-pane svg,html.fit-ex10 #v-puz .ex10-game-content svg{max-width:100%;height:auto}
 html.fit-ex10 #v-puz .ex10-game-content{max-height:calc(100dvh - 84px);overflow-y:auto;overscroll-behavior:contain}
 html.fit-t7 #v-puz.t7 .v5-chip,html.fit-ex10 #v-puz .ex10-game-content button{min-height:44px}
+
+/* Leave room for the light source beside the mirror grid on narrow phones. */
+html.fit-t7 #v-puz.t7 .v5-grid{width:calc(100% - 52px);max-width:330px;margin-inline:auto;grid-template-columns:repeat(var(--n),minmax(0,1fr))}
+html.fit-t7 #v-puz.t7 .v5-cell{min-width:0;min-height:0}
+/* The final light channel may start beyond its viewBox; keep that decoration inside its board. */
+html.fit-t7 #v-puz.t7 .v5-dsvg,html.fit-t7 #v-puz.t7 .v5-dsvg svg{overflow:hidden}
+/* Long reward/finale pages must keep their last actions above the fixed tab bar. */
+#v-puz.t7:has(.v5-finale){padding-bottom:calc(92px + env(safe-area-inset-bottom,0px))}
+#v-puz.t7 .v5-reward .t7-btn{scroll-margin-block:90px}
+
+/* Preserve usable hit areas in the seven phone boards identified by the layout audit. */
+#play.fit #pzb :is(.pgg,.pqd,.zss button,.pap,.ashc,.ashn button,#parot,#paout){min-width:44px;min-height:44px}
+#play.fit #pzb .pqdoors{flex-wrap:wrap}
+#play.fit #pzb .pqd small{font-size:12px}
+#play.fit #pzb .pab{width:min(100%,360px)}
+#play.fit #pzb .pgfl>b{display:grid;gap:2px;font-size:12px;white-space:nowrap;text-align:center}
+#play.fit[data-la-game="pz_avsong"] #pzb .xnote{display:none!important}
+#play.fit[data-la-game="pz_avsong"] .avsk{grid-template-columns:repeat(5,minmax(0,1fr));gap:6px}
+#play.fit[data-la-game="pz_avsong"] .avsk button{min-height:44px;min-width:44px;font-size:14px}
+/* Shadow-clock actions and cells keep their hit areas after phone scaling. */
+#play.fit[data-la-game="pz_ashade"] #pzb .asdh button{min-width:44px;min-height:44px}
+#play.fit[data-la-game="pz_ashade"] .asdg{width:100%;max-width:360px;min-width:calc(var(--n) * 34px + 4px)}
+#play.fit[data-la-game="pz_ashade"] .asdg button{min-height:32px;min-width:32px}
+#play.fit[data-la-game="pz_ashade"] #pzb{overflow-x:auto}
