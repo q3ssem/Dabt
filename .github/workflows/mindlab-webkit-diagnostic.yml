@@ -16,7 +16,7 @@ jobs:
     strategy:
       fail-fast: false
       matrix:
-        case: [heart, treasure]
+        case: [heart, heart-muted, treasure]
     steps:
       - uses: actions/checkout@v4
       - run: python3 -m pip install playwright==1.58.0
