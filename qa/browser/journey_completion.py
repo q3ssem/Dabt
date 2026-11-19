@@ -29,6 +29,7 @@ async def scenes(browser):
         ev=pg.evaluate
         check(await pg.locator('.v5-daily').count()==0,f'{w}: retired daily tile stays removed')
         check(await ev('()=>mindlabJourneyHub.discoveredTransitions().map(t=>t.id)')==['departure'],f'{w}: fresh profile reveals only departure')
+        await pg.click('#mlj-journey-entry')
         await pg.click('#mlj-open-trans')
         await pg.wait_for_function('()=>!document.querySelector(".mlj-tr-scene[aria-busy]")')
         check(await pg.locator('#mlj-tr-next').is_disabled(),f'{w}: future scenes cannot be browsed')
@@ -60,7 +61,7 @@ async def scenes(browser):
         await pg.click('#mlj-tr-close')
         check(await pg.locator('#mlj-tr-modal').get_attribute('data-transition')=='letter',f'{w}: continue then shows grandfather letter')
         await close_transition(pg)
-        await ev('()=>T7.hub()');await pg.locator('#mlj-unified-hub').wait_for()
+        await ev('()=>T7.hub()');await pg.locator('#mlj-journey-entry').wait_for()
         for skin in ['light','dark']:
             await ev('(skin)=>{S.st.skin=skin;S.save();document.documentElement.dataset.skin=skin}',skin)
             for chapter in ['seven_seas','palace','atheran','side']:
@@ -102,7 +103,8 @@ async def palace(browser):
     stations=await ev('()=>PW.map(s=>s.id)')
     check(len(stations)==19,'Palace has all 19 stations')
     for i,gid in enumerate(stations):
-        await ev('()=>T7.hub()');await pg.locator('#mlj-unified-hub').wait_for()
+        await ev('()=>T7.hub()');await pg.locator('#mlj-journey-entry').wait_for()
+        await pg.click('#mlj-journey-entry')
         await pg.click('#mlj-unified-hub .mlj-ch-card[data-mlj-ch=palace]');await close_transition(pg)
         await pg.click(f'#mlj-palace-map [data-mlj-puzzle="{gid}"]')
         for k in range(3):

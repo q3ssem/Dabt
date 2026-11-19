@@ -288,3 +288,134 @@ html[data-skin="dark"] #play.fit #pzb[data-board-art="pz_stat"] {
 html[data-skin="dark"] #play.fit #pzb[data-board-art="pz_pipe"] {
   background-image: linear-gradient(rgba(16, 22, 42, 0.84), rgba(16, 22, 42, 0.90)), url('designs_art/four_puzzles/pz_pipe/bg_village_hillside.png');
 }
+
+/* Stage 1 — one visible journey gateway on the puzzle-library home screen.
+   These are presentation-only overrides: original chapter maps, locks and saves remain intact. */
+#v-puz.mlj-single-entry > .v5-hubcard,
+#v-puz.mlj-single-entry > .ah-launch,
+#v-puz.mlj-single-entry > .ex10-launch,
+#v-puz.mlj-single-entry > .ah-side-head {
+  display: none !important;
+}
+#v-puz .mlj-journey-entry {
+  width: 100%;
+  min-height: 108px;
+  margin: 2px 0 18px;
+  padding: 15px 18px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  direction: rtl;
+  text-align: start;
+  border-radius: 18px;
+  border: 1.5px solid #C9B893;
+  background: linear-gradient(90deg, rgba(255,251,242,.92), rgba(255,251,242,.97) 57%, rgba(255,251,242,.99)),
+    url('designs_art/journey/journey_map.png') center 63% / cover no-repeat;
+  color: #30281B;
+  box-shadow: 0 5px 16px rgba(58,42,20,.07);
+  cursor: pointer;
+  font-family: Tajawal, system-ui, sans-serif;
+}
+#v-puz .mlj-entry-copy { display:flex; flex-direction:column; gap:4px; min-width:0; line-height:1.4 }
+#v-puz .mlj-entry-copy small {font-size:12px;color:#176C65;font-weight:800}
+#v-puz .mlj-entry-copy strong {font-size:clamp(23px,6vw,30px);font-weight:900}
+#v-puz .mlj-entry-copy > span {font-size:12px;color:#695943;line-height:1.6}
+#v-puz .mlj-entry-action {
+  flex:none;
+  display:grid;
+  place-items:center;
+  min-height:44px;
+  padding:9px 13px;
+  border-radius:13px;
+  background:#0D786F;
+  color:#fff;
+  font-size:13px;
+  font-weight:900;
+  white-space:nowrap;
+}
+#v-puz .mlj-journey-entry:focus-visible,
+#v-puz .mlj-atlas-dialog button:focus-visible {
+  outline:3px solid #0D786F;
+  outline-offset:3px;
+}
+#v-puz .mlj-atlas-dialog {
+  position:fixed;
+  inset:0;
+  z-index:110;
+  margin:0;
+  padding:14px;
+  border:0;
+  border-radius:0;
+  box-shadow:none;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  background:rgba(16,25,31,.78);
+  -webkit-backdrop-filter:blur(4px);
+  backdrop-filter:blur(4px);
+}
+#v-puz .mlj-atlas-dialog[hidden] {display:none !important}
+#v-puz .mlj-atlas-content {
+  margin:auto;
+  width:min(100%,540px);
+  max-height:calc(100dvh - 28px);
+  overflow-y:auto;
+  overscroll-behavior:contain;
+  padding:14px;
+  border-radius:18px;
+  background:#FFFBF2;
+  border:1.5px solid #D9C9A8;
+  box-shadow:0 12px 45px rgba(0,0,0,.18);
+}
+#v-puz .mlj-atlas-dialog .mlj-map-wrap {max-width:420px;margin-bottom:12px}
+#v-puz .mlj-atlas-dialog .mlj-pin {
+  display:grid;
+  place-items:center;
+  min-height:44px;
+  min-width:44px;
+  width:44px;
+  height:44px;
+  max-width:none;
+  padding:0;
+  font-size:17px;
+  line-height:1;
+  border-radius:50%;
+  white-space:nowrap;
+}
+#v-puz .mlj-atlas-dialog .mlj-side-pin {width:50px;min-width:50px;font-size:11px;background:#F7E8C3}
+#v-puz .mlj-atlas-dialog .mlj-chapters {grid-template-columns:repeat(2,minmax(0,1fr));gap:9px}
+#v-puz .mlj-atlas-dialog .mlj-ch-card {min-width:0;min-height:70px}
+#v-puz .mlj-atlas-dialog .mlj-ch-card[data-locked="true"] .mlj-ch-meta {color:#986B31;opacity:1}
+#v-puz .mlj-atlas-close {
+  min-height:44px;
+  min-width:64px;
+  border:1px solid #B4D9CE;
+  border-radius:12px;
+  background:#E6F2F1;
+  color:#1F6E66;
+  padding:6px 12px;
+  font-size:13px;
+  font-weight:800;
+  cursor:pointer;
+}
+html[data-skin="dark"] #v-puz .mlj-journey-entry {
+  background:linear-gradient(90deg,rgba(20,27,49,.91),rgba(20,27,49,.96)),url('designs_art/journey/journey_map.png') center / cover no-repeat;
+  color:#EEF1FF;
+  border-color:#526173;
+}
+html[data-skin="dark"] #v-puz .mlj-entry-copy small {color:#5CE0D2}
+html[data-skin="dark"] #v-puz .mlj-entry-copy > span {color:#DAE2ED}
+html[data-skin="dark"] #v-puz .mlj-atlas-content {background:#141B31;color:#EEF1FF;border-color:#526173}
+html[data-skin="dark"] #v-puz .mlj-atlas-close {background:#233A43;color:#5CE0D2;border-color:#5CE0D2}
+@media (max-width:360px) {
+  #v-puz .mlj-journey-entry {padding:11px;gap:7px}
+  #v-puz .mlj-entry-copy strong {font-size:23px}
+  #v-puz .mlj-entry-action {padding:8px;font-size:11px}
+  #v-puz .mlj-atlas-content {padding:9px}
+  #v-puz .mlj-atlas-dialog {padding:8px}
+}
+@media (max-height:430px) and (orientation:landscape) {
+  #v-puz .mlj-atlas-content {max-height:calc(100dvh - 12px)}
+  #v-puz .mlj-atlas-dialog .mlj-map-wrap {max-width:310px}
+}
