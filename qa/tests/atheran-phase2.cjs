@@ -12,8 +12,13 @@ ok(pkg.version === '5.5.28', 'package 5.5.28');
 ok(sw.includes("const VERSION='5.5.28'"), 'service worker cache 5.5.28');
 ['atheran/campaign/story.js', 'atheran/campaign/campaign.js', 'atheran/campaign/campaign.css'].forEach(f => { ok(fs.existsSync(f), f + ' exists'); ok(man.includes(`"${f}"`), f + ' cached offline'); });
 const ui = read('ui/app.js');
-ok(ui.includes("load('atheran/campaign/story.js',()=>load('atheran/campaign/campaign.js'"), 'story loads before the campaign cover');
-ok(/load\('atheran\/campaign\/campaign\.js',\(\)=>load\('atheran\/bindings\/bindings\.js'/.test(ui), '5.5.28 athran-assets-2 bindings load after the campaign cover');
+const campaignScripts = [...(ui.match(/const scripts = \[([\s\S]*?)\];/)?.[1] || '').matchAll(/'([^']+)'/g)].map(match => match[1]);
+const storyIndex = campaignScripts.indexOf('atheran/campaign/story.js');
+const coverIndex = campaignScripts.indexOf('atheran/campaign/campaign.js');
+ok(storyIndex >= 0 && coverIndex > storyIndex, 'story loads before the campaign cover');
+ok(coverIndex >= 0 && campaignScripts.indexOf('atheran/bindings/bindings.js') > coverIndex, 'bindings load after the campaign cover');
+ok(ui.indexOf('script.async = false') < ui.indexOf('document.body.append(script);') &&
+   ui.includes('script.async = false'), 'dynamically inserted scripts retain execution order');
 ok(ui.indexOf('5.5.2-mini') < ui.indexOf('5.5.28-atheran'), 'cover loads after the library layer');
 
 // identifiers and saves untouched

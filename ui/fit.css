@@ -68,6 +68,10 @@
 #play.fit #pzb .lb[data-layout="mechanical"] .st10{width:min(100%,var(--fit-room,320px));max-width:480px}
 #play.fit #pzb .lb[data-layout="mechanical"] .st10-s{min-width:44px;min-height:44px}
 @media(max-height:460px) and (orientation:landscape){
+  #play.fit:not(.xframe) #pzb:has(.lb[data-layout="square"]){justify-content:flex-start}
+  #play.fit #pzb .lb[data-layout="square"] .rhb.rhb2{
+    width:min(calc(100% - 28px),calc(var(--fit-room,320px) - 24px),540px)
+  }
   #play.fit:not(.xframe):has(.lb[data-layout="adventure"])>.pin{max-width:660px}
   #play.fit #pzb .lb[data-layout="adventure"] .rv10>section{padding-top:3px}
   #play.fit #pzb .lb[data-layout="adventure"] .rv10-items{grid-template-columns:repeat(3,44px)}

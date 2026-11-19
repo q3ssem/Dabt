@@ -19,7 +19,8 @@ for (const a of manifest.completed_assets) {
 const runtime = fs.readFileSync(path.join(root,'atheran','runtime','assets-runtime.js'),'utf8');
 for (const hook of ['MINDLAB_ATHRAN_ASSETS','map_layer_01_bg','map_layer_04_markers_base','ah-station-map-markers','puzzleState','puzzleStates','regionParts','secretWorld','aStation','aScene','aRegionInfo','aTraces','aSwList','aSwOpen','aFinale','aFinalePanels','stationBackground','characterPose','spriteSheet']) assert(runtime.includes(hook), `missing runtime integration hook ${hook}`);
 const app = fs.readFileSync(path.join(root,'ui','app.js'),'utf8');
-assert(app.indexOf("load('atheran/runtime/assets-runtime.js'") < app.indexOf("load('atheran/campaign/story.js'"), 'assets runtime must load before campaign scripts');
+const runtimeIndex = app.indexOf("'atheran/runtime/assets-runtime.js'");
+assert(runtimeIndex >= 0 && app.indexOf("'atheran/campaign/story.js'") > runtimeIndex, 'assets runtime must load before campaign scripts');
 assert(runtime.includes("const puzzle=id=>byPuzzle[id]||byStation[id]||[]"), 'puzzle asset lookup must support station-index fallback');
 assert(runtime.includes("wrap('aFinale'"), 'finale art must bind to finale open action');
 assert(!runtime.includes('finalObs.observe(document.body'), 'finale observer must not watch the entire document');

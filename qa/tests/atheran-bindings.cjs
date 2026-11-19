@@ -50,9 +50,10 @@ for (const r of inv) {
 }
 // wiring + offline
 ok(man.includes('"atheran/bindings/bindings.js"') && man.includes('"atheran/bindings/bindings.css"'), 'bindings cached offline');
-ok(/load\('atheran\/bindings\/bindings\.js'/.test(fs.readFileSync('ui/app.js', 'utf8')), 'bindings loaded by ui/app.js');
 ok(!/localStorage\.setItem|S\.save\(|txSave/.test(src), 'bindings never write the save');
 const app = fs.readFileSync('ui/app.js', 'utf8');
+const scripts = app.match(/const scripts = \[([\s\S]*?)\];/)?.[1] || '';
+ok(scripts.includes("'atheran/bindings/bindings.js'"), 'bindings loaded by ui/app.js');
 const viewport = fs.readFileSync('index.html', 'utf8').match(/<meta name="viewport" content="([^"]+)">/)?.[1] || '';
 ok(viewport.includes('width=device-width'), 'native viewport width is retained');
 ok(!/meta\[name=viewport\]|DESIGN = 375/.test(app), 'app avoids overriding the viewport on rotation or resize');
