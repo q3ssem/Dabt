@@ -23,6 +23,17 @@ async def visit(engine, url):
     })""")
     assert not status['hasad'] and not status['hasadRuntime'], 'Retired word game is still registered'
     assert status['chapterCount'] >= 80 and status['puzzleExists'], 'Active expedition/puzzle engine missing'
+    # Activate the visible play surface before opening an intro. Intro dialogs are
+    # intentionally children of #play and must never show while Home is active.
+    profile = page.locator('.mpc[data-m=main]')
+    if await profile.count() and await profile.is_visible():
+        await profile.click()
+    await page.evaluate("()=>startRun(['pz_river'])")
+    await page.wait_for_function("""() => {
+      const play=document.querySelector('#play');
+      return !!play && play.getBoundingClientRect().width>0 && play.getBoundingClientRect().height>0;
+    }""", timeout=12000)
+    saved_after_start = await page.evaluate("()=>localStorage.getItem('miran:v2')")
     # Exercise the actual pre-play controller; it must show text without opening a large atlas.
     await page.evaluate("()=>window.fitOpenings.open('pz_river', true)")
     opening = page.locator('#fit-opening-overlay')
@@ -33,7 +44,7 @@ async def visit(engine, url):
     assert style == 'none', 'Pre-play introduction is still requesting a large image'
     await page.locator('#fit-op-start').click()
     await opening.wait_for(state='detached')
-    assert await page.evaluate("()=>localStorage.getItem('miran:v2')") == status['saved'], 'Player progress was changed'
+    assert await page.evaluate("()=>localStorage.getItem('miran:v2')") == saved_after_start, 'Intro changed player progress'
     await page.wait_for_timeout(400)
     assert not any('/hasad/' in x or '/designs_art/openings/batch' in x for x in requested), 'Removed art or game still downloaded'
     assert not errors, 'Page scripts failed: '+str(errors[:5])
