@@ -183,23 +183,7 @@ try {
 })();
 
 
-/* 5.5.3 — حصاد الكلمات: additive game/data layer; no changes to the core engine or index.html. */
-(function loadHasadLayer() {
-  if (window.__MINDLAB_HASAD_LOADING || window.MINDLAB_HASAD_RUNTIME) return;
-  window.__MINDLAB_HASAD_LOADING = true;
-  const addStyle = () => {
-    if (document.querySelector('link[data-hasad-style]')) return;
-    const link = document.createElement('link'); link.rel = 'stylesheet'; link.href = new URL('../hasad/style.css', document.currentScript && document.currentScript.src || document.baseURI).href; link.dataset.hasadStyle = '1'; document.head.append(link);
-  };
-  const load = src => new Promise((resolve, reject) => {
-    const script = document.createElement('script'); script.src = new URL(src, document.baseURI).href;
-    script.onload = resolve; script.onerror = () => reject(new Error('Failed to load ' + src)); document.body.append(script);
-  });
-  addStyle();
-  load('hasad/data.js').then(() => load('hasad/engine.js')).then(() => load('hasad/game.js'))
-    .catch(error => { window.__MINDLAB_HASAD_LOADING = false; console.error('تعذر تحميل طبقة حصاد الكلمات', error); });
-})();
-
+/* Retired Hasad game and eager word-bank loader removed; saved player data is untouched. */
 /* 5.5.7 additive puzzle quality layer.
    The historical inline game engine remains fingerprint-stable; this replaces only
    its shared puzzle-play coordinator with the audited hint/restart handling. */

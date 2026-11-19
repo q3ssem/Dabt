@@ -6,20 +6,13 @@
   window.__MINDLAB_OPENINGS_UI = true;
 
   const SEEN_KEY = 'mindlab:openings:seen:v1';
-  const EXPR_POS = {
-    welcome: '0% 0%',
-    thinking: '100% 0%',
-    success: '0% 100%',
-    concerned: '100% 100%'
-  };
 
   const $ = (s, r = document) => r.querySelector(s);
   const HEROES = [['rawaa', 'رواء'], ['nuha', 'نهى'], ['ward', 'ورد']];
   function crewMarkup(speaker, expression) {
     const [id, name] = HEROES.find(([id]) => id === speaker) || HEROES[0];
-    const position = EXPR_POS[expression] || EXPR_POS.welcome;
     return `<div class="fit-opening-crew"><span class="fit-opening-hero speaking" role="img" aria-label="${name}"
-      style="background-image:url('ui/designs_art/characters/${id}_expressions.png');background-position:${position}"></span></div>`;
+      style="background-image:url('motion/art10/char_${id}.webp');background-position:center;background-size:contain"></span></div>`;
   }
   const readSeen = () => {
     try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); } catch (_) { return {}; }
@@ -37,22 +30,6 @@
 
   let lastBody = null;
   let lastTriggerFocus = null;
-
-  function bgPositionForRect(rect) {
-    if (!rect) return '0% 0%';
-    const dx = 1 - (rect.width || 0.5);
-    const dy = 1 - (rect.height || 0.2);
-    const px = dx > 0 ? Math.round((rect.x / dx) * 100) : 0;
-    const py = dy > 0 ? Math.round((rect.y / dy) * 100) : 0;
-    return `${px}% ${py}%`;
-  }
-
-  function bgSizeForRect(rect) {
-    if (!rect) return '200% 500%';
-    const sx = Math.round(100 / (rect.width || 0.5));
-    const sy = Math.round(100 / (rect.height || 0.2));
-    return `${sx}% ${sy}%`;
-  }
 
   function closeOpening() {
     const ov = $('#fit-opening-overlay');
@@ -72,12 +49,6 @@
 
     const seen = readSeen();
     const alreadySeen = !!seen[id];
-    const river = id === 'pz_river';
-    const background = river ? 'ui/designs_art/river_stage1/05_opening_and_icon/05_opening_scene.png' : `ui/designs_art/openings/${entry.bg}`;
-    const bgUrl = new URL(background, document.baseURI).href;
-    const size = river ? 'cover' : bgSizeForRect(entry.rect);
-    const position = river ? 'center' : bgPositionForRect(entry.rect);
-
     const ov = document.createElement('div');
     ov.id = 'fit-opening-overlay';
     ov.className = 'fit-opening-overlay';
@@ -87,8 +58,7 @@
 
     ov.innerHTML = `
       <div class="fit-opening-card">
-        <div class="fit-opening-scene" style="background-image:url('${bgUrl}');background-size:${size};background-position:${position}">
-          <div class="fit-opening-scrim"></div>
+        <div class="fit-opening-scene fit-opening-scene--plain">
           <span class="fit-opening-badge">${entry.heroName}</span>
           ${crewMarkup(entry.hero, entry.expr)}
         </div>

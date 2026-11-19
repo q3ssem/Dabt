@@ -52,7 +52,7 @@
     const title = txt($('#pt'));
     const id = gid();
     const hasOpening = !!(id && window.__MINDLAB_OPENINGS_DATA && window.__MINDLAB_OPENINGS_DATA[id] && window.fitOpenings);
-    return `<div class="fit-sheet-card" role="dialog" aria-modal="true" aria-label="${title}"><h3>${title}</h3>${rules.length ? `<div class="fit-sh-rule"><b>القاعدة</b>${rules.map(r => `<p>${r}</p>`).join('')}</div>` : ''}${story.length ? `<div class="fit-sh-story">${story.map(s => `<p>${s}</p>`).join('')}</div>` : ''}${hasOpening ? '<button class="fit-sh-replay" type="button">عرض مشهد الافتتاحية</button>' : ''}<button class="fit-sh-go" type="button">فهمت</button></div>`;
+    return `<div class="fit-sheet-card" role="dialog" aria-modal="true" aria-label="${title}"><h3>${title}</h3>${rules.length ? `<div class="fit-sh-rule"><b>القاعدة</b>${rules.map(r => `<p>${r}</p>`).join('')}</div>` : ''}${story.length ? `<div class="fit-sh-story">${story.map(s => `<p>${s}</p>`).join('')}</div>` : ''}${hasOpening ? '<button class="fit-sh-replay" type="button">عرض مقدمة اللغز</button>' : ''}<button class="fit-sh-go" type="button">فهمت</button></div>`;
   }
   function openSheet() {
     closeSheet(); sheetPrevFocus = document.activeElement;

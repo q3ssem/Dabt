@@ -386,12 +386,11 @@
     const station = window.__MINDLAB_JOURNEY_MAP?.stations.find(s => s.id === id);
     if (!station) return false;
     host.innerHTML = `<article class="mlj-v3-opening">
-      <div class="mlj-v3-opening-art"><img alt=""></div>
+      <div class="mlj-v3-opening-art mlj-v3-opening-art--plain"><img alt=""></div>
       <div class="mlj-v3-opening-text"><h2></h2><p><strong></strong> <span></span></p>
       <button type="button" class="go-btn" id="go">ابدأ اللغز</button></div>
     </article>`;
     const art = $('.mlj-v3-opening-art', host);
-    art.style.backgroundImage = `url("${artV3 + station.openingBackground}")`;
     $('img', art).src = artV3 + 'heroes/' + station.hero + '.webp';
     $('.mlj-v3-opening h2', host).textContent = station.title;
     $('.mlj-v3-opening strong', host).textContent = station.heroName + ' ·';
@@ -416,7 +415,6 @@
         badge: station.region,
         heroName: station.heroName,
         dialogue: station.openingTextAr,
-        bg: artV3 + station.openingBackground,
         sprite: artV3 + 'heroes/' + station.hero + '.webp'
       }, () => sea ? T7.open(index, true) : ML10.openFromJourney(index));
     }
@@ -752,7 +750,6 @@
     const old = $('#fit-opening-overlay');
     if (old) old.remove();
 
-    const bgUrl = info.bg ? new URL(info.bg, document.baseURI).href : new URL('ui/designs_art/journey/journey_map.png', document.baseURI).href;
 
     const ov = document.createElement('div');
     ov.id = 'fit-opening-overlay';
@@ -762,8 +759,7 @@
     ov.setAttribute('aria-label', info.title);
     ov.innerHTML = `
       <div class="fit-opening-card">
-        <div class="fit-opening-scene" style="background-image:url('${bgUrl}');background-size:cover;background-position:center">
-          <div class="fit-opening-scrim"></div>
+        <div class="fit-opening-scene fit-opening-scene--plain">
           <span class="fit-opening-badge">${info.badge}</span>
           ${info.sprite ? `<img class="mlj-v3-opening-person" src="${info.sprite}" alt="">` : window.fitOpenings.crewMarkup(info.hero, info.expr)}
         </div>
@@ -825,7 +821,6 @@
       heroName: station.heroName,
       expr: station.expr,
       dialogue: station.dialogue,
-      bg: scene || station.scene,
     }, start);
   }
 

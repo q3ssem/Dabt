@@ -624,3 +624,7 @@ html #v-games .ui-grid article .ui-gmain .ico { width: 60px !important; height: 
   border-radius: 47% 54% 45% 49%;
   transform: rotate(16deg);
 }
+
+/* 5.5.28 cleanup: lightweight station intro, no pre-game painted background. */
+.mlj-v3-opening-art--plain{height:92px!important;background:none!important;overflow:visible}
+.mlj-v3-opening-art--plain img{width:92px;height:92px;object-fit:contain}

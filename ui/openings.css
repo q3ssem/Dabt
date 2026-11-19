@@ -1,5 +1,5 @@
 /* 5.5.28 — Pre-play visual openings (80 official + 8 extra library IDs)
-   Separate pre-play layer: background atlas crop + approved heroine + HTML speech bubble.
+   Compact text-first pre-play layer with lightweight heroine portrait.
    Does not alter puzzle IDs, rules, generators, or save state. */
 
 .fit-opening-overlay {
@@ -11,8 +11,6 @@
   justify-content: center;
   padding: max(12px, env(safe-area-inset-top, 0px)) max(12px, env(safe-area-inset-right, 0px)) max(14px, env(safe-area-inset-bottom, 0px)) max(12px, env(safe-area-inset-left, 0px));
   background: rgba(18, 22, 34, 0.62);
-  backdrop-filter: blur(4px);
-  -webkit-backdrop-filter: blur(4px);
 }
 
 .fit-opening-card {
@@ -37,21 +35,15 @@ html[data-skin="dark"] .fit-opening-card {
 .fit-opening-scene {
   position: relative;
   width: 100%;
-  aspect-ratio: 16 / 10;
-  min-height: 170px;
-  max-height: 240px;
+  aspect-ratio: auto;
+  min-height: 92px;
+  max-height: 116px;
   overflow: hidden;
   border-radius: 20px 20px 0 0;
-  background-color: #E7DEC8;
+  background-color: #F1E7D5;
   background-repeat: no-repeat;
 }
 
-.fit-opening-scrim {
-  position: absolute;
-  inset: 0;
-  background: linear-gradient(180deg, rgba(16, 20, 32, 0.08) 0%, rgba(16, 20, 32, 0.42) 100%);
-  pointer-events: none;
-}
 
 .fit-opening-crew {
   position: absolute;
@@ -188,8 +180,8 @@ html[data-skin="dark"] .fit-op-skip {
 
 @media (max-height: 620px) {
   .fit-opening-scene {
-    min-height: 130px;
-    max-height: 170px;
+    min-height: 80px;
+    max-height: 96px;
   }
   .fit-opening-hero { width: min(26%, 72px); }
   .fit-opening-hero.speaking { width: min(30%, 88px); }
