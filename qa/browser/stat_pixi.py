@@ -95,12 +95,19 @@ async def warming(browser):
         files.map(file => caches.match(new URL(file, location.href))))).every(Boolean)
     """, arg=PREWARM, timeout=35000)
     assert not await page.evaluate("() => !!window.PIXI")
+    failures = []
+    page.on("console", lambda msg: failures.append(msg.text) if msg.type in ("warning", "error") else None)
+    page.on("requestfailed", lambda req: failures.append(f"{req.failure} {req.url}"))
+    page.on("response", lambda res: failures.append(f"{res.status} {res.url}") if res.status >= 400 else None)
     await context.set_offline(True)
     profile = page.locator(".mpc[data-m=main]")
     if await profile.is_visible():
         await profile.click()
     await open_game(page, "pz_stat")
-    await page.locator(SCENE).wait_for(timeout=15000)
+    await page.locator(".st10").wait_for()
+    await page.wait_for_function("() => !!document.querySelector('.st10')?.dataset.scene", timeout=15000)
+    board = await page.locator(".st10").get_attribute("data-scene")
+    assert board == "pixi", (board, failures)
     print("Chromium: six scene resources prefetched without executing Pixi, then played offline", flush=True)
     await context.close()
 

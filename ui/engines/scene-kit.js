@@ -73,7 +73,11 @@
         const r = await renderers[id + '.' + sp.renderer]({ lib, spec: sp, host, asset: (k, st) => asset(sp, k, st), state: last });
         if (dead || !host.isConnected) { r && r.destroy(); return; }
         real = r; real.update(last);
-      } catch (e) { host.dataset.scene = 'off'; }
+      } catch (e) {
+        if (dead || !host.isConnected) return;
+        host.dataset.scene = 'off';
+        console.warn('Puzzle scene could not start:', id, e);
+      }
     })();
     return view;
   }
