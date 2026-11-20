@@ -43,7 +43,7 @@ async def main():
             r = await pg.evaluate(LOOP, 60000)
             total['opened'] += r['opened']; total['errors'] += r['errors']
             await s.send('HeapProfiler.collectGarbage'); await pg.wait_for_timeout(300)
-            d = await s.send('Memory.getDOMCounters'); h = await pg.evaluate("()=>performance.memory?performance.memory.usedJSHeapSize:0")
+            d = await s.send('Memory.getDOMCounters'); h = (await s.send('Runtime.getHeapUsage'))['usedSize']
             samples.append({'min': minute + 1, 'heapMB': round(h / 1048576, 2), 'nodes': d['nodes'], 'listeners': d['jsEventListeners'], 'docs': d['documents'], 'opened': total['opened']})
             print(json.dumps(samples[-1]), flush=True)
         await b.close()

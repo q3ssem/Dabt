@@ -148,6 +148,9 @@
     if (opt.key) MK.attach(el, { canDrag: () => !api.ended && !opt.busy(), drop: (tok, slot) => { keyAt = slot ? +slot.slice(1) : -1; sfx.pop(); paint(); } });
     const onResize = () => { if (el.isConnected) paint(); else removeEventListener('resize', onResize); };
     addEventListener('resize', onResize, { passive: true });
+    // perf-cleanup F: also drop it when the run ends — the self-removal above only happened on a later resize, so
+    // every closed statue board (≈230 nodes + its listeners) stayed alive until the phone rotated.
+    if (typeof cleanup !== 'undefined' && Array.isArray(cleanup)) cleanup.push(() => removeEventListener('resize', onResize));
     return { el, dir, BACK, paint, turn, get keyAt() { return keyAt; }, setKey: d => { keyAt = d; paint(); }, set: (a, kk) => { a.forEach((v, i) => dir[i] = v); if (kk != null) keyAt = kk; paint(); }, doorEl };
   }
 
