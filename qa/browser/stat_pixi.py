@@ -96,6 +96,9 @@ async def warming(browser):
     """, arg=PREWARM, timeout=35000)
     assert not await page.evaluate("() => !!window.PIXI")
     await context.set_offline(True)
+    profile = page.locator(".mpc[data-m=main]")
+    if await profile.is_visible():
+        await profile.click()
     await open_game(page, "pz_stat")
     await page.locator(SCENE).wait_for(timeout=15000)
     print("Chromium: six scene resources prefetched without executing Pixi, then played offline", flush=True)
