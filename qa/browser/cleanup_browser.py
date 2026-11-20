@@ -12,7 +12,7 @@ async def visit(engine, url):
     errors, requested = [], []
     page.on('pageerror', lambda e: errors.append(str(e)))
     page.on('request', lambda r: requested.append(r.url))
-    await page.goto(url, wait_until='domcontentloaded')
+    await page.goto(url, wait_until='domcontentloaded'); await page.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
     await page.wait_for_function("()=>!!window.fitOpenings && !!window.mindlabJourneyHub && typeof startRun==='function'", timeout=30000)
     status = await page.evaluate("""() => ({
         hasad: typeof G!=='undefined' && G.some(g=>g.id==='hasad'),

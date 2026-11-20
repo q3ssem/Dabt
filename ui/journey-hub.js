@@ -231,8 +231,12 @@
       if (window.ATHERAN_CAMPAIGN && typeof window.ATHERAN_CAMPAIGN.open === 'function')
         showMilestone(['atheran'], () => window.ATHERAN_CAMPAIGN.open());
     } else if (chId === 'side') {
-      if (window.ML10 && typeof window.ML10.renderMap === 'function') window.ML10.renderMap();
-      else $('#v-puz .ex10-launch-go')?.click();
+      // perf-cleanup: the side journey's code is loaded on demand (window.mindlabSide); wait for it once.
+      const openSide = () => {
+        if (window.ML10 && typeof window.ML10.renderMap === 'function') window.ML10.renderMap();
+        else $('#v-puz .ex10-launch-go')?.click();
+      };
+      if (window.ML10) openSide(); else sideReady().then(openSide);
     }
   }
 
@@ -401,6 +405,9 @@
     return true;
   }
 
+  // The side journey (expedition10) is loaded on demand by ui/app.js; resolves at once when it is already here.
+  const sideReady = () => (window.ML10 ? Promise.resolve() : window.mindlabSide ? window.mindlabSide.start() : Promise.resolve());
+
   function openStation(station) {
     const index = station.order - 1;
     if (station.chapter === 'palace') {
@@ -409,6 +416,7 @@
       window.ATHERAN_CAMPAIGN?.openJourneyStation(index);
     } else {
       const sea = station.chapter === 'seven_seas';
+      if (!sea && !window.ML10) { sideReady().then(() => { if (window.ML10) openStation(station); }); return; }
       if (!(sea ? window.T7?.unlocked(index) : window.ML10?.unlocked(index))) return;
       showStationOpening(`${sea ? 't7' : 'ex10'}:${station.id}`, {
         title: station.title,

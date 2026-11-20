@@ -14,13 +14,13 @@ async def main():
         ctx = await b.new_context(viewport={'width': 390, 'height': 820}, has_touch=True); await ctx.add_init_script('window.__test={}')
         pg = await ctx.new_page(); errs = []; pg.on('pageerror', lambda e: errs.append(str(e)[:160])); crashed = []
         pg.on('crash', lambda *_: crashed.append(time.time()))
-        await pg.goto(URL); await pg.wait_for_timeout(2000)
+        await pg.goto(URL); await pg.wait_for_timeout(2000); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
         if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
         try:
             for i in range(N):
                 g = G[i % len(G)]
                 if MODE == 'nav':
-                    await pg.goto(URL); await pg.wait_for_timeout(1400)
+                    await pg.goto(URL); await pg.wait_for_timeout(1400); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
                     if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
                 else:
                     await pg.evaluate("() => { document.querySelector('#stage .res, #stage') && 0 }")

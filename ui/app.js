@@ -40,10 +40,14 @@ try {
 
   /* ---------- faster start: art loads while the intro is read, and common atlases warm up when idle ---------- */
   if (window.LA && LA.assets && LA.load) {
-    const si0 = showIntro; showIntro = function () { const r = si0.apply(this, arguments); try { const g = curGame(); if (g && !g.kid) LA.assets(g).forEach(f => LA.load(f)); } catch (e) {} return r; };
+    const si0 = showIntro; showIntro = function () { const r = si0.apply(this, arguments); try { const g = curGame(); if (g && !g.kid) (LA.needed ? LA.needed(g) : LA.assets(g)).forEach(f => LA.load(f)); if (g && !g.puz) warmOnce(); } catch (e) {} return r; };
     const warm = () => { const c = navigator.connection; if (c && (c.saveData || /2g/.test(c.effectiveType || ''))) return; const list = ['surfaces', 'objects-a', 'objects-b', 'objects-c', 'objects-d', 'objects-e', 'puzzle-parts'];
       const next = () => { const f = list.shift(); if (!f) return; Promise.resolve(LA.load(f)).then(() => (window.requestIdleCallback || setTimeout)(next, { timeout: 1500 })); }; next(); };
-    window.addEventListener('load', () => setTimeout(() => (window.requestIdleCallback || setTimeout)(warm, { timeout: 4000 }), 2500));
+    // perf-cleanup: the brain-game atlases (~2 MB) used to download 2.5 s after every start-up; now they warm once,
+    // when the player opens the games tab or a brain game, so a player who only does puzzles never pays for them.
+    let warmed = false; const warmOnce = () => { if (warmed) return; warmed = true; (window.requestIdleCallback || setTimeout)(warm, { timeout: 4000 }); };
+    window.mindlabWarmGames = warmOnce;
+    if (typeof tab === 'function') { const tab0 = tab; tab = function (t) { const r = tab0.apply(this, arguments); if (t === 'games') warmOnce(); return r; }; }
   }
 
   /* ---------- مستواي: a progress dashboard on top, the detailed sections folded below ---------- */
@@ -144,10 +148,13 @@ try {
   if(document.querySelector('script[data-release="5.5.2-mini"]'))return;
   const s=document.createElement('script');s.src=new URL('ui/mini.js',document.baseURI).href;s.dataset.release='5.5.2-mini';document.body.append(s);
 })();
-/* 5.5.28 — غلاف حملة أَثْرَان وقصتها (بعد طبقة المكتبة، لأن الحملة تلتف حول renderPuz). */
+/* 5.5.28 — غلاف حملة أَثْرَان وقصتها (بعد طبقة المكتبة، لأن الحملة تلتف حول renderPuz).
+   perf-cleanup: these play layers (campaign, art bindings, motion boards, fit, openings, journey hub and their
+   stylesheets) are not needed to paint the home screen, so they no longer compete with it during start-up.
+   They load as one ordered bundle at the first of: the page finished loading and the browser is idle, the
+   player's first touch, the puzzles tab being the opening tab, or startRun() (which waits for them). */
 (function(){
-  if(document.querySelector('script[data-release="5.5.28-atheran"]'))return;
-  const css=document.createElement('link');css.rel='stylesheet';css.href=new URL('atheran/campaign/campaign.css',document.baseURI).href;document.head.append(css);
+  if(document.querySelector('script[data-release="5.5.28-atheran"]')||window.mindlabPlayLayers)return;
   const scripts = [
     'atheran/runtime/assets-runtime.js',
     'atheran/campaign/story.js',
@@ -166,20 +173,56 @@ try {
     'ui/designs_art/journey/v3/stations.js',
     'ui/journey-hub.js'
   ];
+  const styles = ['atheran/campaign/campaign.css', 'atheran/bindings/bindings.css', 'motion/motion.css', 'motion/lab10.css', 'ui/fit.css', 'ui/openings.css', 'ui/journey-hub.css', 'motion/correction-art.css', 'motion/expedition-art.css'];
+  const layers = ['ui/puzzle-design.js', 'ui/adventure-design.js'];
+  let loading = null;
+  const idle = cb => (window.requestIdleCallback ? requestIdleCallback(cb, { timeout: 1200 }) : setTimeout(cb, 200));
+  const insert = src => new Promise(done => {
+    // Fetched in parallel, executed in order (async=false); a failed file must not block play.
+    const script = document.createElement('script');
+    script.async = false;
+    script.src = new URL(src, document.baseURI).href;
+    script.dataset.release = '5.5.28-atheran';
+    script.onload = script.onerror = () => { script.onload = script.onerror = null; done(); };
+    document.body.append(script);
+  });
   const go = () => {
-    // Let the browser fetch these dependencies in parallel and execute them in order.
-    for (const src of scripts) {
-      const script = document.createElement('script');
-      script.async = false;
-      script.src = new URL(src, document.baseURI).href;
-      script.dataset.release = '5.5.28-atheran';
-      document.body.append(script);
+    for (const href of styles) {
+      const link = document.createElement('link'); link.rel = 'stylesheet'; link.href = new URL(href, document.baseURI).href; document.head.append(link);
     }
+    return Promise.all([...scripts, ...layers].map(insert)).then(() => { window.__mlPlayReady = true; window.dispatchEvent(new Event('mindlab:play-layers')); idle(startSide); });
   };
-  const css2=document.createElement('link');css2.rel='stylesheet';css2.href=new URL('atheran/bindings/bindings.css',document.baseURI).href;document.head.append(css2);
-  const css3=document.createElement('link');css3.rel='stylesheet';css3.href=new URL('motion/motion.css',document.baseURI).href;document.head.append(css3);const css4=document.createElement('link');css4.rel='stylesheet';css4.href=new URL('motion/lab10.css',document.baseURI).href;document.head.append(css4);const css5=document.createElement('link');css5.rel='stylesheet';css5.href=new URL('ui/fit.css',document.baseURI).href;document.head.append(css5);const css6=document.createElement('link');css6.rel='stylesheet';css6.href=new URL('ui/openings.css',document.baseURI).href;document.head.append(css6);const css7=document.createElement('link');css7.rel='stylesheet';css7.href=new URL('ui/journey-hub.css',document.baseURI).href;document.head.append(css7);const art=document.createElement('link');art.rel='stylesheet';art.href=new URL('motion/correction-art.css',document.baseURI).href;document.head.append(art);const expeditionArt=document.createElement('link');expeditionArt.rel='stylesheet';expeditionArt.href=new URL('motion/expedition-art.css',document.baseURI).href;document.head.append(expeditionArt);
-  const mini=document.querySelector('script[data-release="5.5.2-mini"]');
-  if(mini&&!window.LA?.miniReady)mini.addEventListener('load',go,{once:true});else go();
+  // The side journey (25 stations, its own save) is a separate bundle: only the journey hub and its map need it.
+  const side = { css: ['expedition10/style.css'], js: ['expedition10/logic.js', 'expedition10/app.js'] };
+  let sideLoading = null;
+  const startSide = () => {
+    if (sideLoading) return sideLoading;
+    if (window.ML10) return (sideLoading = Promise.resolve());
+    for (const href of side.css) { const link = document.createElement('link'); link.rel = 'stylesheet'; link.href = new URL(href, document.baseURI).href; document.head.append(link); }
+    sideLoading = Promise.all(side.js.map(insert)).then(() => window.dispatchEvent(new Event('mindlab:side-journey')));
+    return sideLoading;
+  };
+  window.mindlabSide = { start: startSide };
+  const start = () => {
+    if (loading) return loading;
+    const mini = document.querySelector('script[data-release="5.5.2-mini"]');
+    loading = (mini && !window.LA?.miniReady ? new Promise(r => mini.addEventListener('load', r, { once: true })) : Promise.resolve()).then(go);
+    return loading;
+  };
+  window.mindlabPlayLayers = { start, get ready() { return !!window.__mlPlayReady; } };
+  // A puzzle never starts without its layers: startRun waits for the bundle the first time.
+  if (typeof startRun === 'function') {
+    const startRun0 = startRun;
+    startRun = function () {
+      if (window.__mlPlayReady) return startRun0.apply(this, arguments);
+      const self = this, args = arguments;
+      return start().then(() => startRun.apply(self, args));
+    };
+  }
+  if (typeof curTab !== 'undefined' && curTab !== 'home' && curTab !== 'games') start();
+  else if (document.readyState === 'complete') idle(start);
+  else window.addEventListener('load', () => idle(start), { once: true });
+  document.addEventListener('pointerdown', start, { once: true, capture: true });
 })();
 
 
@@ -236,24 +279,10 @@ return done=>{
 
 /* 5.5.8 — unified logic-grid and river-crossing presentation layer. */
 (function loadPuzzleDesign558() {
-  if (window.__MINDLAB_PUZZLE_DESIGN_LOADING_558 || window.__MINDLAB_PUZZLE_DESIGN_558) return;
-  window.__MINDLAB_PUZZLE_DESIGN_LOADING_558 = true;
-  const script = document.createElement('script');
-  script.src = new URL('ui/puzzle-design.js', document.baseURI).href;
-  script.dataset.release = '5.5.8-puzzle-design';
-  script.onload = () => { window.__MINDLAB_PUZZLE_DESIGN_LOADING_558 = false; };
-  script.onerror = () => { window.__MINDLAB_PUZZLE_DESIGN_LOADING_558 = false; console.error('تعذر تحميل طبقة تصميم ألعاب المنطق وعبور النهر'); };
-  document.body.append(script);
+  // perf-cleanup: loaded with the play-layer bundle above (window.mindlabPlayLayers).
 })();
 
 /* 5.5.9 — additive pirate, wreck and temple puzzle presentation/audio layer. */
 (function loadAdventureDesign559() {
-  if (window.__MINDLAB_ADVENTURE_DESIGN_LOADING_559 || window.__MINDLAB_ADVENTURE_DESIGN_559) return;
-  window.__MINDLAB_ADVENTURE_DESIGN_LOADING_559 = true;
-  const script = document.createElement('script');
-  script.src = new URL('ui/adventure-design.js', document.baseURI).href;
-  script.dataset.release = '5.5.9-adventure-design';
-  script.onload = () => { window.__MINDLAB_ADVENTURE_DESIGN_LOADING_559 = false; };
-  script.onerror = () => { window.__MINDLAB_ADVENTURE_DESIGN_LOADING_559 = false; console.error('تعذر تحميل طبقة تصميم ألغاز المغامرة'); };
-  document.body.append(script);
+  // perf-cleanup: loaded with the play-layer bundle above (window.mindlabPlayLayers).
 })();

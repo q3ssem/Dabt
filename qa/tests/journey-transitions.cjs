@@ -5,8 +5,9 @@ const stations=Array.from({length:21},(_,i)=>({id:'s'+i}));
 const sea={done:{}},atlas={open:false,done:0,cleared:0};
 const saved=new Map();
 const win={T7:{state:()=>sea,data:{stations}},ATHERAN_CAMPAIGN:{summary:()=>atlas},__MINDLAB_JOURNEY_STORY:{transitions:ids.map(id=>({id}))}};
-const doc={readyState:'loading',addEventListener(){}};
-vm.runInNewContext(fs.readFileSync('ui/journey-hub.js','utf8'),{window:win,T7:win.T7,document:doc,localStorage:{getItem:k=>saved.get(k),setItem:(k,v)=>saved.set(k,v)},console});
+const doc={readyState:'loading',addEventListener(){},querySelector:()=>null,querySelectorAll:()=>[]};
+// The hub wraps the engine's showIntro/closePlay at load (5.5.28); give the sandbox inert originals.
+vm.runInNewContext(fs.readFileSync('ui/journey-hub.js','utf8'),{window:win,T7:win.T7,document:doc,localStorage:{getItem:k=>saved.get(k),setItem:(k,v)=>saved.set(k,v)},console,showIntro(){},closePlay(){}});
 const discover=()=>Array.from(win.mindlabJourneyHub.discoveredTransitions(),t=>t.id);
 assert.deepEqual(discover(),['departure']);
 // Noncontiguous and side-journey completion must reveal no official milestones.

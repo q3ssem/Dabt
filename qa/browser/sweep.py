@@ -20,7 +20,7 @@ async def main():
             pg.on('dialog', lambda d: asyncio.ensure_future(d.dismiss()))
             tag = f"{vp['width']}x{vp['height']}"
             t0 = asyncio.get_event_loop().time()
-            await pg.goto(URL, wait_until='load')
+            await pg.goto(URL, wait_until='load'); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
             nav = await pg.evaluate("()=>{const n=performance.getEntriesByType('navigation')[0];return {dcl:Math.round(n.domContentLoadedEventEnd),load:Math.round(n.loadEventEnd),transfer_kb:Math.round(n.transferSize/1024)}}")
             log[f'load_{tag}'] = nav
             modes = await pg.evaluate("()=>[...document.querySelectorAll('.mpc')].map(e=>e.dataset.m)")
@@ -55,20 +55,20 @@ async def main():
                 if saved != m2: probs.append('mute not persisted')
             else: probs.append('mute button #mt missing')
             # kids mode
-            await pg.reload(); await pg.wait_for_timeout(600)
+            await pg.reload(); await pg.wait_for_timeout(600); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
             kid = [m for m in modes if m != 'main']
             for m in kid:
                 if await pg.locator(f'.mpc[data-m="{m}"]').count():
                     await pg.click(f'.mpc[data-m="{m}"]'); await pg.wait_for_timeout(700)
                     await pg.screenshot(path=SHOTS + f'sweep_mode_{m}_{tag}.png')
                     if await pg.evaluate(OV): probs.append(f'{tag} mode {m}: sideways')
-                    await pg.reload(); await pg.wait_for_timeout(600)
+                    await pg.reload(); await pg.wait_for_timeout(600); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
             if errs: probs.append(f'{tag} errors: {errs[:3]}')
             await c.close()
         # kids games: start each kid game through the engine
         c = await b.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)
         pg = await c.new_page(); errs = []; pg.on('pageerror', lambda e: errs.append(str(e)))
-        await pg.goto(URL); await pg.wait_for_timeout(600); await pg.click('.mpc[data-m=main]'); await pg.wait_for_timeout(300)
+        await pg.goto(URL); await pg.wait_for_timeout(600); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000); await pg.click('.mpc[data-m=main]'); await pg.wait_for_timeout(300)
         kids = await pg.evaluate("()=>G.filter(g=>g.kid).map(g=>g.id)")
         log['kid_games'] = len(kids); bad = []
         for k in kids:
@@ -84,20 +84,20 @@ async def main():
         if bad: probs.append(f'kid games: {bad}')
         # TV + assessment pages
         for path in ['tv/index.html', 'tv/remote.html', 'assessment/dashboard.html', 'assessment/rule-switch.html']:
-            n = len(errs); await pg.goto(URL + path, wait_until='load'); await pg.wait_for_timeout(700)
+            n = len(errs); await pg.goto(URL + path, wait_until='load'); await pg.wait_for_timeout(700); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
             if len(errs) > n: probs.append(f'{path}: {errs[n:][:2]}')
         # offline: install SW online, then reload with the network cut
         await c.close()
         c = await b.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)
         pg = await c.new_page(); errs = []; pg.on('pageerror', lambda e: errs.append(str(e)))
-        await pg.goto(URL); await pg.wait_for_function("()=>navigator.serviceWorker&&navigator.serviceWorker.controller||new Promise(r=>setTimeout(()=>r(false),100))", timeout=30000)
-        await pg.evaluate("()=>navigator.serviceWorker.ready"); await pg.reload(); await pg.wait_for_timeout(9000)
+        await pg.goto(URL); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000); await pg.wait_for_function("()=>navigator.serviceWorker&&navigator.serviceWorker.controller||new Promise(r=>setTimeout(()=>r(false),100))", timeout=30000)
+        await pg.evaluate("()=>navigator.serviceWorker.ready"); await pg.reload(); await pg.wait_for_timeout(9000); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
         (await pg.locator('.mpc[data-m=main]').count() and await pg.click('.mpc[data-m=main]')); await pg.click('.tab[data-tab=puz]'); await pg.click('.v5-hubcard'); await pg.wait_for_timeout(300)
         await pg.evaluate('()=>T7.open(0)'); await pg.wait_for_timeout(800)
         caches = await pg.evaluate("async()=>{const out={};for(const k of await caches.keys()){out[k]=(await (await caches.open(k)).keys()).length}return out}")
         log['caches_online'] = caches
         await c.set_offline(True)
-        await pg.reload(wait_until='load'); await pg.wait_for_timeout(1200)
+        await pg.reload(wait_until='load'); await pg.wait_for_timeout(1200); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
         ok = await pg.evaluate("()=>typeof T7==='object'&&document.title")
         (await pg.locator('.mpc[data-m=main]').count() and await pg.click('.mpc[data-m=main]')); await pg.click('.tab[data-tab=puz]'); await pg.click('.v5-hubcard'); await pg.wait_for_timeout(300)
         await pg.evaluate('()=>T7.open(0)'); await pg.wait_for_timeout(600); await pg.click('.v5-intro-go'); await pg.wait_for_timeout(500)

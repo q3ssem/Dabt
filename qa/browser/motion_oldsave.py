@@ -5,6 +5,8 @@
 Usage: python3 qa/browser/motion_oldsave.py NEW_URL OLD_URL   (ENGINE=webkit)"""
 import asyncio, json, os, sys
 from playwright.async_api import async_playwright
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from player_openings import dismiss_opening
 NEW, OLD = sys.argv[1], sys.argv[2]; ENGINE = os.environ.get('ENGINE', 'chromium')
 checks, problems = [], []
 def ok(c, label, extra=None):
@@ -14,14 +16,15 @@ SNAP = """() => { const t = txState(), a = pState(); return { prog: a.prog, done
   lv: Object.fromEntries(['pz_door', 'pz_pliar', 'pz_aarch', 'pz_plib', 'pz_untangle'].map(g => [g, pzLv(g)])), a5: JSON.stringify(t.a5 && t.a5.stars || {}),
   ex10: localStorage.getItem('mindlab:expedition10:v1') } }"""
 async def boot(ctx, url):
-    pg = await ctx.new_page(); await pg.goto(url); await pg.wait_for_timeout(2500)
+    pg = await ctx.new_page(); await pg.goto(url); await pg.wait_for_timeout(2500); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
     if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
     return pg
 async def start(pg, gid):
-    await pg.reload(); await pg.wait_for_timeout(2000)
+    await pg.reload(); await pg.wait_for_timeout(2000); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
     if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
     await pg.evaluate("(g) => startRun([g])", gid); await pg.wait_for_timeout(300)
     if await pg.locator('#stage #go').count(): await pg.click('#stage #go')
+    await dismiss_opening(pg, 1500)
     await pg.wait_for_timeout(2400)
 async def wait_res(pg):
     for _ in range(30):
@@ -49,7 +52,7 @@ async def main():
         pg = await boot(ctx, NEW); errs = []; pg.on('pageerror', lambda e: errs.append(str(e)[:160]))
         new = await pg.evaluate(SNAP)
         for k in ('prog', 'done', 'stars', 'arts', 'aopen', 'lv', 'a5', 'ex10'): ok(new[k] == old[k], f'old save → new build: {k} unchanged', [old[k], new[k]])
-        await pg.reload(); await pg.wait_for_timeout(2200); again = await pg.evaluate(SNAP)
+        await pg.reload(); await pg.wait_for_timeout(2200); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000); again = await pg.evaluate(SNAP)
         ok(again == new, 'old save survives a reload on the new build', [new, again])
         # ---- 3. Atheran opens after the palace, through pz_pobs (two maps) and pz_pliar (statues) on the new boards
         await pg.evaluate("() => { const a = pState(); a.done = Object.fromEntries(PW.filter(w => w.id && w.id !== 'pz_pliar' && w.id !== 'pz_pobs').map(w => [w.id, 1])); a.prog = PW.findIndex(w => w.id === 'pz_pliar'); S.save() }")
@@ -67,7 +70,7 @@ async def main():
         ok(await pg.evaluate("() => !!pState().done.pz_pliar"), 'pz_pliar won on the statues screen counts for the palace')
         ok(await pg.evaluate("() => aOpen()"), 'Atheran opens after the palace is completed')
         st1 = await pg.evaluate("() => JSON.stringify([pState().prog, PW.length, Object.keys(pState().done).length, localStorage.getItem('miran:v2').length])")
-        await pg.reload(); await pg.wait_for_timeout(2200)
+        await pg.reload(); await pg.wait_for_timeout(2200); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
         st2 = await pg.evaluate("() => JSON.stringify([pState().prog, PW.length, Object.keys(pState().done).length, localStorage.getItem('miran:v2').length])")
         ok(await pg.evaluate("() => aOpen()"), 'Atheran still open after reload', [st1, st2])
         ok(not errs, 'no page errors', errs); await b.close()

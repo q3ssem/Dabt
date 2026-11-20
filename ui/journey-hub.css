@@ -51,7 +51,7 @@ html[data-skin="dark"] .mlj-trans-btn {
 }
 
 #v-puz .t7-atlas {
-  background: url('designs_art/journey/journey_map.png') center bottom / 100% auto no-repeat;
+  background: url('designs_art/journey/journey_map.webp') center bottom / 100% auto no-repeat;
 }
 
 .mlj-map-wrap {
@@ -264,23 +264,23 @@ html[data-skin="dark"] .mlj-modal-card {
 }
 
 #play.fit #pzb[data-board-art="pz_rid"] {
-  background-image: linear-gradient(rgba(255, 251, 242, 0.86), rgba(255, 251, 242, 0.90)), url('designs_art/four_puzzles/pz_rid/bg_warehouse.png');
+  background-image: linear-gradient(rgba(255, 251, 242, 0.86), rgba(255, 251, 242, 0.90)), url('designs_art/four_puzzles/pz_rid/bg_warehouse.webp');
 }
 #play.fit #pzb[data-board-art="pz_stat"] {
-  background-image: linear-gradient(rgba(255, 251, 242, 0.84), rgba(255, 251, 242, 0.88)), url('designs_art/four_puzzles/pz_stat/bg_guardian_hall.png');
+  background-image: linear-gradient(rgba(255, 251, 242, 0.84), rgba(255, 251, 242, 0.88)), url('designs_art/four_puzzles/pz_stat/bg_guardian_hall.webp');
 }
 #play.fit #pzb[data-board-art="pz_pipe"] {
-  background-image: linear-gradient(rgba(255, 251, 242, 0.84), rgba(255, 251, 242, 0.88)), url('designs_art/four_puzzles/pz_pipe/bg_village_hillside.png');
+  background-image: linear-gradient(rgba(255, 251, 242, 0.84), rgba(255, 251, 242, 0.88)), url('designs_art/four_puzzles/pz_pipe/bg_village_hillside.webp');
 }
 
 html[data-skin="dark"] #play.fit #pzb[data-board-art="pz_rid"] {
-  background-image: linear-gradient(rgba(16, 22, 42, 0.84), rgba(16, 22, 42, 0.90)), url('designs_art/four_puzzles/pz_rid/bg_warehouse.png');
+  background-image: linear-gradient(rgba(16, 22, 42, 0.84), rgba(16, 22, 42, 0.90)), url('designs_art/four_puzzles/pz_rid/bg_warehouse.webp');
 }
 html[data-skin="dark"] #play.fit #pzb[data-board-art="pz_stat"] {
-  background-image: linear-gradient(rgba(16, 22, 42, 0.84), rgba(16, 22, 42, 0.90)), url('designs_art/four_puzzles/pz_stat/bg_guardian_hall.png');
+  background-image: linear-gradient(rgba(16, 22, 42, 0.84), rgba(16, 22, 42, 0.90)), url('designs_art/four_puzzles/pz_stat/bg_guardian_hall.webp');
 }
 html[data-skin="dark"] #play.fit #pzb[data-board-art="pz_pipe"] {
-  background-image: linear-gradient(rgba(16, 22, 42, 0.84), rgba(16, 22, 42, 0.90)), url('designs_art/four_puzzles/pz_pipe/bg_village_hillside.png');
+  background-image: linear-gradient(rgba(16, 22, 42, 0.84), rgba(16, 22, 42, 0.90)), url('designs_art/four_puzzles/pz_pipe/bg_village_hillside.webp');
 }
 
 /* Stage 1 — one visible journey gateway on the puzzle-library home screen.
@@ -305,7 +305,7 @@ html[data-skin="dark"] #play.fit #pzb[data-board-art="pz_pipe"] {
   border-radius: 18px;
   border: 1.5px solid #C9B893;
   background: linear-gradient(90deg, rgba(255,251,242,.92), rgba(255,251,242,.97) 57%, rgba(255,251,242,.99)),
-    url('designs_art/journey/journey_map.png') center 63% / cover no-repeat;
+    url('designs_art/journey/journey_map.webp') center 63% / cover no-repeat;
   color: #30281B;
   box-shadow: 0 5px 16px rgba(58,42,20,.07);
   cursor: pointer;
@@ -394,7 +394,7 @@ html[data-skin="dark"] #play.fit #pzb[data-board-art="pz_pipe"] {
   cursor:pointer;
 }
 html[data-skin="dark"] #v-puz .mlj-journey-entry {
-  background:linear-gradient(90deg,rgba(20,27,49,.91),rgba(20,27,49,.96)),url('designs_art/journey/journey_map.png') center / cover no-repeat;
+  background:linear-gradient(90deg,rgba(20,27,49,.91),rgba(20,27,49,.96)),url('designs_art/journey/journey_map.webp') center / cover no-repeat;
   color:#EEF1FF;
   border-color:#526173;
 }

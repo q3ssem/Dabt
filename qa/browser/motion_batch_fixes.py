@@ -56,7 +56,7 @@ async def main():
         ctx = await b.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True)
         await ctx.add_init_script('window.__test={}')
         pg = await ctx.new_page(); errs = []; pg.on('pageerror', lambda e: errs.append(str(e)[:160]))
-        await pg.goto(URL); await pg.wait_for_timeout(2500)
+        await pg.goto(URL); await pg.wait_for_timeout(2500); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
         if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
         g = await pg.evaluate(GEN)
         ok(g['pobsAligned'] == 0, 'pz_pobs: 0 of 800 boards start aligned', g['pobsAligned'])
@@ -121,7 +121,7 @@ async def main():
 
         prog = "() => ['pz_xbottle','pz_untangle','pz_ice','pz_plib','pz_pobs','pz_wlake'].map(id => { const st = txStageOf(id); return st ? 'stage' + st.k : 'lv' + pzLv(id) })"
         levels = await pg.evaluate(prog)
-        await pg.reload(); await pg.wait_for_timeout(2500)
+        await pg.reload(); await pg.wait_for_timeout(2500); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
         after = await pg.evaluate(prog)
         ok(levels == after and all(x in ('lv2', 'stage2') for x in after), 'wins are saved: every fixed puzzle advanced (level 2, or stage 2 of its station) and kept it after reload', (levels, after))
         # pz_wlake level 2 explains the wind

@@ -7,7 +7,7 @@ ASSET = "ui/designs_art/work_review/pz_river/river-base--light.webp"
 READY = "() => !!window.mindlabJourneyHub && !!window.fitOpenings"
 
 async def measure_start(page, url):
-    await page.goto(url, wait_until="load")
+    await page.goto(url, wait_until="load"); await page.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
     await page.wait_for_function(READY)
     pick = page.locator(".mpc[data-m=main]")
     if await pick.count() and await pick.is_visible():
@@ -27,7 +27,7 @@ async def probe(browser, url, offline_expected):
         await page.wait_for_function("""async asset => !!await caches.match(new URL(asset,location.href))""",arg=ASSET,timeout=25000)
         saved = await page.evaluate("() => localStorage.getItem('miran:v2')")
         await context.set_offline(True)
-        response = await page.reload(wait_until="load",timeout=45000)
+        response = await page.reload(wait_until="load",timeout=45000); await page.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
         assert response and response.from_service_worker
         await page.wait_for_function(READY, timeout=12000)
         assert await page.evaluate("async asset => (await fetch(asset)).ok",ASSET)

@@ -6,7 +6,10 @@ const offline=fs.readFileSync(path.join(root,'offline-manifest.js'),'utf8');
 const pkg=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
 const app=fs.readFileSync(path.join(root,'expedition10/app.js'),'utf8');
 const logic=fs.readFileSync(path.join(root,'expedition10/logic.js'),'utf8');
-assert(html.includes('expedition10/style.css')&&html.includes('expedition10/logic.js')&&html.includes('expedition10/app.js'),'expedition module remains wired into the application');
+const uiApp=fs.readFileSync(path.join(root,'ui/app.js'),'utf8');
+// perf-cleanup: the side journey is wired as an on-demand bundle in ui/app.js (window.mindlabSide) instead of start-up tags.
+const wired=n=>html.includes(n)||uiApp.includes("'"+n+"'");
+assert(wired('expedition10/style.css')&&wired('expedition10/logic.js')&&wired('expedition10/app.js'),'expedition module remains wired into the application');
 assert.strictEqual(pkg.version,'5.5.28','package is 5.5.28');
 assert(sw.includes("const VERSION='5.5.28'"),'service worker cache is versioned 5.5.28');
 assert.strictEqual((app.match(/id:'ml10_\d\d'/g)||[]).length,25,'exactly twenty-five stages are registered');

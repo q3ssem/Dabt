@@ -1,7 +1,7 @@
 'use strict';
 importScripts('./offline-manifest.js');
 
-const VERSION='5.5.28', PATCH='retired-art-cleanup-1', PREFIX='mindlab-';
+const VERSION='5.5.28', PATCH='perf-cleanup-1', PREFIX='mindlab-';
 const CORE = PREFIX+VERSION+'-'+PATCH+'-core';
 const RUNTIME = PREFIX+VERSION+'-'+PATCH+'-images';
 const BASE = new URL('./', self.location.href);
@@ -24,12 +24,26 @@ self.addEventListener('activate', event => {
     .then(() => self.clients.claim()));
 });
 
+// Storage policy: puzzle art is cached as it is used, and the image cache keeps at most MAX_IMAGES files
+// (oldest first out), so a long session through every world cannot fill the phone. Code and the app shell are
+// not trimmed. Player progress lives in localStorage and is never touched here.
+const MAX_IMAGES = 1200;
+let trimming = null;
+function trimImages() {
+  if (trimming) return trimming;
+  trimming = caches.open(RUNTIME).then(async cache => {
+    const keys = await cache.keys();
+    for (const request of keys.slice(0, Math.max(0, keys.length - MAX_IMAGES))) await cache.delete(request);
+  }).catch(() => {}).finally(() => { trimming = null; });
+  return trimming;
+}
+
 function sharedFetch(url, request, cache) {
   let pending = inFlight.get(url);
   if (!pending) {
     const response = fetch(request);
     const stored = response.then(result => {
-      if (result.ok) return cache.put(url, result.clone());
+      if (result.ok) return cache.put(url, result.clone()).then(() => { if (ART.test(url)) trimImages(); });
     }).catch(() => { /* Storage pressure and network failures must not block play. */ })
       .finally(() => inFlight.delete(url));
     pending = {response, stored};
@@ -76,7 +90,8 @@ self.addEventListener('fetch', event => {
   const url = new URL(request.url);
   if (request.method !== 'GET' || request.headers?.has('range') || url.origin !== BASE.origin || !url.pathname.startsWith(BASE.pathname)) return;
   const relative = url.pathname.slice(BASE.pathname.length);
-  if (/^(?:tv|tools|qa)\//.test(relative)) return;
+  // qa/assessment-engine/ holds the assessment engine that index.html loads at start-up: it is part of the app.
+  if (/^(?:tv|tools|qa)\//.test(relative) && !relative.startsWith('qa/assessment-engine/')) return;
   if (request.mode === 'navigate') {
     event.respondWith(navigate(request, url, relative));
   } else if (ART.test(relative) || CACHEABLE.test(relative)) {
@@ -104,9 +119,10 @@ self.addEventListener('message', event => {
     return;
   }
   if (event.data.type!=='warm-journey') return;
+  // Warm the journey map art (the next thing the player sees) and the 46 brain-game illustrations (offline play);
+  // the 50 correction-pass boards (4.3 MB) are cached as each board is opened instead of during play.
   event.waitUntil(warmArt([
     ...(self.MINDLAB_JOURNEY_ART||[]),
-    ...(self.MINDLAB_GAME_ART||[]),
-    ...(self.MINDLAB_CORRECTION_ART||[])
+    ...(self.MINDLAB_GAME_ART||[])
   ]));
 });

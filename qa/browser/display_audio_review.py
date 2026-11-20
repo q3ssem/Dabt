@@ -51,7 +51,7 @@ async def visit(browser, args, size, skin, ids):
     pg=await ctx.new_page()
     errors=[]
     pg.on('pageerror', lambda e: errors.append(str(e)))
-    await pg.goto(args.url, wait_until='domcontentloaded')
+    await pg.goto(args.url, wait_until='domcontentloaded'); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
     await pg.wait_for_function("()=>typeof startRun==='function' && typeof MK==='object'")
     profile=pg.locator('.mpc[data-m=main]')
     if await profile.is_visible():

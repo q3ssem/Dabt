@@ -62,7 +62,7 @@ async def main():
             pg = await ctx.new_page(); errs = []
             pg.on('pageerror', lambda e: errs.append(str(e)[:200]))
             pg.on('request', lambda r: '/atheran/assets/' in r.url and asset_urls.add(r.url.split('/atheran/assets/')[1]))
-            await pg.goto(URL, wait_until='load'); await pg.wait_for_timeout(1500)
+            await pg.goto(URL, wait_until='load'); await pg.wait_for_timeout(1500); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
             if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
             await pg.click('.tab[data-tab=puz]'); await pg.wait_for_timeout(900)
             seen_frames |= {f['f'] for f in await screen(pg, tag, 'cover')}
@@ -136,13 +136,13 @@ async def main():
                 # offline: the same browser, no network, reload
                 await pg.evaluate("() => closePlay()"); await pg.wait_for_timeout(300)
                 ctrl = await pg.evaluate("async () => { await navigator.serviceWorker.ready; return !!navigator.serviceWorker.controller }")
-                if not ctrl: await pg.reload(); await pg.wait_for_timeout(1500)
+                if not ctrl: await pg.reload(); await pg.wait_for_timeout(1500); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
                 await pg.wait_for_timeout(4000)  # background warm of the opened station
                 warm = await pg.evaluate("() => window.__ahWarm || {}")
                 cached = await pg.evaluate("async () => { const ks = await caches.keys(); const out = {}; for (const k of ks) out[k] = (await (await caches.open(k)).keys()).length; return out; }")
                 ok(any('fit-ui-core' in k for k in cached), 'service worker installed the 5.5.28 athran-assets-2 core cache', cached)
                 await ctx.set_offline(True)
-                await pg.reload(); await pg.wait_for_timeout(2000)
+                await pg.reload(); await pg.wait_for_timeout(2000); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
                 if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
                 await pg.click('.tab[data-tab=puz]'); await pg.wait_for_timeout(900)
                 await screen(pg, tag, 'offline-cover')
@@ -165,7 +165,7 @@ async def main():
         # mid-way save: the three marker states
         ctx = await browser.new_context(viewport={'width': 390, 'height': 844}, has_touch=True, locale='ar-SA')
         await ctx.add_init_script(f"if(!localStorage.getItem('__seeded')){{const s={json.dumps(SAVE, ensure_ascii=False)};for(const k in s)localStorage.setItem(k,s[k]);localStorage.setItem('__seeded','1')}}")
-        pg = await ctx.new_page(); await pg.goto(URL); await pg.wait_for_timeout(1500)
+        pg = await ctx.new_page(); await pg.goto(URL); await pg.wait_for_timeout(1500); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
         if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
         await pg.evaluate("() => { const a = aState(); const keep = ASTN.slice(0, 7).map(s => s.id); a.done = Object.fromEntries(keep.map(k => [k, 1])); a.prog = 7; S.save(); }")
         await pg.click('.tab[data-tab=puz]'); await pg.wait_for_timeout(700); await pg.click('.ah-launch-go'); await pg.wait_for_timeout(900)

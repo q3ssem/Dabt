@@ -15,7 +15,7 @@ from playwright.async_api import async_playwright
 
 URL = sys.argv[1] if len(sys.argv) > 1 else 'http://127.0.0.1:8150/'
 OUT = sys.argv[2] if len(sys.argv) > 2 else None
-ROOT = pathlib.Path(os.environ.get('ROOT', pathlib.Path(__file__).resolve().parents[2]))
+ROOT = pathlib.Path(os.environ['ROOT']) if os.environ.get('ROOT') else pathlib.Path(__file__).resolve().parents[2]
 RUNS = int(os.environ.get('RUNS', '3'))
 PUZZLES = os.environ.get('PUZZLES', 'pz_river,pz_rush,pz_stat,pz_lock,pz_pliar,pz_aarch,pz_xbottle,pz_wlog').split(',')
 CYCLES = int(os.environ.get('CYCLES', '10'))
@@ -49,10 +49,13 @@ async def open_session(ctx, throttle=False):
         r = e['response']; reqs.setdefault(e['requestId'], {})
         reqs[e['requestId']].update(url=r['url'], sw=r.get('fromServiceWorker', False), disk=r.get('fromDiskCache', False), status=r['status'], type=e.get('type'))
     def on_fin(e):
-        reqs.setdefault(e['requestId'], {})['enc'] = e.get('encodedDataLength', 0)
+        reqs.setdefault(e['requestId'], {}).update(enc=e.get('encodedDataLength', 0), t=e.get('timestamp'))
     def on_fail(e):
         reqs.setdefault(e['requestId'], {})['failed'] = e.get('errorText')
     cdp.on('Network.responseReceived', on_resp); cdp.on('Network.loadingFinished', on_fin); cdp.on('Network.loadingFailed', on_fail)
+    await cdp.send('Page.enable'); marks = {}
+    cdp.on('Page.loadEventFired', lambda e: marks.setdefault('load', e['timestamp']))
+    reqs['__marks'] = marks
     if throttle:
         await cdp.send('Network.emulateNetworkConditions', {'offline': False, 'latency': 150, 'downloadThroughput': 200000, 'uploadThroughput': 90000})
         await cdp.send('Emulation.setCPUThrottlingRate', {'rate': 4})
@@ -83,6 +86,7 @@ async def load_once(ctx, label, throttle=False, offline=False):
         sw:!!(navigator.serviceWorker&&navigator.serviceWorker.controller),domNodes:document.getElementsByTagName('*').length,
         scripts:document.scripts.length,styles:document.querySelectorAll('link[rel=stylesheet],style').length}}""")
     if offline: await ctx.set_offline(False)
+    marks = reqs.pop('__marks', {})
     rs = [r for r in reqs.values() if r.get('url', '').startswith('http')]
     net = [r for r in rs if not r.get('sw') and not r.get('disk')]
     m['requests'] = len(rs); m['networkRequests'] = len(net)
@@ -91,6 +95,10 @@ async def load_once(ctx, label, throttle=False, offline=False):
     for r in net:
         g = gz_size(r['url']); gz += g if g is not None else r.get('enc', 0)
     m['gzipEstKB'] = round(gz / 1024, 1)
+    # critical path: what the network delivered before the load event (what a player waits for at start-up)
+    lt = marks.get('load')
+    crit = [r for r in net if lt is None or (r.get('t') or 0) <= lt]
+    m['beforeLoadRequests'] = len(crit); m['beforeLoadKB'] = round(sum(r.get('enc', 0) for r in crit) / 1024, 1)
     m['failed'] = [r['url'].split('/', 3)[-1] for r in rs if r.get('failed') or (r.get('status') or 200) >= 400][:12]
     m.update(await heap(cdp, pg)); m['errors'] = errors[:5]; m['label'] = label
     byType = {}
@@ -118,16 +126,19 @@ async def puzzle_times(pg, cdp):
         await pg.evaluate('()=>{try{closePlay()}catch(e){}}'); await pg.wait_for_timeout(300)
     return out
 
+OPEN_IN_PAGE = """async(g)=>{startRun([g]);for(let i=0;i<200&&!document.querySelector('#stage #go');i++)await new Promise(r=>setTimeout(r,50));
+ document.querySelector('#stage #go').click();await new Promise(r=>setTimeout(r,100));const s=document.querySelector('#fit-opening-overlay #fit-op-start');if(s)s.click();
+ for(let i=0;i<200;i++){const b=document.querySelector('#pzb');if(b&&b.children.length&&!document.querySelector('#stage .cd'))break;await new Promise(r=>setTimeout(r,50))}
+ closePlay();await new Promise(r=>setTimeout(r,150))}"""
+
 async def leak_loop(pg, cdp):
+    # Driven inside the page: Playwright locators/handles are kept alive by the DevTools session and made every
+    # opened Start button look leaked (+1 listener per open) although the app frees them (verified: flat counters).
+    for g in PUZZLES[:4]: await pg.evaluate(OPEN_IN_PAGE, g)
     rows = [await heap(cdp, pg)]
-    sys.path.insert(0, str(pathlib.Path(__file__).parent)); from smoke import open_game
     for c in range(CYCLES):
-        for g in PUZZLES[:4]:
-            try: await open_game(pg, g)
-            except Exception: pass
-            await pg.evaluate('()=>{try{closePlay()}catch(e){}}'); await pg.wait_for_timeout(150)
+        for g in PUZZLES[:4]: await pg.evaluate(OPEN_IN_PAGE, g)
         rows.append(await heap(cdp, pg))
-    timers = await pg.evaluate("()=>window.__perfTimers||null")
     return rows
 
 def med(xs):
@@ -141,8 +152,11 @@ async def main():
         vp = {'viewport': {'width': 390, 'height': 844}, 'is_mobile': True, 'has_touch': True, 'locale': 'ar-SA', 'device_scale_factor': 2}
         cold, warm = [], []
         for i in range(RUNS):
+            # cold: a first visit with no HTTP cache and no service worker in the way of the network accounting
+            ctxc = await b.new_context(**vp, service_workers='block'); await ctxc.add_init_script(INIT)
+            pg, cdp, m = await load_once(ctxc, 'cold'); cold.append(m); await ctxc.close()
             ctx = await b.new_context(**vp); await ctx.add_init_script(INIT)
-            pg, cdp, m = await load_once(ctx, 'cold'); cold.append(m)
+            pg, cdp, _ = await load_once(ctx, 'install')
             # let the service worker finish installing, then reload as a returning player would
             try: await pg.wait_for_function('()=>navigator.serviceWorker&&navigator.serviceWorker.controller', timeout=60000)
             except Exception: pass
@@ -156,11 +170,11 @@ async def main():
             await ctx.close()
         res['scenarios']['cold'] = cold; res['scenarios']['warm'] = warm
         if os.environ.get('THROTTLE', '1') != '0':
-            ctx = await b.new_context(**vp); await ctx.add_init_script(INIT)
+            ctx = await b.new_context(**vp, service_workers='block'); await ctx.add_init_script(INIT)
             pg, cdp, m = await load_once(ctx, 'cold-slow', throttle=True); res['scenarios']['coldSlow'] = m
             await ctx.close()
         await b.close()
-    keys = ['fcp', 'lcp', 'cls', 'tbt', 'longTasks', 'longTaskMs', 'dcl', 'load', 'ready', 'requests', 'networkRequests', 'transferKB', 'gzipEstKB', 'heapMB', 'nodes', 'listeners', 'domNodes']
+    keys = ['fcp', 'lcp', 'cls', 'tbt', 'longTasks', 'longTaskMs', 'dcl', 'load', 'ready', 'requests', 'networkRequests', 'transferKB', 'gzipEstKB', 'beforeLoadRequests', 'beforeLoadKB', 'heapMB', 'nodes', 'listeners', 'domNodes']
     res['median'] = {s: {k: med([r.get(k) for r in res['scenarios'][s]]) for k in keys} for s in ('cold', 'warm')}
     print(json.dumps({'median': res['median'], 'coldSlow': {k: res['scenarios'].get('coldSlow', {}).get(k) for k in keys},
                       'offline': {k: res['scenarios']['offline'].get(k) for k in keys + ['failed', 'errors', 'sw']},

@@ -5,6 +5,8 @@ Also: no horizontal overflow, no page errors, saves kept after reload.
 Usage: python3 qa/browser/motion_play.py http://127.0.0.1:8150/   (ENGINE=webkit; SHOTS=dir for 390 screenshots)"""
 import asyncio, json, os, sys
 from playwright.async_api import async_playwright
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from player_openings import dismiss_opening, open_side_map
 URL = sys.argv[1] if len(sys.argv) > 1 else 'http://127.0.0.1:8150/'
 ENGINE = os.environ.get('ENGINE', 'chromium'); SHOTS = os.environ.get('SHOTS')
 checks, problems = [], []
@@ -37,13 +39,14 @@ async def result(pg):
 async def start(pg, gid):
     await pg.evaluate("(g) => startRun([g])", gid); await pg.wait_for_timeout(300)
     if await pg.locator('#stage #go').count(): await pg.click('#stage #go')
+    await dismiss_opening(pg, 1500)
     await pg.wait_for_timeout(2400)
 
 async def atheran(pg, w):
     mode = 'drag'
     for gid in ('pz_aarch', 'pz_alayer', 'pz_acity', 'pz_arelic'):
         for mode in ('drag', 'tap'):
-            await pg.goto(URL); await pg.wait_for_timeout(1500)  # a fresh page per board (keeps long WebKit sessions light)
+            await pg.goto(URL); await pg.wait_for_timeout(1500); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)  # a fresh page per board (keeps long WebKit sessions light)
             if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
             await start(pg, gid); mv = drag if mode == 'drag' else tap; P = await pg.evaluate("() => window.__test.pz.P")
             if gid == 'pz_aarch':
@@ -76,7 +79,7 @@ async def exp_won(pg):
     return await pg.evaluate("() => document.querySelector('.ex10').innerText.slice(0,200)")
 async def expedition(pg, w):
     await pg.evaluate("() => { const t = document.querySelector('.tab[data-tab=puz]'); t && t.click() }"); await pg.wait_for_timeout(300)
-    await pg.locator('.ex10-launch-go').click(timeout=15000); await pg.wait_for_timeout(300)
+    await open_side_map(pg); await pg.wait_for_timeout(300)
     before = await pg.evaluate("() => ML10.state()")
     # 07: shelf — drag three, tap two, then win
     await exp_open(pg, 6); tgt = ['map', 'compass', 'lantern', 'telescope', 'key']
@@ -128,14 +131,14 @@ async def main():
             done = {f'ml10_{i:02d}': True for i in range(1, 25)}
             await ctx.add_init_script("if(!localStorage.getItem('mindlab:expedition10:v1'))localStorage.setItem('mindlab:expedition10:v1'," + json.dumps(json.dumps({'done': done, 'stars': {}, 'best': {}, 'totalStars': 72}, ensure_ascii=False)) + ")")
             pg = await ctx.new_page(); await pg.clock.install(); errs = []; pg.on('pageerror', lambda e: errs.append(str(e)[:160]))
-            await pg.goto(URL); await pg.wait_for_timeout(2500)
+            await pg.goto(URL); await pg.wait_for_timeout(2500); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
             if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
             await atheran(pg, w)
-            await pg.goto(URL); await pg.wait_for_timeout(2000)
+            await pg.goto(URL); await pg.wait_for_timeout(2000); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
             if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
             mainBefore = await pg.evaluate("() => localStorage.getItem('miran:v2')")
             bef, aft = await expedition(pg, w)
-            await pg.reload(); await pg.wait_for_timeout(2000)
+            await pg.reload(); await pg.wait_for_timeout(2000); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
             kept = await pg.evaluate("() => JSON.parse(localStorage.getItem('mindlab:expedition10:v1'))")
             ok(all(kept['done'].get(k) for k in ('ml10_07', 'ml10_10', 'ml10_16', 'ml10_25')), f'@{w} side-journey wins kept after reload')
             ok(await pg.evaluate("() => localStorage.getItem('miran:v2')") == mainBefore, f'@{w} side journey did not touch the main save')

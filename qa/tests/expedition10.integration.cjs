@@ -6,7 +6,10 @@ const offline=fs.readFileSync(path.join(root,'offline-manifest.js'),'utf8');
 const pkg=JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8'));
 const app=fs.readFileSync(path.join(root,'expedition10/app.js'),'utf8');
 const logic=fs.readFileSync(path.join(root,'expedition10/logic.js'),'utf8');
-assert(html.includes('expedition10/style.css')&&html.includes('expedition10/logic.js')&&html.includes('expedition10/app.js'),'adventure chapter scripts and stylesheet are wired after existing engines');
+const uiApp=fs.readFileSync(path.join(root,'ui/app.js'),'utf8');
+// perf-cleanup: the side journey is wired as an on-demand bundle in ui/app.js (window.mindlabSide) instead of start-up tags.
+const wired=n=>html.includes(n)||uiApp.includes("'"+n+"'");
+assert(wired('expedition10/style.css')&&wired('expedition10/logic.js')&&wired('expedition10/app.js'),'adventure chapter scripts and stylesheet are wired after existing engines');
 assert(offline.includes('expedition10/art/world-map.webp'),'world map is precached');
 for(const f of ['roaa.webp','noha.webp','ward.webp'])assert(offline.includes('expedition10/art/crew/'+f),'main character asset precached: '+f);
 for(let i=1;i<=25;i++){const f=`${String(i).padStart(2,'0')}-`;const scene=fs.readdirSync(path.join(root,'expedition10/art/scenes')).find(x=>x.startsWith(f));assert(scene,'stage scene exists: '+f);assert(offline.includes('expedition10/art/scenes/'+scene),'stage scene is included in Offline Precache: '+scene);}

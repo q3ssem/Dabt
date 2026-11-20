@@ -28,7 +28,7 @@ async def main():
             await ctx.add_init_script('window.__test={}')
             if SAVE: await ctx.add_init_script(f"if(!localStorage.getItem('__seeded')){{const s={json.dumps(SAVE, ensure_ascii=False)};for(const k in s)localStorage.setItem(k,s[k]);localStorage.setItem('__seeded','1')}}")
             pg = await ctx.new_page(); errs = []; pg.on('pageerror', lambda e: errs.append(str(e)[:160]))
-            await pg.goto(URL); await pg.wait_for_timeout(2000)
+            await pg.goto(URL); await pg.wait_for_timeout(2000); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
             if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
             await pg.click('.tab[data-tab=puz]'); await pg.wait_for_timeout(1000)
             lib = await pg.evaluate("""() => { const v = document.getElementById('v-puz'), a = v.querySelector('.ah-launch'), s = v.querySelector('.ex10-launch');

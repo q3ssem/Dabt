@@ -1,9 +1,14 @@
 """Use the same start/continue buttons as the player; do not mark scenes seen in storage."""
-async def dismiss_opening(page):
+async def dismiss_opening(page, wait=0):
+    """Close the story opening if it is up; with wait (ms), keep looking that long for it to appear."""
     opening=page.locator('#fit-opening-overlay #fit-op-start')
-    if await opening.count() and await opening.is_visible():
-        await opening.click()
-        await page.wait_for_timeout(100)
+    for _ in range(max(1, wait // 100)):
+        if await opening.count() and await opening.is_visible():
+            await opening.click()
+            await page.wait_for_timeout(100)
+            return True
+        if wait: await page.wait_for_timeout(100)
+    return False
 
 async def close_transition(page):
     for _ in range(12):

@@ -59,7 +59,7 @@ async def main():
         page = await ctx.new_page(); errors = []
         page.on('pageerror', lambda e: errors.append(str(e)[:200]))
         await page.add_init_script('window.__test={}')
-        await page.goto(URL, wait_until='load', timeout=60000); await page.wait_for_timeout(1500)
+        await page.goto(URL, wait_until='load', timeout=60000); await page.wait_for_timeout(1500); await page.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
         if await page.locator('.mpc[data-m=main]').count(): await page.click('.mpc[data-m=main]')
         ev = page.evaluate
 
@@ -223,7 +223,7 @@ async def main():
         # --- reload keeps everything, under the same save key ---
         before = await ev("() => JSON.stringify(txState().a5)")
         keys = await ev("() => Object.keys(localStorage)")
-        await page.reload(); await page.wait_for_timeout(1500)
+        await page.reload(); await page.wait_for_timeout(1500); await page.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
         after = await ev("() => JSON.stringify(txState().a5)")
         ok(before == after, 'campaign save survives a reload unchanged')
         ok('miran:v2' in keys, 'progress lives under miran:v2')

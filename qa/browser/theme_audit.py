@@ -32,7 +32,7 @@ async def main(a):
         ctx = await b.new_context(viewport={'width': a.w, 'height': a.h}, device_scale_factor=1, has_touch=True, is_mobile=a.engine != 'webkit', locale='ar-SA')
         await ctx.add_init_script(f"""(()=>{{try{{const k='miran:v2',s=JSON.parse(localStorage.getItem(k)||'null')||{{v:1,hist:[],best:{{}},lv:{{}},days:{{}}}};{'s.skin=' + json.dumps(a.skin) + ';' if a.skin != 'default' else ''}localStorage.setItem(k,JSON.stringify(s))}}catch(e){{}}}})()""")
         pg = await ctx.new_page(); errs = []; pg.on('pageerror', lambda e: errs.append(str(e)))
-        await pg.goto(a.url, wait_until='load'); await pg.wait_for_timeout(900)
+        await pg.goto(a.url, wait_until='load'); await pg.wait_for_timeout(900); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
         if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]'); await pg.wait_for_timeout(500)
         res['resolved_skin'] = await pg.evaluate('()=>document.documentElement.dataset.skin')
         async def shot(name, sel=None):

@@ -23,7 +23,7 @@ async def main():
         browser=await (p.webkit.launch() if engine=='webkit' else p.chromium.launch(**({'executable_path':CHROME} if CHROME else {}),args=['--no-sandbox']))
         page=await browser.new_page(viewport={'width':390,'height':844},device_scale_factor=1,is_mobile=True,has_touch=True,locale='ar-SA')
         page.on('pageerror',lambda e:errors.append(str(e)))
-        await page.goto(URL,wait_until='load',timeout=90000)
+        await page.goto(URL,wait_until='load',timeout=90000); await page.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
         await page.wait_for_timeout(800)
         pick=page.locator('.mpc[data-m=main]')
         if await pick.count() and await pick.is_visible(): await pick.click()

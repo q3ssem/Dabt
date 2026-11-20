@@ -35,7 +35,7 @@ async def main(a):
         b = await (p.webkit.launch() if a.engine == 'webkit' else p.chromium.launch(args=['--no-sandbox'], **({'executable_path': a.chrome} if a.chrome else {})))
         ctx = await b.new_context(viewport={'width': 390, 'height': 844}, is_mobile=a.engine != 'webkit', has_touch=True, locale='ar-SA')
         if a.skin != 'default': await ctx.add_init_script("(()=>{const k='miran:v2',s=JSON.parse(localStorage.getItem(k)||'null')||{v:1,hist:[],best:{},lv:{},days:{}};s.skin='%s';localStorage.setItem(k,JSON.stringify(s))})()" % a.skin)
-        pg = await ctx.new_page(); await pg.goto(a.url); await pg.wait_for_timeout(900)
+        pg = await ctx.new_page(); await pg.goto(a.url); await pg.wait_for_timeout(900); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
         if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
         async def check(name, scope):
             nonlocal overimg, total

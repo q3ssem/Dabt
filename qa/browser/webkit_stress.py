@@ -14,7 +14,7 @@ async def main():
     async with async_playwright() as p:
         b = await p.webkit.launch(); ctx = await b.new_context(viewport={'width': 390, 'height': 820}, has_touch=True)
         await ctx.add_init_script('window.__test={};' + INIT); pg = await ctx.new_page()
-        await pg.goto(URL); await pg.wait_for_timeout(2000)
+        await pg.goto(URL); await pg.wait_for_timeout(2000); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
         if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
         btn = {'pz_arelic': '#arlgo', 'pz_aarch': '#aargo', 'pz_alayer': '#alygo', 'pz_acity': '#actgo', 'pz_door': '#plgo'}[G]
         t0 = time.time()

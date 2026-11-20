@@ -11,6 +11,8 @@ Exit code is non-zero when any check fails.
 Usage: python3 qa/browser/palace_statues.py http://127.0.0.1:8150/   (ENGINE=webkit)"""
 import asyncio, os, sys
 from playwright.async_api import async_playwright
+sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
+from player_openings import dismiss_opening
 URL = sys.argv[1] if len(sys.argv) > 1 else 'http://127.0.0.1:8150/'
 ENGINE = os.environ.get('ENGINE', 'chromium'); SHOTS = os.environ.get('SHOTS')
 checks, problems = [], []
@@ -33,15 +35,16 @@ REG = r"""() => { const real = window.drMake; window.__realDr = real; window.drM
 
 async def boot(ctx):
     pg = await ctx.new_page(); errs = []; pg.on('pageerror', lambda e: errs.append(str(e)[:200]))
-    await pg.goto(URL); await pg.wait_for_timeout(2200)
+    await pg.goto(URL); await pg.wait_for_timeout(2200); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
     if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
     return pg, errs
 async def start(pg, gid, lv=None, seed=None, pre=None):
-    await pg.goto(URL); await pg.wait_for_timeout(1600)
+    await pg.goto(URL); await pg.wait_for_timeout(1600); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
     if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
     if pre: await pg.evaluate(pre)
     await pg.evaluate("([g, lv, s]) => { startRun([g]); if (lv) RUN.replay = { id: g, lv, seed: s } }", [gid, lv, seed]); await pg.wait_for_timeout(300)
     if await pg.locator('#stage #go').count(): await pg.click('#stage #go')
+    await dismiss_opening(pg, 1500)
     await pg.wait_for_timeout(2200)
 async def result(pg, t=6000):
     for _ in range(t // 200):
@@ -164,7 +167,7 @@ async def pliar(pg, w, lv):
     await tap(pg, '#plgo'); ok(await result(pg) is True, f'{lab}: the hall wins')
     await pg.wait_for_timeout(700); st1 = await pg.evaluate("() => JSON.stringify([txStageOf('pz_pliar'), pState().done.pz_pliar || 0])")
     ok(st1 != st0, f'{lab}: one palace stage recorded', [st0, st1])
-    await pg.reload(); await pg.wait_for_timeout(2000)
+    await pg.reload(); await pg.wait_for_timeout(2000); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
     ok(await pg.evaluate("() => JSON.stringify([txStageOf('pz_pliar'), pState().done.pz_pliar || 0])") == st1, f'{lab}: kept after reload')
 
 async def main():
@@ -187,7 +190,7 @@ async def main():
                     await pg.evaluate("() => window.__test.pz.set()"); await tap(pg, '#plgo'); ok(await result(pg) is True, f'pz_door lv{lv}: solved board wins')
             for kind in ('regression', 'mixed', 'mix'): await door_case(pg, w, kind)
             lv0 = await pg.evaluate("() => pzLv('pz_door')")
-            await pg.reload(); await pg.wait_for_timeout(2000); ok(await pg.evaluate("() => pzLv('pz_door')") == lv0, f'pz_door@{w}: level kept after reload')
+            await pg.reload(); await pg.wait_for_timeout(2000); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000); ok(await pg.evaluate("() => pzLv('pz_door')") == lv0, f'pz_door@{w}: level kept after reload')
             ok(not errs, f'pz_door@{w} no page errors', errs); await ctx.close()
             # pz_pliar in its own context (fresh profile → its own first stage)
             ctx = await b.new_context(viewport={'width': w, 'height': 820}, has_touch=True); await ctx.add_init_script('window.__test={}')
