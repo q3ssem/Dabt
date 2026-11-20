@@ -1,7 +1,7 @@
 'use strict';
 importScripts('./offline-manifest.js');
 
-const VERSION='5.5.28', PATCH='engines-2', PREFIX='mindlab-';
+const VERSION='5.5.28', PATCH='stat-scene-1', PREFIX='mindlab-';
 const CORE = PREFIX+VERSION+'-'+PATCH+'-core';
 const RUNTIME = PREFIX+VERSION+'-'+PATCH+'-images';
 const BASE = new URL('./', self.location.href);
@@ -110,9 +110,26 @@ async function warmArt(files) {
   }
 }
 
+async function warmScene(files) {
+  const core = await caches.open(CORE), images = await caches.open(RUNTIME);
+  for (const file of files) {
+    const url = new URL(file, BASE);
+    const cache = ART.test(url.pathname) ? images : core;
+    try {
+      if (await cache.match(url.href)) continue;
+      await sharedFetch(url.href, new Request(url, {priority: 'low'}), cache).stored;
+    } catch (_) { /* Opening the puzzle can retry a missed asset. */ }
+  }
+}
+
 self.addEventListener('message', event => {
   if (!event.data) return;
   const {type, puzzleId} = event.data;
+  if (type === 'warm-puzzle-scene') {
+    const files = self.MINDLAB_SCENE_FILES[puzzleId];
+    if (Array.isArray(files)) event.waitUntil(warmScene(files));
+    return;
+  }
   if (type === 'warm-puzzle-art') {
     const files = self.MINDLAB_EXPEDITION_ART[puzzleId];
     if (Array.isArray(files)) event.waitUntil(warmArt(files));

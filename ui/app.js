@@ -285,6 +285,7 @@ return done=>{
     win(detail){if(!ended)fin(true,detail)},over(detail){if(!ended)fin(false,detail)}};
   const mount=()=>{const R=Math.random;Math.random=seeded(seed);try{P=build(api)||{};if(typeof XOLD!=='undefined'&&XOLD.has(id)&&id!=='pz_pipe')try{xWrapOld(api.body,id)}catch(e){}}finally{Math.random=R}};
   mount();
+  window.mindlabOffline?.rememberPuzzle(id);
   window.mindlabOffline?.warmPuzzle(id);
   const hb=$('#pzh');if(!P.hint)hb.hidden=true;
   hb.onclick=()=>{if(ended||hints>=3||!P.hint)return;const before=pts;hints++;if(!kid)setP(pts-Math.round(base*.2));const t=P.hint(hints);if(t==null){hints--;if(!kid)setP(before);return}$('#pzhn').textContent=3-hints;

@@ -210,7 +210,12 @@
       const poses = ['north', 'east', 'south', 'west'].map(pose => DESIGNS + `work_review/pz_stat/guardian--${pose}.png`);
       poses.forEach(path => { new Image().src = path; });
       frame(api, { id: 'stat', layout: 'mechanical', lead: `طابق مؤشر اتجاه التمثال الأخضر مع الماسة الذهبية. ${rule}${P.ring ? '، والتماثيل في حلقة مغلقة' : ''}.` });
-      const Rr = 34, pos = [...Array(n)].map((_, i) => { const a = -Math.PI / 2 + i * 2 * Math.PI / n; return [50 + Rr * Math.cos(a), 50 + Rr * Math.sin(a)]; }), sz = n <= 4 ? 26 : n <= 5 ? 24 : 21;
+      const radius = 32;
+      const pos = Array.from({length: n}, (_, i) => {
+        const a = -Math.PI / 2 + i * 2 * Math.PI / n;
+        return [50 + radius * Math.cos(a), 55 + radius * .78 * Math.sin(a)];
+      });
+      const sz = n <= 4 ? 26 : n <= 5 ? 24 : 21;
       const pairs = []; for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) if (i !== j && P.R[i][j]) { const k = i < j ? i + '-' + j : j + '-' + i; if (!pairs.includes(k)) pairs.push(k); }
       const links = pairs.map(k => {
         const [a, b] = k.split('-').map(Number), [x, y] = pos[a], [endX, endY] = pos[b];
@@ -222,12 +227,15 @@
       }).join('');
       $('#lbb').innerHTML = `<div class="st10" id="st10">${piece('stat', 'door_closed', 'st10-door')}${piece('stat', 'door_open', 'st10-open')}<svg class="st10-links" viewBox="0 0 100 100" aria-hidden="true">${links}</svg>
         ${pos.map(([x, y], i) => `<button class="st10-s" data-i="${i}" style="left:${x}%;top:${y}%;width:${sz}%" aria-label="تمثال ${N(i + 1)}"> <i class="st10-tgt" style="--a:${P.tgt[i] * 90}deg"></i><img class="st10-g" src="${poses[0]}" alt="" draggable="false"><span class="st10-current"><i class="st10-dot"></i></span></button>`).join('')}</div>`;
-      const btns = [...$('#st10').querySelectorAll('.st10-s')], lines = [...$('#st10').querySelectorAll('line')];
+      const stage = $('#st10');
+      const snapshot = () => ({angles: ang.map(angle => angle / 90)});
+      const view = window.mlScene?.mount('pz_stat', stage, snapshot());
+      const btns = [...stage.querySelectorAll('.st10-s')], lines = [...stage.querySelectorAll('line')];
       function draw() { btns.forEach((b, i) => {
         const heading = ((ang[i] / 90) % 4 + 4) % 4;
         b.querySelector('.st10-g').src = poses[heading];
         b.querySelector('.st10-current').style.transform = `rotate(${ang[i]}deg)`;
-        b.classList.toggle('ok', s[i] === 0); b.setAttribute('aria-label', `تمثال ${N(i + 1)}: ${s[i] === 0 ? 'يطابق ماسته' : 'لا يطابق'}`); }); $('#st10').classList.toggle('all', s.every(d => d === 0)); }
+        b.classList.toggle('ok', s[i] === 0); b.setAttribute('aria-label', `تمثال ${N(i + 1)}: ${s[i] === 0 ? 'يطابق ماسته' : 'لا يطابق'}`); }); stage.classList.toggle('all', s.every(d => d === 0)); view?.update(snapshot()); }
       function press(i) { if (api.ended) return; const matchedBefore = s.filter(d => d === 0).length; P.R[i].forEach((r, j) => { if (r) { s[j] = (s[j] + r) % 4; ang[j] += r === 3 ? -90 : r * 90; } }); presses++;
         btns.forEach((b, j) => {
           b.classList.remove('hint');

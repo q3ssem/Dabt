@@ -1,73 +1,18 @@
 {
- "id": "pz_stat",
- "spec": 1,
- "renderer": "dom",
- "plannedRenderer": "pixi",
- "status": "awaiting-art",
- "model": {
-  "statues": "3–6 by level; lv≥4 sit in a ring (each turns its neighbours)",
-  "head": "4 directions N/E/S/W",
-  "turn": "tap = quarter turn; linked statues turn 1, 2 or 3 quarters",
-  "goal": "all heads match the target runes → door opens"
- },
- "frame": {
-  "board": {
-   "size": [
-    1200,
-    1600
-   ]
+  "id": "pz_stat",
+  "spec": 1,
+  "renderer": "pixi",
+  "status": "ready",
+  "assetBase": "ui/designs_art/work/pz_stat/",
+  "assets": {
+    "painting": "scene.webp",
+    "guardians": "guardians.json"
   },
-  "door": {
-   "anchor": [
-    600,
-    560
-   ]
+  "frame": {
+    "atlasHeading": [8, 4, 0, 12],
+    "framesPerQuarter": 4,
+    "frameCount": 16,
+    "darkTint": "#8ca0bf"
   },
-  "slots": {
-   "line3": [
-    [
-     270,
-     1150
-    ],
-    [
-     600,
-     1150
-    ],
-    [
-     930,
-     1150
-    ]
-   ],
-   "ring": "n points on an ellipse centre [600,1100] radii [420,260] — give one set per n=4,5,6"
-  }
- },
- "assets_required": {
-  "hall": "1200×1600 background",
-  "door": {
-   "states": [
-    "closed",
-    "open"
-   ]
-  },
-  "body": "one per statue family (sun, anchor, wave, +3 more for n=6), 300×420, anchor = feet centre",
-  "head": {
-   "states": [
-    "north",
-    "east",
-    "south",
-    "west"
-   ],
-   "size": "200×200, anchor centre"
-  },
-  "rune": "target marker per direction",
-  "fx": [
-   "selected ring",
-   "affected ring",
-   "link between statues",
-   "aligned glow"
-  ]
- },
- "note": "Contract for the art team (ChatGPT Work). The engine keeps the DOM board until this scene has art and a renderer; then only this file and the art folder change.",
- "assetBase": "ui/designs_art/work/pz_stat/",
- "assets": {}
+  "motion": {"quarterMs": 220, "halfMs": 360}
 }

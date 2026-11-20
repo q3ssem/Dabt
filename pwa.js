@@ -15,6 +15,25 @@
     else window.setTimeout(callback, 250);
   }
 
+  const recentSceneKey = 'mindlab:recent-puzzle-scene';
+  let pendingScene = false, sceneRequested = false;
+  function flushScene() {
+    const worker = serviceWorker.controller;
+    const connection = navigator.connection;
+    if (!pendingScene || sceneRequested || !worker || document.hidden || connection?.saveData ||
+        /^(?:slow-2g|2g|3g)$/.test(connection?.effectiveType || '')) return;
+    worker.postMessage({type: 'warm-puzzle-scene', puzzleId: 'pz_stat'});
+    sceneRequested = true;
+  }
+  function queueRecentScene() {
+    try { pendingScene = localStorage.getItem(recentSceneKey) === 'pz_stat'; } catch (_) {}
+    defer(flushScene);
+  }
+  if (document.readyState === 'complete') queueRecentScene();
+  else window.addEventListener('load', queueRecentScene, {once: true});
+  serviceWorker.addEventListener('controllerchange', () => defer(flushScene));
+  document.addEventListener('visibilitychange', () => { if (!document.hidden) defer(flushScene); });
+
   const pending = new Set();
   function flushPuzzles() {
     const worker = serviceWorker.controller;
@@ -28,7 +47,13 @@
     pending.add(puzzleId);
     defer(flushPuzzles);
   }
-  window.mindlabOffline = {warmPuzzle};
+  function rememberPuzzle(id) {
+    try {
+      if (id === 'pz_stat') localStorage.setItem(recentSceneKey, id);
+      else localStorage.removeItem(recentSceneKey);
+    } catch (_) { /* Storage can be unavailable in restricted browser contexts. */ }
+  }
+  window.mindlabOffline = {warmPuzzle, rememberPuzzle};
 
   let journeyRequested = false;
   document.addEventListener('click', event => {

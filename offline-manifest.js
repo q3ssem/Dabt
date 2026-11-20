@@ -239,3 +239,15 @@ self.MINDLAB_EXPEDITION_ART = {
   "pz_zshadow": ["ui/designs_art/work_review/pz_zharp/scene-cue--selected.png","ui/designs_art/work_review/pz_zharp/scene-cue--success.png","ui/designs_art/work_review/pz_zharp/scene-cue--wrong.png","ui/designs_art/work_review/pz_zshadow/shadow-mask--solved.png"],
   "pz_zthrone": ["ui/designs_art/work_review/pz_aarch/scene-cue--selected.png","ui/designs_art/work_review/pz_aarch/scene-cue--success.png","ui/designs_art/work_review/pz_aarch/scene-cue--wrong.png","ui/designs_art/work_review/pz_arelic/relic--active.png","ui/designs_art/work_review/pz_arelic/relic--blocked.png","ui/designs_art/work_review/pz_arelic/relic--normal.png","ui/designs_art/work_review/pz_arelic/relic--solved.png","ui/designs_art/work_review/pz_pjail/cell-door--active.png","ui/designs_art/work_review/pz_pjail/cell-door--blocked.png","ui/designs_art/work_review/pz_pjail/cell-door--normal.png","ui/designs_art/work_review/pz_pjail/cell-door--solved.png","ui/designs_art/work_review/pz_tmap/environment--dark-supported.webp","ui/designs_art/work_review/pz_tmap/environment--light.webp"]
 };
+
+/* One opt-in gameplay scene; its renderer and art are outside the install shell. */
+self.MINDLAB_SCENE_FILES = {
+  pz_stat: [
+    'ui/engines/scenes/pz_stat.json',
+    'ui/engines/renderers/pz_stat.pixi.js',
+    'vendor/pixi/pixi.min.js?v=8.23.0',
+    'ui/designs_art/work/pz_stat/scene.webp',
+    'ui/designs_art/work/pz_stat/guardians.json',
+    'ui/designs_art/work/pz_stat/guardians.webp'
+  ]
+};
