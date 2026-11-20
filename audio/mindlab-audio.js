@@ -226,3 +226,18 @@
     } catch (_) {}
   }, { capture: true, passive: true });
 })();
+
+/* iPhone silent switch. With the audio session 'ambient' (the default set in index.html) iOS mutes the game when the
+   side switch is on silent, and the player's own music keeps playing. A player who wants the game heard anyway
+   chooses it in «مستواي» (S.st.soundOnSilent): the session becomes 'playback', which plays through the switch but
+   pauses other apps' audio. Only browsers with navigator.audioSession (Safari 16.4+) have this choice. */
+window.mlSilentSound = (function () {
+  const supported = () => { try { return !!navigator.audioSession; } catch (_) { return false; } };
+  const apply = () => { try { if (supported()) navigator.audioSession.type = S.st.soundOnSilent ? 'playback' : 'ambient'; } catch (_) {} };
+  apply();
+  return {
+    supported, apply,
+    get on() { try { return !!S.st.soundOnSilent; } catch (_) { return false; } },
+    set(on) { try { S.st.soundOnSilent = !!on; S.save(); } catch (_) {} apply(); }
+  };
+})();

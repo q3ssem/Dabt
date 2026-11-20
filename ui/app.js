@@ -71,11 +71,22 @@ try {
   /* perf-cleanup D: the theme choice lived only inside the closed «الإعدادات» fold. This row at the top of «مستواي»
      shows it; each chip presses the existing setting button, so there is still one theme setting and one handler. */
   function appearance() {
-    let pref = 'light'; try { pref = S.st.skin || 'dark'; } catch (_) {}
+    let pref = 'light'; try { pref = S.st.skin || document.documentElement.dataset.skin || 'light'; } catch (_) {}
     const row = E('div', { class: 'ui-look', role: 'group', 'aria-label': 'مظهر التطبيق' }, E('b', { text: 'المظهر' }));
     [['light', 'فاتح'], ['dark', 'داكن'], ['auto', 'تلقائي']].forEach(([k, n]) => {
       const b = E('button', { type: 'button', class: 'ui-look-chip' + (pref === k ? ' on' : ''), 'data-look-sk': k, 'aria-pressed': String(pref === k), text: n });
       b.onclick = () => { const real = document.querySelector(`#v-me [data-sk="${k}"]`); if (real) real.click(); };
+      row.append(b);
+    });
+    return row;
+  }
+  /* iPhone silent switch: shown only where the browser can change it (audio/mindlab-audio.js mlSilentSound). */
+  function silentRow() {
+    const M = window.mlSilentSound; if (!M || !M.supported()) return null;
+    const row = E('div', { class: 'ui-look', role: 'group', 'aria-label': 'الصوت مع وضع الصامت' }, E('b', { text: 'الصوت مع الصامت' }));
+    [[true, 'يشتغل'], [false, 'لا يشتغل']].forEach(([v, n]) => {
+      const b = E('button', { type: 'button', class: 'ui-look-chip' + (M.on === v ? ' on' : ''), 'data-silent': String(v), 'aria-pressed': String(M.on === v), text: n });
+      b.onclick = () => { M.set(v); renderMe(); };
       row.append(b);
     });
     return row;
@@ -90,7 +101,7 @@ try {
     const groups = []; rest.forEach(n => { const t = titleOf(n); if (t || !groups.length) groups.push([t || 'المزيد', [n]]); else groups[groups.length - 1][1].push(n); });
     // radar + stats read better together
     const folded = groups.map(([t, nodes]) => { const d = E('details', { class: 'ui-fold', 'data-fold': t }, E('summary', { text: t })); if (wasOpen.has(t)) d.open = true; nodes.forEach(n => d.append(n)); return d; });
-    v.innerHTML = ''; v.append(head, appearance(), dashboard(), ...folded);
+    v.innerHTML = ''; v.append(head, appearance(), ...[silentRow()].filter(Boolean), dashboard(), ...folded);
     const settings = folded.find(d => d.querySelector('#dxBackupStatus')); if (settings) settings.querySelector('summary').textContent = 'الإعدادات والنسخة الاحتياطية';
   };
 
