@@ -106,6 +106,9 @@
         <section class="rv10-bank goal" data-slot="bank1" aria-label="المرج الأخضر"><h4>المرج الأخضر</h4><div class="rv10-items" id="rvb1"></div></section>
         <div class="rv10-boat" data-slot="boat" aria-label="القارب"><div class="rv10-rig" aria-hidden="true"></div><div class="rv10-load" id="rvld"></div></div></div>`;
       const crossButton = $('#lbgo');
+      // Drawing engine (ui/engines/scene-kit.js + scenes/pz_river.json). Rules and state stay here; the view only hears
+      // what changed. Without it (engine/art not ready or failed) this DOM scene is what the player sees.
+      const view = window.mlScene?.mount('pz_river', root.querySelector('.rv10'), { side: 0, passengers: 0 });
       const fs = () => (s & F ? 1 : 0);
       const stageOne = ['wolf', 'sheep', 'grass'];
       const passengerPath = (animal, state) => DESIGNS + (stageOne.includes(animal)
@@ -131,7 +134,7 @@
       function draw() { const f = fs();
         for (const side of [0, 1]) $('#rvb' + side).innerHTML = P.it.map((k, i) => (s >> i & 1) === side && !boat.has(i) ? tok(i, false) : '').join('');
         $('#rvld').innerHTML = [...boat].map(i => tok(i, true)).join(''); boatArt(); $('#rvside').textContent = f ? 'عند اليمين' : 'عند اليسار';
-        root.querySelector('.rv10').classList.toggle('at1', !!f);
+        root.querySelector('.rv10').classList.toggle('at1', !!f); view?.update({ side: f, passengers: boat.size, sailing: false });
         root.querySelectorAll('.rv10-bank .rv10-it').forEach(e => { const i = +e.dataset.tok; e.setAttribute('aria-disabled', (s >> i & 1) !== f ? 'true' : 'false'); }); }
       function tap(i) { if (busy || api.ended) return; if (boat.has(i)) boat.delete(i); else { if ((s >> i & 1) !== fs()) { api.msg('القارب على الضفة الأخرى.'); return; }
           if (boat.size >= P.cap) { api.msg(`القارب يتسع للمزارع و${P.cap === 1 ? 'واحد فقط' : P.cap === 2 ? 'اثنين فقط' : 'ثلاثة فقط'}.`); sfx.bad(); flash(root.querySelector('.rv10-boat')); return; } boat.add(i); }
@@ -148,7 +151,7 @@
         drop: (id, slot) => { const i = +id; if (slot === 'boat' ? !boat.has(i) : boat.has(i)) tap(i); } });
       function cross() { if (busy || api.ended) return; let m = 0; boat.forEach(i => m |= 1 << i); const t = s ^ F ^ m; moves++; busy = true;
         const scene = root.querySelector('.rv10'), vessel = root.querySelector('.rv10-boat');
-        scene.classList.add('sail'); vessel.setAttribute('aria-busy', 'true'); crossButton.disabled = true;
+        scene.classList.add('sail'); view?.update({ sailing: true, passengers: boat.size }); vessel.setAttribute('aria-busy', 'true'); crossButton.disabled = true;
         sound?.play('river.cross');
         later(() => { s = t; boat.clear(); busy = false; scene.classList.remove('sail'); vessel.removeAttribute('aria-busy'); const f = fs(), eat = P.conf.find(([a, c]) => (s >> a & 1) === (s >> c & 1) && (s >> a & 1) !== f); draw();
           if (s !== goal) sound?.play('river.dock');
@@ -162,7 +165,8 @@
           }
           else { crossButton.disabled = false; api.msg(`الرحلات: ${N(moves)} · أقل حل: ${N(P.min)}`); }
         }, reduceMotion.matches ? 120 : 650); }
-      crossButton.onclick = cross; draw(); api.msg(`أقل حل: ${N(P.min)} رحلات.`); pzHook({ P, tap, cross, s: () => s, boat: () => [...boat], moves: () => moves });
+      crossButton.onclick = cross; draw(); api.msg(`أقل حل: ${N(P.min)} رحلات.`);
+      pzHook({ P, tap, cross, s: () => s, boat: () => [...boat], moves: () => moves });
       return { hint: k => { if (k === 1) return `أقل عدد رحلات للحل ${arN(P.min, AN.trip)}، والرجوع يُحسب رحلة. أحيانًا لازم ترجع بأحدهم معك.`; const p = rvPath(n, P.cap, P.conf, s); if (!p || p.length < 2) return 'أنت قريب جدًا!';
           const d = (p[0] ^ p[1]) & (F - 1), names = P.it.filter((_, i) => d >> i & 1).map(k => RVN[k]); return `الخطوة التالية من وضعك الحالي: ${names.length ? 'اعبر ومعك ' + names.join(' و') : 'اعبر وحدك بدون أحد'}.`; },
         reveal: () => `أقل حل كان ${arN(P.min, AN.trip)}.` };

@@ -1,0 +1,51 @@
+{
+ "id": "pz_pipe",
+ "spec": 1,
+ "renderer": "dom",
+ "plannedRenderer": "pixi",
+ "status": "awaiting-art",
+ "model": {
+  "grid": "4×4 … 7×8 by level",
+  "tile": "connection mask of 1–4 sides (end, straight, corner, tee, cross); rotates by quarter turns",
+  "state": "dry / filled with water from the source",
+  "goal": "every tile filled, every house watered"
+ },
+ "frame": {
+  "board": {
+   "cell": 160,
+   "note": "board size = cols×160 by rows×160 plus a 120 border; art must tile"
+  }
+ },
+ "assets_required": {
+  "tile_bg": "160×160 ground tile (2–3 variants)",
+  "pipe": {
+   "kinds": [
+    "end",
+    "straight",
+    "corner",
+    "tee",
+    "cross"
+   ],
+   "states": [
+    "dry",
+    "wet"
+   ],
+   "size": "160×160, drawn pointing up/right, the engine rotates"
+  },
+  "source": "160×160",
+  "house": {
+   "states": [
+    "dry",
+    "watered"
+   ],
+   "size": "160×160"
+  },
+  "fx": [
+   "flow pulse",
+   "rotate hint"
+  ]
+ },
+ "note": "Contract for the art team (ChatGPT Work). The engine keeps the DOM board until this scene has art and a renderer; then only this file and the art folder change.",
+ "assetBase": "ui/designs_art/work/pz_pipe/",
+ "assets": {}
+}

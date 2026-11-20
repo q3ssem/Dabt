@@ -1,0 +1,38 @@
+{
+ "id": "pz_untangle",
+ "spec": 1,
+ "renderer": "dom",
+ "plannedRenderer": "konva",
+ "status": "awaiting-art",
+ "model": {
+  "nodes": "6–16 points, free drag",
+  "edges": "fixed links; goal = no two links cross"
+ },
+ "frame": {
+  "board": {
+   "size": [
+    1000,
+    1000
+   ],
+   "coords": "engine uses 0–100 units; scaled to the board"
+  }
+ },
+ "assets_required": {
+  "board": "1000×1000 background, quiet centre",
+  "node": {
+   "states": [
+    "idle",
+    "dragging",
+    "ok"
+   ],
+   "size": "96×96, anchor centre"
+  },
+  "edge": "stroke colours: normal, crossing, solved (hex) + width",
+  "fx": [
+   "solved"
+  ]
+ },
+ "note": "Contract for the art team (ChatGPT Work). The engine keeps the DOM board until this scene has art and a renderer; then only this file and the art folder change.",
+ "assetBase": "ui/designs_art/work/pz_untangle/",
+ "assets": {}
+}

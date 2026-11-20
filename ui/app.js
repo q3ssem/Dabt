@@ -176,6 +176,7 @@ try {
     'motion/atheran-motion.js',
     'motion/palace-motion.js',
     'motion/lab10.js',
+    'ui/engines/scene-kit.js',
     'motion/pirate-routes.js',
     'ui/fit.js',
     'ui/openings-data.js',

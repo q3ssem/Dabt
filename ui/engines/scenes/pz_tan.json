@@ -1,0 +1,30 @@
+{
+ "id": "pz_tan",
+ "spec": 1,
+ "renderer": "dom",
+ "plannedRenderer": "konva",
+ "status": "awaiting-art",
+ "model": {
+  "grid": "5×5 … 7×7 target region",
+  "pieces": "3–8 polyomino pieces of 3–5 squares, drag + rotate",
+  "goal": "fill the target region exactly"
+ },
+ "frame": {
+  "board": {
+   "cell": 120
+  }
+ },
+ "assets_required": {
+  "target": "region fill texture (tileable 120×120) + outline style",
+  "piece_tile": "120×120 square tile per piece colour (8 colours), seamless when joined",
+  "tray": "background for pieces not yet placed",
+  "fx": [
+   "snap",
+   "wrong place",
+   "solved"
+  ]
+ },
+ "note": "Contract for the art team (ChatGPT Work). The engine keeps the DOM board until this scene has art and a renderer; then only this file and the art folder change.",
+ "assetBase": "ui/designs_art/work/pz_tan/",
+ "assets": {}
+}

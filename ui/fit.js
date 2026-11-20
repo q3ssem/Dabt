@@ -134,10 +134,7 @@
       };
       sync(); tools.append(sound);
     }
-    const main = $('[data-fit-primary]', body);
-    const prior = $('[data-fit-primary]', tools);
-    if (main && prior) prior.remove();
-    if (main && main.parentElement !== tools) tools.append(main);
+    // The river's «cross» button stays on the board, big, under the boat (it is the main action there).
     const q = $('#pzq'); if (q && q.parentElement !== tools) { q.setAttribute('aria-label', q.textContent.trim() === 'رجوع' ? 'رجوع' : 'استسلم'); tools.append(q); }
     const t = $('#pzt'); if (t && !t.dataset.fit) { t.dataset.fit = '1'; t.addEventListener('click', () => { t.hidden = true; }); }
   }

@@ -2,8 +2,15 @@
    a suspended audio device; WebKit may block when sources are started mid-resume. */
 (function installGestureAudioLifecycle(){
   if (typeof audioOK !== 'function' || typeof unlockAudio !== 'function') return;
-  const events = ['pointerdown','touchend','keydown'], oldUnlock = unlockAudio;
-  events.forEach(event => document.removeEventListener(event, oldUnlock, true));
+  const oldEvents = ['pointerdown','touchend','keydown'], oldUnlock = unlockAudio;
+  oldEvents.forEach(event => document.removeEventListener(event, oldUnlock, true));
+  /* perf-cleanup audio fix (iPhone): iOS starts audio only from an activation gesture — touchend / pointerup /
+     click / keydown, not a touch pointerdown. The previous layer let one pending resume() (often the one from
+     pointerdown) block every later gesture, never resumed an 'interrupted' context (after a call, Siri, another
+     app or the tab in the background) and suspended after 5 s, so most sounds were silently dropped.
+     Now every gesture asks again, any non-running state is resumed, and the device sleeps after 30 s outside a
+     round (never during one). */
+  const IDLE_MS = 30000, events = ['pointerdown','pointerup','touchend','click','keydown'];
   let waking = null;
   const idle = ctx => {
     clearTimeout(audioOK.t);
@@ -12,18 +19,18 @@
       const playing = typeof DX !== 'undefined' && typeof DX.inRound === 'function' && DX.inRound();
       if (!document.hidden && !S.st.mute && playing) { idle(ctx); return; }
       ctx.suspend().catch(() => {});
-    }, 5000);
+    }, IDLE_MS);
   };
   unlockAudio = function(){
-    clearTimeout(audioOK.t);
-    if (document.hidden || S.st.mute) { sleepAudio(); return; }
+    if (document.hidden || S.st.mute) { clearTimeout(audioOK.t); sleepAudio(); return; }
     const ctx = acInit();
     if (!ctx) return;
     if (ctx.state === 'running') { idle(ctx); return; }
-    if (ctx.state !== 'suspended' || waking) return;
     try {
-      waking = Promise.resolve(ctx.resume()).catch(() => {}).finally(() => {
-        waking = null;
+      const attempt = Promise.resolve(ctx.resume()).catch(() => {});
+      waking = attempt;
+      attempt.finally(() => {
+        if (waking === attempt) waking = null;
         if ((document.hidden || S.st.mute) && ctx.state === 'running') ctx.suspend().catch(() => {});
         else if (ctx.state === 'running') idle(ctx);
       });
@@ -172,4 +179,50 @@
       }
     };
   };
+})();
+
+/* perf-cleanup audio fix: every board answers a tap. Several presentation layers (the redesigned boards of the
+   river, car park, pipes, flow, tangram, tents…) replaced the engine's board and only kept the error sound, so a
+   correct move was silent. When a tap on a board produced no sound of its own within 90 ms, a short material
+   sound for that puzzle family plays. Nothing is added when the game already sounded, when muted, or outside a
+   board (HUD, intro, results). */
+(function installTapFeedback(){
+  if (typeof sfx !== 'object' || !sfx || !sfx.material || typeof AudioContext === 'undefined') return;
+  let lastSound = 0;
+  const proto = AudioContext.prototype;
+  for (const m of ['createOscillator', 'createBufferSource']) {
+    const own = proto[m];
+    if (typeof own !== 'function') continue;
+    proto[m] = function () { lastSound = performance.now(); return own.apply(this, arguments); };
+  }
+  const M = sfx.material;
+  const FAMILY = [
+    [/^pz_(river|pgarden|aflow|xreef|ytide|zcur|pvalve|flow)$/, 'water'],
+    [/^pz_(rush|tan|soko|ice|xloot|k_rush)$|^k_rush$/, 'wood'],
+    [/^pz_(stat|door|pliar|pboss1|plast|pheart|phall)$/, 'stone'],
+    [/^pz_(pipe|lock|plock|xlock|parm|peng|pclock)$/, 'metal'],
+    [/^pz_(laser|lights|pmirror|pqueen)$/, 'glass'],
+    [/^pz_(grid|sudo|binary|tent|stroke|untangle|rid|plib|pjail|pcrypt|pdragon|ymap|tmap|tpath|zcode)$/, 'pencil'],
+    [/^pz_(a|w)/, 'chime'],
+    [/^pz_[xyzt]/, 'wood'],
+    [/^k_|^dx_k_/, 'hop'],
+  ];
+  const kind = id => { for (const [re, k] of FAMILY) if (re.test(id)) return k; return 'switch'; };
+  const BOARD = '#pzb, #lbb, #stage, #v-puz .t7-puzzle-pane, #v-puz .ex10-game-content';
+  const SKIP = '.pzhud, .fit-tools, .fit-sheet, .intro, .res, #go, .pbar, .t7-tools, .ex10-top-right, .cd';
+  const HIT = 'button, a, [data-i], [data-slot], [data-turn], [data-rot], [data-c], .cell, td, [role="button"], svg [data-i], img, [draggable="true"]';
+  document.addEventListener('pointerup', e => {
+    try {
+      if (S.st.mute || e.button > 0) return;
+      const t = e.target && e.target.closest && e.target.closest(HIT);
+      if (!t || !t.closest(BOARD) || t.closest(SKIP)) return;
+      const at = performance.now();
+      setTimeout(() => {
+        if (lastSound >= at - 5 || S.st.mute || document.hidden) return;
+        let id = ''; try { const g = typeof curGame === 'function' ? curGame() : null; id = g && g.id || ''; } catch (_) {}
+        if (!id && document.querySelector('#v-puz .t7-puzzle-pane, #v-puz .ex10-game-content')) id = 'pz_x';
+        (M[kind(id)] || M.switch)();
+      }, 90);
+    } catch (_) {}
+  }, { capture: true, passive: true });
 })();

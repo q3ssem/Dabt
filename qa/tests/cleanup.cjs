@@ -34,7 +34,7 @@ const manifest = read('offline-manifest.js'), realm={self:{}};vm.runInNewContext
 const all = [...realm.self.MINDLAB_OFFLINE_FILES,...realm.self.MINDLAB_JOURNEY_ART,...realm.self.MINDLAB_GAME_ART,...realm.self.MINDLAB_CORRECTION_ART,...Object.values(realm.self.MINDLAB_EXPEDITION_ART).flat()];
 assert.ok(all.every(x=>!x.startsWith('hasad/') && !gone.includes(x)), 'precache must not reference removed files');
 // The cache generation must have moved past the generation that still held the deleted assets.
-assert.ok(/PATCH='(retired-art-cleanup-1|perf-cleanup-\d+)'/.test(read('sw.js')), 'cache generation must change after deleting assets');
+assert.ok(/PATCH='(retired-art-cleanup-1|perf-cleanup-\d+|engines-\d+)'/.test(read('sw.js')), 'cache generation must change after deleting assets');
 assert.ok(openings.includes("motion/art10/char_"),'lightweight heroine intro art retained');
 assert.ok(hub.includes('ابدأ اللغز') && openings.includes('ابدأ اللغز'),'start action retained in both journeys');
 console.log('MindLab cleanup passed: 80 lightweight puzzle records, 88 library intros, '+map.stations.length+' journey stations; retired assets absent.');

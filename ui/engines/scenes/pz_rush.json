@@ -1,0 +1,59 @@
+{
+ "id": "pz_rush",
+ "spec": 1,
+ "renderer": "dom",
+ "plannedRenderer": "pixi",
+ "status": "awaiting-art",
+ "model": {
+  "grid": [
+   6,
+   6
+  ],
+  "exitRow": 2,
+  "exitSide": "right",
+  "vehicles": "2 or 3 cells long, horizontal or vertical; one hero car (2×1, horizontal, exit row)",
+  "levels": "8 (2–99 moves)"
+ },
+ "frame": {
+  "board": {
+   "size": [
+    1200,
+    1200
+   ],
+   "grid": {
+    "origin": [
+     150,
+     150
+    ],
+    "cell": 150
+   },
+   "exit": {
+    "x": 1050,
+    "y": 450
+   }
+  }
+ },
+ "assets_required": {
+  "board": "1200×1200 background, grid drawn in the art, no text",
+  "hero_2x1_h": "300×150",
+  "car_2x1_h": "300×150 ×4 colour variants",
+  "car_2x1_v": "150×300 ×4",
+  "truck_3x1_h": "450×150 ×2",
+  "truck_3x1_v": "150×450 ×2",
+  "shadow": "one soft shadow per size",
+  "gate": {
+   "states": [
+    "closed",
+    "open"
+   ],
+   "size": "150×150"
+  },
+  "fx": {
+   "selected": "tile overlay",
+   "target": "exit marker"
+  }
+ },
+ "note": "Contract for the art team (ChatGPT Work). The engine keeps the DOM board until this scene has art and a renderer; then only this file and the art folder change.",
+ "assetBase": "ui/designs_art/work/pz_rush/",
+ "assets": {}
+}
