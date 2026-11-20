@@ -1,7 +1,7 @@
 'use strict';
 importScripts('./offline-manifest.js');
 
-const VERSION='5.5.28', PATCH='stat-scene-3', PREFIX='mindlab-';
+const VERSION='5.5.28', PATCH='stat-scene-4', PREFIX='mindlab-';
 const CORE = PREFIX+VERSION+'-'+PATCH+'-core';
 const RUNTIME = PREFIX+VERSION+'-'+PATCH+'-images';
 const BASE = new URL('./', self.location.href);
@@ -9,6 +9,8 @@ const HOME = new URL('index.html', BASE).href;
 const ART = /\.(?:webp|png|jpe?g|svg|avif|gif)$/i;
 const CACHEABLE = /\.(?:js|css|woff2|webmanifest|json|mp3|ogg|opus|m4a|wav)$/i;
 const inFlight = new Map();
+const sceneURLs = new Set(Object.values(self.MINDLAB_SCENE_FILES)
+  .flat().map(path => new URL(path, BASE).href));
 
 // Install the offline shell first. Puzzle art can be fetched independently.
 const shell = self.MINDLAB_OFFLINE_FILES.filter(path => path !== './' && !ART.test(path));
@@ -76,6 +78,14 @@ async function resource(event, url, image) {
   const cache = await caches.open(image ? RUNTIME : CORE);
   const saved = await cache.match(url);
   if (saved) return saved;
+  if (sceneURLs.has(url)) {
+    const preferences = {ignoreVary: true};
+    // The warm fetch and later image/script request can send different headers.
+    // These exact URLs all refer to fixed assets in the shipped app.
+    const warmed = await cache.match(url, preferences) ||
+      await (await caches.open(image ? CORE : RUNTIME)).match(url, preferences);
+    if (warmed) return warmed;
+  }
   try {
     const pending = sharedFetch(url, event.request, cache);
     event.waitUntil?.(pending.stored);

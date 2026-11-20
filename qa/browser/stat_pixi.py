@@ -107,7 +107,13 @@ async def warming(browser):
     await page.locator(".st10").wait_for()
     await page.wait_for_function("() => !!document.querySelector('.st10')?.dataset.scene", timeout=15000)
     board = await page.locator(".st10").get_attribute("data-scene")
-    assert board == "pixi", (board, failures)
+    stored = await page.evaluate("""async files => Object.fromEntries(await Promise.all(
+      (await caches.keys()).map(async key => {
+        const cache = await caches.open(key);
+        return [key, (await Promise.all(files.map(async file =>
+          (await cache.match(new URL(file, location.href)))?.status ?? null)))];
+      })))""", PREWARM)
+    assert board == "pixi", (board, stored, failures[-8:])
     print("Chromium: six scene resources prefetched without executing Pixi, then played offline", flush=True)
     await context.close()
 
