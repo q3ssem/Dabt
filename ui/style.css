@@ -189,3 +189,8 @@ html,body{overflow-x:hidden}
 #play[data-mla-theme] .mla-music-toggle[aria-pressed="true"]{border-color:#87b6a5;background:#eaf5ee;color:#286a58}
 @media(max-width:390px){#play[data-mla-theme] .mla-music-toggle{max-width:118px;overflow:hidden;text-overflow:ellipsis}}
 @media(prefers-reduced-motion:reduce){#play[data-mla-theme] *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
+/* perf-cleanup D: visible theme row at the top of «مستواي» (proxies the existing setting buttons) */
+.ui-look{display:flex;align-items:center;gap:6px;margin:8px 0 12px;padding:6px 8px;border-radius:14px;background:var(--surface,rgba(20,30,80,.05));border:1px solid var(--line,rgba(20,30,80,.14))}
+.ui-look b{font-size:13px;margin-inline-end:auto;color:var(--ink)}
+.ui-look-chip{min-height:36px;min-width:58px;padding:0 12px;border-radius:999px;border:1px solid var(--line,rgba(20,30,80,.14));background:transparent;color:var(--ink);font:700 13px Tajawal,sans-serif}
+.ui-look-chip.on{background:var(--ink);color:var(--bg,#fff);border-color:var(--ink)}

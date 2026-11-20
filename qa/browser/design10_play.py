@@ -134,7 +134,7 @@ async def pipe(pg, lab, P, mode):
     ok(await pg.evaluate("() => document.querySelectorAll('.pp10-c.src .pp10-spring').length === 1 && document.querySelectorAll('.pp10-c.house .pp10-house').length > 0"), f'{lab}: one spring and the houses drawn')
     # every tile's drawn pipe matches its mask: (drawn kind rotated k) == cur mask
     ok(await pg.evaluate("""() => { const P = window.__test.pz.P, base = {pipe_straight: 5, pipe_corner: 6, pipe_tee: 7, pipe_cross: 15, pipe_end: 4};
-        return [...document.querySelectorAll('.pp10-c')].every((b, i) => { const art = b.querySelector('.pp10-pipe').src.split('/').pop().replace(/\.(webp|png)$/, ''), k = +b.querySelector('.pp10-rot').style.getPropertyValue('--k'); let m = base[art]; for (let j = 0; j < k; j++) m = ppRot(m); return m === P.cur[i] }) }"""), f'{lab}: each picture, turned, is exactly the cell\'s pipe mask')
+        return [...document.querySelectorAll('.pp10-c')].every((b, i) => { const art = b.querySelector('.pp10-pipe').src.split('/').pop().replace(/[.](webp|png)$/, ''), k = +b.querySelector('.pp10-rot').style.getPropertyValue('--k'); let m = base[art]; for (let j = 0; j < k; j++) m = ppRot(m); return m === P.cur[i] }) }"""), f'{lab}: each picture, turned, is exactly the cell\'s pipe mask')
     for i in range(P['w'] * P['h']):
         for _ in range(4):
             if await pg.evaluate("(i) => { const P = window.__test.pz.P; return P.cur[i] === P.sol[i] }", i): break

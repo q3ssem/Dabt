@@ -52,9 +52,14 @@ async def main():
                         r['sheetClosed'] = await pg.locator('.fit-sheet').count() == 0
                     if k % 11 == 0:
                         q = pg.locator('.fit-tools #pzq')
-                        if await q.count():
+                        if await q.count() and await q.is_visible():
                             await q.click(); await pg.wait_for_timeout(100)
                             r['giveArm'] = await pg.evaluate("()=>document.querySelector('#pzq').classList.contains('arm')&&!!document.querySelector('#pzq').closest('.fit-tools')")
+                        elif await q.count():  # narrow phone: give up lives in the ⓘ sheet (one-row HUD)
+                            await pg.locator('.fit-tools .fit-info').click(); await pg.wait_for_timeout(200)
+                            await pg.locator('.fit-sheet .fit-sh-give').click(); await pg.wait_for_timeout(100)
+                            r['giveArm'] = await pg.evaluate("()=>document.querySelector('#pzq').classList.contains('arm')&&!!document.querySelector('.fit-sheet .fit-sh-give.arm')")
+                            await pg.locator('.fit-sheet .fit-sh-go').click(); await pg.wait_for_timeout(150)
                     if k % 7 == 0 and await pg.locator('#pzh:not([hidden])').count():
                         await pg.locator('#pzh').click(); await pg.wait_for_timeout(150)
                         if await pg.locator('#pzt:not([hidden])').count():

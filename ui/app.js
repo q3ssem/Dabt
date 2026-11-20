@@ -68,6 +68,18 @@ try {
       E('div', { class: 'ui-island' }, E('img', { src: ART + 'hub_treasure.webp', alt: '', class: 'ui-island-ico' }), E('p', { text: `جزيرة الكنز: ${AR(seals)} / ٧ أختام · ${AR(stars)} نجمة تحدٍّ` })),
       best.length ? E('div', { class: 'ui-best' }, E('h3', { text: 'أفضل نتائجك' }), ...best.map(h => { const g = GM[h.g]; return g ? E('p', {}, E('span', { text: g.name }), E('b', { text: AR(h.idx || h.pts || 0) })) : null; })) : null);
   }
+  /* perf-cleanup D: the theme choice lived only inside the closed «الإعدادات» fold. This row at the top of «مستواي»
+     shows it; each chip presses the existing setting button, so there is still one theme setting and one handler. */
+  function appearance() {
+    let pref = 'light'; try { pref = S.st.skin || 'dark'; } catch (_) {}
+    const row = E('div', { class: 'ui-look', role: 'group', 'aria-label': 'مظهر التطبيق' }, E('b', { text: 'المظهر' }));
+    [['light', 'فاتح'], ['dark', 'داكن'], ['auto', 'تلقائي']].forEach(([k, n]) => {
+      const b = E('button', { type: 'button', class: 'ui-look-chip' + (pref === k ? ' on' : ''), 'data-look-sk': k, 'aria-pressed': String(pref === k), text: n });
+      b.onclick = () => { const real = document.querySelector(`#v-me [data-sk="${k}"]`); if (real) real.click(); };
+      row.append(b);
+    });
+    return row;
+  }
   const me0 = renderMe; renderMe = function () {
     // 5.4.8: a setting (theme, mute, motion…) re-renders this page; keep the folds the player had open.
     const prev = $('#v-me'), wasOpen = new Set(prev ? [...prev.querySelectorAll('details.ui-fold[open]')].map(d => d.dataset.fold) : []);
@@ -78,7 +90,7 @@ try {
     const groups = []; rest.forEach(n => { const t = titleOf(n); if (t || !groups.length) groups.push([t || 'المزيد', [n]]); else groups[groups.length - 1][1].push(n); });
     // radar + stats read better together
     const folded = groups.map(([t, nodes]) => { const d = E('details', { class: 'ui-fold', 'data-fold': t }, E('summary', { text: t })); if (wasOpen.has(t)) d.open = true; nodes.forEach(n => d.append(n)); return d; });
-    v.innerHTML = ''; v.append(head, dashboard(), ...folded);
+    v.innerHTML = ''; v.append(head, appearance(), dashboard(), ...folded);
     const settings = folded.find(d => d.querySelector('#dxBackupStatus')); if (settings) settings.querySelector('summary').textContent = 'الإعدادات والنسخة الاحتياطية';
   };
 

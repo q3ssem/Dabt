@@ -57,8 +57,19 @@
   function openSheet() {
     closeSheet(); sheetPrevFocus = document.activeElement;
     const d = document.createElement('div'); d.className = 'fit-sheet'; d.innerHTML = sheetHTML();
+    const extra = sheetExtras(); if (extra) { const go = $('.fit-sh-go', d); if (go) go.insertAdjacentHTML('beforebegin', extra); }
     d.addEventListener('click', e => {
       if (e.target.closest('.fit-sh-replay')) { const id = gid(); closeSheet(); if (id && window.fitOpenings) window.fitOpenings.open(id, true); return; }
+      const give = e.target.closest('.fit-sh-give'), q = $('#pzq');
+      if (give && q) {
+        const armed = q.classList.contains('arm'); q.click();
+        if (armed || !q.isConnected || !q.classList.contains('arm')) { closeSheet(); return; }
+        give.classList.add('arm'); give.textContent = 'متأكد؟ اضغط مرة ثانية';
+        setTimeout(() => { if (give.isConnected && !q.classList.contains('arm')) { give.classList.remove('arm'); give.textContent = 'استسلم'; } }, 3100);
+        return;
+      }
+      const snd = e.target.closest('.fit-sh-sound'), real = $('#stage .fit-sound');
+      if (snd && real) { real.click(); snd.setAttribute('aria-pressed', String(!S.st.mute)); $('span', snd).textContent = S.st.mute ? 'المؤثرات الصوتية متوقفة' : 'المؤثرات الصوتية تعمل'; return; }
       if (e.target === d || e.target.closest('.fit-sh-go')) closeSheet();
     });
     d.addEventListener('keydown', e => {
@@ -172,11 +183,35 @@
   }
   const framed = () => { const p = $('#play'); return !p || p.classList.contains('xframe'); };
 
+  /* One-row HUD on every phone width. When the controls would wrap to a second row (320 px, or the river's extra
+     sail button), the least-used ones — give up, then the sound toggle — move into the ⓘ sheet, where they act on
+     the same buttons (the double-tap give-up confirmation is the engine's own). Touch targets stay 44 px. */
+  const ONE_ROW = 46;
+  function compactHud() {
+    const h = $('#stage .pzhud'), tools = h && $('.fit-tools', h); if (!tools) return;
+    const moved = $$('.fit-in-sheet', tools); moved.forEach(b => b.classList.remove('fit-in-sheet'));
+    if (!$('.fit-info', tools)) return;
+    const q = $('#pzq', tools), give = q && q.getAttribute('aria-label') === 'استسلم' ? q : null;
+    for (const b of [give, $('.fit-sound', tools)]) {
+      if (!b || h.getBoundingClientRect().height <= ONE_ROW) break;
+      b.classList.add('fit-in-sheet');
+    }
+  }
+  function sheetExtras() {
+    const tools = $('#stage .pzhud .fit-tools'); if (!tools) return '';
+    let html = '';
+    const q = $('#pzq.fit-in-sheet', tools);
+    if (q) html += `<button type="button" class="fit-sh-give${q.classList.contains('arm') ? ' arm' : ''}">${q.classList.contains('arm') ? 'متأكد؟ اضغط مرة ثانية' : 'استسلم'}</button>`;
+    const snd = $('.fit-sound.fit-in-sheet', tools);
+    if (snd) html += `<button type="button" class="fit-sh-sound" aria-pressed="${!S.st.mute}">${I_SOUND}<span>${S.st.mute ? 'المؤثرات الصوتية متوقفة' : 'المؤثرات الصوتية تعمل'}</span></button>`;
+    return html ? `<div class="fit-sh-extra">${html}</div>` : '';
+  }
+
   // zoom the board until it fits under the HUD; below MIN_ZOOM the board scrolls inside itself
   function fit() {
     raf = 0; if (!body || !body.isConnected || fitting || framed()) return; fitting = true;
     try {
-      gardenAmounts();
+      gardenAmounts(); compactHud();
       const pl = $('#play'); if (pl) pl.scrollTop = 0;
       const bounds = pl.querySelector('.pin').getBoundingClientRect();
       const safe = parseFloat(getComputedStyle(pl.querySelector('.pin')).paddingBottom) || 0;

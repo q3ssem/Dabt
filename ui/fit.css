@@ -306,3 +306,17 @@ html[data-skin="dark"] #play[data-la-game^="pz_a"] #pzb .xpaper.xsheet {
 #play[data-la-game="pz_xbottle"].fit #pzb .xbtxt { font-size: 17px; line-height: 1.3; }
 #play[data-la-game="pz_xbottle"].fit #pzb .xbo2 { padding: 4px; min-height: 44px; font-size: 14px; }
 #play[data-la-game="pz_xbottle"].fit #pzb .xbopts { gap: 4px 6px; margin-top: 2px; }
+
+/* perf-cleanup D: one-row HUD — give up / sound move into the ⓘ sheet only when the row would wrap (ui/fit.js compactHud) */
+#play.fit .fit-tools .fit-in-sheet{display:none!important}
+#play.fit .fit-sh-extra{display:flex;flex-wrap:wrap;gap:8px;margin:4px 0 10px}
+#play.fit .fit-sh-extra button{flex:1 1 140px;min-height:44px;border-radius:14px;font-weight:800;font-size:15px;display:flex;align-items:center;justify-content:center;gap:8px;background:transparent}
+#play.fit .fit-sh-give{border:1.5px solid #C0392B;color:#B03224}
+#play.fit .fit-sh-give.arm{background:#C0392B!important;color:#fff}
+#play.fit .fit-sh-sound{border:1.5px solid #8a7a56;color:#5a4528}
+#play.fit .fit-sh-sound svg{width:20px;height:20px}
+#play.fit .fit-sh-sound[aria-pressed="false"]{opacity:.75;text-decoration:line-through}
+html[data-skin="dark"] #play.fit .fit-sh-give{border-color:#FF8A7A;color:#FFB4A8}
+html[data-skin="dark"] #play.fit .fit-sh-sound{border-color:#7f9599;color:#EEF1FF}
+/* Intro screens: the start button stays on screen (sticky in the scrolling play surface), so starting never needs a scroll. */
+#play #stage:has(>.intro)>#go.go-btn{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:6;box-shadow:0 8px 22px rgba(0,0,0,.22)}
