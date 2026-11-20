@@ -20,7 +20,8 @@
       await app.init({
         width: Math.max(1, host.clientWidth), height: Math.max(1, host.clientHeight),
         resolution: Math.min(window.devicePixelRatio || 1, 2), autoDensity: true,
-        preference: 'webgl', autoStart: false, autoGarbageCollect: false
+        preference: 'webgl', autoStart: false, preserveDrawingBuffer: true,
+        eventFeatures: {move: false, globalMove: false, click: false, wheel: false}
       });
     } catch (error) {
       if (app.renderer) app.destroy(true, {children: true});

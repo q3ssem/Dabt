@@ -249,3 +249,4 @@ html[data-skin="dark"] .lb[data-lb="rush"] .rh10::before{background:rgba(255,245
 .st10 > .scene-canvas{position:absolute;inset:0;pointer-events:none;border-radius:12px}
 .st10.scene-on .st10-g{visibility:hidden}
 .st10.scene-on .st10-door{display:none}
+#play.fit:not(.xframe) #pzb:has(.st10){justify-content:flex-start}

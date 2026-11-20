@@ -1,5 +1,7 @@
 """Exercise the new statue view, the original moves and progress, and offline warming."""
 import asyncio
+import io
+from PIL import Image
 import os
 import sys
 from pathlib import Path
@@ -36,12 +38,18 @@ async def play(browser, width, height):
     await page.locator(SCENE).wait_for(timeout=15000)
     assert await page.locator(f"{SCENE} > canvas").count() == 1
     for skin in ("light", "dark"):
-        await page.evaluate("skin => document.documentElement.dataset.skin = skin", skin)
+        await page.evaluate("skin => { S.st.skin = skin; document.documentElement.dataset.skin = skin }", skin)
+        await page.wait_for_timeout(350)
         assert await page.locator(".st10-s").evaluate_all("""buttons => buttons.every(b => {
           const r = b.getBoundingClientRect(), hit = document.elementFromPoint(r.x+r.width/2, r.y+r.height/2);
           return r.width >= 44 && r.height >= 44 && b.contains(hit);
         })""")
         await page.screenshot(path=f"/tmp/stat-qa/{ENGINE}-{width}-{skin}.png")
+        preview = Image.open(io.BytesIO(await page.locator(SCENE).screenshot())).convert("RGB")
+        # Idle rendering still needs to show the painted hall, even after screenshot compositing.
+        preview.thumbnail((120, 120))
+        painted = sum(1 for red, green, blue in preview.getdata() if red+green+blue > 100 and max(red,green,blue)-min(red,green,blue)>16)
+        assert painted > preview.width * preview.height * .22, (ENGINE, width, skin, painted)
     await page.locator("#pzh").click()
     assert await page.locator("#pzt").is_visible()
     before = await page.evaluate("() => JSON.stringify(pzState())")
