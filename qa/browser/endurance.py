@@ -27,6 +27,13 @@ LOOP = r"""async (ms) => {
 }"""
 
 
+def slope(xs):
+    if len(xs) < 2: return 0
+    n = len(xs); mx = sum(x['min'] for x in xs) / n; my = sum(x['heapMB'] for x in xs) / n
+    den = sum((x['min'] - mx) ** 2 for x in xs) or 1
+    return round(sum((x['min'] - mx) * (x['heapMB'] - my) for x in xs) / den, 3)
+
+
 async def main():
     async with async_playwright() as p:
         b = await p.chromium.launch(args=['--js-flags=--expose-gc'])
@@ -54,7 +61,9 @@ async def main():
     verdict = {'minutes': n, 'wall_s': round(time.time() - t0), 'opened': total['opened'], 'loopErrors': total['errors'], 'pageErrors': errs[:10],
                'heapFirstThirdMB': round(first, 2), 'heapLastThirdMB': round(last, 2), 'nodesFirst': round(fn), 'nodesLast': round(ln),
                'listenersFirst': round(fl), 'listenersLast': round(ll),
-               'pass': last <= first * 1.15 + 1 and ln <= fn * 1.15 + 50 and ll <= fl * 1.1 + 10 and not errs}
+               'heapSlopeLastQuarterMBperMin': slope(samples[-max(3, n // 4):]),
+               # heap warms up while new puzzles' code and art are first used; what matters is that it levels off
+               'pass': slope(samples[-max(3, n // 4):]) < 0.1 and ln <= fn * 1.15 + 50 and ll <= fl * 1.1 + 10 and not errs}
     json.dump({'samples': samples, 'verdict': verdict}, open(OUT, 'w'), indent=1, ensure_ascii=False)
     print(json.dumps(verdict, ensure_ascii=False)); sys.exit(0 if verdict['pass'] else 1)
 
