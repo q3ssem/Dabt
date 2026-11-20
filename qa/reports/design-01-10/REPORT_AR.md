@@ -6,7 +6,7 @@
 ## ما نُفّذ
 - تسعة ألغاز (02–10) صارت تُرسم بتصاميم الحزمة فوق المولدات والمحركات الحالية نفسها: لم يتغير أي معرّف لغز ولا قاعدة ولا مستوى ولا مفتاح حفظ (`miran:v2` و`mindlab:expedition10:v1`).
 - كل لوحة فيها بطاقة الثلاثي (رواء ونهى وورد) وتختفي مع أول حركة، وشريط سفلي فيه التلميح والزر الرئيسي.
-- سؤال الصناديق (pz_rid) بقي **معاينة مستقلة فقط**: `motion/preview/pz_rid.html`. غير مربوط باللعبة ولا بالكاش ولا بأي رابط.
+- سؤال الصناديق (pz_rid) كان له عرض تجريبي مستقل. حُذف ملف المعاينة في التنظيف، وتبقى [صور المعاينة](shots/pz_rid_preview_390.webp) هنا.
 - الصور الـ61 من الحزمة في `motion/art10/` ومضافة إلى قائمة العمل دون اتصال. رقعة الكاش: `design-01-10`.
 - لم يُلمس `index.html` ولا `tv/` ولا مسارات atheran ولا أصول Expedition10.
 
@@ -48,7 +48,7 @@
 معدّلة: `ui/app.js` (تحميل الملفين)، `offline-manifest.js`، `sw.js` (رقعة الكاش)، `qa/browser/atheran_ui_sweep.py`، `qa/browser/smoke.py`.
 
 ## التجربة محليًا
-فك الـZIP، ثم شغّل `python3 -m http.server 8000` داخل المجلد وافتح `http://localhost:8000/`. المعاينة: `http://localhost:8000/motion/preview/pz_rid.html`.
+فك الـZIP، ثم شغّل `python3 -m http.server 8000` داخل المجلد وافتح `http://localhost:8000/`.
 الاختبار: `python3 qa/browser/design10_play.py http://localhost:8000/ <مجلد الحزمة>`.
 
 صور قبل وبعد على 390: `qa/reports/design-01-10/shots/`.

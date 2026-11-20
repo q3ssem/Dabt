@@ -31,7 +31,6 @@
   }
   if (document.readyState === 'complete') queueRecentScene();
   else window.addEventListener('load', queueRecentScene, {once: true});
-  serviceWorker.addEventListener('controllerchange', () => defer(flushScene));
   document.addEventListener('visibilitychange', () => { if (!document.hidden) defer(flushScene); });
 
   const pending = new Set();
@@ -41,7 +40,10 @@
     for (const puzzleId of pending) worker.postMessage({type:'warm-puzzle-art', puzzleId});
     pending.clear();
   }
-  serviceWorker.addEventListener('controllerchange', () => defer(flushPuzzles));
+  serviceWorker.addEventListener('controllerchange', () => defer(() => {
+    flushScene();
+    flushPuzzles();
+  }));
   function warmPuzzle(puzzleId) {
     if (!puzzleId || pending.has(puzzleId) || navigator.connection?.saveData) return;
     pending.add(puzzleId);
