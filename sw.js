@@ -1,9 +1,10 @@
 'use strict';
 importScripts('./offline-manifest.js');
 
-const VERSION='5.5.28', PATCH='stat-scene-4', PREFIX='mindlab-';
+const VERSION='5.5.28', PATCH='stat-scene-5', PREFIX='mindlab-';
 const CORE = PREFIX+VERSION+'-'+PATCH+'-core';
 const RUNTIME = PREFIX+VERSION+'-'+PATCH+'-images';
+const SCENES = PREFIX+VERSION+'-'+PATCH+'-scenes';
 const BASE = new URL('./', self.location.href);
 const HOME = new URL('index.html', BASE).href;
 const ART = /\.(?:webp|png|jpe?g|svg|avif|gif)$/i;
@@ -21,7 +22,7 @@ self.addEventListener('install', event => {
 });
 self.addEventListener('activate', event => {
   event.waitUntil(caches.keys()
-    .then(names => Promise.all(names.filter(name => name.startsWith(PREFIX) && name !== CORE && name !== RUNTIME)
+    .then(names => Promise.all(names.filter(name => name.startsWith(PREFIX) && name !== CORE && name !== RUNTIME && name !== SCENES)
       .map(name => caches.delete(name))))
     .then(() => self.clients.claim()));
 });
@@ -75,17 +76,9 @@ async function navigate(request, url, relative) {
 }
 
 async function resource(event, url, image) {
-  const cache = await caches.open(image ? RUNTIME : CORE);
+  const cache = await caches.open(sceneURLs.has(url) ? SCENES : image ? RUNTIME : CORE);
   const saved = await cache.match(url);
   if (saved) return saved;
-  if (sceneURLs.has(url)) {
-    const preferences = {ignoreVary: true};
-    // The warm fetch and later image/script request can send different headers.
-    // These exact URLs all refer to fixed assets in the shipped app.
-    const warmed = await cache.match(url, preferences) ||
-      await (await caches.open(image ? CORE : RUNTIME)).match(url, preferences);
-    if (warmed) return warmed;
-  }
   try {
     const pending = sharedFetch(url, event.request, cache);
     event.waitUntil?.(pending.stored);
@@ -121,10 +114,9 @@ async function warmArt(files) {
 }
 
 async function warmScene(files) {
-  const core = await caches.open(CORE), images = await caches.open(RUNTIME);
+  const cache = await caches.open(SCENES);
   for (const file of files) {
     const url = new URL(file, BASE);
-    const cache = ART.test(url.pathname) ? images : core;
     try {
       if (await cache.match(url.href)) continue;
       await sharedFetch(url.href, new Request(url, {priority: 'low'}), cache).stored;

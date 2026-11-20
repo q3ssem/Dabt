@@ -91,18 +91,23 @@ async def warming(browser):
     assert not await page.evaluate("async files => !!await caches.match(new URL(files[2], location.href))", PREWARM)
     await page.evaluate("() => localStorage.setItem('mindlab:recent-puzzle-scene', 'pz_stat')")
     await page.reload()
-    await page.wait_for_function("""async files => (await Promise.all(
-        files.map(file => caches.match(new URL(file, location.href))))).every(Boolean)
-    """, arg=PREWARM, timeout=35000)
+    for _ in range(120):
+        ready = await page.evaluate("""async files => (await Promise.all(files.map(
+          async file => (await caches.match(new URL(file, location.href)))?.status))).every(s => s === 200)
+        """, PREWARM)
+        if ready:
+            break
+        await asyncio.sleep(.25)
+    assert ready, "the scene did not finish warming before disconnect"
     assert not await page.evaluate("() => !!window.PIXI")
     failures = []
     page.on("console", lambda msg: failures.append(msg.text) if msg.type in ("warning", "error") else None)
     page.on("requestfailed", lambda req: failures.append(f"{req.failure} {req.url}"))
     page.on("response", lambda res: failures.append(f"{res.status} {res.url}") if res.status >= 400 else None)
-    await context.set_offline(True)
     profile = page.locator(".mpc[data-m=main]")
     if await profile.is_visible():
         await profile.click()
+    await context.set_offline(True)
     await open_game(page, "pz_stat")
     await page.locator(".st10").wait_for()
     await page.wait_for_function("() => !!document.querySelector('.st10')?.dataset.scene", timeout=15000)
