@@ -59,6 +59,7 @@ html[data-skin="dark"] #play.fit .fit-tools .pzgive{background:#253538;border-co
 
 /* Guided board sizing keeps HUD and touch targets at native scale. */
 #play.fit:not(.xframe) #pzb:has(.lb[data-layout]){justify-content:safe center}
+#play.fit:not(.xframe) #pzb:has(.lb[data-lb="stat"]){justify-content:flex-start}
 #play.fit:not(.xframe) #pzb:has(.lb[data-layout])::before,
 #play.fit:not(.xframe) #pzb:has(.lb[data-layout])::after{content:none}
 #play.fit #pzb .lb[data-layout]>.lb-board{padding:0;border:0;background:none}

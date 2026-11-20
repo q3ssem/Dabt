@@ -20,7 +20,8 @@
       await app.init({
         width: Math.max(1, host.clientWidth), height: Math.max(1, host.clientHeight),
         resolution: Math.min(window.devicePixelRatio || 1, 2), autoDensity: true,
-        preference: 'webgl', autoStart: false, preserveDrawingBuffer: true,
+        // This small scene also needs reliable retained frames in WebKit.
+        preference: 'canvas', autoStart: false,
         eventFeatures: {move: false, globalMove: false, click: false, wheel: false}
       });
     } catch (error) {
@@ -111,7 +112,6 @@
       observer.disconnect();
       theme.disconnect();
       media.removeEventListener('change', motionChange);
-      canvas.removeEventListener('webglcontextlost', destroy);
       host.classList.remove('scene-on');
       delete host.dataset.scene;
       app.destroy(true, {children: true});
@@ -130,7 +130,6 @@
       observer.observe(host);
       theme.observe(skin, {attributes: true, attributeFilter: ['data-skin']});
       media.addEventListener('change', motionChange);
-      canvas.addEventListener('webglcontextlost', destroy);
       return {update, destroy};
     } catch (error) {
       destroy();

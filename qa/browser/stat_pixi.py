@@ -48,7 +48,7 @@ async def play(browser, width, height):
         preview = Image.open(io.BytesIO(await page.locator(SCENE).screenshot())).convert("RGB")
         # Idle rendering still needs to show the painted hall, even after screenshot compositing.
         preview.thumbnail((120, 120))
-        painted = sum(1 for red, green, blue in preview.getdata() if red+green+blue > 100 and max(red,green,blue)-min(red,green,blue)>16)
+        painted = sum(1 for red, green, blue in preview.get_flattened_data() if red+green+blue > 100 and max(red,green,blue)-min(red,green,blue)>16)
         assert painted > preview.width * preview.height * .22, (ENGINE, width, skin, painted)
     await page.locator("#pzh").click()
     assert await page.locator("#pzt").is_visible()
