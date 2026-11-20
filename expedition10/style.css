@@ -109,11 +109,7 @@ html[data-skin="dark"] .ex10 .ex10-btn.secondary{background:#243148;color:#EEF1F
 @media(max-width:650px){.ex10-pipe-board{gap:4px;padding:6px}.ex10-pipe-empty,.ex10-pipe-end,.ex10-pipe-tile{border-radius:7px}.ex10-pipe-tile small{font-size:7px}.ex10-ice-board{gap:4px;padding:6px}.ex10-ice-cell{font-size:19px}.ex10-ice-status{font-size:10px}.ex10-ice-controls{gap:4px}.ex10-ice-controls button{font-size:11px;padding:9px 3px}.ex10-nim-heaps{gap:5px}.ex10-nim-heap{padding:8px 3px}.ex10-nim-stones{font-size:17px;min-height:54px}.ex10-nim-takes{gap:3px}.ex10-nim-takes button{font-size:9px;padding:6px 5px}.ex10-shadow-lamps{gap:4px}.ex10-shadow-lamp{padding:8px 3px}.ex10-shadow-lamp .shadow-shape{width:50px;height:50px;font-size:24px}.ex10-shadow-lamp button{font-size:9px;padding:7px 4px}.ex10-cipher-disc{padding:11px}.ex10-cipher-disc .cipher-ring{width:70px;height:70px;font-size:32px}}
 
 /* Expedition 20 — stages 16–20. Five additional handcrafted interactive mechanics. */
-.ex10-manifest-list{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:9px;max-width:560px;margin:14px auto}
-.ex10-manifest-slot{display:grid;gap:6px;padding:10px;border:1px solid #c49b5c;border-radius:13px;background:linear-gradient(145deg,#fff5e1,#dfc69a);color:#604526;font-size:12px;font-weight:900}
-.ex10-manifest-slot select{width:100%;min-height:42px;border:1px solid #a77f43;border-radius:9px;padding:7px 9px;background:#fff9ec;color:#49351f;font:inherit;font-weight:800}
-.ex10-manifest-cargo{display:flex;flex-wrap:wrap;justify-content:center;gap:8px;margin:10px auto;padding:10px;border-radius:13px;background:#173c46;color:#f8e5bd;max-width:560px}
-.ex10-manifest-cargo span{padding:7px 10px;border:1px solid #d1ad6c;border-radius:9px;background:#274c50;font-size:12px}
+
 .ex10-tide-stage{max-width:500px;margin:14px auto;padding:14px;border:2px ridge #c69d56;border-radius:20px;background:radial-gradient(circle at 50% 45%,#386f75,#142f3c 72%);color:#fff1cc;box-shadow:inset 0 0 28px #061c2a99}
 .ex10-tide-wheel{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:7px;max-width:380px;margin:0 auto}
 .ex10-tide-sector{display:grid;place-items:center;gap:2px;aspect-ratio:1;border:1px solid #c99e5d;border-radius:50%;background:linear-gradient(145deg,#e7d2a7,#967047);color:#49351f;box-shadow:inset 0 1px #fff9,0 3px 7px #061b2688}
@@ -145,7 +141,7 @@ html[data-skin="dark"] .ex10 .ex10-btn.secondary{background:#243148;color:#EEF1F
 .ex10-knight-cell.goal{background:radial-gradient(circle,#fff3b0,#a66d2b);border:2px solid #f4d58a}
 .ex10-knight-cell.visited{background:linear-gradient(145deg,#a5c6a5,#4e8174);color:#143f3d}
 @media(max-width:650px){
- .ex10-manifest-list{gap:6px}.ex10-manifest-slot{padding:7px;font-size:11px}.ex10-manifest-slot select{font-size:11px;min-height:40px;padding:5px}
+ 
  .ex10-tide-stage{padding:9px}.ex10-tide-wheel{gap:5px}.ex10-tide-sector b{font-size:17px}.ex10-tide-sector small{font-size:8px}.ex10-tide-readout{font-size:10px;gap:6px}
  .ex10-relic-board,.ex10-crate-board,.ex10-knight-board{gap:3px;padding:6px}.ex10-relic-tile span{font-size:21px}.ex10-relic-empty{font-size:19px}.ex10-crate-cell{font-size:18px}.ex10-knight-cell{font-size:18px}
  .ex10-crate-controls{gap:5px}.ex10-crate-controls button{min-height:42px}
@@ -187,18 +183,12 @@ html[data-skin="dark"] .ex10 .ex10-btn.secondary{background:#243148;color:#EEF1F
 .ex10-hanoi-stack .disk-space{height:0;width:100%}
 .ex10-hanoi-peg>b{font-size:12px}
 .ex10-hanoi-peg small{font-size:10px;color:#78552c}
-.ex10-seal-clues{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;max-width:560px;margin:12px auto}
-.ex10-seal-clues div{padding:10px;border:1px solid #c5a16a;border-radius:11px;background:linear-gradient(145deg,#fff4dd,#e7d1a7);color:#66482a;font-size:12px;line-height:1.55;text-align:center}
-.ex10-seal-slots{display:grid;grid-template-columns:repeat(5,minmax(0,1fr));gap:7px;max-width:610px;margin:14px auto;padding:10px;border:3px ridge #b68d50;border-radius:17px;background:linear-gradient(145deg,#233e46,#10252d)}
-.ex10-seal-slot{display:grid;justify-items:center;gap:5px;min-width:0;padding:8px 3px;border:1px solid #b48a4a;border-radius:11px;background:linear-gradient(145deg,#fff0ca,#cfab6d);color:#634524}
-.ex10-seal-slot small{font-size:9px;font-weight:900}
-.ex10-seal-slot span{font-size:26px;color:#215460}
-.ex10-seal-slot select{width:100%;min-width:0;padding:6px 2px;border:1px solid #9e7844;border-radius:8px;background:#fff8e8;color:#533b20;font-size:10px;font-weight:900;text-align:center}
+
 @media(max-width:650px){
  .ex10-maze-board{gap:3px;padding:6px}.ex10-maze-cell{border-radius:5px}
  .ex10-jugs{gap:12px;padding:12px 4px}.ex10-jug-glass{width:88px;height:154px}.ex10-jug.large .ex10-jug-glass{width:96px;height:178px}.ex10-jug-actions{gap:5px}.ex10-jug-actions button{font-size:10px;min-height:43px}
  .ex10-signal-board{gap:6px;padding:7px}.ex10-signal-cell{font-size:27px;border-radius:9px}
- .ex10-hanoi-board{gap:5px;padding:6px}.ex10-hanoi-peg{min-height:178px;padding:6px 2px}.ex10-hanoi-stack{height:112px}.ex10-hanoi-stack .disk{height:25px}.ex10-seal-clues{gap:5px}.ex10-seal-clues div{padding:7px 5px;font-size:10px}.ex10-seal-slots{gap:4px;padding:6px}.ex10-seal-slot{padding:6px 1px}.ex10-seal-slot span{font-size:21px}.ex10-seal-slot select{font-size:9px;padding:5px 0}
+ .ex10-hanoi-board{gap:5px;padding:6px}.ex10-hanoi-peg{min-height:178px;padding:6px 2px}.ex10-hanoi-stack{height:112px}.ex10-hanoi-stack .disk{height:25px}
 }
 
 /* 5.5.24 — presentation polish: authored heroine poses, clearer progress and touch-first layout. */
@@ -289,7 +279,6 @@ html[data-skin="dark"] .ex10 .ex10-btn.secondary{background:#243148;color:#EEF1F
 .ex10-crew-mini .ex10-heroine img{width:50px;height:64px;object-fit:contain}
 .ex10-heroine[data-mood="worried"] img{filter:drop-shadow(0 4px 3px #38251835)}
 
-
 /* 5.5.25 — expanded heroine emotions: curious discovery and explicit celebration poses. */
 .ex10-heroine[data-mood="curious"]{border-color:#6faaa1;background:linear-gradient(145deg,#fdf8e9,#d6e9df);box-shadow:inset 0 0 0 1px #8dbfb0,0 3px 9px #1b514b18}
 .ex10-heroine[data-mood="happy"],.ex10-heroine[data-mood="celebrate"]{border-color:#d6aa50;background:linear-gradient(145deg,#fff8dc,#f4d99c);box-shadow:inset 0 0 0 1px #ebcb78,0 3px 10px #8c5b1d22}
@@ -297,8 +286,6 @@ html[data-skin="dark"] .ex10 .ex10-btn.secondary{background:#243148;color:#EEF1F
 .ex10-heroine img.pose-switching{opacity:.12;filter:blur(2px) drop-shadow(0 3px 3px #38251830)}
 .ex10-heroine img{will-change:opacity,filter}
 @media(prefers-reduced-motion:reduce){.ex10-heroine,.ex10-heroine img{transition:none!important;animation:none!important}}
-
-
 
 /* 5.5.27 — a bespoke illustrated object pack for all 25 puzzles. */
 .ex10-art-details{display:flex;align-items:stretch;gap:7px;margin:8px 0 11px;overflow-x:auto;overscroll-behavior-inline:contain;padding:2px 1px 5px;scrollbar-width:thin}

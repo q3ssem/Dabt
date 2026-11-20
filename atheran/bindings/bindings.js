@@ -57,7 +57,7 @@
   const seen = id => { if (id && window.__test) (window.__ahPieceSeen = window.__ahPieceSeen || {})[id] = 1; };
   function paint(gid) {
     const cfg = PIECES[gid], pzb = $('#pzb'); if (!cfg || !pzb) return;
-    pzb.dataset.ahPieces = gid;
+    if (pzb.dataset.ahPieces !== gid) pzb.dataset.ahPieces = gid;
     pzb.querySelectorAll(cfg.piece).forEach(el => {
       const st = stateOf(gid, cfg, el, pzb), id = st ? artId(gid, cfg.art, st) : '', u = id ? url(id) : ''; seen(id);
       if (cfg.mode === 'svg') {
@@ -66,11 +66,13 @@
         const c = el.querySelector('circle'); if (!c) return;
         if (!im) { im = document.createElementNS(SVGNS, 'image'); im.setAttribute('class', 'ah-pc'); im.setAttribute('pointer-events', 'none'); const t = el.querySelector('text'); el.insertBefore(im, t || null); }
         const at = cfg.svgAt || [0, 0, 13], cx = +c.getAttribute('cx') + at[0], cy = +c.getAttribute('cy') + at[1], r = at[2];
-        im.setAttribute('x', cx - r); im.setAttribute('y', cy - r); im.setAttribute('width', 2 * r); im.setAttribute('height', 2 * r);
-        if (im.getAttribute('href') !== u) im.setAttribute('href', u);
-        im.dataset.state = st; im.dataset.asset = id; return;
+        for (const [k, v] of [['x', cx - r], ['y', cy - r], ['width', 2 * r], ['height', 2 * r], ['href', u], ['data-state', st], ['data-asset', id]]) if (im.getAttribute(k) !== String(v)) im.setAttribute(k, v);
+        return;
       }
-      el.classList.add('ah-piece', cfg.mode === 'fill' ? 'ah-piece-fill' : cfg.mode === 'cap' ? 'ah-piece-cap' : 'ah-piece-badge');
+      // Only real changes: the observer below watches class attributes, and re-adding present classes every paint
+      // queued a mutation each frame (a permanent requestAnimationFrame loop while a station was open).
+      const kind = cfg.mode === 'fill' ? 'ah-piece-fill' : cfg.mode === 'cap' ? 'ah-piece-cap' : 'ah-piece-badge';
+      if (!el.classList.contains('ah-piece') || !el.classList.contains(kind)) el.classList.add('ah-piece', kind);
       if (el.dataset.ahState !== st) { el.dataset.ahState = st; el.dataset.ahAsset = id; el.style.setProperty('--ah-piece', u ? `url("${u}")` : 'none'); }
     });
   }
@@ -240,7 +242,7 @@
   let raf = 0;
   const tick = () => { raf = 0; const play = $('#play'), g = play && !play.hidden && play.dataset.laGame; const pzb = $('#pzb');
     if (g && (isStation(g) || isSecret(g))) warmStation(g);
-    if (pzb && pzb.classList.contains('solved') && play) play.dataset.ahOutcome = 'win';
+    if (pzb && pzb.classList.contains('solved') && play && play.dataset.ahOutcome !== 'win') play.dataset.ahOutcome = 'win';
     if (g && PIECES[g]) paint(g); frames(); };
   const schedule = () => { if (!raf) raf = requestAnimationFrame(tick); };
   const play = $('#play');

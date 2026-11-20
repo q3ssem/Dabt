@@ -167,7 +167,7 @@ html[data-skin="light"] .t7 .v5-gate{background:var(--ml-gold-soft)!important;bo
 html[data-skin="light"] .t7 .v5-done{background:var(--ml-good-soft)!important;color:var(--ml-ink)!important;border:1px solid color-mix(in srgb,var(--ml-good) 30%,transparent)!important}
 html[data-skin="light"] .t7 .v5-say{color:var(--ml-ink)!important}
 html[data-skin="light"] .t7 .t7-location{background:rgba(255,255,255,.92)!important;color:var(--ml-ink)!important;border:1px solid var(--ml-line)!important;backdrop-filter:blur(4px)}
-html[data-skin="light"] .t7 .v5-intro-face,html[data-skin="light"] .t7 .v5-say-face{background-color:var(--ml-sunken)!important;border:2px solid var(--ml-surface)!important;box-shadow:var(--ml-sh-1)!important}
+html[data-skin="light"] .t7 .v5-intro-face{background-color:var(--ml-sunken)!important;border:2px solid var(--ml-surface)!important;box-shadow:var(--ml-sh-1)!important}
 html[data-skin="light"] .t7 .v5-intro-goal{background:var(--ml-accent-soft)!important;color:var(--ml-ink)!important;border:1px solid color-mix(in srgb,var(--ml-accent) 25%,transparent)!important}
 html[data-skin="light"] .t7 .v5-intro-goal b{color:var(--ml-accent)!important}
 

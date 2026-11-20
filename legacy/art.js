@@ -3,6 +3,8 @@
    clocks, correct answers, difficulty ladders and result calculation remain in index.html. */
 (function(){
 const root=window,LA=root.LA={version:1,view:null,failed:new Set(),loaded:new Set()},E=DX.el,$=DX.$,A=DX.AR;
+// One shared canvas hook: art layers register here instead of each re-wrapping getContext (deep.js, watercolor/app.js).
+LA.canvasHooks=[];LA.canvasHook=function(hook){LA.canvasHooks.push(hook);const proto=typeof HTMLCanvasElement!=='undefined'&&HTMLCanvasElement.prototype;if(!proto||proto.getContext.laHooks)return;const nativeContext=proto.getContext;proto.getContext=function(type){const ctx=nativeContext.apply(this,arguments);if(type==='2d'&&ctx)for(const run of LA.canvasHooks){try{run(ctx,this);}catch(e){}}return ctx;};proto.getContext.laHooks=true;};
 const normalize=s=>String(s).replace(/\ufe0f/g,'');
 const escape=s=>String(s).replace(/[&<>"']/g,c=>({'&':'&amp;','<':'&lt;','>':'&gt;','"':'&quot;',"'":'&#39;'}[c]));
 const sheets={

@@ -54,7 +54,7 @@
 .mk-sp.pulse circle:not(.halo){animation:mk-pulse .5s ease-out}
 .mk-sp.relit circle:not(.halo){filter:none;transition:filter .6s}
 @keyframes mk-pulse{0%{transform-box:fill-box;transform-origin:center;transform:scale(1.35)}100%{transform:scale(1)}}
-.mk-simrow{display:grid;grid-template-columns:minmax(120px,40%) 1fr;gap:8px;align-items:stretch;margin:6px 0}
+
 .mk-slot.sim{background:repeating-linear-gradient(135deg,#F3E6CA 0 8px,#FFF8E8 8px 16px)}
 .mk-simout,.mk-cmpout{display:block;padding:8px 10px;border-radius:11px;background:#F7EEDB;font-size:12.5px;line-height:1.5}
 .mk-simout.good,.mk-cmpout.good{background:#EAF6EC;color:#1E5B3A}.mk-simout.bad,.mk-cmpout.bad{background:#FBEDEA;color:#7E2A20}
@@ -81,7 +81,6 @@
 /* ---------- motion-batch-1: xbottle gate ---------- */
 .xbnudge{animation:mkshake .35s}
 @keyframes mkshake{20%{transform:translateX(-5px)}40%{transform:translateX(5px)}60%{transform:translateX(-3px)}80%{transform:translateX(3px)}}
-
 
 /* ---------- priority-7 R4: pz_acity ---------- */
 .ac-top{display:flex;justify-content:space-between;align-items:center;gap:8px;margin:4px 0}
@@ -231,7 +230,6 @@
 .arl-tline{display:block;font-weight:800;color:#1F6E66;font-size:13px;margin-bottom:4px}
 .mk-slot.truth.full{background:#E8F6F3;border-color:#2E8A80}
 @media (max-width:360px){.po-board{width:calc(100% + 24px);max-width:none;margin-inline:-12px;padding:2px;border-radius:10px}}
-
 
 /* Keep navigation out of the board and give every Treasure station the same compact layout. */
 #v-puz.t7 .t7-compact-top {

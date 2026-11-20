@@ -73,7 +73,8 @@ async def main():
         await ev("() => { const t = txState(); t.a4 = { prog: 0, done: Object.fromEntries(PW.map(w => [w.id, 1])), arts: [] }; S.save(); }")
         await ev("() => renderPuz()"); await page.wait_for_timeout(500)
         ok(await ev("() => aOpen()"), 'campaign opens once all 19 palace stations are done (any order)')
-        await page.click('.ah-launch-go'); await page.wait_for_timeout(900)
+        # 5.5.28 moved the entry into the journey hub; the hub's Atheran chapter calls this same function.
+        await ev("() => window.ATHERAN_CAMPAIGN.open()"); await page.wait_for_timeout(900)
         await page.screenshot(path=str(OUT / '01-atlas.png'))
         ok(await ev("() => LA.view === 'atheran' && document.querySelectorAll('#v-puz [data-as]').length === 21"), 'atlas shows 21 station buttons')
 

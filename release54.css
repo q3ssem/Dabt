@@ -81,16 +81,7 @@ html[data-skin="light"] .dx-pause{background:rgba(35,40,40,.48)}
 html[data-skin="light"] .dx-pause-card{background:#FFFFFF;color:#24282A;border-color:#C8D0CC}
 html[data-skin="light"] .dx-toast{background:#24282A;color:#FFFFFF}
 html[data-skin="light"] .dx-game .dx-board{color:#24282A}
-html[data-skin="light"] .dxw{background:#F7F7F5;color:#24282A}
-html[data-skin="light"] .dxw-top,html[data-skin="light"] .dxw-load{background:#FFFFFF;color:#24282A;border-color:#D7DEDA}
-html[data-skin="light"] .dxw-card{background:#FFFFFF!important;color:#24282A;border-color:#D7DEDA}
-html[data-skin="light"] .dxw-card .dx-btn{color:#24282A;border-color:#C9D1CD;background:#F1F3F0}
-html[data-skin="light"] .dxw-card .dx-muted{color:#666D70}
-html[data-skin="light"] .dxw-clue{background:#F1F3F0;color:#24282A;border-color:#B9C2BE}
-html[data-skin="light"] .dxw-zone{background:#F1F3F0;color:#24282A;border-color:#D7DEDA}
-html[data-skin="light"] .dxw-zone small{color:#666D70}
-html[data-skin="light"] .dxw-hud span{background:#FFFFFFE8;color:#24282A;border-color:#D7DEDA}
-html[data-skin="light"] .dxw-pad button{background:#FFFFFF;color:#24282A;border-color:#A77E35}
+
 @media(prefers-reduced-motion:reduce){.wc-icon-art{filter:none}}
 /* A consistent three-part progression shown on every growing puzzle (levels and results are unchanged). */
 .pz-phase-card{width:100%;max-width:460px;margin:0;padding:12px 14px;border:1px solid var(--line);border-radius:16px;background:var(--surface);text-align:start}

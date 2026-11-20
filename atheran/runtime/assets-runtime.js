@@ -93,11 +93,14 @@
   // 8) Runtime stage artwork for all 63 Atheran stages and five secret-world games.
   function currentGameId(){try{const g=typeof curGame==='function'&&curGame();if(g&&g.id)return g.id}catch(_){}try{return RUN&&RUN.queue&&RUN.queue[RUN.pos]}catch(_){return null}}
   function mountStage(){const play=$('#play');if(!play)return;const id=currentGameId();const isStation=!!byStation[id];const isSecret=(typeof ASW!=='undefined'?ASW:[]).some(w=>w.id===id);
-    if(!isStation&&!isSecret){play.classList.remove('ah-stage-art');play.style.removeProperty('--ah-stage-bg');return;}
+    if(!isStation&&!isSecret){artOff(play);return;}
     let u='';if(isStation){let k=1;try{const st=typeof txStageOf==='function'&&txStageOf(id);if(st&&st.k)k=Math.max(1,Math.min(3,st.k))}catch(_){}const rec=stationBackground(id,k);u=rec?url(rec.asset_id):'';}
     else {const rec=byId[`${id}_bg`];u=rec?url(rec.asset_id):'';}
-    if(u){play.style.setProperty('--ah-stage-bg',`url("${u}")`);play.classList.add('ah-stage-art');}else{play.classList.remove('ah-stage-art');play.style.removeProperty('--ah-stage-bg');}
+    if(u){const v=`url("${u}")`;if(play.style.getPropertyValue('--ah-stage-bg')!==v)play.style.setProperty('--ah-stage-bg',v);if(!play.classList.contains('ah-stage-art'))play.classList.add('ah-stage-art');}else artOff(play);
   }
+  // Write only real changes: this observer watches #play's class/style, so re-adding or re-removing the same class
+  // queued a new mutation every frame and kept requestAnimationFrame running even on the home screen.
+  function artOff(play){if(play.classList.contains('ah-stage-art'))play.classList.remove('ah-stage-art');if(play.style.getPropertyValue('--ah-stage-bg'))play.style.removeProperty('--ah-stage-bg');}
   let raf=0;const scheduleStage=()=>{if(raf)return;raf=requestAnimationFrame(()=>{raf=0;mountStage()})};
   const play=$('#play');if(play)new MutationObserver(scheduleStage).observe(play,{childList:true,subtree:true,attributes:true,attributeFilter:['hidden','class','style','data-la-game']});
   document.addEventListener('click',e=>{if(e.target.closest('#quit'))scheduleStage()},true);

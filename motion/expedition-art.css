@@ -287,10 +287,10 @@ html[data-skin="dark"] #play[data-la-game="pz_zthrone"] #pzb { --exp-scene:url(.
 #play[data-la-game="pz_acity"] .actg:is(.sel,.on,.lit,[aria-pressed="true"]) { --exp-piece:url(../ui/designs_art/work_review/pz_acity/building--active.png) }
 #play[data-la-game="pz_acity"] .actg:is(.blocked,.no,[disabled],[aria-disabled="true"]) { --exp-piece:url(../ui/designs_art/work_review/pz_acity/building--blocked.png) }
 #play[data-la-game="pz_acity"] #pzb.solved .actg { --exp-piece:url(../ui/designs_art/work_review/pz_acity/building--solved.png) }
-#play[data-la-game="pz_acity"] .ac-simout { --exp-piece:url(../ui/designs_art/work_review/pz_acity/light-window--normal.png);background-image:var(--exp-piece);background-size:min(26%,48px) auto;background-position:bottom 2px right 2px;background-repeat:no-repeat }
-#play[data-la-game="pz_acity"] .ac-simout:is(.sel,.on,.lit,[aria-pressed="true"]) { --exp-piece:url(../ui/designs_art/work_review/pz_acity/light-window--active.png) }
-#play[data-la-game="pz_acity"] .ac-simout:is(.blocked,.no,[disabled],[aria-disabled="true"]) { --exp-piece:url(../ui/designs_art/work_review/pz_abridge/fog-overlay--blocked.png) }
-#play[data-la-game="pz_acity"] #pzb.solved .ac-simout { --exp-piece:url(../ui/designs_art/work_review/pz_abridge/fog-overlay--solved.png) }
+
+.on,.lit,[aria-pressed="true"]){ --exp-piece:url(../ui/designs_art/work_review/pz_acity/light-window--active.png) }
+.no,[disabled],[aria-disabled="true"]){ --exp-piece:url(../ui/designs_art/work_review/pz_abridge/fog-overlay--blocked.png) }
+
 #play[data-la-game="pz_acur"] .acug { --exp-piece:url(../ui/designs_art/work_review/pz_acur/drift-token--normal.png);background-image:var(--exp-piece);background-size:min(26%,48px) auto;background-position:bottom 2px right 2px;background-repeat:no-repeat }
 #play[data-la-game="pz_acur"] .acug:is(.sel,.on,.lit,[aria-pressed="true"]) { --exp-piece:url(../ui/designs_art/work_review/pz_acur/drift-token--active.png) }
 #play[data-la-game="pz_acur"] .acug:is(.blocked,.no,[disabled],[aria-disabled="true"]) { --exp-piece:url(../ui/designs_art/work_review/pz_acur/drift-token--blocked.png) }

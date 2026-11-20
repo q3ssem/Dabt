@@ -63,7 +63,7 @@ W.cards=function(){
 new MutationObserver(W.cards).observe($('#v-puz'),{childList:true,subtree:true});
 // Paint terrain beneath the same exact native road path and collision geometry.
 W.attachRoad=function(ctx){if(!ctx||ctx.__wcTerrain)return ctx;ctx.__wcTerrain=true;const fill=ctx.fillRect.bind(ctx);ctx.fillRect=function(x,y,w,h){const value=fill(x,y,w,h),im=W.images.get('racer');if(im&&ctx.fillStyle==='#14361f'&&x===0&&y===0&&w>100&&h>100){ctx.save();try{const s=Math.max(w/im.naturalWidth,h/im.naturalHeight),dw=im.naturalWidth*s,dh=im.naturalHeight*s;ctx.drawImage(im,(w-dw)/2,(h-dh)/2,dw,dh);}catch(e){/* Native fill remains usable. */}finally{ctx.restore();}}return value;};return ctx;};
-if(typeof HTMLCanvasElement!=='undefined'){const get0=HTMLCanvasElement.prototype.getContext;HTMLCanvasElement.prototype.getContext=function(type){const ctx=get0.apply(this,arguments);return type==='2d'&&this.id==='rc'&&W.current()?.id==='racer'?W.attachRoad(ctx):ctx;};}
+LA.canvasHook((ctx,canvas)=>{if(canvas.id==='rc'&&W.current()?.id==='racer')W.attachRoad(ctx);});
 // Synthesised Foley, not a claimed field recording: friction, low body, settling knock.
 let stoneContext=null,stoneNodes=[],lastStone=0;
 W.stopStone=function(){stoneNodes.forEach(n=>{try{n.stop();}catch(e){}});stoneNodes=[];};
