@@ -13,7 +13,7 @@ URL = sys.argv[1]
 ENGINE = os.environ.get("ENGINE", "chromium")
 SCENE = ".st10[data-scene=pixi]"
 PREWARM = ["ui/engines/scenes/pz_stat.json", "ui/engines/renderers/pz_stat.pixi.js",
-           "vendor/pixi/pixi.min.js?v=8.23.0", "ui/designs_art/work/pz_stat/scene.webp",
+           "vendor/pixi/pixi.min.js", "ui/designs_art/work/pz_stat/scene.webp",
            "ui/designs_art/work/pz_stat/guardians.json", "ui/designs_art/work/pz_stat/guardians.webp"]
 
 
@@ -117,11 +117,11 @@ async def main():
     async with async_playwright() as p:
         options = {"args": ["--use-angle=swiftshader", "--enable-unsafe-swiftshader"]} if ENGINE == "chromium" else {}
         browser = await getattr(p, ENGINE).launch(**options)
+        if ENGINE == "chromium":
+            await warming(browser)
         for size in [(320, 640), (390, 844), (430, 932), (844, 390)]:
             await play(browser, *size)
         await fallback(browser)
-        if ENGINE == "chromium":
-            await warming(browser)
         await browser.close()
 
 

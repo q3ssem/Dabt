@@ -245,7 +245,7 @@ self.MINDLAB_SCENE_FILES = {
   pz_stat: [
     'ui/engines/scenes/pz_stat.json',
     'ui/engines/renderers/pz_stat.pixi.js',
-    'vendor/pixi/pixi.min.js?v=8.23.0',
+    'vendor/pixi/pixi.min.js',
     'ui/designs_art/work/pz_stat/scene.webp',
     'ui/designs_art/work/pz_stat/guardians.json',
     'ui/designs_art/work/pz_stat/guardians.webp'

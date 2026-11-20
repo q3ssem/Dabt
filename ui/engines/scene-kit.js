@@ -15,7 +15,7 @@
   'use strict';
   if (window.mlScene) return;
   const ENGINES = {
-    pixi: { src: 'vendor/pixi/pixi.min.js?v=8.23.0', global: 'PIXI' },
+    pixi: { src: 'vendor/pixi/pixi.min.js', global: 'PIXI' },
     konva: { src: 'vendor/konva/konva.min.js?v=10.10.0', global: 'Konva' }
   };
   const loads = new Map(), specs = new Map();
