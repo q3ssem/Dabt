@@ -46,7 +46,10 @@
   const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
   function ready(){try{return !S.st.mute && audioOK() && AC && MASTER;}catch(e){return false;}}
   function osc(f,d=.09,type='sine',v=.08,bend=1,delay=0){if(!ready())return;try{const t=AC.currentTime+.008+delay,o=AC.createOscillator(),g=AC.createGain();o.type=type;o.frequency.setValueAtTime(Math.max(35,f),t);if(bend!==1)o.frequency.exponentialRampToValueAtTime(Math.max(30,f*bend),t+d);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(Math.max(.0002,v),t+.006);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(MASTER);o.start(t);o.stop(t+d+.025);}catch(e){}}
-  function noise(d=.08,cut=900,v=.06,kind='lowpass',delay=0){if(!ready())return;try{const sr=AC.sampleRate,n=Math.max(128,Math.floor(sr*d)),b=AC.createBuffer(1,n,sr),a=b.getChannelData(0);let brown=0;for(let i=0;i<n;i++){const w=Math.random()*2-1;brown=(brown+w*.22)/1.22;a[i]=(kind==='highpass'?w:brown)*Math.pow(1-i/n,1.65);}const src=AC.createBufferSource(),f=AC.createBiquadFilter(),g=AC.createGain(),t=AC.currentTime+.008+delay;src.buffer=b;f.type=kind;f.frequency.setValueAtTime(cut,t);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);src.connect(f);f.connect(g);g.connect(MASTER);src.start(t);src.stop(t+d+.02);}catch(e){}}
+  const noiseBank=new Map();
+  // Each noise shape is synthesised once per length and filter kind, then reused (no per-tap 10k-sample allocation).
+  function noiseBuffer(n,sr,kind){const key=n+'|'+sr+'|'+kind;let b=noiseBank.get(key);if(b)return b;b=AC.createBuffer(1,n,sr);const a=b.getChannelData(0);let brown=0;for(let i=0;i<n;i++){const w=Math.random()*2-1;brown=(brown+w*.22)/1.22;a[i]=(kind==='highpass'?w:brown)*Math.pow(1-i/n,1.65);}noiseBank.set(key,b);return b;}
+  function noise(d=.08,cut=900,v=.06,kind='lowpass',delay=0){if(!ready())return;try{const sr=AC.sampleRate,n=Math.max(128,Math.floor(sr*d)),b=noiseBuffer(n,sr,kind);const src=AC.createBufferSource(),f=AC.createBiquadFilter(),g=AC.createGain(),t=AC.currentTime+.008+delay;src.buffer=b;f.type=kind;f.frequency.setValueAtTime(cut,t);g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+d);src.connect(f);f.connect(g);g.connect(MASTER);src.start(t);src.stop(t+d+.02);}catch(e){}}
   const sounds={
     wood(){noise(.055,1000,.075);osc(145,.075,'triangle',.075,.62,.008);},
     stone(){noise(.16,520,.105);osc(82,.19,'sine',.11,.52,.012);},
@@ -64,7 +67,9 @@
     chime(){osc(1318,.28,'sine',.06,1.0);osc(1760,.2,'sine',.025,1,.045);}
   };
   sfx.material=sounds;
+  let lastMove=0,lastKind='';
   sfx.puzzleMove=(kind)=>{
+    const now=performance.now();if(kind===lastKind&&now-lastMove<35)return;lastMove=now;lastKind=kind;
     const map={locks:'metal',cipher:'paper',mirrors:'glass',torn:'paper',chime:'bell',linked:'chime',tide:'water',weigh:'stone',valves:'metal',slide:'stone',lights:'glass',scales:'metal',ropes:'rope',gearfit:'gear',drums:'wood',push:'stone',stroke:'pencil',hanoi:'wood',river:'water',frogs:'hop',path:'glass'};
     (sounds[map[kind]||'wood']||sounds.wood)();
   };

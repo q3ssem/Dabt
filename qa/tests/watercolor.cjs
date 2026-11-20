@@ -26,6 +26,13 @@ const count=nativeTones;c.tone(300,.1,'sine',.1);ok(nativeTones===count+1,'other
 c.current={id:'pz_stat'};W.stone();ok(created===1,'foley context');ok(nativeTones===count+1,'electronic rotation beep replaced');
 time+=100;c.S.st.mute=true;ok(W.stone()===false,'mute stops foley');ok(created===1,'mute no new context');c.S.st.mute=false;W.stopStone();ok(stopped>=2,'audio nodes stop');
 c.document.hidden=true;ok(W.stone()===false,'hidden page cannot trigger stone');c.document.hidden=false;c.DX.clock={paused:()=>true};ok(W.stone()===false,'paused game cannot trigger stone');c.DX.clock.paused=()=>false;
+// In the app the Foley shares the engine's single AudioContext and master chain, and reuses one friction texture.
+{let shared=0,buffers=0;const sharedCtx=new c.AudioContext();shared=created;const cb=sharedCtx.createBuffer.bind(sharedCtx);sharedCtx.createBuffer=(...a)=>{buffers++;return cb(...a);};
+c.acInit=()=>sharedCtx;c.audioOK=()=>true;c.MASTER={connect(){}};
+time+=200;ok(W.stone()===true,'stone plays through the shared context');ok(created===shared,'no second AudioContext in the app');
+time+=200;W.stone();ok(buffers<=1,'friction texture synthesised at most once and reused');
+c.audioOK=()=>false;time+=200;ok(W.stone()===false,'locked/suspended shared audio stays silent');ok(created===shared,'still one context');
+delete c.acInit;delete c.audioOK;delete c.MASTER;}
 const calls=[],ctx={fillStyle:'#14361f',fillRect(...a){calls.push(['native',...a]);return 7},save(){calls.push(['save'])},restore(){calls.push(['restore'])},drawImage(...a){calls.push(['image',...a])}};
 W.images.set('racer',{naturalWidth:1000,naturalHeight:1000});W.attachRoad(ctx);ok(ctx.fillRect(0,0,340,260)===7,'native return');ok(calls.filter(x=>x[0]==='native').length===1,'native fill once');ok(calls.filter(x=>x[0]==='image').length===1,'terrain image');ok(calls.at(-1)[0]==='restore','state restored');
 ctx.fillStyle='#fff';ctx.fillRect(3,4,10,10);ok(calls.filter(x=>x[0]==='image').length===1,'unrelated fill unchanged');ctx.fillStyle='#14361f';ctx.drawImage=()=>{throw Error('decode')};ok(ctx.fillRect(0,0,340,260)===7,'art failure safe');ok(calls.at(-1)[0]==='restore','failure restores state');
