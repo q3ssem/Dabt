@@ -1,7 +1,7 @@
 'use strict';
 importScripts('./offline-manifest.js');
 
-const VERSION='5.5.28', PATCH='final-cleanup-14', PREFIX='mindlab-';
+const VERSION='5.5.28', PATCH='board-polish-15', PREFIX='mindlab-';
 const CORE = PREFIX+VERSION+'-'+PATCH+'-core';
 const RUNTIME = PREFIX+VERSION+'-'+PATCH+'-images';
 const SCENES = PREFIX+VERSION+'-'+PATCH+'-scenes';
