@@ -33,6 +33,7 @@ jobs:
           python -m http.server 8765 --bind 127.0.0.1 >/tmp/mindlab-http.log 2>&1 &
           python qa/browser/phase2_startup.py http://127.0.0.1:8765/
           python qa/browser/phase3_acceptance.py http://127.0.0.1:8765/ chromium full
+          python qa/browser/phase5_game_matrix.py http://127.0.0.1:8765/ chromium
       - name: Compare active progress from published main with the candidate
         run: |
           git fetch --depth=1 origin main
@@ -55,4 +56,4 @@ jobs:
       - name: Check WebKit touch navigation, save and optional-download cancellation
         run: |
           python -m http.server 8767 --bind 127.0.0.1 >/tmp/mindlab-webkit-http.log 2>&1 &
-          python qa/browser/phase3_acceptance.py http://127.0.0.1:8767/ webkit quick
+          python qa/browser/phase3_acceptance.py http://127.0.0.1:8767/ webkit full

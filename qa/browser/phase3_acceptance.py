@@ -77,6 +77,23 @@ async def main():
             await page.wait_for_function("()=>window.mindlabPlayLayers?.ready===true",timeout=45000)
             assert await page.evaluate("()=>localStorage.getItem('mindlab:phase3:sentinel')")==saved
             report['offline_navigation']=True
+            # Image-cache cleanup must not wipe the app shell or player progress.
+            await context.set_offline(False)
+            removed=await page.evaluate("async()=>await window.mindlabOffline.clearOptionalCaches()")
+            assert removed>=1,'Image cache did not exist before cleanup'
+            remaining=await page.evaluate("""async()=>{
+              const names=await caches.keys();
+              return names.filter(name=>name.endsWith('-core'));
+            }""")
+            assert remaining,'Image cleanup deleted the app shell'
+            assert await page.evaluate("()=>localStorage.getItem('mindlab:phase3:sentinel')")==saved
+            response=await page.evaluate("""async()=>{
+              const res=await fetch(new URL('ui/art/games/dual.webp',document.baseURI),{cache:'reload'});
+              return res.status;
+            }""")
+            assert response==200,'On-demand images cannot be restored after cleanup'
+            report['image_cache_cleanup_preserves_save']=True
+            report['image_cache_rehydrates']=True
         assert not errors,errors[:5]
         report['errors']=errors
         print('PHASE3_ACCEPTANCE='+json.dumps(report,ensure_ascii=False),flush=True)
