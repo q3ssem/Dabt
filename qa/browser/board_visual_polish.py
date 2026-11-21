@@ -150,9 +150,13 @@ async def run():
         assert rows[0]["ink"]!=rows[-1]["ink"],"Dark theme must change ink palette"
         assert rows[0]["teal"]!=rows[-1]["teal"],"Dark theme must change accent palette"
         await page.set_viewport_size({"width":390,"height":844})
-        await page.evaluate("()=>document.documentElement.dataset.skin='light'")
+        await page.evaluate("""()=>{
+          S.st.skin='light';S.save();document.documentElement.dataset.skin='light';
+        }""")
+        await page.wait_for_function("()=>document.documentElement.dataset.skin==='light'",timeout=7000)
         await open_game(page,"dual")
         legacy=await page.evaluate(MEASURE)
+        assert legacy["skin"]=="light" and legacy["ink"]==rows[0]["ink"],"Brain-game screenshot does not use the saved light theme"
         assert legacy["button"] and legacy["button"]["radius"]>=19,"Legacy brain-game HUD not polished"
         assert not legacy["overflow"],"Brain-game panel overflows"
         if SHOTS:
