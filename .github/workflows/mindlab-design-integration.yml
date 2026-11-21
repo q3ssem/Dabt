@@ -32,3 +32,19 @@ jobs:
           command -v google-chrome
           python -m http.server 8765 --bind 127.0.0.1 >/tmp/mindlab-http.log 2>&1 &
           python qa/browser/phase2_startup.py http://127.0.0.1:8765/
+          python qa/browser/phase3_acceptance.py http://127.0.0.1:8765/ chromium full
+
+  webkit-acceptance:
+    runs-on: ubuntu-latest
+    timeout-minutes: 12
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - run: python -m playwright install --with-deps webkit
+      - name: Check WebKit touch navigation, save and optional-download cancellation
+        run: |
+          python -m http.server 8767 --bind 127.0.0.1 >/tmp/mindlab-webkit-http.log 2>&1 &
+          python qa/browser/phase3_acceptance.py http://127.0.0.1:8767/ webkit quick
