@@ -103,6 +103,14 @@ html #play #stage :is(.mlp-rules-label,.mlp-clues-title,.lb-intro) {
 }
 html #play #stage :is(.res,.res .msg,.res p) {color:var(--bp-ink)!important;}
 
+/* Calligraphic type is reserved for story headings, not action or puzzle labels. */
+html #v-puz .t7 :is(.t7-story-title,.v5-intro h2,.v546-memory h2),
+html #v-puz .ex10 :is(.ex10-title,.ex10-chapter-title) {
+  font-family:'Aref Ruqaa',Georgia,serif;
+  font-weight:700;
+  line-height:1.55;
+  text-wrap:balance;
+}
 /* Top bar: quiet parchment surface, strongly differentiated circular tool icons. */
 html #play .pbar {
   border-color:var(--bp-stroke)!important;
