@@ -1,7 +1,7 @@
 'use strict';
 importScripts('./offline-manifest.js');
 
-const VERSION='5.5.28', PATCH='asset-preload-11', PREFIX='mindlab-';
+const VERSION='5.5.28', PATCH='on-demand-assets-12', PREFIX='mindlab-';
 const CORE = PREFIX+VERSION+'-'+PATCH+'-core';
 const RUNTIME = PREFIX+VERSION+'-'+PATCH+'-images';
 const SCENES = PREFIX+VERSION+'-'+PATCH+'-scenes';
@@ -142,13 +142,7 @@ self.addEventListener('message', event => {
     if (Array.isArray(files)) event.waitUntil(warmArt(files));
     return;
   }
-  if (event.data.type!=='warm-journey') return;
-  // Warm the journey map art (the next thing the player sees) and the 46 brain-game illustrations (offline play);
-  // the 50 correction-pass boards (4.3 MB) are cached as each board is opened instead of during play.
-  event.waitUntil(warmArt([
-    ...(self.MINDLAB_JOURNEY_ART||[]),
-    ...(self.MINDLAB_GAME_ART||[])
-  ]));
+
 });
 
 /* Prepare the complete active puzzle asset set once; subsequent launches verify the persistent CacheStorage. */

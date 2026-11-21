@@ -1,7 +1,7 @@
 """design-01-10 — real play of puzzles 02–10 on the new boards, at 320/390/430.
 For every puzzle:
   · the pack's reference boards (boards/*.json of MindLab_Design_01-10_Reviewed_AR, 18 boards) are injected as the
-    generator's output, and the screen must draw exactly that board (items, cars, statues, masks, clues, givens, ends,
+    generator's output, and the screen must draw exactly that board (items, cars, masks, clues, givens, ends,
     pieces, trees and sums);
   · a wrong move or answer is refused with the error state; the right one is played with real input (mouse drag or
     tap — the hook is read only to know the answer) and wins once;
@@ -20,17 +20,16 @@ checks, problems = [], []
 def ok(c, label, extra=None):
     if os.environ.get('FORCE_FAIL') and label == os.environ['FORCE_FAIL']: c = False
     (checks if c else problems).append(label if c else f'{label} :: {extra}'); return c
-B = {k: json.load(open(f'{PACK}/boards/{f}.json')) for k, f in [('river', '02_pz_river'), ('rush', '03_pz_rush'), ('stat', '04_pz_stat'), ('pipe', '05_pz_pipe'), ('grid', '06_pz_grid'), ('sudo', '07_pz_sudo'), ('flow', '08_pz_flow'), ('tan', '09_pz_tan'), ('tent', '10_pz_tent')]}
+B = {k: json.load(open(f'{PACK}/boards/{f}.json')) for k, f in [('river', '02_pz_river'), ('rush', '03_pz_rush'), ('pipe', '05_pz_pipe'), ('grid', '06_pz_grid'), ('sudo', '07_pz_sudo'), ('flow', '08_pz_flow'), ('tan', '09_pz_tan'), ('tent', '10_pz_tent')]}
 REPLAY = json.load(open(f'{PACK}/evidence/replay_paths.json'))
-GEN = {'river': 'rvMake', 'rush': 'rhMake', 'stat': 'stMake', 'pipe': 'ppMake', 'grid': 'lgMake', 'sudo': 'sdMake', 'flow': 'flMake', 'tan': 'tgMake', 'tent': 'tnMake'}
+GEN = {'river': 'rvMake', 'rush': 'rhMake', 'pipe': 'ppMake', 'grid': 'lgMake', 'sudo': 'sdMake', 'flow': 'flMake', 'tan': 'tgMake', 'tent': 'tnMake'}
 
 async def start(pg, gid, lv=None, seed=1, inject=None):
     await pg.goto(URL); await pg.wait_for_timeout(1500)
     if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
-    if inject:  # the generator returns the reference board once (stat: the real stMake for R's distance tables)
+    if inject:  # the generator returns the reference board once
         name, data = inject
         await pg.evaluate("""([name, d]) => { const real = window[name]; window[name] = function (lv) { window[name] = real;
-            if (name === 'stMake') { const P = real(lv); return Object.assign(P, { s: d.s.slice(), tgt: d.tgt.slice(), min: d.min }); }
             return JSON.parse(JSON.stringify(d)); } }""", [name, data])
     await pg.evaluate("([g, lv, s]) => { startRun([g]); if (lv) RUN.replay = { id: g, lv, seed: s } }", [gid, lv, seed]); await pg.wait_for_timeout(300)
     if gid in {'pz_' + key for key in GEN}:
@@ -113,20 +112,6 @@ async def rush(pg, lab, P, mode, moves=None):
     moves = await pg.evaluate("() => rhSolve(window.__test.pz.vs, 200000)")
     for i, np in moves: await slide(i, np)
     vs = await pg.evaluate("() => window.__test.pz.vs"); ok(vs[0]['c'] == 4, f'{lab}: the red car reaches the gate by mouse drags', vs[0])
-    return True
-
-async def stat(pg, lab, P, mode):
-    ok(await pg.evaluate("(n) => document.querySelectorAll('.st10-s').length === n && document.querySelectorAll('.st10-s .st10-g').length === n", P['n']), f'{lab}: {P["n"]} statues on pedestals')
-    ok(await pg.evaluate("(t) => [...document.querySelectorAll('.st10-tgt')].every((e, i) => e.style.getPropertyValue('--a') === (t[i] * 90) + 'deg')", P['tgt']), f'{lab}: each gold diamond is the statue\'s target (stMake.tgt)')
-    # wrong: a press off the shortest path leaves the statues unmatched and the board unsolved
-    i0 = await pg.evaluate("() => { const h = window.__test.pz; return h.P.nxt[h.P.enc(h.s())] }")
-    await tap(pg, f'.st10-s[data-i="{(i0 + 1) % P["n"]}"]')
-    ok(await result(pg, 400) is None and not all(d == 0 for d in await pg.evaluate("() => window.__test.pz.s()")), f'{lab}: a press off the shortest path does not solve it')
-    for _ in range(80):
-        s = await pg.evaluate("() => window.__test.pz.s()")
-        if all(d == 0 for d in s): break
-        i = await pg.evaluate("() => { const h = window.__test.pz; return h.P.nxt[h.P.enc(h.s())] }")
-        await tap(pg, f'.st10-s[data-i="{i}"]')
     return True
 
 async def pipe(pg, lab, P, mode):
@@ -227,8 +212,8 @@ async def tent(pg, lab, P, mode):
             await tap(pg, f'.tn10-c[data-i="{c}"]')
     return True
 
-DRIVERS = {'river': river, 'rush': rush, 'stat': stat, 'pipe': pipe, 'grid': grid, 'sudo': sudo, 'flow': flow, 'tan': tan, 'tent': tent}
-LV = {'river': ['lv1', 'lv7'], 'rush': ['lv3', 'lv8'], 'stat': ['lv2', 'lv6'], 'pipe': ['lv1', 'lv8'], 'grid': ['lv2', 'lv7'], 'sudo': ['lv1', 'lv8'], 'flow': ['lv1', 'lv8'], 'tan': ['lv2', 'lv8'], 'tent': ['lv1', 'lv8']}
+DRIVERS = {'river': river, 'rush': rush, 'pipe': pipe, 'grid': grid, 'sudo': sudo, 'flow': flow, 'tan': tan, 'tent': tent}
+LV = {'river': ['lv1', 'lv7'], 'rush': ['lv3', 'lv8'], 'pipe': ['lv1', 'lv8'], 'grid': ['lv2', 'lv7'], 'sudo': ['lv1', 'lv8'], 'flow': ['lv1', 'lv8'], 'tan': ['lv2', 'lv8'], 'tent': ['lv1', 'lv8']}
 
 async def main():
     async with async_playwright() as p:

@@ -210,16 +210,12 @@ html[data-skin="dark"] .lb[data-lb="rush"] .rh10::before{background:rgba(255,245
 .tn10.won .tn10-c.tent{box-shadow:0 0 0 2px var(--lb-ok) inset}
 
 #pzb[data-board-art="pz_rush"] .rhlot.won .rhexit::after{content:none}
-/* drawing engine (ui/engines/scene-kit.js): when a scene view is on, it draws the landscape and the boat art;
-   the DOM keeps the passengers, the cross button and the drop slots */
+/* Legacy scene classes are retained only as harmless fallbacks; current boards use DOM rendering. */
 .rv10 > canvas.scene-canvas{position:absolute;inset:0;width:100%!important;height:100%!important;z-index:-1;pointer-events:none}
 .rv10.scene-on .rv10-landscape{display:none}
 .rv10.scene-on .rv10-rig{visibility:hidden}
 .rv10.scene-on .rv10-boat{transition:none}
 
-.st10 > .scene-canvas{position:absolute;inset:0;pointer-events:none;border-radius:12px}
-.st10.scene-on .st10-g{visibility:hidden}
-.st10.scene-on .st10-door{display:none}
 
 /* Motion and paths · in-puzzle artwork revision */
 .lb[data-lb="river"] .rv10 {
@@ -350,9 +346,6 @@ html[data-skin="dark"] .tg10-c.reg:not(.on)::after { border-color: #efd5a5; }
 .lb[data-lb="tan"] .tg10-c.lock { outline: 2px solid #d3aa58; outline-offset: -3px; }
 .lb[data-lb="tan"] .tg10-c:is(:focus-visible,.mk-over) { outline: 3px solid var(--lb-teal); outline-offset: -3px; }
 
-.st10-tgt::before { box-shadow: 0 0 0 2px #fff6cf; }
-.st10-current::before { box-shadow: 0 0 0 2px #f5f6e6, 0 0 0 3px #344a3c; }
-.st10-s:focus-visible { outline: 2px solid #e6b85c; outline-offset: 3px; }
 
 /* The square board provides the same coordinate system for nodes and edges. */
 #unsv {

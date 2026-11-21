@@ -24,8 +24,8 @@ ok(ds.includes('img.ml-art{display:block;width:100%;height:100%;object-fit:conta
 ok(ds.includes(':is(.ico,.hero):has(>img.ml-art){background:none!important'),'no gradient tile behind the art');
 // offline: listed for background warm-up; engines still frozen
 const ctx={self:{}};vm.runInNewContext(read('offline-manifest.js'),ctx);
-ok(ctx.self.MINDLAB_GAME_ART.length===46&&ctx.self.MINDLAB_GAME_ART.every(p=>fs.existsSync(path.join(root,p))),'46 illustrations warmed for offline play');
-ok(read('sw.js').includes('...(self.MINDLAB_GAME_ART||[])'),'service worker warms them');
+ok(ctx.self.MINDLAB_GAME_ART.length===46&&ctx.self.MINDLAB_GAME_ART.every(p=>fs.existsSync(path.join(root,p))),'46 illustrations available for optional offline preparation');
+ok(read('sw.js').includes('...(self.MINDLAB_GAME_ART || [])')&&read('pwa.js').includes('mindlabOffline.prepareAll'),'offline illustrations remain available in the opt-in full pack');
 ok(read('qa/tests/legacy.art.cjs').includes('retired games are not registered in the active engine'),'inline engine baseline is checked by the scoped legacy fingerprint test');
 for(const f of ['brain_brake','brain_backward','brain_rules'])ok(fs.existsSync(path.join(root,'ui/art',f+'.webp')),'earlier art kept on disk: '+f);
 console.log(JSON.stringify({status:'passed',checks,games:ids.length,skills:6},null,2));

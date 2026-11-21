@@ -12,7 +12,7 @@
 html[data-skin="dark"] #play[data-play-paper] { --paper: #171d28; --paper-overlay: linear-gradient(#121827df,#121827df); }
 html #play[data-play-paper][data-play-paper],
 html[data-skin] #play[data-play-paper][data-play-paper] {
-  background: var(--paper-overlay), var(--paper-art) center / 100% 100% no-repeat, var(--paper) !important;
+  background: var(--paper-overlay), var(--paper-art) center / cover no-repeat, var(--paper) !important;
 }
 html #play[data-play-paper][data-play-paper] > .pin {
   max-width: none !important;
@@ -87,7 +87,7 @@ html #play[data-play-paper] #pzb :is(
   overflow: auto;
   text-align: start;
   color: #34291e;
-  background: #f9e3af var(--paper-art, url(art/play-backgrounds/01-pirate-letter.webp)) center / 100% 100%;
+  background: #f9e3af var(--paper-art, url(art/play-backgrounds/01-pirate-letter.webp)) center / cover;
   padding: 18px 20px;
 }
 #play .fit-opening-body { background: none; box-shadow: none; padding: 0; color: inherit; }
@@ -108,7 +108,7 @@ html #play[data-play-paper] #pzb :is(
 }
 html.fit-t7 #v-puz .t7-puzzle-layout,
 html.fit-ex10 #v-puz .ex10-game-shell {
-  background: #f6e6be url(art/play-backgrounds/01-pirate-letter.webp) center / 100% 100%;
+  background: #f6e6be url(art/play-backgrounds/01-pirate-letter.webp) center / cover;
   border: 0;
   border-radius: 0;
   box-shadow: none;
@@ -171,7 +171,7 @@ html[data-skin="dark"] #play[data-play-paper] #pzb .rhb.rhb2 { background-color:
 html .mlj-station-rules .fit-opening-card {
   position: relative;
   color: #34291e;
-  background: #f9e3af url(art/play-backgrounds/01-pirate-letter.webp) center / 100% 100%;
+  background: #f9e3af url(art/play-backgrounds/01-pirate-letter.webp) center / cover;
 }
 .mlj-station-rules .fit-opening-dismiss {
   position: absolute;
@@ -338,28 +338,6 @@ html[data-skin="dark"] #ose .ose.on { background: #73e0a5; }
 }
 .ymt canvas { display: block; width: 100%; height: 100%; }
 
-#pzb .st-compass {
-  display: grid;
-  position: absolute;
-  z-index: 3;
-  place-items: center;
-  top: 55%;
-  left: 50%;
-  width: max(44px,18%);
-  aspect-ratio: 1;
-  border-radius: 50%;
-  border: 1px solid #ccab75;
-  padding: 0;
-  transform: translate(-50%,-50%);
-  background: #203348;
-  color: #ffebbb;
-  cursor: pointer;
-}
-.st-compass img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
-.st-compass span { position: relative; font: bold clamp(21px,7vw,29px)/1 system-ui; }
-.st-compass:is(.hint,[aria-pressed="true"],:focus-visible) { outline: 3px solid #dfb768; outline-offset: 2px; }
-.st10[data-reverse="true"] .st10-link.zap::after { background: #a7dcff; }
-#pzb .st10.all .st-compass { display: none; }
 
 #play[data-play-paper] #pzb .pp10 {
   width: min(100%, calc((var(--fit-room, 67dvh) - 62px) * var(--w)/var(--h)));
@@ -582,14 +560,10 @@ html #play[data-play-paper][data-puzzle-illustration="emblem"] {
 }
 
 /* Frame the playable surface, keeping its engine's coordinate system intact. */
-#play[data-puzzle-illustration] #pzb :is(#st10, .tg10, .unb, .icb2, .mirror-field) {
+#play[data-puzzle-illustration] #pzb :is(.tg10, .unb, .icb2, .mirror-field) {
   outline: 2px solid var(--identity-edge);
   border-radius: 10px;
   box-shadow: 0 0 0 3px var(--identity-rim), 0 5px 12px var(--identity-shadow);
-}
-#play[data-puzzle-illustration] #pzb .st10-s[aria-pressed="true"] {
-  outline: 2px solid #f3c665;
-  outline-offset: 2px;
 }
 #play[data-puzzle-illustration] #pzb .lb[data-lb="flow"] .fl10-c:not(.on) {
   background-color: #fff3d9;
@@ -806,9 +780,6 @@ html[data-skin="dark"] #play[data-puzzle-illustration] #pzb .lb[data-lb="flow"] 
   box-shadow: inset 0 0 0 2px #a43a38;
 }
 
-#play[data-play-paper] #pzb .st10-s.ok .st10-tgt {
-  filter: drop-shadow(0 0 4px #ffd277);
-}
 #play[data-play-paper] #pzb .mirror-tile.mirror-crystal.lit {
   box-shadow: inset 0 0 0 1px #ffe3a781, inset 0 0 9px var(--light);
 }

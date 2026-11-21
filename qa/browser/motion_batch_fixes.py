@@ -35,8 +35,6 @@ GEN = r"""() => { const R = Math.random, run = (s, f) => { Math.random = seeded(
   o.plibOrdered = ord; o.plib86849 = run(86849, () => plbMake(2)).order;
   // pz_wlake: the shift reaches the screen on levels 2-8 only
   o.wlakeShift = [1, 2, 3, 4, 5, 6, 7, 8].map(lv => run(lv * 97, () => wlkMake(lv)).shift);
-  // pz_xbottle: one key, two keys and reversed text all decode with their own keys
-  o.xbDecode = [1, 5, 7, 8].map(lv => { const P = run(lv * 31, () => xbMake(lv)); const dec = P.shown.map((w, i) => xbDec(w, P.two && i % 2 ? P.s2 : P.s1)); const read = P.rev ? dec.map(w => [...w].reverse().join('')) : dec; return read.join(' ') === P.words.join(' ') });
   return o }"""
 
 async def start(pg, gid):
@@ -71,17 +69,8 @@ async def main():
         ok(g['plibOrdered'] == 0, 'pz_plib: 0 of 2000 boards start in order', g['plibOrdered'])
         ok(g['plib86849'] != sorted(g['plib86849']), 'pz_plib seed 86849 (level 2) starts shuffled', g['plib86849'])
         ok(g['wlakeShift'] == [False] + [True] * 7, 'pz_wlake: shift reaches the screen on levels 2-8 only', g['wlakeShift'])
-        ok(all(g['xbDecode']), 'pz_xbottle: one wheel, reversed text and two wheels decode with their keys', g['xbDecode'])
 
         # ---- screens: refused case, right case wins once, win survives a reload
-        await start(pg, 'pz_xbottle')
-        await pg.evaluate("() => __test.pz.answer(__test.pz.P.place)"); await pg.wait_for_timeout(500)
-        ok(not await pg.evaluate("() => !!document.querySelector('#stage .res')") and await pg.evaluate("() => !document.querySelector('.xbo2.ok')"), 'pz_xbottle: the right place is refused while the wheel is not on its key')
-        await pg.evaluate("() => __test.pz.setK(__test.pz.P.s1, __test.pz.P.s2)"); await pg.wait_for_timeout(200)
-        await pg.evaluate("() => __test.pz.answer(__test.pz.P.place)")
-        ok(await won(pg), 'pz_xbottle: once decoded, the right place wins')
-        await pg.evaluate("() => closePlay()"); await pg.wait_for_timeout(300)
-
         await start(pg, 'pz_untangle')
         await pg.evaluate("() => { const h = __test.pz; h.pos.forEach(p => { p[0] = 50; p[1] = 50 }); h.draw() }"); await pg.wait_for_timeout(300)
         ok(not await pg.evaluate("() => !!document.querySelector('#stage .res')"), 'pz_untangle screen: nodes stacked in the centre do not win')
@@ -119,7 +108,7 @@ async def main():
         await pg.evaluate("() => { const h = __test.pz; h.pick(h.P.ans); h.check() }"); ok(await won(pg), 'pz_wlake: the right constellation wins')
         await pg.evaluate("() => closePlay()"); await pg.wait_for_timeout(300)
 
-        prog = "() => ['pz_xbottle','pz_untangle','pz_ice','pz_plib','pz_pobs','pz_wlake'].map(id => { const st = txStageOf(id); return st ? 'stage' + st.k : 'lv' + pzLv(id) })"
+        prog = "() => ['pz_untangle','pz_ice','pz_plib','pz_pobs','pz_wlake'].map(id => { const st = txStageOf(id); return st ? 'stage' + st.k : 'lv' + pzLv(id) })"
         levels = await pg.evaluate(prog)
         await pg.reload(); await pg.wait_for_timeout(2500); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
         after = await pg.evaluate(prog)

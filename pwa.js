@@ -24,22 +24,15 @@
   }
   window.mindlabOffline = {warmPuzzle, rememberPuzzle() {}};
 
-  let journeyRequested = false;
   document.addEventListener('click', event => {
     const puzzle = event.target.closest?.('[data-legacy-puzzle]');
     if (puzzle) warmPuzzle(puzzle.dataset.legacyPuzzle);
-    if (journeyRequested || navigator.connection?.saveData ||
-        !event.target.closest?.('#mlj-journey-entry, #t7-homego')) return;
-    journeyRequested = true;
-    defer(() => {
-      const worker = serviceWorker.controller;
-      if (worker) worker.postMessage({type:'warm-journey'});
-      else journeyRequested = false;
-    });
   });
 
-  // Full-screen first-run asset preparation. CacheStorage is checked on each launch;
+  // Prepare all assets only when the player explicitly requests offline download.
   // files already saved are never requested from the network again.
+  window.mindlabOffline.prepareAll = function prepareAll() {
+    if (document.getElementById('ml-preload')) return;
   const style = document.createElement('style');
   style.textContent = `
     #ml-preload {position:fixed;inset:0;z-index:2147483000;display:grid;place-items:center;
@@ -91,7 +84,7 @@
   const status = $('ml-load-status'), detail = $('ml-load-count');
   const retry = $('ml-load-retry'), skip = $('ml-load-skip');
   let progressPort, finished = false;
-  const openSkip = setTimeout(() => {if (!finished) skip.hidden = false;}, 12000);
+  const openSkip = setTimeout(() => {if (!finished) skip.hidden = false;}, 0);
   function close() {
     finished = true;
     clearTimeout(openSkip);
@@ -154,4 +147,13 @@
       beginPreload(worker);
     })
     .catch(() => fail('تعذر تجهيز الأصول الآن. التطبيق ما زال متاحًا عبر الإنترنت.'));
+  };
+  window.mindlabOffline.clearOptionalCaches = async function clearOptionalCaches() {
+    const names = await caches.keys();
+    const stale = names.filter(name => name.startsWith('mindlab-') && /-(?:images|scenes)$/.test(name));
+    await Promise.all(stale.map(name => caches.delete(name)));
+    return stale.length;
+  };
+  // Register the offline shell without blocking the visible app behind a 42 MB download.
+  serviceWorker.register(scriptURL.href, {updateViaCache:'none'}).catch(() => {});
 })();

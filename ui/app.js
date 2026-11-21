@@ -102,7 +102,22 @@ try {
     // radar + stats read better together
     const folded = groups.map(([t, nodes]) => { const d = E('details', { class: 'ui-fold', 'data-fold': t }, E('summary', { text: t })); if (wasOpen.has(t)) d.open = true; nodes.forEach(n => d.append(n)); return d; });
     v.innerHTML = ''; v.append(head, appearance(), ...[silentRow()].filter(Boolean), dashboard(), ...folded);
-    const settings = folded.find(d => d.querySelector('#dxBackupStatus')); if (settings) settings.querySelector('summary').textContent = 'الإعدادات والنسخة الاحتياطية';
+    const settings = folded.find(d => d.querySelector('#dxBackupStatus'));
+    if (settings) {
+      settings.querySelector('summary').textContent = 'الإعدادات والنسخة الاحتياطية';
+      const tools = E('div', {class:'ui-look', role:'group', 'aria-label':'ملفات التطبيق للعمل دون اتصال'},
+        E('b', {text:'الملفات دون اتصال'}),
+        E('button', {type:'button',class:'ui-look-chip',text:'تحميل جميع الأصول',onclick:()=>window.mindlabOffline?.prepareAll?.()}),
+        E('button', {type:'button',class:'ui-look-chip',text:'إزالة الصور المؤقتة',onclick:async(event)=>{
+          if (!confirm('إزالة الصور والمشاهد المخزنة فقط؟ لن تُحذف مراحل اللعب أو تقدمك.')) return;
+          try {
+            const removed = await window.mindlabOffline?.clearOptionalCaches?.();
+            if (removed !== undefined) alert('تم تنظيف ذاكرة الصور المؤقتة.');
+          } catch (_) { alert('تعذر تنظيف الملفات المؤقتة على هذا الجهاز.'); }
+        }})
+      );
+      settings.append(tools);
+    }
   };
 
   /* ---------- عبور النهر: birds and butterflies drift over the river (decoration only) ---------- */
@@ -189,7 +204,6 @@ try {
     'motion/palace-motion.js',
     'motion/lab10.js',
     'motion/logic-revised/board.js',
-    'ui/engines/scene-kit.js',
     'motion/pirate-routes.js',
     'ui/fit.js',
     'motion/wreck-painted.js',
