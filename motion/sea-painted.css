@@ -1,0 +1,189 @@
+/* WebP scene layers and canvas traces for the three sea puzzles. */
+#pzb .sea-sprite {
+  display: block;
+  width: 90%;
+  height: 90%;
+  object-fit: contain;
+  pointer-events: none;
+}
+#pzb:has(.sea-path) .xnote h3 .sea-sprite { width: 36px; height: 32px; flex: none; }
+#pzb :is(.zsd,.zsi,.zrscope i,.xshov i,.xshovel,.xcoin) > .sea-sprite { width: 100%; height: 100%; }
+#pzb .sea-path { position: absolute; inset: 0; width: 100%; height: 100%; pointer-events: none; z-index: 2; }
+#pzb :is(#zrw,#zgw,.sea-island) {
+  isolation: isolate;
+  border: 1px solid #3c544f;
+  border-radius: 12px;
+  overflow: hidden;
+  max-inline-size: 430px;
+  margin-inline: auto;
+}
+#pzb .sea-island { background: #bcd9c5 url('pirate-revised/compass/scene.webp') center/cover; }
+#pzb .sea-island .xbin { position: absolute; inset: 0; }
+#pzb .sea-island .xc {
+  border: 0;
+  border-radius: 0;
+  box-shadow: inset -1px -1px #8f5d345a;
+  background: #ecd794 url('pirate-revised/map/land.webp') center/cover;
+}
+#pzb .sea-island .xc.sea { background: #266577 url('pirate-revised/map/water.webp') center/cover; }
+#pzb .sea-island .xsprs { z-index: 1; pointer-events: none; }
+#pzb .sea-island .xfx { z-index: 3; }
+#pzb .sea-island .xc.found::after { content: '×'; background: none; color: #852e20; font: 900 24px/1 Tajawal; }
+#pzb .sea-island .xfound .sea-sprite { width: 100%; }
+#pzb:has(.sea-island) .zdial { background: #132138 radial-gradient(#31516a,#111a34); box-shadow: 0 0 0 3px #aa844a; }
+#pzb:has(.sea-island) [data-tool] .sea-sprite { width: 22px; height: 22px; flex: none; }
+#pzb:has(.sea-island) .zcrot button { min-width: 44px; min-height: 44px; }
+#pzb #zrw { background: #2c6c70 url('pirate-revised/route/scene.webp') center/cover; }
+#pzb #zgw { background: #276278 url('pirate-revised/current/scene.webp') center/cover; }
+#pzb :is(#zrw,#zgw) .xrsea {
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background: linear-gradient(90deg,#d6f5ed5c 1px,transparent 1px),
+    linear-gradient(#d6f5ed5c 1px,transparent 1px), #103a426b;
+  background-size: calc(100% / var(--sea-w)) calc(100% / var(--sea-h));
+}
+#pzb :is(#zrw,#zgw) :is(.xrs,.zjelly,.xboat,.zsn,.zgate) { display: grid; place-items: center; }
+#pzb #zrw .xboat { z-index: 4; }
+#pzb #zrw .zsn { z-index: 3; }
+#pzb #zrw .zsn i { width: 85%; height: 85%; }
+#pzb #zrw .zsn img { width: 100%; height: 100%; }
+#pzb #zgw .zgate { z-index: 4; }
+#pzb #zgw .zgate i { display: grid; place-items: center; }
+#pzb #zgw .sea-arrow {
+  display: inline-grid;
+  place-items: center;
+  width: 1.25em;
+  height: 1.25em;
+  border-radius: 50%;
+  color: #123b34;
+  background: #e1f9dc;
+  font: 900 clamp(14px, 5vw, 22px)/1 Tajawal,system-ui,sans-serif;
+}
+#pzb #zgw .zgate .sea-arrow {
+  position: absolute;
+  color: #612815;
+  background: #fff2b8;
+}
+#pzb #zgw .zgate em { z-index: 1; }
+#pzb #zgw .zjelly { z-index: 5; pointer-events: none; }
+#pzb #zgw .zjelly.home img { filter: drop-shadow(0 0 9px #c1f5ff); }
+#pzb #zgw .zjelly.lost img { opacity: .3; transform: scale(.5); }
+@media (max-width:380px) {
+  #pzb:has(#zrw) .xkbtns { flex-wrap: wrap; }
+}
+@media (prefers-reduced-motion:reduce) {
+  #pzb :is(#zrw,#zgw) * { transition-duration: 0ms !important; animation: none !important; }
+}
+
+/* Captain's ledger, mermaid harp, and shadow room. */
+#pzb:has(#zkm,#zhh,#zsw) .xnote h3 .sea-sprite { width: 36px; height: 32px; flex: none; }
+#pzb #zkm {
+  color: #3a2616;
+  padding: 12px 8px;
+  border: 1px solid #9a6946;
+  border-radius: 12px;
+  background: #f1dcb0 url('pirate-revised/captain/scene.webp') center/cover;
+}
+#pzb #zkm .zkw { flex-wrap: wrap; max-width: 100%; }
+#pzb #zkm .zkc { background: #fff1d0; color: #3a2616; min-height: 44px; }
+#pzb #zkm .zkc.kn { background: #e5c68c; opacity: 1; }
+#pzb #zkm .zkc i .sea-sprite { width: 100%; height: 100%; }
+#pzb #zkb { gap: 4px; }
+#pzb #zkb button { min-height: 40px; }
+#pzb .zhinstrument {
+  width: 100%;
+  padding: 8px;
+  box-sizing: border-box;
+  border-radius: 14px;
+  background: #333457 url('pirate-revised/harp/scene.webp') center/cover;
+}
+#pzb .zhinstrument .zhshell { margin: 0 0 8px; gap: clamp(2px,1vw,6px); }
+#pzb .zhinstrument .zhshell i { min-width: 0; color: #31263b; background: #f8e7ee; }
+#pzb .zhinstrument .zhshell i.on { color: #112d47; background: #c6f4ff; }
+#pzb .zhinstrument .zhshell i.ok { background: #ffe1a0; }
+#pzb .zhinstrument .zhharp {
+  height: clamp(120px,25vh,190px);
+  background: url('pirate-revised/harp/harp.webp') center/auto 88% no-repeat, #392d4c;
+}
+#pzb .zhinstrument .zhharp b {
+  background: #251e39;
+  color: #fff0cb;
+  border-radius: 12px;
+  min-width: 20px;
+}
+#pzb .zhinstrument .zhharp button:focus-visible,
+#pzb #zkm .zkc:focus-visible,
+#pzb .zss button:focus-visible { outline: 2px solid #f1a429; outline-offset: 2px; }
+#pzb #zsw { background: #234657 url('pirate-revised/shadow/scene.webp') center/cover; }
+#pzb #zsw i { background: #e7d8bc url('pirate-revised/shadow/rock.webp') center/115% auto; border-radius: 2px; }
+#pzb #zsw i.t { box-shadow: inset 0 0 0 3px #a5271c; }
+#pzb #zsw i.s { background: #253749; }
+#pzb #zsw i.t.s { box-shadow: inset 0 0 0 3px #eb785b; }
+#pzb #zsw.done i.t.s { background: #254d59; box-shadow: inset 0 0 0 2px #a3f3ff; }
+#pzb .zsmini { background: #c2dae0; }
+#pzb .zslamp .sea-sprite { width: 100%; height: 100%; }
+#pzb .zss button { min-height: 44px; }
+@media (prefers-reduced-motion:reduce) {
+  #pzb .zhinstrument .zhharp button.pl span { animation: none; }
+  #pzb :is(#zsw .s,.zslamp) { transition-duration: 0ms; }
+}
+
+/* Dragon, temple constellation, and ocean throne. */
+#pzb:has(#znp,#zts,#zow) .xnote h3 .sea-sprite { width: 36px; height: 32px; flex: none; }
+#pzb #znp {
+  align-items: flex-end;
+  flex-wrap: wrap;
+  padding: 10px 8px;
+  border-radius: 12px;
+  background: #332747 url('pirate-revised/dragon/scene.webp') center/cover;
+}
+#pzb #znp .znpile { color: #382413; background: #fff0c8 url('pirate-revised/dragon/plinth.webp') center bottom/100% 48px no-repeat; }
+#pzb #znp .znpile.sel { outline: 2px solid #ffd68f; outline-offset: 3px; }
+#pzb #znp .znpile i .sea-sprite { width: 100%; height: 100%; }
+#pzb #znp .znpile b { background: #fff0c8; border-radius: 6px; min-width: 24px; }
+#pzb .ztw { grid-template-columns: minmax(90px,1fr) minmax(0,1.7fr); }
+#pzb :is(.zt-board,#zts) {
+  position: relative;
+  aspect-ratio: 1;
+  border-radius: 10px;
+  border: 1px solid #745d47;
+}
+#pzb .zt-tablet {
+  background: #debd82 url('pirate-revised/constellation/tablet.webp') center/100% 100% no-repeat;
+}
+#pzb #zts {
+  background: linear-gradient(#1a253b90,#1a253b90),url('pirate-revised/constellation/scene.webp') center/cover,#1a253b;
+  isolation: isolate;
+}
+#pzb :is(.zt-board,#zts) canvas, #pzb #zts .zt-stars {
+  position: absolute;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+}
+#pzb #zts canvas { pointer-events: none; }
+#pzb #zts .ztst {
+  position: absolute;
+  transform: translate(-50%,-50%);
+  display: grid;
+  place-items: center;
+  width: clamp(24px,9%,40px);
+  aspect-ratio: 1;
+  padding: 0;
+  border: 0;
+  background: transparent;
+}
+#pzb #zts .ztst .sea-sprite { width: 64%; height: 64%; filter: drop-shadow(0 0 3px #ffe0a0); }
+#pzb #zts .ztst[aria-pressed=true] { background: #75491e; outline: 2px solid #ffe8a1; border-radius: 50%; }
+#pzb #zts .ztst:focus-visible { outline: 2px dashed #fff5d6; }
+#pzb #zow { border-radius: 16px; background: #284e59 url('pirate-revised/throne/scene.webp') center/cover; }
+#pzb #zow .zothr { display: grid; place-items: center; }
+#pzb #zow .zothr .sea-sprite { width: 57%; height: 64%; }
+#pzb #zow :is(.zoslot,.zoend) .sea-sprite { width: 100%; height: 100%; }
+#pzb #zot .zotool i .sea-sprite { width: 100%; height: 100%; }
+#pzb #zow .zoend { pointer-events: none; }
+@media (prefers-reduced-motion:reduce) {
+  #pzb #zow.nope { animation: none; }
+  #pzb #zow :is(.zoend,.zothr) { transition: none; }
+}

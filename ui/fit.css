@@ -321,3 +321,17 @@ html[data-skin="dark"] #play.fit .fit-sh-give{border-color:#FF8A7A;color:#FFB4A8
 html[data-skin="dark"] #play.fit .fit-sh-sound{border-color:#7f9599;color:#EEF1FF}
 /* Intro screens: the start button stays on screen (sticky in the scrolling play surface), so starting never needs a scroll. */
 #play #stage:has(>.intro)>#go.go-btn{position:sticky;bottom:calc(10px + env(safe-area-inset-bottom,0px));z-index:6;box-shadow:0 8px 22px rgba(0,0,0,.22)}
+
+/* Keep the complete river composition in a compact, responsive play area. */
+#play.fit #pzb .lb[data-lb="river"] .rv10 {
+  height: min(var(--fit-room, 350px), clamp(242px, 91vw, 393px));
+}
+@media (max-height: 460px) and (orientation: landscape) {
+  #play.fit #pzb .lb[data-lb="river"] .rv10 { height: min(var(--fit-room, 225px), 245px); }
+}
+#play.fit:not(.xframe) #pzb:has(.lb[data-lb="river"]) {
+  justify-content: flex-start;
+  background: transparent;
+  border-color: transparent;
+  box-shadow: none;
+}

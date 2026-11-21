@@ -583,7 +583,7 @@ html[data-skin="dark"] .mlj-v3-content {
 .mlj-v3-opening-text button { min-height: 44px; }
 
 /* Frameless library and brain-game art, including legacy art that is not photographic. */
-html #v-puz .la-sections .la-library-grid { grid-template-columns: repeat(4,minmax(0,1fr)) !important; }
+html #v-puz .la-sections .la-library-grid { grid-template-columns: repeat(3,minmax(0,1fr)) !important; }
 html #v-puz .la-sections .la-library-card,
 html #v-games .ui-grid article .ui-gmain {
   background: transparent !important;

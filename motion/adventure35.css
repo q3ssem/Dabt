@@ -1,0 +1,269 @@
+/* River scene and rules share one fitted plane on both themes. */
+#play #pzb .lb[data-lb="river"] .rv10 {
+  display: block;
+  max-width: 440px;
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  margin-inline: auto;
+  overflow: hidden;
+  --river-paint: url(adventure35/river-day.webp);
+  --dock-left: 35%;
+  --dock-right: 65%;
+  --dock-level: 65%;
+}
+.rv10 .rv10-landscape { background: var(--river-paint) center / 100% 100% no-repeat; }
+#play #pzb .lb[data-lb="river"] .rv10-bank {
+  position: absolute;
+  inset: 49% auto auto 6%;
+  width: 25%;
+  padding: 0;
+  gap: 2px;
+  justify-content: flex-start;
+}
+#play #pzb .lb[data-lb="river"] .rv10-bank.goal { inset: 49% 6% auto auto; }
+#play #pzb .rv10-bank h4 { position: absolute; top: -43cqw; white-space: nowrap; font-size: clamp(10px, 3.3cqw, 13px); }
+#play #pzb .rv10 .rv10-items {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 44px));
+  gap: 0;
+}
+#play #pzb .rv10 .rv10-it {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+  border-radius: 50%;
+  touch-action: none;
+}
+#play #pzb .rv10 .rv10-it img {
+  width: 100%;
+  height: 100%;
+  filter: drop-shadow(0 3px 2px #26321780);
+}
+#play #pzb .rv10 .rv10-it[aria-disabled="true"] { opacity: .9; cursor: default; }
+#play #pzb .rv10 .rv10-it img.in-flight { visibility: hidden; }
+#play #pzb .rv10 .rv10-boat {
+  left: var(--dock-target, var(--dock-left));
+  top: var(--dock-level);
+  width: 39%;
+  transition: left .82s cubic-bezier(.34,.11,.32,.99);
+}
+#play #pzb .rv10 .rv10-load { left: 53%; top: 56%; transform: translate(-50%,-50%); }
+#play #pzb .rv10 .rv10-load .rv10-it { width: clamp(32px, 11cqw, 44px); height: 44px; }
+#play #pzb .rv10 .rv10-load .rv10-it img { width: 86%; height: 80%; }
+.rv10.sail .rv10-rig { animation: river-rock .82s ease-in-out; }
+@keyframes river-rock { 28% { transform: translateY(-2px) rotate(-2deg); } 66% { transform: translateY(1px) rotate(2deg); } }
+.rv10-flight,.rv10-nature { position: absolute; inset: 0; pointer-events: none; }
+.rv10-flight { z-index: 6; }
+.rv10-flight img { position: absolute; object-fit: contain; filter: drop-shadow(0 4px 2px #27331677); }
+.rv10-nature { z-index: 1; }
+.rv10-glint {
+  position: absolute;
+  left: 40%; top: 76%;
+  width: 18%; height: 4%;
+  border-radius: 50%;
+  background: #c1ffff65;
+  filter: blur(2px);
+  animation: river-glint 4.8s ease-in-out infinite alternate;
+}
+@keyframes river-glint { from { transform: translateX(-15%) scaleX(.65); opacity: .13; } to { transform: translateX(25%) scaleX(1.35); opacity: .6; } }
+@media (prefers-reduced-motion: reduce) {
+  #play #pzb .rv10 .rv10-boat { transition: none; }
+  .rv10.sail .rv10-rig,.rv10-glint { animation: none; }
+}
+
+#play #pzb .rv10-bank:not(.goal) .rv10-it:nth-child(n+5) { transform: translateX(-27%); }
+#play #pzb .rv10-bank.goal .rv10-it:nth-child(n+5) { transform: translateX(27%); }
+html[data-skin="dark"] .rv10 .rv10-landscape { filter: brightness(.7) saturate(.86) hue-rotate(7deg); }
+#play #pzb .rv10 .rv10-items .rv10-it { height: clamp(32px,11cqw,47px); }
+
+.rid-act {
+  width: min(100%, 570px);
+  margin: auto;
+  display: grid;
+  gap: .7rem;
+  padding: .7rem;
+  border-radius: 15px;
+  color: #3b2617;
+  background: #c5a778 url(../ui/designs_art/four_puzzles/pz_rid/bg_warehouse.webp) center/cover;
+}
+.rid-race { background: #c6cfa8 url(revised/ice-scene.webp) center/cover; }
+.rid-act-clue { background: #fffaed; padding: .7rem; border-radius: 10px; margin: 0; font-weight: 700; }
+html[data-skin="dark"] .rid-act-clue { background: #1b343e; color: #fff2da; }
+.rid-act-board { text-align: center; }
+.rid-act-crates,.rid-act-track { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: .35rem; }
+.rid-act-crate [data-open] {
+  position: relative;
+  background: transparent;
+  border: none;
+  width: 100%;
+  aspect-ratio: 1;
+  cursor: pointer;
+}
+.rid-act-crate [data-open] img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.rid-act-crate [data-open] b {
+  position: absolute; left: 50%; bottom: 3%; transform: translateX(-50%);
+  padding: .15rem .45rem; background: #fff1cf; color: #462c18; border-radius: .4rem; font-size: .78rem;
+}
+.rid-act-track button,.rid-act-slot,.rid-act-labels button {
+  min-height: 44px;
+  border: 1px solid #aa8155;
+  border-radius: 8px;
+  color: #4e2f1c;
+  background: #fff3dc;
+  font-family: inherit; font-size: .86rem; font-weight: 700; line-height: 1.25;
+  cursor: pointer;
+}
+.rid-act-track button { display: grid; justify-items: center; padding: .4rem; }
+.rid-act-track img { height: clamp(48px, 16vw, 96px); max-width: 100%; object-fit: contain; }
+.rid-act-slot { width: 100%; }
+.rid-act-labels { display: flex; justify-content: center; gap: .35rem; margin: .45rem auto; flex-wrap: wrap; }
+.rid-act-labels button { touch-action: none; padding: 0 .5rem; }
+.rid-act-labels button.mk-sel,.rid-act-slot.mk-over,.rid-act-track button.mk-over { outline: 3px solid #166a62; }
+.rid-act-slot img,.rid-act-labels img,.rid-act-sample img { width: 22px; vertical-align: middle; }
+.rid-act-sample { display: inline-flex; gap: .3rem; align-items: center; margin: .4rem auto 0; padding: .2rem .5rem; border-radius: .45rem; background: #fff4d9; }
+
+#play #pzb .painted-adventure {
+  --sheet: #f9edce;
+  --sheet-ink: #32261a;
+  background: var(--sheet);
+  color: var(--sheet-ink);
+  border: 1px solid #a58b5b;
+  border-radius: 13px;
+  width: min(100%, 620px);
+  margin: auto;
+  padding: clamp(6px,2vw,13px);
+  box-sizing: border-box;
+  overflow: hidden;
+}
+html[data-skin="dark"] #play #pzb .painted-adventure {
+  --sheet: #27343b;
+  --sheet-ink: #fff1da;
+}
+#play #pzb .painted-adventure > .xpin { position: relative; padding: 0; min-width: 0; }
+.painted-adventure .xpin h3 { display: flex; align-items: center; gap: .45rem; color: var(--sheet-ink); }
+.painted-adventure .xpin h3 img,.painted-adventure .xrolled img { width: 34px; height: 34px; }
+.painted-adventure .painted-prop { display: block; width: 100%; height: 100%; object-fit: contain; pointer-events: none; }
+.painted-adventure :is(.xnote,.xbread,.xbq,.xtools) { color: var(--sheet-ink); }
+.painted-adventure button:focus-visible { outline: 2px solid #167d75; outline-offset: 2px; }
+
+#play #pzb .painted-bottle { background: var(--sheet) url(../expedition10/art/scenes/15-bottle.webp) center top/100% auto no-repeat; }
+.painted-bottle :is(.xnote,.xbread,.xbq,.xbcode) { background: var(--sheet); border-radius: .5rem; padding: .3rem .45rem; }
+.painted-bottle .xbwheel small { background: var(--sheet); padding: .15rem .35rem; border-radius: .35rem; color: var(--sheet-ink); }
+.painted-wheel { position: relative; width: min(100%,200px); aspect-ratio: 1; isolation: isolate; }
+.painted-wheel > .painted-prop { position: absolute; inset: 0; }
+.painted-wheel :is(.painted-wheel-rim,.xbi) { position: absolute; inset: 0; transform-origin: center; }
+.painted-wheel .xbi { transition: transform .28s ease-out; }
+.painted-wheel span {
+  position: absolute;
+  display: grid;
+  place-items: center;
+  width: 11%; height: 11%;
+  left: 44.5%; top: 44.5%;
+  transform: rotate(var(--step)) translateY(calc(var(--orbit) * -9.09)) rotate(calc(var(--step) * -1));
+  color: #27190f;
+  text-shadow: 0 0 3px #fff4d7;
+  font: bold clamp(8px, 2vw, 13px)/1 Tajawal,sans-serif;
+}
+.painted-wheel-pin { position: absolute; top: 1%; left: 47%; width: 6%; height: 12%; clip-path: polygon(0 0,100% 0,50% 100%); background: #862f22; }
+
+#play #pzb .painted-chart #xb {
+  background: #3f8081 url(pirate-revised/map/scene.webp) center/cover;
+  border-radius: .65rem;
+}
+.painted-chart #xb .xbin { inset: 7%; }
+.painted-chart #xb .xbsv { display: none; }
+.painted-chart #xb .xbg { z-index: 0; }
+.painted-chart #xb .xsprs { pointer-events: none; z-index: 1; }
+.painted-chart #xb .xfx { z-index: 2; }
+.painted-chart #xb .xc { border-radius: 0; min-width: 0; background: #d5bd83 url(pirate-revised/map/land.webp) center/cover; box-shadow: inset -1px -1px #49362466; }
+.painted-chart #xb .xc.sea { background: #588e86 url(pirate-revised/map/water.webp) center/cover; }
+.painted-chart #xb .xc.xo { box-shadow: inset 0 0 0 3px #b33227; }
+.painted-map-rose { position: absolute; top: .1%; left: 1%; width: 7%; aspect-ratio: 1; border-radius: 50%; background: #fff1d2; color: #542e25; display: grid; place-items: center; font-size: 10px; pointer-events: none; }
+.painted-map-rose b { display: none; }
+.painted-map-rose span { transform: rotate(var(--north)); font: 900 15px/1 sans-serif; }
+.painted-footprint { position: absolute; inset: 30%; background: #3e2919ad; border-radius: 55% 60% 40% 40%; box-shadow: 2px 2px #3e291980; }
+
+#play #pzb .painted-reef #xrw { width: 100%; max-width: 330px; margin: .45rem auto; background: #28657a url(pirate-revised/reef/scene.webp) center/cover; border-radius: .6rem; }
+.painted-reef #xrw :is(.xrsea,.xrsea2) { background-image: none; opacity: .28; }
+.painted-reef .xcur2 b { position: absolute; inset: 0; display: grid; place-items: center; color: #fff5d5; text-shadow: 0 1px 4px #16474c; }
+.painted-reef .xpad button { font-size: 1.45rem; }
+.painted-bridge #xgw { background: #524944 url(pirate-revised/bridge/scene.webp) center/cover; border-radius: .6rem; }
+.painted-bridge #xgw :is(.xgriver,.xgcl) { visibility: hidden; }
+.painted-bridge .xgp .painted-prop { object-fit: fill; }
+.painted-bridge :is(.xgboard,.xgplank span) { background: #9b6a3b url(pirate-revised/bridge/plank.webp) center/100% 100%; }
+.painted-bridge .xgplank span i { background: transparent; }
+.painted-bridge .xgruler { color: #fff5de; text-shadow: 0 1px 3px #2d1e16; }
+.painted-cave #xcw { background: #261b19 url(pirate-revised/cave/scene.webp) center/cover; }
+.painted-cave .xcst2 { position: absolute; height: 100%; object-fit: contain; }
+.painted-cave .painted-flame { display: block; width: 100%; height: 100%; background: url(../ui/designs_art/work_review/pz_xcave/torch-glow--active.png) center/contain no-repeat; }
+.painted-cave .xcslab2 .painted-prop { object-fit: fill; }
+.painted-loot .xlcrew { background: #674132 url(pirate-revised/loot/scene.webp) center/cover; border-radius: .6rem; padding: .3rem; gap: .35rem; }
+.painted-loot .loot-recipient { justify-items: center; width: 100%; color: #402516; display: grid; gap: .25rem; min-height: 44px; cursor: pointer; background: #ffefd0; border: 0; border-radius: .45rem; }
+.painted-loot .xlp { min-width: 0; padding: 2px; }
+.painted-loot .xlbag > .painted-prop { position: absolute; inset: 0; }
+.painted-loot .xlbag em img { width: 14px; height: 14px; }
+.painted-loot .xlbag b { z-index: 1; text-shadow: 0 1px 3px #f6ddb5; color: #331d12; }
+@media (prefers-reduced-motion: reduce) {
+  .painted-adventure * { animation-duration: .01ms !important; transition-duration: .01ms !important; }
+}
+
+.painted-chart .xpirate.flip img { transform: scaleX(-1); }
+
+.rid-measure { background: #b4c498 url(pirate-revised/bridge/scene.webp) center/cover; }
+.rid-lengths { display: grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: .3rem; }
+.rid-length {
+  display: grid;
+  align-content: space-between;
+  justify-items: center;
+  min-height: 100px;
+  background: #fff1d6;
+  border: 1px dashed #996948;
+  border-radius: .55rem;
+  padding: .3rem .15rem;
+  font-size: .84rem;
+}
+.rid-length img,.rid-portrait img { display: block; width: 100%; height: 45px; object-fit: contain; }
+.rid-person-3 img { filter: hue-rotate(75deg); }
+.rid-length:is(.mk-over,:focus-visible) { outline: 3px solid #176a62; }
+
+html[data-skin="dark"] #play #pzb #rhb > i {
+  box-shadow: inset 0 0 0 1px #e7d6a761;
+}
+#play #pzb .pp10-intake {
+  position: absolute;
+  pointer-events: none;
+  inset: 0;
+  transform: rotate(var(--intake-angle, 0deg));
+  z-index: 2;
+}
+#play #pzb .pp10-intake::before {
+  content: '';
+  position: absolute;
+  left: 43%;
+  top: 14%;
+  width: 14%;
+  height: 13%;
+  border-radius: 50%;
+  border: max(1px, .16em) solid #805332;
+  background: #e6c28b;
+}
+#play #pzb .pp10-c.on .pp10-intake::before {
+  background: #a4f5ff;
+  border-color: #26616b;
+  box-shadow: 0 0 4px #55ebf5;
+}
+#play #pzb .st10-current::before { outline: 1px solid #244437; outline-offset: 3px; }
+#play #pzb #unsv .unode::after {content:''; position:absolute; inset:-5px; border-radius:50%;}
+#play #pzb .lg10-c:focus-visible { outline: 2px solid #258777; outline-offset: -2px; }
+#play #pzb [data-logic-board="door"] .pl-door:focus-visible,
+#play #pzb [data-logic-board="door"] .pl-door.mk-over { outline: 2px solid #b4762d; outline-offset: 2px; }
+#play #pzb .xkdial.on { box-shadow: 0 0 0 2px #b67f3f inset; }
+#play #pzb #zkb button:focus-visible { outline: 2px solid #b37732; outline-offset: 1px; }
+#play #pzb .zoslot {
+  min-width: min(44px,14cqw);
+  min-height: min(44px,14cqw);
+}
+#play #pzb .zoslot:focus-visible { outline: 2px solid #f9db8f; outline-offset: 2px; }
+
+.painted-bridge #xgw { overflow: hidden; }

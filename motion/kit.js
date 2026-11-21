@@ -76,3 +76,81 @@
   };
   window.MK = { attach, esc, icon, REL, svgNS };
 })();
+
+/* Presentation for the bridge, cave and loot rounds. The native builders own every move. */
+(function () {
+  'use strict';
+  if (typeof pzPlay !== 'function') return;
+  const renderers = { pz_xbridge: bridge, pz_xcave: cave, pz_xloot: loot };
+  const play = pzPlay;
+
+  function artwork(targets, file) {
+    if (!targets.length) return;
+    const image = new Image();
+    image.onload = () => {
+      for (const target of targets) {
+        if (target.isConnected) target.classList.add('pirate-painted');
+      }
+    };
+    image.src = 'motion/pirate-revised/' + file + '.webp';
+  }
+
+  function bridge(body) {
+    const stage = body.querySelector('#xgw');
+    const tray = body.querySelector('#xgtray');
+    if (!stage || !tray) return;
+    const widthInUnits = Number(tray.style.getPropertyValue('--W'));
+    if (widthInUnits > 0) {
+      const setScale = () => tray.style.setProperty('--bridge-unit', stage.clientWidth * 0.92 / widthInUnits + 'px');
+      const watch = new ResizeObserver(setScale);
+      watch.observe(stage);
+      cleanup.push(() => watch.disconnect());
+      setScale();
+    }
+    artwork([...stage.querySelectorAll('.xgp')], 'bridge/pier');
+  }
+
+  function cave(body) {
+    artwork([...body.querySelectorAll('.xcst2')], 'cave/torch');
+    artwork([...body.querySelectorAll('.xcslab2')], 'cave/slab');
+  }
+
+  function loot(body) {
+    const crew = [...body.querySelectorAll('.xlcrew > button.xlp')];
+    const portraits = ['captain', 'sailor', 'cook', 'gunner'];
+    crew.forEach((oldCard, index) => {
+      const card = document.createElement('article');
+      card.className = oldCard.className;
+      card.dataset.p = oldCard.dataset.p;
+      const recipient = document.createElement('button');
+      recipient.type = 'button';
+      recipient.className = 'xlrecipient';
+      const [portrait, name, total, bags] = oldCard.children;
+      total.setAttribute('aria-live', 'polite');
+      recipient.append(portrait, name, total);
+      recipient.onclick = oldCard.onclick.bind(card);
+      card.append(recipient, bags);
+      oldCard.replaceWith(card);
+      artwork([portrait], 'loot/' + portraits[index]);
+    });
+    const restoreFocus = event => {
+      const bag = event.target.closest('.xlbag');
+      if (!bag || event.detail !== 0) return;
+      const same = body.querySelector('.xlbag[data-b="' + bag.dataset.b + '"]');
+      if (same && same !== bag) same.focus();
+    };
+    body.addEventListener('click', restoreFocus);
+    cleanup.push(() => body.removeEventListener('click', restoreFocus));
+    artwork([body.querySelector('.xlcrew').parentElement], 'loot/sack');
+  }
+
+  pzPlay = function (id, build) {
+    if (!renderers[id]) return play(id, build);
+    return play(id, api => {
+      api.body.dataset.pirateWork = id.slice(3);
+      const result = build(api);
+      renderers[id](api.body);
+      return result;
+    });
+  };
+})();

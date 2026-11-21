@@ -703,7 +703,7 @@ html[data-skin="dark"] #play[data-la-game="pz_zthrone"] #pzb { --exp-scene:url(.
 #play[data-la-game="pz_zthrone"] .zothr:is(.sel,.on,.lit,[aria-pressed="true"]) { --exp-piece:url(../ui/designs_art/work_review/pz_pjail/cell-door--active.png) }
 #play[data-la-game="pz_zthrone"] .zothr:is(.blocked,.no,[disabled],[aria-disabled="true"]) { --exp-piece:url(../ui/designs_art/work_review/pz_pjail/cell-door--blocked.png) }
 #play[data-la-game="pz_zthrone"] #pzb.solved .zothr { --exp-piece:url(../ui/designs_art/work_review/pz_pjail/cell-door--solved.png) }
-#play[data-la-game="pz_tpath"] #xb .xc[data-i]:active { background-image:url(../ui/designs_art/work_review/pz_tpath/map-cell--active.png);background-size:96% 96%;background-position:center;background-repeat:no-repeat }
+#play[data-la-game="pz_tpath"] #xb .xc[data-i]:active { background-image:url(../ui/designs_art/work_review/pz_tpath/map-cell--active.png);background-size:100% 100%;background-position:center;background-repeat:no-repeat }
 #play[data-la-game="pz_tpath"] #pzb.solved #xb .xspr.xstart::before { background-image:url(../ui/designs_art/work_review/pz_tpath/route-beacon--solved.png);background-size:contain;background-position:center;background-repeat:no-repeat }
 #play[data-la-game="pz_xcave"] #xcw .xct2 .xcst2 { background-image:url(../ui/designs_art/work_review/pz_xcave/torch--normal.png);background-size:contain;background-position:center;background-repeat:no-repeat }
 #play[data-la-game="pz_xcave"] #xcw .xct2.lit .xcst2 { background-image:url(../ui/designs_art/work_review/pz_xcave/torch--active.png);background-size:contain;background-position:center;background-repeat:no-repeat }

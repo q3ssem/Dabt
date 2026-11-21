@@ -4,27 +4,13 @@
 (function () {
   'use strict';
   if (!window.MK || typeof GM === 'undefined') return;
-  const { attach, icon, REL } = MK;
+  const { attach } = MK;
+  const glyph = (value, color='currentColor') => `<span class="board70-glyph" style="color:${color}" aria-hidden="true">${value}</span>`;
   const has = id => GM[id] && typeof pzPlay === 'function';
 
   /* ---------------------------------------------------------------- pictograms */
-  const CAP_ICON = [ // six captains' seals: distinct shape + colour, readable without colour
-    ['#B5523A', '<circle cx="20" cy="20" r="7"/><path d="M20 4v6M20 30v6M4 20h6M30 20h6M9 9l4 4M27 27l4 4M31 9l-4 4M13 27l-4 4"/>'],          // sun
-    ['#3F6F8C', '<path d="M26 8a13 13 0 1 0 0 24a10 10 0 0 1 0-24z"/>'],                                                                     // moon
-    ['#C8932F', '<path d="M20 5l4.4 9.5 10.4 1.1-7.8 7 2.3 10.2L20 27.6l-9.3 5.2 2.3-10.2-7.8-7 10.4-1.1z"/>'],                                  // star
-    ['#2F7F6A', '<path d="M4 16q4-6 8 0t8 0 8 0 8 0M4 26q4-6 8 0t8 0 8 0 8 0"/>'],                                                             // wave
-    ['#7A4E8C', '<path d="M30 6C16 8 10 20 10 32M10 32l6-4M14 22l8-2M18 14l8-2"/>'],                                                         // feather
-    ['#8A5A33', '<circle cx="14" cy="20" r="6"/><path d="M20 20h16M30 20v6M35 20v5"/>']                                                      // key
-  ];
-  const FATE_ICON = { // عادت · اختفت · انسحبت · بقيت هناك · أنكرت ما رأت
-    'عادت': '<path d="M30 14H14l6-6M14 14l6 6"/><path d="M8 26h24v8H8z"/>',
-    'اختفت': '<circle cx="20" cy="20" r="12" stroke-dasharray="4 4"/><path d="M14 20h12" opacity=".5"/>',
-    'انسحبت': '<path d="M30 20H10M16 13l-7 7 7 7"/><path d="M34 10v20"/>',
-    'بقيت هناك': '<path d="M12 34V6M12 7h16l-4 6 4 6H12"/>',
-    'أنكرت ما رأت': '<path d="M5 20q15-14 30 0q-15 14-30 0z"/><circle cx="20" cy="20" r="4"/><path d="M8 32L32 8"/>'
-  };
-  const SHIP = '<path d="M6 26h28l-4 7H10z"/><path d="M20 6v20M20 7l10 14H20M20 10l-8 11h8"/>';
-
+  const CAP_SEAL=['☼','☾','☆','≈','♧','⊣'];
+  const CAP_COLOR=['#B5523A','#3F6F8C','#a67425','#2F7F6A','#7A4E8C','#8A5A33'];
   /* ================================================================ 1. أرشيف الرحلات — pz_aarch */
   if (has('pz_aarch') && typeof aarMake === 'function') {
     GM.pz_aarch.run = function runAArchMotion() {
@@ -34,35 +20,35 @@
         // captain's own seal mark, fate = rune by AAR_F index (rune_flame = AAR_F[4] per the manifest).
         const ART = 'ui/designs_art/priority7/', SHIP_ART = i => AAR_SHIP.indexOf(P.ships[i]) % 2 ? 'prop_rowboat' : 'prop_ship';
         const FATE_ART = { 'عادت': 'rune_wave', 'اختفت': 'rune_moon', 'بقيت هناك': 'rune_star', 'أنكرت ما رأت': 'rune_flame' };
-        const capChip = (x, small) => `<span class="mk-chip cap aa-cap${small ? ' sm' : ''}" style="--c:${CAP_ICON[AAR_CAP.indexOf(P.caps[x]) % 6][0]}"><span class="aa-scroll"><img src="${ART}prop_manifest.png" alt="" draggable="false">${icon(CAP_ICON[AAR_CAP.indexOf(P.caps[x]) % 6][1], CAP_ICON[AAR_CAP.indexOf(P.caps[x]) % 6][0])}</span><small>${P.caps[x]}</small></span>`;
-        const fateChip = (f, small) => { const a = FATE_ART[P.fates[f]]; return `<span class="mk-chip fate aa-fate${small ? ' sm' : ''}">${a ? `<img class="aa-rune" src="${ART}${a}.png" alt="" draggable="false">` : `<span class="aa-rune drawn">${icon(FATE_ICON[P.fates[f]] || '<circle cx="20" cy="20" r="10"/>', '#7A4E2C')}</span>`}<small>${P.fates[f]}</small></span>`; };
+        const capChip = (x, small) => `<span class="mk-chip cap aa-cap${small ? ' sm' : ''}" style="--c:${CAP_COLOR[AAR_CAP.indexOf(P.caps[x]) % 6]}"><span class="aa-scroll"><img src="${ART}prop_manifest.png" alt="" draggable="false">${glyph(CAP_SEAL[AAR_CAP.indexOf(P.caps[x]) % 6], CAP_COLOR[AAR_CAP.indexOf(P.caps[x]) % 6])}</span><small>${P.caps[x]}</small></span>`;
+        const fateChip = (f, small) => { const a = FATE_ART[P.fates[f]]; return `<span class="mk-chip fate aa-fate${small ? ' sm' : ''}">${a ? `<img class="aa-rune" src="${ART}${a}.png" alt="" draggable="false">` : `<span class="aa-rune drawn">${glyph('↤','#7A4E2C')}</span>`}<small>${P.fates[f]}</small></span>`; };
         const shipChip = r => `<span class="mk-chip ship sm aa-shipc"><img src="${ART}${SHIP_ART(r)}.png" alt="" draggable="false"><small>${P.ships[r]}</small></span>`;
         // relations as pictures: = same row · ✗ not · dotted path = sailed earlier (older row first) · two touching slots = the very next ship
-        const SEQ = '<span class="mk-rel aa-seq" title="أبحر قبل" aria-label="قبل"><svg viewBox="0 0 44 16" aria-hidden="true"><path d="M40 8H8" stroke="#5A4630" stroke-width="2.4" stroke-dasharray="4 3"/><path d="M12 3L5 8l7 5" fill="none" stroke="#5A4630" stroke-width="2.4" stroke-linejoin="round"/></svg></span>';
-        const NEXT = '<span class="mk-rel aa-next" title="السفينة التالية مباشرة" aria-label="التالية مباشرة"><svg viewBox="0 0 44 18" aria-hidden="true"><rect x="23" y="2" width="18" height="14" rx="3" fill="#F2C553" stroke="#5A4630" stroke-width="1.8"/><rect x="4" y="2" width="18" height="14" rx="3" fill="#fff" stroke="#5A4630" stroke-width="1.8"/></svg></span>';
-        const NOT = '<span class="mk-rel aa-not" title="ليس" aria-label="ليس"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M4 4l12 12M16 4L4 16" stroke="#B6382A" stroke-width="3" stroke-linecap="round"/></svg></span>';
+        const SEQ = '<span class="mk-rel aa-seq" title="أبحر قبل" aria-label="قبل">⇠</span>';
+        const NEXT = '<span class="mk-rel aa-next" title="السفينة التالية مباشرة" aria-label="التالية مباشرة">▰▱</span>';
+        const NOT = '<span class="mk-rel aa-not" title="ليس" aria-label="ليس">×</span>';
         const clueHTML = c => {
           switch (c.t) {
-            case 'eq': return shipChip(c.r) + REL.eq + capChip(c.c, 1);
+            case 'eq': return shipChip(c.r) + glyph('=') + capChip(c.c, 1);
             case 'cn': return shipChip(c.r) + NOT + capChip(c.c, 1);
             case 'cy': return capChip(c.a, 1) + SEQ + capChip(c.b, 1);
-            case 'fc': return capChip(c.c, 1) + REL.eq + fateChip(c.f, 1);
+            case 'fc': return capChip(c.c, 1) + glyph('=') + fateChip(c.f, 1);
             case 'fn': return capChip(c.c, 1) + NOT + fateChip(c.f, 1);
-            case 'fr': return shipChip(c.r) + REL.eq + fateChip(c.f, 1);
+            case 'fr': return shipChip(c.r) + glyph('=') + fateChip(c.f, 1);
             case 'fy': return shipChip(c.r) + SEQ + fateChip(c.f, 1);
             case 'adj': return fateChip(c.f, 1) + NEXT + capChip(c.c, 1);
           } return '';
         };
         const clueSay = c => aarText(c, P);
-        api.body.innerHTML = xSheet(`${xHead(XS_.navigator.replace('viewBox="0 0 60 80"', 'viewBox="0 0 60 80" width="28" height="36"'), 'أرشيف الرحلات')}
+        api.body.innerHTML = board70Sheet('aarch',`${xHead(board70Image('aarch','seal'),'أرشيف الرحلات')}
           <p class="mk-lead">اسحب ختم كل قائد ورمز كل مصير إلى سفينته. السفن مرتبة بسنة إبحارها، الأقدم أولًا. كل قرينة تضيء أخضر حين تتحقق وأحمر حين تُخالَف.</p>
-          <div class="aa-key">${REL.eq}نفسه · ${NOT}ليس · ${SEQ}أقدم من · ${NEXT}التالية مباشرة</div>
+          <div class="aa-key">${glyph('=')}نفسه · ${NOT}ليس · ${SEQ}أقدم من · ${NEXT}التالية مباشرة</div>
           <div class="mk-clues" id="aarcl">${P.clues.map((c, i) => `<div class="mk-clue" data-cl="${i}" role="note" aria-label="${clueSay(c)}"><i class="mk-dot"></i>${clueHTML(c)}</div>`).join('')}</div>
           <div class="mk-board aar-board" id="aarboard">
             <div class="mk-rows">${P.ships.map((s, r) => `<div class="mk-row"><div class="mk-ship aa-ship"><img src="${ART}${SHIP_ART(r)}.png" alt="" draggable="false"><b>${s}</b><small>سنة ${XAR(P.years[r])}</small></div><div class="mk-slot" data-slot="c${r}" tabindex="0" aria-label="قائد ${s}"></div><div class="mk-slot" data-slot="f${r}" tabindex="0" aria-label="مصير ${s}"></div></div>`).join('')}</div>
             <div class="mk-tray" data-tray="c" aria-label="أختام القادة"></div><div class="mk-tray" data-tray="f" aria-label="رموز المصائر"></div>
           </div>
-          <div class="xkbtns"><button class="go-btn xsm alt2" id="aarclr">أعد القطع</button><button class="go-btn xsm" id="aargo">رتّب الأرشيف</button></div>`, 620 + n * 110, 501);
+          <div class="xkbtns"><button class="go-btn xsm alt2" id="aarclr">أعد القطع</button><button class="go-btn xsm" id="aargo">رتّب الأرشيف</button></div>`);
         const board = api.body.querySelector('#aarboard');
         const tokHTML = id => id[0] === 'c' ? `<button class="mk-tok" data-tok="${id}">${capChip(+id.slice(1))}</button>` : `<button class="mk-tok" data-tok="${id}">${fateChip(+id.slice(1))}</button>`;
         const draw = () => {
@@ -115,38 +101,33 @@
         const P = alyMake(api.lv), k = P.k, W = 300, Hh = 40, H = k * Hh, N = P.items.length, u = Array(N).fill(-1); let miss = 0, busy = false;
         const lay = P.ev.filter(e => e.t === 'L'), fs = P.ev.filter(e => e.t === 'F');
         const off = (li, x) => fs.reduce((s, f) => s + (li <= f.top && x > f.x * W ? 10 : 0), 0);
-        let svg = `<svg viewBox="0 0 ${W} ${H + 8}" class="alys mk-section">`;
-        lay.forEach(e => { const y = H - (e.i + 1) * Hh; const pts = [0, W * .25, W * .5, W * .75, W].map(x => [x, y - off(e.i, x)]); const pb = [0, W * .25, W * .5, W * .75, W].map(x => [x, y + Hh - off(e.i, x)]);
-          svg += `<path data-ev="L${e.i}" d="M${pts.map(p => p.join(' ')).join('L')}L${pb.reverse().map(p => p.join(' ')).join('L')}Z" fill="${ALY_C[e.i]}" stroke="#3A2616" stroke-width="1"/>${[...Array(5)].map((_, q) => `<path d="M${20 + q * 60} ${y + 12 + (q % 2) * 10}h14" stroke="#3A2616" stroke-width=".6" opacity=".4"/>`).join('')}<text x="10" y="${y + Hh / 2 + 5}" font-size="14" fill="#3A2616" font-family="'Aref Ruqaa',serif">${'أبجدهوز'[e.i]}</text>`; });
-        P.ev.filter(e => e.t === 'V').forEach(v => { const x = v.x * W, top = H - (v.top + 1) * Hh; svg += `<path data-ev="V${v.i}" d="M${x - 6} ${H}q8-${(H - top) / 3} -2 -${(H - top) * .6}t6 -${(H - top) * .4}h8q-8 ${(H - top) * .4} 2 ${(H - top) * .6}t-2 ${(H - top) * .4}z" fill="${ALY_V[v.i]}" stroke="#3A2616" stroke-width=".8" opacity=".9"/><circle cx="${x + 4}" cy="${top + 10}" r="9" fill="#F4E9CC" stroke="#3A2616"/><text x="${x + 4}" y="${top + 14}" font-size="11" text-anchor="middle" fill="#3A2616">${XAR(v.i + 1)}</text>`; });
-        fs.forEach(f => { const x = f.x * W, top = H - (f.top + 1) * Hh; svg += `<path data-ev="F${f.i}" d="M${x} ${H}L${x - 6} ${top}" stroke="#1E1712" stroke-width="2.4" stroke-dasharray="6 3"/><rect x="${x - 20}" y="${top - 4}" width="26" height="14" rx="3" fill="#F4E9CC" stroke="#3A2616"/><text x="${x - 7}" y="${top + 7}" font-size="9.5" text-anchor="middle" fill="#3A2616">شق ${XAR(f.i + 1)}</text>`; });
         // anchors where a placed card's position number appears on the section itself
         const anc = {}; lay.forEach(e => anc['L' + e.i] = [16, H - (e.i + 1) * Hh + Hh / 2 - off(e.i, 16)]);
         P.ev.filter(e => e.t === 'V').forEach(v => anc['V' + v.i] = [v.x * W + 10, H - (v.top + 1) * Hh + Hh * .55]);
         fs.forEach(f => anc['F' + f.i] = [f.x * W + 12, H - (f.top + 1) * Hh + Hh * .55]);
-        svg += '<g id="alynums"></g></svg>';
-        const mark = e => e.t === 'L' ? `<svg viewBox="0 0 40 40"><rect x="4" y="12" width="32" height="16" rx="2" fill="${ALY_C[e.i]}" stroke="#3A2616" stroke-width="1.6"/><text x="20" y="25" font-size="12" text-anchor="middle" fill="#3A2616" font-family="'Aref Ruqaa',serif">${'أبجدهوز'[e.i]}</text></svg>`
-          : e.t === 'V' ? `<svg viewBox="0 0 40 40"><path d="M16 36q6-10 0-18t6-14h6q-8 6-2 14t-2 18z" fill="${ALY_V[e.i]}" stroke="#3A2616" stroke-width="1.4"/></svg>`
-          : `<svg viewBox="0 0 40 40"><path d="M24 36L16 4" stroke="#1E1712" stroke-width="3" stroke-dasharray="6 3"/></svg>`;
+        const mark = e => e.t==='L'
+          ? `<span class="board70-rock-mark" style="--rock:${ALY_C[e.i]}">${'أبجدهوز'[e.i]}</span>`
+          : glyph(e.t==='V'?'∿':'╱',e.t==='V'?ALY_V[e.i]:'#39271d');
         const tok = j => `<button class="mk-tok" data-tok="${j}"><span class="mk-chip ev">${mark(P.items[j])}<small>${alyName(P.items[j])}</small></span></button>`;
-        api.body.innerHTML = xSheet(`${xHead('', 'طبقات الزمن')}
-          <div class="mk-rules"><span>${icon('<path d="M20 34V8M12 16l8-8 8 8"/>')}<small>الأعلى أحدث</small></span><span>${icon('<path d="M18 36q6-10 0-18t6-14" stroke-width="3"/><path d="M6 20h28" opacity=".45"/>')}<small>العرق أحدث مما يشقه</small></span>${fs.length ? `<span>${icon('<path d="M24 36L16 4" stroke-dasharray="5 3"/><path d="M6 14h10M20 22h14" opacity=".45"/>')}<small>الشق أحدث مما أزاحه</small></span>` : ''}</div>
+        api.body.innerHTML = board70Sheet('alayer',`${xHead(board70Image('alayer','slate'),'طبقات الزمن')}
+          <div class="mk-rules"><span>${glyph('↑')}<small>الأعلى أحدث</small></span><span>${glyph('∿')}<small>العرق أحدث مما يشقه</small></span>${fs.length ? `<span>${glyph('╱')}<small>الشق أحدث مما أزاحه</small></span>` : ''}</div>
           <div class="aly-top"><img src="ui/designs_art/priority7/prop_strata.png" alt="" width="40" height="38"><span class="aly-stat" id="alystat" aria-live="polite"></span></div>
-          ${svg}
+          <div class="board70-layer-map"><canvas class="alys mk-section" id="alyMotionCanvas" role="img" aria-label="مقطع الطبقات والعروق والشقوق"></canvas><div id="alynums" aria-hidden="true"></div></div>
           <div class="mk-time"><span class="mk-end">الأقدم</span><div class="mk-line">${[...Array(N).keys()].map(q => `<div class="mk-slot tl" data-slot="${q}" tabindex="0" aria-label="الموضع ${q + 1}"><i>${XAR(q + 1)}</i></div>`).join('')}</div><span class="mk-end">الأحدث</span></div>
           <div class="mk-tray" data-tray="t" aria-label="الأحداث"></div>
-          <div class="xkbtns"><button class="go-btn xsm alt2" id="alyz">أعد القطع</button><button class="go-btn xsm" id="alygo">ثبّت الترتيب</button></div>`, 960, 731);
+          <div class="xkbtns"><button class="go-btn xsm alt2" id="alyz">أعد القطع</button><button class="go-btn xsm" id="alygo">ثبّت الترتيب</button></div>`);
+        board70Layers(P,$('#alyMotionCanvas'),W,Hh,H);
         const root = api.body.querySelector('.xpaper') || api.body;
         const draw = () => {
           root.querySelectorAll('[data-slot]').forEach(s => { const q = +s.dataset.slot; s.innerHTML = u[q] < 0 ? `<i>${XAR(q + 1)}</i>` : tok(u[q]); s.classList.toggle('full', u[q] >= 0); });
           root.querySelector('[data-tray="t"]').innerHTML = [...Array(N).keys()].filter(j => !u.includes(j)).map(tok).join('');
           // the time line updates the section as cards are placed, and shows whether it is complete (not whether it is right)
-          root.querySelector('#alynums').innerHTML = u.map((j, q) => { if (j < 0) return ''; const e = P.items[j], a = anc[e.t + e.i]; return a ? `<g class="aly-num"><circle cx="${a[0]}" cy="${a[1]}" r="9"/><text x="${a[0]}" y="${a[1] + 4}" text-anchor="middle">${XAR(q + 1)}</text></g>` : ''; }).join('');
+          root.querySelector('#alynums').innerHTML = u.map((j, q) => { if (j < 0) return ''; const e = P.items[j], a = anc[e.t + e.i]; return a ? `<span class="board70-layer-index" style="left:${a[0]/W*100}%;top:${a[1]/(H+8)*100}%">${XAR(q+1)}</span>` : ''; }).join('');
           const placed = u.filter(j => j >= 0).length, st = root.querySelector('#alystat');
           st.textContent = placed === N ? `الخط الزمني مكتمل · ${XAR(N)} من ${XAR(N)}` : `ترتيب ناقص · ${XAR(placed)} من ${XAR(N)}`; st.classList.toggle('done', placed === N);
           root.querySelector('.mk-line').style.setProperty('--fill', placed / N);
         };
-        const flash = j => { const e = P.items[j], el = root.querySelector(`[data-ev="${e.t}${e.i}"]`); if (!el) return; el.classList.remove('mk-flash'); void el.getBBox(); el.classList.add('mk-flash'); };
+        const flash = j => { const e = P.items[j], el = root.querySelector(`[data-ev="${e.t}${e.i}"]`); if (!el) return; el.classList.remove('mk-flash'); void el.offsetWidth; el.classList.add('mk-flash'); };
         attach(root, {
           canDrag: () => !api.ended && !busy, onPick: j => flash(+j),
           drop: (t, slot) => { const j = +t, from = u.indexOf(j); if (slot == null) { if (from >= 0) u[from] = -1; } else { const q = +slot; if (from >= 0) u[from] = u[q]; u[q] = j; } flash(j); tone(360 + u.filter(x => x >= 0).length * 30, .04); draw(); }
@@ -190,23 +171,24 @@
         const rows = []; for (let d = 0; d <= Math.max(...depth); d++) { const r = [...Array(n).keys()].filter(i => depth[i] === d); for (let q = 0; q < r.length; q += 3) rows.push(r.slice(q, q + 3)); }
         const D = rows.length, W = 300, rowH = D > 3 ? 86 : 98, R = n > 6 ? 25 : 28, H = D * rowH + 16, pos = [];
         rows.forEach((row, d) => { const gap = W / row.length; row.forEach((i, q) => pos[i] = [W - (q + .5) * gap + (row.length < 3 && d % 2 ? 14 : 0), 14 + R + d * rowH]); }); // RTL: first on the right
-        const edge = (a, b, any) => { const [x1, y1] = pos[a], [x2, y2] = pos[b], L = Math.hypot(x2 - x1, y2 - y1) || 1, ux = (x2 - x1) / L, uy = (y2 - y1) / L;
-          return `<path class="ae ${any ? 'any' : 'all'}" data-e="${a}-${b}" d="M${(x1 + ux * (R + 3)).toFixed(1)} ${(y1 + uy * (R + 3)).toFixed(1)}L${(x2 - ux * (R + 3)).toFixed(1)} ${(y2 - uy * (R + 3)).toFixed(1)}"/>`; };
-        const web = () => { let s = `<svg viewBox="0 0 ${W} ${H + 22}" class="mk-web ac-web" id="actweb" role="group" aria-label="شبكة الغذاء">`;
-          for (let i = 0; i < n; i++) for (const r of P.req[i]) s += edge(r, i, P.req[i].or);
-          for (let i = 0; i < n; i++) { const [x, y] = pos[i];
-            s += `<g class="mk-sp ${P.al[i] ? 'lit' : 'dark'}" data-sp="${i}" tabindex="0" role="button" aria-label="${nm(i)}: ${P.al[i] ? 'مضيء' : 'منطفئ'}">
-              <circle class="halo" cx="${x}" cy="${y}" r="${R + 4}"/><circle class="disc" cx="${x}" cy="${y}" r="${R}" style="--c:${col(i)}"/>
-              <image href="${ART}${SP_ART[P.ord[i]]}.png" x="${x - R * .78}" y="${y - R * .78}" width="${R * 1.56}" height="${R * 1.56}"/>
-              <text class="mk-lbl" x="${x}" y="${y + R + 15}" text-anchor="middle">${nm(i)}</text><text class="ac-mark" x="${x + R * .72}" y="${y - R * .6}" text-anchor="middle"></text></g>`; }
-          return s + '</svg>'; };
-        api.body.innerHTML = xSheet(`${xHead('', 'المدينة الحية')}
+        const edge = (a,b,any)=>{
+          const [x,y]=pos[a],[xx,yy]=pos[b],dx=xx-x,dy=yy-y;
+          const angle=Math.atan2(dy,dx),distance=Math.hypot(dx,dy);
+          const inset=R+3;
+          return `<span aria-hidden="true" class="ae ${any?'any':'all'}" data-e="${a}-${b}" style="left:${(x+Math.cos(angle)*inset)/W*100}%;top:${(y+Math.sin(angle)*inset)/(H+22)*100}%;width:${Math.max(0,distance-2*inset)/W*100}%;transform:rotate(${angle}rad)"></span>`;
+        };
+        const web=()=>{
+          const edges=P.req.flatMap((parents,i)=>parents.map(a=>edge(a,i,parents.or))).join('');
+          const species=pos.map(([x,y],i)=>`<button type="button" class="mk-sp ${P.al[i]?'lit':'dark'}" data-sp="${i}" aria-label="${nm(i)}: ${P.al[i]?'مضيء':'منطفئ'}" style="left:${x/W*100}%;top:${y/(H+22)*100}%;--c:${col(i)};--size:${2*R/W*100}%"><span class="disc"><img src="${ART}${SP_ART[P.ord[i]]}.png" alt="" draggable="false"></span><span class="mk-lbl">${nm(i)}</span><span class="ac-mark"></span></button>`).join('');
+          return `<div class="mk-web ac-web board70-food" id="actweb" role="group" aria-label="شبكة الغذاء" style="aspect-ratio:${W}/${H+22}">${edges}${species}</div>`;
+        };
+        api.body.innerHTML = board70Sheet('acity',`${xHead(board70Image('acity','mushroom'),'المدينة الحية')}
           <div class="ac-top"><b>${XAR(n)} أنواع</b><button class="ac-mode" id="acmode" type="button" aria-pressed="false">المشهد الآن</button></div>
-          <div class="ac-key"><span><svg viewBox="0 0 34 8" aria-hidden="true"><path d="M2 4H32" stroke="#3A2616" stroke-width="3"/></svg>يحتاج <b>الكل</b></span><span><svg viewBox="0 0 34 8" aria-hidden="true"><path d="M2 4H32" stroke="#2E8A80" stroke-width="3" stroke-dasharray="6 4"/></svg><b>أحدها</b> يكفي</span><span><svg viewBox="0 0 14 14" aria-hidden="true"><circle cx="7" cy="7" r="5.5" fill="#EEE9E2" stroke="#8C8478" stroke-width="2"/></svg>منطفئ</span></div>
+          <div class="ac-key"><span><i class="board70-legend" aria-hidden="true"></i>يحتاج <b>الكل</b></span><span><i class="board70-legend any" aria-hidden="true"></i><b>أحدها</b> يكفي</span><span><i class="board70-legend dot" aria-hidden="true"></i>منطفئ</span></div>
           <p class="mk-lead">نوع واحد اختفى أولًا وأطفأ غيره. المس نوعًا منطفئًا لتحاكي اختفاءه، وقارن الانتشار بالمشهد.</p>
           ${web()}
           <div class="mk-simout" id="actsim" aria-live="polite">لا فرضية بعد.</div>
-          <div class="xkbtns"><button class="go-btn xsm" id="actgo">هذا اختفى أولًا</button></div>`, 980, 711);
+          <div class="xkbtns"><button class="go-btn xsm" id="actgo">هذا اختفى أولًا</button></div>`);
         const root = api.body.querySelector('.xpaper') || api.body;
         const paint = () => {
           const showSim = sim && view === 'sim';
@@ -226,10 +208,9 @@
           const gens = [], al = Array(n).fill(true); al[sel] = false; let cur = [sel];
           while (cur.length) { gens.push(cur); const nx = []; for (let i = 0; i < n; i++) { if (!al[i]) continue; const Rq = P.req[i]; const ok = !Rq.length || (Rq.or ? Rq.some(r => al[r]) : Rq.every(r => al[r])); if (!ok) { al[i] = false; nx.push(i); } } cur = nx; }
           root.querySelectorAll('.mk-sp').forEach(g => g.classList.remove('pulse'));
-          gens.forEach((g, q) => later(() => g.forEach(i => { const el = root.querySelector(`[data-sp="${i}"]`); if (el) { el.classList.remove('pulse'); void el.getBBox(); el.classList.add('pulse'); } }), q * 340)); tone(240, .05); };
+          gens.forEach((g, q) => later(() => g.forEach(i => { const el = root.querySelector(`[data-sp="${i}"]`); if (el) { el.classList.remove('pulse'); void el.offsetWidth; el.classList.add('pulse'); } }), q * 340)); tone(240, .05); };
         const pick = i => { if (api.ended || busy) return; if (P.al[i]) { api.msg(`«${nm(i)}» ما زال مضيئًا في المشهد: الأول اختفى، فهو منطفئ.`); return; } sel = sel === i ? -1 : i; sfx.pop(); simulate(); };
         root.querySelector('#actweb').addEventListener('click', e => { const g = e.target.closest('.mk-sp'); if (g) pick(+g.dataset.sp); });
-        root.querySelector('#actweb').addEventListener('keydown', e => { const g = e.target.closest('.mk-sp'); if (g && (e.key === 'Enter' || e.key === ' ')) { e.preventDefault(); pick(+g.dataset.sp); } });
         $('#acmode').onclick = () => { if (!sim) return; view = view === 'sim' ? 'scene' : 'sim'; paint(); };
         function check() { if (api.ended || busy) return; if (sel < 0) { api.msg('المس نوعًا منطفئًا أولًا.'); return; } const audit = actAudit(P, sel);
           if (audit.exact) { busy = true; sfx.lvl(); view = 'scene'; paint(); root.querySelectorAll('.mk-sp.dark').forEach((g, q) => later(() => { if (+g.dataset.sp !== P.gone) g.classList.add('relit'); }, 300 + q * 250)); later(() => aWin(api, 'pz_acity', 'عرفت ما اختفى. وحين أعادت الفوانيس توزيع الضوء، فهمت: هذه ليست غابة… هذه مدينة.'), 1200); return; }
@@ -251,32 +232,26 @@
      every other source lights the pictures where it disagrees with it. The true source is the one that matches
      the hard evidence and differs from every other source in exactly one picture. Placing it seals the truth. */
   if (has('pz_arelic') && typeof arlMake === 'function') {
-    const AT_ICON = [
-      ['<path d="M8 28l4-14 8 8 8-8 4 14z"/><path d="M8 32h24"/>', '<circle cx="20" cy="20" r="11"/><path d="M20 9q8 11 0 22q-8-11 0-22"/>', '<path d="M6 32q14-26 28 0z"/><circle cx="16" cy="25" r="2"/><circle cx="24" cy="25" r="2"/>', '<path d="M6 26h28l-4 7H10z"/><path d="M20 6v20M20 7l9 13H20"/>'],
-      ['<path d="M8 20h24"/><circle cx="12" cy="20" r="3" fill="#3A2616"/>', '<path d="M8 20h24"/><circle cx="20" cy="20" r="3" fill="#3A2616"/>', '<path d="M8 20h24"/><circle cx="29" cy="20" r="3" fill="#3A2616"/>', '<path d="M8 20h24"/><circle cx="8" cy="20" r="3" fill="#3A2616"/><path d="M4 14l4 6-4 6"/>'],
-      ['<path d="M14 30h12M16 30l-2-12h12l-2 12"/><path d="M20 8v6M12 12l3 3M28 12l-3 3"/>', '<circle cx="20" cy="20" r="11"/><path d="M20 9v11l7 4"/>', '<path d="M8 32h24M10 32V18l10-8 10 8v14M17 32v-7h6v7"/>', '<circle cx="15" cy="22" r="7"/><circle cx="25" cy="18" r="7"/>'],
-      ['<path d="M20 32s-11-7-11-15a6 6 0 0 1 11-3 6 6 0 0 1 11 3c0 8-11 15-11 15z"/>', '<path d="M4 24q4-6 8 0t8 0 8 0 8 0"/><path d="M10 14h20"/>', '<path d="M4 30l10-16 6 8 6-10 10 18z"/>', '<path d="M20 34V20M12 22l8-14 8 14z"/><path d="M14 30l6-10 6 10z"/>']
-    ];
     GM.pz_arelic.run = function runARelicMotion() {
       return pzPlay('pz_arelic', api => {
         const P = arlMake(api.lv), u = Array(P.na).fill(-1); let miss = 0, busy = false, cmp = -1;
         // R4 art: every source is a diary page (prop_diary); each piece shows its value picture with the rune of its
         // attribute (arlMake.A[0] moon, A[1] wave, A[2] star per the manifest; A[3] keeps a drawn ring).
         const ART = 'ui/designs_art/priority7/', RUNE = ['rune_moon', 'rune_wave', 'rune_star'];
-        const pic = (j, v, cls = '') => `<span class="mk-pic arl-pic ${cls}" title="${P.A[j].n}: ${P.A[j].v[v]}">${RUNE[j] ? `<img class="arl-rune" src="${ART}${RUNE[j]}.png" alt="" draggable="false">` : '<i class="arl-rune ring"></i>'}${icon(AT_ICON[j][v])}<small>${P.A[j].v[v]}</small>${cls.includes('diff') ? '<em class="arl-x">تناقض</em>' : ''}</span>`;
+        const pic = (j, v, cls = '') => `<span class="mk-pic arl-pic ${cls}" title="${P.A[j].n}: ${P.A[j].v[v]}">${RUNE[j] ? `<img class="arl-rune" src="${ART}${RUNE[j]}.png" alt="" draggable="false">` : '<i class="arl-rune ring"></i>'}${glyph(['◇','○','△','□'][v])}<small>${P.A[j].v[v]}</small>${cls.includes('diff') ? '<em class="arl-x">تناقض</em>' : ''}</span>`;
         const strip = (i, diffMask) => `<span class="mk-strip" style="--na:${P.na}">${P.S[i].map((v, j) => pic(j, v, diffMask && diffMask[j] ? 'diff' : '')).join('')}</span>`;
         const LBL = ['أ', 'ب', 'ج', 'د', 'هـ'];
         const srcHead = (i, extra = '') => `<b class="arl-src"><img src="${ART}prop_diary.png" alt="" draggable="false"><span>المصدر ${LBL[i]}<small>${ARL_SRC[i]}</small></span>${extra}</b>`;
         const srcTok = (i, extra = '', mask) => `<button class="mk-tok src" data-tok="${i}"><span class="mk-chip src">${srcHead(i, extra)}${strip(i, mask)}</span></button>`;
-        api.body.innerHTML = xSheet(`${xHead('', 'أرشيف الآثار الأولى')}
+        api.body.innerHTML = board70Sheet('arelic',`${xHead(board70Image('arelic','seal'),'أرشيف الآثار الأولى')}
           <div class="arl-top"><span class="arl-stat" id="arlstat">أضف مصدرًا</span></div>
           <div class="mk-rules"><span><small>مصدر واحد صادق في كل شيء · كل مصدر آخر يخطئ في قطعة واحدة فقط</small></span></div>
           <div class="mk-attr" style="--na:${P.na}">${P.A.map((a, j) => `<small>${RUNE[j] ? `<img src="${ART}${RUNE[j]}.png" alt="" width="16" height="16">` : ''}${a.n}</small>`).join('')}</div>
-          ${P.ev.length ? `<div class="mk-evid"><b>${icon('<rect x="10" y="16" width="20" height="16" rx="2"/><path d="M14 16v-4a6 6 0 0 1 12 0v4"/>')} دليل مؤكد</b>${P.ev.map(e => pic(e.k, e.v, 'fixed')).join('')}</div>` : ''}
+          ${P.ev.length ? `<div class="mk-evid"><b>${board70Image('arelic','seal')} دليل مؤكد</b>${P.ev.map(e => pic(e.k, e.v, 'fixed')).join('')}</div>` : ''}
           <div class="mk-tray srcs" data-tray="s" aria-label="المصادر"></div>
           <div class="mk-cmp"><div class="mk-slot cmp" data-slot="cmp" tabindex="0" aria-label="منصة المقارنة"><em>منصة المقارنة: اسحب مصدرًا هنا</em></div><div id="arlcmp" class="mk-cmpout" aria-live="polite"></div></div>
           <div class="mk-truth"><b>صف الحقيقة المعتمد</b><div class="mk-slot truth" data-slot="truth" tabindex="0" aria-label="الحقيقة"><em>اسحب المصدر الصادق من المنصة إلى هنا</em></div></div>
-          <div class="xkbtns"><button class="go-btn xsm" id="arlgo">ثبّت الاستنتاج</button></div>`, 1040, 741);
+          <div class="xkbtns"><button class="go-btn xsm" id="arlgo">ثبّت الاستنتاج</button></div>`);
         const root = api.body.querySelector('.xpaper') || api.body;
         const truthSrc = () => P.S.findIndex(s => s.every((v, j) => v === u[j]));
         const draw = () => {
@@ -313,5 +288,5 @@
       });
     };
   }
-  window.ATHRAN_MOTION = { CAP_ICON, FATE_ICON, SHIP };
+  window.ATHRAN_MOTION = { CAP_SEAL, CAP_COLOR };
 })();

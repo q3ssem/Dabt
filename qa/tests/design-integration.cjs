@@ -12,7 +12,6 @@ const journey=JSON.parse(read('ui/designs_art/journey/manifest.json'));
 const openings=JSON.parse(read('ui/designs_art/openings/manifest.json'));
 const boardSource=read('ui/board-art-data.js');
 const board=JSON.parse(boardSource.slice(boardSource.indexOf('{'),boardSource.lastIndexOf('}')+1));
-const env=JSON.parse(read('ui/designs_art/river_v2/env_anchors_manifest.json'));
 const stage=JSON.parse(read('ui/designs_art/river_stage1/anchors_manifest.json'));
 const riverJs=read('motion/lab10.js'),riverCss=read('motion/lab10.css'),hubJs=read('ui/journey-hub.js'),hubCss=read('ui/journey-hub.css'),load=read('ui/app.js');
 ok(openings.puzzles.length===80&&new Set(openings.puzzles.map(x=>x.puzzle_id)).size===80,'80 unique puzzle opening records');
@@ -34,11 +33,6 @@ for(const [id,rec] of Object.entries(board.fourPuzzles)){
 ok(load.includes('ui/journey-hub.js')&&load.includes('motion/lab10.js'),'design runtime scripts are loaded');
 ok(load.includes('ui/board-art-data.js')&&load.includes('ui/openings-data.js'),'board and opening registries are loaded');
 
-const dock=env.boat_crossing_anchors_scene_px;
-const total=env.full_canvas_px.width;
-const left=dock.dock_left.x/total*100,right=dock.dock_right.x/total*100;
-ok(left<right&&right-left>=15,'two physically distinct river docking positions');
-ok(Math.abs(left-40.116)<.05&&Math.abs(right-59.884)<.05,'river dock percentages match the original design');
 ok(riverCss.includes('--rv-dock-left:calc(50% - var(--rv-image-width)*.14)')&&riverCss.includes('--rv-dock-right:calc(50% + var(--rv-image-width)*.14)'), 'boat uses responsive design coordinates');
 ok(riverCss.includes('.rv10:not(.at1).sail .rv10-boat')&&riverCss.includes('.rv10.at1.sail .rv10-boat'),'CSS supplies movement in both directions');
 ok(riverJs.includes('classList.add('+"'sail'"+')')&&riverJs.includes('classList.remove('+"'sail'"+')'),'board transitions in and out of sailing state');
@@ -56,8 +50,8 @@ for(const animal of ['wolf','sheep','grass'])
   for(const pose of ['bank','boarding','seated']){
     ok(exists('ui/designs_art/river_stage1/03_passengers/'+animal+'_'+pose+'.png'),'passenger '+animal+'_'+pose);
   }
-for(const file of ['01_background/01_sky_and_mountains','03_water/04_water_surface','02_banks/02_bank_left','02_banks/03_bank_right','05_sky_anim/cloud_01','05_sky_anim/cloud_02','05_sky_anim/cloud_03'])
-  ok(exists('ui/designs_art/river_v2/'+file+'.png'),'river scene '+file);
+for(const theme of ['light','dark-corrected'])
+  ok(exists('ui/designs_art/work_review/pz_river/river-base--'+theme+'.webp'),'current river art '+theme);
 ok(hubCss.includes('.mlj-palace-station')&&hubCss.includes('art/series_mirrors.webp'),'illustrated Palace map has responsive station links');
 
 /* Exercise actual chapter routing with a small DOM; no static name-only guesses. */
@@ -94,4 +88,4 @@ ok(doc.dialog&&doc.dialog.slots.children.length===19,'Palace click opens modal w
 doc.dialog.slots.children[0].onclick();
 ok(called.at(-1)==='puzzle','Palace station launches existing puzzle engine via its library tile');
 ok(!doc.dialog,'Palace closes its map before starting the puzzle');
-console.log(JSON.stringify({status:'passed',checks,openings:80,chapters:4,palaceStations:19,priorityArt:board.priority7.length,riverDockPercentages:[left,right]},null,2));
+console.log(JSON.stringify({status:'passed',checks,openings:80,chapters:4,palaceStations:19,priorityArt:board.priority7.length},null,2));

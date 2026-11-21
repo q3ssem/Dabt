@@ -93,6 +93,7 @@ const SECTIONS=[['منطق وأرقام',['pz_rid','pz_lock','pz_grid','pz_sudo'
  ['حركة ومسارات',['pz_river','pz_rush','pz_stat','pz_pipe','pz_laser','pz_soko','pz_flow','pz_tan','pz_untangle','pz_stroke','pz_ice']],
  ['مغامرة القرصان',g=>/^pz_[xt]/.test(g)],['الحطام والمعبد',g=>/^pz_[yz]/.test(g)],['قصر المرايا',g=>/^pz_p/.test(g)],['أرض أثران',g=>/^pz_[aw]/.test(g)]];
 LA.librarySections=()=>{const puzzles=G.filter(g=>g.puz&&!g.kid&&!RETIRED.has(g.id)),used=new Set();return SECTIONS.map(([name,m])=>{const list=puzzles.filter(g=>!used.has(g.id)&&(typeof m==='function'?m(g.id):m.includes(g.id)));list.forEach(g=>used.add(g.id));return[name,list];}).concat([['ألغاز أخرى',puzzles.filter(g=>!used.has(g.id))]]).filter(x=>x[1].length);};
+const PAINTED_LIBRARY = new Set('pz_binary pz_door pz_grid pz_rid pz_sudo pz_tent pz_flow pz_ice pz_tan pz_untangle pz_xbottle pz_tpath pz_xreef pz_xbridge pz_xcave pz_xloot pz_tmap pz_tdig pz_xlock pz_yhold pz_ytide pz_ydoor pz_zcomp pz_zroute pz_zcur pz_zcode pz_zharp pz_zshadow pz_znim pz_zthrone pz_zstars pz_aarch pz_abridge pz_acity pz_acur pz_aecho pz_aflow pz_agiant pz_aheart pz_aherd pz_alayer pz_alight pz_aport pz_arelic pz_aring pz_aroot pz_ashade pz_ashell pz_asilent pz_asong pz_aswarm pz_avsong pz_wbone pz_wfirst pz_wlake pz_wlog pz_wspore pz_parm pz_pboss1 pz_pclock pz_pcrypt pz_pdragon pz_peng pz_pgarden pz_phall pz_pheart pz_pjail pz_plast pz_pliar pz_plib pz_plock pz_pmaze pz_pmirror pz_pobs pz_pqueen pz_pvalve'.split(' '));
 const DESIGN_ICONS = {
   pz_rid: 'ui/designs_art/four_puzzles/pz_rid/icon_pz_rid.png',
   pz_rush: 'ui/designs_art/four_puzzles/pz_rush/icon_pz_rush.png',
@@ -100,7 +101,13 @@ const DESIGN_ICONS = {
   pz_pipe: 'ui/designs_art/four_puzzles/pz_pipe/icon_pz_pipe.png',
   pz_river: 'ui/designs_art/river_stage1/05_opening_and_icon/06_puzzle_icon.png'
 };
-function tileFor(g){const c=settings(g),designIcon=DESIGN_ICONS[g.id],tile=E('button',{class:'la-library-card',type:'button','data-legacy-puzzle':g.id,onclick:event=>event?.journeyStation?startRun([g.id],null,{journeyStation:true}):startRun([g.id])});tile.innerHTML=`<span class="la-library-image">${designIcon?`<img src="${designIcon}" alt="" loading="lazy" decoding="async">`:LA.object(c[1])||LA.sprite('puzzle-parts',1)}</span><b>${escape(g.name)}</b><small>المستوى ${A(typeof pzLv==='function'?pzLv(g.id):1)}</small>`;return tile;}
+function tileFor(g) {
+ const image = DESIGN_ICONS[g.id] || (PAINTED_LIBRARY.has(g.id) ? 'ui/art/library-painted/' + g.id + '.webp' : 'ui/art/lib_logic.webp');
+ const tile = E('button', {class:'la-library-card',type:'button','data-legacy-puzzle':g.id,'data-wc-icon':g.id,
+  onclick:event=>event?.journeyStation?startRun([g.id],null,{journeyStation:true}):startRun([g.id])});
+ tile.innerHTML = `<span class="la-library-image"><img src="${image}" alt="" loading="lazy" decoding="async"></span><b>${escape(g.name)}</b><small>المستوى ${A(typeof pzLv==='function'?pzLv(g.id):1)}</small>`;
+ return tile;
+}
 LA.libraryInto=function(host){const input=E('input',{class:'dx-search',type:'search',placeholder:'ابحث عن لغز…','aria-label':'ابحث عن لغز'}),box=E('div',{class:'la-sections'});host.append(input,box);const secs=LA.librarySections();LA.puzzleCount=secs.reduce((n,s)=>n+s[1].length,0);
  const fill=()=>{const q=input.value?.trim()||'';box.innerHTML='';let any=false;secs.forEach(([name,list])=>{const found=list.filter(g=>g.name.includes(q));if(!found.length)return;any=true;const grid=E('div',{class:'la-library-grid'});found.forEach(g=>grid.append(tileFor(g)));box.append(E('section',{class:'la-section'},secHead(name,found.length),grid));});if(!any)box.append(E('p',{class:'t7-help',text:'لا توجد ألغاز مطابقة.'}));};input.oninput=fill;fill();};
 function library(){const v=$('#v-puz');v.classList.remove('trip');v.classList.add('t7');v.innerHTML='';v.append(E('header',{class:'t7-top'},E('div',{},E('span',{class:'t7-kicker',text:'نفس الألغاز · رسم متجدد'}),E('h1',{text:'مكتبة الألغاز'})),E('button',{class:'t7-btn',type:'button',text:'كل الألغاز',onclick:()=>{LA.view=null;T7.hub?T7.hub():T7.map();}})));LA.libraryInto(v);}

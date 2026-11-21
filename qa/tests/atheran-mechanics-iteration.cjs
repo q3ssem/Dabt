@@ -106,7 +106,7 @@ for(const [needle,label] of [
   ['id="aecclear"','echo reset control'],
   ['data-hyp="${i}"','relic source hypothesis action'],
   ['استخدم الرواية المتسقة','relic hypothesis transfer action'],
-  ['id="ahtundo"','heart reverse-step control'],
+  ['data-axis="${axis}" data-index="${index}" data-dir="${dir}"','heart direct row and column controls for reverse steps'],
   ['id="ahtback"','heart one-step redo control'],
   ['id="ahtreset"','heart reset control'],
 ]) ok(html.includes(needle),label);

@@ -1,0 +1,164 @@
+/* Painted surfaces and sprites. Cell boundaries and controls remain native HTML. */
+#play #pzb[data-pirate-paint] {
+  --treasure-paper: #fff1d5;
+  --treasure-ink: #35281e;
+  --treasure-line: #8b6748;
+  --treasure-focus: #843814;
+}
+html[data-skin="dark"] #play #pzb[data-pirate-paint] {
+  --treasure-paper: #303842;
+  --treasure-ink: #fff1d4;
+  --treasure-line: #caac75;
+  --treasure-focus: #ffda8a;
+}
+#play #pzb[data-pirate-paint] > .xsheet,
+#play #pzb[data-pirate-paint] > .xsheet > .xpin {
+  min-width: 0;
+  width: 100%;
+  max-width: 100%;
+}
+#play #pzb[data-pirate-paint] .pirate-raster {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+#play #pzb[data-pirate-paint] button:focus-visible {
+  outline: 2px solid var(--treasure-focus);
+  outline-offset: -2px;
+}
+#play #pzb[data-pirate-paint] .xnote h3 > img { width: 26px; height: 26px; }
+#play #pzb[data-pirate-paint] [data-tool] img { width: 19px; height: 19px; }
+#play #pzb[data-pirate-paint] .xshov img { width: 23px; height: 23px; }
+#play #pzb[data-pirate-paint] :is(.xshovel,.xcoin) .pirate-raster { width: 100%; height: 100%; }
+
+#play #pzb[data-pirate-paint="map"] {
+  --island-scene: url(pirate-revised/map/scene.webp);
+  --island-land: url(pirate-revised/map/land.webp);
+  --island-hole: url(pirate-revised/map/hole.webp);
+}
+#play #pzb[data-pirate-paint="dig"] {
+  --island-scene: url(pirate-revised/dig/scene.webp);
+  --island-hole: url(pirate-revised/dig/hole.webp);
+  --island-land: url(pirate-revised/map/land.webp);
+}
+#play #pzb[data-pirate-paint]:is([data-pirate-paint="map"],[data-pirate-paint="dig"]) #xb {
+  background: #2a5b5e var(--island-scene) center/cover;
+  border-radius: 10px;
+  isolation: isolate;
+}
+#play #pzb[data-pirate-paint] #xb .xbin {
+  isolation: isolate;
+  border-radius: 2px;
+}
+#play #pzb[data-pirate-paint] #xb .xbg { z-index: 0; }
+#play #pzb[data-pirate-paint] #xb .xsprs { z-index: 1; pointer-events: none; }
+#play #pzb[data-pirate-paint] #xb .xfx { z-index: 2; }
+#play #pzb[data-pirate-paint] #xb .xspr img { width: 94%; height: 94%; }
+#play #pzb[data-pirate-paint] #xb .xc {
+  border-radius: 0;
+  box-shadow: inset -1px -1px #291e1573;
+  min-width: 0;
+  min-height: 0;
+}
+#play #pzb[data-pirate-paint] #xb .xc[data-i] {
+  background: #d3ac70 var(--island-land) center/100% 100% no-repeat;
+}
+#play #pzb[data-pirate-paint] #xb .xc.sea {
+  background: #468388 url(pirate-revised/map/water.webp) center/100% 100% no-repeat;
+}
+#play #pzb[data-pirate-paint] #xb .xc.xo::before,
+#play #pzb[data-pirate-paint] #xb .xc.found::after {
+  content: '×';
+  inset: 12%;
+  display: grid;
+  place-items: center;
+  font: 800 clamp(16px,5vw,24px)/1 Tajawal,sans-serif;
+  color: #672718;
+  background: #fff5d2ac;
+  border-radius: 5px;
+}
+#play #pzb[data-pirate-paint] #xb .xc.hole::after {
+  content: '';
+  inset: 4%;
+  box-shadow: none;
+  background: var(--island-hole) center/contain no-repeat;
+}
+#play #pzb[data-pirate-paint] #xb .xc:is(.cand,.hl) {
+  outline: 2px solid #a55224;
+  outline-offset: -3px;
+}
+#play #pzb[data-pirate-paint] #xb .xc .xdn { color: white; border-color: #fff9de; }
+#play #pzb[data-pirate-paint] #xb .xfound {
+  aspect-ratio: 1;
+  display: grid;
+  grid-template: 1fr/1fr;
+  align-items: end;
+}
+
+#play #pzb[data-pirate-paint="lock"] #xkc {
+  width: 100%;
+  max-width: 400px;
+  min-height: clamp(112px,24dvh,200px);
+  aspect-ratio: 2/1;
+  overflow: hidden;
+  border-radius: 10px;
+  isolation: isolate;
+  background: #614233 url(pirate-revised/lock/scene.webp) center/cover;
+}
+#play #pzb[data-pirate-paint="lock"] #xkc > :is(.painted-open-chest,.painted-chest) {
+  position: absolute;
+  width: 56%;
+  height: 88%;
+  left: 22%;
+  bottom: 4%;
+  object-fit: contain;
+  object-position: center bottom;
+}
+#play #pzb[data-pirate-paint="lock"] .painted-open-chest { visibility: hidden; }
+#play #pzb[data-pirate-paint="lock"] #xkc.s2 > .painted-chest { animation: painted-unlatch .3s ease-out; }
+#play #pzb[data-pirate-paint="lock"] #xkc.s3 > .painted-chest { visibility: hidden; }
+#play #pzb[data-pirate-paint="lock"] #xkc.s3 > .painted-open-chest { visibility: visible; }
+@keyframes painted-unlatch {
+  40% { transform: translateX(-2px) rotate(-2deg); }
+  70% { transform: translateX(2px) rotate(2deg); }
+}
+#play #pzb[data-pirate-paint="lock"] #xkprize { text-align: center; width: 62%; }
+#play #pzb[data-pirate-paint="lock"] #xkprize img { width: 28px; height: 28px; margin: auto; }
+#play #pzb[data-pirate-paint="lock"] #xkprize span {
+  display: inline-block;
+  background: var(--treasure-paper);
+  color: var(--treasure-ink);
+  font-weight: 800;
+  padding: 2px 5px;
+  border-radius: 4px;
+}
+#play #pzb[data-pirate-paint="lock"] :is(.xkdial,.xkpal button,.xkrow i) {
+  background: var(--treasure-paper);
+  color: var(--treasure-ink);
+  border-color: var(--treasure-line);
+}
+#play #pzb[data-pirate-paint="lock"] :is(.xkdial,.xkpal button) img { width: 78%; height: 78%; }
+#play #pzb[data-pirate-paint="lock"] .xkdial { width: 48px; height: 48px; }
+#play #pzb[data-pirate-paint="lock"] .xkpal { gap: 4px; }
+#play #pzb[data-pirate-paint="lock"] .xkrow { gap: 4px; flex-wrap: wrap; }
+#play #pzb[data-pirate-paint="lock"] .xkrow i img { width: 82%; height: 82%; }
+#play #pzb[data-pirate-paint="lock"] .xkn { color: var(--treasure-ink); }
+@media (prefers-reduced-motion: reduce) {
+  #play #pzb[data-pirate-paint] :is(.xshovel,#xkprize,.painted-chest,.painted-open-chest) {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media (orientation: landscape) and (max-height: 560px) {
+  #play.fit #pzb[data-pirate-paint]:is([data-pirate-paint="map"],[data-pirate-paint="dig"]) .xpin {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) clamp(170px,53dvh,246px);
+    align-items: start;
+    gap: 6px;
+  }
+  #play.fit #pzb[data-pirate-paint] .xbw { width: 100%; margin: 0; }
+  #play.fit #pzb[data-pirate-paint] .xtools { grid-column: 1 / -1; }
+}

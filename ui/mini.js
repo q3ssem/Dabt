@@ -79,7 +79,7 @@
       el('div', {}, el('span', { class: 't7-kicker', text: `${AR(games.length)} لعبة قصيرة من بحر القراصنة` }), el('h1', { text: MINI })),
       el('button', { class: 't7-btn', type: 'button', text: 'رجوع', onclick: back })));
     const hero = el('section', { class: 'ml-mini-hero' });
-    hero.innerHTML = `<img class="ml-mini-hero-art" src="ui/art/series_pirate.webp" alt="" decoding="async"><div class="ml-mini-hero-text"><b>جولة سريعة</b><small>${AR(ROUND)} ألعاب عشوائية متتالية</small></div>`;
+    hero.innerHTML = `<img class="ml-mini-hero-art" src="ui/art/lib_pirate.webp" alt="" decoding="async"><div class="ml-mini-hero-text"><b>جولة سريعة</b><small>${AR(ROUND)} ألعاب عشوائية متتالية</small></div>`;
     hero.append(el('button', { class: 'ml-mini-go', type: 'button', text: 'ابدأ الجولة', onclick: quick }));
     v.append(hero);
     // البطاقات نفسها التي تبنيها المكتبة الأصلية، بأيقوناتها وأزرارها كما هي.

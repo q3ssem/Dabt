@@ -1,0 +1,167 @@
+/* Three in-round painted environments with native geometry and controls. */
+#play #pzb[data-pirate-water] > .xsheet,
+#play #pzb[data-pirate-water] > .xsheet > .xpin { width: 100%; max-width: 100%; min-width: 0; }
+#play #pzb[data-pirate-water] .wreck-sprite {
+  display: block;
+  width: 100%;
+  height: 100%;
+  object-fit: contain;
+  pointer-events: none;
+}
+#play #pzb[data-pirate-water] .xnote h3 .wreck-sprite { width: 32px; height: 32px; }
+#play #pzb[data-pirate-water] :is(#yhw,#ytw,#ydw) {
+  isolation: isolate;
+  border-radius: 10px;
+}
+#play #pzb[data-pirate-water] :is(#yhw,#ytw)::before {
+  content: '';
+  position: absolute;
+  inset: 0;
+  pointer-events: none;
+  background-image: linear-gradient(90deg,#fff7db66 1px,transparent 1px),linear-gradient(#fff7db66 1px,transparent 1px);
+  background-size: calc(100% / var(--wreck-cols)) calc(100% / var(--wreck-rows));
+  z-index: 1;
+}
+#play #pzb[data-pirate-water] :is(.yhc,.ytr) { z-index: 2; }
+#play #pzb[data-pirate-water] :is(#yhp,#ytp) { z-index: 4; }
+#play #pzb[data-pirate-water] :is(.yhc,.ytr,#yhp,#ytp) .wreck-sprite {
+  position: absolute;
+  inset: 5%;
+  width: 90%;
+  height: 90%;
+}
+#play #pzb[data-pirate-water] .xpad button { font: 800 24px/1 Tajawal,system-ui,sans-serif; min-height: 44px; }
+#play #pzb[data-pirate-water] button:focus-visible { outline: 2px solid #a95025; outline-offset: -2px; }
+#play #pzb[data-pirate-water="hold"] #yhw {
+  background: linear-gradient(#31271a40,#31271a40),url(pirate-revised/hold/scene.webp) center/cover;
+}
+#play #pzb[data-pirate-water="hold"] #yhwa {
+  overflow: visible;
+  z-index: 3;
+  background: linear-gradient(#56c3cf99,#104369d1);
+}
+#play #pzb[data-pirate-water="hold"] #yhwa:not([style*="height: 0%"])::before {
+  content: '';
+  position: absolute;
+  inset: -2px 0 auto;
+  height: 5px;
+  background: #97ecda;
+  opacity: .8;
+}
+#play #pzb[data-pirate-water="hold"] .wreck-channel {
+  position: absolute;
+  z-index: 1;
+  bottom: 2%;
+  inset-inline-end: 2%;
+  width: 17px;
+  height: 17px;
+  border-radius: 50%;
+  background: var(--dc);
+  color: #211812;
+  outline: 1px solid #fff4d7;
+  font: 900 12px/17px Tajawal,sans-serif;
+  text-align: center;
+  text-shadow: 0 0 2px #fff6dc;
+}
+#play #pzb[data-pirate-water="hold"] .yhdoor.open img { transform: translateY(-20%) scaleY(.35); opacity: .5; }
+#play #pzb[data-pirate-water="hold"] .yhlev.on img { transform: rotate(30deg); }
+#play #pzb[data-pirate-water="hold"] .yhdoor img,
+#play #pzb[data-pirate-water="hold"] .yhlev img { transition: transform .25s,opacity .25s; }
+#play #pzb[data-pirate-water] :is(#yhp,#ytp).sink img { opacity: .23; transform: translateY(20%); }
+#play #pzb[data-pirate-water] #yhp.climb img { opacity: 0; transform: translateY(-60%); }
+
+#play #pzb[data-pirate-water="tide"] #ytw {
+  background: #447d83 url(pirate-revised/tide/scene.webp) center/cover;
+}
+#play #pzb[data-pirate-water="tide"] .ytsea { opacity: .4; }
+#play #pzb[data-pirate-water="tide"] .ytbank {
+  background: #cfac6e url(pirate-revised/tide/bank.webp) 15% 10% / auto 350% repeat-x;
+  opacity: .85;
+}
+#play #pzb[data-pirate-water="tide"] .ytr i { transform: none; opacity: 1; }
+#play #pzb[data-pirate-water="tide"] .ytr:not(.up) .wreck-wet { opacity: .55; }
+#play #pzb[data-pirate-water="tide"] .ytr:not(.up) .wreck-dry,
+#play #pzb[data-pirate-water="tide"] .ytr.up .wreck-wet { visibility: hidden; }
+#play #pzb[data-pirate-water="tide"] .ytr b { z-index: 3; }
+
+#play #pzb[data-pirate-water="temple"] #ydw {
+  width: min(100%,300px);
+  background: #503c40 url(pirate-revised/temple/scene.webp) center/cover;
+}
+#play #pzb[data-pirate-water="temple"] .wreck-temple-face {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: clip;
+}
+#play #pzb[data-pirate-water="temple"] .wreck-temple-face::after {
+  content: '▼';
+  position: absolute;
+  z-index: 2;
+  top: 1%;
+  left: 50%;
+  transform: translateX(-50%);
+  color: #ffeea5;
+  text-shadow: 0 1px 2px #291a21;
+  line-height: 1;
+}
+#play #pzb[data-pirate-water="temple"] .wreck-ring {
+  position: absolute;
+  inset: 0;
+  transform-origin: center;
+  transition: transform .42s ease-out;
+}
+#play #pzb[data-pirate-water="temple"] .wreck-ring-frame {
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: var(--ring-radius);
+  height: var(--ring-radius);
+  transform: translate(-50%,-50%);
+}
+#play #pzb[data-pirate-water="temple"] .wreck-rune {
+  position: absolute;
+  width: var(--rune-size);
+  height: var(--rune-size);
+  transform: translate(-50%,-50%);
+}
+#play #pzb[data-pirate-water="temple"] .wreck-hub {
+  position: absolute;
+  width: 13%;
+  height: 13%;
+  top: 43.5%;
+  left: 43.5%;
+}
+#play #pzb[data-pirate-water="temple"] #ydw.open .wreck-temple-face { opacity: .45; transition: opacity .5s; }
+#play #pzb[data-pirate-water="temple"] .ydwant img { width: 88%; height: 88%; }
+#play #pzb[data-pirate-water="temple"] .ydlev button { width: 68px; min-height: 44px; }
+#play #pzb[data-pirate-water="temple"] .ydlev button img { width: 34px; height: 34px; transform-origin: center bottom; }
+#play #pzb[data-pirate-water="temple"] .ydlev button.pull img { animation: ydpull .45s ease; }
+#play #pzb[data-pirate-water="temple"] .wreck-ring-effect {
+  display: flex;
+  gap: 1px;
+  flex-wrap: wrap;
+  justify-content: center;
+  color: #462915;
+  font: 800 10px/1.2 Tajawal,sans-serif;
+}
+#play #pzb[data-pirate-water="temple"] .wreck-ring-effect small {
+  padding: 1px 2px;
+  background: #fff0d2;
+  border-radius: 2px;
+  font-size: inherit;
+}
+@media (orientation: landscape) and (max-height: 560px) {
+  #play.fit #pzb[data-pirate-water] .xpin {
+    display: grid;
+    grid-template-columns: minmax(0,1fr) clamp(145px,43dvh,226px);
+    align-items: start;
+    gap: 4px 10px;
+  }
+  #play.fit #pzb[data-pirate-water] :is(#yhw,#ytw,#ydw) { grid-column: 2; grid-row: 1 / span 2; }
+  #play.fit #pzb[data-pirate-water] :is(.ydlev,.ydwant,.xpad,.xtools) { grid-column: 1; }
+}
+@media (prefers-reduced-motion: reduce) {
+  #play #pzb[data-pirate-water] *,
+  #play #pzb[data-pirate-water] *::after { transition-duration: 0ms !important; animation: none !important; }
+}

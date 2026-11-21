@@ -340,3 +340,218 @@
     position:static; height:auto; min-height:44px; flex-wrap:wrap;
   }
 }
+
+/* Bridge, cave and loot retain separate hit areas, labels and artwork. */
+#play #pzb[data-pirate-work] {
+  --pirate-paper: #fff5dc;
+  --pirate-ink: #35281f;
+  --pirate-line: #94704b;
+  --pirate-focus: #804416;
+}
+html[data-skin="dark"] #play #pzb[data-pirate-work] {
+  --pirate-paper: #303640;
+  --pirate-ink: #fff0ce;
+  --pirate-line: #bd9c6b;
+  --pirate-focus: #ffdb82;
+}
+#play #pzb[data-pirate-work] button:focus-visible {
+  outline: 2px solid var(--pirate-focus);
+  outline-offset: -3px;
+}
+
+#play #pzb[data-pirate-work="xbridge"] .xgw {
+  height: clamp(140px,25dvh,224px);
+  border-radius: 10px;
+  background: #536574 url(pirate-revised/bridge/scene.webp) center / cover;
+  isolation: isolate;
+}
+#play #pzb[data-pirate-work="xbridge"] :is(.xgcl,.xgp) { top: 44%; }
+#play #pzb[data-pirate-work="xbridge"] .xgp.pirate-painted {
+  background: url(pirate-revised/bridge/pier.webp) top center / 100% 100% no-repeat;
+}
+#play #pzb[data-pirate-work="xbridge"] .xgp.pirate-painted > svg { visibility: hidden; }
+#play #pzb[data-pirate-work="xbridge"] .xgcl { opacity: 1; bottom: 26%; }
+#play #pzb[data-pirate-work="xbridge"] .xgruler {
+  font-variant-numeric: tabular-nums;
+  top: 63%;
+  height: 21px;
+  z-index: 2;
+  margin: 0;
+}
+#play #pzb[data-pirate-work="xbridge"] .xgruler i {
+  display: grid;
+  justify-items: center;
+  min-width: 10px;
+  color: #fcf3dc;
+  font: 800 11px/12px Tajawal, sans-serif;
+  text-shadow: 0 1px 2px #1d1b1c, 0 -1px 2px #1d1b1c, 0 0 2px #1d1b1c;
+  opacity: 1;
+}
+#play #pzb[data-pirate-work="xbridge"] .xgruler i::before {
+  content: '';
+  display: block;
+  width: 1px;
+  height: 5px;
+  margin-bottom: 2px;
+  background: #fcf3dc;
+}
+#play #pzb[data-pirate-work="xbridge"] .xgboard {
+  height: 12px;
+  top: calc(44% - 12px);
+  border: 0;
+  border-radius: 0;
+  background: #9d6439 url(pirate-revised/bridge/plank.webp) center / 100% 100% no-repeat;
+  box-shadow: inset 0 1px #e0ae78, inset 0 -1px #4b2f21;
+}
+#play #pzb[data-pirate-work="xbridge"] .xgtray { background: none; gap: 6px; }
+#play #pzb[data-pirate-work="xbridge"] .xgplank {
+  --length: calc(var(--l) * var(--bridge-unit,20px));
+  width: max(44px,var(--length));
+  min-height: 44px;
+  background: var(--pirate-paper);
+  border: 1px solid var(--pirate-line);
+}
+#play #pzb[data-pirate-work="xbridge"] .xgplank span {
+  inset: auto auto 5px 50%;
+  transform: translateX(-50%);
+  width: var(--length);
+  height: 11px;
+  background: #9d6439 url(pirate-revised/bridge/plank.webp) center / 100% 100% no-repeat;
+}
+#play #pzb[data-pirate-work="xbridge"] .xgplank b {
+  display: block;
+  transform: translateY(-6px);
+  color: var(--pirate-ink);
+  text-shadow: none;
+}
+
+#play #pzb[data-pirate-work="xcave"] .xcave {
+  background: #241d21 url(pirate-revised/cave/scene.webp) center / cover;
+  min-height: 236px;
+}
+#play #pzb[data-pirate-work="xcave"] .xcwall { opacity: .17; }
+#play #pzb[data-pirate-work="xcave"] .xctr2 {
+  inset-inline: 5px;
+  display: flex;
+  gap: 2px;
+  justify-content: center;
+}
+#play #pzb[data-pirate-work="xcave"] .xct2 {
+  flex: 0 1 58px;
+  min-width: 0;
+  padding: 15px 0 2px;
+}
+#play #pzb[data-pirate-work="xcave"] .xcst2 {
+  width: 29px;
+  height: 40px;
+}
+#play #pzb[data-pirate-work="xcave"] #xcw .xcst2.pirate-painted {
+  background: url(pirate-revised/cave/torch.webp) bottom center / contain no-repeat;
+}
+#play #pzb[data-pirate-work="xcave"] .xcst2.pirate-painted > * { visibility: hidden; }
+#play #pzb[data-pirate-work="xcave"] .xcslab2.pirate-painted {
+  background: url(pirate-revised/cave/slab.webp) bottom center / 100% 100% no-repeat;
+}
+#play #pzb[data-pirate-work="xcave"] .xcslab2.pirate-painted svg { visibility: hidden; }
+#play #pzb[data-pirate-work="xcave"] .xct2 .xcfl2 {
+  bottom: 72%;
+  width: 26px;
+}
+#play #pzb[data-pirate-work="xcave"] .xcsym2 { width: min(34px,100%); }
+#play #pzb[data-pirate-work="xcave"] .xct2 .xcn { inset-inline-end: 0; }
+
+#play #pzb[data-pirate-work="xloot"] .xlcrew {
+  grid-template-columns: repeat(2,minmax(0,1fr));
+  background: #74402d url(pirate-revised/loot/scene.webp) center / cover;
+  border-radius: 9px;
+  padding: 6px;
+  gap: 6px;
+}
+#play #pzb[data-pirate-work="xloot"] .xlp {
+  min-height: 96px;
+  padding: 2px;
+  background: var(--pirate-paper);
+  color: var(--pirate-ink);
+  border-color: var(--pirate-line);
+}
+#play #pzb[data-pirate-work="xloot"] .xlp.angry { border-color: #c85c4f; }
+#play #pzb[data-pirate-work="xloot"] .xlrecipient {
+  display: grid;
+  grid-template-columns: 38px minmax(0,1fr) auto;
+  align-items: center;
+  gap: 3px;
+  width: 100%;
+  min-height: 46px;
+  background: none;
+  color: inherit;
+  border: 0;
+  padding: 2px;
+  text-align: start;
+}
+#play #pzb[data-pirate-work="xloot"] .xlrecipient > i { width: 37px; height: 41px; }
+#play #pzb[data-pirate-work="xloot"] .xlrecipient b { overflow-wrap: anywhere; }
+#play #pzb[data-pirate-work="xloot"] .xlsum,
+#play #pzb[data-pirate-work="xloot"] .xlrecipient small { color: var(--pirate-ink); }
+#play #pzb[data-pirate-work="xloot"] .xlrecipient i.pirate-painted {
+  background: var(--portrait) center / contain no-repeat;
+}
+#play #pzb[data-pirate-work="xloot"] [data-p="0"] { --portrait: url(pirate-revised/loot/captain.webp); }
+#play #pzb[data-pirate-work="xloot"] [data-p="1"] { --portrait: url(pirate-revised/loot/sailor.webp); }
+#play #pzb[data-pirate-work="xloot"] [data-p="2"] { --portrait: url(pirate-revised/loot/cook.webp); }
+#play #pzb[data-pirate-work="xloot"] [data-p="3"] { --portrait: url(pirate-revised/loot/gunner.webp); }
+#play #pzb[data-pirate-work="xloot"] .xlrecipient i.pirate-painted svg { visibility: hidden; }
+#play #pzb[data-pirate-work="xloot"] :is(.xltray,.xlbags) { background: none; }
+#play #pzb[data-pirate-work="xloot"] .xlbag { width: 44px; height: 44px; flex: none; }
+#play #pzb[data-pirate-work="xloot"] .xlbag b {
+  inset: auto auto 4px 50%;
+  transform: translateX(-50%);
+  min-width: 20px;
+  border-radius: 5px;
+  background: #fff3d2;
+  color: #35281f;
+  line-height: 18px;
+}
+#play #pzb[data-pirate-work="xloot"] .pirate-painted .xlbag {
+  background: url(pirate-revised/loot/sack.webp) center / contain no-repeat;
+}
+#play #pzb[data-pirate-work="xloot"] .pirate-painted .xlbag > svg { visibility: hidden; }
+#play #pzb[data-pirate-work="xloot"] .xlbag.sel {
+  transform: translateY(-3px);
+  outline: 2px solid var(--pirate-focus);
+  outline-offset: -2px;
+}
+#play #pzb[data-pirate-work="xloot"] .xlbag em { width: 17px; }
+
+@media (prefers-reduced-motion: reduce) {
+  #play #pzb[data-pirate-work] :is(.xgboard,.xgpir,.xcave,.xcfl2,.xcslab2,.xclight,.xlp,.xlbag),
+  #play #pzb[data-pirate-work] :is(.xlrecipient i,.xcfl2 svg *) {
+    animation: none !important;
+    transition: none !important;
+  }
+}
+
+@media (max-width: 350px) {
+  #play #pzb[data-pirate-work="xcave"] .xcave:has(.xct2:nth-child(6)) {
+    width: 100%;
+    min-height: 0;
+    height: 306px;
+    aspect-ratio: auto;
+  }
+  #play #pzb[data-pirate-work="xcave"] .xcave:has(.xct2:nth-child(6)) .xcdoor2 {
+    top: 4%;
+    height: 38%;
+  }
+  #play #pzb[data-pirate-work="xcave"] .xctr2:has(.xct2:nth-child(6)) {
+    display: grid;
+    grid-template-columns: repeat(3,minmax(44px,58px));
+    gap: 4px;
+  }
+  #play #pzb[data-pirate-work="xcave"] .xctr2:has(.xct2:nth-child(6)) .xct2 { width: 100%; }
+}
+
+#play.fit #pzb[data-pirate-work] > .xsheet,
+#play.fit #pzb[data-pirate-work] > .xsheet > .xpin {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+}

@@ -1,3 +1,5 @@
+@import url(../motion/wreck-painted.css);
+
 /* 5.5.2 — طقم شاشة اللعب لألعاب العقل الأصلية (ألعاب dx لها طقمها الخاص).
    تنسيق فقط في الثيم الأبيض: لوحات بلون الرقّ، أزرار موحّدة، وتوسيط. لا تغيير في القواعد أو النقاط. */
 html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]){--pk-paper:#FFFCF5;--pk-paper2:#F8F0E1;--pk-edge:#E6D9C0;--pk-edge2:#D8C6A3;--pk-ink:#2A2418;--pk-gold:#B3802A}
@@ -44,19 +46,89 @@ html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"])
 /* المساحات الفارغة: تكبير لوحات الومضة السريعة إلى مربع متوازن */
 html[data-skin="light"] #play[data-la-puzzle="false"]:not([data-la-game^="dx_"]) :is(#f.ddf){min-height:min(62vw,300px)!important}
 
-/* ======== ألعاب القراصنة المصغّرة ======== */
-.ml-mini-card .ml-mini-art img{width:100%;height:100%;object-fit:contain}
-#v-puz .ml-mini-section .la-library-grid{grid-template-columns:1fr!important}
-#v-puz .ml-mini-section .ml-mini-card{flex-direction:row!important;display:grid!important;grid-template-columns:96px 1fr;grid-template-rows:auto auto;align-items:center;text-align:right;gap:2px 14px!important;padding:12px 14px!important;min-height:0!important}
-#v-puz .ml-mini-section .ml-mini-card .la-library-image{grid-row:1/3;width:96px!important;height:96px!important;margin:0!important}
-#v-puz .ml-mini-section .ml-mini-card b{align-self:end;font-size:18px!important}
-#v-puz .ml-mini-section .ml-mini-card small{align-self:start;justify-self:start;margin:0!important}
-.ml-mini-hero{display:grid;grid-template-columns:110px 1fr;grid-template-rows:auto auto;align-items:center;gap:6px 14px;margin:6px 0 18px;padding:14px;
-  border-radius:var(--ml-r-lg,22px);background:var(--ml-surface,#fff);border:1px solid var(--ml-line,#E6DED0);box-shadow:var(--ml-sh-1,0 6px 18px -12px rgba(0,0,0,.3))}
-.ml-mini-hero-art{grid-row:1/3;width:110px;height:110px;object-fit:cover;border-radius:16px}
-.ml-mini-hero-text{display:grid;gap:2px}
-.ml-mini-hero-text b{font:900 20px/1.3 Tajawal,system-ui,sans-serif;color:var(--ml-ink,#1D2729)}
-.ml-mini-hero-text small{font:700 13px/1.4 Tajawal,system-ui,sans-serif;color:var(--ml-ink-3,#6B7276)}
-.ml-mini-go{justify-self:start;padding:10px 20px;border-radius:999px;background:var(--ml-accent,#12867F);color:#fff!important;font:800 15px Tajawal,system-ui,sans-serif!important;box-shadow:0 4px 0 #0B5752}
-.ml-mini-go:active{transform:translateY(3px);box-shadow:0 1px 0 #0B5752}
-.ml-mini-list-head{margin:4px 0 10px}
+/* Puzzle library and pirate minigames share a three-column, frameless list. */
+html #v-puz .la-library-image svg { display: none !important; }
+html #v-puz .la-library-grid.ml-mini-grid {
+  grid-template-columns: repeat(3,minmax(0,1fr)) !important;
+  gap: 12px 7px !important;
+}
+html #v-puz :is(.la-sections,.ml-mini-grid) .la-library-card {
+  display: grid !important;
+  grid-template-columns: minmax(0,1fr);
+  grid-template-rows: auto 2.6em auto;
+  justify-items: center;
+  align-items: center;
+  align-content: start;
+  text-align: center;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  min-height: 44px !important;
+  padding: 5px 2px !important;
+  gap: 3px !important;
+  color: var(--ml-ink,#203435) !important;
+}
+html #v-puz :is(.la-sections,.ml-mini-grid) .la-library-card:focus-visible {
+  outline: 2px solid var(--ml-accent,#12867f);
+  outline-offset: -2px;
+}
+html #v-puz :is(.la-sections,.ml-mini-grid) .la-library-card > .la-library-image {
+  position: relative;
+  width: min(100%,clamp(68px,22vw,108px)) !important;
+  height: clamp(68px,22vw,108px) !important;
+  background: transparent !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  border-radius: 0 !important;
+  margin: 0 !important;
+}
+html #v-puz :is(.la-sections,.ml-mini-grid) .la-library-image > img {
+  position: absolute;
+  inset: 0;
+  display: block;
+  width: 100% !important;
+  height: 100% !important;
+  max-width: 100%;
+  max-height: 100%;
+  object-fit: contain;
+}
+html #v-puz :is(.la-sections,.ml-mini-grid) .la-library-card > b {
+  font-size: clamp(12px,3.55vw,17px) !important;
+  min-height: 0 !important;
+  margin: 0 !important;
+  line-height: 1.28;
+  max-width: 100%;
+  color: inherit !important;
+}
+html #v-puz :is(.la-sections,.ml-mini-grid) .la-library-card > small {
+  padding: 0 !important;
+  margin: 0 !important;
+  background: transparent !important;
+  color: var(--ml-ink-3,#405354) !important;
+}
+html #v-puz .ml-mini-section .la-library-grid > .ml-mini-card {
+  grid-column: 1 / -1;
+  grid-template-rows: auto auto auto;
+  width: 100%;
+  padding-block: 8px 14px !important;
+}
+html #v-puz .ml-mini-section .ml-mini-card > .ml-mini-art {
+  width: min(100%,164px) !important;
+  height: 144px !important;
+}
+html #v-puz .ml-mini-section .ml-mini-card > b { font-size: 20px !important; }
+.ml-mini-hero {
+  display: grid;
+  justify-items: center;
+  gap: 7px;
+  margin-block: 6px 16px;
+  padding: 2px 4px;
+  text-align: center;
+}
+.ml-mini-hero-art { width: 164px; max-width: 100%; height: 133px; object-fit: contain; }
+.ml-mini-hero-text { display: grid; gap: 2px; }
+.ml-mini-hero-text b { font: 900 20px/1.3 Tajawal,system-ui,sans-serif; color: var(--ml-ink,#1d2729); }
+.ml-mini-hero-text small { font: 700 13px/1.4 Tajawal,system-ui,sans-serif; color: var(--ml-ink-3,#6b7276); }
+.ml-mini-go { padding: 10px 20px; min-height: 44px; border-radius: 999px; background: var(--ml-accent,#12867f); color: #fff !important; font: 800 15px Tajawal,system-ui,sans-serif !important; }
+.ml-mini-list-head { margin: 4px 0 10px; }

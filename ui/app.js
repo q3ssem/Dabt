@@ -183,13 +183,16 @@ try {
     'atheran/campaign/story.js',
     'atheran/campaign/campaign.js',
     'atheran/bindings/bindings.js',
+    'motion/pirate-painted.js',
     'motion/kit.js',
     'motion/atheran-motion.js',
     'motion/palace-motion.js',
     'motion/lab10.js',
+    'motion/logic-revised/board.js',
     'ui/engines/scene-kit.js',
     'motion/pirate-routes.js',
     'ui/fit.js',
+    'motion/wreck-painted.js',
     'ui/openings-data.js',
     'ui/openings.js',
     'ui/journey-story-data.js',
@@ -197,7 +200,7 @@ try {
     'ui/designs_art/journey/v3/stations.js',
     'ui/journey-hub.js'
   ];
-  const styles = ['atheran/campaign/campaign.css', 'atheran/bindings/bindings.css', 'motion/motion.css', 'motion/lab10.css', 'ui/fit.css', 'ui/openings.css', 'ui/journey-hub.css', 'motion/correction-art.css', 'motion/expedition-art.css'];
+  const styles = ['atheran/campaign/campaign.css', 'atheran/bindings/bindings.css', 'motion/motion.css', 'motion/lab10.css', 'ui/fit.css', 'ui/openings.css', 'ui/journey-hub.css', 'motion/correction-art.css', 'motion/expedition-art.css', 'motion/logic-revised/board.css', 'motion/sea-painted.css', 'motion/adventure35.css'];
   const layers = ['ui/puzzle-design.js', 'ui/adventure-design.js'];
   let loading = null;
   const idle = cb => (window.requestIdleCallback ? requestIdleCallback(cb, { timeout: 1200 }) : setTimeout(cb, 200));
@@ -261,10 +264,11 @@ try {
 return done=>{
   const g=GM[id],kid=!!g.kid,mx=pzMax(id),daily=!!(RUN&&RUN.daily)&&!kid,isRid=id==='pz_rid';
   const rp=RUN&&RUN.replay&&RUN.replay.id===id?RUN.replay:null;if(RUN)RUN.replay=null;
-  const stg=rp?null:txStageOf(id),lv=rp?rp.lv:stg?stg.lv:pzLv(id),seed=rp?rp.seed:(Math.random()*2147483646|0)+1;if(RUN&&!isRid)RUN.last={id,lv,seed};
+  const authored = RUN?.authoredStage?.id === id ? RUN.authoredStage : null;
+  const stg=rp||authored?null:txStageOf(id),lv=authored?authored.number:rp?rp.lv:stg?stg.lv:pzLv(id),seed=rp?rp.seed:(Math.random()*2147483646|0)+1;if(RUN&&!isRid)RUN.last={id,lv,seed};
   const st=$('#stage');const base=kid?0:(isRid?40:20+lv*10)*(daily?2:1);let pts=base,hints=0,wrongs=0,ended=false,P={};
   const canRe=!PZ_NORESTART.includes(id);
-  st.innerHTML=`<div class="pzhud">${kid?`<span class="pzlv">المستوى <b class="num">${lv}</b></span>`:`<span class="pzlv">${daily?'<span class="badge">لغز اليوم ×2</span> ':''}${isRid?'':stg?`المرحلة <b class="num">${stg.k}</b> من 3`:`المستوى <b class="num">${lv}</b> من ${mx}`}</span><span class="pzcoin" title="العملات المتاحة">${COIN}<b class="num" id="pzp">${pts}</b></span>`}${canRe?`<button class="pzhb pzre" id="pzr" aria-label="إعادة اللغز من البداية">${RE_SVG}<span>إعادة</span></button>`:''}<button class="pzhb" id="pzh" aria-label="تلميح">${BULB}<span>تلميح</span><i class="num" id="pzhn">3</i></button></div><div class="pzhint" id="pzt" hidden></div><div class="msg" id="m"></div><div class="pzbody" id="pzb"></div><div class="pzfoot"><button class="pzgive" id="pzq">${kid?'رجوع':'استسلم'}</button></div>`;
+  st.innerHTML=`<div class="pzhud">${kid?`<span class="pzlv">المستوى <b class="num">${lv}</b></span>`:`<span class="pzlv">${daily?'<span class="badge">لغز اليوم ×2</span> ':''}${isRid?'':authored?`المرحلة <b class="num">${lv}</b> من ${authored.total}`:stg?`المرحلة <b class="num">${stg.k}</b> من 3`:`المستوى <b class="num">${lv}</b> من ${mx}`}</span><span class="pzcoin" title="العملات المتاحة">${COIN}<b class="num" id="pzp">${pts}</b></span>`}${canRe?`<button class="pzhb pzre" id="pzr" aria-label="إعادة اللغز من البداية">${RE_SVG}<span>إعادة</span></button>`:''}<button class="pzhb" id="pzh" aria-label="تلميح">${BULB}<span>تلميح</span><i class="num" id="pzhn">3</i></button></div><div class="pzhint" id="pzt" hidden></div><div class="msg" id="m"></div><div class="pzbody" id="pzb"></div><div class="pzfoot"><button class="pzgive" id="pzq">${kid?'رجوع':'استسلم'}</button></div>`;
   const paintState = state => { st.dataset.expState = state; };
   const board = $('#pzb');
   board.addEventListener('click', event => {
@@ -274,13 +278,17 @@ return done=>{
   delete st.dataset.expState;
   const setP=v=>{pts=Math.max(Math.round(base*.25),v);const e=$('#pzp');if(e)e.textContent=pts};
   const fin=(won,detail)=>{ended=true;stopAll();const p=pzState(),cur=pzLv(id);let nl=cur;
-    if(!isRid&&!stg)nl=won?Math.min(mx,cur+1):Math.max(1,cur-1);if(!isRid&&!stg)pzSetLv(id,nl);if(won&&stg&&stg.replay){S.st.stgR=S.st.stgR||{};S.st.stgR[id]=stg.k%3}
+    if(!isRid&&!stg&&!authored)nl=won?Math.min(mx,cur+1):Math.max(1,cur-1);if(!isRid&&!stg&&!authored)pzSetLv(id,nl);if(won&&stg&&stg.replay){S.st.stgR=S.st.stgR||{};S.st.stgR[id]=stg.k%3}
     if(won&&!kid){p.pts+=pts;p.n[id]=(p.n[id]||0)+1;if(daily)p.daily=dayKey()}if(RUN){RUN.daily=false;if(isRid)RUN.rid=null}
-    const lvTxt=isRid||stg?'':nl>cur?` المرحلة التالية: المستوى ${nl}.`:nl<cur?` رجعنا للمستوى ${nl} لتثبيت المهارة.`:'';
+    const lvTxt=isRid||stg||authored?'':nl>cur?` المرحلة التالية: المستوى ${nl}.`:nl<cur?` رجعنا للمستوى ${nl} لتثبيت المهارة.`:'';
     const hTxt=kid?'':won?(hints?` استخدمت ${arN(hints,AN.hint)}.`:' بدون أي تلميح!'):'';
     if(won){paintState('solved');sfx.win();$('#pzb').classList.add('solved');pzStamp(kid?'أحسنت!':'محلول!')}
-    later(()=>done({pts:won?pts:0,metric:won?clamp(1000-hints*150-wrongs*100,250,1000):0,detail:(detail||'')+hTxt+lvTxt}),won?1500:300)};
-  const api={lv,kid,id,body:$('#pzb'),msg:h=>{const m=$('#m');if(m)m.innerHTML=h},get ended(){return ended},get hints(){return hints},get wrongs(){return wrongs},
+    if (won && authored) window.mlAuthoredStages.complete(authored);
+    later(() => {
+      done({pts:won?pts:0,metric:won?clamp(1000-hints*150-wrongs*100,250,1000):0,detail:(detail||'')+hTxt+lvTxt});
+      if (authored) window.mlAuthoredStages.result(authored, won);
+    }, won?1500:300)};
+  const api={lv,kid,id,authored,body:$('#pzb'),msg:h=>{const m=$('#m');if(m)m.innerHTML=h},get ended(){return ended},get hints(){return hints},get wrongs(){return wrongs},
     wrong(){if(ended)return;paintState('wrong');wrongs++;sfx.bad();if(!kid)setP(pts-Math.round(base*.1))},
     win(detail){if(!ended)fin(true,detail)},over(detail){if(!ended)fin(false,detail)}};
   const mount=()=>{const R=Math.random;Math.random=seeded(seed);try{P=build(api)||{};if(typeof XOLD!=='undefined'&&XOLD.has(id)&&id!=='pz_pipe')try{xWrapOld(api.body,id)}catch(e){}}finally{Math.random=R}};
@@ -310,4 +318,53 @@ return done=>{
 /* 5.5.9 — additive pirate, wreck and temple puzzle presentation/audio layer. */
 (function loadAdventureDesign559() {
   // perf-cleanup: loaded with the play-layer bundle above (window.mindlabPlayLayers).
+})();
+
+/* The authored stages are an optional track from the original puzzle intro. */
+(function () {
+  const authoredIds = new Set(['pz_river', 'pz_stat', 'pz_rush']);
+  let loading;
+  function loadStages() {
+    if (loading) return loading;
+    loading = new Promise((resolve, reject) => {
+      const script = document.createElement('script');
+      script.src = new URL('motion/stages60/play.js', document.baseURI);
+      script.onload = () => resolve(window.mlAuthoredStages);
+      script.onerror = () => { script.remove(); reject(new Error('Unable to load stages')); };
+      document.head.append(script);
+    }).then(async stages => { await stages.load(); return stages; }).catch(error => {
+      loading = null;
+      throw error;
+    });
+    return loading;
+  }
+  const originalIntro = showIntro;
+  showIntro = function () {
+    if (RUN) delete RUN.authoredStage;
+    originalIntro.apply(this, arguments);
+    const run = RUN;
+    if (!run || run.daily || run.wk || run.journeyStation || run.queue.length !== 1) return;
+    const id = curGame()?.id;
+    if (!authoredIds.has(id)) return;
+    const start = document.querySelector('#stage #go');
+    if (!start) return;
+    const button = document.createElement('button');
+    button.type = 'button';
+    button.className = 'cta ghost ml-authored-open';
+    button.textContent = 'المراحل الجديدة · ٢٠ مرحلة';
+    start.before(button);
+    if ('requestIdleCallback' in window && !navigator.connection?.saveData) {
+      requestIdleCallback(() => { if (button.isConnected) loadStages().catch(() => {}); });
+    }
+    button.onclick = async () => {
+      button.disabled = true;
+      try {
+        const stages = await loadStages();
+        if (RUN === run && button.isConnected) stages.choose(id);
+      } catch {
+        button.textContent = 'تعذر تحميل المراحل · أعد المحاولة';
+        button.disabled = false;
+      }
+    };
+  };
 })();
