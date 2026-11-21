@@ -51,14 +51,20 @@ assert.ok(!read('qa/browser/design10_play.py').includes('pz_stat'), 'deleted des
 assert.ok(!read('qa/browser/motion_batch_fixes.py').includes('pz_xbottle'), 'deleted bottle replay removed');
 
 // The cache generation must have moved past the generation that still held the deleted assets.
-assert.ok(read('sw.js').includes("PATCH='intent-load-13'"), 'cache generation must change after switching to deferred assets');
+assert.ok(read('sw.js').includes("PATCH='final-cleanup-14'"), 'cache generation must change after switching to deferred assets');
 const pwa = read('pwa.js');
 assert.ok(pwa.includes('window.mindlabOffline.prepareAll = function prepareAll()'), 'offline bulk download must be opt-in');
 assert.ok(pwa.includes('window.mindlabOffline.clearOptionalCaches'), 'optional image cache cleanup available');
+assert.ok(pwa.includes("progressPort?.postMessage({type:'cancel'})"), 'stopping optional preload must cancel the worker job');
+assert.ok(pwa.includes('skip.hidden = false'), 'manual download has a visible stop control');
+const swSource = read('sw.js');
+assert.ok(swSource.includes('pendingFetches') && swSource.includes('controller.abort()'), 'worker cancels active downloads');
+assert.ok(swSource.includes('++imageWrites % 32 === 0'), 'image eviction scan is not repeated for every image');
+
 
 const runtime = read('sw.js');
 const startUi = read('ui/app.js');
-assert.ok(runtime.includes("PATCH='intent-load-13'"), 'second-stage cache generation');
+assert.ok(runtime.includes("PATCH='final-cleanup-14'"), 'second-stage cache generation');
 const shell = runtime.slice(runtime.indexOf('const shell = ['), runtime.indexOf('];', runtime.indexOf('const shell = ['))+2);
 const listed = [...shell.matchAll(/'([^']+)'/g)].map(m=>m[1]);
 assert.equal(listed.length,18,'core shell includes 10 startup resources and 8 assessment dependencies');

@@ -4,7 +4,7 @@
 2) Load that exact dump into NEW (fresh origin), boot, and compare: every key/value the player had is still there
    byte-for-byte, and the progress the app derives from it (done counts, unlocked chapters, coins) is identical.
 Usage: python3 qa/browser/oldsave_compat.py NEW_URL OLD_URL"""
-import asyncio, json, sys
+import asyncio, json, sys, os
 from playwright.async_api import async_playwright
 
 NEW, OLD = sys.argv[1], sys.argv[2]
@@ -39,20 +39,29 @@ DERIVED = r"""() => {
 DUMP = "() => Object.fromEntries(Object.keys(localStorage).map(k => [k, localStorage.getItem(k)]))"
 
 
+async def ensure_puzzle_layers(pg):
+    pick = pg.locator('.mpc[data-m=main]')
+    if await pick.count() and await pick.is_visible(): await pick.click()
+    await pg.wait_for_function("()=>typeof tab==='function' && typeof startRun==='function'", timeout=30000)
+    await pg.evaluate("()=>tab('puz')")
+    await pg.wait_for_function("()=>!window.mindlabPlayLayers || window.mindlabPlayLayers.ready", timeout=45000)
+    await pg.wait_for_function("()=>typeof pState==='function' && typeof txState==='function' && typeof T7!=='undefined' && typeof T7.state==='function'", timeout=30000)
+
 async def boot(b, url, init=None):
     c = await b.new_context(viewport={'width': 390, 'height': 844})
     if init is not None:
         await c.add_init_script(f"(()=>{{if(sessionStorage.getItem('__seeded'))return;sessionStorage.setItem('__seeded','1');localStorage.clear();const d={json.dumps(init)};for(const k in d)localStorage.setItem(k,d[k]);}})()")
-    pg = await c.new_page(); await pg.goto(url); await pg.wait_for_timeout(2500)
+    pg = await c.new_page(); await pg.goto(url, wait_until='load')
+    await ensure_puzzle_layers(pg)
     return c, pg
 
 
 async def main():
     async with async_playwright() as p:
-        b = await p.chromium.launch()
+        b = await p.chromium.launch(executable_path=os.environ.get('CHROME', '/usr/bin/google-chrome'),args=['--no-sandbox'])
         c, pg = await boot(b, OLD)
-        if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]'); await pg.wait_for_timeout(500)
-        await pg.evaluate(SEED); await pg.reload(); await pg.wait_for_timeout(2500)
+        await pg.evaluate(SEED); await pg.reload(wait_until='load')
+        await ensure_puzzle_layers(pg)
         old_dump = await pg.evaluate(DUMP); old_derived = await pg.evaluate(DERIVED); await c.close()
         ok(len(old_dump) >= 3, f'old build wrote a save ({len(old_dump)} keys)')
         c, pg = await boot(b, NEW, old_dump)

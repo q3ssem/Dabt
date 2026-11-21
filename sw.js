@@ -1,7 +1,7 @@
 'use strict';
 importScripts('./offline-manifest.js');
 
-const VERSION='5.5.28', PATCH='intent-load-13', PREFIX='mindlab-';
+const VERSION='5.5.28', PATCH='final-cleanup-14', PREFIX='mindlab-';
 const CORE = PREFIX+VERSION+'-'+PATCH+'-core';
 const RUNTIME = PREFIX+VERSION+'-'+PATCH+'-images';
 const SCENES = PREFIX+VERSION+'-'+PATCH+'-scenes';
@@ -42,7 +42,7 @@ self.addEventListener('activate', event => {
 // (oldest first out), so a long session through every world cannot fill the phone. Code and the app shell are
 // not trimmed. Player progress lives in localStorage and is never touched here.
 const MAX_IMAGES = 2200;
-let trimming = null;
+let trimming = null, imageWrites = 0;
 function trimImages() {
   if (trimming) return trimming;
   trimming = caches.open(RUNTIME).then(async cache => {
@@ -57,7 +57,7 @@ function sharedFetch(url, request, cache) {
   if (!pending) {
     const response = fetch(request);
     const stored = response.then(result => {
-      if (result.ok) return cache.put(url, result.clone()).then(() => { if (ART.test(url)) trimImages(); });
+      if (result.ok) return cache.put(url, result.clone()).then(() => { if (ART.test(url) && ++imageWrites % 32 === 0) trimImages(); });
     }).catch(() => { /* Storage pressure and network failures must not block play. */ })
       .finally(() => inFlight.delete(url));
     pending = {response, stored};
@@ -166,6 +166,13 @@ const PRELOAD_FILES = [...new Set([
 ].filter(file => file && file !== './' && !file.includes('/pz_stat/') && !file.includes('/pz_xbottle/')))];
 let activePreload = null;
 async function preloadAll(port) {
+  let cancelled = false;
+  const pendingFetches = new Set();
+  port.onmessage = ({data}) => {
+    if (data?.type !== 'cancel') return;
+    cancelled = true;
+    for (const controller of pendingFetches) controller.abort();
+  };
   if (activePreload) {
     // A new page can request a fresh cache check; do not run two competing downloads.
     try { await activePreload; } catch (_) {}
@@ -190,21 +197,28 @@ async function preloadAll(port) {
     };
     report('progress');
     async function runner() {
-      while (cursor < total) {
+      while (!cancelled && cursor < total) {
         const task = tasks[cursor++];
         const cache = cacheByType[task.type];
         if (stored[task.type].has(task.url)) {
           cached++;
         } else {
+          const controller = new AbortController();
+          pendingFetches.add(controller);
           try {
-            const response = await fetch(new Request(task.url, {credentials: 'same-origin'}));
+            const response = await fetch(new Request(task.url, {credentials: 'same-origin', signal: controller.signal}));
+            if (cancelled) break;
             if (!response.ok || response.type === 'opaque') throw new Error('HTTP ' + response.status);
             await cache.put(task.url, response);
             stored[task.type].add(task.url);
             downloaded++;
           } catch (_) {
-            failed++;
-            failedFiles.push(task.url.slice(BASE.href.length));
+            if (!cancelled) {
+              failed++;
+              failedFiles.push(task.url.slice(BASE.href.length));
+            }
+          } finally {
+            pendingFetches.delete(controller);
           }
         }
         done++;
@@ -212,7 +226,7 @@ async function preloadAll(port) {
       }
     }
     await Promise.all(Array.from({length: 4}, () => runner()));
-    report('complete');
+    report(cancelled ? 'cancelled' : 'complete');
   })();
   activePreload = job;
   try { await job; } finally { if (activePreload === job) activePreload = null; }
