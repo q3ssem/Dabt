@@ -57,7 +57,7 @@ ok(read('ui/app.js').includes("'data-fold': t }")&&read('ui/app.js').includes('i
  ok(kit.every(p=>fs.existsSync(path.join(root,p))),'every journey-kit file exists');
  ok(!kit.some(p=>/_scene\.webp$/.test(p)&&!p.includes('/thumbs/')),'large scene paintings stay on demand');
  const size=kit.reduce((n,p)=>n+fs.statSync(path.join(root,p)).size,0);ok(size<4.5*1048576,'kit under 4.5 MB ('+(size/1048576).toFixed(2)+' MB)');
- ok(read('sw.js').includes("event.data.type!=='warm-journey'")&&read('pwa.js').includes("postMessage({type:'warm-journey'})")&&read('pwa.js').includes('saveData'),'warm requested by the page, skipped on Save-Data');
+ ok(!read('sw.js').includes('warm-journey')&&!read('pwa.js').includes('warm-journey')&&read('pwa.js').includes('mindlabOffline.prepareAll'),'journey and game icons are fetched on demand; full offline preparation is opt-in');
  for(const k of ['rawaa','nuha','nabd','shibl','suhail','ward','nawfal'])ok(ctx.self.MINDLAB_OFFLINE_FILES.includes('treasure/art/story5/crew_full_'+k+'.webp')&&fs.existsSync(path.join(root,'treasure/art/story5/crew_'+k+'.webp')),'original crew art kept: '+k);}
 
 console.log(JSON.stringify({status:'passed',checks,fixes:['profile freeze','old backup restore','challenge-1 migration','read-only move preview','settings folds','offline journey kit'],saveKey:'miran:v2'},null,2));
