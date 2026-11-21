@@ -257,7 +257,13 @@ html #v-puz :is(.t7-puzzle-layout,.ex10-game-shell) button:focus-visible {
 html #play #stage .ml-authored-picker {
   gap:clamp(8px,2vw,14px);
   width:min(100%,600px);
+  max-block-size:calc(100dvh - 106px - env(safe-area-inset-top,0px) - env(safe-area-inset-bottom,0px));
+  overflow-y:auto;
+  overflow-x:hidden;
+  overscroll-behavior-y:contain;
+  scrollbar-width:thin;
   padding-inline:clamp(4px,2vw,12px);
+  padding-block-end:calc(16px + env(safe-area-inset-bottom,0px));
   color:var(--bp-ink);
 }
 html #play #stage .ml-authored-picker {
