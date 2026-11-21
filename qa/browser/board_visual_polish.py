@@ -173,9 +173,35 @@ async def run():
         if SHOTS:
             await page.screenshot(path=str(SHOTS/"brain-dual-light-390.png"))
         await page.evaluate("()=>closePlay()")
+        # Verify the two separately-rendered campaign families also inherit
+        # the visual typography while keeping their own handcrafted board art.
+        await page.evaluate("()=>T7.open(0,true)")
+        await page.locator("#v-puz .t7-puzzle-pane").wait_for(state="visible",timeout=18000)
+        sea=await page.evaluate("""()=>{
+          const host=document.querySelector('#v-puz .t7-puzzle-pane');
+          const info=document.querySelector('#v-puz .v5-chip');
+          return {visible:!!host && host.getBoundingClientRect().height>80,
+            font:getComputedStyle(info||host).fontFamily,
+            overflow:document.documentElement.scrollWidth>innerWidth+3};
+        }""")
+        assert sea["visible"] and not sea["overflow"],f"Treasure campaign board is not usable: {sea}"
+        if SHOTS: await page.screenshot(path=str(SHOTS/"treasure-sea1-light-390.png"))
+        await page.evaluate("async()=>await window.mindlabSide.start()")
+        await page.wait_for_function("()=>!!window.ML10",timeout=20000)
+        await page.evaluate("()=>ML10.startStage(0)")
+        await page.locator("#v-puz .ex10-game-shell").wait_for(state="visible",timeout=18000)
+        side=await page.evaluate("""()=>{
+          const host=document.querySelector('#v-puz .ex10-game-shell');
+          const title=document.querySelector('#v-puz .ex10-game-top');
+          return {visible:!!host && host.getBoundingClientRect().height>90,
+            font:getComputedStyle(title||host).fontFamily,
+            overflow:document.documentElement.scrollWidth>innerWidth+3};
+        }""")
+        assert side["visible"] and not side["overflow"],f"Side-journey board is not usable: {side}"
+        if SHOTS: await page.screenshot(path=str(SHOTS/"side-lighthouse-light-390.png"))
         assert not errors,errors[:5]
         print("BOARD_VISUAL_ACCEPTANCE="+json.dumps({
-          "engine":ENGINE,"panels":len(rows)+1,"themes":["light","dark"],
+          "engine":ENGINE,"panels":len(rows)+3,"themes":["light","dark"],
           "widths":[320,390],"picker_levels":rows[0]["pickerButtons"],
           "close_contrast":[row["button"]["contrast"] for row in rows],
           "hud_icon_counts":[len(row["hudIcons"]) for row in rows],"errors":errors
