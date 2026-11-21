@@ -205,3 +205,6 @@ self.MINDLAB_OFFLINE_FILES.push(
   "motion/shared-raster/map.webp",
   "motion/shared-raster/mirror-queen.webp"
 );
+
+// 5.5.29: keep the shared visual board system available after full offline preparation.
+self.MINDLAB_OFFLINE_FILES.push("ds/board-polish.css");
