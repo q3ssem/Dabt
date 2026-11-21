@@ -14,7 +14,7 @@ SELECTED=[
 async def open_one(page, gid, width):
     await page.set_viewport_size({'width':width,'height':844})
     await page.evaluate('(id)=>startRun([id])', gid)
-    await page.wait_for_function("()=>!!window.RUN&&document.querySelector('#stage')?.textContent?.trim().length>0",timeout=18000)
+    await page.wait_for_function("()=>typeof RUN!=='undefined'&&!!RUN&&document.querySelector('#stage')?.textContent?.trim().length>0",timeout=18000)
     button=page.locator('#stage #go')
     if await button.count() and await button.first.is_visible():
         await button.first.click()
