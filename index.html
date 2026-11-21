@@ -5508,7 +5508,7 @@ const XAR=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
 const xNest=(svg,x,y,w,h,cls='')=>svg.replace('<svg ',`<svg x="${x}" y="${y}" width="${w}" height="${h}" ${cls?`class="${cls}" `:''}`);
 const XISL='M70 150C58 104 116 66 170 78C214 58 276 70 296 112C332 140 326 202 302 232C322 286 290 342 232 352C192 372 136 362 106 334C68 316 46 270 70 236C44 204 50 172 70 150Z';
 function txState(){const t=S.st.tx||(S.st.tx={voy:1,prog:0,found:[]});t.inv=t.inv||[];
-  if(!t.bottleRetiredV1){if(t.prog>0)t.prog--;else t.stage=1;t.bottleRetiredV1=1}
+  if(!t.bottleRetiredV1){if(t.prog>=15)t.prog--;if(t.prog===14)t.stage=0;t.bottleRetiredV1=1;S.save();}
   return t}
 /* the islands take turns: odd voyages on Treasure Island, even ones on Skull Island */
 const XISLES=[{n:'جزيرة الكنز',st:XST,key:'map',art:()=>xMapArt(),over:()=>xOverA()}];
