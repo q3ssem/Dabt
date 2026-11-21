@@ -19,7 +19,6 @@ door_open,"pz_door,pz_pliar",ui.door_open,drMake.t (selected/win),open_win,VERIF
 key,pz_door,ui.key_token,drMake.t (hypothesis_target),tray_and_placed,VERIFIED,160x160,"80,80",assets/key.png
 padlock,"pz_door,pz_xlock",ui.padlock_icon,drMake.rule (UI lock),locked,VERIFIED,160x160,"80,80",assets/padlock.png
 prop_biolantern,pz_acity,ui.species_lantern,ACT_SP[4] / actMake.ord,alive_and_extinct,VERIFIED,140x160,"70,80",assets/prop_biolantern.png
-prop_bottle,pz_xbottle,ui.bottle_token,xbMake (UI prop),cipher_bottle,PROVISIONAL_UI_TOKEN,150x160,"75,80",assets/prop_bottle.png
 prop_cart,pz_rush,ui.cart_token,rsMake (UI vehicle),movable_vehicle,PROVISIONAL_UI_TOKEN,180x140,"90,70",assets/prop_cart.png
 prop_clock,"pz_pclock,pz_pboss1,pz_peng",ui.clock_dial,pcMake (UI dial),clock_dial,PROVISIONAL_UI_TOKEN,150x160,"75,80",assets/prop_clock.png
 prop_compass,"pz_zcomp,pz_tpath,pz_tmap",ui.compass_token,zcMake (UI compass),navigation_compass,PROVISIONAL_UI_TOKEN,150x150,"75,75",assets/prop_compass.png
