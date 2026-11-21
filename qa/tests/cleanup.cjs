@@ -37,7 +37,10 @@ const all = [...realm.self.MINDLAB_OFFLINE_FILES,...realm.self.MINDLAB_JOURNEY_A
 assert.ok(all.every(x=>!x.startsWith('hasad/') && !gone.includes(x)), 'precache must not reference removed files');
 const uniqueAssets = [...new Set(all.filter(file => file && file !== './'))];
 const missingAssets = uniqueAssets.filter(file => !fs.existsSync(file));
-assert.deepEqual(missingAssets, [], 'all 988 referenced offline resources must exist');
+assert.deepEqual(missingAssets, [], 'all optional offline pack resources must exist');
+assert.ok(!read('ui/app.js').includes('ui/engines/scene-kit.js'), 'unneeded engine loader removed from startup');
+assert.ok(!read('offline-manifest.js').includes('ui/engines/scene-kit.js'), 'unused renderer loader removed from precache');
+for (const dead of ['ui/engines/scene-kit.js', ...['flow','ice','pipe','rush','tan','untangle'].map(id=>'ui/engines/scenes/pz_'+id+'.json'), 'vendor/pixi/pixi.min.js', 'vendor/konva/konva.min.js']) assert.ok(!fs.existsSync(dead), 'unused external scene runtime removed: '+dead);
 assert.ok(!read('sw.js').includes('warm-journey'), 'no redundant warm-journey service');
 assert.ok(!read('pwa.js').includes('warm-journey'), 'opening the journey must not queue unrelated art');
 assert.ok(!fs.existsSync('qa/browser/stat_pixi.py'), 'removed statue-only browser test absent');

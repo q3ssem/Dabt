@@ -204,7 +204,6 @@ try {
     'motion/palace-motion.js',
     'motion/lab10.js',
     'motion/logic-revised/board.js',
-    'ui/engines/scene-kit.js',
     'motion/pirate-routes.js',
     'ui/fit.js',
     'motion/wreck-painted.js',
