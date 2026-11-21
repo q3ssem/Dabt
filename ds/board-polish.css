@@ -1,0 +1,358 @@
+/* MindLab 5.5.29 — visual polish for all shared game boards.
+   Presentation only: preserve painted scenes, game-piece geometry, rules and saves.
+   Loaded last among puzzle styles; palette respects the player's white/dark choice. */
+html[data-skin="light"] #play,
+html[data-skin="light"] #v-puz {
+  --bp-ink:#25353a;
+  --bp-muted:#56666b;
+  --bp-faint:#718082;
+  --bp-stroke:#dbcdb5;
+  --bp-glass:rgba(255,251,241,.92);
+  --bp-paper:#fffaf0;
+  --bp-paper-alt:#f7eedc;
+  --bp-teal:#146d68;
+  --bp-teal-soft:#e1f3ef;
+  --bp-gold:#a16a16;
+  --bp-gold-soft:#fff0ce;
+  --bp-azure:#236b93;
+  --bp-azure-soft:#e3f2fa;
+  --bp-violet:#7555a1;
+  --bp-violet-soft:#f0e9fa;
+  --bp-red:#af3d39;
+  --bp-red-soft:#ffebe7;
+  --bp-green:#23754e;
+  --bp-green-soft:#e3f5e9;
+  --bp-focus:#126c92;
+  --bp-shadow:0 2px 10px rgba(67,48,21,.10);
+}
+html[data-skin="dark"] #play,
+html[data-skin="dark"] #v-puz {
+  --bp-ink:#f5f0e6;
+  --bp-muted:#d3d8d5;
+  --bp-faint:#b4c2c3;
+  --bp-stroke:#57666b;
+  --bp-glass:rgba(21,32,42,.94);
+  --bp-paper:#22323b;
+  --bp-paper-alt:#273b42;
+  --bp-teal:#78e1d5;
+  --bp-teal-soft:#1c4848;
+  --bp-gold:#f5d58a;
+  --bp-gold-soft:#514126;
+  --bp-azure:#91d6fa;
+  --bp-azure-soft:#234760;
+  --bp-violet:#d1b2f4;
+  --bp-violet-soft:#443753;
+  --bp-red:#ffb2ac;
+  --bp-red-soft:#583535;
+  --bp-green:#9fe3b6;
+  --bp-green-soft:#214937;
+  --bp-focus:#a3e4fb;
+  --bp-shadow:0 2px 11px rgba(0,0,0,.25);
+}
+/* The app also supports an automatic light/dark choice. */
+@media (prefers-color-scheme:light){
+  html[data-skin="auto"] #play,
+  html[data-skin="auto"] #v-puz {--bp-ink:#25353a;--bp-muted:#56666b;--bp-faint:#718082;--bp-stroke:#dbcdb5;--bp-glass:rgba(255,251,241,.92);--bp-paper:#fffaf0;--bp-paper-alt:#f7eedc;--bp-teal:#146d68;--bp-teal-soft:#e1f3ef;--bp-gold:#a16a16;--bp-gold-soft:#fff0ce;--bp-azure:#236b93;--bp-azure-soft:#e3f2fa;--bp-violet:#7555a1;--bp-violet-soft:#f0e9fa;--bp-red:#af3d39;--bp-red-soft:#ffebe7;--bp-green:#23754e;--bp-green-soft:#e3f5e9;--bp-focus:#126c92;--bp-shadow:0 2px 10px rgba(67,48,21,.10);}
+}
+@media (prefers-color-scheme:dark){
+  html[data-skin="auto"] #play,
+  html[data-skin="auto"] #v-puz {--bp-ink:#f5f0e6;--bp-muted:#d3d8d5;--bp-faint:#b4c2c3;--bp-stroke:#57666b;--bp-glass:rgba(21,32,42,.94);--bp-paper:#22323b;--bp-paper-alt:#273b42;--bp-teal:#78e1d5;--bp-teal-soft:#1c4848;--bp-gold:#f5d58a;--bp-gold-soft:#514126;--bp-azure:#91d6fa;--bp-azure-soft:#234760;--bp-violet:#d1b2f4;--bp-violet-soft:#443753;--bp-red:#ffb2ac;--bp-red-soft:#583535;--bp-green:#9fe3b6;--bp-green-soft:#214937;--bp-focus:#a3e4fb;--bp-shadow:0 2px 11px rgba(0,0,0,.25);}
+}
+
+/* Consistent Arabic typography and hierarchy, without erasing individual artwork. */
+html #play,html #play button,html #play input,
+html #play select,html #play textarea,
+html #v-puz :is(.t7-puzzle-layout,.ex10-game-shell,.ex10-game-content),
+html #v-puz :is(.t7-puzzle-layout,.ex10-game-shell) button {
+  font-family:'Tajawal',system-ui,sans-serif;
+  letter-spacing:0;
+}
+html #play .pbar #pt {
+  font-family:'Tajawal',system-ui,sans-serif!important;
+  font-size:clamp(16px,4.2vw,20px)!important;
+  line-height:1.28!important;
+  font-weight:900!important;
+  color:var(--bp-ink)!important;
+  letter-spacing:0!important;
+  text-overflow:ellipsis;
+}
+html #play .pbar .t span {
+  font-family:'Tajawal',system-ui,sans-serif;
+  font-size:12px;
+  line-height:1.35;
+  color:var(--bp-muted)!important;
+}
+html #play #stage :is(.intro h2,.res h2,.ml-authored-picker h2),
+html #v-puz :is(.v5-head h2,.ex10-game-top h2) {
+  font-family:'Tajawal',system-ui,sans-serif!important;
+  font-size:clamp(17px,4.4vw,23px);
+  font-weight:900;
+  line-height:1.35;
+  color:var(--bp-ink)!important;
+  text-wrap:balance;
+}
+html #play #stage :is(.intro p,.why,.how,.pzhint,.ml-authored-picker p,.lb-lead,.lb-rule,.msg),
+html #v-puz :is(.v5-challenge-note,.ex10-objective,.ex10-clue,.ex10-dialogue) {
+  font-family:'Tajawal',system-ui,sans-serif!important;
+  font-size:clamp(13px,3.4vw,15px);
+  line-height:1.65;
+  overflow-wrap:break-word;
+}
+html #play #stage :is(.mlp-rules-label,.mlp-clues-title,.lb-intro) {
+  text-wrap:pretty;
+}
+html #play #stage :is(.res,.res .msg,.res p) {color:var(--bp-ink)!important;}
+
+/* Top bar: quiet parchment surface, strongly differentiated circular tool icons. */
+html #play .pbar {
+  border-color:var(--bp-stroke)!important;
+  color:var(--bp-ink)!important;
+}
+html #play.fit .pzhud {
+  align-items:center;
+  column-gap:6px!important;
+  row-gap:4px!important;
+}
+html #play :is(.pbar .x,.pzhud .pzhb,.fit-tools .pzgive) {
+  --bp-icon:var(--bp-azure);
+  --bp-icon-bg:var(--bp-azure-soft);
+  display:inline-grid!important;
+  place-items:center!important;
+  flex:none;
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  padding:0!important;
+  border:1.5px solid color-mix(in srgb,var(--bp-icon) 35%,var(--bp-stroke))!important;
+  border-radius:50%!important;
+  background:var(--bp-icon-bg)!important;
+  color:var(--bp-icon)!important;
+  box-shadow:0 2px 0 color-mix(in srgb,var(--bp-icon) 12%,transparent)!important;
+  -webkit-tap-highlight-color:transparent;
+  transition:transform .12s ease,background-color .16s ease,box-shadow .16s ease;
+}
+html #play .pbar .x {--bp-icon:var(--bp-azure);--bp-icon-bg:var(--bp-azure-soft);}
+html #play .pzhud :is(#pzh,.pzhb[data-kind="hint"]) {--bp-icon:var(--bp-gold);--bp-icon-bg:var(--bp-gold-soft);}
+html #play .fit-tools :is(.fit-info,#fitinfo) {--bp-icon:var(--bp-teal);--bp-icon-bg:var(--bp-teal-soft);}
+html #play .fit-tools .fit-journal {--bp-icon:var(--bp-violet);--bp-icon-bg:var(--bp-violet-soft);}
+html #play .fit-tools .fit-sound {--bp-icon:var(--bp-green);--bp-icon-bg:var(--bp-green-soft);}
+html #play .fit-tools .pzgive {--bp-icon:var(--bp-red);--bp-icon-bg:var(--bp-red-soft);}
+html #play :is(.pbar .x,.pzhud .pzhb,.fit-tools .pzgive) :is(svg,img,.fit-sound-icon) {
+  width:21px!important;
+  height:21px!important;
+  flex:none;
+  object-fit:contain;
+  color:inherit;
+}
+html #play :is(.pbar .x,.pzhud .pzhb,.fit-tools .pzgive):active {
+  transform:scale(.93);
+  box-shadow:none!important;
+}
+html #play :is(.pbar .x,.pzhud .pzhb,.fit-tools .pzgive):disabled {opacity:.44;}
+html #play .pzhud .fit-journal i {
+  background:var(--bp-paper)!important;
+  color:var(--bp-violet)!important;
+  border:1px solid var(--bp-stroke)!important;
+  font-size:10px!important;
+  border-radius:999px!important;
+  bottom:-4px;
+}
+html #play .pzhud #pzhn {
+  background:var(--bp-red)!important;
+  color:#fff!important;
+  border:1.5px solid var(--bp-glass)!important;
+  top:-4px!important;
+  inset-inline-end:-3px!important;
+  border-radius:999px!important;
+  line-height:17px!important;
+}
+html #play .pzhud .pzlv[data-short]::after,
+html #play.fit .pzlv[data-short]::after {
+  background:var(--bp-paper)!important;
+  border:1px solid var(--bp-stroke)!important;
+  border-radius:999px!important;
+  color:var(--bp-ink)!important;
+  font-family:'Tajawal',system-ui,sans-serif;
+  font-size:13px!important;
+  font-weight:900;
+  padding:5px 9px!important;
+  box-shadow:none;
+}
+html #play .pzhud .pzcoin {
+  border:1px solid color-mix(in srgb,var(--bp-gold) 35%,var(--bp-stroke))!important;
+  background:var(--bp-gold-soft)!important;
+  color:var(--bp-gold)!important;
+  border-radius:999px!important;
+  font-variant-numeric:tabular-nums;
+  font-size:14px!important;
+  font-weight:900!important;
+}
+html #play .pzhud .pzcoin :is(svg,img) {object-fit:contain;}
+html #play.fit .pzhud .fit-tools .pzgive.arm {
+  background:var(--bp-red)!important;
+  border-color:var(--bp-red)!important;
+  color:var(--bp-paper)!important;
+}
+html #play .pzhud .fit-sound[aria-pressed="false"] {opacity:.7;}
+
+/* Main action buttons look consistent; colored puzzle pieces remain untouched. */
+html #play #stage :is(.go-btn,#go,.lb-bar button,.ml-authored-open),
+html #play #stage .res .btns button,
+html #play .fit-sheet-card :is(.fit-sh-go,.fit-sh-replay) {
+  min-height:44px;
+  font-family:'Tajawal',system-ui,sans-serif!important;
+  font-size:clamp(14px,3.7vw,16px)!important;
+  font-weight:800!important;
+  line-height:1.2!important;
+  border-radius:16px!important;
+  -webkit-tap-highlight-color:transparent;
+}
+html #play #stage :is(.go-btn,#go):not(:disabled),
+html #play .fit-sheet-card .fit-sh-go {
+  background:var(--bp-teal)!important;
+  border:1px solid var(--bp-teal)!important;
+  color:var(--bp-paper)!important;
+  box-shadow:0 3px 0 color-mix(in srgb,var(--bp-teal) 40%,#111)!important;
+}
+html #play #stage .ml-authored-picker .go-btn {min-height:50px;}
+html #play #stage :is(.lb-bar button,.res .btns button):not([data-river-travel]):not(:disabled):not(.primary) {
+  background:var(--bp-paper-alt);
+  border-color:var(--bp-stroke);
+  color:var(--bp-ink);
+}
+html #play #stage button:disabled:not([class*="cell"]):not([class*="piece"]) {
+  cursor:not-allowed;
+}
+html #play #stage :is(.go-btn,#go,.lb-bar button,.ml-authored-open):focus-visible,
+html #play .pbar .x:focus-visible,
+html #play .pzhud button:focus-visible,
+html #play .fit-sheet-card button:focus-visible,
+html #v-puz :is(.t7-puzzle-layout,.ex10-game-shell) button:focus-visible {
+  outline:3px solid var(--bp-focus)!important;
+  outline-offset:3px!important;
+}
+
+/* A clear stage selector that does not interfere with the actual puzzle-board grid. */
+html #play #stage .ml-authored-picker {
+  gap:clamp(8px,2vw,14px);
+  width:min(100%,600px);
+  padding-inline:clamp(4px,2vw,12px);
+  color:var(--bp-ink);
+}
+html #play #stage .ml-authored-picker header {padding:4px 6px;}
+html #play #stage .ml-authored-picker header p {
+  color:var(--bp-muted);
+  font-size:13px;
+  font-variant-numeric:tabular-nums;
+}
+html #play #stage .ml-authored-levels {
+  display:grid;
+  grid-template-columns:repeat(auto-fit,minmax(64px,1fr));
+  gap:7px;
+}
+html #play #stage .ml-authored-levels button {
+  min-width:0;
+  min-height:52px;
+  padding:7px 4px;
+  background:var(--bp-paper)!important;
+  border:1px solid var(--bp-stroke)!important;
+  color:var(--bp-ink)!important;
+  border-radius:14px!important;
+  box-shadow:var(--bp-shadow);
+  font-family:'Tajawal',system-ui,sans-serif;
+  font-weight:800;
+  font-size:15px;
+  font-variant-numeric:tabular-nums;
+}
+html #play #stage .ml-authored-levels button[aria-current="step"] {
+  color:var(--bp-teal)!important;
+  background:var(--bp-teal-soft)!important;
+  border-color:var(--bp-teal)!important;
+  box-shadow:inset 0 0 0 1px var(--bp-teal)!important;
+}
+html #play #stage .ml-authored-levels button:disabled {
+  opacity:.52;
+  border-style:dashed!important;
+  box-shadow:none!important;
+}
+html #play #stage .ml-authored-levels button span {
+  color:var(--bp-muted)!important;
+  font-size:12px!important;
+  line-height:1.35!important;
+}
+
+/* Compact information sheets: text remains the focus, no nested heavy panels. */
+html #play .fit-sheet-card {
+  background:var(--bp-paper)!important;
+  color:var(--bp-ink)!important;
+  border:1px solid var(--bp-stroke);
+  border-radius:22px 22px 0 0;
+  font-family:'Tajawal',system-ui,sans-serif;
+}
+html #play .fit-sheet-card h3 {color:var(--bp-ink)!important;font-weight:900;}
+html #play .fit-sheet-card :is(.fit-sh-rule,.fit-sh-story) {
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:4px 2px 6px!important;
+  color:var(--bp-muted)!important;
+}
+html #play .fit-sheet-card .fit-sh-rule {border-bottom:1px solid var(--bp-stroke)!important;}
+html #play .fit-sheet-card .fit-sh-rule b {color:var(--bp-teal)!important;}
+html #play .fit-sheet-card :is(.fit-sh-rule,.fit-sh-story) p {line-height:1.75;}
+
+/* Treasure campaign and side-journey control typography: stay scoped to UI, not scene art. */
+html #v-puz .t7 :is(.t7-compact-top,.v5-head,.v5-challenge-note,.v5-counter) {
+  font-family:'Tajawal',system-ui,sans-serif!important;
+}
+html #v-puz .t7 .v5-chip {font-weight:800;line-height:1.25;border-radius:999px;}
+html #v-puz .t7 .v5-chip[aria-current="step"],
+html #v-puz .t7 .v5-chip.on {box-shadow:0 0 0 1px var(--bp-teal);}
+html #v-puz .t7 :is(.v5-bar,.t7-puzzle-pane) .t7-btn {
+  font-family:'Tajawal',system-ui,sans-serif;
+  font-size:clamp(13px,3.4vw,15px);
+  font-weight:800;
+  min-height:44px;
+  border-radius:14px;
+}
+html #v-puz .t7 .v5-challenge-note {color:var(--bp-muted)!important;line-height:1.6;}
+html #v-puz .ex10 :is(.ex10-game-top,.ex10-objective,.ex10-stage-progress,.ex10-feedback) {
+  font-family:'Tajawal',system-ui,sans-serif!important;
+  line-height:1.55;
+}
+html #v-puz .ex10 :is(.ex10-game-top,.ex10-stage-progress) {
+  color:var(--bp-ink);
+}
+html #v-puz .ex10 :is(.ex10-back,.ex10-game-actions button,.ex10-cipher-controls button) {
+  font-family:'Tajawal',system-ui,sans-serif;
+  font-weight:800;
+  border-radius:14px;
+  min-height:44px;
+}
+html #v-puz .ex10 .ex10-objective {font-size:clamp(13px,3.5vw,15px);}
+
+/* Icons and badges: keep the provided hand-drawn graphics sharp and unstretched. */
+html #play :is(.pzhud,.fit-tools,.fit-sheet-card) img,
+html #v-puz :is(.v5-head,.v5-bar,.ex10-game-top) img {
+  object-fit:contain!important;
+  object-position:center;
+}
+html #play :is(.fit-info-icon,.fit-sound-icon) {font-style:normal;}
+html #play button,html #v-puz :is(.t7-puzzle-layout,.ex10-game-shell) button {
+  touch-action:manipulation;
+}
+@media (max-width:360px) {
+  html #play.fit .pzhud {column-gap:4px!important;row-gap:3px!important;}
+  html #play .pbar #pt {font-size:16px!important;}
+  html #play #stage .ml-authored-levels {grid-template-columns:repeat(auto-fit,minmax(60px,1fr));gap:5px;}
+}
+@media (max-height:470px) and (orientation:landscape) {
+  html #play.fit :is(.pzhud .pzhb,.fit-tools .pzgive,.pbar .x) {
+    width:40px!important;height:40px!important;min-width:40px!important;min-height:40px!important;
+  }
+  html #play .pbar #pt {font-size:15px!important;}
+}
+@media (prefers-reduced-motion:reduce){
+  html #play :is(.pbar .x,.pzhud .pzhb,.fit-tools .pzgive) {transition:none!important;}
+}
