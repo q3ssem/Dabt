@@ -51,10 +51,22 @@ assert.ok(!read('qa/browser/design10_play.py').includes('pz_stat'), 'deleted des
 assert.ok(!read('qa/browser/motion_batch_fixes.py').includes('pz_xbottle'), 'deleted bottle replay removed');
 
 // The cache generation must have moved past the generation that still held the deleted assets.
-assert.ok(read('sw.js').includes("PATCH='on-demand-assets-12'"), 'cache generation must change after deleting assets');
+assert.ok(read('sw.js').includes("PATCH='intent-load-13'"), 'cache generation must change after switching to deferred assets');
 const pwa = read('pwa.js');
 assert.ok(pwa.includes('window.mindlabOffline.prepareAll = function prepareAll()'), 'offline bulk download must be opt-in');
 assert.ok(pwa.includes('window.mindlabOffline.clearOptionalCaches'), 'optional image cache cleanup available');
+
+const runtime = read('sw.js');
+const startUi = read('ui/app.js');
+assert.ok(runtime.includes("PATCH='intent-load-13'"), 'second-stage cache generation');
+const shell = runtime.slice(runtime.indexOf('const shell = ['), runtime.indexOf('];', runtime.indexOf('const shell = ['))+2);
+const listed = [...shell.matchAll(/'([^']+)'/g)].map(m=>m[1]);
+assert.equal(listed.length,18,'core shell includes 10 startup resources and 8 assessment dependencies');
+assert.ok(listed.every(file=>fs.existsSync(file)),'core shell resources exist');
+assert.ok(!startUi.includes('idle(startSide)'), 'side journey never loads automatically');
+assert.ok(!startUi.includes("document.addEventListener('pointerdown', start"), 'unrelated taps do not preload play bundle');
+assert.ok(startUi.includes("if (target === 'puz') start()"), 'puzzle tab requests its dependencies on demand');
+
 assert.ok(!read('legacy/art.js').match(/\['pz_river','pz_rush','pz_stat'/), 'retired statue not shown in library section');
 assert.ok(!read('ui/fit.css').includes('pz_xbottle'), 'retired bottle CSS must be gone');
 assert.ok(!read('motion/correction-art.css').includes('pz_xbottle'), 'retired bottle correction CSS must be gone');

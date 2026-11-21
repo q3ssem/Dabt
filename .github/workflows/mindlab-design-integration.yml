@@ -25,3 +25,10 @@ jobs:
       - run: python -m py_compile qa/browser/authored_stages.py qa/browser/perf_bench.py qa/browser/display_audio_review.py qa/browser/design10_play.py qa/browser/motion_batch_fixes.py
       - run: npm test
       - run: npm run test:authored-stages
+      - run: python qa/audit/asset_audit.py
+      - run: python -m pip install playwright
+      - name: Test on-demand navigation in Chrome
+        run: |
+          command -v google-chrome
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/mindlab-http.log 2>&1 &
+          python qa/browser/phase2_startup.py http://127.0.0.1:8765/

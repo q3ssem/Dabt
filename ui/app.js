@@ -189,8 +189,7 @@ try {
 /* 5.5.28 — غلاف حملة أَثْرَان وقصتها (بعد طبقة المكتبة، لأن الحملة تلتف حول renderPuz).
    perf-cleanup: these play layers (campaign, art bindings, motion boards, fit, openings, journey hub and their
    stylesheets) are not needed to paint the home screen, so they no longer compete with it during start-up.
-   They load as one ordered bundle at the first of: the page finished loading and the browser is idle, the
-   player's first touch, the puzzles tab being the opening tab, or startRun() (which waits for them). */
+   They load only on the puzzle tab or a direct puzzle start; Home/Games/Progress do not initialize them. */
 (function(){
   if(document.querySelector('script[data-release="5.5.28-atheran"]')||window.mindlabPlayLayers)return;
   const scripts = [
@@ -218,7 +217,6 @@ try {
   const styles = ['atheran/campaign/campaign.css', 'atheran/bindings/bindings.css', 'motion/motion.css', 'motion/lab10.css', 'ui/fit.css', 'ui/openings.css', 'ui/journey-hub.css', 'motion/correction-art.css', 'motion/expedition-art.css', 'motion/logic-revised/board.css', 'motion/sea-painted.css', 'motion/adventure35.css', 'ui/fullscreen-puzzles.css'];
   const layers = ['ui/puzzle-design.js', 'ui/adventure-design.js'];
   let loading = null;
-  const idle = cb => (window.requestIdleCallback ? requestIdleCallback(cb, { timeout: 1200 }) : setTimeout(cb, 200));
   const insert = src => new Promise(done => {
     // Fetched in parallel, executed in order (async=false); a failed file must not block play.
     const script = document.createElement('script');
@@ -232,9 +230,9 @@ try {
     for (const href of styles) {
       const link = document.createElement('link'); link.rel = 'stylesheet'; link.href = new URL(href, document.baseURI).href; document.head.append(link);
     }
-    return Promise.all([...scripts, ...layers].map(insert)).then(() => { window.__mlPlayReady = true; window.dispatchEvent(new Event('mindlab:play-layers')); idle(startSide); });
+    return Promise.all([...scripts, ...layers].map(insert)).then(() => { window.__mlPlayReady = true; window.dispatchEvent(new Event('mindlab:play-layers')); });
   };
-  // The side journey (25 stations, its own save) is a separate bundle: only the journey hub and its map need it.
+  // The side journey (24 stations, its own save) loads on demand only when its map is opened.
   const side = { css: ['expedition10/style.css'], js: ['expedition10/logic.js', 'expedition10/app.js'] };
   let sideLoading = null;
   const startSide = () => {
@@ -261,10 +259,19 @@ try {
       return start().then(() => startRun.apply(self, args));
     };
   }
-  if (typeof curTab !== 'undefined' && curTab !== 'home' && curTab !== 'games') start();
-  else if (document.readyState === 'complete') idle(start);
-  else window.addEventListener('load', () => idle(start), { once: true });
-  document.addEventListener('pointerdown', start, { once: true, capture: true });
+  // Keep the play bundle entirely out of Home/Games/Progress until the puzzle tab
+  // is actually opened. All direct puzzle starts are already intercepted above.
+  if (typeof tab === 'function') {
+    const showTab = tab;
+    tab = function (target) {
+      const result = showTab.apply(this, arguments);
+      if (target === 'puz') start().then(() => {
+        if (typeof curTab !== 'undefined' && curTab === 'puz' && typeof renderPuz === 'function') renderPuz();
+      });
+      return result;
+    };
+  }
+  if (typeof curTab !== 'undefined' && curTab === 'puz') start();
 })();
 
 
