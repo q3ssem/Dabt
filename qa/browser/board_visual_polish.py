@@ -180,11 +180,17 @@ async def run():
         sea=await page.evaluate("""()=>{
           const host=document.querySelector('#v-puz .t7-puzzle-pane');
           const info=document.querySelector('#v-puz .v5-chip');
+          const icon=document.querySelector('#v-puz.t7 .t7-tools .t7-tool-icon');
+          const rect=icon?.getBoundingClientRect();
+          const visual=icon&&getComputedStyle(icon);
           return {visible:!!host && host.getBoundingClientRect().height>80,
             font:getComputedStyle(info||host).fontFamily,
+            roundTool:!!icon&&Math.min(rect.width,rect.height)>=42 &&
+              (visual.borderTopLeftRadius==='50%'||parseFloat(visual.borderTopLeftRadius)>=20),
             overflow:document.documentElement.scrollWidth>innerWidth+3};
         }""")
         assert sea["visible"] and not sea["overflow"],f"Treasure campaign board is not usable: {sea}"
+        assert sea['roundTool'],f'Treasure campaign toolbar icons are not circular: {sea}'
         if SHOTS: await page.screenshot(path=str(SHOTS/"treasure-sea1-light-390.png"))
         await page.evaluate("async()=>await window.mindlabSide.start()")
         await page.wait_for_function("()=>!!window.ML10",timeout=20000)
@@ -193,11 +199,21 @@ async def run():
         side=await page.evaluate("""()=>{
           const host=document.querySelector('#v-puz .ex10-game-shell');
           const title=document.querySelector('#v-puz .ex10-game-top');
+          const label=title?.querySelector('b');
+          const c=label?getComputedStyle(label).color:'';
+          const numbers=c.match(/[0-9.]+/g)?.slice(0,3).map(Number)||[];
+          const back=title?.querySelector('.ex10-back');
+          const rect=back?.getBoundingClientRect();
           return {visible:!!host && host.getBoundingClientRect().height>90,
             font:getComputedStyle(title||host).fontFamily,
+            titleContrast:!!numbers.length&&Math.min(...numbers)>200,
+            roundBack:!!back&&Math.min(rect.width,rect.height)>=42&&
+               (getComputedStyle(back).borderTopLeftRadius==='50%' ||
+                parseFloat(getComputedStyle(back).borderTopLeftRadius)>=20),
             overflow:document.documentElement.scrollWidth>innerWidth+3};
         }""")
         assert side["visible"] and not side["overflow"],f"Side-journey board is not usable: {side}"
+        assert side['titleContrast'] and side['roundBack'],f'Side-journey header is illegible or back control not round: {side}'
         if SHOTS: await page.screenshot(path=str(SHOTS/"side-lighthouse-light-390.png"))
         assert not errors,errors[:5]
         print("BOARD_VISUAL_ACCEPTANCE="+json.dumps({
