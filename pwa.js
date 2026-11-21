@@ -156,7 +156,7 @@
       beginPreload(worker);
     })
     .catch(() => fail('تعذر تجهيز الأصول الآن. التطبيق ما زال متاحًا عبر الإنترنت.'));
-}  };
+  };
   window.mindlabOffline.clearOptionalCaches = async function clearOptionalCaches() {
     const names = await caches.keys();
     const stale = names.filter(name => name.startsWith('mindlab-') && /-(?:images|scenes)$/.test(name));
