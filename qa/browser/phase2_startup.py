@@ -9,8 +9,11 @@ async def main():
         browser=await pw.chromium.launch(executable_path=CHROME,args=['--no-sandbox'])
         context=await browser.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True,locale='ar-SA')
         page=await context.new_page()
-        requests=[]; errors=[]
+        requests=[]; errors=[]; resources=[]
         page.on('request',lambda req: requests.append(urlsplit(req.url).path))
+        page.on('response',lambda res: resources.append({'path':urlsplit(res.url).path,
+            'bytes':int(res.headers.get('content-length') or 0),'type':res.request.resource_type})
+            if res.url.startswith(URL) else None)
         page.on('pageerror',lambda exc: errors.append(str(exc)))
         await page.goto(URL,wait_until='load',timeout=45000)
         profile=page.locator('.mpc[data-m=main]')
@@ -27,6 +30,7 @@ async def main():
         assert early==0, 'Play resources downloaded on Home'
         assert not errors, errors[:4]
         pre=len(requests)
+        home_resources=list(resources)
         await page.evaluate("() => tab('puz')")
         await page.wait_for_function("() => !!window.mindlabPlayLayers?.ready",timeout=45000)
         assert not await page.evaluate("() => !!window.ML10"),'Side journey loaded without choosing it'
@@ -37,6 +41,8 @@ async def main():
         assert await page.evaluate("() => typeof window.mindlabOffline?.prepareAll==='function'"),'Offline control missing'
         print('PHASE2_BROWSER_AUDIT='+json.dumps({'on_home':before,'requests_home':pre,
            'unwanted_play_requests':early,'requests_after_navigation':len(requests),
+           'homepage_bytes_uncompressed':sum(x['bytes'] for x in home_resources),
+           'homepage_largest_resources':sorted(home_resources,key=lambda x:x['bytes'],reverse=True)[:15],
            'play_ready':True,'side_ready':True,'errors':errors},ensure_ascii=False))
         await browser.close()
 asyncio.run(main())
