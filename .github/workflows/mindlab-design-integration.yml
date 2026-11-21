@@ -34,6 +34,23 @@ jobs:
           python qa/browser/phase2_startup.py http://127.0.0.1:8765/
           python qa/browser/phase3_acceptance.py http://127.0.0.1:8765/ chromium full
           python qa/browser/phase5_game_matrix.py http://127.0.0.1:8765/ chromium
+          python qa/browser/board_visual_polish.py http://127.0.0.1:8765/ chromium /tmp/mindlab-visuals
+      - name: Validate board CSS parsing
+        run: |
+          python - <<'PY'
+          import tinycss2
+          text=open('ds/board-polish.css',encoding='utf-8').read()
+          sheet=tinycss2.parse_stylesheet(text,skip_comments=True,skip_whitespace=True)
+          errors=[node.message for node in sheet if node.type=='error']
+          assert not errors,errors
+          print('BOARD_POLISH_CSS=passed',len(sheet),'rules')
+          PY
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mindlab-board-polish-chromium
+          path: /tmp/mindlab-visuals/*.png
+          if-no-files-found: ignore
       - name: Compare active progress from published main with the candidate
         run: |
           # A shallow checkout of merged main does not contain the original pre-merge commit.
@@ -60,3 +77,10 @@ jobs:
         run: |
           python -m http.server 8767 --bind 127.0.0.1 >/tmp/mindlab-webkit-http.log 2>&1 &
           python qa/browser/phase3_acceptance.py http://127.0.0.1:8767/ webkit full
+          python qa/browser/board_visual_polish.py http://127.0.0.1:8767/ webkit /tmp/mindlab-webkit-visuals
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mindlab-board-polish-webkit
+          path: /tmp/mindlab-webkit-visuals/*.png
+          if-no-files-found: ignore
