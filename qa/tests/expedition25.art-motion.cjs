@@ -17,13 +17,13 @@ ok(app.includes("const SAVE_KEY='mindlab:expedition10:v1'"),'expedition save nam
 ok(!/localStorage\.setItem\(['"]miran:v2/.test(app),'legacy miran:v2 is not written');
 const block=app.match(/const expeditionPropFiles=\[([\s\S]*?)\];/);
 assert(block,'custom stage prop registry exists');
-const propNames=[...block[1].matchAll(/['\"]([^'\"]+\.webp)['\"]/g)].map(m=>m[1]);
+const propNames=[...block[1].matchAll(/['"]([^'"]+\.webp)['"]/g)].map(m=>m[1]);
 ok(propNames.length===24,'exactly 24 custom stage props are registered');
 ok(new Set(propNames).size===24,'all 24 stage props are unique');
 for(const f of propNames){const p='expedition10/art/props/'+f;ok(fs.existsSync(path.join(root,p)),'custom prop exists: '+f);ok(fs.statSync(path.join(root,p)).size>1000,'custom prop has non-empty image data: '+f);ok(offline.includes(p),'custom prop is precached offline: '+f);}
 const details=app.match(/const expeditionArtDetails=\[([\s\S]*?)\];\nstages\.forEach/);
 assert(details,'per-stage supporting art registry exists');
-const detailPaths=[...details[1].matchAll(/(?:src|[\"']src[\"'])\s*:\s*['\"]([^'\"]+)['\"]/g)].map(m=>m[1]);
+const detailPaths=[...details[1].matchAll(/(?:\bsrc|['"]src['"])\s*:\s*['"]([^'"]+)['"]/g)].map(m=>m[1]);
 ok(detailPaths.length>=48,'at least two supporting hand-painted elements are assigned to every stage');
 for(const p of new Set(detailPaths)){ok(fs.existsSync(path.join(root,p)),'supporting artwork exists: '+p);ok(allOffline.has(p),'supporting artwork is available to offline warming: '+p);}
 ok(app.includes("stage.artDetails=expeditionArtDetails[index]"),'art details are bound to every stage record');
