@@ -150,6 +150,15 @@ html #play :is(.pbar .x,.pzhud .pzhb,.fit-tools .pzgive):active {
   box-shadow:none!important;
 }
 html #play :is(.pbar .x,.pzhud .pzhb,.fit-tools .pzgive):disabled {opacity:.44;}
+/* The icon group itself is not a rectangular card. */
+html #play #stage .pzhud > .fit-tools {
+  background:transparent!important;
+  border:0!important;
+  box-shadow:none!important;
+  padding:0!important;
+  margin-inline-start:auto;
+}
+html #play .pbar .x svg {color:inherit!important;stroke:currentColor;}
 html #play .pzhud .fit-journal i {
   background:var(--bp-paper)!important;
   color:var(--bp-violet)!important;
@@ -159,7 +168,7 @@ html #play .pzhud .fit-journal i {
   bottom:-4px;
 }
 html #play .pzhud #pzhn {
-  background:var(--bp-red)!important;
+  background:#a93637!important;
   color:#fff!important;
   border:1.5px solid var(--bp-glass)!important;
   top:-4px!important;
@@ -195,6 +204,7 @@ html #play.fit .pzhud .fit-tools .pzgive.arm {
   color:var(--bp-paper)!important;
 }
 html #play .pzhud .fit-sound[aria-pressed="false"] {opacity:.7;}
+html[data-skin="dark"] #play .pzhud #pzhn {background:#a93637!important;color:#fff!important;}
 
 /* Main action buttons look consistent; colored puzzle pieces remain untouched. */
 html #play #stage :is(.go-btn,#go,.lb-bar button,.ml-authored-open),
