@@ -215,9 +215,6 @@ html[data-skin="dark"] .fit-clue-controls { color: #fff6e3; }
 html[data-skin="dark"] .fit-clue-controls button { background: #193837; color: #f6e9c7; }
 #play[data-la-game="pz_grid"].fit #pzb :is(.lg10-tw,.lg10-t) { width: 100%; }
 #play[data-la-game="pz_grid"].fit #pzb .lg10-c { min-height: 43px; }
-#play[data-la-game="pz_xbottle"].fit #pzb .xbwheels { gap: 6px; width: 100%; margin-inline: auto; }
-#play[data-la-game="pz_xbottle"].fit #pzb .xbwheel { flex: 1 1 0; min-width: 0; }
-#play[data-la-game="pz_xbottle"].fit #pzb .xbwheel svg { width: min(100%, 250px); height: auto; max-width: none; }
 #play[data-la-game="pz_tpath"].fit #pzb .tpbig .xpin { padding-inline: 2px !important; }
 #play[data-la-game="pz_tpath"].fit #pzb .tpbig .xbw { margin-inline: 0; }
 #play[data-la-game="pz_tpath"].fit #pzb .tpbig #tsc { max-width: 100%; }
@@ -260,11 +257,6 @@ html:not([data-skin="dark"]) #v-puz :is(.t7-puzzle-pane,.la-section-title) {
 #play[data-la-game="pz_xcave"] .xcave { background: #231e23 url('../motion/art-polish/cave.webp') center / cover; }
 #play[data-la-game="pz_xcave"] .xcwall { opacity: .28; }
 
-#play[data-la-game="pz_xbottle"].fit .xbwheels .xbwheel {
-  width: min(85%, clamp(174px, 34dvh, 270px)) !important;
-  max-width: 100% !important;
-}
-#play[data-la-game="pz_xbottle"].fit .xbwheels:has(.xbwheel + .xbwheel) .xbwheel { width: 48% !important; }
 #play[data-la-game^="pz_a"] #pzb .xpaper.xsheet {
   background: linear-gradient(#fff6e9c9, #f1e6dede), url('../motion/art-polish/atheran.webp') center / cover;
 }
@@ -273,37 +265,6 @@ html[data-skin="dark"] #play[data-la-game^="pz_a"] #pzb .xpaper.xsheet {
 }
 
 /* Use the real wheel diameter, not a stretched flex box reserved for it. */
-#play[data-la-game="pz_xbottle"].fit #pzb .xsheet {
-  aspect-ratio: auto !important;
-  min-height: 0 !important;
-}
-#play[data-la-game="pz_xbottle"].fit #pzb .xpin {
-  display: block;
-  padding: 4px !important;
-  height: auto !important;
-  min-height: 0 !important;
-}
-#play[data-la-game="pz_xbottle"].fit #pzb .xbwheel {
-  display: grid;
-  justify-items: center;
-  align-content: start;
-  gap: 2px;
-  height: auto !important;
-}
-#play[data-la-game="pz_xbottle"].fit #pzb .xbwheel > svg {
-  width: min(100%, clamp(155px, 26dvh, 238px)) !important;
-  height: auto !important;
-  aspect-ratio: 1;
-}
-#play[data-la-game="pz_xbottle"].fit #pzb .xbwheel .xbo text { fill: #35241c; }
-#play[data-la-game="pz_xbottle"].fit #pzb .xbwheel .xbi text { fill: #752b21; }
-#play[data-la-game="pz_xbottle"].fit #pzb .xbrot { gap: 4px; }
-#play[data-la-game="pz_xbottle"].fit #pzb .xbrot button { width: 44px; min-height: 44px; }
-#play[data-la-game="pz_xbottle"].fit #pzb :is(.xbread,.xbq) { margin-top: 2px; }
-#play[data-la-game="pz_xbottle"].fit #pzb .xbcode { font-size: 16px; margin-block: 0 4px; line-height: 1.25; }
-#play[data-la-game="pz_xbottle"].fit #pzb .xbtxt { font-size: 17px; line-height: 1.3; }
-#play[data-la-game="pz_xbottle"].fit #pzb .xbo2 { padding: 4px; min-height: 44px; font-size: 14px; }
-#play[data-la-game="pz_xbottle"].fit #pzb .xbopts { gap: 4px 6px; margin-top: 2px; }
 
 /* perf-cleanup D: one-row HUD — give up / sound move into the ⓘ sheet only when the row would wrap (ui/fit.js compactHud) */
 #play.fit .fit-tools .fit-in-sheet{display:none!important}
