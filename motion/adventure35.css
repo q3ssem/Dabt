@@ -147,26 +147,6 @@ html[data-skin="dark"] #play #pzb .painted-adventure {
 .painted-adventure :is(.xnote,.xbread,.xbq,.xtools) { color: var(--sheet-ink); }
 .painted-adventure button:focus-visible { outline: 2px solid #167d75; outline-offset: 2px; }
 
-#play #pzb .painted-bottle { background: var(--sheet) url(../expedition10/art/scenes/15-bottle.webp) center top/100% auto no-repeat; }
-.painted-bottle :is(.xnote,.xbread,.xbq,.xbcode) { background: var(--sheet); border-radius: .5rem; padding: .3rem .45rem; }
-.painted-bottle .xbwheel small { background: var(--sheet); padding: .15rem .35rem; border-radius: .35rem; color: var(--sheet-ink); }
-.painted-wheel { position: relative; width: min(100%,200px); aspect-ratio: 1; isolation: isolate; }
-.painted-wheel > .painted-prop { position: absolute; inset: 0; }
-.painted-wheel :is(.painted-wheel-rim,.xbi) { position: absolute; inset: 0; transform-origin: center; }
-.painted-wheel .xbi { transition: transform .28s ease-out; }
-.painted-wheel span {
-  position: absolute;
-  display: grid;
-  place-items: center;
-  width: 11%; height: 11%;
-  left: 44.5%; top: 44.5%;
-  transform: rotate(var(--step)) translateY(calc(var(--orbit) * -9.09)) rotate(calc(var(--step) * -1));
-  color: #27190f;
-  text-shadow: 0 0 3px #fff4d7;
-  font: bold clamp(8px, 2vw, 13px)/1 Tajawal,sans-serif;
-}
-.painted-wheel-pin { position: absolute; top: 1%; left: 47%; width: 6%; height: 12%; clip-path: polygon(0 0,100% 0,50% 100%); background: #862f22; }
-
 #play #pzb .painted-chart #xb {
   background: #3f8081 url(pirate-revised/map/scene.webp) center/cover;
   border-radius: .65rem;

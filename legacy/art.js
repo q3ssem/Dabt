@@ -94,7 +94,6 @@ const PAINTED_LIBRARY = new Set('pz_binary pz_door pz_grid pz_rid pz_sudo pz_ten
 const DESIGN_ICONS = {
   pz_rid: 'ui/designs_art/four_puzzles/pz_rid/icon_pz_rid.png',
   pz_rush: 'ui/designs_art/four_puzzles/pz_rush/icon_pz_rush.png',
-  pz_stat: 'ui/designs_art/four_puzzles/pz_stat/icon_pz_stat.png',
   pz_pipe: 'ui/designs_art/four_puzzles/pz_pipe/icon_pz_pipe.png',
   pz_river: 'ui/designs_art/river_stage1/05_opening_and_icon/06_puzzle_icon.png'
 };
