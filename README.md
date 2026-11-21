@@ -12,4 +12,4 @@
 - اختبارات المراحل عبر `npm run test:authored-stages`.
 - [سجل التغيير الحالي](docs/CHANGELOG_AR.md)
 - [الفحص على الأجهزة](docs/QA_ON_DEVICE_AR.md)
-- [مواصفات أصول المشاهد](docs/SCENE_ASSET_SPEC_AR.md)
+- [تقرير القبول وإجراءات الفحص بعد الدمج](docs/FINAL_RELEASE_GATE_AR.md)
