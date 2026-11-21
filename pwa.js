@@ -74,7 +74,7 @@
     <p id="ml-load-count" class="ml-load-note">فحص الملفات المحفوظة…</p>
     <div class="ml-load-actions">
       <button type="button" id="ml-load-retry" hidden>إعادة المحاولة</button>
-      <button type="button" id="ml-load-skip" hidden>الدخول الآن</button>
+      <button type="button" id="ml-load-skip">إيقاف التنزيل والدخول</button>
     </div>
   </div>`;
   document.body.append(overlay);
@@ -84,15 +84,14 @@
   const status = $('ml-load-status'), detail = $('ml-load-count');
   const retry = $('ml-load-retry'), skip = $('ml-load-skip');
   let progressPort, finished = false;
-  const openSkip = setTimeout(() => {if (!finished) skip.hidden = false;}, 0);
+  skip.hidden = false;
   function close() {
     finished = true;
-    clearTimeout(openSkip);
     progressPort?.close();
     overlay.remove();
     style.remove();
   }
-  skip.onclick = close;
+  skip.onclick = () => { try { progressPort?.postMessage({type:'cancel'}); } catch (_) {} close(); };
   function fail(message) {
     status.textContent = message;
     retry.hidden = false;
@@ -100,7 +99,7 @@
   }
   function preload(worker) {
     retry.hidden = true;
-    skip.hidden = true;
+    skip.hidden = false;
     finished = false;
     progressPort?.close();
     const channel = new MessageChannel();
