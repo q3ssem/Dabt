@@ -26,6 +26,6 @@ ok(ds.includes(':is(.ico,.hero):has(>img.ml-art){background:none!important'),'no
 const ctx={self:{}};vm.runInNewContext(read('offline-manifest.js'),ctx);
 ok(ctx.self.MINDLAB_GAME_ART.length===46&&ctx.self.MINDLAB_GAME_ART.every(p=>fs.existsSync(path.join(root,p))),'46 illustrations warmed for offline play');
 ok(read('sw.js').includes('...(self.MINDLAB_GAME_ART||[])'),'service worker warms them');
-ok(read('qa/tests/legacy.art.cjs').includes('original inline engine matches baseline after reversing the explicitly audited audio, Mirror Palace and Atheran changes'),'inline engine baseline is checked by the scoped legacy fingerprint test');
+ok(read('qa/tests/legacy.art.cjs').includes('active puzzle engine script remains')&&!idx.includes("id:'pz_stat'")&&!idx.includes("id:'pz_xbottle'"),'scoped legacy audit covers the active engine while retired puzzles remain absent');
 for(const f of ['brain_brake','brain_backward','brain_rules'])ok(fs.existsSync(path.join(root,'ui/art',f+'.webp')),'earlier art kept on disk: '+f);
 console.log(JSON.stringify({status:'passed',checks,games:ids.length,skills:6},null,2));
