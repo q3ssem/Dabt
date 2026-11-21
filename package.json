@@ -8,6 +8,7 @@
     "test:browser": "python3 qa/browser/atheran_campaign.py && python3 qa/browser/expedition25_smoke.py && python3 qa/browser/smoke.py && python3 qa/browser/journey.py && python3 qa/browser/challenges.py && python3 qa/browser/sweep.py",
     "test:visual": "python3 qa/browser/theme_audit.py --games-card \"#v-games article.ui-game\" --puz-card \"#v-puz button.la-library-card\"",
     "test:atheran-bindings": "node qa/tests/atheran-bindings.cjs",
-    "test:references": "node qa/tests/references.cjs"
+    "test:references": "node qa/tests/references.cjs",
+    "test:phase2-assets": "python3 qa/audit/asset_audit.py"
   }
 }
