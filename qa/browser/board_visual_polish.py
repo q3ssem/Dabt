@@ -90,7 +90,26 @@ async def run():
             if SHOTS:
                 await page.screenshot(path=str(SHOTS/f"river-picker-{skin}-{width}.png"))
             await page.locator("#stage .ml-authored-picker .go-btn").click()
-            await page.locator("#stage .ml-authored-picker").wait_for(state="detached",timeout=25000)
+            initial=await page.evaluate("""()=>{
+              const root=document.querySelector('#stage');
+              return {html:root?.innerHTML?.slice(0,180),
+                authored:typeof RUN!=='undefined'?RUN?.authoredStage?.number:null,
+                countdown:!!root?.querySelector('.cd'),
+                picker:!!root?.querySelector('.ml-authored-picker')};
+            }""")
+            await page.wait_for_timeout(3200)
+            follow=await page.evaluate("""()=>{
+              const root=document.querySelector('#stage');
+              return {html:root?.innerHTML?.slice(0,180),
+                authored:typeof RUN!=='undefined'?RUN?.authoredStage?.number:null,
+                countdown:!!root?.querySelector('.cd'),
+                picker:!!root?.querySelector('.ml-authored-picker'),
+                next:!!root?.querySelector('.lb,.pzbody,.ml-river-board')};
+            }""")
+            if follow["picker"]:
+                if SHOTS: await page.screenshot(path=str(SHOTS/f"stuck-after-start-{skin}-{width}.png"))
+                print("BOARD_STAGE_CLICK_DIAG="+json.dumps({"engine":ENGINE,"theme":skin,"width":width,"initial":initial,"follow":follow},ensure_ascii=False),flush=True)
+            await page.locator("#stage .ml-authored-picker").wait_for(state="detached",timeout=9000)
             await page.wait_for_timeout(350)
             game=await page.evaluate(MEASURE)
             assert not game["overflow"],f"Game board overflow at {skin} {width}"
