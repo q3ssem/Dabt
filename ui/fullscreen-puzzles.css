@@ -12,7 +12,7 @@
 html[data-skin="dark"] #play[data-play-paper] { --paper: #171d28; --paper-overlay: linear-gradient(#121827df,#121827df); }
 html #play[data-play-paper][data-play-paper],
 html[data-skin] #play[data-play-paper][data-play-paper] {
-  background: var(--paper-overlay), var(--paper-art) center / 100% 100% no-repeat, var(--paper) !important;
+  background: var(--paper-overlay), var(--paper-art) center / cover no-repeat, var(--paper) !important;
 }
 html #play[data-play-paper][data-play-paper] > .pin {
   max-width: none !important;
@@ -87,7 +87,7 @@ html #play[data-play-paper] #pzb :is(
   overflow: auto;
   text-align: start;
   color: #34291e;
-  background: #f9e3af var(--paper-art, url(art/play-backgrounds/01-pirate-letter.webp)) center / 100% 100%;
+  background: #f9e3af var(--paper-art, url(art/play-backgrounds/01-pirate-letter.webp)) center / cover;
   padding: 18px 20px;
 }
 #play .fit-opening-body { background: none; box-shadow: none; padding: 0; color: inherit; }
@@ -108,7 +108,7 @@ html #play[data-play-paper] #pzb :is(
 }
 html.fit-t7 #v-puz .t7-puzzle-layout,
 html.fit-ex10 #v-puz .ex10-game-shell {
-  background: #f6e6be url(art/play-backgrounds/01-pirate-letter.webp) center / 100% 100%;
+  background: #f6e6be url(art/play-backgrounds/01-pirate-letter.webp) center / cover;
   border: 0;
   border-radius: 0;
   box-shadow: none;
@@ -171,7 +171,7 @@ html[data-skin="dark"] #play[data-play-paper] #pzb .rhb.rhb2 { background-color:
 html .mlj-station-rules .fit-opening-card {
   position: relative;
   color: #34291e;
-  background: #f9e3af url(art/play-backgrounds/01-pirate-letter.webp) center / 100% 100%;
+  background: #f9e3af url(art/play-backgrounds/01-pirate-letter.webp) center / cover;
 }
 .mlj-station-rules .fit-opening-dismiss {
   position: absolute;
