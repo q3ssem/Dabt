@@ -95,6 +95,21 @@ async def run():
             assert a["button"]["contrast"] and a["button"]["contrast"]>=3.0,f"Low-contrast close icon: {a}"
             assert a["pickerButtons"]>=10,f"Stage picker hidden or incomplete: {a}"
             assert not a["overflow"],f"Horizontal overflow at {width}: {a}"
+            # Verify the final authored stage is actually reachable on 320px
+            # screens instead of being clipped below the fixed-height play area.
+            last=page.locator("#stage .ml-authored-levels button").last
+            await last.scroll_into_view_if_needed(timeout=7000)
+            stage_reachable=await page.evaluate("""()=>{
+              const picker=document.querySelector('#stage .ml-authored-picker');
+              const last=picker.querySelector('.ml-authored-levels button:last-child');
+              const p=picker.getBoundingClientRect(), r=last.getBoundingClientRect();
+              return r.top>=p.top-2 && r.bottom<=p.bottom+2 &&
+                r.bottom<=window.innerHeight+2;
+            }""")
+            assert stage_reachable,f"Last stage is clipped or unreachable on {width}px"
+            if SHOTS and width==320:
+                await page.screenshot(path=str(SHOTS/f"river-picker-last-stage-{skin}-{width}.png"))
+            await page.evaluate("()=>document.querySelector('#stage .ml-authored-picker').scrollTop=0")
             rows.append({"theme":skin,"width":width,**a})
             if SHOTS:
                 await page.screenshot(path=str(SHOTS/f"river-picker-{skin}-{width}.png"))
