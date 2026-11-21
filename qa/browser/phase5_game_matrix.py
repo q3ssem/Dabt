@@ -4,17 +4,30 @@ This complements pure logic tests and does not claim every level was solved.
 import asyncio, json, os, sys
 from playwright.async_api import async_playwright
 from smoke import open_game
+from player_openings import dismiss_opening
 
 URL=sys.argv[1] if len(sys.argv)>1 else 'http://127.0.0.1:8765/'
 ENGINE=sys.argv[2] if len(sys.argv)>2 else 'chromium'
+AUTHORED={'pz_river','pz_rush','pz_pipe','pz_flow','pz_ice','pz_tan','pz_untangle'}
 SELECTED=[
   'dual','juggle','loci','piano','scene','matrix',
   'pz_river','pz_rush','pz_pipe','pz_flow','pz_ice','pz_tan','pz_untangle'
 ]
 async def open_one(page, gid, width):
     await page.set_viewport_size({'width':width,'height':844})
-    # Reuse the validated opening helper: it waits for countdowns and gate overlays.
-    await open_game(page,gid)
+    if gid in AUTHORED:
+        # These seven games open their authored-stage picker instead of the legacy #go button.
+        await page.evaluate('(id)=>startRun([id])',gid)
+        picker=page.locator('#stage .ml-authored-picker')
+        await picker.wait_for(state='visible',timeout=20000)
+        resume=picker.locator('.go-btn[data-level]')
+        await resume.click()
+        await dismiss_opening(page,wait=1000)
+        await page.wait_for_function("()=>!document.querySelector('#stage .cd')",timeout=20000)
+        await page.wait_for_timeout(400)
+    else:
+        # Older games use the shared legacy #go intro; wait for countdown completion.
+        await open_game(page,gid)
     # A usable stage must retain navigation/controls; do not assume specific engine geometry.
     info=await page.evaluate("""()=>{
        const stage=document.querySelector('#stage');
