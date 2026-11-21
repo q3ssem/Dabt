@@ -40,6 +40,8 @@ MEASURE = """() => {
   const picker=document.querySelector('#stage .ml-authored-picker');
   const tools=[...document.querySelectorAll('#play .pzhud .pzhb,#play .fit-tools .pzgive')];
   return {
+    skin:document.documentElement.dataset.skin,
+    preference:typeof S!=='undefined'?S.st.skin:'unknown',
     ink:s.getPropertyValue('--bp-ink').trim(),teal:s.getPropertyValue('--bp-teal').trim(),
     titleFont:t?.fontFamily||'',titleSize:parseFloat(t?.fontSize||0),
     button:close?{size:[Math.round(r.width),Math.round(r.height)],
@@ -76,7 +78,13 @@ async def run():
         rows=[]
         for skin,width in [("light",320),("light",390),("dark",390)]:
             await page.set_viewport_size({"width":width,"height":844})
-            await page.evaluate("(skin)=>document.documentElement.dataset.skin=skin",skin)
+            # release54.js watches data-skin and restores the preference in
+            # S.st.skin; use the actual app setting instead of only changing HTML.
+            await page.evaluate("""(skin)=>{
+              S.st.skin=skin; S.save();
+              document.documentElement.dataset.skin=skin;
+            }""",skin)
+            await page.wait_for_function("(skin)=>document.documentElement.dataset.skin===skin",arg=skin,timeout=8000)
             await page.evaluate("()=>startRun(['pz_river'])")
             await page.locator("#stage .ml-authored-picker").wait_for(state="visible",timeout=20000)
             a=await page.evaluate(MEASURE)
