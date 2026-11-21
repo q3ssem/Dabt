@@ -61,7 +61,7 @@ const startUi = read('ui/app.js');
 assert.ok(runtime.includes("PATCH='intent-load-13'"), 'second-stage cache generation');
 const shell = runtime.slice(runtime.indexOf('const shell = ['), runtime.indexOf('];', runtime.indexOf('const shell = ['))+2);
 const listed = [...shell.matchAll(/'([^']+)'/g)].map(m=>m[1]);
-assert.equal(listed.length,10,'only ten core files installed automatically');
+assert.equal(listed.length,18,'core shell includes 10 startup resources and 8 assessment dependencies');
 assert.ok(listed.every(file=>fs.existsSync(file)),'core shell resources exist');
 assert.ok(!startUi.includes('idle(startSide)'), 'side journey never loads automatically');
 assert.ok(!startUi.includes("document.addEventListener('pointerdown', start"), 'unrelated taps do not preload play bundle');
