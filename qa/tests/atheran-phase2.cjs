@@ -74,7 +74,7 @@ const exc = read('expedition10/style.css'), exa = read('expedition10/app.js');
 ok(exc.includes('.ex10 button.ex10-node:active{transform:translate(-50%,-50%) scale(.94)}'), 'node keeps its centre when pressed');
 ok(!/<div class="ex10-map-legend">[^<]*<\/div><\/div><div class="ex10-map-footer">/.test(exa) && exa.includes('</div><div class="ex10-map-legend">'), 'route legend sits below the map');
 const pos = JSON.parse(exa.match(/return(\[\[21,64\][^;]+);\}/)[1]);
-ok(pos.length === 25, '25 map positions');
+ok(pos.length === 24, '24 active map positions after retiring bottle stage');
 [[256, 320, 30], [296, 370, 34], [326, 408, 38], [366, 458, 38], [718, 439, 46]].forEach(([W, H, s]) => {
   const p = pos.map(([x, y]) => [x * W / 100, y * H / 100]);
   p.forEach(([x, y], i) => ok(x - s / 2 >= 0 && x + s / 2 <= W && y - s / 2 >= 0 && y + s / 2 <= H, `node ${i + 1} inside a ${W}px map`));
