@@ -19,7 +19,12 @@ const sceneURLs = new Set(Object.values(self.MINDLAB_SCENE_FILES)
 const shell = [
   'index.html', 'manifest.webmanifest', 'pwa.js', 'ui/app.js',
   'ui/mini.js', 'release54.js', 'audio/mindlab-audio.js',
-  'ds/light-auto.css', 'ds/mindlab-ds.css', 'ui/style.css'
+  'ds/light-auto.css', 'ds/mindlab-ds.css', 'ui/style.css',
+  // Assessment dashboard remains usable offline after first installation.
+  'assessment/dashboard.html', 'assessment/rule-switch.html',
+  'assessment/dashboard.js', 'assessment/rule-switch.js',
+  'assessment/style.css', 'assessment/common.js', 'assessment/sync.js',
+  'qa/assessment-engine/Dabt_Assessment_Engine_v1.3.js'
 ];
 self.addEventListener('install', event => {
   event.waitUntil(caches.open(CORE)
