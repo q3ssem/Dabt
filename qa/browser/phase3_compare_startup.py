@@ -51,5 +51,14 @@ async def main():
     assert not new['errors'],f'Candidate startup JavaScript errors: {new["errors"]}'
     assert not new['play_ready'] and not new['side_ready'],'Home should not initialize puzzle/side engines'
     assert new['resource_bytes']<=old['resource_bytes']*1.05,'Candidate Home resource bytes regressed by more than 5%'
+    # Regression limits derived from the verified phase-three baseline. Timing metrics
+    # are reported but not used as a flaky CI gate on shared hosted runners.
+    assert new['requests']<=65, 'More than 65 Home requests'
+    assert new['resource_bytes']<=3_650_000, 'Home downloads exceed 3.65 MB budget'
+    assert new['scripts_bytes']<=600_000, 'Home script budget exceeded'
+    assert new['styles_bytes']<=400_000, 'Home style budget exceeded'
+    assert new['requests']<=old['requests']*.85, 'Home requests no longer materially improved over main'
+    assert new['resource_bytes']<=old['resource_bytes']*.90, 'Home transferred bytes no longer materially improved over main'
+
 
 asyncio.run(main())
