@@ -19,7 +19,7 @@ const block=app.match(/const expeditionPropFiles=\[([\s\S]*?)\];/);
 assert(block,'custom stage prop registry exists');
 const propNames=[...block[1].matchAll(/'([^']+\.webp)'/g)].map(m=>m[1]);
 ok(propNames.length===24,'exactly 24 custom stage props are registered');
-ok(new Set(propNames).size===25,'all 24 stage props are unique');
+ok(new Set(propNames).size===24,'all 24 stage props are unique');
 for(const f of propNames){const p='expedition10/art/props/'+f;ok(fs.existsSync(path.join(root,p)),'custom prop exists: '+f);ok(fs.statSync(path.join(root,p)).size>1000,'custom prop has non-empty image data: '+f);ok(offline.includes(p),'custom prop is precached offline: '+f);}
 const details=app.match(/const expeditionArtDetails=\[([\s\S]*?)\];\nstages\.forEach/);
 assert(details,'per-stage supporting art registry exists');
@@ -36,5 +36,5 @@ ok(css.includes('@media(prefers-reduced-motion:reduce)')&&css.includes('animatio
 ok(css.includes('.ex10-art-details')&&css.includes('.ex10-art-detail'),'stage-specific supporting objects have a responsive visual rail');
 ok(/aria-live="polite"/.test(app)&&app.includes('aria-label="عناصر مرسومة خاصة باللغز"'),'story and art details are exposed accessibly');
 const ids=[...app.matchAll(/id:'(ml10_\d{2})'/g)].map(m=>m[1]);
-ok(ids.length===24&&new Set(ids).size===25,'24 active stage identifiers remain intact');
+ok(ids.length===24&&new Set(ids).size===24,'24 active stage identifiers remain intact');
 console.log(JSON.stringify({status:'passed',checks:checks.length,version:pkg.version,mainProps:propNames.length,supportingArt:new Set(detailPaths).size,offlineMainProps:propNames.length,storyTransitions:true,bodyMotion:5},null,2));

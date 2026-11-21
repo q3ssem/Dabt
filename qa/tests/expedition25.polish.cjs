@@ -34,7 +34,7 @@ const poses=['roaa','noha','ward'].flatMap(k=>['welcome','thinking','worried','c
 for(const p of poses){ok(fs.existsSync(path.join(root,p)),`pose asset exists: ${path.basename(p)}`);ok(offline.includes(p),`pose asset is precached offline: ${path.basename(p)}`);}
 const idMatches=[...app.matchAll(/id:'(ml10_\d{2})'/g)].map(m=>m[1]);
 ok(idMatches.length===24,'24 active stage identifiers remain in source');
-ok(new Set(idMatches).size===25,'all 24 stage identifiers remain unique');
+ok(new Set(idMatches).size===24,'all 24 stage identifiers remain unique');
 const sceneMatches=[...app.matchAll(/scene:'([^']+\.webp)'/g)].map(m=>m[1]);
 ok(sceneMatches.length===24,'24 unique stage scene references remain in registry');
 for(const scene of new Set(sceneMatches)){ok(fs.existsSync(path.join(root,'expedition10/art/scenes',scene)),`stage art exists: ${scene}`);}
