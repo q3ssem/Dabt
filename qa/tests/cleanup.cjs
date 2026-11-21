@@ -35,6 +35,18 @@ assert.ok(map.stations.length>=80 && map.stations.every(x=>!x.openingBackground)
 const manifest = read('offline-manifest.js'), realm={self:{}};vm.runInNewContext(manifest,realm);
 const all = [...realm.self.MINDLAB_OFFLINE_FILES,...realm.self.MINDLAB_JOURNEY_ART,...realm.self.MINDLAB_GAME_ART,...realm.self.MINDLAB_CORRECTION_ART,...Object.values(realm.self.MINDLAB_EXPEDITION_ART).flat()];
 assert.ok(all.every(x=>!x.startsWith('hasad/') && !gone.includes(x)), 'precache must not reference removed files');
+const uniqueAssets = [...new Set(all.filter(file => file && file !== './'))];
+const missingAssets = uniqueAssets.filter(file => !fs.existsSync(file));
+assert.deepEqual(missingAssets, [], 'all 988 referenced offline resources must exist');
+assert.ok(!read('sw.js').includes('warm-journey'), 'no redundant warm-journey service');
+assert.ok(!read('pwa.js').includes('warm-journey'), 'opening the journey must not queue unrelated art');
+assert.ok(!fs.existsSync('qa/browser/stat_pixi.py'), 'removed statue-only browser test absent');
+assert.ok(!read('ui/journey-hub.css').includes('pz_stat'), 'deleted statue artwork not referenced by journey CSS');
+assert.ok(!read('motion/lab10.css').includes('.st10'), 'deleted statue engine CSS removed');
+assert.ok(!read('ui/fullscreen-puzzles.css').includes('.st10'), 'deleted statue full-screen styles removed');
+assert.ok(!read('qa/browser/design10_play.py').includes('pz_stat'), 'deleted design replay removed');
+assert.ok(!read('qa/browser/motion_batch_fixes.py').includes('pz_xbottle'), 'deleted bottle replay removed');
+
 // The cache generation must have moved past the generation that still held the deleted assets.
 assert.ok(read('sw.js').includes("PATCH='on-demand-assets-12'"), 'cache generation must change after deleting assets');
 const pwa = read('pwa.js');
