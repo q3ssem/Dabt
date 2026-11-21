@@ -33,7 +33,7 @@
     journeyRequested = true;
     defer(() => {
       const worker = serviceWorker.controller;
-      if (worker) worker.postMessage({type: 'warm-journey'});
+      if (worker) worker.postMessage({type:'warm-journey'});
       else journeyRequested = false;
     });
   });
