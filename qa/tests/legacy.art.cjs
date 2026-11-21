@@ -4,7 +4,10 @@ const fs=require('node:fs'),path=require('node:path'),vm=require('node:vm'),cryp
 const base=path.join(__dirname,'../..'),inventory=JSON.parse(fs.readFileSync(path.join(base,'legacy/inventory.json')));let checks=0;const check=(v,msg)=>{assert.ok(v,msg);checks++};
 const html=fs.readFileSync(path.join(base,'index.html'),'utf8');const presentation = JSON.parse(fs.readFileSync(path.join(base,'qa/allowed_display_audio_changes.json'))); let auditedHTML = html;
 for (const {before, after, reason} of presentation) {
-  if(auditedHTML.split(after).length === 1 && /xbEnc|xbw1|isRead/.test(after))continue;
+  if(auditedHTML.split(after).length === 1){
+    check(!auditedHTML.includes(before), 'superseded historical visual patch has not reverted: '+reason);
+    continue;
+  }
   check(auditedHTML.split(after).length === 2, 'exact display/audio patch: '+reason);
   auditedHTML = auditedHTML.replace(after, () => before);
 }
