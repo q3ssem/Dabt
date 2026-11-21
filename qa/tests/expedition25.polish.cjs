@@ -26,16 +26,16 @@ ok(app.includes('function preloadCrewPoses()'),'all heroine poses are preloaded 
 ok(app.includes('function setHeroinePose(el,mood)')&&app.includes('img.dataset.poseSrc===src'),'character image changes only when a real pose changes');
 ok(app.includes('function updateCrew(moods,words)')&&app.includes("'.ex10-crew-mini, .ex10-crew'"),'character reactions update in game and intro strips');
 ok(app.includes('ex10-live-dialogue')&&app.includes('role="status" aria-live="polite"'),'stage dialogue and feedback are announced accessibly');
-ok(app.includes('ex10-stage-progress')&&app.includes('aria-valuemax="25"'),'current stage progress is exposed accessibly');
+ok(app.includes('ex10-stage-progress')&&app.includes('aria-valuemax="${stages.length}"'),'current stage progress is exposed accessibly');
 ok(css.includes('@media(prefers-reduced-motion:reduce)'),'reduced-motion preference is respected');
 ok(css.includes('@media(max-width:380px)'),'small-phone breakpoint exists');
 ok(css.includes('.ex10-crew-mini .ex10-heroine img{width:50px;height:64px'),'mini character sprites have legible mobile-friendly sizing');
 const poses=['roaa','noha','ward'].flatMap(k=>['welcome','thinking','worried','curious','happy'].map(p=>`expedition10/art/crew/poses/${k}-${p}.webp`));
 for(const p of poses){ok(fs.existsSync(path.join(root,p)),`pose asset exists: ${path.basename(p)}`);ok(offline.includes(p),`pose asset is precached offline: ${path.basename(p)}`);}
 const idMatches=[...app.matchAll(/id:'(ml10_\d{2})'/g)].map(m=>m[1]);
-ok(idMatches.length===25,'25 fixed stage identifiers remain in source');
-ok(new Set(idMatches).size===25,'all 25 stage identifiers remain unique');
+ok(idMatches.length===24,'24 active stage identifiers remain in source');
+ok(new Set(idMatches).size===24,'all 24 stage identifiers remain unique');
 const sceneMatches=[...app.matchAll(/scene:'([^']+\.webp)'/g)].map(m=>m[1]);
-ok(sceneMatches.length===25,'25 unique stage scene references remain in registry');
+ok(sceneMatches.length===24,'24 unique stage scene references remain in registry');
 for(const scene of new Set(sceneMatches)){ok(fs.existsSync(path.join(root,'expedition10/art/scenes',scene)),`stage art exists: ${scene}`);}
 console.log(JSON.stringify({status:'passed',checks:checks.length,version:pkg.version,poseAssets:poses.length,stageIDs:idMatches.length,scenes:new Set(sceneMatches).size},null,2));

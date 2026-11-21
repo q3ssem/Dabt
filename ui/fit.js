@@ -228,7 +228,7 @@
       }
       const keep = body.scrollTop;
       const natural = () => { body.scrollTop = 0; const r0 = body.getBoundingClientRect().top; let b = 0; for (const c of body.children) { const r = c.getBoundingClientRect(); if (r.height) b = Math.max(b, r.bottom); } return b - r0 + 4; };
-      const floor = ['pz_avsong','pz_ashade'].includes(gid()) ? 1 : ['pz_grid','pz_xbottle','pz_tpath','pz_door'].includes(gid()) ? 0.85 : MIN_ZOOM;
+      const floor = ['pz_avsong','pz_ashade'].includes(gid()) ? 1 : ['pz_grid','pz_tpath','pz_door'].includes(gid()) ? 0.85 : MIN_ZOOM;
       let z = 1; body.style.removeProperty('--fit-z'); body.style.height = ''; let need = natural();
       for (let i = 0; i < 5 && need > avail + 1; i++) {
         z = Math.max(floor, Math.min(1, z * avail / need)); body.style.setProperty('--fit-z', String(z)); need = natural();

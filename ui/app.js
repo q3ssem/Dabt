@@ -323,7 +323,7 @@ return done=>{
 
 /* Show the authored track first when opening these puzzles from the catalogue. */
 (function () {
-  const authoredIds = new Set(['pz_river', 'pz_rush', 'pz_stat', 'pz_pipe', 'pz_flow', 'pz_tan', 'pz_untangle', 'pz_ice']);
+  const authoredIds = new Set(['pz_river', 'pz_rush', 'pz_pipe', 'pz_flow', 'pz_tan', 'pz_untangle', 'pz_ice']);
   let loading;
   function loadStages() {
     if (loading) return loading;

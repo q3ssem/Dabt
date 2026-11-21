@@ -114,8 +114,6 @@ html[data-skin="dark"] #play[data-la-game="pz_pvalve"] #pzb { --exp-scene:url(..
 html[data-skin="dark"] #play[data-la-game="pz_tmap"] #pzb { --exp-scene:url(../ui/designs_art/work_review/pz_tmap/environment--dark-supported.webp);--exp-paper:#202b32e8 }
 #play[data-la-game="pz_tmap"] { --exp-selection:url(../ui/designs_art/work_review/pz_aarch/scene-cue--selected.png);--exp-error:url(../ui/designs_art/work_review/pz_aarch/scene-cue--wrong.png);--exp-success:url(../ui/designs_art/work_review/pz_aarch/scene-cue--success.png) }
 #play[data-la-game="pz_tpath"] { --exp-selection:url(../ui/designs_art/work_review/pz_tpath/scene-cue--selected.png);--exp-error:url(../ui/designs_art/work_review/pz_tpath/scene-cue--wrong.png);--exp-success:url(../ui/designs_art/work_review/pz_tpath/scene-cue--success.png) }
-#play[data-la-game="pz_xbottle"] #pzb { --exp-scene:url(../ui/designs_art/work_review/pz_xbottle/deck--light.webp);--exp-paper:#fffaf0df }
-html[data-skin="dark"] #play[data-la-game="pz_xbottle"] #pzb { --exp-scene:url(../ui/designs_art/work_review/pz_xbottle/deck--dark-supported.webp);--exp-paper:#202b32e8 }
 #play[data-la-game="pz_xbridge"] #pzb { --exp-scene:url(../ui/designs_art/work_review/pz_xbridge/environment--light.webp);--exp-paper:#fffaf0df }
 html[data-skin="dark"] #play[data-la-game="pz_xbridge"] #pzb { --exp-scene:url(../ui/designs_art/work_review/pz_xbridge/environment--dark-supported.webp);--exp-paper:#202b32e8 }
 #play[data-la-game="pz_xbridge"] { --exp-selection:url(../ui/designs_art/work_review/pz_aarch/scene-cue--selected.png);--exp-error:url(../ui/designs_art/work_review/pz_aarch/scene-cue--wrong.png);--exp-success:url(../ui/designs_art/work_review/pz_aarch/scene-cue--success.png) }
@@ -191,7 +189,6 @@ html[data-skin="dark"] #play[data-la-game="pz_zthrone"] #pzb { --exp-scene:url(.
   [data-la-game="pz_pobs"],
   [data-la-game="pz_pvalve"],
   [data-la-game="pz_tmap"],
-  [data-la-game="pz_xbottle"],
   [data-la-game="pz_xbridge"],
   [data-la-game="pz_xlock"],
   [data-la-game="pz_xloot"],
@@ -736,11 +733,6 @@ html[data-skin="dark"] #play[data-la-game="pz_zthrone"] #pzb { --exp-scene:url(.
 #play[data-la-game="pz_pliar"] .pl-stage { background:url(../ui/designs_art/work_review/pz_pliar/witness-statue--idle.png) 8px center/auto 85% no-repeat;padding-inline-end:2.8em }
 #play[data-la-game="pz_pliar"] .pl-stage:focus-within { background-image:url(../ui/designs_art/work_review/pz_pliar/witness-statue--selected.png) }
 #play[data-la-game="pz_pliar"] #pzb.solved .pl-stage { background-image:url(../ui/designs_art/work_review/pz_pliar/witness-statue--speaking.png) }
-#play[data-la-game="pz_xbottle"] .xbwheel { background-image:url(../ui/designs_art/work_review/pz_xbottle/wheel-ring--normal.png);background-size:contain;background-position:center;background-repeat:no-repeat }
-#play[data-la-game="pz_xbottle"] .xbwheel:active { background-image:url(../ui/designs_art/work_review/pz_xbottle/wheel-ring--pressed.png);background-size:contain;background-position:center;background-repeat:no-repeat }
-#play[data-la-game="pz_xbottle"] .xbwheel svg > circle:first-child { fill-opacity:.68 }
-#play[data-la-game="pz_xbottle"] .xbwheel::after { content:"";display:block;margin:auto;width:15px;height:15px;background:url(../ui/designs_art/work_review/pz_xbottle/wheel-pointer--normal.png) center/contain no-repeat }
-#play[data-la-game="pz_xbottle"] .xbwheel:focus-within::after { background-image:url(../ui/designs_art/work_review/pz_xbottle/wheel-pointer--active.png) }
 #play[data-la-game="pz_pobs"] .po-board { background-color:#f4e7c3 }
 #play[data-la-game="pz_pobs"] .po-board::before { content:"";position:absolute;inset-inline-start:5px;top:5px;width:20px;height:20px;pointer-events:none;background:url(../ui/designs_art/work_review/pz_pobs/overlay-a--registered.png) center/contain no-repeat }
 #play[data-la-game="pz_pobs"] .po-board:active::before { background-image:url(../ui/designs_art/work_review/pz_pobs/overlay-a--active.png) }

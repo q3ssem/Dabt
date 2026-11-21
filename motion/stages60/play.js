@@ -110,34 +110,6 @@
     return { w, h, start, goal, min, rock: Array.from({ length: w * h }, (_, i) => blockers.has(i)) };
   }
 
-  function statues(board) {
-    const { R } = board;
-    const n = R.length;
-    const enc = state => state.reduce((sum, angle, i) => sum + angle * 4 ** i, 0);
-    const next = new Int8Array(4 ** n).fill(-1);
-    const nextMode = new Int8Array(next.length);
-    const distance = new Int16Array(next.length).fill(-1);
-    const directions = board.reversible ? [1, -1] : [1];
-    const turn = (state, i, direction) => state.map((angle, j) => (angle + direction * R[i][j] + 4) % 4);
-    const queue = [Array(n).fill(0)];
-    distance[0] = 0;
-    for (const state of queue) {
-      const length = distance[enc(state)] + 1;
-      for (let i = 0; i < n; i++) {
-        for (const direction of directions) {
-          const prior = turn(state, i, -direction);
-          const key = enc(prior);
-          if (distance[key] >= 0) continue;
-          distance[key] = length;
-          next[key] = i;
-          nextMode[key] = direction;
-          queue.push(prior);
-        }
-      }
-    }
-    return { ...board, n, enc, nxt: next, nextMode, turn, min: distance[enc(board.s)] };
-  }
-
   function riverRules(board) {
     const captainStage = board.number === 16;
     const grainStage = board.number === 17;
@@ -243,7 +215,13 @@
     'كلب': 'ui/designs_art/river_stage2/passengers/dog_bank.png',
     'قط': 'ui/designs_art/river_stage2/passengers/cat_bank.png',
     'فأر': 'ui/designs_art/river_stage2/passengers/mouse_bank.png',
-    'مزارع': riverArt + '02_boat_and_farmer/farmer_go.png'
+    'مزارع': riverArt + '02_boat_and_farmer/farmer_go.png',
+    'سمكة': 'treasure/art/story5/ch1_s2_piece_fish.webp',
+    'صندوق': 'expedition10/art/props/16-cargo-chest.webp',
+    'فانوس': 'motion/art/prop_biolantern.webp',
+    'حبل': 'treasure/art/story5/tool_rope.webp',
+    'ماء': 'expedition10/art/props/22-water-jugs.webp',
+    'زاد': 'motion/pirate-revised/loot/sack.webp'
   };
 
   function river(api, frame) {
@@ -297,7 +275,7 @@
         <h4>${labels[bank]}</h4><div>${groups.filter(group => state.loc[group.indices[0]] === bank).map(group =>
           `<button type="button" data-river-item="${esc(group.name)}" aria-pressed="${selected.has(group.name)}"
               ${busy || bank !== state.bank ? 'disabled' : ''}>
-              ${portrait(group.name) ? icon(portrait(group.name)) : '<span class="ml-river-token" aria-hidden="true">◆</span>'}<span>${esc(group.name)}</span>
+              ${portrait(group.name) ? icon(portrait(group.name)) : '<span class="ml-river-token" aria-hidden="true">${esc(group.name)}</span>'}<span>${esc(group.name)}</span>
             </button>`).join('')}</div></section>`).join('');
       banks.querySelectorAll('button').forEach(button => {
         const name = button.dataset.riverItem;
@@ -306,11 +284,11 @@
           const unloaded = selected.delete(name);
           if (!unloaded) selected.add(name);
           sound?.play(unloaded ? 'river.unboard' : 'river.board');
-          const item = button.querySelector('img');
+          const item = button.querySelector('img, .ml-river-token');
           const start = (unloaded ? Array.from(seats.children).find(seat => seat.dataset.cargoName === name) : item)?.getBoundingClientRect();
           draw();
           const target = Array.from(banks.querySelectorAll('[data-river-item]'))
-            .find(itemButton => itemButton.dataset.riverItem === name)?.querySelector('img');
+            .find(itemButton => itemButton.dataset.riverItem === name)?.querySelector('img, .ml-river-token');
           const seated = Array.from(seats.children).find(item => item.dataset.cargoName === name);
           hop(item, start, unloaded ? target : seated);
         };
@@ -318,7 +296,8 @@
       });
       seats.innerHTML = cargo.map(({ name }) => {
         const src = portrait(name);
-        return src ? `<img src="${src}" alt="" data-cargo-name="${esc(name)}">` : '';
+        return src ? `<img src="${src}" alt="" data-cargo-name="${esc(name)}">`
+          : `<span class="ml-river-seat-token" data-cargo-name="${esc(name)}">${esc(name)}</span>`;
       }).join('');
       vessel.style.setProperty('--dock', dock(state.bank) + '%');
       const weight = cargo.reduce((sum, group) => sum + group.weight, 0);
@@ -366,7 +345,7 @@
       if (!item || !start || !landing || reduced.matches) return;
       const host = scene.getBoundingClientRect();
       const end = landing.getBoundingClientRect();
-      const clone = item.cloneNode();
+      const clone = item.cloneNode(true);
       boardingFlight?.remove();
       boardingFlight = clone;
       clone.className = 'ml-river-hop';
@@ -441,5 +420,5 @@
     };
   }
 
-  window.mlAuthoredStages = { load, choose, complete, result, parking, pipes, ice, statues, river, riverRules };
+  window.mlAuthoredStages = { load, choose, complete, result, parking, pipes, ice, river, riverRules };
 })();

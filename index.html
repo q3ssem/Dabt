@@ -3968,32 +3968,6 @@ function runLock(){return pzPlay('pz_lock',api=>{
   return{hint:k=>{if(k===1)return'ابدأ بالدليل الذي يقول إن الأرقام الصحيحة قليلة، واشطب الأرقام المستحيلة من البقية.';const i=val.findIndex((v,j)=>!fixed[j]&&v!==P.sec[j]),j=i<0?fixed.indexOf(false):i;if(j<0)return null;val[j]=P.sec[j];fixed[j]=true;draw();return`الخانة ${j+1} من اليسار رقمها <b class="num">${P.sec[j]}</b>.`},
    reveal:()=>`الرمز كان <b class="ltr num">${P.sec.join('')}</b>.`}})}
 
-/* ---------- 5. rotating statues (pressing one turns its neighbours) ---------- */
-function stMake(lv){const n=[3,4,4,5,5,6,6][lv-1],ring=lv>=4,twist=lv>=6;
-  const R=[...Array(n)].map((_,i)=>{const v=Array(n).fill(0);v[i]=1;const L=ring?(i+n-1)%n:i-1,Rr=ring?(i+1)%n:i+1;if(L>=0&&L!==i)v[L]=twist?3:1;if(Rr<n&&Rr!==i)v[Rr]=lv===3||lv===5?2:twist?3:1;return v});
-  const enc=s=>s.reduce((a,d,i)=>a+d*4**i,0),dec=x=>[...Array(n)].map((_,i)=>Math.floor(x/4**i)%4);
-  const N=4**n,dist=new Int16Array(N).fill(-1),nxt=new Int8Array(N).fill(-1);dist[0]=0;let q=[0];
-  while(q.length){const nq=[];for(const x of q){const s=dec(x);for(let i=0;i<n;i++){const t=enc(s.map((d,j)=>(d-R[i][j]+4)%4));if(dist[t]<0){dist[t]=dist[x]+1;nxt[t]=i;nq.push(t)}}}q=nq}
-  const want=Math.min(Math.max(...dist),[3,4,5,6,7,8,9][lv-1]);let cand=[];for(let x=0;x<N;x++)if(dist[x]===want)cand.push(x);if(!cand.length)for(let x=1;x<N;x++)if(dist[x]>0)cand.push(x);
-  const s=dec(pick(cand)),tgt=[...Array(n)].map(()=>rnd(4));return{n,R,s,tgt,ring,twist,dist,nxt,enc,min:dist[enc(s)]}}
-function runStatues(){return pzPlay('pz_stat',api=>{
-  const P=stMake(api.lv),n=P.n;let s=P.s.slice(),presses=0;const ang=P.s.map((d,i)=>(P.tgt[i]+d)*90);
-  const rule=P.twist?'الضغط يدير الحارس يمينًا وجيرانه يسارًا':P.R.some(v=>v.includes(2))?'الضغط يديره ربع لفة، وجاره نصف لفة':'الضغط يدير الحارس وجيرانه ربع لفة';
-  const R=36,pos=[...Array(n)].map((_,i)=>{const a=-Math.PI/2+i*2*Math.PI/n;return[50+R*Math.cos(a),50+R*Math.sin(a)]}),sz=n<=4?27:n<=5?24:21;
-  const links=[];for(let i=0;i<n;i++)for(let j=0;j<n;j++)if(i!==j&&P.R[i][j])links.push([i,j,P.R[i][j]]);
-  const pairs=[];links.forEach(([i,j])=>{const k=i<j?i+'-'+j:j+'-'+i;if(!pairs.includes(k))pairs.push(k)});
-  api.body.innerHTML=`<div class="strule">${rule}${P.ring?' · الحراس في دائرة مغلقة':''}</div><div class="stb2" id="stb"><svg class="stlinks" viewBox="0 0 100 100">${pairs.map(k=>{const[a,b]=k.split('-').map(Number);return`<line data-a="${a}" data-b="${b}" x1="${pos[a][0]}" y1="${pos[a][1]}" x2="${pos[b][0]}" y2="${pos[b][1]}"/>`}).join('')}<circle cx="50" cy="50" r="9" class="stcore"/></svg>${pos.map(([x,y],i)=>`<button class="stbtn2" data-i="${i}" style="left:${x}%;top:${y}%;width:${sz}%" aria-label="حارس">${stGuardian(P.tgt[i])}</button>`).join('')}</div>`;
-  api.msg(`وجّه كل حارس نحو الماسة المنقوشة على قاعدته. أقل حل: <b class="num">${P.min}</b>`);
-  const btns=[...$('#stb').querySelectorAll('.stbtn2')],lines=[...$('#stb').querySelectorAll('.stlinks line')];
-  function draw(){btns.forEach((b,i)=>{b.querySelector('.sthead2').style.transform=`rotate(${ang[i]}deg)`;b.classList.toggle('ok',s[i]===0)});$('#stb').classList.toggle('all',s.every(d=>d===0))}
-  function press(i){if(api.ended)return;P.R[i].forEach((r,j)=>{if(r){s[j]=(s[j]+r)%4;ang[j]+=r*90}});presses++;
-    btns.forEach((b,j)=>{b.classList.remove('hint');if(P.R[i][j]){b.classList.remove('press');void b.offsetWidth;b.classList.add('press')}});lines.forEach(l=>{const on=+l.dataset.a===i||+l.dataset.b===i;l.classList.remove('zap');if(on){void l.getBoundingClientRect();l.classList.add('zap')}});
-    if(window.Watercolor)Watercolor.stone();else tone(180+i*30,.22,'triangle',.06);draw();
-    if(s.every(d=>d===0))api.win(`وجّهت الحراس في ${arN(presses,AN.press)}، والأقل ${arN(P.min,AN.press)}.`);else api.msg(`الضغطات: <b class="num">${presses}</b> · أقل حل: <b class="num">${P.min}</b>`)}
-  btns.forEach((b,i)=>b.onclick=()=>press(i));draw();pzHook({P,press,s:()=>s});
-  return{hint:k=>{if(k===1)return`أقل حل ${arN(P.min,AN.press)}. ترتيب الضغطات لا يهم، المهم عدد مرات ضغط كل حارس. الخطوط بينهم تريك من يحرّك من.`;const i=P.nxt[P.enc(s)];if(i<0)return null;btns[i].classList.add('hint');return'اضغط الحارس المضيء.'},
-   reveal:()=>`كان أقل حل ${arN(P.min,AN.press)}.`}})}
-
 /* ---------- 6. pipes (water to every house) ---------- */
 const PP_SZ=[[4,4],[4,5],[5,5],[5,6],[6,6],[6,7],[7,7],[7,8]];
 const ppRot=m=>((m<<1)|(m>>3))&15;
@@ -4103,7 +4077,6 @@ const PZ_GAMES=[
  {id:'pz_river',maxLv:7,col:['#3FD0E8','#2A7BFF'],name:'عبور النهر',lab:'River crossing',why:'لغز تخطيط كلاسيكي: يجبرك أن تفكر خطوات للأمام وأحيانًا ترجع للخلف لتتقدم.',how:['اختر من يركب القارب مع المزارع ثم اعبر.','لا تترك اثنين يأكل أحدهما الآخر بدون المزارع.','المستويات تزيد الركاب وتغيّر سعة القارب.'],run:runRiver},
  {id:'pz_rush',maxLv:8,col:['#FF4D6D','#FF8A3D'],name:'موقف السيارات',lab:'Rush Hour',why:'لغز التخطيط التسلسلي الشهير: كل حركة تفتح أو تسد طريقًا، فتدرب التفكير المتسلسل.',how:['أخرج السيارة الحمراء من الفتحة اليمنى.','اسحب كل سيارة في اتجاهها فقط.','الصعوبة = عدد حركات الحل الأمثل.'],run:runRush},
  {id:'pz_lock',maxLv:7,col:['#B48CFF','#6A5CFF'],name:'القفل السري',lab:'Code lock',why:'استنتاج على طريقة ألغاز ريزدنت إيفل: تجمع أدلة جزئية وتشطب الاحتمالات حتى يبقى رمز واحد.',how:['كل دليل يقول كم رقمًا صحيحًا وهل هو في مكانه.','الرمز وحيد ويمكن استنتاجه دائمًا.','أدخل الرمز واضغط افتح.'],run:runLock},
- {id:'pz_stat',maxLv:7,col:['#C9CFF0','#7A86C4'],name:'التماثيل الدوّارة',lab:'Rotating statues',why:'لغز على طريقة غرف ريزدنت إيفل: كل ضغطة تؤثر على الجيران، فتتعلم التفكير في الأثر الجانبي.',how:['اضغط التمثال ليدور هو وجيرانه.','وجّه كل تمثال نحو السهم الذهبي تحته.','في المستويات العليا: دائرة ودوران معاكس.'],run:runStatues},
  {id:'pz_pipe',maxLv:8,col:['#5EE6C0','#3FD0E8'],name:'الأنابيب',lab:'Pipes',why:'لغز مكاني: تدوير القطع ذهنيًا وتتبع المسارات يدرّب التصور المكاني.',how:['اضغط القطعة لتدورها ربع لفة.','أوصل الماء من النبع إلى كل البيوت.','بدون أطراف مفتوحة.'],run:runPipes},
  {id:'pz_grid',maxLv:7,col:['#8BE36A','#3FBF6A'],name:'شبكة المنطق',lab:'Logic grid',why:'لغز «أينشتاين» المصغر: استنتاج متعدد الخطوات من أدلة «لا» و«نعم».',how:['اقرأ الأدلة كلها.','لكل شخص شيء واحد من كل عمود.','اضغط الخانة لتغيّرها ثم تحقق.'],run:runGrid},
  {id:'pz_scale',maxLv:7,col:['#F2A65A','#FFD45A'],name:'الميزان والقطعة المزيفة',lab:'Balance puzzle',why:'لغز معلومات شهير: كل وزنة لها 3 نتائج، والحل يحتاج أن تستخرج أقصى معلومة من كل وزنة.',how:['ضع عددًا متساويًا من القطع في الكفتين وزن.','الميزان ذكي: لا يسمح بالحظ، فقط الاستنتاج الكامل يفوز.','حدد المزيفة قبل أن تنتهي الوزنات.'],run:runScale}];
@@ -4114,13 +4087,12 @@ Object.assign(I,{
  pz_river:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M4 30q5-4 10 0t10 0 10 0 10 0" fill="none" stroke="#0A0E1C" stroke-width="3" opacity=".45"/><path d="M10 26h28l-5 8H15z"/><path d="M24 26V10l9 9h-9" opacity=".7"/></svg>',
  pz_rush:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><rect x="6" y="6" width="36" height="36" rx="5" fill="none" stroke="#0A0E1C" stroke-width="3" opacity=".35"/><rect x="10" y="20" width="18" height="8" rx="3"/><rect x="32" y="10" width="7" height="18" rx="3" opacity=".55"/><path d="M42 24h4" stroke="#0A0E1C" stroke-width="3"/></svg>',
  pz_lock:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M15 21v-6a9 9 0 0 1 18 0v6" fill="none" stroke="#0A0E1C" stroke-width="4"/><rect x="9" y="21" width="30" height="21" rx="5"/><circle cx="18" cy="31.5" r="2.5" fill="#fff" opacity=".8"/><circle cx="24" cy="31.5" r="2.5" fill="#fff" opacity=".8"/><circle cx="30" cy="31.5" r="2.5" fill="#fff" opacity=".8"/></svg>',
- pz_stat:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><circle cx="24" cy="20" r="9"/><path d="M24 4l5 6h-10z"/><rect x="14" y="34" width="20" height="8" rx="2" opacity=".6"/><path d="M8 24a16 16 0 0 1 4-10M40 24a16 16 0 0 0-4-10" fill="none" stroke="#0A0E1C" stroke-width="3" stroke-linecap="round" opacity=".45"/></svg>',
  pz_pipe:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="6" stroke-linecap="round"><path d="M6 14h14v20h22"/><path d="M34 34V8" opacity=".5"/><circle cx="6" cy="14" r="2" fill="#0A0E1C"/></svg>',
  pz_grid:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3"><rect x="6" y="6" width="36" height="36" rx="4"/><path d="M18 6v36M30 6v36M6 18h36M6 30h36" opacity=".45"/><path d="M9 12l3 3 4-6M21 24l3 3 4-6" stroke-width="3.5" stroke-linecap="round"/><path d="M33 33l6 6M39 33l-6 6" stroke-linecap="round"/></svg>',
  pz_scale:'<svg viewBox="0 0 48 48" fill="none" stroke="#0A0E1C" stroke-width="3.5" stroke-linecap="round"><path d="M24 6v34M14 42h20M8 14l32-4"/><path d="M8 14l-5 12h10zM40 10l-5 12h10z" fill="#0A0E1C" stroke-linejoin="round"/></svg>'});
 
 /* ---------- puzzle city tab ---------- */
-const PZ_TYPES=['pz_river','pz_rush','pz_lock','pz_stat','pz_pipe','pz_grid','pz_scale','tol'];
+const PZ_TYPES=['pz_river','pz_rush','pz_lock','pz_pipe','pz_grid','pz_scale','tol'];
 function pzDailyType(){const r=seeded(+dayKey().replace(/-/g,'')+7);const all=['pz_rid',...PZ_TYPES.filter(t=>t!=='tol')];return all[Math.floor(r()*all.length)]}
 function renderPuz(){const p=pzState(),solvedR=Object.keys(p.rid).length,dt=pzDailyType(),dDone=p.daily===dayKey();
   $('#v-puz').innerHTML=`<div class="top"><div class="hello"><span class="eyebrow">مدينة الألغاز</span><h1>الألغاز</h1></div><div class="pzwallet">${COIN}<b class="num">${p.pts}</b><small>${pzRank(p.pts)}</small></div></div>
@@ -4686,11 +4658,6 @@ const ART_FN={
    B.wc(B.ell(210,150,105,105),ARTC.stone,{a:.3});B.wc(B.ell(210,150,80,80),'#C9C3B4',{a:.35});B.ink(B.ell(210,150,105,105,30),{close:true,w:2});B.ink(B.ell(210,150,80,80,28),{close:true,w:1.4});
    for(let k=0;k<12;k++){const a=k/12*6.283;B.ink([[210+Math.cos(a)*66,150+Math.sin(a)*66],[210+Math.cos(a)*76,150+Math.sin(a)*76]],{w:1.2,a:.6})}
    B.wc(B.ell(210,150,24,24),ARTC.gold,{a:.35});B.ink(B.ell(210,150,24,24,16),{close:true,w:1.5});B.ink([[210,150],[226,134]],{w:3});for(let k=0;k<4;k++)B.ink([[320+k*6,60],[320+k*6,240]],{w:4,a:.55});B.frame()},
- pz_stat:B=>{B.sky('#D9CBB3','#EFE4CE');[60,150,240,330].forEach(x=>{B.wc(B.rect(x-18,30,36,200),'#D8CDB8',{a:.25,amp:3});B.ink([[x-18,230],[x-18,30],[x+18,30],[x+18,230]],{w:1,a:.4})});B.wc(B.rect(-10,230,440,80),'#B8A88C',{a:.3});
-   [[105,1,0],[210,1.2,1],[315,1,2]].forEach(([x,s,k])=>{const top=230-30-70*s;B.wc(B.rect(x-26*s,200,52*s,30),ARTC.stone,{a:.32});B.ink([[x-26*s,230],[x-26*s,200],[x+26*s,200],[x+26*s,230]],{w:1.2});
-     B.wc([[x-18*s,200],[x-14*s,top+18*s],[x+14*s,top+18*s],[x+18*s,200]],'#BDB6A8',{a:.38});B.ink([[x-18*s,200],[x-14*s,top+18*s],[x+14*s,top+18*s],[x+18*s,200]],{w:1.1,a:.6});
-     B.wc(B.ell(x,top+6*s,13*s,15*s),'#BDB6A8',{a:.45});B.ink(B.ell(x,top+6*s,13*s,15*s,14),{close:true,w:1.2,a:.7});const d=[[0,-1],[1,0],[-1,0]][k];B.wc(B.ell(x+d[0]*9*s,top+6*s+d[1]*9*s,4*s,4*s),ARTC.gold,{a:.55,amp:1})});
-   B.ink([[60,250],[120,262],[180,250]],{w:1,a:.3});B.frame()},
  pz_pipe:B=>{B.sky('#CFE3EC','#F2EAD6');B.hills(210,ARTC.sage,18);B.wc(B.rect(50,60,40,60),ARTC.stone,{a:.3});B.wc(B.ell(70,58,30,14),ARTC.teal,{a:.3});B.ink([[40,120],[40,60],[100,60],[100,120]],{w:1.3});
    const p=[[70,120],[70,170],[200,170],[200,230],[330,230]],q=[[200,170],[330,170],[330,140]];B.ink(p,{w:9,a:.45});B.ink(q,{w:9,a:.45});B.ctx.save();B.ctx.globalAlpha=.6;B.ctx.strokeStyle=ARTC.sky;B.ctx.lineWidth=5;B.ctx.beginPath();p.forEach(([x,y],i)=>i?B.ctx.lineTo(x,y):B.ctx.moveTo(x,y));B.ctx.stroke();B.ctx.beginPath();q.forEach(([x,y],i)=>i?B.ctx.lineTo(x,y):B.ctx.moveTo(x,y));B.ctx.stroke();B.ctx.restore();
    B.house(330,138,.9);B.house(355,262,.9,ARTC.ochre);B.frame()},
@@ -5529,7 +5496,6 @@ Object.assign(XS_,{
  wave:`<svg viewBox="0 0 30 12"><path d="M1 9q4-6 9-3q-2-.3-2.6 1.4M10 9q4-6 9-3q-2-.3-2.6 1.4M19 9q4-6 9-3q-2-.3-2.6 1.4" fill="none" stroke="${XS}" stroke-width="1.1" stroke-linecap="round"/></svg>`});
 /* ---------- the voyage: nine stations across the island ---------- */
 const XST=[
- {id:'pz_xbottle',n:'رسالة الزجاجة',x:84,y:352},
  {id:'pz_tpath',n:'خريطة القرصان',x:120,y:300},
  {id:'pz_xreef',n:'ممر الشعاب',x:46,y:222},
  {id:'pz_xbridge',n:'جسر الوادي',x:116,y:184},
@@ -5541,7 +5507,9 @@ const XST=[
 const XAR=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
 const xNest=(svg,x,y,w,h,cls='')=>svg.replace('<svg ',`<svg x="${x}" y="${y}" width="${w}" height="${h}" ${cls?`class="${cls}" `:''}`);
 const XISL='M70 150C58 104 116 66 170 78C214 58 276 70 296 112C332 140 326 202 302 232C322 286 290 342 232 352C192 372 136 362 106 334C68 316 46 270 70 236C44 204 50 172 70 150Z';
-function txState(){const t=S.st.tx||(S.st.tx={voy:1,prog:0,found:[]});t.inv=t.inv||[];return t}
+function txState(){const t=S.st.tx||(S.st.tx={voy:1,prog:0,found:[]});t.inv=t.inv||[];
+  if(!t.bottleRetiredV1){if(t.prog>=15)t.prog--;if(t.prog===14)t.stage=0;t.bottleRetiredV1=1;S.save();}
+  return t}
 /* the islands take turns: odd voyages on Treasure Island, even ones on Skull Island */
 const XISLES=[{n:'جزيرة الكنز',st:XST,key:'map',art:()=>xMapArt(),over:()=>xOverA()}];
 const txIsle=t=>XISLES[(t.voy-1)%XISLES.length],txList=t=>txIsle(t).st;
@@ -5643,25 +5611,6 @@ function xWalk(P,upto,ms,cb,art){const fx=$('#xfx');if(!fx){cb&&cb();return}cons
   pts.slice(1).forEach((c,k)=>later(()=>{const prev=pts[k],f=document.createElement('div'),r=xRect(n,prev),dx=(c%n)-(prev%n),dy=((c/n)|0)-((prev/n)|0);f.className='xfoot2';f.style.cssText=`left:${r.l+r.s*.2}%;top:${r.t+r.s*.2}%;width:${r.s*.6}%;height:${r.s*.6}%;transform:rotate(${Math.atan2(dy,dx)*180/Math.PI+90}deg)`;f.innerHTML=art?.foot??XS_.foot;fx.appendChild(f);
     pr.classList.toggle('flip',dx<0);put(c);tone(300+k*15,.03)},ms*(k+1)));later(()=>{pr.classList.remove('walk');cb&&cb()},ms*pts.length+40)}
 
-/* ---------- 1) رسالة الزجاجة: cipher wheel ---------- */
-const XB_PL=['الكوخ','الكهف','الجسر','النخيل','الحطام','الشلال','البرج','الوادي','النهر','الجبل','الخليج','المنار','الصخور'];
-const XB_T=['الكنز تحت {P}','احفر خلف {P}','الصندوق مدفون عند {P}','الذهب مدفون في {P}','امش شرقا ثم احفر عند {P}','لا تثق بالقبطان الكنز عند {P}','امش من البحر نحو {P} واحفر'];
-const XB_LV=[{crib:'first'},{crib:'word'},{},{long:1},{rev:1,crib:'first'},{rev:1},{two:1,crib:'first'},{two:1,long:1}];
-const xbEnc=(w,s)=>[...w].map(ch=>{const i=XAL.indexOf(ch);return i<0?ch:XAL[(i+s)%28]}).join('');
-const xbDec=(w,k)=>[...w].map(ch=>{const i=XAL.indexOf(ch);return i<0?ch:XAL[(i-k+56)%28]}).join('');
-function xbMake(lv){const o=XB_LV[lv-1],place=pick(XB_PL),t=pick(o.crib==='first'?XB_T.filter(x=>/^(الكنز|الصندوق|الذهب)/.test(x)):XB_T);
-  let words=t.replace('{P}',place).split(' ');if(o.long&&words.length<6)words=('يا رفاقي '+words.join(' ')).split(' ');
-  const s1=1+rnd(27);let s2=1+rnd(27);while(s2===s1)s2=1+rnd(27);const keys=words.map((_,i)=>o.two&&i%2?s2:s1);
-  const shown=words.map((w,i)=>{const e=xbEnc(w,keys[i]);return o.rev?[...e].reverse().join(''):e});
-  const opts=shuffle([place,...shuffle(XB_PL.filter(p=>p!==place)).slice(0,3)]);
-  const cw=o.crib==='word'?words.filter(w=>w.length>=4&&w!==place)[0]||words[0]:words[0];return{...o,words,shown,keys,s1,s2,place,opts,cw}}
-const xbWheel=(id,k,label)=>{
-  const ring=(radius)=>Array.from(XAL,(letter,i)=>`<span style="--step:${i*360/28}deg;--orbit:${radius}%">${letter}</span>`).join('');
-  return `<div class="xbwheel"><div class="painted-wheel" aria-hidden="true">${paintedProp('motion/adventure35/cipher.webp')}
-    <div class="painted-wheel-rim">${ring(42)}</div>
-    <div class="xbi" id="${id}" style="transform:rotate(${-k*360/28}deg)">${ring(29)}</div><i class="painted-wheel-pin"></i>
-    </div><small>${label}</small><div class="xbrot"><button data-r="1" aria-label="لف يمين">‹</button><b>${XAR(k)}</b><button data-r="-1" aria-label="لف يسار">›</button></div></div>`;
-};
 const paintedProp=(path,cls='')=>`<img class="painted-prop ${cls}" alt="" aria-hidden="true" draggable="false" src="${path}">`;
 const pirateProp=(name,cls='')=>paintedProp('motion/pirate-revised/'+name+'.webp',cls);
 const paintedSheet=(name,inner)=>`<div class="xsheet painted-adventure painted-${name}"><div class="xpin">${inner}</div></div>`;
@@ -5677,29 +5626,6 @@ const paintedIsland=P=>{
   });
   return `<div class="xb ltr" id="xb" style="--n:${n}"><div class="xbin"><div class="xbg">${cells.map(x=>x.tile).join('')}</div><div class="xsprs">${cells.map(x=>x.sprite).filter(Boolean).join('')}</div><div class="xfx" id="xfx"></div></div></div>`;
 };
-function runXBottle(){return pzPlay('pz_xbottle',api=>{
-  const P=xbMake(api.lv);let k1=0,k2=0,miss=0,read=false;
-  const dec=()=>P.shown.map((w,i)=>xbDec(w,P.two&&i%2?k2:k1));
-  /* the destination can only be chosen once the message is actually decoded (every wheel on its key) */
-  const isRead=()=>k1===P.s1&&(!P.two||k2===P.s2);const gate=()=>{read=isRead();api.body.querySelectorAll(".xbo2").forEach(b=>{if(!b.classList.contains("no")){b.style.opacity=read?"":".45";b.setAttribute("aria-disabled",read?"false":"true")}})};
-  const draw=()=>{gate();$('#xbtxt').innerHTML=dec().map((w,i)=>`<span class="${P.two?(i%2?'w2':'w1'):''}">${w}</span>`).join(' ');$('#xbw1').closest('.xbwheel').querySelector('b').textContent=XAR(k1);if(P.two)$('#xbw2').closest('.xbwheel').querySelector('b').textContent=XAR(k2)};
-  const rules=P.rev?'<li>القرصان كتب كل كلمة بالمقلوب: اقرأها من اليسار.</li>':'';
-  api.body.innerHTML=paintedSheet('bottle',`${xHead(paintedProp('ui/art/library-painted/pz_xbottle.webp'),'رسالة في زجاجة')}<div class="xbcode">${P.shown.map((w,i)=>`<span class="${P.two?(i%2?'w2':'w1'):''}">${w}</span>`).join(' ')}</div>
-   <ol class="xnote"><li>كل حرف في الرسالة مُزاح بعدد ثابت على عجلة الحروف. لفّ الحلقة الداخلية حتى تصير الرسالة مفهومة.</li>${P.two?'<li>الكلمات الذهبية لها مفتاح، والكلمات الفضية لها مفتاح آخر: عجلتان.</li>':''}${rules}${P.crib==='first'?`<li>أول كلمة في الرسالة: «${P.words[0]}».</li>`:P.crib==='word'?`<li>في الرسالة كلمة «${P.cw}».</li>`:''}</ol>
-   <div class="xbwheels">${xbWheel('xbw1',0,P.two?'الكلمات الذهبية':'عجلة القرصان')}${P.two?xbWheel('xbw2',0,'الكلمات الفضية'):''}</div>
-   <div class="xbread"><small>تقرأ الآن:</small><div id="xbtxt" class="xbtxt"></div></div>
-   <div class="xbq"><b>وين تحفر حسب الرسالة؟</b><div class="xbopts">${P.opts.map(p=>`<button class="xbo2" data-p="${p}">${p}</button>`).join('')}</div></div>`);
-  draw();api.msg('لفّ العجلة حتى تقرأ الرسالة، ثم اختر المكان.');
-  api.body.querySelectorAll('.xbwheel').forEach((w,wi)=>w.querySelectorAll('[data-r]').forEach(b=>b.onclick=()=>{if(api.ended)return;const d=+b.dataset.r;if(wi===0)k1=(k1+d+28)%28;else k2=(k2+d+28)%28;
-    const g=w.querySelector('.xbi');g.style.transform=`rotate(${-(wi?k2:k1)*360/28}deg)`;tone(700+((wi?k2:k1)%7)*40,.03);draw()}));
-  function answer(p,b){if(api.ended)return;if(!isRead()){gate();api.msg("فكّ الرسالة أولًا: لفّ العجلة حتى تصير كل كلماتها مفهومة، ثم اختر المكان.");if(b){b.classList.remove("xbnudge");void b.offsetWidth;b.classList.add("xbnudge")}return}if(p===P.place){b.classList.add('ok');k1=P.s1;k2=P.s2;draw();$('#xbtxt').classList.add('solved');sfx.ok(2);later(()=>xWin(api,'pz_xbottle',`فككت شيفرة القرصان: «${P.words.join(' ')}».`),700);return}
-    miss++;b.classList.add('no');b.disabled=true;api.wrong();if(miss>=2){k1=P.s1;k2=P.s2;draw();api.over(`الرسالة كانت: «${P.words.join(' ')}». المفتاح ${XAR(P.s1)}${P.two?` و${XAR(P.s2)}`:''}.`);return}api.msg('ليس هذا المكان. اقرأ الرسالة جيدًا: باقي محاولة واحدة.')}
-  api.body.querySelectorAll('.xbo2').forEach(b=>b.onclick=()=>answer(b.dataset.p,b));pzHook({P,answer:p=>answer(p,api.body.querySelector(`.xbo2[data-p="${p}"]`)),setK:(a,b)=>{k1=a;k2=b||0;draw()},dec});
-  return{hint:k=>{if(k===1)return'ابحث عن كلمة قصيرة متكررة مثل «ال»: الحرفان المشفّران الأولان في كثير من الكلمات يمثلان «ا» و«ل».';
-    if(k===2){k1=P.s1;draw();const g=$('#xbw1').closest('.xbwheel').querySelector('.xbi');g.style.transform=`rotate(${-k1*360/28}deg)`;return P.two?'ضبطت لك العجلة الذهبية. الباقي عليك.':'ضبطت لك العجلة. اقرأ الرسالة.'}
-    return`المكان المقصود يبدأ بحرف «${P.place[2]}».`},
-   reveal:()=>{k1=P.s1;k2=P.s2;draw();return`الرسالة: «${P.words.join(' ')}».`}}})}
-
 /* ---------- 2) خريطة القرصان (improved) ---------- */
 const TP_LV=[{n:6,s:2,nl:3},{n:7,s:3,nl:3},{n:7,s:4,nl:4},{n:7,s:3,nl:4,rel:1},{n:8,s:4,nl:4,rel:1,mem:1},{n:8,s:4,nl:5,rot:1},{n:8,s:4,nl:5,rel:1,rot:1,mem:1},{n:9,s:4,nl:5,unk:1}];
 function tpWalkFrom(I,start,segs){let p=start;const path=[p];for(const{sd,k}of segs)for(let j=0;j<k;j++){const x=p%I.n+D4[sd][0],y=((p/I.n)|0)+D4[sd][1];if(!inb(x,y,I.n,I.n)||!I.isl[y*I.n+x])return null;p=y*I.n+x;path.push(p)}return path}
@@ -5998,7 +5924,6 @@ function runXLock(){return pzPlay('pz_xlock',api=>{
 /* ---------- registry ---------- */
 const TX_IDS=XST.map(s=>s.id);
 const PZ_X=[
- {id:'pz_xbottle',maxLv:8,col:['#A9C7B8','#3E6F62'],name:'رسالة الزجاجة',lab:'Cipher wheel',cat:'flx',why:'فك شيفرة الإزاحة: تجرّب وتتحقق من المعنى، وفي المستويات العالية رسالة مقلوبة ومفتاحان. تفكير مرن وانتباه للتفاصيل.',how:['لفّ عجلة الحروف.','توقف لما تصير الرسالة مفهومة.','اختر المكان الذي تذكره الرسالة.'],run:runXBottle},
  {id:'pz_tpath',maxLv:8,col:['#9ED27A','#3FA0E0'],name:'خريطة القرصان',lab:'Pirate directions',cat:'spa',why:'تتبّع المسار ذهنيًا بالاتجاهات والخطوات، مع أوامر نسبية وبوصلة مقلوبة وتعليمات تختفي: ذاكرة عاملة مكانية.',how:['ابدأ من المعلم المذكور.','امشِ في ذهنك حسب كل أمر.','اضغط المربع الذي ينتهي عنده المسار.'],run:runTPath},
  {id:'pz_xreef',maxLv:8,col:['#7E9C8E','#2F5E6E'],name:'ممر الشعاب',lab:'Sliding reef',cat:'spa',why:'القارب ينزلق حتى يصطدم، والدوّامات تغيّر اتجاهه: تخطيط عدة حركات للأمام والتفكير من الهدف للخلف.',how:['اختر اتجاهًا فينزلق القارب.','استعمل الشعاب والدوّامات لتوقفه.','أوصله للخليج قبل ما تخلص الحركات.'],run:runXReef},
  {id:'pz_xbridge',maxLv:8,col:['#C99A62','#7A4A22'],name:'جسر الوادي',lab:'Plank bridge',cat:'log',why:'اختيار مجموعة ألواح تقع أطرافها على الأعمدة بالضبط، مع ألواح فخ: تخطيط وحساب وتجنّب الطرق المسدودة.',how:['اختر لوحًا فيمتد من نهاية الجسر.','طرفه لازم يقع على عمود.','اعبر للحافة الثانية.'],run:runXBridge},
@@ -6010,7 +5935,6 @@ const PZ_X=[
 PZ_X.forEach(g=>{Object.assign(g,{puz:1,hidden:1,noIndex:1,nocd:1,norm:m=>m});G.push(g);GM[g.id]=g});
 
 Object.assign(I,{
- pz_xbottle:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><g transform="rotate(-30 24 24)"><rect x="20" y="4" width="8" height="6" rx="1"/><path d="M19 11h10v6q6 4 6 11v14q0 3-3 3H16q-3 0-3-3V28q0-7 6-11z" opacity=".55"/><path d="M17 26h14v12H17z"/></g></svg>',
  pz_tpath:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><ellipse cx="12" cy="36" rx="3.5" ry="5"/><ellipse cx="20" cy="30" rx="3.5" ry="5" opacity=".75"/><ellipse cx="26" cy="22" rx="3.5" ry="5" opacity=".6"/><path d="M34 8l8 8M42 8l-8 8" stroke="#0A0E1C" stroke-width="4" stroke-linecap="round"/></svg>',
  pz_xreef:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M8 30h32l-6 8H14z"/><path d="M24 30V8l12 18H24z" opacity=".6"/><path d="M4 42q5-3 10 0t10 0 10 0 10 0" stroke="#0A0E1C" stroke-width="2.4" fill="none"/></svg>',
  pz_xbridge:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M2 40V24h8v16zM38 40V24h8v16z"/><path d="M10 22h28v4H10z"/><path d="M22 26h4v14h-4z" opacity=".5"/></svg>',
@@ -6021,7 +5945,6 @@ Object.assign(I,{
  pz_xlock:'<svg viewBox="0 0 48 48" fill="#0A0E1C"><path d="M6 22q0-14 18-14t18 14v4H6z" opacity=".55"/><rect x="6" y="26" width="36" height="16" rx="2"/><path d="M20 22h8v10q0 4-4 6q-4-2-4-6z" fill="#fff" opacity=".7"/></svg>'});
 pzDailyType=function(){const r=seeded(+dayKey().replace(/-/g,'')+7);const all=['pz_rid',...PZ_TYPES.filter(t=>t!=='tol'),...TX_IDS];return all[Math.floor(r()*all.length)]};
 Object.assign(ART_FN,{
- pz_xbottle:B=>{B.bg('#E9DDBE',.35);B.wc(B.rect(-10,200,440,110),ARTC.sky,{a:.35});B.wc(B.ell(210,150,34,70),'#A9C7B8',{a:.55,amp:3});B.wc(B.rect(186,120,48,60),'#F3E2BC',{a:.7,amp:2});B.ink([[176,90],[244,90],[250,220],[170,220]],{close:true,w:1.6,a:.6});B.frame()},
  pz_tmap:B=>{B.bg(ARTC.sky,.45);B.wc(B.ell(210,160,160,95),ARTC.sand,{a:.55,amp:14});B.wc(B.ell(205,150,110,62),ARTC.sage,{a:.32,amp:10});B.palm(140,160,1);B.palm(300,150,.9);B.house(225,128,.8);B.ink([[120,215],[170,200],[215,214],[262,192]],{w:2,a:.55,j:1.5});B.ink([[262,182],[282,202]],{w:4});B.ink([[282,182],[262,202]],{w:4});B.frame()},
  pz_tpath:B=>{B.bg('#E9D7B0',.3);B.wc(B.rect(40,30,340,240),'#F3E2BC',{a:.6,amp:6});B.ink([[40,30],[380,30],[380,270],[40,270]],{close:true,w:1.6,a:.5});B.wc(B.ell(210,150,120,80),ARTC.sage,{a:.25,amp:12});
    [[90,220],[120,200],[150,190],[185,170],[210,140],[240,120],[270,110]].forEach(([x,y])=>B.wc(B.ell(x,y,5,7),ARTC.wood,{a:.5,amp:1}));B.ink([[300,95],[320,115]],{w:4});B.ink([[320,95],[300,115]],{w:4});B.frame()},

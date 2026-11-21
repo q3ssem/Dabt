@@ -18,7 +18,7 @@ c.Path2D=Clip;c.HTMLCanvasElement=Canvas;
 vm.runInContext(fs.readFileSync(path.join(__dirname,'../../legacy/deep-manifest.js'),'utf8'),c);
 vm.runInContext(fs.readFileSync(path.join(__dirname,'../../legacy/deep.js'),'utf8'),c);
 let checks=0;const ok=(v,m)=>{assert.ok(v,m);checks++};const D=c.DA;
-ok(Object.keys(manifest.puzzles).length===88,'88 original puzzle designs mapped');ok(Object.keys(manifest.brainBoards).length===32,'32 original brain boards mapped');
+ok(Object.keys(manifest.puzzles).length===86,'86 current puzzle designs mapped');ok(Object.keys(manifest.brainBoards).length===32,'32 original brain boards mapped');
 for(const [id,key]of Object.entries(manifest.puzzles)){ok(!!D.sources[key],id+' valid artwork');ok(c.LA.puzzleConfig[id][1]==='deep:'+key,id+' same identifier');}
 for(const [file,keys]of Object.entries(manifest.worlds)){ok(keys.length===16,file+' equal atlas');ok(fs.existsSync(path.join(__dirname,'../../legacy/art',file+'.webp')),file+' exists');for(const key of keys){if(key==='X')ok(c.XS_[key]==='original-X','positional X unchanged');else ok(c.XS_[key].includes(file+'.webp'),key+' raster artwork');}}
 for(const key of ['classic','boards','scene-people','motion'])ok(fs.existsSync(path.join(__dirname,'../../legacy/art',key+'.webp')),key+' exists');

@@ -54,7 +54,7 @@ assert.deepEqual(Object.keys(designs).sort(), inventory.puzzles.map(p => p.id).s
 ok(app.indexOf(designsFile) < app.indexOf('ui/openings.js') && manifest.includes(`"${designsFile}"`),
   'design catalog loads before opening code and is included in offline cache');
 const alreadyThemed = new Set([
-  'pz_river', 'pz_rush', 'pz_stat', 'pz_pipe', 'pz_flow', 'pz_tan', 'pz_tent',
+  'pz_river', 'pz_rush', 'pz_pipe', 'pz_flow', 'pz_tan', 'pz_tent',
   'pz_untangle', 'pz_ice', 'pz_pmirror'
 ]);
 const boardCss = read('ui/fullscreen-puzzles.css');

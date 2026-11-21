@@ -110,39 +110,6 @@ html[data-skin="dark"] .lb[data-lb="rush"] .rh10::before{background:rgba(255,245
 #pzb[data-board-art="pz_rush"] .rhcar.sel .rh10{background-image:url(../ui/designs_art/four_puzzles/pz_rush/sprites/fx_selection_tile.png)}
 #pzb[data-board-art="pz_rush"] .rhcar.red:focus-visible .rh10{background-image:url(../ui/designs_art/four_puzzles/pz_rush/sprites/fx_target_tile.png)}
 
-/* 04 statues */
-.st10{position:relative;width:100%;aspect-ratio:1;max-width:340px;margin:0 auto;container-type:inline-size}
-.st10-links{position:absolute;inset:0;pointer-events:none}
-.st10-link{position:absolute;height:6cqw;max-height:28px;transform-origin:left center;translate:0 -50%;
-  background:url(../ui/designs_art/four_puzzles/pz_stat/sprites/fx_stone_link.png) center/100% 100% no-repeat}
-.st10-link::after{content:'';position:absolute;inset:50% 0 auto;height:2px;translate:0 -50%;background:#b49a6b;transition:background-color .2s}
-.st10-link.zap::after{height:4px;background:#f0b648}
-.st10-s{all:unset;cursor:pointer;position:absolute;aspect-ratio:1;transform:translate(-50%,-50%);display:grid;place-items:center;border-radius:50%}
-.st10-g{position:absolute;width:67%;height:78%;bottom:16%;object-fit:contain;object-position:center bottom;pointer-events:none;transform-origin:center 94%}
-.st10-s::before{content:'';position:absolute;pointer-events:none;inset:auto 8% 7%;height:23%;
-  background:url(../ui/designs_art/work_review/pz_stat/guardian-base--normal.png) center/contain no-repeat}
-.st10-s:is(.ok,.turned,.linked)::before{background-image:url(../ui/designs_art/work_review/pz_stat/guardian-base--active.png)}
-.st10-s:is(.turned,.linked) .st10-g{animation:stat-turn .24s ease-out}
-@keyframes stat-turn{from{transform:scaleX(.84)}to{transform:none}}
-.st10-dot{position:absolute;top:-4%;left:50%;width:14%;height:14%;margin-left:-7%;border-radius:50%;background:#2E9E5B;border:2px solid #fff;box-shadow:0 0 0 1px #1F6E44}
-.st10-tgt{position:absolute;inset:0;transform:rotate(var(--a));pointer-events:none}
-.st10-tgt::before{content:'';position:absolute;top:-6%;left:50%;width:15%;height:15%;margin-left:-7.5%;background:#E0A93A;border:1.5px solid #8A5A1C;transform:rotate(45deg)}
-.st10-s.ok{box-shadow:0 0 0 3px var(--lb-ok)}.st10-s.hint{box-shadow:0 0 0 4px #F2C553;animation:lb-pulse 1s infinite}
-.st10-s.press{animation:lb-pop .4s}.st10-s:focus-visible{outline:3px solid #2F6F8C}
-.st10.all .st10-s{box-shadow:0 0 0 3px var(--lb-ok)}
-@keyframes lb-pop{50%{transform:translate(-50%,-50%) scale(1.07)}}@keyframes lb-pulse{50%{box-shadow:0 0 0 7px #F2C55366}}
-
-.st10-door,.st10-open{position:absolute;left:40%;top:40%;width:20%;height:20%;object-fit:contain;pointer-events:none}
-.st10-open,.st10.all .st10-door{display:none}
-.st10.all .st10-open{display:block}
-.st10-current{position:absolute;inset:7%;pointer-events:none;transition:transform .3s}
-.st10-s.ok{background:url(../ui/designs_art/four_puzzles/pz_stat/sprites/fx_rune_aligned.png) center/contain no-repeat}
-.st10-s.turned{background-image:url(../ui/designs_art/four_puzzles/pz_stat/sprites/fx_ring_selected.png)}
-.st10-s.linked{background-image:url(../ui/designs_art/four_puzzles/pz_stat/sprites/fx_ring_affected.png)}
-.st10-s:is(.turned,.linked){background-position:center;background-size:contain;background-repeat:no-repeat}
-.st10-s:is(.turned,.linked)::after{content:'';position:absolute;inset:0;background:url(../ui/designs_art/four_puzzles/pz_stat/sprites/fx_turn_quarter.png) center/75% no-repeat;pointer-events:none}
-.st10-s[data-turn="half"]:is(.turned,.linked)::after{background-image:url(../ui/designs_art/four_puzzles/pz_stat/sprites/fx_turn_half.png)}
-
 /* 05 pipes */
 .pp10{display:grid;grid-template-columns:repeat(var(--w),minmax(0,1fr));gap:4px;max-width:340px;margin:0 auto;direction:ltr}
 .pp10-c{all:unset;cursor:pointer;position:relative;aspect-ratio:1;border-radius:8px;background:#F4ECDD;border:1.5px solid #E2D3B6;overflow:hidden}

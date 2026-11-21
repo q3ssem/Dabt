@@ -26,8 +26,8 @@ for (const file of new Set(images)) assert.ok(fs.existsSync(file), 'art file ' +
 assert.ok(app.includes("'motion/expedition-art.css'"));
 assert.ok(realm.self.MINDLAB_OFFLINE_FILES.includes('motion/expedition-art.css'));
 const groups = realm.self.MINDLAB_EXPEDITION_ART;
-const scope = new Set([...Object.keys(groups), 'pz_river', 'pz_stat']);
-assert.equal(scope.size, 64, 'puzzle groups across the two art passes');
+const scope = new Set([...Object.keys(groups), 'pz_river']);
+assert.equal(scope.size, Object.keys(groups).length + 1, 'puzzle groups across the two art passes');
 for (const group of Object.values(groups)) {
   assert.equal(group.length, new Set(group).size, 'no duplicate URLs within a puzzle');
   for (const file of group) assert.ok(fs.existsSync(file));
@@ -49,5 +49,5 @@ function warm(puzzleId) {
   assert.equal(JSON.stringify(requested), JSON.stringify(expected), 'only the selected puzzle is fetched');
   await warm('pz_pobs');
   assert.equal(requested.length, expected.length, 'subsequent visits reuse cached images');
-  console.log('64 puzzle groups, shared assets and per-puzzle offline caching verified.');
+  console.log(scope.size + ' puzzle groups, shared assets and per-puzzle offline caching verified.');
 })().catch(error => { console.error(error); process.exitCode = 1; });

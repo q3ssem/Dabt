@@ -20,8 +20,7 @@ const stages=[
  {id:'ml10_11',name:'أنابيب المد',place:'ورشة قنوات الميناء',kind:'تركيب مسار مائي',scene:'11-pipes.webp',prop:'watercolor/art/icons54/lever.webp',objective:'دوّر قطع الأنابيب السبع حتى يصل الماء من المدخل إلى المصب، مع اتصال كل وصلة وعدم ترك أي طرف مفتوح.',story:'وجدت نهى شبكة قنوات قديمة تحت الميناء. الماء محبوس خلف سبع قطع دوارة، وكل وصلة يجب أن تقابل الأنبوب المجاور بدقة.',moods:['thinking','curious','alert'],talk:['سأبدأ من المدخل وأتبع الانعطاف قطعةً قطعة.','أستطيع سماع الماء خلف الجدار؛ لا بد أن اتجاه إحدى الوصلات معكوس.','راقب أطراف الأنبوب؛ الطرف المفتوح يعني أن الماء سيتسرب.'],hint:['المسار ينزل بعد القطعة الأولى، ثم ينعطف شرقاً في أسفل اللوحة.','القطع المستقيمة عمودية في الموضعين الثاني والسادس، وأفقية في الوسط.','اتجاهات القطع بالترتيب: جنوب-غرب، عمودي، شمال-شرق، أفقي، شمال-غرب، عمودي، جنوب-شرق.'],outro:'اندفع الماء في القناة، وفتح باباً جليدياً خلف الشلال.'},
  {id:'ml10_12',name:'ممر الجليد',place:'كهف البلور المتجمد',kind:'تخطيط انزلاقي من سبع حركات',scene:'12-ice.webp',prop:'watercolor/art/icons54/crystal.webp',objective:'حرّك بلورة القارب فوق الجليد. لا تتوقف في منتصف الطريق؛ تنزلق حتى يصطدم المسار بصخرة أو حافة. أوصلها إلى البوابة في سبع حركات بالضبط.',story:'في الكهف المتجمد لا تستطيع البلورة التوقف بإرادتك؛ سطح الجليد يدفعها حتى تصطدم بعائق. على رواء قراءة حدود المسار قبل كل انزلاق.',moods:['alert','thinking','curious'],talk:['لا تدفع البلورة عشوائياً؛ فكّر أين ستتوقف قبل أن تتحرك.','سأرسم في ذهني مواضع الصخور؛ كل صخرة تصنع نقطة توقف جديدة.','سبع حركات فقط تفتح البوابة، وأي التفاف زائد يضيّع المسار.'],hint:['البلورة تبدأ أسفل اليسار، والصخور الداكنة هي العوائق.','الحركة الأولى إلى اليمين، ثم إلى أعلى.','المسار الوحيد الأقصر: يمين، أعلى، يسار، أسفل، يمين، أعلى، يمين.'],outro:'وصلت البلورة إلى البوابة، وخلفها قاعة رهان حراشف التنين.'},
  {id:'ml10_13',name:'رهان حراشف التنين',place:'قاعة الرهان القديمة',kind:'استراتيجية نيم',scene:'13-dragon.webp',prop:'treasure/art/story5/ch3_s2_piece_stone.webp',objective:'أمامك ثلاث أكوام من الحراشف: ١ و٣ و٥. في كل دور خذ من كومة واحدة أي عدد من ١ حتى كامل الكومة. من يأخذ آخر حرشفة يفوز. العب ضد حارس القاعة واختر افتتاحية تضمن لك استراتيجية رابحة.',story:'حارس القاعة لا يقبل التخمين؛ يضع الحراشف في ثلاث أكوام ويعرف كيف يستغل أي حركة متسرعة. عليك أن تترك له وضعاً لا يملك منه استراتيجية رابحة.',moods:['thinking','curious','alert'],talk:['لا أريد أكبر عدد من الحراشف؛ أريد أن أترك للحارس وضعاً خاسراً.','سأحسب الأكوام معاً، لا كل كومة على حدة.','إن أحسنت الافتتاحية، فسيضطر الحارس إلى كشف ثغرة في كل رد.'],hint:['فكّر في قيمة الأكوام معاً، لا في مجموعها الحسابي فقط.','حاول أن تجعل ناتج XOR للأكوام صفراً بعد حركتك.','الافتتاحية الرابحة الوحيدة: خذ ثلاث حراشف من الكومة الثالثة، فتصبح الأكوام ١ و٣ و٢.'],outro:'احترم الحارس ذكاءك وترك لك ختماً قديماً يفتح مسرح الظلال.'},
- {id:'ml10_14',name:'مسرح الظلال',place:'معبد النقوش الضوئية',kind:'استنتاج ظلي واتجاهي',scene:'14-shadows.webp',prop:'treasure/art/story5/tool_lens.webp',objective:'اضبط الفوانيس الثلاثة حتى تطابق ظلالها النقوش على الجدار: سفينة، سلحفاة، ومرساة. اقرأ علاقة اتجاه كل فانوس بالآخر.',story:'في المعبد لا تظهر النقوش مباشرة؛ لا يقرأها إلا من يوجه الضوء من الزاوية الصحيحة. لكل فانوس ظل مختلف، وترتيبها مرتبط ببعضه.',moods:['curious','thinking','alert'],talk:['سأقارن الظلال بالنقوش، ثم أتحقق من علاقة الاتجاهات.','إذا غيّرنا فانوساً واحداً فقد تتغير صورة الجدار كلها.','الضوء يكشف الحقيقة، لكن ترتيب مصادره هو مفتاحها.'],hint:['الفانوس الأول يجب أن يصنع ظل السفينة.','الفانوس الثاني عكس اتجاه الأول تماماً.','الفانوس الثالث ربع دورة مع عقارب الساعة من الأول؛ الاتجاهات النهائية جنوب، شمال، غرب.'],outro:'اصطفّت الظلال الثلاثة، وظهر ختم يحمل رسالة في زجاجة.'},
- {id:'ml10_15',name:'رسالة الزجاجة',place:'مرسى القبطان الأخير',kind:'فك شفرة قيصرية عربية',scene:'15-bottle.webp',prop:'treasure/art/story5/ch1_secret_letter.webp',objective:'أدر قرص الشفرة حتى تتحول الرسالة إلى كلمة مفهومة. استخدم ترتيب الحروف العربية والقرينة المحفورة على عنق الزجاجة.',story:'وصلت زجاجة إلى المرسى تحمل حروفاً غير مفهومة وقرينة واحدة: الحرف ا في الرسالة الأصلية أصبح ج في الشفرة. فك الإزاحة لتعرف اسم المكان الذي يجب أن تقصده الرحلة.',moods:['curious','thinking','happy'],talk:['القرص لا يبدّل الحروف عشوائياً؛ كل حرف يتحرك بالمقدار نفسه.','سأثبت الحرف الأول من القرينة، ثم أختبر بقية الرسالة.','إذا ظهرت كلمة الميناء، نكون قد قرأنا رسالة القبطان كاملة.'],hint:['قارن الحرف ا في الأصل بالحرف ج في النص المشفر.','في ترتيب القرص المعروض، ج يبعد أربع خطوات عن ا.','أدر القرص إلى الإزاحة ٤؛ ستظهر كلمة الميناء.'],outro:'انكشفت رسالة القبطان: الطريق إلى الميناء القديم، حيث تنتظر خمس محطات تقود إلى بوابة الميناء الداخلي.'},
+ {id:'ml10_14',name:'مسرح الظلال',place:'معبد النقوش الضوئية',kind:'استنتاج ظلي واتجاهي',scene:'14-shadows.webp',prop:'treasure/art/story5/tool_lens.webp',objective:'اضبط الفوانيس الثلاثة حتى تطابق ظلالها النقوش على الجدار: سفينة، سلحفاة، ومرساة. اقرأ علاقة اتجاه كل فانوس بالآخر.',story:'في المعبد لا تظهر النقوش مباشرة؛ لا يقرأها إلا من يوجه الضوء من الزاوية الصحيحة. لكل فانوس ظل مختلف، وترتيبها مرتبط ببعضه.',moods:['curious','thinking','alert'],talk:['سأقارن الظلال بالنقوش، ثم أتحقق من علاقة الاتجاهات.','إذا غيّرنا فانوساً واحداً فقد تتغير صورة الجدار كلها.','الضوء يكشف الحقيقة، لكن ترتيب مصادره هو مفتاحها.'],hint:['الفانوس الأول يجب أن يصنع ظل السفينة.','الفانوس الثاني عكس اتجاه الأول تماماً.','الفانوس الثالث ربع دورة مع عقارب الساعة من الأول؛ الاتجاهات النهائية جنوب، شمال، غرب.'],outro:'اصطفّت الظلال الثلاثة، وظهر ختم يدل على سجل الحمولة في الميناء القديم.'},
  {id:'ml10_16',name:'سجل الحمولة',place:'ساحة شحن الميناء القديم',kind:'استنتاج وربط قيود',scene:'16-harbor-cargo.webp',prop:'watercolor/art/icons54/boat.webp',objective:'رتّب الصناديق الأربعة على الأرصفة وفق القرائن. لا يوجد صندوقان في الرصيف نفسه، وكل دليل يضيّق موضع الحمولة.',story:'كشفت رسالة القبطان أن مفتاح الممر الداخلي أُخفي داخل شحنة لم تغادر الميناء. أمام البطلات أربعة صناديق وأربعة أرصفة، وسجل الشحن ممزق إلى ثلاث قرائن.',moods:['thinking','curious','alert'],talk:['سأقارن ترتيب الصناديق؛ كل قرينة يجب أن تنطبق مع الأخريين.','أستطيع تمييز البلور من لمعانه، لكن لا بد أن نعرف الرصيف الصحيح.','سأراجع سجل الحمولة قبل أن نرسل الصناديق إلى السفينة.'],hint:['صندوق البلور يسبق البوصلة مباشرة.','اللؤلؤ ليس في أول رصيف ولا آخره.','التوابل تأتي بعد اللؤلؤ؛ الترتيب الوحيد: البلور، البوصلة، اللؤلؤ، التوابل.'],outro:'أظهر سجل الحمولة أن ساعة المد هي التي تفتح الطريق البحري إلى الميناء الداخلي.'},
  {id:'ml10_17',name:'ساعة المدّ',place:'برج المد والجزر',kind:'توقيت واستجابة متتابعة',scene:'17-tide-clock.webp',prop:'treasure/art/story5/ch5_s2_piece_gear_large.webp',objective:'أوقف مؤشر الساعة عند ثلاث نوافذ آمنة بالترتيب. استنتج مواضعها من القرائن ثم نفّذ التوقيت قبل عودة الموجة.',story:'تتحكم ساعة المدّ في بوابة الميناء. يدور المؤشر حول ثمانية قطاعات، ولا تثبت البوابة إلا إذا أُوقفت الموجة في ثلاث لحظات متتابعة.',moods:['happy','thinking','curious'],talk:['سأحسب مواضع النوافذ أولاً، ثم أوقف المؤشر عند مرورها.','لا تضغطي بسرعة؛ انتظري اقتراب القطاع الصحيح.','الموجة تتسارع… سأراقب المؤشر والوقت معاً.'],hint:['النافذة الأولى تبعد قطاعين مع عقارب الساعة عن علامة الشمال.','الثانية تبعد ثلاثة قطاعات عن الأولى.','الثالثة تبعد أربعة قطاعات عن الثانية؛ الترتيب ٣، ٦، ٢ عند العدّ من الصفر.'],outro:'استقرت ساعة المد، وظهر مدخل إلى رواق المرايا القديمة.'},
  {id:'ml10_18',name:'رقع رواق المرايا',place:'رواق المرايا المكسور',kind:'تركيب مكاني وتسلسل حركات',scene:'18-mask-gallery.webp',prop:'treasure/art/story5/ch1_s3_piece_mirror.webp',objective:'حرّك الرقع المجاورة للفراغ لإعادة صورة ختم المرايا. أمامك ثماني حركات، والمسار الأقصر الوحيد يعيد النقش كاملاً.',story:'في الرواق، تحوّل ختم القبطان إلى تسع رقع حجرية. لا يمكن نقل رقعة عبر أخرى؛ حرّك الرقعة الملامسة للفراغ حتى يعود النقش إلى ترتيبه.',moods:['curious','thinking','alert'],talk:['سأبحث عن حركة تفتح الطريق للرقع التالية، لا عن خطوة تبدو صحيحة الآن فقط.','الفراغ هو المساحة الوحيدة التي تسمح بتبديل موضع القطعة.','ثماني حركات فقط؛ لنبدأ بالقطعة التي تفتح العمود الأيسر.'],hint:['الفراغ يبدأ في الركن السفلي الأيمن؛ انقلي الرقعة المجاورة إليه، لا تحاولي سحب الرقعة عبر غيرها.','أول رقعتين تتحركان من العمود الأيمن إلى أسفل، ثم تنتقل الرقعتان العلويتان إلى اليمين.','مسار الفراغ الأقصر: أعلى، أعلى، يسار، يسار، أسفل، أسفل، يمين، يمين؛ أي أن الرقع تتحرك عكس اتجاه الفراغ.'],outro:'عاد ختم المرايا إلى صورته، وكشف مخزناً لا يفتح إلا بتحريك صندوق القبطان.'},
@@ -34,38 +33,272 @@ const stages=[
  {id:'ml10_25',name:'الختم الخماسي',place:'محراب أَثْران الأخير',kind:'استنتاج ترتيبي متعدد القيود',scene:'25-fivefold-seal.webp',prop:'watercolor/art/icons54/lock.webp',objective:'رتّب الرموز الخمسة على الختم وفق أربع قرائن مترابطة. لكل رمز موضع واحد، ولا يفتح المحراب إلا بالترتيب الكامل الصحيح.',story:'وصلت رواء ونهى وورد إلى محراب أَثْران. أمامهن خمسة رموز جمعتها الرحلة: القمر والورقة والماء والنجمة والنار. النقوش لا تعطي مواضع مباشرة، بل علاقات يجب جمعها في ترتيب واحد.',moods:['thinking','curious','alert'],talk:['سأحوّل كل قرينة إلى علاقة بين موضعين، ثم أرتب السلسلة كاملة.','لن تعمل الأقراص إذا تكرر رمز أو بقي موضع فارغ.','هذا هو الختم الأخير؛ لا نحتاج إلى تخمين، فالقرائن تكفي وحدها.'],hint:['القمر يسبق الورقة مباشرة؛ ضعهما متجاورين بهذا الترتيب.','الورقة تأتي قبل الماء، والنجمة تأتي بعد الماء.','النار في الموضع الأخير؛ الترتيب الوحيد: القمر، الورقة، الماء، النجمة، النار.'],outro:'اكتمل الختم الخماسي، وأضاء محراب الرحلة. انتهت المغامرة الجانبية بخمس وعشرين محطة، وبقيت آثار خطواتكن محفوظة على خريطتها.'}
  ];
 const expeditionPropFiles=[
- '01-lighthouse-lock.webp','02-rowboat.webp','03-torn-map.webp','04-pirate-balance.webp','05-crystal-shrine.webp',
- '06-mirror-assembly.webp','07-hourglass.webp','08-island-compass.webp','09-captain-journal.webp','10-atheran-heart-seal.webp',
- '11-water-valve.webp','12-ice-crystal.webp','13-dragon-scale-token.webp','14-shadow-projector-lens.webp','15-cipher-drum.webp',
- '16-cargo-chest.webp','17-tidal-clock-mechanism.webp','18-guardian-bird-mask.webp','19-wind-axle.webp','20-guardian-medallion.webp',
- '21-lantern-trio.webp','22-water-jugs.webp','23-signal-towers.webp','24-hanoi-disks.webp','25-fivefold-rune-seal.webp'
+  "01-lighthouse-lock.webp",
+  "02-rowboat.webp",
+  "03-torn-map.webp",
+  "04-pirate-balance.webp",
+  "05-crystal-shrine.webp",
+  "06-mirror-assembly.webp",
+  "07-hourglass.webp",
+  "08-island-compass.webp",
+  "09-captain-journal.webp",
+  "10-atheran-heart-seal.webp",
+  "11-water-valve.webp",
+  "12-ice-crystal.webp",
+  "13-dragon-scale-token.webp",
+  "14-shadow-projector-lens.webp",
+  "16-cargo-chest.webp",
+  "17-tidal-clock-mechanism.webp",
+  "18-guardian-bird-mask.webp",
+  "19-wind-axle.webp",
+  "20-guardian-medallion.webp",
+  "21-lantern-trio.webp",
+  "22-water-jugs.webp",
+  "23-signal-towers.webp",
+  "24-hanoi-disks.webp",
+  "25-fivefold-rune-seal.webp"
 ];
 const expeditionArtDetails=[
- [{src:'watercolor/art/icons54/key.webp',label:'مفتاح العدسة'},{src:'treasure/art/story5/ch1_s2_piece_anchor.webp',label:'مرساة المنارة'}],
- [{src:'treasure/art/story5/ch1_s2_piece_shell.webp',label:'صدفة النهر'},{src:'treasure/art/story5/ch1_s2_piece_anchor.webp',label:'مرساة القارب'}],
- [{src:'treasure/art/story5/ch4_s1_piece_map_tile.webp',label:'رقعة خريطة'},{src:'treasure/art/story5/tool_compass.webp',label:'بوصلة التوجيه'}],
- [{src:'treasure/art/story5/ch3_s2_piece_balance_beam.webp',label:'عارضة الميزان'},{src:'treasure/art/story5/ch3_s2_piece_balance_pan.webp',label:'كفة القياس'}],
- [{src:'treasure/art/story5/tool_crystal_weight.webp',label:'وزن البلور'},{src:'treasure/art/story5/ch4_seal_crystal.webp',label:'ختم البلورة'}],
- [{src:'treasure/art/story5/tool_lens.webp',label:'عدسة الضوء'},{src:'treasure/art/story5/ch6_seal_moon.webp',label:'ختم الانعكاس'}],
- [{src:'treasure/art/story5/ch5_s2_piece_gear_medium.webp',label:'ترس متوسط'},{src:'treasure/art/story5/ch5_s2_piece_gear_small.webp',label:'ترس صغير'}],
- [{src:'treasure/art/story5/tool_rope.webp',label:'حبل الربط'},{src:'treasure/art/story5/ch1_s2_piece_anchor.webp',label:'مرساة الجزيرة'}],
- [{src:'treasure/art/story5/ch1_secret_letter.webp',label:'رسالة القبطان'},{src:'treasure/art/story5/ch4_s3_piece_feather.webp',label:'ريشة الأرشيف'}],
- [{src:'treasure/art/story5/ch4_secret_star_lens.webp',label:'عدسة النجمة'},{src:'treasure/art/story5/ch6_seal_moon.webp',label:'ختم القمر'}],
- [{src:'treasure/art/story5/ch3_s1_piece_tide_lever.webp',label:'ذراع المد'},{src:'treasure/art/story5/tool_wind_axle.webp',label:'محور القناة'}],
- [{src:'watercolor/art/icons54/shell.webp',label:'صدفة الجليد'},{src:'treasure/art/story5/tool_crystal_weight.webp',label:'بلورة التوازن'}],
- [{src:'treasure/art/story5/ch3_s2_piece_balance_stand.webp',label:'قاعدة الرهان'},{src:'treasure/art/story5/ch3_s2_piece_stone.webp',label:'حرشفة حجرية'}],
- [{src:'watercolor/art/icons54/lantern.webp',label:'مصدر الضوء'},{src:'treasure/art/story5/ch4_secret_star_lens.webp',label:'عدسة الظل'}],
- [{src:'treasure/art/story5/ch1_secret_letter.webp',label:'الرسالة المشفرة'},{src:'treasure/art/story5/tool_key.webp',label:'مفتاح القبطان'}],
- [{src:'treasure/art/story5/tool_rope.webp',label:'حبال الشحن'},{src:'treasure/art/story5/ch1_s2_piece_anchor.webp',label:'ختم الرصيف'}],
- [{src:'treasure/art/story5/ch3_s1_piece_tide_lever.webp',label:'ذراع الساعة'},{src:'treasure/art/story5/ch5_s2_piece_gear_large.webp',label:'ترس المد'}],
- [{src:'treasure/art/story5/ch1_s3_piece_mirror.webp',label:'رقعة المرآة'},{src:'treasure/art/story5/ch4_s3_piece_feather.webp',label:'ريشة النقش'}],
- [{src:'treasure/art/story5/tool_compass.webp',label:'بوصلة الرياح'},{src:'treasure/art/story5/tool_observatory_needle.webp',label:'إبرة الاتجاه'}],
- [{src:'expedition10/art/props/20-mirror-guardians.webp',label:'حارسا البوابة'},{src:'treasure/art/story5/tool_key.webp',label:'مفتاح الحارس'}],
- [{src:'expedition10/art/props/21-maze-lanterns.webp',label:'فوانيس الممر'},{src:'treasure/art/story5/tool_compass.webp',label:'بوصلة الحديقة'}],
- [{src:'treasure/art/story5/tool_water_valve.webp',label:'صمام الماء'},{src:'watercolor/art/icons54/pearlstand.webp',label:'قاعدة القياس'}],
- [{src:'watercolor/art/icons54/bell.webp',label:'جرس الإشارة'},{src:'treasure/art/story5/tool_bell_clapper.webp',label:'لسان الجرس'}],
- [{src:'treasure/art/story5/ch5_s2_piece_gear_large.webp',label:'القرص الكبير'},{src:'treasure/art/story5/ch5_s2_piece_gear_medium.webp',label:'القرص المتوسط'}],
- [{src:'treasure/art/story5/ch4_secret_star_lens.webp',label:'عدسة الختم'},{src:'treasure/art/story5/ch5_secret_storm_gear.webp',label:'ترس العاصفة'}]
+  [
+    {
+      "src": "watercolor/art/icons54/key.webp",
+      "label": "مفتاح العدسة"
+    },
+    {
+      "src": "treasure/art/story5/ch1_s2_piece_anchor.webp",
+      "label": "مرساة المنارة"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/ch1_s2_piece_shell.webp",
+      "label": "صدفة النهر"
+    },
+    {
+      "src": "treasure/art/story5/ch1_s2_piece_anchor.webp",
+      "label": "مرساة القارب"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/ch4_s1_piece_map_tile.webp",
+      "label": "رقعة خريطة"
+    },
+    {
+      "src": "treasure/art/story5/tool_compass.webp",
+      "label": "بوصلة التوجيه"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/ch3_s2_piece_balance_beam.webp",
+      "label": "عارضة الميزان"
+    },
+    {
+      "src": "treasure/art/story5/ch3_s2_piece_balance_pan.webp",
+      "label": "كفة القياس"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/tool_crystal_weight.webp",
+      "label": "وزن البلور"
+    },
+    {
+      "src": "treasure/art/story5/ch4_seal_crystal.webp",
+      "label": "ختم البلورة"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/tool_lens.webp",
+      "label": "عدسة الضوء"
+    },
+    {
+      "src": "treasure/art/story5/ch6_seal_moon.webp",
+      "label": "ختم الانعكاس"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/ch5_s2_piece_gear_medium.webp",
+      "label": "ترس متوسط"
+    },
+    {
+      "src": "treasure/art/story5/ch5_s2_piece_gear_small.webp",
+      "label": "ترس صغير"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/tool_rope.webp",
+      "label": "حبل الربط"
+    },
+    {
+      "src": "treasure/art/story5/ch1_s2_piece_anchor.webp",
+      "label": "مرساة الجزيرة"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/ch1_secret_letter.webp",
+      "label": "رسالة القبطان"
+    },
+    {
+      "src": "treasure/art/story5/ch4_s3_piece_feather.webp",
+      "label": "ريشة الأرشيف"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/ch4_secret_star_lens.webp",
+      "label": "عدسة النجمة"
+    },
+    {
+      "src": "treasure/art/story5/ch6_seal_moon.webp",
+      "label": "ختم القمر"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/ch3_s1_piece_tide_lever.webp",
+      "label": "ذراع المد"
+    },
+    {
+      "src": "treasure/art/story5/tool_wind_axle.webp",
+      "label": "محور القناة"
+    }
+  ],
+  [
+    {
+      "src": "watercolor/art/icons54/shell.webp",
+      "label": "صدفة الجليد"
+    },
+    {
+      "src": "treasure/art/story5/tool_crystal_weight.webp",
+      "label": "بلورة التوازن"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/ch3_s2_piece_balance_stand.webp",
+      "label": "قاعدة الرهان"
+    },
+    {
+      "src": "treasure/art/story5/ch3_s2_piece_stone.webp",
+      "label": "حرشفة حجرية"
+    }
+  ],
+  [
+    {
+      "src": "watercolor/art/icons54/lantern.webp",
+      "label": "مصدر الضوء"
+    },
+    {
+      "src": "treasure/art/story5/ch4_secret_star_lens.webp",
+      "label": "عدسة الظل"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/tool_rope.webp",
+      "label": "حبال الشحن"
+    },
+    {
+      "src": "treasure/art/story5/ch1_s2_piece_anchor.webp",
+      "label": "ختم الرصيف"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/ch3_s1_piece_tide_lever.webp",
+      "label": "ذراع الساعة"
+    },
+    {
+      "src": "treasure/art/story5/ch5_s2_piece_gear_large.webp",
+      "label": "ترس المد"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/ch1_s3_piece_mirror.webp",
+      "label": "رقعة المرآة"
+    },
+    {
+      "src": "treasure/art/story5/ch4_s3_piece_feather.webp",
+      "label": "ريشة النقش"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/tool_compass.webp",
+      "label": "بوصلة الرياح"
+    },
+    {
+      "src": "treasure/art/story5/tool_observatory_needle.webp",
+      "label": "إبرة الاتجاه"
+    }
+  ],
+  [
+    {
+      "src": "expedition10/art/props/20-mirror-guardians.webp",
+      "label": "حارسا البوابة"
+    },
+    {
+      "src": "treasure/art/story5/tool_key.webp",
+      "label": "مفتاح الحارس"
+    }
+  ],
+  [
+    {
+      "src": "expedition10/art/props/21-maze-lanterns.webp",
+      "label": "فوانيس الممر"
+    },
+    {
+      "src": "treasure/art/story5/tool_compass.webp",
+      "label": "بوصلة الحديقة"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/tool_water_valve.webp",
+      "label": "صمام الماء"
+    },
+    {
+      "src": "watercolor/art/icons54/pearlstand.webp",
+      "label": "قاعدة القياس"
+    }
+  ],
+  [
+    {
+      "src": "watercolor/art/icons54/bell.webp",
+      "label": "جرس الإشارة"
+    },
+    {
+      "src": "treasure/art/story5/tool_bell_clapper.webp",
+      "label": "لسان الجرس"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/ch5_s2_piece_gear_large.webp",
+      "label": "القرص الكبير"
+    },
+    {
+      "src": "treasure/art/story5/ch5_s2_piece_gear_medium.webp",
+      "label": "القرص المتوسط"
+    }
+  ],
+  [
+    {
+      "src": "treasure/art/story5/ch4_secret_star_lens.webp",
+      "label": "عدسة الختم"
+    },
+    {
+      "src": "treasure/art/story5/ch5_secret_storm_gear.webp",
+      "label": "ترس العاصفة"
+    }
+  ]
 ];
 stages.forEach((stage,index)=>{stage.prop=ART+'props/'+expeditionPropFiles[index];stage.artDetails=expeditionArtDetails[index];});
 const itemNames={map:'الخريطة',compass:'البوصلة',lantern:'الفانوس',telescope:'المنظار',key:'المفتاح',moon:'القمر',anchor:'المرساة',sun:'الشمس'};
@@ -98,14 +331,14 @@ function preloadCrewPoses(){
     image.src=CREW+'poses/'+key+'-'+pose+'.webp';
   }
 }
-function header(){return `<header class="ex10-header"><div class="ex10-brand"><span class="ex10-compass">✥</span><div><h1>مختبر العقل</h1><small>رحلة جانبية في أرض أَثْران</small></div></div><div class="ex10-stats"><span class="ex10-stat">★ ${ar(save.totalStars)} / ٧٥</span><span class="ex10-stat">✦ ${ar(completed())} / ٢٥</span></div></header>`;}
-function mapPositions(){/* 5.5.28: nudged (≤6 points) so no two stations overlap and none is clipped from 320px phones to tablets */return[[21,64],[34,49],[48,57],[63,36],[77,32],[79,54],[63,72],[83,77],[46,78],[51,14],[67,13],[91,30],[93,56],[69,86],[25,87],[7,70],[7,40],[31,8],[93,88],[93,8],[82,19],[63,25],[56,46],[42,33],[24,26]];}
+function header(){return `<header class="ex10-header"><div class="ex10-brand"><span class="ex10-compass">✥</span><div><h1>مختبر العقل</h1><small>رحلة جانبية في أرض أَثْران</small></div></div><div class="ex10-stats"><span class="ex10-stat">★ ${ar(save.totalStars)} / ٧٢</span><span class="ex10-stat">✦ ${ar(completed())} / ٢٤</span></div></header>`;}
+function mapPositions(){/* 5.5.28: nudged (≤6 points) so no two stations overlap and none is clipped from 320px phones to tablets */return[[21,64],[34,49],[48,57],[63,36],[77,32],[79,54],[63,72],[83,77],[46,78],[51,14],[67,13],[91,30],[93,56],[69,86],[7,70],[7,40],[31,8],[93,88],[93,8],[82,19],[63,25],[56,46],[42,33],[24,26]];}
 let journeyEntry=false;
-function renderMap(){if(journeyEntry&&window.mindlabJourneyHub?.returnToMap){backHub();window.mindlabJourneyHub.returnToMap();return}view='map';stopTimer();const positions=mapPositions(),done=completed();root.innerHTML=`<main class="ex10">${header()}<div class="ex10-panel"><div class="ex10-map-intro"><div><span class="ex10-eyebrow">رحلة جانبية · خمس وعشرون مرحلة قابلة للعب</span><h2 class="ex10-title">أرض أَثْران: سرّ القلب المفقود</h2><p class="ex10-sub">اجمعوا العلامات الخمس والعشرين، وافتحوا حديقة الفوانيس وأحواض المعبد وأبراج الإشارة وغرفة الأقراص والختم الأخير.</p></div><button class="ex10-back" data-ex10="hub">رجوع إلى المكتبة ↶</button></div><div class="ex10-map" role="group" aria-label="خريطة أرض أَثْران"><svg class="ex10-map-route" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${positions.map(([x,y],k)=>(k?'L':'M')+x+' '+y).join(' ')}"/></svg>${stages.map((s,i)=>{const [x,y]=positions[i],d=!!save.done[s.id],u=unlocked(i),cls=d?'done':u?'current':'locked';return `<button class="ex10-node ${cls}" data-ex10-node="${i}" style="left:${x}%;top:${y}%" aria-label="${s.name} ${u?'متاحة':'مقفلة'}">${d?STATE_ICON.done:u?ar(i+1):STATE_ICON.locked}<small>${s.name}</small></button>`}).join('')}</div><div class="ex10-map-legend">المسار يتابع من الميناء الداخلي إلى حديقة الفوانيس وأحواض المعبد ثم محراب الختم الخماسي · المراحل تفتح بالتتابع</div><div class="ex10-map-footer"><span>التقدم: <b>${ar(done)} من ٢٥</b> مرحلة · النجوم ${ar(save.totalStars)} من ٧٥</span><button class="ex10-btn dark" data-ex10="continue">${done? 'تابع من آخر مرحلة':'ابدأ المغامرة'}</button></div></div><div class="ex10-section-head"><h3>محطات الرحلة</h3><small>كل محطة تتطلب حل لغزها لفتح التالية</small></div><section class="ex10-levels">${stages.map((s,i)=>{const d=!!save.done[s.id],u=unlocked(i),stars=save.stars[s.id]||0;return `<button class="ex10-level-card ${u?'':'locked'} ${d?'done':''}" data-ex10-node="${i}" ${u?'':'aria-disabled="true"'}><span class="ex10-level-thumb"><img src="${scenePaths(s)}" alt="" loading="lazy">${stateBadge(d?'done':u?'open':'locked')}</span><span><b>${ar(i+1)} · ${s.name}</b><small>${s.kind} · ${u?(d?'مكتملة ويمكن إعادتها':'متاحة للعب'):'تُفتح بعد المرحلة السابقة'}</small><span class="ex10-stars">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</span></span></button>`}).join('')}</section></main>`;
- root.querySelectorAll('[data-ex10-node]').forEach(b=>b.addEventListener('click',()=>{const i=+b.dataset.ex10Node;if(unlocked(i))renderIntro(i);else toast('أكمل المرحلة السابقة أولاً.');}));root.querySelector('[data-ex10="hub"]').onclick=()=>backHub();root.querySelector('[data-ex10="continue"]').onclick=()=>{const i=stages.findIndex(s=>!save.done[s.id]);renderIntro(i<0?24:i);};}
+function renderMap(){if(journeyEntry&&window.mindlabJourneyHub?.returnToMap){backHub();window.mindlabJourneyHub.returnToMap();return}view='map';stopTimer();const positions=mapPositions(),done=completed();root.innerHTML=`<main class="ex10">${header()}<div class="ex10-panel"><div class="ex10-map-intro"><div><span class="ex10-eyebrow">رحلة جانبية · ٢٤ مرحلة قابلة للعب</span><h2 class="ex10-title">أرض أَثْران: سرّ القلب المفقود</h2><p class="ex10-sub">اجمعوا العلامات الأربع والعشرين، وافتحوا حديقة الفوانيس وأحواض المعبد وأبراج الإشارة وغرفة الأقراص والختم الأخير.</p></div><button class="ex10-back" data-ex10="hub">رجوع إلى المكتبة ↶</button></div><div class="ex10-map" role="group" aria-label="خريطة أرض أَثْران"><svg class="ex10-map-route" viewBox="0 0 100 100" preserveAspectRatio="none"><path d="${positions.map(([x,y],k)=>(k?'L':'M')+x+' '+y).join(' ')}"/></svg>${stages.map((s,i)=>{const [x,y]=positions[i],d=!!save.done[s.id],u=unlocked(i),cls=d?'done':u?'current':'locked';return `<button class="ex10-node ${cls}" data-ex10-node="${i}" style="left:${x}%;top:${y}%" aria-label="${s.name} ${u?'متاحة':'مقفلة'}">${d?STATE_ICON.done:u?ar(i+1):STATE_ICON.locked}<small>${s.name}</small></button>`}).join('')}</div><div class="ex10-map-legend">المسار يتابع من الميناء الداخلي إلى حديقة الفوانيس وأحواض المعبد ثم محراب الختم الخماسي · المراحل تفتح بالتتابع</div><div class="ex10-map-footer"><span>التقدم: <b>${ar(done)} من ٢٤</b> مرحلة · النجوم ${ar(save.totalStars)} من ٧٥</span><button class="ex10-btn dark" data-ex10="continue">${done? 'تابع من آخر مرحلة':'ابدأ المغامرة'}</button></div></div><div class="ex10-section-head"><h3>محطات الرحلة</h3><small>كل محطة تتطلب حل لغزها لفتح التالية</small></div><section class="ex10-levels">${stages.map((s,i)=>{const d=!!save.done[s.id],u=unlocked(i),stars=save.stars[s.id]||0;return `<button class="ex10-level-card ${u?'':'locked'} ${d?'done':''}" data-ex10-node="${i}" ${u?'':'aria-disabled="true"'}><span class="ex10-level-thumb"><img src="${scenePaths(s)}" alt="" loading="lazy">${stateBadge(d?'done':u?'open':'locked')}</span><span><b>${ar(i+1)} · ${s.name}</b><small>${s.kind} · ${u?(d?'مكتملة ويمكن إعادتها':'متاحة للعب'):'تُفتح بعد المرحلة السابقة'}</small><span class="ex10-stars">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</span></span></button>`}).join('')}</section></main>`;
+ root.querySelectorAll('[data-ex10-node]').forEach(b=>b.addEventListener('click',()=>{const i=+b.dataset.ex10Node;if(unlocked(i))renderIntro(i);else toast('أكمل المرحلة السابقة أولاً.');}));root.querySelector('[data-ex10="hub"]').onclick=()=>backHub();root.querySelector('[data-ex10="continue"]').onclick=()=>{const i=stages.findIndex(s=>!save.done[s.id]);renderIntro(i<0?23:i);};}
 function toast(t){let n=root.querySelector('.ex10-toast');if(!n){n=document.createElement('div');n.className='ex10-toast';root.append(n);}n.textContent=t;}
 function backHub(){journeyEntry=false;stopTimer();view='hub';try{if(typeof baseRender==='function')baseRender();else renderPuz();}catch(e){}insertLaunch();}
-function insertLaunch(){const v=$('#v-puz');if(!v||!v.querySelector('.v5-hublib')||v.querySelector('.ex10-launch'))return;const card=document.createElement('section');card.className='ex10-launch';card.innerHTML=`<div><span class="ex10-eyebrow" style="color:#f3d18a">رحلة جانبية · ٢٥ لغزاً جاهزة للعب</span><h2>رحلة أسرار أَثْران</h2><p>عالم مرسوم يدوياً، أدوات ومقتنيات مخصصة لكل لغز، ورواء ونهى وورد يتحركن ويتفاعلن مع أحداث الرحلة.</p></div><button class="ex10-launch-go" type="button">افتح الخريطة ←</button>`;card.querySelector('button').onclick=renderMap;const before=v.querySelector('.pzstory')||v.children[1]||null;v.insertBefore(card,before);}
+function insertLaunch(){const v=$('#v-puz');if(!v||!v.querySelector('.v5-hublib')||v.querySelector('.ex10-launch'))return;const card=document.createElement('section');card.className='ex10-launch';card.innerHTML=`<div><span class="ex10-eyebrow" style="color:#f3d18a">رحلة جانبية · ٢٤ لغزاً جاهزة للعب</span><h2>رحلة أسرار أَثْران</h2><p>عالم مرسوم يدوياً، أدوات ومقتنيات مخصصة لكل لغز، ورواء ونهى وورد يتحركن ويتفاعلن مع أحداث الرحلة.</p></div><button class="ex10-launch-go" type="button">افتح الخريطة ←</button>`;card.querySelector('button').onclick=renderMap;const before=v.querySelector('.pzstory')||v.children[1]||null;v.insertBefore(card,before);}
 function renderIntro(i){if(journeyEntry){renderMap();return}stopTimer();active=i;view='intro';const s=stages[i],beat=lastStoryBeat&&lastStoryBeat.nextIndex===i?`<aside class="ex10-story-transition" aria-live="polite"><span>انتقال في الرحلة</span><b>${lastStoryBeat.from} ← ${s.name}</b><p>${lastStoryBeat.text}</p></aside>`:'';lastStoryBeat=null;root.innerHTML=`<main class="ex10">${header()}<button class="ex10-back" data-ex10="map">← العودة إلى الخريطة</button>${beat}<section class="ex10-panel"><div class="ex10-stage-hero"><img src="${scenePaths(s)}" alt="مشهد ${s.place}"><img class="ex10-stage-prop" src="${s.prop}" alt="${s.name} — عنصر مرسوم خاص" loading="eager"><div class="ex10-stage-hero-copy"><span class="ex10-eyebrow" style="color:#f9d98b">المرحلة ${ar(i+1)} · ${s.place}</span><h2>${s.name}</h2><p>${s.objective}</p></div></div><div class="ex10-brief"><span class="ex10-eyebrow">مقدمة الرحلة</span><p style="margin:4px 0 10px;line-height:1.8;color:#684c2c;font-size:13px">${s.story}</p>${artDetailsHtml(s,'intro')} ${crewHtml(i)}<div class="ex10-dialogue" aria-live="polite"><strong>${i%3===0?'رواء':i%3===1?'نهى':'ورد'}:</strong> ${s.talk[i%3]}</div><div class="ex10-start-row"><small>نوع التحدي: ${s.kind} · ${i===6?'مؤقت ٤٥ ثانية':i===11?'حد أقصى ٧ انزلاقات':i===16?'مؤقت ٣٥ ثانية':i===17?'حد أقصى ٨ حركات':i===18?'حد أقصى ٦ دفعات':i===19?'حد أقصى ٨ قفزات':i===20?'مسار فريد من ١٢ خطوة':i===21?'٨ عمليات قياس':i===22?'٤ ضغطات دقيقة':i===23?'٧ نقلات قانونية':i===24?'٥ رموز · ترتيب وحيد':'لا يوجد وقت إجباري'}</small><button class="ex10-btn" data-ex10="start">قواعد المحطة</button></div></div></section></main>`;
  root.querySelector('[data-ex10="map"]').onclick=renderMap;
  const opening=window.mindlabJourneyHub;
@@ -115,19 +348,19 @@ function renderIntro(i){if(journeyEntry){renderMap();return}stopTimer();active=i
 const STATE_ICON={locked:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.2" fill="currentColor"/><path d="M8 10.5V8a4 4 0 0 1 8 0v2.5" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/><circle cx="12" cy="15.5" r="1.6" fill="#1b2c33"/></svg>',open:'<svg viewBox="0 0 24 24" aria-hidden="true"><rect x="5" y="10.5" width="14" height="10" rx="2.2" fill="currentColor"/><path d="M8 10.5V8a4 4 0 0 1 7.6-1.7" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"/></svg>',done:'<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M5 12.5l4.2 4.2L19 7" fill="none" stroke="currentColor" stroke-width="3" stroke-linecap="round" stroke-linejoin="round"/></svg>'};
 const STATE_LABEL={locked:'مقفلة',open:'مفتوحة',done:'مكتملة'};
 function stateBadge(st){return `<i class="ex10-state-badge ${st}" role="img" aria-label="${STATE_LABEL[st]}">${STATE_ICON[st]}</i>`;}
-function commonGame(i,inner,extra=''){const s=stages[i],progress=Math.round(((i+1)/stages.length)*100);return `<main class="ex10">${header()}<div class="ex10-game-shell" data-stage-id="${s.id}"><div class="ex10-game-top"><div><b>${ar(i+1)} · ${s.name}</b><br><small>${s.place} · ${s.kind}</small></div><div class="ex10-top-right">${extra}<button class="ex10-back" data-ex10="map">الخريطة ×</button></div></div><div class="ex10-stage-progress" role="progressbar" aria-label="تقدم الرحلة" aria-valuemin="1" aria-valuemax="25" aria-valuenow="${i+1}"><div><span>المحطة ${ar(i+1)} من ${ar(stages.length)}</span><b>${ar(completed())} مكتملة</b></div><i style="width:${progress}%"></i></div><div class="ex10-game-scene ex10-scene-enter" data-state="${save.done[s.id]?'done':'locked'}" style="background-image:url('${scenePaths(s)}')"><span>${s.place}</span>${stateBadge(save.done[s.id]?'done':'locked')}</div><div class="ex10-game-content"><section class="ex10-brief" aria-label="بطاقة المحطة"><div class="ex10-stage-prop-inline"><img src="${s.prop}" alt="عنصر مرسوم خاص بـ ${s.name}" loading="lazy" decoding="async"><p class="ex10-objective">${s.objective}</p></div>${artDetailsHtml(s)}<div class="ex10-brief-crew">${crewHtml(i,true)}<div class="ex10-dialogue ex10-live-dialogue" aria-live="polite"><strong>${['رواء','نهى','ورد'][i%3]}:</strong> ${s.talk[i%3]}</div></div></section>${inner}<div class="ex10-controls"><button class="ex10-btn secondary" data-ex10="hint">تلميح</button><button class="ex10-btn secondary" data-ex10="restart">إعادة المرحلة</button><button class="ex10-btn dark" data-ex10="map2">الخريطة</button></div><div class="ex10-feedback" id="ex10-feedback" role="status" aria-live="polite" aria-atomic="true">ابدأ بالتفكير، ثم نفّذ حركتك.</div><div id="ex10-hint" class="ex10-hint" role="note" hidden></div></div></div></main>`;}
+function commonGame(i,inner,extra=''){const s=stages[i],progress=Math.round(((i+1)/stages.length)*100);return `<main class="ex10">${header()}<div class="ex10-game-shell" data-stage-id="${s.id}"><div class="ex10-game-top"><div><b>${ar(i+1)} · ${s.name}</b><br><small>${s.place} · ${s.kind}</small></div><div class="ex10-top-right">${extra}<button class="ex10-back" data-ex10="map">الخريطة ×</button></div></div><div class="ex10-stage-progress" role="progressbar" aria-label="تقدم الرحلة" aria-valuemin="1" aria-valuemax="${stages.length}" aria-valuenow="${i+1}"><div><span>المحطة ${ar(i+1)} من ${ar(stages.length)}</span><b>${ar(completed())} مكتملة</b></div><i style="width:${progress}%"></i></div><div class="ex10-game-scene ex10-scene-enter" data-state="${save.done[s.id]?'done':'locked'}" style="background-image:url('${scenePaths(s)}')"><span>${s.place}</span>${stateBadge(save.done[s.id]?'done':'locked')}</div><div class="ex10-game-content"><section class="ex10-brief" aria-label="بطاقة المحطة"><div class="ex10-stage-prop-inline"><img src="${s.prop}" alt="عنصر مرسوم خاص بـ ${s.name}" loading="lazy" decoding="async"><p class="ex10-objective">${s.objective}</p></div>${artDetailsHtml(s)}<div class="ex10-brief-crew">${crewHtml(i,true)}<div class="ex10-dialogue ex10-live-dialogue" aria-live="polite"><strong>${['رواء','نهى','ورد'][i%3]}:</strong> ${s.talk[i%3]}</div></div></section>${inner}<div class="ex10-controls"><button class="ex10-btn secondary" data-ex10="hint">تلميح</button><button class="ex10-btn secondary" data-ex10="restart">إعادة المرحلة</button><button class="ex10-btn dark" data-ex10="map2">الخريطة</button></div><div class="ex10-feedback" id="ex10-feedback" role="status" aria-live="polite" aria-atomic="true">ابدأ بالتفكير، ثم نفّذ حركتك.</div><div id="ex10-hint" class="ex10-hint" role="note" hidden></div></div></div></main>`;}
 function bindCommon(i){root.querySelector('[data-ex10="map"]').onclick=renderMap;root.querySelector('[data-ex10="map2"]').onclick=renderMap;root.querySelector('[data-ex10="restart"]').onclick=()=>startStage(i);root.querySelector('[data-ex10="hint"]').onclick=()=>showHint(i);}
 function feedback(text,kind=''){const b=$('#ex10-feedback',root);if(b){b.textContent=text;b.className='ex10-feedback'+(kind?' '+kind:'');}if(kind==='bad')updateCrew(['worried','thinking','curious'],['نهى','توقف لحظة، لنعيد فحص الدليل قبل الخطوة التالية.']);else if(kind==='good')updateCrew(['thinking','happy','curious'],['رواء','هذه خطوة صحيحة؛ واصل بناء الحل.']);}
 function updateCrew(moods,words){const crew=root.querySelector('.ex10-crew-mini, .ex10-crew');if(!crew)return;const imgs=$$('.ex10-heroine',crew);imgs.forEach((el,k)=>{if(moods&&moods[k])setHeroinePose(el,moods[k]);});if(words){let d=root.querySelector('.ex10-dialogue');if(!d){d=document.createElement('div');d.className='ex10-dialogue';crew.after(d);}d.innerHTML=`<strong>${words[0]}:</strong> ${words[1]}`;}}
 function showHint(i){const s=stages[i],n=(gameState.hints||0);gameState.hints=n+1;const h=$('#ex10-hint',root);if(h){h.hidden=false;h.textContent=s.hint[Math.min(n,s.hint.length-1)];}feedback('ظهر تلميح جديد؛ سيؤثر على نجوم الإتقان فقط.','');updateCrew(['thinking','curious','curious'],['ورد','وجدت ملاحظة قد تساعدنا، لكن القرار لك.']);}
 function winStage(i,message){stopTimer();if(!gameState||gameState.finished)return;gameState.finished=true;{const sc=root.querySelector('.ex10-game-scene');if(sc){sc.dataset.state='done';const b=sc.querySelector('.ex10-state-badge');if(b)b.outerHTML=stateBadge('done');}}const id=stages[i].id,stars=gameState.hints?1:gameState.errors?2:3;save.done[id]=true;save.stars[id]=Math.max(save.stars[id]||0,stars);save.best[id]=Math.max(save.best[id]||0,stars);save.totalStars=Object.values(save.stars).reduce((a,b)=>a+b,0);saveNow();lastStoryBeat={from:stages[i].name,text:stages[i].outro,nextIndex:i+1};renderOutcome(i,true,message,stars);}
 function failStage(i,message){stopTimer();if(!gameState||gameState.finished)return;gameState.finished=true;renderOutcome(i,false,message,0);}
-function renderOutcome(i,success,message,stars){const s=stages[i];root.innerHTML=`<main class="ex10">${header()}<section class="ex10-outcome"><div class="emblem">${success?'🏆':'🧭'}</div><span class="ex10-eyebrow">${success?(i===24?'اكتملت الرحلة الجانبية':'تم فتح المحطة التالية'):'لم تكتمل المحاولة'}</span><h2>${success?'نجاح!':'تعثر مؤقت'}</h2><p>${message||s.outro}</p>${success?`<aside class="ex10-outcome-story"><span>ما الذي تغيّر في الرحلة؟</span><p>${s.outro}</p></aside><div class="ex10-stars-big">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</div><p>حصلت على ${ar(stars)} نجوم. ${stars===3?'إتقان كامل دون أخطاء أو تلميحات.':stars===2?'حل صحيح مع بعض الأخطاء.':'تم الحل بعد استخدام التلميح.'}</p>`:`<p>لم نحذف تقدمك السابق. يمكنك إعادة المحاولة أو العودة إلى الخريطة.</p>`}${crewHtml(i,false,success?['happy','happy','happy']:['thinking','worried','curious'])}<div class="ex10-actions-row">${success&&i<24?`<button class="ex10-btn" data-ex10="next">المرحلة التالية ←</button>`:''}${success&&i===24?`<button class="ex10-btn" data-ex10="epilogue">شاهد خاتمة الرحلة</button>`:''}<button class="ex10-btn secondary" data-ex10="retry">${success?'إعادة اللعب':'حاول مرة أخرى'}</button><button class="ex10-btn dark" data-ex10="map">الخريطة</button></div></section></main>`;
+function renderOutcome(i,success,message,stars){const s=stages[i];root.innerHTML=`<main class="ex10">${header()}<section class="ex10-outcome"><div class="emblem">${success?'🏆':'🧭'}</div><span class="ex10-eyebrow">${success?(i===24?'اكتملت الرحلة الجانبية':'تم فتح المحطة التالية'):'لم تكتمل المحاولة'}</span><h2>${success?'نجاح!':'تعثر مؤقت'}</h2><p>${message||s.outro}</p>${success?`<aside class="ex10-outcome-story"><span>ما الذي تغيّر في الرحلة؟</span><p>${s.outro}</p></aside><div class="ex10-stars-big">${'★'.repeat(stars)}${'☆'.repeat(3-stars)}</div><p>حصلت على ${ar(stars)} نجوم. ${stars===3?'إتقان كامل دون أخطاء أو تلميحات.':stars===2?'حل صحيح مع بعض الأخطاء.':'تم الحل بعد استخدام التلميح.'}</p>`:`<p>لم نحذف تقدمك السابق. يمكنك إعادة المحاولة أو العودة إلى الخريطة.</p>`}${crewHtml(i,false,success?['happy','happy','happy']:['thinking','worried','curious'])}<div class="ex10-actions-row">${success&&i<stages.length-1?`<button class="ex10-btn" data-ex10="next">المرحلة التالية ←</button>`:''}${success&&i===stages.length-1?`<button class="ex10-btn" data-ex10="epilogue">شاهد خاتمة الرحلة</button>`:''}<button class="ex10-btn secondary" data-ex10="retry">${success?'إعادة اللعب':'حاول مرة أخرى'}</button><button class="ex10-btn dark" data-ex10="map">الخريطة</button></div></section></main>`;
  const icons={next:'next',epilogue:'check',retry:'retry',map:'map'};
  root.querySelectorAll('.ex10-outcome button').forEach(control=>window.puzzleAction?.(control,icons[control.dataset.ex10]));
  const next=root.querySelector('[data-ex10="next"]');if(next)next.onclick=()=>renderIntro(i+1);const ep=root.querySelector('[data-ex10="epilogue"]');if(ep)ep.onclick=renderEpilogue;root.querySelector('[data-ex10="retry"]').onclick=()=>renderIntro(i);root.querySelector('[data-ex10="map"]').onclick=renderMap;}
-function renderEpilogue(){root.innerHTML=`<main class="ex10">${header()}<section class="ex10-outcome"><div class="emblem">🌊</div><span class="ex10-eyebrow">نهاية الرحلة</span><h2>عاد قلب أَثْران إلى النبض</h2><p>اجتمعت العلامات الخمس والعشرون، واستعادت رواء ونهى وورد ختم الرحلة الخماسي. اكتملت هذه المغامرة الجانبية، ويمكنكن العودة إلى خريطتها لإتقان المحطات أو متابعة الحملة الرسمية من خريطة رحلة الكنز.</p>${crewHtml(24)}<div class="ex10-actions-row"><button class="ex10-btn" data-ex10="map">استكشف الخريطة</button></div></section></main>`;root.querySelector('[data-ex10="map"]').onclick=renderMap;}
-function startStage(i){preloadCrewPoses();stopTimer();active=i;view='game';gameState={hints:0,errors:0,moves:0,finished:false};switch(i){case 0:gameCode(i);break;case 1:gameRiver(i);break;case 2:gameMap(i);break;case 3:gameBalance(i);break;case 4:gameMemory(i);break;case 5:gameMirrors(i);break;case 6:gameTimed(i);break;case 7:gameIslands(i);break;case 8:gameArchiveGrid(i);break;case 9:gameStars(i);break;case 10:gamePipes(i);break;case 11:gameIce(i);break;case 12:gameNim(i);break;case 13:gameShadows(i);break;case 14:gameCipher(i);break;case 15:gameManifest(i);break;case 16:gameTideClock(i);break;case 17:gameRelics(i);break;case 18:gameCrate(i);break;case 19:gameKnight(i);break;case 20:gameLanternMaze(i);break;case 21:gameWaterJugs(i);break;case 22:gameSignalTowers(i);break;case 23:gameHanoi(i);break;case 24:gameFivefoldSeal(i);break;}}
+function renderEpilogue(){root.innerHTML=`<main class="ex10">${header()}<section class="ex10-outcome"><div class="emblem">🌊</div><span class="ex10-eyebrow">نهاية الرحلة</span><h2>عاد قلب أَثْران إلى النبض</h2><p>اجتمعت العلامات الخمس والعشرون، واستعادت رواء ونهى وورد ختم الرحلة الخماسي. اكتملت هذه المغامرة الجانبية، ويمكنكن العودة إلى خريطتها لإتقان المحطات أو متابعة الحملة الرسمية من خريطة رحلة الكنز.</p>${crewHtml(23)}<div class="ex10-actions-row"><button class="ex10-btn" data-ex10="map">استكشف الخريطة</button></div></section></main>`;root.querySelector('[data-ex10="map"]').onclick=renderMap;}
+function startStage(i){preloadCrewPoses();stopTimer();active=i;view='game';gameState={hints:0,errors:0,moves:0,finished:false};switch(i){case 0:gameCode(i);break;case 1:gameRiver(i);break;case 2:gameMap(i);break;case 3:gameBalance(i);break;case 4:gameMemory(i);break;case 5:gameMirrors(i);break;case 6:gameTimed(i);break;case 7:gameIslands(i);break;case 8:gameArchiveGrid(i);break;case 9:gameStars(i);break;case 10:gamePipes(i);break;case 11:gameIce(i);break;case 12:gameNim(i);break;case 13:gameShadows(i);break;case 14:gameManifest(i);break;case 15:gameTideClock(i);break;case 16:gameRelics(i);break;case 17:gameCrate(i);break;case 18:gameKnight(i);break;case 19:gameLanternMaze(i);break;case 20:gameWaterJugs(i);break;case 21:gameSignalTowers(i);break;case 22:gameHanoi(i);break;case 23:gameFivefoldSeal(i);break;}}
 function gameCode(i){let digits=[0,0,0],tries=0;root.innerHTML=commonGame(i,`<div class="ex10-clues">${L.CODE_CLUES.map((c,k)=>`<div class="ex10-clue"><b>المحاولة ${ar(k+1)}</b><br>${c.guess.split('').join(' · ')}<br><small>${c.well?`صحيح وفي مكانه: ${ar(c.well)}`:'لا يوجد رقم في مكانه'} · ${c.wrong?`صحيح في مكان آخر: ${ar(c.wrong)}`:'لا رقم صحيح في مكان آخر'}</small></div>`).join('')}</div><div class="ex10-dials">${digits.map((d,k)=>`<div class="ex10-dial"><button data-dial="${k}" data-dir="up" aria-label="زيادة الرقم"></button><strong id="ex10-d${k}">٠</strong><button data-dial="${k}" data-dir="down" aria-label="إنقاص الرقم"></button><small>الخانة ${ar(k+1)}</small></div>`).join('')}</div><div class="ex10-controls"><button class="ex10-btn" data-ex10="check-code">جرّب الرمز</button><span class="ex10-stat">محاولات متبقية: <b id="ex10-attempts">٥</b></span></div>`);bindCommon(i);
  root.querySelectorAll('[data-dial]').forEach(b=>b.onclick=()=>{const k=+b.dataset.dial;digits[k]=(digits[k]+(b.dataset.dir==='up'?1:9))%10;$('#ex10-d'+k,root).textContent=ar(digits[k]);gameState.moves++;});
  root.querySelector('[data-ex10="check-code"]').onclick=()=>{tries++;gameState.moves++;if(digits.join('')===L.TARGET_CODE){winStage(i,'انفتح قفل المنارة، وعاد شعاعها ليضيء الممر البحري.');return;}gameState.errors++;$('#ex10-attempts',root).textContent=ar(5-tries);feedback('لم يفتح القفل. راجع عدد الأرقام الصحيحة ومواقعها.','bad');updateCrew(['thinking','worried','curious'],['نهى','القفل ما زال مغلقاً… لنراجع القرائن بهدوء.']);if(tries>=5)failStage(i,'نفدت محاولات القفل الخمس. لم نفقد تقدمك؛ أعد المحاولة بعد مراجعة الأدلة.');};}
@@ -268,23 +501,6 @@ function gameShadows(i){
  root.querySelectorAll('[data-shadow]').forEach(b=>b.onclick=()=>{const k=+b.dataset.shadow;gameState.shadow[k]=(gameState.shadow[k]+1)%4;gameState.moves++;paint();if(JSON.stringify(gameState.shadow)===JSON.stringify(L.shadowTarget))winStage(i,'اصطفّت ظلال السفينة والسلحفاة والمرساة مع النقوش الثلاثة.');});
  root.querySelector('[data-ex10="check-shadows"]').onclick=()=>{if(JSON.stringify(gameState.shadow)===JSON.stringify(L.shadowTarget))winStage(i,'وصلت الفوانيس إلى اتجاهاتها الصحيحة وأضاء ختم المعبد.');else{gameState.errors++;feedback('الظلال لم تصطف بعد. تذكّر أن الفانوس الثاني عكس الأول، والثالث يدور معه باتجاه عقارب الساعة.','bad');}};paint();
 }
-
-// Stage 15 — rotate the Arabic Caesar wheel and decode the captain's bottle.
-function gameCipher(i){gameState.cipherShift=0;const alphabet=L.arabicCipherAlphabet;
- const ring=alphabet.map((letter,j)=>`<span style="--letter-angle:${j*360/alphabet.length}deg">${letter}</span>`).join('');
- const board=`<p class="ex10-objective">النص المشفّر على الورقة: <b class="ex10-cipher-text">${L.cipherText}</b>. تقول القرينة المحفورة على عنق الزجاجة إن الحرف <b>ا</b> في الرسالة الأصلية أصبح <b>ج</b> في الشفرة. أدر القرص وفق ترتيب الحروف ثم اقرأ الرسالة.</p><div class="ex10-cipher-disc"><div class="cipher-dial"><div class="cipher-ring" aria-hidden="true">${ring}</div><div class="cipher-core" aria-hidden="true">✦</div></div><div class="cipher-offset"><span>إزاحة القرص</span><strong id="ex10-cipher-shift">٠</strong></div><div class="ex10-cipher-controls"><button class="ex10-btn secondary" data-cipher="down" aria-label="أدر القرص للخلف">↶</button><button class="ex10-btn secondary" data-cipher="up" aria-label="أدر القرص للأمام">↷</button></div><div class="ex10-cipher-output"><small>الرسالة بعد فك الشفرة</small><b id="ex10-cipher-decoded">${L.shiftArabic(L.cipherText,0)}</b></div></div><div class="ex10-controls"><button class="ex10-btn" data-ex10="check-cipher">افتح الرسالة</button></div>`;
- root.innerHTML=commonGame(i,board);bindCommon(i);
- function paint(){gameState.cipherShift=(gameState.cipherShift+L.arabicCipherAlphabet.length)%L.arabicCipherAlphabet.length;const wheel=$('.cipher-dial',root), next=gameState.cipherShift;
-  const previous=Number(wheel.dataset.shift||0);
-  const delta=((next-previous+alphabet.length+1)%alphabet.length)-1;
-  const angle=Number(wheel.dataset.angle||0)+delta*360/alphabet.length;
-  wheel.dataset.shift=next;wheel.dataset.angle=angle;
-  wheel.style.setProperty('--dial-rotation',angle+'deg');
-  $('#ex10-cipher-shift',root).textContent=ar(next);$('#ex10-cipher-decoded',root).textContent=L.shiftArabic(L.cipherText,-gameState.cipherShift);}
- root.querySelectorAll('[data-cipher]').forEach(b=>b.onclick=()=>{const d=b.dataset.cipher==='up'?1:-1;gameState.cipherShift=(gameState.cipherShift+d+L.arabicCipherAlphabet.length)%L.arabicCipherAlphabet.length;gameState.moves++;paint();});
- root.querySelector('[data-ex10="check-cipher"]').onclick=()=>{const decoded=L.shiftArabic(L.cipherText,-gameState.cipherShift);if(decoded===L.cipherPlain&&gameState.cipherShift===L.cipherShift)winStage(i,'فُكّت رسالة القبطان: الميناء. لقد كشفت الرسالة الطريق إلى الميناء الداخلي.');else{gameState.errors++;feedback('الرسالة ما زالت غير مفهومة. ثبّت علاقة ا ← ج ثم احسب الإزاحة نفسها لبقية الحروف.','bad');updateCrew(['thinking','worried','curious'],['رواء','لدينا قرينة مؤكدة؛ لا نحتاج إلى تجربة كل الحروف عشوائياً.']);}};paint();
-}
-
 
 // Stage 16 — uniquely match four recovered cargo crates to the four berths.
 function gameManifest(i){

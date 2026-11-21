@@ -31,7 +31,7 @@ const ratio=(Math.max(...colors)+.05)/(Math.min(...colors)+.05);ok(ratio>=4.5,'g
 const assets=fs.readdirSync(path.join(base,'watercolor/art'));ok(!assets.some(x=>x.endsWith('.png')),'source PNG removed from deployment');ok(assets.filter(x=>x.endsWith('.webp')).length===56,'56 standalone WebP assets (5.1: + eight cropped library icons)');
 ok(assets.reduce((n,f)=>n+fs.statSync(path.join(base,'watercolor/art',f)).size,0)<6*1024*1024,'art budget below 6 MiB');
 const app=fs.readFileSync(path.join(base,'watercolor/app.js'),'utf8');ok(!/toDataURL|createElement\('canvas'\)|const tone0=tone/.test(app),'no atlas canvas crop or fragile tone interception');
-const html=fs.readFileSync(path.join(base,'index.html'),'utf8');ok(html.includes('if(window.Watercolor)Watercolor.stone();else tone('),'stone called directly by existing statue turn handler');
+const html=fs.readFileSync(path.join(base,'index.html'),'utf8');ok(!html.includes('function runStatues(')&&!html.includes("id:'pz_stat'"),'retired statue engine and registration are absent');
 async function serviceWorker(){
  const handlers={},stores=new Map(),offline={value:false},BASE='https://test.invalid/app/',api={};
  function cache(name){if(!stores.has(name))stores.set(name,new Map());const map=stores.get(name);return{async addAll(urls){for(const u of urls){const rel=new URL(u).pathname.slice('/app/'.length);ok(fs.existsSync(path.join(base,rel||'index.html')),'precache path exists '+rel);map.set(u,new Response('core',{status:200}));}},async match(req,opts={}){const url=typeof req==='string'?req:req.url;for(const[k,v]of map)if(k===url||(opts.ignoreSearch&&k.split('?')[0]===url.split('?')[0]))return v.clone();},async put(req,response){map.set(typeof req==='string'?req:req.url,response.clone());}};}

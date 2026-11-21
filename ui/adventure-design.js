@@ -7,7 +7,7 @@
   const $ = (s, r = document) => r.querySelector(s);
   const FAMILIES = {
     pirate: {
-      ids: ['pz_xbottle','pz_tpath','pz_xreef','pz_xbridge','pz_xcave','pz_xloot','pz_tmap','pz_tdig','pz_xlock'],
+      ids: ['pz_tpath','pz_xreef','pz_xbridge','pz_xcave','pz_xloot','pz_tmap','pz_tdig','pz_xlock'],
       label: 'رحلة القراصنة', title: 'اتبع أثر الخريطة واكتشف طريق الكنز',
       text: 'راقب العلامات، فك الإشارات، وخطّط خطواتك قبل التحرك.',
       color: 'pirate'

@@ -14,9 +14,9 @@ const boardSource=read('ui/board-art-data.js');
 const board=JSON.parse(boardSource.slice(boardSource.indexOf('{'),boardSource.lastIndexOf('}')+1));
 const stage=JSON.parse(read('ui/designs_art/river_stage1/anchors_manifest.json'));
 const riverJs=read('motion/lab10.js'),riverCss=read('motion/lab10.css'),hubJs=read('ui/journey-hub.js'),hubCss=read('ui/journey-hub.css'),load=read('ui/app.js');
-ok(openings.puzzles.length===80&&new Set(openings.puzzles.map(x=>x.puzzle_id)).size===80,'80 unique puzzle opening records');
+ok(openings.puzzles.length===78&&new Set(openings.puzzles.map(x=>x.puzzle_id)).size===78,'78 current puzzle opening records');
 ok(journey.chapters.length===4,'four journey choices');
-for(const [id,n] of [['seven_seas',21],['palace',19],['atheran',21],['side',25]]){
+for(const [id,n] of [['seven_seas',21],['palace',19],['atheran',21],['side',24]]){
   const c=journey.chapters.find(c=>c.id===id);
   ok(c&&c.stations.length===n,'chapter stations '+id);
 }
@@ -88,4 +88,4 @@ ok(doc.dialog&&doc.dialog.slots.children.length===19,'Palace click opens modal w
 doc.dialog.slots.children[0].onclick();
 ok(called.at(-1)==='puzzle','Palace station launches existing puzzle engine via its library tile');
 ok(!doc.dialog,'Palace closes its map before starting the puzzle');
-console.log(JSON.stringify({status:'passed',checks,openings:80,chapters:4,palaceStations:19,priorityArt:board.priority7.length},null,2));
+console.log(JSON.stringify({status:'passed',checks,openings:78,chapters:4,palaceStations:19,priorityArt:board.priority7.length},null,2));
