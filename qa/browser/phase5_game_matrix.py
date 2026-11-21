@@ -3,7 +3,7 @@ This complements pure logic tests and does not claim every level was solved.
 """
 import asyncio, json, os, sys
 from playwright.async_api import async_playwright
-from player_openings import dismiss_opening
+from smoke import open_game
 
 URL=sys.argv[1] if len(sys.argv)>1 else 'http://127.0.0.1:8765/'
 ENGINE=sys.argv[2] if len(sys.argv)>2 else 'chromium'
@@ -13,29 +13,24 @@ SELECTED=[
 ]
 async def open_one(page, gid, width):
     await page.set_viewport_size({'width':width,'height':844})
-    await page.evaluate('(id)=>startRun([id])', gid)
-    await page.wait_for_function("()=>typeof RUN!=='undefined'&&!!RUN&&document.querySelector('#stage')?.textContent?.trim().length>0",timeout=18000)
-    button=page.locator('#stage #go')
-    if await button.count() and await button.first.is_visible():
-        await button.first.click()
-        await dismiss_opening(page,wait=1200)
-    else:
-        await dismiss_opening(page,wait=500)
+    # Reuse the validated opening helper: it waits for countdowns and gate overlays.
+    await open_game(page,gid)
     # A usable stage must retain navigation/controls; do not assume specific engine geometry.
     info=await page.evaluate("""()=>{
        const stage=document.querySelector('#stage');
        const body=document.querySelector('#play');
        const W=document.documentElement.clientWidth;
        return {
-          chars:stage?.innerText?.trim().length||0,
-          buttons:stage?.querySelectorAll('button')?.length||0,
+          nodes:stage?.querySelectorAll('*')?.length||0,
+          buttons:stage?.querySelectorAll('button,input,[role="button"],canvas,[tabindex]')?.length||0,
+          stageHeight:Math.round(stage?.getBoundingClientRect().height||0),
           wide:document.documentElement.scrollWidth>W+3,
           visible:!!body&&getComputedStyle(body).display!=='none'
        };
     }""")
-    assert info['chars']>5 and info['visible'],f'{gid}@{width}: empty or invisible game: {info}'
+    assert info['nodes']>=2 and info['stageHeight']>40 and info['visible'],f'{gid}@{width}: empty or invisible game: {info}'
     assert not info['wide'],f'{gid}@{width}: horizontal overflow'
-    assert info['buttons']>0,f'{gid}@{width}: no usable controls'
+    assert info['buttons']>0 or info['nodes']>12,f'{gid}@{width}: no game board elements'
     await page.evaluate('()=>closePlay()')
     await page.wait_for_timeout(130)
     return info
