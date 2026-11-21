@@ -111,6 +111,17 @@ html #v-puz .ex10 :is(.ex10-title,.ex10-chapter-title) {
   line-height:1.55;
   text-wrap:balance;
 }
+/* Short objectives over painted game backgrounds must remain legible in
+   both themes; they are text, not another opaque information panel. */
+html[data-skin="light"] #play.fit #m {
+  color:var(--bp-ink)!important;
+  font-weight:800;
+}
+html[data-skin="dark"] #play.fit #m {
+  color:var(--bp-ink)!important;
+  font-weight:800;
+  text-shadow:0 1px 2px rgba(0,0,0,.6);
+}
 /* Top bar: quiet parchment surface, strongly differentiated circular tool icons. */
 html #play .pbar {
   border-color:var(--bp-stroke)!important;
