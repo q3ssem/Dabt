@@ -135,6 +135,18 @@
   serviceWorker.addEventListener('controllerchange', () => {
     if (!finished && serviceWorker.controller) preload(serviceWorker.controller);
   });
+  // An existing installation can initially return the OLD active worker while the
+  // updated worker is installing. Retry the handshake once the new worker claims
+  // this page; otherwise first-run preloading would remain at 0% indefinitely.
+  let preloadWorker = null;
+  function beginPreload(worker) {
+    if (!worker || worker === preloadWorker || finished) return;
+    preloadWorker = worker;
+    preload(worker);
+  }
+  serviceWorker.addEventListener('controllerchange', () => {
+    if (!finished && overlay.isConnected) beginPreload(serviceWorker.controller);
+  });
   retry.onclick = async () => {
     try { const registration = await serviceWorker.ready; preload(registration.active || serviceWorker.controller); }
     catch (_) { fail('تعذر الوصول إلى التخزين دون اتصال.'); }
@@ -144,7 +156,7 @@
     .then(registration => {
       const worker = registration.active || serviceWorker.controller;
       if (!worker) throw new Error('Service worker not active');
-      preload(worker);
+      beginPreload(worker);
     })
     .catch(() => fail('تعذر تجهيز الأصول الآن. التطبيق ما زال متاحًا عبر الإنترنت.'));
 })();
