@@ -260,7 +260,49 @@ html #play #stage .ml-authored-picker {
   padding-inline:clamp(4px,2vw,12px);
   color:var(--bp-ink);
 }
-html #play #stage .ml-authored-picker header {padding:4px 6px;}
+html #play #stage .ml-authored-picker {
+  grid-template-columns:minmax(0,1fr) 58px;
+  align-items:center;
+  column-gap:8px;
+}
+html #play #stage .ml-authored-picker > header {
+  grid-column:1;
+  grid-row:1;
+  padding:3px 4px;
+  text-align:start;
+  min-width:0;
+}
+html #play #stage .ml-authored-picker > .go-btn {
+  grid-column:2;
+  grid-row:1;
+  justify-self:center;
+  display:grid!important;
+  place-items:center;
+  flex:none;
+  width:56px!important;
+  height:56px!important;
+  min-width:56px!important;
+  min-height:56px!important;
+  padding:10px!important;
+  border-radius:50%!important;
+}
+html #play #stage .ml-authored-picker > .ml-authored-levels {grid-column:1/-1;}
+html #play #stage .ml-authored-picker > [data-back] {
+  grid-column:1/-1;
+  justify-self:start;
+  display:grid!important;
+  place-items:center;
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  padding:8px!important;
+  border:1px solid var(--bp-stroke)!important;
+  border-radius:50%!important;
+  color:var(--bp-azure)!important;
+  background:var(--bp-azure-soft)!important;
+  box-shadow:none!important;
+}
 html #play #stage .ml-authored-picker header p {
   color:var(--bp-muted);
   font-size:13px;
