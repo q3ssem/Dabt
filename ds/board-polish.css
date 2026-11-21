@@ -121,7 +121,8 @@ html #play.fit .pzhud {
   column-gap:6px!important;
   row-gap:4px!important;
 }
-html #play :is(.pbar .x,.pzhud .pzhb,.fit-tools .pzgive) {
+html #play :is(.pbar .x,.pzhud .pzhb,.fit-tools .pzgive),
+html #play[data-play-paper][data-play-paper] :is(.pbar .x,.pzhud .pzhb,.fit-tools .pzgive) {
   --bp-icon:var(--bp-azure);
   --bp-icon-bg:var(--bp-azure-soft);
   display:inline-grid!important;
@@ -145,6 +146,7 @@ html #play .pzhud :is(#pzh,.pzhb[data-kind="hint"]) {--bp-icon:var(--bp-gold);--
 html #play .fit-tools :is(.fit-info,#fitinfo) {--bp-icon:var(--bp-teal);--bp-icon-bg:var(--bp-teal-soft);}
 html #play .fit-tools .fit-journal {--bp-icon:var(--bp-violet);--bp-icon-bg:var(--bp-violet-soft);}
 html #play .fit-tools .fit-sound {--bp-icon:var(--bp-green);--bp-icon-bg:var(--bp-green-soft);}
+html #play .pzhud #pzr {--bp-icon:var(--bp-green);--bp-icon-bg:var(--bp-green-soft);}
 html #play .fit-tools .pzgive {--bp-icon:var(--bp-red);--bp-icon-bg:var(--bp-red-soft);}
 html #play :is(.pbar .x,.pzhud .pzhb,.fit-tools .pzgive) :is(svg,img,.fit-sound-icon) {
   width:21px!important;
