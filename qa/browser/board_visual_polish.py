@@ -10,6 +10,7 @@ from pathlib import Path
 import sys
 from playwright.async_api import async_playwright
 from smoke import open_game
+from player_openings import dismiss_opening, close_transition
 
 URL = sys.argv[1] if len(sys.argv) > 1 else "http://127.0.0.1:8765/"
 ENGINE = sys.argv[2] if len(sys.argv) > 2 else "chromium"
@@ -90,6 +91,10 @@ async def run():
             if SHOTS:
                 await page.screenshot(path=str(SHOTS/f"river-picker-{skin}-{width}.png"))
             await page.locator("#stage .ml-authored-picker .go-btn").click()
+            # The story opening deliberately stays above the selector until the
+            # player taps Start; never bypass the narrative gate in visual QA.
+            await dismiss_opening(page,wait=2200)
+            await close_transition(page)
             initial=await page.evaluate("""()=>{
               const root=document.querySelector('#stage');
               return {html:root?.innerHTML?.slice(0,180),
