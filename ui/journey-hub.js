@@ -386,25 +386,6 @@
     return tile;
   }
 
-  function renderRunOpening(id, host, start) {
-    const station = window.__MINDLAB_JOURNEY_MAP?.stations.find(s => s.id === id);
-    if (!station) return false;
-    host.innerHTML = `<article class="mlj-v3-opening">
-      <div class="mlj-v3-opening-art mlj-v3-opening-art--plain"><img alt=""></div>
-      <div class="mlj-v3-opening-text"><h2></h2><p><strong></strong> <span></span></p>
-      <button type="button" class="go-btn" id="go">ابدأ اللغز</button></div>
-    </article>`;
-    const art = $('.mlj-v3-opening-art', host);
-    $('img', art).src = artV3 + 'heroes/' + station.hero + '.webp';
-    $('.mlj-v3-opening h2', host).textContent = station.title;
-    $('.mlj-v3-opening strong', host).textContent = station.heroName + ' ·';
-    $('.mlj-v3-opening span', host).textContent = station.openingTextAr;
-    const button = $('#go', host);
-    button.onclick = start;
-    button.focus({ preventScroll: true });
-    return true;
-  }
-
   // The side journey (expedition10) is loaded on demand by ui/app.js; resolves at once when it is already here.
   const sideReady = () => (window.ML10 ? Promise.resolve() : window.mindlabSide ? window.mindlabSide.start() : Promise.resolve());
 
@@ -423,7 +404,8 @@
         badge: station.region,
         heroName: station.heroName,
         dialogue: station.openingTextAr,
-        sprite: artV3 + 'heroes/' + station.hero + '.webp'
+        sprite: artV3 + 'heroes/' + station.hero + '.webp',
+        rule: sea ? window.TreasureData?.stations[index]?.goal : window.ML10.stages[index]?.objective
       }, () => sea ? T7.open(index, true) : ML10.openFromJourney(index));
     }
   }
@@ -761,12 +743,13 @@
 
     const ov = document.createElement('div');
     ov.id = 'fit-opening-overlay';
-    ov.className = 'fit-opening-overlay' + (info.sprite ? ' mlj-v3-opening-overlay' : '');
+    ov.className = 'fit-opening-overlay mlj-station-rules' + (info.sprite ? ' mlj-v3-opening-overlay' : '');
     ov.setAttribute('role', 'dialog');
     ov.setAttribute('aria-modal', 'true');
     ov.setAttribute('aria-label', info.title);
     ov.innerHTML = `
       <div class="fit-opening-card">
+        <button type="button" class="fit-opening-dismiss" id="fit-op-start" aria-label="إغلاق القواعد">×</button>
         <div class="fit-opening-scene fit-opening-scene--plain">
           <span class="fit-opening-badge">${info.badge}</span>
           ${info.sprite ? `<img class="mlj-v3-opening-person" src="${info.sprite}" alt="">` : window.fitOpenings.crewMarkup(info.hero, info.expr)}
@@ -777,13 +760,16 @@
             <span class="fit-opening-speaker">${info.heroName}</span>
             <span>${info.dialogue}</span>
           </div>
+          <p class="mlj-station-rule"></p>
           <div class="fit-opening-actions">
-            <button type="button" class="fit-op-start" id="fit-op-start">ابدأ اللغز</button>
             <button type="button" class="fit-op-skip" id="fit-op-skip">رجوع</button>
           </div>
         </div>
       </div>
     `;
+    const rule = $('.mlj-station-rule', ov);
+    rule.textContent = info.rule || '';
+    rule.hidden = !info.rule;
 
     const dismiss = (event, play) => {
       event.preventDefault();
@@ -799,10 +785,10 @@
       }
     };
     ov.addEventListener('pointerdown', e => { if (e.target === ov) e.stopPropagation(); });
-    ov.addEventListener('click', e => { if (e.target === ov) dismiss(e, false); });
+    ov.addEventListener('click', e => { if (e.target === ov) dismiss(e, true); });
     const sBtn = $('#fit-op-start', ov), back = $('#fit-op-skip', ov);
     ov.addEventListener('keydown', e => {
-      if (e.key === 'Escape') dismiss(e, false);
+      if (e.key === 'Escape') dismiss(e, true);
       if (e.key === 'Tab' && ((e.shiftKey && document.activeElement === sBtn) || (!e.shiftKey && document.activeElement === back))) {
         e.preventDefault();
         (e.shiftKey ? back : sBtn).focus();
@@ -814,13 +800,13 @@
     sBtn.focus({ preventScroll: true });
   }
 
-  function beforeStation(id, scene, start) {
+  function beforeStation(id, scene, start, rule) {
     const story = window.__MINDLAB_JOURNEY_STORY;
     const sea = story?.treasureStations.find(st => st.saveKey === id);
     const expedition = story?.expeditionStations.find(st => st.stageId === id);
     const station = sea || expedition;
     const key = `${sea ? 't7' : 'ex10'}:${id}`;
-    if (!station || readSeen()[key]) return start();
+    if (!station) return start();
 
     showStationOpening(key, {
       title: `${sea ? sea.storyTitle : expedition.title} · ${station.location}`,
@@ -829,6 +815,7 @@
       heroName: station.heroName,
       expr: station.expr,
       dialogue: station.dialogue,
+      rule
     }, start);
   }
 
@@ -846,16 +833,6 @@
     }
 
   }
-
-  // Keep the engine-owned start handler and timers. Only replace the pre-play presentation.
-  const originalIntro = showIntro;
-  showIntro = function () {
-    originalIntro.apply(this, arguments);
-    if (typeof RUN === 'undefined' || !RUN?.journeyStation) return;
-    const host = $('#stage');
-    const start = $('#go', host)?.onclick;
-    if (start) renderRunOpening(curGame().id, host, start);
-  };
 
   const originalClose = closePlay;
   closePlay = function () {

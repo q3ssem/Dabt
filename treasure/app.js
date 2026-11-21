@@ -176,13 +176,13 @@ function renderStory(){
  const bubble=E('div',{class:'t7-hero-intro'},E('img',{src:ART+'crew_full_'+guide.key+'.webp',alt:guide.name}),
   E('div',{class:'t7-speech'},E('b',{text:guide.name}),E('p',{text:OPENING_CREW[s.i][1]})));
  const story=E('details',{class:'t7-story-more'},E('summary',{text:'مشهد القصة'}),...lines);
+ const begin=()=>{view='puzzle';render();window.scrollTo(0,0);};
+ const opening=window.mindlabJourneyHub;
+ const rules=()=>opening ? opening.beforeStation(s.id,ART+s.scene+'.webp',begin,s.goal) : begin();
  const card=E('section',{class:'t7-dialog v5-intro t7-compact-intro'},E('h2',{class:'v5-intro-title',text:s.title}),bubble,
-  button('ابدأ اللغز',()=>{
-    const begin=()=>{view='puzzle';render();window.scrollTo(0,0);};
-    const opening=window.mindlabJourneyHub;
-    if(opening)opening.beforeStation(s.id,ART+s.scene+'.webp',begin);else begin();
-  },'primary v5-intro-go'),story);
+  button('قواعد المحطة',rules,'primary v5-intro-go'),story);
  v.append(E('div',{class:'t7-story-layout'},scene(s),card));
+ if(opening)rules();
 }
 function renderPuzzle(){const s=D.stations[active],v=shell(),x=state();top(v,`الفصل ${A(s.ch+1)} · المحطة ${A(active+1)}`,s.title);const sc=scene(s);sc.classList.add('t7-puzzle-scene');
  const host=E('section',{class:'t7-puzzle-pane v5-pane'});v.append(E('div',{class:'t7-puzzle-layout v5-layout','data-station-id':s.id},sc,host));

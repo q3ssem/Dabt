@@ -103,9 +103,10 @@ const DESIGN_ICONS = {
 };
 function tileFor(g) {
  const image = DESIGN_ICONS[g.id] || (PAINTED_LIBRARY.has(g.id) ? 'ui/art/library-painted/' + g.id + '.webp' : 'ui/art/lib_logic.webp');
- const tile = E('button', {class:'la-library-card',type:'button','data-legacy-puzzle':g.id,'data-wc-icon':g.id,
+ const pirate = /^pz_[xyzt]/.test(g.id) && !['pz_tan','pz_tent'].includes(g.id);
+ const tile = E('button', {class:'la-library-card'+(pirate?' la-library-pirate':''),type:'button','data-legacy-puzzle':g.id,'data-wc-icon':g.id,
   onclick:event=>event?.journeyStation?startRun([g.id],null,{journeyStation:true}):startRun([g.id])});
- tile.innerHTML = `<span class="la-library-image"><img src="${image}" alt="" loading="lazy" decoding="async"></span><b>${escape(g.name)}</b><small>المستوى ${A(typeof pzLv==='function'?pzLv(g.id):1)}</small>`;
+ tile.innerHTML = `<span class="la-library-image"><img src="${image}" alt="" loading="lazy" decoding="async"></span><b>${escape(g.name)}</b>`;
  return tile;
 }
 LA.libraryInto=function(host){const input=E('input',{class:'dx-search',type:'search',placeholder:'ابحث عن لغز…','aria-label':'ابحث عن لغز'}),box=E('div',{class:'la-sections'});host.append(input,box);const secs=LA.librarySections();LA.puzzleCount=secs.reduce((n,s)=>n+s[1].length,0);

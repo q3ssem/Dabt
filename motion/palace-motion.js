@@ -34,17 +34,17 @@
         const ext = rr => { const s = paRot(P.top, rr); return [Math.max(...s.map(a => a[0])), Math.max(...s.map(a => a[1]))]; };
         const clampXY = (x, y, rr = r) => { const [w, h] = ext(rr); return [Math.max(0, Math.min(n - 1 - w, x)), Math.max(0, Math.min(n - 1 - h, y))]; };
         api.body.innerHTML = xSheet(`${xHead(`<img src="ui/designs_art/priority7/prop_starchart.png" alt="" width="30" height="30">`, 'الخريطتان الشفافتان')}
-          <div class="po-top"><span class="po-key"><svg viewBox="0 0 20 20" aria-hidden="true"><circle cx="10" cy="10" r="7" fill="#3E73B5"/></svg>نجوم الخريطة الزرقاء</span><span class="po-key"><svg viewBox="0 0 20 20" aria-hidden="true"><path d="M10 3l7 13H3z" fill="#C8932F"/></svg>نجوم الشفافة الذهبية</span></div>
+          <div class="po-top"><span class="po-key"><i class="po-b"></i>نجوم الخريطة الزرقاء</span><span class="po-key"><i class="po-t"></i>نجوم الشفافة الذهبية</span></div>
           <p class="mk-lead">اسحب الشفافة الذهبية ودوّرها حتى تقع كل نجمة ذهبية على نجمة زرقاء.</p>
-          <div class="po-board" id="pob"><svg viewBox="-.5 -.5 ${n} ${n}" id="pos" role="img" aria-label="الخريطتان"><g id="pobot"></g><g id="potop"></g></svg></div>
+          <div class="po-board" id="pob"><div id="pos" style="--n:${n}" role="img" aria-label="الخريطتان"><div id="pobot"></div><div id="potop"></div></div></div>
           <div class="po-pad" dir="ltr">${[['t', '↻', 'دوّر الشفافة'], ['r', '→', 'يمين'], ['l', '←', 'يسار'], ['d', '↓', 'أسفل'], ['u', '↑', 'أعلى']].map(([m, g, a]) => `<button data-m="${m}" aria-label="${a}">${g}</button>`).join('')}</div>
           <div class="po-status" id="pom" aria-live="polite"></div>`, 800, 561);
-        const grid = () => { let s = `<rect x="-.5" y="-.5" width="${n}" height="${n}" class="po-bg"/>`; for (let i = 0; i <= n; i++) s += `<path class="po-ln" d="M${i - .5} -.5V${n - .5}M-.5 ${i - .5}H${n - .5}"/>`;
-          return s + P.bot.map(i => `<circle class="po-b" cx="${i % n}" cy="${(i / n) | 0}" r=".3"/>`).join(''); };
-        $('#pobot').innerHTML = grid();
+        const position = (x, y) => `--col:${x};--row:${y}`;
+        $('#pobot').innerHTML = P.bot.map(i =>
+          `<i class="po-b" style="${position(i % n, Math.floor(i / n))}"></i>`).join('');
         const draw = () => { const [gx, gy] = ghost || [dx, dy], pts = cur(r, gx, gy), [w, h] = ext(r), on = pts.filter(([x, y]) => bset.has(y * n + x)).length;
-          $('#potop').innerHTML = `<rect class="po-sheet${ghost ? ' moving' : ''}" x="${gx - .5}" y="${gy - .5}" width="${w + 1}" height="${h + 1}" rx=".18"/>` +
-            pts.map(([x, y]) => `<path class="po-t${bset.has(y * n + x) ? ' on' : ''}" d="M${x} ${y - .26}L${x + .25} ${y + .2}H${x - .25}z"/>`).join('');
+          $('#potop').innerHTML = `<i class="po-sheet${ghost ? ' moving' : ''}" style="${position(gx, gy)};--span-x:${w+1};--span-y:${h+1}"></i>` +
+            pts.map(([x, y]) => `<i class="po-t${bset.has(y * n + x) ? ' on' : ''}" style="${position(x, y)}"></i>`).join('');
           $('#pom').innerHTML = `تنطبق <b>${XAR(on)}</b> من ${XAR(pts.length)} · الحركات <b>${XAR(moves)}</b>/${XAR(lim)}`; };
         const after = () => { draw(); if (ok()) { busy = true; $('#pob').classList.add('done'); $('#pom').innerHTML = '<b>تطابق كامل</b> · كل نجمة ذهبية فوق نجمة زرقاء.'; sfx.lvl(); later(() => pWin(api, 'pz_pobs', 'الخريطتان انطبقتا، وظهر رمز القصر بين النجوم.'), 800); return; }
           if (moves >= lim) { busy = true; api.over('خلصت الحركات. ابحث عن شكل مميز (زاوية أو خط) في الذهبية وطابقه أولًا.'); } };
@@ -54,18 +54,18 @@
           moves++; tone(500, .03); after(); }
         api.body.querySelectorAll('[data-m]').forEach(b => b.onclick = () => mv(b.dataset.m));
         // finger drag of the transparent sheet, snapped to cells
-        const svg = $('#pos'); let start = null;
-        const cell = e => { const b = svg.getBoundingClientRect(); return [(e.clientX - b.left) / b.width * n, (e.clientY - b.top) / b.height * n]; };
-        svg.addEventListener('pointerdown', e => { if (api.ended || busy) return; const [cx, cy] = cell(e), [w, h] = ext(r);
-          if (cx < dx - .2 || cy < dy - .2 || cx > dx + w + 1.2 || cy > dy + h + 1.2) return; e.preventDefault(); svg.setPointerCapture(e.pointerId); start = [cx, cy]; ghost = [dx, dy]; draw(); });
+        const chart = $('#pos'); let start = null;
+        const cell = e => { const b = chart.getBoundingClientRect(); return [(e.clientX - b.left) / b.width * n, (e.clientY - b.top) / b.height * n]; };
+        chart.addEventListener('pointerdown', e => { if (api.ended || busy) return; const [cx, cy] = cell(e), [w, h] = ext(r);
+          if (cx < dx - .2 || cy < dy - .2 || cx > dx + w + 1.2 || cy > dy + h + 1.2) return; e.preventDefault(); chart.setPointerCapture(e.pointerId); start = [cx, cy]; ghost = [dx, dy]; draw(); });
         // the sheet can only travel as many cells as the moves left: a drag never costs more than the budget allows
         const reach = g => { const left = lim - moves; let [x, y] = [dx, dy];
           for (let k = 0; k < left && (x !== g[0] || y !== g[1]); k++) { const ex = g[0] - x, ey = g[1] - y; if (Math.abs(ex) >= Math.abs(ey)) x += Math.sign(ex); else y += Math.sign(ey); }
           return [x, y]; };
-        svg.addEventListener('pointermove', e => { if (!start) return; const [cx, cy] = cell(e); const g = reach(clampXY(Math.round(dx + cx - start[0]), Math.round(dy + cy - start[1]))); if (g[0] !== ghost[0] || g[1] !== ghost[1]) { ghost = g; tone(520, .02); draw(); } });
+        chart.addEventListener('pointermove', e => { if (!start) return; const [cx, cy] = cell(e); const g = reach(clampXY(Math.round(dx + cx - start[0]), Math.round(dy + cy - start[1]))); if (g[0] !== ghost[0] || g[1] !== ghost[1]) { ghost = g; tone(520, .02); draw(); } });
         const end = () => { if (!start) return; const [gx, gy] = ghost; start = null; ghost = null; const steps = Math.abs(gx - dx) + Math.abs(gy - dy);
           if (!steps || api.ended || busy) { draw(); return; } dx = gx; dy = gy; moves += steps; after(); };
-        svg.addEventListener('pointerup', end); svg.addEventListener('pointercancel', () => { start = null; ghost = null; draw(); });
+        chart.addEventListener('pointerup', end); chart.addEventListener('pointercancel', () => { start = null; ghost = null; draw(); });
         $('#pob').tabIndex = 0; $('#pob').addEventListener('keydown', e => { const m = { ArrowUp: 'u', ArrowDown: 'd', ArrowLeft: 'l', ArrowRight: 'r', r: 't', ' ': 't' }[e.key]; if (m) { e.preventDefault(); mv(m); } });
         draw(); api.msg('طابق الخريطتين.');
         pzHook({ P, mv, state: () => ({ r, dx, dy, moves }), solve: () => { r = P.R; dx = P.ans[0]; dy = P.ans[1]; draw(); if (ok()) { busy = true; pWin(api, 'pz_pobs', 'الخريطتان انطبقتا.'); } } });

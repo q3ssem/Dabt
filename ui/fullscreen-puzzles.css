@@ -1,0 +1,402 @@
+/* The viewport owns the artwork. Board geometry and hit targets remain puzzle-owned. */
+#play[data-play-paper] {
+  --paper: #e9e1f0;
+  --paper-art: url(art/play-backgrounds/06-logic.webp);
+  --paper-overlay: linear-gradient(transparent, transparent);
+}
+#play[data-play-paper="pirate"] { --paper: #f5d793; --paper-art: url(art/play-backgrounds/01-pirate-letter.webp); }
+#play[data-play-paper="athran"] { --paper: #f5deac; --paper-art: url(art/play-backgrounds/02-athran-map.webp); }
+#play[data-play-paper="coast"] { --paper: #f4e9ce; --paper-art: url(art/play-backgrounds/03-coastal-letter.webp); }
+#play[data-play-paper="mirror"] { --paper: #eee9f1; --paper-art: url(art/play-backgrounds/04-mirror-palace.webp); }
+#play[data-play-paper="motion"] { --paper: #d7ddd1; --paper-art: url(art/play-backgrounds/05-movement.webp); }
+html[data-skin="dark"] #play[data-play-paper] { --paper: #171d28; --paper-overlay: linear-gradient(#121827df,#121827df); }
+html #play[data-play-paper][data-play-paper],
+html[data-skin] #play[data-play-paper][data-play-paper] {
+  background: var(--paper-overlay), var(--paper-art) center / 100% 100% no-repeat, var(--paper) !important;
+}
+html #play[data-play-paper][data-play-paper] > .pin {
+  max-width: none !important;
+  width: 100%;
+  background: transparent !important;
+}
+html #play[data-play-paper][data-play-paper] :is(#pzb,#m) {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+  margin-inline: 0 !important;
+  max-width: none !important;
+}
+html #play[data-play-paper] #pzb :is(.xsheet,.lb-board,.rhwrap2,.rhlot,.ah-framed,.rid-act,.rid-act-clue,.xpin) {
+  background: transparent !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  box-shadow: none !important;
+}
+html #play[data-play-paper] #pzb :is(.xsheet,.lb,.lb-board) { width: 100%; max-width: none !important; }
+html #play[data-play-paper] #pzb :is(.xm3bg,.xm3ov,.ah-atmo),
+html #play[data-play-paper] #pzb :is(.xsheet,.ah-framed,.lb-board)::before,
+html #play[data-play-paper] #pzb :is(.xsheet,.ah-framed,.lb-board)::after { display: none !important; }
+/* Retain the color that keeps local symbols readable. The textures below were backdrop-only. */
+html #play[data-play-paper] #pzb :is(
+  .sea-island,#zrw,#zgw,#zkm,#zsw,#znp,.zhinstrument,.zt-board,#zow,
+  #xcw,#xrw,#xb,#xkc,.xlcrew,#yhw,#ytw,#ydw,.diary-board,.herd-board,
+  .mirror-board,.ring-board,.garden-board,.shade-board,.clock-board,.valve-board,
+  .lantern-board,.engraving-board,.echo-board,.maze-board,.fogbridge-board,.dragon-board,
+  #unsv,.fl10,.tg10,#icb,.gate-face,.acug,.rhb.rhb2
+) { background-image: none !important; }
+#play[data-play-paper] .pzbody :is(.xnote,.cargo-help,.lkclues) {
+  background: transparent;
+  box-shadow: none;
+  border: 0;
+}
+#play[data-play-paper] #pzb:has(#zrw,#zgw,#xrw) { padding-inline: 0 !important; }
+#play[data-play-paper] #pzb :is(#zrw,#zgw,#xrw) {
+  width: min(100%, calc(var(--fit-room, 60dvh) - 58px));
+  max-width: none !important;
+  border-radius: 0;
+}
+#play[data-play-paper] #pzb .painted-wheel,
+#play[data-play-paper] #pzb .painted-wheel > img {
+  aspect-ratio: 1;
+}
+#play[data-play-paper] #pzb .painted-wheel span {
+  width: 11%;
+  height: 11%;
+  inset-inline-start: 44.5%;
+  inset-block-start: 44.5%;
+  font-size: clamp(8px, 2.3vw, 12px);
+  line-height: 1;
+}
+#play[data-play-paper] #pzb .xgpir {
+  width: clamp(42px, 9%, 76px);
+  height: 76px;
+  top: calc(44% - 79px);
+}
+#play[data-play-paper] #pzb .xgpir img { width: 100%; height: 100%; object-fit: contain; object-position: bottom; }
+#play[data-play-paper] #pzb .aptr { min-width: 0; flex-wrap: wrap; }
+#play[data-play-paper] #pzb :is(.aptfs,.cargo-help) { white-space: normal; overflow-wrap: anywhere; }
+#play[data-play-paper] #pzb #zggo { display: inline-grid; place-items: center; width: 44px; min-width: 44px; height: 44px; padding: 6px; }
+#play[data-play-paper] #pzb #zggo img { width: 28px; height: 28px; object-fit: contain; }
+
+#play .fit-opening-overlay { padding: max(12px, env(safe-area-inset-top)) 12px 12px; }
+#play .fit-opening-card {
+  position: relative;
+  width: min(100%, 570px);
+  max-height: calc(100dvh - 28px);
+  overflow: auto;
+  text-align: start;
+  color: #34291e;
+  background: #f9e3af var(--paper-art, url(art/play-backgrounds/01-pirate-letter.webp)) center / 100% 100%;
+  padding: 18px 20px;
+}
+#play .fit-opening-body { background: none; box-shadow: none; padding: 0; color: inherit; }
+#play .fit-opening-title { margin: 0 0 8px; padding-inline-end: 44px; }
+#play .fit-opening-rules { margin-block: 10px; padding-inline-start: 1.4em; line-height: 1.65; }
+#play .fit-opening-dismiss {
+  position: absolute;
+  top: 8px;
+  inset-inline-end: 8px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff7dc;
+  color: #392b20;
+  font: 24px / 1 system-ui;
+  cursor: pointer;
+}
+html.fit-t7 #v-puz .t7-puzzle-layout,
+html.fit-ex10 #v-puz .ex10-game-shell {
+  background: #f6e6be url(art/play-backgrounds/01-pirate-letter.webp) center / 100% 100%;
+  border: 0;
+  border-radius: 0;
+  box-shadow: none;
+  min-height: min(72dvh, 680px);
+}
+html.fit-t7 #v-puz :is(.t7-puzzle-scene,.t7-puzzle-pane),
+html.fit-ex10 #v-puz :is(.ex10-game-scene,.ex10-game-content) {
+  background: transparent;
+  border: 0;
+  box-shadow: none;
+}
+html.fit-t7 #v-puz .t7-puzzle-scene,
+html.fit-ex10 #v-puz .ex10-game-scene { display: none !important; }
+#play #stage > :is(#go,.intro)[hidden] { display: none !important; }
+#play .fit-opening-bubble:not([hidden]) { display: flex; align-items: center; gap: 10px; }
+#play .fit-opening-bubble[hidden] { display: none; }
+#play .fit-opening-full-hero { width: clamp(44px, 15vw, 76px); height: 100px; object-fit: contain; flex: none; }
+@media (max-height: 460px) { #play .fit-opening-full-hero { height: 64px; } }
+
+#play[data-play-paper] { --puzzle-ink: #302820; }
+html[data-skin="dark"] #play[data-play-paper] { --puzzle-ink: #f5e8ce; }
+#play[data-play-paper] #pzb :is(.diary-board,.herd-board,.mirror-board,.garden-board,.ring-board,.shade-board,.clock-board,.valve-board,.lantern-board,.engraving-board,.echo-board,.maze-board,.fogbridge-board,.dragon-board,.board70) {
+  color: var(--puzzle-ink);
+  --board-ink: var(--puzzle-ink);
+}
+#play[data-play-paper] #pzb :is(#pmcounter,#garden-progress) { color: #fff1d5; }
+#play[data-play-paper] #pzb :is(.mirror-field,.rhwrap2,.rhlot) { max-width: 100%; }
+#play[data-play-paper] #pzb .mirror-field {
+  background: #253044;
+  width: min(100% - 52px, calc(var(--fit-room, 55dvh) - 82px));
+}
+#play[data-play-paper] #pzb .rhb.rhb2 { background-color: #e6ddc3; }
+html[data-skin="dark"] #play[data-play-paper] #pzb .rhb.rhb2 { background-color: #343c47; }
+#play[data-play-paper] #pzb .zhinstrument { background-color: transparent; padding-inline: 0; }
+#play[data-play-paper] #pzb .zhinstrument .zhharp {
+  min-height: clamp(126px, calc(var(--fit-room, 50dvh) - 131px), 425px);
+}
+#play[data-play-paper] #pzb #zhre { display: inline-grid; place-items: center; min-width: 44px; min-height: 44px; }
+#play[data-play-paper] #pzb #zhre img { width: 30px; height: 28px; }
+#play[data-play-paper] #pzb .zsky {
+  flex-wrap: wrap;
+  justify-content: center;
+  background: transparent;
+  color: var(--puzzle-ink);
+  padding: 4px;
+  margin: 0;
+}
+#play[data-play-paper] #pzb .zsky small { flex: 1 1 135px; color: inherit; }
+#play[data-play-paper] #pzb .zdial {
+  background: url(../motion/pirate-revised/compass/bezel.webp) center / 100% 100% no-repeat, #1b2b46;
+}
+#play[data-play-paper] #pzb .xnote:has(.zsky) ol {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 2px 12px;
+  padding-inline-start: 16px;
+  margin-block: 4px;
+}
+
+html .mlj-station-rules .fit-opening-card {
+  position: relative;
+  color: #34291e;
+  background: #f9e3af url(art/play-backgrounds/01-pirate-letter.webp) center / 100% 100%;
+}
+.mlj-station-rules .fit-opening-dismiss {
+  position: absolute;
+  z-index: 1;
+  inset-block-start: 7px;
+  inset-inline-end: 7px;
+  width: 44px;
+  height: 44px;
+  border: 0;
+  border-radius: 50%;
+  background: #fff6de;
+  color: #392b20;
+  font-size: 24px;
+  cursor: pointer;
+}
+.mlj-station-rule { margin: 6px 0 14px; line-height: 1.5; }
+
+#play[data-play-paper] .po-board {
+  box-sizing: border-box;
+  width: min(100%, calc(var(--fit-room, 61dvh) - 88px));
+  max-width: none;
+  margin: 4px auto;
+  padding: 0;
+  border: 0;
+  border-radius: 0;
+}
+#play[data-play-paper] .po-top { background: transparent; color: var(--puzzle-ink); }
+.po-key i { display: inline-block; width: 18px; height: 18px; }
+#pos {
+  --unit: calc(100% / var(--n));
+  position: relative;
+  width: 100%;
+  aspect-ratio: 1;
+  overflow: hidden;
+  direction: ltr;
+  touch-action: none;
+  background: linear-gradient(90deg, #bcc9eb46 1px, transparent 1px),
+              linear-gradient(#bcc9eb46 1px, transparent 1px), #24344d;
+  background-size: var(--unit) var(--unit);
+}
+#pos :is(#pobot,#potop) { position: absolute; inset: 0; pointer-events: none; }
+.po-b,.po-t {
+  background: url(../motion/pirate-revised/constellation/star.webp) center / contain no-repeat;
+}
+.po-b { filter: hue-rotate(166deg) saturate(1.3); }
+#pos :is(.po-b,.po-t) {
+  position: absolute;
+  top: calc((var(--row) + .5) * var(--unit));
+  left: calc((var(--col) + .5) * var(--unit));
+  width: calc(var(--unit) * .67);
+  height: calc(var(--unit) * .67);
+  transform: translate(-50%,-50%);
+}
+#pos .po-t { width: calc(var(--unit) * .46); height: calc(var(--unit) * .46); }
+#pos .po-t.on { filter: drop-shadow(0 0 4px #ffdc7f); }
+#pos .po-sheet {
+  position: absolute;
+  top: calc(var(--row) * var(--unit));
+  left: calc(var(--col) * var(--unit));
+  width: calc(var(--span-x) * var(--unit));
+  height: calc(var(--span-y) * var(--unit));
+  border: 1px solid #e8bf6f;
+  border-radius: 7px;
+  background: #cc963b36;
+}
+#pos .po-sheet.moving { background-color: #cc963b58; }
+.po-board.done #pos .po-sheet { border-color: #72e5c7; background-color: #72e5c728; }
+
+#pzb .raster-piece { display: block; width: 92%; height: 92%; object-fit: contain; margin: auto; }
+#pzb .lzspr .raster-piece { width: 100%; height: 100%; }
+#pzb .scstand { object-fit: contain; object-position: center bottom; pointer-events: none; }
+#pzb .scbar {
+  top: 24%;
+  height: 52%;
+  border: 1px solid #644120;
+  border-radius: 45%;
+  background: linear-gradient(#d58d40,#f8d284 40%,#92612d);
+}
+#pzb .skme2[data-f="3"] .raster-piece { scale: -1 1; }
+#pzb .raster-crate-check {
+  display: none;
+  position: absolute;
+  right: 0;
+  bottom: 0;
+  padding: 0 3px;
+  border-radius: 50%;
+  color: #fff2d7;
+  background: #246445;
+  font: bold 15px / 1.2 system-ui;
+}
+#pzb .skbox2.ok .raster-crate-check { display: block; }
+#pzb .loc { display: grid; place-items: center; position: relative; }
+#pzb .loc :is(.raster-lamp-off,.raster-lamp-on) { width: 94%; height: 94%; object-fit: contain; }
+#pzb .loc .raster-lamp-on,#pzb .loc.on .raster-lamp-off { display: none; }
+#pzb .loc.on .raster-lamp-on { display: block; filter: drop-shadow(0 0 8px #ffda76); }
+#ose { position: absolute; inset: 0; pointer-events: none; }
+#ose .ose {
+  position: absolute;
+  width: var(--length);
+  height: 4px;
+  border-radius: 4px;
+  background: #58463190;
+  transform-origin: left center;
+  transform: translateY(-50%) rotate(var(--angle));
+  animation: none;
+}
+#ose .ose.on { background: #19834d; }
+#ose .ose.anim.on { animation: ink-line .3s ease-out; }
+@keyframes ink-line { from { clip-path: inset(0 100% 0 0); } to { clip-path: inset(0 0 0 0); } }
+html[data-skin="dark"] #ose .ose { background: #e6cef281; }
+html[data-skin="dark"] #ose .ose.on { background: #73e0a5; }
+.ybw .ybbeam {
+  width: 100%;
+  height: 24px;
+  border-radius: 6px;
+  background: repeating-linear-gradient(5deg,#6e4320,#a67341 7px,#9e6238 10px);
+  box-shadow: inset 0 3px 2px #e5b36a70,0 3px 4px #321f215e;
+}
+.ybb .raster-bell { display: block; width: 100%; max-height: 102px; object-fit: contain; filter: hue-rotate(var(--bell-hue)); }
+@media (prefers-reduced-motion: reduce) { #ose .ose.anim.on { animation: none; } }
+
+#pzb .pbk:has(.full-palace-person) i { width: clamp(40px, 16vw, 85px); height: clamp(78px, 15dvh, 132px); flex: none; }
+#pzb .pbk .full-palace-person { display: block; width: 100%; height: 100%; object-fit: contain; object-position: center bottom; }
+#pzb .raster-queen-gem { display: block; margin: auto; width: 65%; height: 65%; opacity: .54; border-radius: 50%; box-shadow: inset 0 0 11px var(--fc); }
+#pzb .raster-queen-gem img { width: 100%; height: 100%; object-fit: contain; }
+#pzb .pmx.on .raster-queen-gem { opacity: 1; filter: drop-shadow(0 0 8px var(--fc)); }
+.raster-arm-mini {
+  --unit: clamp(12px, 4vw, 19px);
+  display: inline-grid;
+  grid-template-columns: repeat(var(--columns),var(--unit));
+  grid-template-rows: repeat(var(--rows),var(--unit));
+  direction: ltr;
+}
+.raster-arm-mini i {
+  width: 100%;
+  height: 100%;
+  border: 1px solid #583929;
+  border-radius: 3px;
+  background: radial-gradient(at 30% 18%, #fffaf766, transparent 67%), var(--piece-color);
+}
+.engineer-chart {
+  --unit: calc(100% / var(--n));
+  position: relative;
+  width: min(100%, 220px);
+  margin-inline: auto;
+  aspect-ratio: 1;
+  overflow: hidden;
+  background: #24344d;
+}
+.engineer-chart.gold { background: #4b3d46; }
+.engineer-chart i {
+  position: absolute;
+  top: calc(var(--row) * var(--unit));
+  left: calc(var(--col) * var(--unit));
+  width: var(--unit);
+  height: var(--unit);
+  background: url(../motion/pirate-revised/constellation/star.webp) center / 76% no-repeat;
+}
+.engineer-chart:not(.gold) i { filter: hue-rotate(166deg) saturate(1.3); }
+.map-legend-stroke {
+  display: inline-block;
+  width: 28px;
+  border-block-start: var(--path-stroke) solid var(--path-color);
+}
+.ymt canvas { display: block; width: 100%; height: 100%; }
+
+#pzb .st-compass {
+  display: grid;
+  position: absolute;
+  z-index: 3;
+  place-items: center;
+  top: 55%;
+  left: 50%;
+  width: max(44px,18%);
+  aspect-ratio: 1;
+  border-radius: 50%;
+  border: 1px solid #ccab75;
+  padding: 0;
+  transform: translate(-50%,-50%);
+  background: #203348;
+  color: #ffebbb;
+  cursor: pointer;
+}
+.st-compass img { position: absolute; inset: 0; width: 100%; height: 100%; object-fit: contain; }
+.st-compass span { position: relative; font: bold clamp(21px,7vw,29px)/1 system-ui; }
+.st-compass:is(.hint,[aria-pressed="true"],:focus-visible) { outline: 3px solid #dfb768; outline-offset: 2px; }
+.st10[data-reverse="true"] .st10-link.zap::after { background: #a7dcff; }
+#pzb .st10.all .st-compass { display: none; }
+
+#play[data-play-paper] #pzb .pp10 {
+  width: min(100%, calc((var(--fit-room, 67dvh) - 62px) * var(--w)/var(--h)));
+  max-width: none;
+  border-radius: 0;
+  outline: 0;
+}
+#pzb .pp10-pin { position: absolute; inset: 3px auto auto 3px; width: 24%; height: 24%; object-fit: contain; }
+
+.fit-info-icon {
+  display: inline-grid;
+  place-items: center;
+  width: 23px;
+  height: 23px;
+  border-radius: 50%;
+  border: 1.5px solid currentColor;
+  font: bold 17px / 1 system-ui;
+}
+.fit-sound-icon { display: inline-block; position: relative; width: 24px; height: 22px; }
+.fit-sound-icon::before {
+  content: "";
+  position: absolute;
+  inset: 3px 8px 3px 1px;
+  background: currentColor;
+  clip-path: polygon(5% 31%,40% 31%,87% 0%,87% 100%,40% 69%,5% 69%);
+}
+.fit-sound-icon::after {
+  content: "";
+  position: absolute;
+  inset: 3px 1px 3px 14px;
+  border-inline-end: 2px solid currentColor;
+  border-radius: 50%;
+}
+
+#play[data-play-paper] #pzb .icw2 {
+  width: min(100%, calc((var(--fit-room, 62dvh) - 100px) * var(--ice-columns,1)/var(--ice-rows,1)));
+  max-width: none;
+}
+#play[data-play-paper] #pzb #icb { background-color: #c8e2e7; border-radius: 0; }
+html[data-skin="dark"] #play[data-play-paper] #pzb #icb { background-color: #355975; }

@@ -56,7 +56,7 @@ function drive(s){drive.sel=null;const work=()=>c.T7.state().work[s.id];if(s.var
 /* Play every station through its real board controls (tool gate, taps) — no state writes. */
 function playV5(s){c.T7.open(s.i);
  ok(t.nodes().filter(n=>n.className==='t7-hero-intro').length===1,'single illustrated opening '+s.id);
- t.click('ابدأ اللغز');ok(!!t.byid('v5-board'),'5.0 board '+s.id);
+ t.click('قواعد المحطة');ok(!!t.byid('v5-board'),'5.0 board '+s.id);
  for(const action of ['الخريطة','دفتر الرحلة','الكنوز']){
   const matches=t.buttons().filter(n=>n.textContent===action);
   ok(matches.length===1&&matches[0].attrs['aria-label']===action,'single accessible toolbar action '+action+' '+s.id);

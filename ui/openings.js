@@ -1,186 +1,136 @@
-/* 5.5.28 — Pre-play openings controller (80 official + 8 extra library IDs).
-   Presentation only: does not alter puzzle IDs, solvers, generators, or miran:v2 progress. */
+/* Show a rules sheet before a round starts and make the story replayable from the HUD. */
 (function () {
   'use strict';
   if (window.__MINDLAB_OPENINGS_UI) return;
   window.__MINDLAB_OPENINGS_UI = true;
 
-  const SEEN_KEY = 'mindlab:openings:seen:v1';
-
   const $ = (s, r = document) => r.querySelector(s);
-  const HEROES = [['rawaa', 'رواء'], ['nuha', 'نهى'], ['ward', 'ورد']];
-  function crewMarkup(speaker, expression) {
-    const [id, name] = HEROES.find(([id]) => id === speaker) || HEROES[0];
-    return `<div class="fit-opening-crew"><span class="fit-opening-hero speaking" role="img" aria-label="${name}"
-      style="background-image:url('motion/art10/char_${id}.webp');background-position:center;background-size:contain"></span></div>`;
+  const heroes = {
+    rawaa: 'رواء', nuha: 'نهى', ward: 'ورد'
+  };
+  const families = {
+    movement: new Set(['pz_river', 'pz_rush', 'pz_stat', 'pz_pipe', 'pz_flow', 'pz_ice', 'pz_untangle', 'pz_tan']),
+    coast: new Set(['pz_xreef', 'pz_zroute', 'pz_zcur', 'pz_acur', 'pz_aport', 'pz_ashell', 'pz_alight'])
+  };
+  const game = () => RUN && curGame();
+
+  function paper(id) {
+    if (families.coast.has(id) || id.startsWith('pz_y')) return 'coast';
+    if (families.movement.has(id)) return 'motion';
+    if (id.startsWith('pz_p') && id !== 'pz_pipe') return 'mirror';
+    if (id.startsWith('pz_a') || id.startsWith('pz_w')) return 'athran';
+    if (/^pz_[xzt]/.test(id) && id !== 'pz_tent') return 'pirate';
+    return 'logic';
   }
-  const readSeen = () => {
-    try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); } catch (_) { return {}; }
-  };
-  const markSeen = id => {
-    try {
-      const s = readSeen();
-      s[id] = 1;
-      localStorage.setItem(SEEN_KEY, JSON.stringify(s));
-    } catch (_) {}
-  };
-  const gid = () => {
-    try { return typeof curGame === 'function' ? (curGame() || {}).id : null; } catch (_) { return null; }
-  };
 
-  let lastBody = null;
-  let lastTriggerFocus = null;
-
+  let lastFocus;
   function closeOpening() {
-    const ov = $('#fit-opening-overlay');
-    if (ov) ov.remove();
-    if (lastTriggerFocus && typeof lastTriggerFocus.focus === 'function' && lastTriggerFocus.isConnected) {
-      try { lastTriggerFocus.focus({ preventScroll: true }); } catch (_) {}
-    }
-    lastTriggerFocus = null;
+    $('#fit-opening-overlay')?.remove();
+    if (lastFocus?.isConnected) lastFocus.focus({ preventScroll: true });
+    lastFocus = null;
   }
 
-  function openOpening(id, forceReplay, begin, cancel) {
-    const data = window.__MINDLAB_OPENINGS_DATA || {};
-    const entry = data[id];
-    if (!entry) return;
+  function crewMarkup(speaker) {
+    const id = Object.hasOwn(heroes, speaker) ? speaker : 'rawaa';
+    return `<img class="fit-opening-full-hero" src="treasure/art/story5/crew_full_${id}.webp" alt="${heroes[id]}">`;
+  }
+
+  function openOpening(id, replay, begin) {
+    const g = GM[id];
+    if (!g) return;
+    const station = RUN?.journeyStation && window.__MINDLAB_JOURNEY_MAP?.stations.find(item => item.id === id);
+    const entry = station ? { hero: station.hero, dialogue: station.openingTextAr } : window.__MINDLAB_OPENINGS_DATA?.[id];
+    const current = RUN?.authoredStage;
+    const stageDescription = current?.id === id ? current.board.description : null;
     closeOpening();
-    lastTriggerFocus = document.activeElement;
+    lastFocus = document.activeElement;
 
-    const seen = readSeen();
-    const alreadySeen = !!seen[id];
-    const ov = document.createElement('div');
-    ov.id = 'fit-opening-overlay';
-    ov.className = 'fit-opening-overlay';
-    ov.setAttribute('role', 'dialog');
-    ov.setAttribute('aria-modal', 'true');
-    ov.setAttribute('aria-label', entry.name || 'مقدمة اللغز');
-
-    ov.innerHTML = `
-      <div class="fit-opening-card">
-        <div class="fit-opening-scene fit-opening-scene--plain">
-          <span class="fit-opening-badge">${entry.heroName}</span>
-          ${crewMarkup(entry.hero, entry.expr)}
-        </div>
-        <div class="fit-opening-body">
-          <h3 class="fit-opening-title">${entry.name}</h3>
-          <div class="fit-opening-bubble">
-            <span class="fit-opening-speaker">${entry.heroName}</span>
-            <span>${entry.dialogue}</span>
-          </div>
-          <div class="fit-opening-actions">
-            <button type="button" class="fit-op-start" id="fit-op-start">${forceReplay ? 'متابعة اللغز' : 'ابدأ اللغز'}</button>
-            ${alreadySeen ? '<button type="button" class="fit-op-skip" id="fit-op-skip">تخطي</button>' : ''}
-          </div>
-        </div>
+    const d = document.createElement('div');
+    d.id = 'fit-opening-overlay';
+    d.className = 'fit-opening-overlay';
+    d.setAttribute('role', 'dialog');
+    d.setAttribute('aria-modal', 'true');
+    d.setAttribute('aria-labelledby', 'fit-opening-name');
+    d.innerHTML = `<div class="fit-opening-card" dir="rtl">
+      <button type="button" class="fit-opening-dismiss" id="fit-op-start" aria-label="${replay ? 'إغلاق القواعد والعودة للعب' : 'إغلاق القواعد'}">×</button>
+      <div class="fit-opening-body">
+        <h3 id="fit-opening-name" class="fit-opening-title"></h3>
+        <div class="fit-opening-bubble" hidden></div>
+        <ol class="fit-opening-rules"></ol>
       </div>
-    `;
+    </div>`;
+    $('#fit-opening-name', d).textContent = g.name;
+    const bubble = $('.fit-opening-bubble', d);
+    if (entry?.dialogue) {
+      bubble.hidden = false;
+      bubble.innerHTML = crewMarkup(entry.hero);
+      const line = document.createElement('span');
+      line.textContent = entry.dialogue;
+      bubble.append(line);
+    }
+    const rules = $('.fit-opening-rules', d);
+    for (const rule of [...(Array.isArray(g.how) ? g.how : []), ...(stageDescription ? [stageDescription] : [])]) {
+      const li = document.createElement('li');
+      li.textContent = rule;
+      rules.append(li);
+    }
+    if (!rules.childElementCount && g.why) {
+      const li = document.createElement('li');
+      li.textContent = g.why;
+      rules.append(li);
+    }
 
-    // Prevent the tap that closes the opening from passing through to the puzzle board.
-    const dismiss = e => {
-      if (e) {
-        e.preventDefault();
-        e.stopPropagation();
-      }
-      // A cancelled pre-play scene leaves the original intro and starts no timer.
-      if (begin && e && (e.target === ov || e.key === 'Escape')) {
-        closeOpening();
-        if (cancel) cancel();
-        return;
-      }
-      markSeen(id);
+    const dismiss = event => {
+      event.preventDefault();
+      event.stopPropagation();
       closeOpening();
-      if (begin) begin();
+      begin?.();
     };
-
-    ov.addEventListener('pointerdown', e => {
-      if (e.target === ov) {
-        e.stopPropagation();
-      }
+    const button = $('#fit-op-start', d);
+    button.addEventListener('click', dismiss);
+    d.addEventListener('click', event => { if (event.target === d) dismiss(event); });
+    d.addEventListener('keydown', event => {
+      event.stopPropagation();
+      if (event.key === 'Escape') dismiss(event);
+      if (event.key === 'Tab') event.preventDefault();
     });
-    ov.addEventListener('click', e => {
-      if (e.target === ov) dismiss(e);
+    $('#play').append(d);
+    button.focus({ preventScroll: true });
+  }
+
+  const oldCountdown = countdown;
+  countdown = function () {
+    const current = game();
+    if (!current) return;
+    const run = RUN;
+    stopAll();
+    openOpening(current.id, false, () => {
+      if (RUN === run && game()?.id === current.id) oldCountdown.apply(this, arguments);
     });
-    ov.addEventListener('keydown', e => {
-      if (e.key === 'Escape') {
-        dismiss(e);
-        return;
-      }
-      if (e.key === 'Tab') {
-        const focusables = [...ov.querySelectorAll('button:not([disabled])')];
-        if (!focusables.length) return;
-        const first = focusables[0];
-        const last = focusables[focusables.length - 1];
-        if (e.shiftKey && document.activeElement === first) {
-          e.preventDefault();
-          last.focus();
-        } else if (!e.shiftKey && document.activeElement === last) {
-          e.preventDefault();
-          first.focus();
-        }
-      }
-    });
+  };
 
-    ($('#play') || document.body).append(ov);
-    const startBtn = $('#fit-op-start', ov);
-    const skipBtn = $('#fit-op-skip', ov);
-    if (startBtn) {
-      startBtn.addEventListener('click', dismiss);
-      startBtn.focus({ preventScroll: true });
+  const oldIntro = showIntro;
+  showIntro = function () {
+    const current = game();
+    if (!current) return oldIntro.apply(this, arguments);
+    if (current.puz) $('#play').dataset.playPaper = paper(current.id);
+    else delete $('#play').dataset.playPaper;
+    oldIntro.apply(this, arguments);
+    // Authored tracks and story station pickers run their own stage selection.
+    const go = $('#stage > #go');
+    if (go && current.puz) {
+      go.hidden = true;
+      $('.intro', $('#stage'))?.setAttribute('hidden', '');
+      go.click();
     }
-    if (skipBtn) {
-      skipBtn.addEventListener('click', dismiss);
-    }
-  }
+  };
 
-  function checkMount() {
-    const b = $('#stage #pzb');
-    if (!b) {
-      lastBody = null;
-      closeOpening();
-      return;
-    }
-    if (b === lastBody) return;
-    lastBody = b;
-    const id = gid();
-    if (!id || (typeof RUN !== 'undefined' && RUN?.journeyStation)) return;
-    const data = window.__MINDLAB_OPENINGS_DATA || {};
-    if (!data[id]) return;
-    const seen = readSeen();
-    if (!seen[id]) {
-      openOpening(id, false);
-    }
-  }
-
-  function watch() {
-    const st = $('#stage');
-    if (!st) return setTimeout(watch, 300);
-    new MutationObserver(checkMount).observe(st, { childList: true });
-    checkMount();
-  }
-
-  // Gate the engine itself, rather than covering an already running timed board.
-  // The original countdown owns timers/cleanup and is called once after Start.
-  if (typeof countdown === 'function') {
-    const countdown0 = countdown;
-    countdown = function () {
-      const id = gid(), run = typeof RUN !== 'undefined' ? RUN : null;
-      const data = window.__MINDLAB_OPENINGS_DATA || {};
-      if (run?.journeyStation || !id || !data[id] || readSeen()[id]) return countdown0.apply(this, arguments);
-      const self = this, args = arguments;
-      if (typeof stopAll === 'function') stopAll();
-      openOpening(id, false, () => {
-        if (typeof RUN !== 'undefined' && RUN === run && gid() === id) countdown0.apply(self, args);
-      }, () => {
-        if (typeof RUN !== 'undefined' && RUN === run && typeof showIntro === 'function') showIntro();
-      });
-    };
-  }
-
+  const oldClose = closePlay;
+  closePlay = function () {
+    closeOpening();
+    delete $('#play').dataset.playPaper;
+    return oldClose.apply(this, arguments);
+  };
+  $('#quit').onclick = closePlay;
   window.fitOpenings = { open: openOpening, close: closeOpening, crewMarkup };
-  if (document.readyState === 'loading') {
-    document.addEventListener('DOMContentLoaded', watch);
-  } else {
-    watch();
-  }
 })();

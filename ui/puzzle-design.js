@@ -6,91 +6,13 @@
   window.__MINDLAB_PUZZLE_DESIGN_558 = true;
 
   const $ = (s, root = document) => root.querySelector(s);
-  const state = { game: '', musicGame: '', musicTimer: null, logicObserver: null, logicTable: null, riverObserver: null, riverScene: null, scheduled: false, cleanupRegistered: false, audioPrimed: false };
-  const MUSIC = {
-    pz_grid: {
-      interval: 3000, pad: [130.81, 164.81, 196.00],
-      melody: [392.00, 440.00, 493.88, 440.00, 349.23, 392.00, 440.00, 392.00],
-      padSeconds: 2.65, padVolume: 0.006, melodyVolume: 0.0065, melodyEvery: 2,
-      label: 'موسيقى تركيز هادئة'
-    },
-    pz_river: {
-      interval: 2350, pad: [110.00, 146.83, 164.81],
-      melody: [440.00, 523.25, 587.33, 659.25, 587.33, 523.25, 440.00, 392.00],
-      padSeconds: 2.1, padVolume: 0.007, melodyVolume: 0.0075, melodyEvery: 1,
-      label: 'موسيقى استكشاف الجزيرة'
-    }
-  };
+  const state = { game: '', logicObserver: null, logicTable: null, riverObserver: null, riverScene: null, scheduled: false };
 
   function getGameId() {
     try {
       const g = typeof curGame === 'function' ? curGame() : null;
       return g && g.id || '';
     } catch (_) { return ''; }
-  }
-
-  function stopMusic() {
-    if (state.musicTimer) clearInterval(state.musicTimer);
-    state.musicTimer = null;
-    state.musicGame = '';
-  }
-
-  function musicEnabled() {
-    try { return !S.st.mute && !S.st.puzzleMusicOff; } catch (_) { return false; }
-  }
-
-  function startMusic(id) {
-    if (!MUSIC[id] || !musicEnabled() || typeof tone !== 'function') { stopMusic(); return; }
-    if (state.musicTimer && state.musicGame === id) return;
-    stopMusic();
-    const cfg = MUSIC[id];
-    let step = 0;
-    const playPhrase = () => {
-      if (!musicEnabled() || document.hidden) return;
-      const chord = cfg.pad;
-      chord.forEach((f, i) => tone(f, cfg.padSeconds, 'sine', cfg.padVolume, i * 0.045));
-      if (step % cfg.melodyEvery === 0) {
-        const note = cfg.melody[(step / cfg.melodyEvery | 0) % cfg.melody.length];
-        tone(note, 0.72, 'sine', cfg.melodyVolume, 0.28);
-      }
-      step++;
-    };
-    state.musicGame = id;
-    playPhrase();
-    state.musicTimer = setInterval(playPhrase, cfg.interval);
-    if (!state.cleanupRegistered && typeof cleanup !== 'undefined' && Array.isArray(cleanup)) { cleanup.push(stopMusic); state.cleanupRegistered = true; }
-  }
-
-  function updateMusicButton() {
-    const hud = $('.pzhud');
-    if (!hud) return;
-    let button = $('.mlp-music-toggle', hud);
-    if (!button) {
-      button = document.createElement('button');
-      button.type = 'button';
-      button.className = 'mlp-music-toggle';
-      button.innerHTML = '<svg viewBox="0 0 24 24" aria-hidden="true"><path d="M9 18V5l12-2v13"/><circle cx="6" cy="18" r="3"/><circle cx="18" cy="16" r="3"/></svg><span></span>';
-      button.addEventListener('click', () => {
-        S.st.puzzleMusicOff = !S.st.puzzleMusicOff;
-        S.save();
-        paintMusicButton();
-        if (S.st.puzzleMusicOff) stopMusic(); else startMusic(state.game);
-      });
-      const hint = $('#pzh', hud);
-      hud.insertBefore(button, hint || null);
-    }
-    paintMusicButton();
-  }
-
-  function paintMusicButton() {
-    const button = $('.mlp-music-toggle');
-    if (!button) return;
-    const enabled = musicEnabled();
-    button.setAttribute('aria-pressed', String(enabled));
-    button.classList.toggle('on', enabled);
-    const label = $('span', button);
-    if (label) label.textContent = S.st.mute ? 'الصوت مكتوم' : (S.st.puzzleMusicOff ? 'تشغيل الموسيقى' : 'إيقاف الموسيقى');
-    button.title = S.st.mute ? 'فعّل المؤثرات الصوتية من الإعدادات أولًا' : (S.st.puzzleMusicOff ? 'تشغيل الموسيقى الخلفية' : 'إيقاف الموسيقى الخلفية');
   }
 
   function insertOnce(parent, selector, html, before) {
@@ -225,14 +147,13 @@
   function apply() {
     state.scheduled = false;
     const play = $('#play');
-    if (!play) { stopMusic(); return; }
+    if (!play) return;
     const id = getGameId();
     const active = (id === 'pz_grid' && $('#lgt')) || (id === 'pz_river' && $('#rv3'));
     if (!active) {
       if (state.game) {
         play.removeAttribute('data-ml-puzzle');
         state.game = '';
-        stopMusic();
         if (state.logicObserver) { state.logicObserver.disconnect(); state.logicObserver = null; }
         if (state.riverObserver) { state.riverObserver.disconnect(); state.riverObserver = null; }
         state.logicTable = null;
@@ -245,14 +166,11 @@
       if (state.riverObserver) { state.riverObserver.disconnect(); state.riverObserver = null; }
       state.logicTable = null;
       state.riverScene = null;
-      stopMusic();
     }
     state.game = id;
     play.dataset.mlPuzzle = id === 'pz_grid' ? 'logic' : 'river';
     if (id === 'pz_grid') enhanceLogic();
     else enhanceRiver();
-    updateMusicButton();
-    if (musicEnabled() && state.audioPrimed) startMusic(id); else stopMusic();
   }
 
   function schedule() {
@@ -266,21 +184,4 @@
     new MutationObserver(schedule).observe(play, { childList: true, subtree: true });
     schedule();
   }
-  document.addEventListener('pointerdown', event => {
-    if (!(event.target.closest && event.target.closest('#play')) || !state.game || !musicEnabled()) return;
-    if (!state.audioPrimed) {
-      state.audioPrimed = true;
-      stopMusic();
-      startMusic(state.game);
-    } else if (!state.musicTimer || state.musicGame !== state.game) startMusic(state.game);
-  }, true);
-  document.addEventListener('visibilitychange', () => {
-    if (document.hidden) stopMusic();
-    else if (state.game && musicEnabled()) startMusic(state.game);
-  });
-  document.addEventListener('click', event => {
-    if (event.target.closest && event.target.closest('#mt')) {
-      setTimeout(() => { paintMusicButton(); if (S.st.mute) stopMusic(); else if (state.game && !S.st.puzzleMusicOff) startMusic(state.game); }, 0);
-    }
-  }, true);
 })();

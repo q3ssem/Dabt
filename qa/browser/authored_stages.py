@@ -5,12 +5,12 @@ from playwright.sync_api import sync_playwright
 
 URL = os.environ.get('MINDLAB_URL', 'http://127.0.0.1:8765/index.html')
 ENGINE = os.environ.get('ENGINE', 'chromium')
-BOARDS = {'pz_river': '.ml-river-board', 'pz_stat': '.st10-s', 'pz_rush': '.rhcar.red'}
+BOARDS = {'pz_river': '.ml-river-board', 'pz_stat': '.st10-s', 'pz_rush': '.rhcar.red', 'pz_pipe': '.pp10', 'pz_ice': '.icb2',
+          'pz_flow': '.fl10', 'pz_tan': '.tg10', 'pz_untangle': '.unb'}
 
 
 def open_track(page, puzzle):
     page.evaluate('(id) => startRun([id])', puzzle)
-    page.locator('#stage .ml-authored-open').tap()
     picker = page.locator('.ml-authored-picker')
     picker.wait_for()
     assert picker.locator('.ml-authored-levels button').count() == 20

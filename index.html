@@ -4053,12 +4053,8 @@ function runScale(){return pzPlay('pz_scale',api=>{
   const pos=Array(n).fill(0);let used=0,accuse=false,showSafe=false,log=[],last=-1,T=0,A=0,V=0,raf=0,res0=null,dragged=false;
   const HUE=[48,8,200,140,280,330,24,170,230,95,310,190];const sm=n>13?' sm':'';
   api.body.innerHTML=`<div class="scl3${sm}" id="sclw"><div class="scsky"><i></i><i></i><i></i><i></i><i></i><i></i></div>
-   <svg class="scstand" viewBox="0 0 200 200" aria-hidden="true"><defs><linearGradient id="scg1" x1="0" x2="1"><stop offset="0" stop-color="#7A4E1E"/><stop offset=".45" stop-color="#F7D27A"/><stop offset="1" stop-color="#8C5A20"/></linearGradient><linearGradient id="scg2" y1="0" y2="1"><stop offset="0" stop-color="#5B3FA8"/><stop offset="1" stop-color="#2A1D5E"/></linearGradient></defs>
-    <path d="M100 18q-7 70-9 152h18q-2-82-9-152z" fill="url(#scg1)" stroke="#2B2520" stroke-width="2"/>
-    <ellipse cx="100" cy="186" rx="62" ry="10" fill="rgba(0,0,0,.25)"/><path d="M48 186q4-18 30-20h44q26 2 30 20z" fill="url(#scg2)" stroke="#2B2520" stroke-width="2"/>
-    <path d="M70 178h60" stroke="#F7D27A" stroke-width="2" stroke-dasharray="2 6" stroke-linecap="round"/><circle cx="100" cy="176" r="5" fill="#E5484D" stroke="#2B2520" stroke-width="1.5"/>
-    <path d="M68 28a32 32 0 0 0 64 0" fill="none" stroke="rgba(255,255,255,.2)" stroke-width="7"/><path d="M68 28a32 32 0 0 0 64 0" fill="none" stroke="#F7D27A" stroke-width="1.5" stroke-dasharray="1 6"/></svg>
-   <div class="sclbeam" id="sbm"><svg class="scbar" viewBox="0 0 300 24" preserveAspectRatio="none" aria-hidden="true"><path d="M4 12q20-9 60-6h172q40-3 60 6q-20 9-60 6H64q-40 3-60-6z" fill="url(#scg1)" stroke="#2B2520" stroke-width="2"/><circle cx="10" cy="12" r="4" fill="#3FD0E8" stroke="#2B2520" stroke-width="1.5"/><circle cx="290" cy="12" r="4" fill="#FF5FA8" stroke="#2B2520" stroke-width="1.5"/></svg>
+   <img class="scstand" src="ui/designs_art/priority7/prop_scale_tri.png" alt="" draggable="false">
+   <div class="sclbeam" id="sbm"><i class="scbar" aria-hidden="true"></i>
     <i class="scndl" aria-hidden="true"></i>
     <div class="sclpan l" data-z="1"><span class="sclstr"></span><div class="sclplate" id="spl"></div><b class="scglow"></b></div>
     <div class="sclpan r" data-z="2"><span class="sclstr"></span><div class="sclplate" id="spr"></div><b class="scglow"></b></div><b class="sclpin"></b></div>
@@ -4453,6 +4449,7 @@ function tnMake(lv){const n=[5,6,6,7,7,8,8,9][lv-1];
 /* ================= v23: UIs for the 10 new puzzle types ================= */
 const QCOL=['#F2A7A0','#9EC5F0','#B5DE9B','#F3D488','#CDB2EE','#F6B985','#97D9CF','#E9A6CF','#C9C79A'];
 const gridBtns=(n,m,fn)=>[...Array(n*m)].map((_,i)=>fn(i)).join('');
+const rasterBoardPad=()=>`<div class="mzpad ltr pzpad">${[['ArrowUp','↑','أعلى'],['ArrowLeft','←','يسار'],['ArrowDown','↓','أسفل'],['ArrowRight','→','يمين']].map(([key,icon,label])=>`<button data-d="${key}" aria-label="${label}">${icon}</button>`).join('')}</div>`;
 const DK={ArrowUp:0,ArrowRight:1,ArrowDown:2,ArrowLeft:3};
 function bindArrows(step){api0Pad(step);keyH=e=>{const d=DK[e.key];if(d!=null){e.preventDefault();step(d)}}}
 function api0Pad(step){document.querySelectorAll('.pzpad button').forEach(b=>b.onclick=()=>step(DK[b.dataset.d]))}
@@ -4462,11 +4459,25 @@ function api0Pad(step){document.querySelectorAll('.pzpad button').forEach(b=>b.o
 function runLaser(){return pzPlay('pz_laser',api=>{
   const P=lzMake(api.lv),{w,h}=P,ori=P.ori.slice(),lock=new Set(),W=w+2,H=h+2,mang=ori.map(o=>o?45:-45);
   let cells='';for(let y=-1;y<=h;y++)for(let x=-1;x<=w;x++){const mi=P.mir.findIndex(m=>m.x===x&&m.y===y),gi=P.gems.findIndex(g=>g.x===x&&g.y===y),src=x===-1&&y===P.sy,tgt=x===P.out[0]&&y===P.out[1],edge=!inb(x,y,w,h);
-    cells+=mi>=0?`<button class="lzc mir" data-m="${mi}" aria-label="مرآة"><i style="transform:rotate(${mang[mi]}deg)"></i></button>`:`<span class="lzc${edge?' edge':''}${gi>=0?' gem':''}" ${gi>=0?`data-g="${gi}"`:''}>${src?`<b class="lzspr lzsrc">${SPR.torch}</b>`:tgt?`<b class="lzspr tgt">${SPR.target}</b>`:gi>=0?`<b class="lzspr">${SPR.gem}</b>`:''}</span>`}
-  api.body.innerHTML=`<div class="lzb ltr" id="lzb" style="--w:${W};--h:${H}">${cells}<svg class="lzbeam2" viewBox="0 0 ${W} ${H}"><polyline id="lzg" pathLength="100"/><polyline id="lzc" pathLength="100"/><polyline id="lzf" pathLength="100"/><circle id="lzhit" r=".28"/></svg></div>`;
+    cells+=mi>=0?`<button class="lzc mir" data-m="${mi}" aria-label="مرآة"><i style="transform:rotate(${mang[mi]}deg)"></i></button>`:`<span class="lzc${edge?' edge':''}${gi>=0?' gem':''}" ${gi>=0?`data-g="${gi}"`:''}>${src?`<b class="lzspr lzsrc">${paintedProp('motion/shared-raster/laser-lamp.webp','raster-piece')}</b>`:tgt?`<b class="lzspr tgt">${paintedProp('motion/shared-raster/laser-target.webp','raster-piece')}</b>`:gi>=0?`<b class="lzspr">${paintedProp('motion/art/treasure_gem.webp','raster-piece')}</b>`:''}</span>`}
+  api.body.innerHTML=`<div class="lzb ltr" id="lzb" style="--w:${W};--h:${H}">${cells}<canvas class="lzbeam2" id="lzcanvas" width="${W*42}" height="${H*42}" aria-hidden="true"></canvas></div>`;
   api.msg(`دوّر المرايا ليصل الشعاع إلى الهدف ويمر على ${P.gems.length>1?'كل الجواهر':'الجوهرة'}.`);
-  function draw(){const r=lzTrace(P,ori),hit=new Set(r.path.map(([a,b])=>a+','+b)),pts=r.path.map(([a,b])=>`${a+1.5},${b+1.5}`).join(' ');['lzg','lzc','lzf'].forEach(id=>$('#'+id).setAttribute('points',pts));
-    const end=r.path[r.path.length-1],hc=$('#lzhit');hc.setAttribute('cx',end[0]+1.5);hc.setAttribute('cy',end[1]+1.5);
+  function draw(){
+    const r=lzTrace(P,ori),hit=new Set(r.path.map(([a,b])=>a+','+b));
+    const canvas=$('#lzcanvas'),ctx=canvas.getContext('2d');
+    if(ctx){
+      ctx.setTransform(42,0,0,42,0,0);
+      ctx.clearRect(0,0,W,H);
+      ctx.beginPath();
+      r.path.forEach(([x,y],i)=>i?ctx.lineTo(x+1.5,y+1.5):ctx.moveTo(x+1.5,y+1.5));
+      ctx.lineCap='round'; ctx.lineJoin='round';
+      ctx.strokeStyle='#ff5a7258'; ctx.lineWidth=.43; ctx.stroke();
+      ctx.strokeStyle='#ff6b6b'; ctx.lineWidth=.19; ctx.stroke();
+      ctx.strokeStyle='#fff0d8'; ctx.lineWidth=.06; ctx.stroke();
+      const [x,y]=r.path.at(-1);
+      ctx.beginPath(); ctx.arc(x+1.5,y+1.5,.22,0,2*Math.PI);
+      ctx.fillStyle='#ffdbca'; ctx.fill();
+    }
     $('#lzb').querySelectorAll('.lzc.mir').forEach(e=>{const i=+e.dataset.m;e.firstChild.style.transform=`rotate(${mang[i]}deg)`;e.classList.toggle('lock',lock.has(i))});
     $('#lzb').querySelectorAll('.lzc.gem').forEach(e=>{const g=P.gems[+e.dataset.g];e.classList.toggle('on',hit.has(g.x+','+g.y))});const t=$('#lzb .tgt'),on=!!r.out&&r.out[0]===P.out[0]&&r.out[1]===P.out[1];if(t)t.classList.toggle('on',on);$('#lzb').classList.toggle('reach',on)}
   function flip(i){if(api.ended||lock.has(i))return;ori[i]^=1;mang[i]+=90;tone(620,.05,'triangle');draw();if(lzWin(P,ori)){$('#lzb').classList.add('won');api.win('وصل الشعاع للهدف ومرّ على كل الجواهر.')}}
@@ -4478,7 +4489,7 @@ function runLaser(){return pzPlay('pz_laser',api=>{
 /* ---------- صناديق المخزن ---------- */
 function runSoko(){return pzPlay('pz_soko',api=>{
   const P=skMake(api.lv),{w,h}=P;let bx=P.boxes.slice(),pl=P.player,pushes=0,steps=0,hist=[],hl=-1,face=2;const G=new Set(P.goals);
-  api.body.innerHTML=`<div class="skw2 ltr" id="skw"><div class="skb2" id="skb" style="--w:${w};--h:${h}">${gridBtns(w,h,i=>P.wall[i]?`<span class="skc2 wall${P.wall[i-w]===false||i<w?'':' top'}"></span>`:`<span class="skc2${G.has(i)?' goal':''}" data-i="${i}">${G.has(i)?'<i class="pad"></i>':''}</span>`)}</div>${bx.map((_,k)=>`<div class="sksp2 skbox2" id="skx${k}">${SPR.crate2}</div>`).join('')}<div class="sksp2 skme2" id="skme">${SPR.worker}</div></div>${arrowPad()}<div class="row skbtns"><button class="pzgive" id="skun">↶ تراجع</button><button class="pzgive" id="skre">↺ من جديد</button></div>`;
+  api.body.innerHTML=`<div class="skw2 ltr" id="skw"><div class="skb2" id="skb" style="--w:${w};--h:${h}">${gridBtns(w,h,i=>P.wall[i]?`<span class="skc2 wall${P.wall[i-w]===false||i<w?'':' top'}"></span>`:`<span class="skc2${G.has(i)?' goal':''}" data-i="${i}">${G.has(i)?'<i class="pad"></i>':''}</span>`)}</div>${bx.map((_,k)=>`<div class="sksp2 skbox2" id="skx${k}">${paintedProp('motion/shared-raster/crate.webp','raster-piece')}<i class="raster-crate-check" aria-hidden="true">✓</i></div>`).join('')}<div class="sksp2 skme2" id="skme">${paintedProp('treasure/art/story5/crew_full_shibl.webp','wbody raster-piece')}</div></div>${rasterBoardPad()}<div class="row skbtns"><button class="pzgive" id="skun">↶ تراجع</button><button class="pzgive" id="skre">↺ من جديد</button></div>`;
   api.msg(`ادفع كل الصناديق إلى الدوائر المضيئة. لا تستطيع سحب الصندوق. أقل حل: <b class="num">${P.min}</b> دفعات.`);
   const put=(e,c)=>{e.style.left=(c%w)*100/w+'%';e.style.top=(c/w|0)*100/h+'%';e.style.width=100/w+'%';e.style.height=100/h+'%'};
   function dust(c,d){const e=document.createElement('i');e.className='skdust d'+d;put(e,c);$('#skw').appendChild(e);setTimeout(()=>e.remove(),520)}
@@ -4902,9 +4913,9 @@ function runDoors(){return pzPlay('pz_door',api=>{
 /* ---------- أطفئ الأنوار ---------- */
 function runLights(){return pzPlay('pz_lights',api=>{
   const P=loMake(api.lv),n=P.n,on=P.on.slice();let presses=0;
-  api.body.innerHTML=`<div class="log ltr" id="log" style="--n:${n}">${on.map((_,i)=>`<button class="loc" data-i="${i}" aria-label="مصباح">${SPR.bulb}</button>`).join('')}</div>`;
+  api.body.innerHTML=`<div class="log ltr" id="log" style="--n:${n}">${on.map((_,i)=>`<button class="loc" data-i="${i}" aria-label="مصباح">${paintedProp('motion/shared-raster/lamp-off.webp','raster-lamp-off')}${paintedProp('motion/shared-raster/lamp-on.webp','raster-lamp-on')}</button>`).join('')}</div>`;
   api.msg(`أطفئ كل المصابيح. الضغط يقلب المصباح وجيرانه الأربعة. أقل حل: <b class="num">${P.min}</b>`);const cells=[...$('#log').children];
-  function draw(){cells.forEach((b,i)=>b.classList.toggle('on',!!on[i]))}
+  function draw(){cells.forEach((b,i)=>{b.classList.toggle('on',!!on[i]); b.setAttribute('aria-pressed',String(!!on[i]))})}
   function press(i){if(api.ended)return;const x=i%n,y=i/n|0;[[0,0],[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy],k)=>{if(!inb(x+dx,y+dy,n,n))return;const j=(y+dy)*n+x+dx;on[j]^=1;const c=cells[j];c.classList.remove('flip');void c.offsetWidth;c.classList.add('flip')});presses++;tone(on[i]?700:420,.05);cells.forEach(c=>c.classList.remove('hint'));draw();
     if(!on.some(Boolean))api.win(`أطفأت كل المصابيح في ${arN(presses,AN.press)}، والأقل ${arN(P.min,AN.press)}.`);else api.msg(`الضغطات: <b class="num">${presses}</b> · أقل حل: <b class="num">${P.min}</b>`)}
   cells.forEach((b,i)=>b.onclick=()=>press(i));draw();pzHook({P,press,on});
@@ -4913,7 +4924,7 @@ function runLights(){return pzPlay('pz_lights',api=>{
 
 /* ---------- فك التشابك ---------- */
 function runUntangle(){return pzPlay('pz_untangle',api=>{
-  const P=unMake(api.lv), pos=P.pos.map(p=>p.slice()), lock=new Set();
+  const P=api.authored?.board||unMake(api.lv), pos=P.pos.map(p=>p.slice()), lock=new Set(P.fixed);
   let drag=null, moves=0;
   api.body.innerHTML=`<div class="unb" id="unsv" role="group" aria-label="لوحة فك التشابك">
     <div class="un-edges" aria-hidden="true">${P.e.map(()=>'<i class="un-edge"></i>').join('')}</div>
@@ -4997,7 +5008,10 @@ function runUntangle(){return pzPlay('pz_untangle',api=>{
 /* ---------- بخط واحد ---------- */
 function runStroke(){return pzPlay('pz_stroke',api=>{
   const P=osMake(api.lv),{c,r}=P,used=new Set(),X=i=>8+(i%c)*84/(c-1),Y=i=>8+(i/c|0)*84/(r-1),K=([a,b])=>a+'-'+b;let cur=null,trail=[];
-  api.body.innerHTML=`<div class="osb"><svg viewBox="0 0 100 100"><g id="ose">${P.edges.map((e,k)=>`<line class="ose" data-k="${k}" x1="${X(e[0])}" y1="${Y(e[0])}" x2="${X(e[1])}" y2="${Y(e[1])}" pathLength="1"/>`).join('')}</g></svg>${[...new Set(P.edges.flat())].map(v=>`<button class="osn" data-v="${v}" style="left:${X(v)}%;top:${Y(v)}%" aria-label="نقطة"></button>`).join('')}</div><div class="row skbtns"><button class="pzgive" id="osre">↺ من جديد</button></div>`;
+  api.body.innerHTML=`<div class="osb"><div id="ose" aria-hidden="true">${P.edges.map(([a,b],k)=>{
+    const dx=X(b)-X(a),dy=Y(b)-Y(a),length=Math.hypot(dx,dy),angle=Math.atan2(dy,dx);
+    return `<i class="ose" data-k="${k}" style="left:${X(a)}%;top:${Y(a)}%;--length:${length}%;--angle:${angle}rad"></i>`;
+  }).join('')}</div>${[...new Set(P.edges.flat())].map(v=>`<button class="osn" data-v="${v}" style="left:${X(v)}%;top:${Y(v)}%" aria-label="نقطة"></button>`).join('')}</div><div class="row skbtns"><button class="pzgive" id="osre">↺ من جديد</button></div>`;
   api.msg('ارسم الشكل كله بخط واحد بدون أن ترفع القلم أو تمر على خط مرتين. اضغط نقطة البداية ثم النقاط واحدة واحدة.');
   function draw(){$('#ose').querySelectorAll('.ose').forEach(l=>{const e=P.edges[+l.dataset.k];l.classList.toggle('on',used.has(K(e)))});document.querySelectorAll('.osn').forEach(b=>{const v=+b.dataset.v;b.classList.toggle('cur',v===cur);b.classList.remove('hint')});api.msg(`الخطوط: <b class="num">${used.size}</b> من <b class="num">${P.edges.length}</b>`)}
   function tap(v){if(api.ended)return;if(cur==null){cur=v;sfx.pop();draw();return}const e=P.edges.find(([a,b])=>!used.has(a+'-'+b)&&((a===cur&&b===v)||(b===cur&&a===v)));if(!e){if(!used.size){cur=v;draw();return}sfx.bad();return}
@@ -5033,12 +5047,12 @@ function runBinary(){return pzPlay('pz_binary',api=>{
 
 /* ---------- الجليد المنزلق ---------- */
 function runIce(){return pzPlay('pz_ice',api=>{
-  const P=icMake(api.lv),{w,h}=P;let pos=P.start,moves=0,busy=false;
+  const P=api.authored?window.mlAuthoredStages.ice(api.authored.board):icMake(api.lv),{w,h}=P;let pos=P.start,moves=0,busy=false;
   const reduce=window.matchMedia('(prefers-reduced-motion: reduce)');
   const art=(name,alt)=>`<img src="motion/revised/ice-${name}.webp" alt="${alt}" draggable="false">`;
   const directions=[['Up','أعلى','↑'],['Left','يسار','←'],['Down','أسفل','↓'],['Right','يمين','→']];
   const pad=`<div class="mzpad ltr pzpad icpad">${directions.map(([key,label,arrow])=>`<button type="button" data-d="Arrow${key}" aria-label="${label}"><span aria-hidden="true">${arrow}</span></button>`).join('')}</div>`;
-  api.body.innerHTML=`<div class="icw2 ltr" id="icw"><div class="icb2" id="icb" style="--w:${w};--h:${h}">${gridBtns(w,h,i=>P.rock[i]?`<span class="icc2 rock">${art('rock','صخرة')}</span>`:i===P.goal?`<span class="icc2 goal">${art('igloo','الكوخ الجليدي')}</span>`:`<span class="icc2${(i*7)%11===0?' glint':''}"></span>`)}</div><div class="ictok2" id="ict">${art('penguin','البطريق')}</div></div>${pad}<div class="row skbtns"><button class="pzgive" id="icre">↺ من جديد</button></div>`;
+  api.body.innerHTML=`<div class="icw2 ltr" id="icw" style="--ice-columns:${w};--ice-rows:${h}"><div class="icb2" id="icb" style="--w:${w};--h:${h}">${gridBtns(w,h,i=>P.rock[i]?`<span class="icc2 rock">${art('rock','صخرة')}</span>`:i===P.goal?`<span class="icc2 goal">${art('igloo','الكوخ الجليدي')}</span>`:`<span class="icc2${(i*7)%11===0?' glint':''}"></span>`)}</div><div class="ictok2" id="ict">${art('penguin','البطريق')}</div></div>${pad}<div class="row skbtns"><button class="pzgive" id="icre">↺ من جديد</button></div>`;
   api.msg(`البطريق ينزلق حتى يصطدم بصخرة أو بالحافة، ويتوقف أيضًا عند الكوخ إذا مرّ به في طريقه. أوصله إلى الكوخ الجليدي. أقل حل: <b class="num">${P.min}</b>`);
   const board=$('#icb'), wrap=$('#icw'), token=$('#ict');
   const put=(p,ms)=>{const t=token;t.style.transitionDuration=(ms||0)+'ms';t.style.left=(p%w)*100/w+'%';t.style.top=(p/w|0)*100/h+'%';t.style.width=100/w+'%';t.style.height=100/h+'%'};
@@ -5773,7 +5787,7 @@ function runXBridge(){return pzPlay('pz_xbridge',api=>{
   const P=xgMake(api.lv),W=P.W;let pos=0,placed=[],falls=0,busy=false,sel=-1;const lim=3,X=x=>4+x*92/W;
   const pils=[...P.pil].filter(x=>x>0&&x<W).map(x=>`<div class="xgp" style="left:${X(x)}%">${pirateProp('bridge/pier')}</div>`).join('');
   api.body.innerHTML=paintedSheet('bridge',`${xHead(paintedProp('ui/art/library-painted/pz_xbridge.webp'),'جسر الوادي')}<ol class="xnote"><li>ابنِ جسرًا من الحافة اليسرى إلى الحافة اليمنى.</li><li>كل لوح يبدأ من نهاية الجسر، ولازم يقع طرفه الآخر على عمود صخري أو على الحافة.</li><li>كل لوح يُستعمل مرة واحدة، وبعض الألواح فخ. ${arN(lim,['سقطة واحدة','سقطتان','سقطات','سقطة'])} وتخسر.</li></ol>
-   <div class="xgw ltr" id="xgw"><div class="xgcl l"></div><div class="xgcl r"></div><div class="xgriver"></div>${pils}<div id="xgpl"></div><div class="xgruler">${[...Array(W+1).keys()].map(x=>`<i style="left:${X(x)}%">${x%2===0||W<=10?XAR(x):''}</i>`).join('')}</div><div class="xpirate xgpir" id="xgpir" style="left:${X(0)}%">${pirateProp('loot/captain')}</div><div class="xfx" id="xfx"></div></div>
+   <div class="xgw ltr" id="xgw"><div class="xgcl l"></div><div class="xgcl r"></div><div class="xgriver"></div>${pils}<div id="xgpl"></div><div class="xgruler">${[...Array(W+1).keys()].map(x=>`<i style="left:${X(x)}%">${x%2===0||W<=10?XAR(x):''}</i>`).join('')}</div><div class="xpirate xgpir" id="xgpir" style="left:${X(0)}%">${paintedProp('treasure/art/story5/crew_full_nawfal.webp')}</div><div class="xfx" id="xfx"></div></div>
    <div class="xgtray" id="xgtray" style="--W:${W}"></div><div class="xgbtns"><button class="cta ghost" id="xgun">شيل آخر لوح</button></div>`);
   const tray=()=>{$('#xgtray').innerHTML=P.planks.map((l,i)=>placed.includes(i)?'':`<button class="xgplank${sel===i?' sel':''}" data-i="${i}" style="--l:${l}"><span>${[...Array(l)].map(()=>'<i></i>').join('')}</span><b>${XAR(l)}</b></button>`).join('');$('#xgtray').querySelectorAll('[data-i]').forEach(b=>b.onclick=()=>lay(+b.dataset.i))};
   const deck=()=>{let x=0;$('#xgpl').innerHTML=placed.map(i=>{const l=P.planks[i],s=`<div class="xgboard" style="left:${X(x)}%;width:${X(x+l)-X(x)}%"></div>`;x+=l;return s}).join('');$('#xgpir').style.left=X(pos)+'%'};tray();deck();
@@ -6070,9 +6084,9 @@ const YB_LV=[[3,4,0],[4,5,0],[4,6,0],[4,6,1],[5,6,1],[5,7,1],[6,7,1],[6,8,1]],YB
 function runYBell(){return pzPlay('pz_ybell',api=>{
   const[nb,tgt,rev]=YB_LV[api.lv-1],all=[...Array(tgt)].map(()=>rnd(nb));let len=2,inp=[],busy=true,miss=0;
   const back=()=>rev&&len%2===1,want=()=>{const s=all.slice(0,len);return back()?s.reverse():s};
-  api.body.innerHTML=xSheet(`${xHead(XS_.bell,'أجراس الحطام')}<ol class="xnote"><li>الأجراس ترن بلحن، وأنت تعيده.</li><li>كل مرة يطول اللحن جرسًا واحدًا حتى ${arN(tgt,['جرس','جرسين','أجراس','جرسًا'])}.</li>${rev?'<li>في الجولات الفردية الطويلة: أعد اللحن <b>بالمقلوب</b> من آخر جرس لأوله.</li>':''}<li>غلطة واحدة نسامحك عليها، والثانية تغرق الحطام.</li></ol>
-   <div class="ybw" id="ybw"><svg class="ybbeam" viewBox="0 0 300 40" preserveAspectRatio="none"><path d="M4 14h292v12H4z" fill="#8A5A33" ${XI}/><path d="M4 20h292" stroke="${XK}" stroke-width=".6" opacity=".6"/><path d="M0 14l14-12h8L8 14M300 14L286 2h-8l14 12" fill="#6E4320" ${XI2}/></svg>
-   <div class="ybrow" style="--n:${nb}">${[...Array(nb)].map((_,i)=>`<button class="ybb" data-b="${i}" style="--bc:${YB_C[i]}"><span class="ybrope"></span><i>${XS_.bell.replace('url(#xGold)','var(--bc)')}</i><em class="ybwave"></em></button>`).join('')}</div></div>
+  api.body.innerHTML=xSheet(`${xHead(paintedProp('motion/shared-raster/bell.webp'),'أجراس الحطام')}<ol class="xnote"><li>الأجراس ترن بلحن، وأنت تعيده.</li><li>كل مرة يطول اللحن جرسًا واحدًا حتى ${arN(tgt,['جرس','جرسين','أجراس','جرسًا'])}.</li>${rev?'<li>في الجولات الفردية الطويلة: أعد اللحن <b>بالمقلوب</b> من آخر جرس لأوله.</li>':''}<li>غلطة واحدة نسامحك عليها، والثانية تغرق الحطام.</li></ol>
+   <div class="ybw" id="ybw"><div class="ybbeam" aria-hidden="true"></div>
+   <div class="ybrow" style="--n:${nb}">${[...Array(nb)].map((_,i)=>`<button class="ybb" data-b="${i}" aria-label="جرس ${XAR(i+1)}" style="--bc:${YB_C[i]};--bell-hue:${i*23}deg"><span class="ybrope"></span><i>${paintedProp('motion/shared-raster/bell.webp','raster-bell')}</i><em class="ybwave"></em></button>`).join('')}</div></div>
    <div class="ybdots" id="ybd"></div>`,640,111);
   const dots=()=>{$('#ybd').innerHTML=[...Array(tgt-1)].map((_,k)=>`<i class="${k<len-2?'ok':k===len-2?'cur':''}"></i>`).join('')};
   const ring=b=>{const e=api.body.querySelector(`.ybb[data-b="${b}"]`);if(!e)return;e.classList.remove('ring');void e.offsetWidth;e.classList.add('ring');tone(YB_F[b],.45,'sine',.09);tone(YB_F[b]*2,.25,'sine',.025)};
@@ -6098,15 +6112,40 @@ function ymMake(lv){const[n,rot,K]=YM_LV[lv-1];
 function ymOk(P,cur){const n=P.n,E=i=>ymEdges(P.tiles[cur[i].t],cur[i].r);let bad=0;
   for(let r=0;r<n;r++)for(let c=0;c<n;c++){const e=E(r*n+c);if(r===0&&e[0])bad++;if(c===n-1&&e[1])bad++;if(r===n-1&&e[2])bad++;if(c===0&&e[3])bad++;if(c<n-1&&e[1]!==E(r*n+c+1)[3])bad++;if(r<n-1&&e[2]!==E((r+1)*n+c)[0])bad++}return bad}
 const YM_STY=[null,['#7A4A22',3,'4 3'],['#4F8FA8',4.4,''],['#3A2616',3.4,'1 2.2'],['#5E8A3E',3,'.5 3.4'],['#9B2B1F',2.6,'7 3']];
-function ymTile(T){const pts=[[20,0],[40,20],[20,40],[0,20]];let f='',fr='';T.forEach((k,i)=>{if(!k){fr+=['<path d="M1.5 1.5h37"/>','<path d="M38.5 1.5v37"/>','<path d="M1.5 38.5h37"/>','<path d="M1.5 1.5v37"/>'][i];return}const[c,w,d]=YM_STY[k],[x,y]=pts[i];
-  f+=k===2?`<path d="M${x} ${y}Q${(x+20)/2+(i%2?0:4)} ${(y+20)/2+(i%2?4:0)} 20 20" fill="none" stroke="${c}" stroke-width="${w}" stroke-linecap="round"/>`:`<path d="M${x} ${y}L20 20" stroke="${c}" stroke-width="${w}" stroke-dasharray="${d}" stroke-linecap="${k===4?'round':'butt'}"/>`});
-  return`<svg viewBox="0 0 40 40"><rect width="40" height="40" fill="#EFDDB0"/><path d="M0 0h40v40H0z" fill="none" stroke="rgba(58,38,22,.35)" stroke-width=".6"/>${f}<circle cx="20" cy="20" r="3.4" fill="#EFDDB0" ${XI2}/><g fill="none" stroke="${XK}" stroke-width="2.6">${fr}</g></svg>`}
+function ymTile(canvas,T){
+  const ctx=canvas.getContext('2d');
+  if(!ctx)return;
+  ctx.setTransform(3,0,0,3,0,0);
+  ctx.clearRect(0,0,40,40);
+  const wash=ctx.createLinearGradient(0,0,40,40);
+  wash.addColorStop(0,'#fff0c7');wash.addColorStop(1,'#d9aa6e');
+  ctx.fillStyle=wash;ctx.fillRect(0,0,40,40);
+  ctx.strokeStyle='#7f5732';ctx.lineWidth=.5;ctx.strokeRect(0,0,40,40);
+  const edges=[[20,0],[40,20],[20,40],[0,20]];
+  const rim=[[1.5,1.5,38.5,1.5],[38.5,1.5,38.5,38.5],[1.5,38.5,38.5,38.5],[1.5,1.5,1.5,38.5]];
+  T.forEach((kind,i)=>{
+    const [x,y]=edges[i];
+    const [color,line,dash]=YM_STY[kind]||['#302218',2.5,''];
+    ctx.beginPath();ctx.strokeStyle=color;ctx.lineWidth=line;
+    ctx.setLineDash(dash?dash.split(' ').map(Number):[]);
+    ctx.lineCap=kind===2||kind===4?'round':'butt';
+    if(!kind){const [ax,ay,bx,by]=rim[i];ctx.moveTo(ax,ay);ctx.lineTo(bx,by);}
+    else{
+      ctx.moveTo(x,y);
+      if(kind===2)ctx.quadraticCurveTo((x+20)/2+(i%2?0:4),(y+20)/2+(i%2?4:0),20,20);
+      else ctx.lineTo(20,20);
+    }
+    ctx.stroke();
+  });
+  ctx.setLineDash([]);ctx.beginPath();ctx.arc(20,20,3.4,0,Math.PI*2);ctx.fillStyle='#eed8a4';ctx.fill();
+  ctx.lineWidth=.7;ctx.strokeStyle='#604528';ctx.stroke();
+}
 function runYMap(){return pzPlay('pz_ymap',api=>{
   const P=ymMake(api.lv),n=P.n,lim=n*n*(P.rot?4:2)+6;let cur=P.cur.map(x=>({...x})),sel=-1,moves=0,busy=false;
-  api.body.innerHTML=xSheet(`${xHead(XS_.mapp,'الخريطة الممزقة')}<ol class="xnote"><li>رجّع القطع لمكانها: كل طريق ونهر وجرف لازم يكمل في القطعة اللي جنبه.</li><li>الإطار الأسود حافة الخريطة: لازم يكون على الطرف.</li><li>اضغط قطعتين لتبدّلهما${P.rot?'، واضغط القطعة المختارة مرة ثانية لتدويرها':''}.</li></ol>
-   <div class="ymleg">${[1,2,3,4,5].slice(0,P.K).map(k=>`<span><svg viewBox="0 0 30 10"><path d="M2 5h26" stroke="${YM_STY[k][0]}" stroke-width="${YM_STY[k][1]}" stroke-dasharray="${YM_STY[k][2]}"/></svg>${['طريق','نهر','جرف','درب الغابة','أثر القرصان'][k-1]}</span>`).join('')}</div>
+  api.body.innerHTML=xSheet(`${xHead(paintedProp('motion/shared-raster/map.webp'),'الخريطة الممزقة')}<ol class="xnote"><li>رجّع القطع لمكانها: كل طريق ونهر وجرف لازم يكمل في القطعة اللي جنبه.</li><li>الإطار الأسود حافة الخريطة: لازم يكون على الطرف.</li><li>اضغط قطعتين لتبدّلهما${P.rot?'، واضغط القطعة المختارة مرة ثانية لتدويرها':''}.</li></ol>
+   <div class="ymleg">${[1,2,3,4,5].slice(0,P.K).map(k=>`<span><i class="map-legend-stroke" style="--path-color:${YM_STY[k][0]};--path-stroke:${YM_STY[k][1]}px;border-block-start-style:${YM_STY[k][2]?'dashed':'solid'}"></i>${['طريق','نهر','جرف','درب الغابة','أثر القرصان'][k-1]}</span>`).join('')}</div>
    <div class="ymg ltr" id="ymg" style="--n:${n}"></div><div class="xtools"><span>الحركات: <b id="ymv"></b> من ${XAR(lim)}</span><span id="ymok"></span></div>`,700,121);
-  const draw=()=>{$('#ymg').innerHTML=cur.map((x,i)=>`<button class="ymt${sel===i?' sel':''}" data-i="${i}"><i style="transform:rotate(${x.r*90}deg)">${ymTile(P.tiles[x.t])}</i></button>`).join('');$('#ymv').textContent=XAR(moves);
+  const draw=()=>{$('#ymg').innerHTML=cur.map((x,i)=>`<button class="ymt${sel===i?' sel':''}" data-i="${i}"><i style="transform:rotate(${x.r*90}deg)"><canvas width="120" height="120" aria-hidden="true"></canvas></i></button>`).join('');$('#ymg').querySelectorAll('canvas').forEach((canvas,i)=>ymTile(canvas,P.tiles[cur[i].t]));$('#ymv').textContent=XAR(moves);
     const b=ymOk(P,cur);$('#ymok').textContent=b?`وصلات ناقصة: ${XAR(b)}`:'';api.body.querySelectorAll('.ymt').forEach(e=>e.onclick=()=>tap(+e.dataset.i))};
   function tap(i){if(api.ended||busy)return;if(sel<0){sel=i;sfx.pop();draw();return}
     if(sel===i){if(!P.rot){sel=-1;draw();return}cur[i].r=(cur[i].r+1)%4;moves++;tone(500,.04)}else{[cur[sel],cur[i]]=[cur[i],cur[sel]];sel=-1;moves++;tone(380,.05,'triangle')}
@@ -6359,7 +6398,7 @@ function runZComp(){return pzPlay('pz_zcomp',api=>{
   const dial=[...Array(8)].map((_,pos)=>{const d=(pos-P.R+8)%8,a=pos*45;return`<div class="zsd" style="transform:rotate(${a}deg) translateY(-42px) rotate(${-a}deg)">${zStar(P.starAt[d])}</div>`}).join('');
   const cell=xIslandPuzzle(api,P,{seed:201,h:780,board:drawnIsland,top:`<div class="xnote">${xHead(seaArt('compass/bezel'),'خريطة النجوم على ظهر الحوت')}<ol>${P.clues.map(c=>`<li>من ${P.marks[c.L].n}: الكنز تحت النجم <i class="zsi">${zStar(P.starAt[c.d])}</i></li>`).join('')}</ol>
     <div class="zsky"><div class="zdial">${dial}<b class="zpole">${P.R?'':'ش'}</b></div><small>${P.R?'قرص النجوم مقلوب حسب الموسم: النجم القطبي <i class="zsi">'+zStar(0)+'</i> يشير دائمًا للشمال (أعلى الخريطة). كل نجم يبقى في مكانه بالنسبة للقطبي.':'النجم القطبي <i class="zsi">'+zStar(0)+'</i> فوق = الشمال. كل نجم في القرص يدلّ على اتجاه.'}</small></div>${P.marks.length>P.clues.length?'<p class="xlie">أحد المعالم على الخريطة لا علاقة له بالأدلة.</p>':''}</div>`,
-   tools:`<div class="xtools"><span class="xshov" id="xsh"></span><div class="seg xseg"><button class="on" data-tool="comp">${seaArt('compass/bezel')}<span>البوصلة</span></button><button data-tool="dig">${shovel}<span>احفر</span></button></div><span class="zcrot"><button id="zl">↺</button><button id="zr">↻</button></span></div>`});
+   tools:`<div class="xtools"><span class="xshov" id="xsh"></span><div class="seg xseg"><button class="on" data-tool="comp">${seaArt('compass/bezel')}<span>البوصلة</span></button><button data-tool="dig">${shovel}<span>احفر</span></button></div><span class="zcrot"><button id="zl" aria-label="أدر البوصلة يسارًا">↺</button><button id="zr" aria-label="أدر البوصلة يمينًا">↻</button></span></div>`});
   $('#xb .xbin').insertAdjacentHTML('beforeend',seaPath('zrays',n,n));
   const drawRays=()=>{
     const canvas=$('#zrays');
@@ -6446,7 +6485,7 @@ function runZCur(){return pzPlay('pz_zcur',api=>{
   const gates=P.cell.map((c,i)=>c.t==='gate'?`<button class="zgate" data-i="${i}" style="${pc(i)}"><i data-g="${c.g}">${seaArt('current/gate')}<span class="sea-arrow">↑</span>${P.groups[c.g].length>1?`<em>${ZGL[c.g%3]}</em>`:''}</i></button>`:'').join('');
   api.body.innerHTML=xSheet(`${xHead(seaArt('current/goal-shell'),'بوابات المرجان')}<ol class="xnote"><li>القنديل يطلع من الصدفة تحت ويسبح مع التيار.</li><li>الأسهم الخضراء ثابتة. البوابات الذهبية تدور إذا ضغطتها.</li><li>${P.groups.some(g=>g.length>1)?'البوابات اللي تحمل نفس الرمز تدور مع بعض!':'وجّه التيار للقلب المرجاني فوق، بعيدًا عن الصخور والدوّامات.'}</li></ol>
    <div class="xrw zgw ltr" id="zgw" style="aspect-ratio:${w}/${h};--sea-w:${w};--sea-h:${h}"><div class="xrsea zgsea"></div>${cells}<div class="xrs zg-goal" style="${pc(P.goal)}">${seaArt('current/goal-shell')}</div><div class="xrs zg-src" style="${pc(P.start)}">${seaArt('current/source-shell')}</div>${gates}${seaPath('zgp',w,h)}<div class="zjelly" id="zgj" style="${pc(P.start)}">${seaArt('current/jelly')}</div></div>
-   <div class="xkbtns"><button class="go-btn xsm" id="zggo">أطلق القنديل</button></div><div class="xtools"><span class="xtries" id="zgt"></span></div>`,820,221);
+   <div class="xkbtns"><button class="go-btn xsm" id="zggo" aria-label="أطلق القنديل">${seaArt('current/jelly')}</button></div><div class="xtools"><span class="xtries" id="zgt"></span></div>`,820,221);
   const paint=()=>{api.body.querySelectorAll('.zgate').forEach(b=>{const c=P.cell[+b.dataset.i];const direction=(c.d+rot[c.g])%4;b.querySelector('i').style.transform=`rotate(${direction*90}deg)`;b.setAttribute('aria-label',`بوابة الصف ${XAR(Math.floor(+b.dataset.i/w)+1)}، العمود ${XAR(+b.dataset.i%w+1)}، ${D8N[direction*2]}${P.groups[c.g].length>1?'، مجموعة '+ZGL[c.g%3]:''}`)});$('#zgt').innerHTML=`محاولات: ${[0,1,2].map(k=>`<i class="${k<tries?'on':''}"></i>`).join('')}`};
   const turnG=g=>{if(api.ended||busy)return;rot[g]=(rot[g]+1)%4;paint();tone(420,.05,'triangle');seaTrace($('#zgp'),[])};
   api.body.querySelectorAll('.zgate').forEach(b=>b.onclick=()=>turnG(P.cell[+b.dataset.i].g));
@@ -6521,7 +6560,7 @@ function runZHarp(){return pzPlay('pz_zharp',api=>{
   const[ns,len,sh,rev]=ZH_LV[api.lv-1],lo=Math.max(0,-sh),hi=ns-1-Math.max(0,sh),mel=[...Array(len)].map(()=>lo+rnd(hi-lo+1)),heard=mel.map(m=>m+sh),want=rev?mel.slice().reverse():mel;let inp=[],busy=true,miss=0;
   api.body.innerHTML=xSheet(`${xHead(seaArt('harp/shell'),'قيثارة الحورية')}<ol class="xnote"><li>الصدفة تعيد لحن الحورية لكن <b>${sh>0?'أعلى':'أخفض'} بـ${arN(Math.abs(sh),['وتر واحد','وترين','أوتار','وترًا'])}</b>.</li><li>اعزف اللحن الأصلي على القيثارة${rev?'، <b>بالمقلوب</b> من آخر نغمة':''}.</li><li>الصدفة تعرض اللحن بالضوء والصوت، فما تحتاج تسمع إذا الصوت مغلق.</li></ol>
    <div class="zhinstrument"><div class="zhshell" id="zhs" aria-label="عرض النغمات">${heard.map(()=>'<i></i>').join('')}</div><div class="zhharp ltr" id="zhh" style="--n:${ns}">${[...Array(ns)].map((_,i)=>`<button data-s="${i}" aria-label="الوتر ${XAR(i+1)}"><span></span><b>${XAR(i+1)}</b></button>`).join('')}</div></div>
-   <div class="xkbtns"><button class="cta ghost xsm" id="zhre">أعد سماع الصدفة</button></div>`,760,241);
+   <div class="xkbtns"><button class="cta ghost xsm" id="zhre" aria-label="أعد سماع الصدفة">${seaArt('harp/shell')}</button></div>`,760,241);
   const pluck=s=>{const b=api.body.querySelector(`#zhh [data-s="${s}"]`);if(b){b.classList.remove('pl');void b.offsetWidth;b.classList.add('pl')}tone(ZH_F[s],.5,'triangle',.07)};
   function play(){busy=true;inp=[];const dots=[...$('#zhs').children];dots.forEach(d=>{d.className='';d.textContent=''});heard.forEach((s,k)=>later(()=>{dots[k].className='on';dots[k].textContent=XAR(s+1);pluck(s)},400+k*700));later(()=>{dots.forEach(d=>{d.className='';d.textContent=''});busy=false;api.msg(`اعزف الأصل${rev?' بالمقلوب':''}.`)},600+heard.length*700+900)}
   function tap(s){if(api.ended||busy)return;pluck(s);inp.push(s);if(want[inp.length-1]!==s){miss++;api.wrong();busy=true;if(miss>=2){later(()=>api.over(`اللحن الأصلي: ${want.map(x=>XAR(x+1)).join(' ← ')}.`),400);return}api.msg('نغمة خاطئة! اسمع الصدفة مرة ثانية.');later(play,900);return}
@@ -6908,7 +6947,7 @@ function runPClock(){return pzPlay('pz_pclock',api=>{
 /* ---------- the gatekeeper's test: three trials in a row ---------- */
 function runPBoss1(){return pzPlay('pz_pboss1',api=>{
   const lv=Math.min(8,api.lv+2),A=plMake(lv),Bq=pqMake(Math.min(8,lv)),C=pcMake(Math.min(8,lv));let stage=0,miss=0,busy=false;const say=t=>{$('#pbq').textContent=t};
-  api.body.innerHTML=xSheet(`<div class="pbk"><i>${XS_.keeper}</i><div><b>حارس البوابة</b><p id="pbq">«ثلاثة اختبارات. أجب عن الأول».</p></div></div><div class="pbstages">${[0,1,2].map(i=>`<span class="${i===0?'cur':''}" id="pbs${i}">${['الرقم','الكذاب','الوقت'][i]}</span>`).join('')}</div><div id="pbb"></div>`,780,331);
+  api.body.innerHTML=xSheet(`<div class="pbk"><i>${paintedProp('motion/shared-raster/gatekeeper.webp','full-palace-person')}</i><div><b>حارس البوابة</b><p id="pbq">«ثلاثة اختبارات. أجب عن الأول».</p></div></div><div class="pbstages">${[0,1,2].map(i=>`<span class="${i===0?'cur':''}" id="pbs${i}">${['الرقم','الكذاب','الوقت'][i]}</span>`).join('')}</div><div id="pbb"></div>`,780,331);
   function next(){$('#pbs'+stage).className='ok';stage++;if(stage>2){busy=true;say('«عبرت. خذ مفتاحي، فالقصر ينتظرك».');sfx.lvl();later(()=>pWin(api,'pz_pboss1','اجتزت اختبار حارس البوابة.'),900);return}$('#pbs'+stage).className='cur';sfx.ok(2);render()}
   function fail(t){miss++;api.wrong();say(t);if(miss>=3){busy=true;api.over('«عد حين تكون مستعدًا»، قالها الحارس وأغلق البوابة.')}}
   function render(){const b=$('#pbb');if(stage===0){say('«سبعة وجوه، وأقراص تحفظ رقمي. اقرأ النقوش».');b.innerHTML=`<ol class="xnote">${A.clues.map(c=>`<li>${plText(c)}</li>`).join('')}</ol><div class="pldials">${A.v.map((_,i)=>`<div class="pldial"><button data-u="${i}">▲</button><b id="bv${i}">٠</b><button data-d="${i}">▼</button></div>`).join('')}</div><div class="xkbtns"><button class="go-btn xsm" id="bgo">أجب</button></div>`;
@@ -7191,12 +7230,12 @@ function runPQueen(){return pzPlay('pz_pqueen',api=>{
   if(mir(pat).join()===pat.join())pat[0]=!pat[0];const opts=shuffle([{p:mir(pat),ok:1},{p:flipV(pat),ok:0},{p:rot(pat),ok:0},{p:mir(rot(pat)),ok:0}].filter((o,i,a)=>a.findIndex(x=>x.p.join()===o.p.join())===i));
   const B=pmMake(Math.min(5,lv)),C=pqMake(Math.min(6,lv));let st=0,miss=0,busy=false;const say=t=>{$('#pqq').textContent=t};
   const grid=p=>`<div class="pqg">${p.map(v=>`<i class="${v?'on':''}"></i>`).join('')}</div>`;
-  api.body.innerHTML=xSheet(`<div class="pbk"><i>${XS_.queen}</i><div><b>ملكة المرايا</b><p id="pqq"></p></div></div><div class="pbstages">${['الانعكاس','الشعاع','الصدق'].map((s,i)=>`<span id="pqs${i}" class="${i?'':'cur'}">${s}</span>`).join('')}</div><div id="pqb"></div>`,820,531);
+  api.body.innerHTML=xSheet(`<div class="pbk"><i>${paintedProp('motion/shared-raster/mirror-queen.webp','full-palace-person')}</i><div><b>ملكة المرايا</b><p id="pqq"></p></div></div><div class="pbstages">${['الانعكاس','الشعاع','الصدق'].map((s,i)=>`<span id="pqs${i}" class="${i?'':'cur'}">${s}</span>`).join('')}</div><div id="pqb"></div>`,820,531);
   function next(){$('#pqs'+st).className='ok';st++;sfx.ok(2);if(st>2){busy=true;say('«مرآتي لك. لم يرَ أحد وجهي الحقيقي قبلك».');later(()=>pWin(api,'pz_pqueen','تغلبت على ملكة المرايا.'),900);return}$('#pqs'+st).className='cur';render()}
   function fail(t){miss++;api.wrong();say(t);if(miss>=3){busy=true;api.over('«المرايا خدعتك»، ضحكت الملكة واختفت.')}}
   const H={};function render(){const b=$('#pqb');if(st===0){say('«أي هذه هي انعكاسي في المرآة؟»');b.innerHTML=`<div class="pqsrc">${grid(pat)}<span>│</span></div><div class="pqopts">${opts.map((o,i)=>`<button data-o="${i}">${grid(o.p)}</button>`).join('')}</div>`;b.querySelectorAll('[data-o]').forEach(e=>e.onclick=()=>{if(api.ended||busy)return;opts[+e.dataset.o].ok?next():fail('«هذا ليس انعكاسي… انظر جيدًا».')});H.a=()=>b.querySelector(`[data-o="${opts.findIndex(o=>o.ok)}"]`).click()}
     else if(st===1){say('«أضئ بلّوراتي».');const s=B.s0.slice();const nn=B.n,pc=i=>`left:${(i%nn)*100/nn}%;top:${((i/nn)|0)*100/nn}%;width:${100/nn}%;height:${100/nn}%`;
-      b.innerHTML=`<div class="pmb ltr" style="--n:${nn}"><div class="pmsrc" style="top:${(B.sy+.5)*100/nn}%"></div>${B.cell.map((c,i)=>c.t==='m'?`<button class="pmm" data-m="${c.m}" style="${pc(i)}"><i></i></button>`:c.t==='f'?`<div class="pmf" style="${pc(i)};--fc:${PM_COL[c.c]}"></div>`:c.t==='x'?`<div class="pmx" data-i="${i}" style="${pc(i)};--fc:${PM_COL[c.c]}"><svg viewBox="0 0 40 40"><path d="M20 4l10 12-10 20-10-20z" fill="var(--fc)" fill-opacity=".45" stroke="${XK}" stroke-width="1.4"/></svg></div>`:c.t==='wall'?`<div class="pmw" style="${pc(i)}"></div>`:'').join('')}</div>`;
+      b.innerHTML=`<div class="pmb ltr" style="--n:${nn}"><div class="pmsrc" style="top:${(B.sy+.5)*100/nn}%"></div>${B.cell.map((c,i)=>c.t==='m'?`<button class="pmm" data-m="${c.m}" style="${pc(i)}"><i></i></button>`:c.t==='f'?`<div class="pmf" style="${pc(i)};--fc:${PM_COL[c.c]}"></div>`:c.t==='x'?`<div class="pmx" data-i="${i}" style="${pc(i)};--fc:${PM_COL[c.c]}"><i class="raster-queen-gem">${paintedProp('motion/revised/mirrors/gem.webp')}</i></div>`:c.t==='wall'?`<div class="pmw" style="${pc(i)}"></div>`:'').join('')}</div>`;
       const d=()=>{const r=pmTrace(B,s);b.querySelectorAll('.pmm').forEach(e=>e.classList.toggle('b',!!s[+e.dataset.m]));b.querySelectorAll('.pmx').forEach(e=>e.classList.toggle('on',r.lit.has(+e.dataset.i)));return r.lit.size===B.crys.length};d();
       b.querySelectorAll('.pmm').forEach(e=>e.onclick=()=>{if(api.ended||busy)return;s[+e.dataset.m]^=1;if(d())next()});H.a=()=>{B.sol.forEach((v,i)=>s[i]=v);if(d())next()}}
     else{say('«انعكاساتي الثلاثة تتكلم… أي باب أصدق؟»');b.innerHTML=`<ol class="xnote">${C.sts.map((s,i)=>`<li><b>الانعكاس ${XAR(i+1)}:</b> ${pqText(s).replace(/تمثال (\S+)/g,'انعكاس $1')}</li>`).join('')}</ol><div class="pqdoors">${[...Array(C.D)].map((_,d)=>`<button class="pqd" data-d="${d}"><small>${PQD[d]}</small></button>`).join('')}</div>`;
@@ -7238,9 +7277,12 @@ function runPArm(){return pzPlay('pz_parm',api=>{
   const cells=(p,i)=>paRot(p.base,p.r).map(([a,b])=>[a+place[i][0],b+place[i][1]]);
   const grid=()=>{const g=new Array(n*n).fill(-1);place.forEach((pl,i)=>{if(pl)cells(P.pcs[i],i).forEach(([a,b])=>{if(inb(a,b,n,n))g[b*n+a]=g[b*n+a]===-1?i:-2})});return g};
   const done=()=>{const g=grid();return place.every(Boolean)&&P.occ.every((o,i)=>(o>=0)===(g[i]>=0))&&!g.includes(-2)&&place.every((pl,i)=>cells(P.pcs[i],i).every(([a,b])=>inb(a,b,n,n)&&P.occ[b*n+a]>=0))};
-  api.body.innerHTML=xSheet(`<div class="pbk"><i>${XS_.shield}</i><div><b>مخزن أسلحة الملوك</b><p>«ركّب القطع داخل الظل. اختر قطعة، دوّرها، ثم اضغط مكانها».</p></div></div>
+  api.body.innerHTML=xSheet(`<div class="pbk"><i>${paintedProp('ui/art/library-painted/pz_parm.webp','raster-piece')}</i><div><b>مخزن أدوات الملوك</b><p>«ركّب القطع داخل الظل. اختر قطعة، دوّرها، ثم اضغط مكانها».</p></div></div>
    <div class="pab ltr" id="pab" style="--n:${n}"></div><div class="patray ltr" id="pat"></div><div class="xkbtns"><button class="cta ghost xsm" id="parot">دوّر القطعة</button><button class="cta ghost xsm" id="paout">أخرج القطعة</button></div><div class="xtools"><span>الحركات: <b id="pam"></b> من ${XAR(lim)}</span></div>`,820,541);
-  const mini=(p,i)=>{const c=paRot(p.base,p.r),w=Math.max(...c.map(a=>a[0]))+1,h=Math.max(...c.map(a=>a[1]))+1;return`<svg viewBox="0 0 ${w} ${h}" style="width:${w*16}px;height:${h*16}px">${c.map(([a,b])=>`<rect x="${a+.05}" y="${b+.05}" width=".9" height=".9" rx=".15" fill="${PA_C[i%6]}" stroke="${XK}" stroke-width=".06"/>`).join('')}</svg>`};
+  const mini=(p,i)=>{
+    const cells=paRot(p.base,p.r),w=Math.max(...cells.map(a=>a[0]))+1,h=Math.max(...cells.map(a=>a[1]))+1;
+    return `<span class="raster-arm-mini" style="--columns:${w};--rows:${h};--piece-color:${PA_C[i%6]}">${cells.map(([x,y])=>`<i style="grid-column:${x+1};grid-row:${y+1}"></i>`).join('')}</span>`;
+  };
   const draw=()=>{const g=grid();$('#pab').innerHTML=[...Array(n*n)].map((_,i)=>`<button class="pac ${P.occ[i]>=0?'sh':''}" data-i="${i}" style="${g[i]>=0?`background:${PA_C[g[i]%6]}`:g[i]===-2?'background:#E8A89C':''}"></button>`).join('');
     $('#pat').innerHTML=P.pcs.map((p,i)=>`<button class="pap${sel===i?' sel':''}${place[i]?' used':''}" data-p="${i}">${mini(p,i)}</button>`).join('');$('#pam').textContent=XAR(moves);
     $('#pab').querySelectorAll('.pac').forEach(b=>b.onclick=()=>drop(+b.dataset.i));$('#pat').querySelectorAll('.pap').forEach(b=>b.onclick=()=>{sel=+b.dataset.p;sfx.pop();draw()})};
@@ -7321,13 +7363,14 @@ function runPObs(){return pzPlay('pz_pobs',api=>{
 /* ---------- the clock engineer's test ---------- */
 function runPEng(){return pzPlay('pz_peng',api=>{
   const lv=Math.min(8,api.lv+2),A=pjMake(Math.min(6,lv)),C=pcMake(lv),O=poMake(Math.min(6,lv));let st=0,miss=0,busy=false;const say=t=>{$('#peq').textContent=t};const H={};
-  api.body.innerHTML=xSheet(`<div class="pbk"><i>${XS_.engineer}</i><div><b>مهندس الساعات</b><p id="peq"></p></div></div><div class="pbstages">${['الشهادة','الساعات','النجوم'].map((s,i)=>`<span id="pes${i}" class="${i?'':'cur'}">${s}</span>`).join('')}</div><div id="peb"></div>`,800,571);
+  api.body.innerHTML=xSheet(`<div class="pbk"><i>${paintedProp('motion/shared-raster/clock-engineer.webp','full-palace-person')}</i><div><b>مهندس الساعات</b><p id="peq"></p></div></div><div class="pbstages">${['الشهادة','الساعات','النجوم'].map((s,i)=>`<span id="pes${i}" class="${i?'':'cur'}">${s}</span>`).join('')}</div><div id="peb"></div>`,800,571);
   function next(){$('#pes'+st).className='ok';st++;sfx.ok(2);if(st>2){busy=true;say('«آليتي تعمل من جديد. خذ ترسي المزدوج».');later(()=>pWin(api,'pz_peng','أصلحت آلية مهندس الساعات.'),900);return}$('#pes'+st).className='cur';render()}
   function fail(t){miss++;api.wrong();say(t);if(miss>=3){busy=true;api.over('«التروس لا تكذب… لكنك أخطأت»، قالها المهندس.')}}
+  const chart=(points,gold)=>`<div class="engineer-chart${gold?' gold':''}" style="--n:${O.n}">${points.map(([x,y])=>`<i style="--col:${x};--row:${y}"></i>`).join('')}</div>`;
   function render(){const b=$('#peb');if(st===0){say('«سجنائي اختلفوا. من الكاذب؟»');b.innerHTML=`<ol class="xnote">${A.sts.map((s,i)=>`<li><b>${PJ_N[i]}:</b> ${pjText(s)}</li>`).join('')}</ol><div class="pqdoors">${A.sts.map((_,i)=>`<button class="pqd" data-i="${i}"><small>${PJ_N[i]}</small></button>`).join('')}</div>`;b.querySelectorAll('[data-i]').forEach(e=>e.onclick=()=>{if(api.ended||busy)return;+e.dataset.i===A.liar?next():fail('«اتهمت بريئًا»')});H.a=()=>b.querySelector(`[data-i="${A.liar}"]`).click()}
     else if(st===1){say('«بعد كم دقة تتفق ساعاتي؟»');b.innerHTML=`<p class="zstory">${C.s.map((v,i)=>`ساعة على ${XAR(C.h[i]||12)} تتقدم ${XAR(v)} كل دقة`).join('، و')}.</p><div class="pldials"><div class="pldial"><button id="eu">▲</button><b id="ex">٠</b><button id="ed">▼</button></div><div class="pldial"><button id="eu10">+١٠</button><button id="ed10">−١٠</button></div></div><div class="xkbtns"><button class="go-btn xsm" id="ego">أجب</button></div>`;
       let x=0;const s=d=>{x=Math.max(0,x+d);$('#ex').textContent=XAR(x)};$('#eu').onclick=()=>s(1);$('#ed').onclick=()=>s(-1);$('#eu10').onclick=()=>s(10);$('#ed10').onclick=()=>s(-10);$('#ego').onclick=()=>{if(api.ended||busy)return;x>0&&C.s.every((v,i)=>(C.h[i]+v*x)%12===0)?next():fail('«ليس بعد…»')};H.a=()=>{x=C.T;$('#ego').click()}}
-    else{say('«كم مرة تدوّر الخريطة الذهبية (ربع دورة) لتطابق الزرقاء؟»');b.innerHTML=`<div class="ztw" style="grid-template-columns:1fr 1fr"><svg viewBox="-.5 -.5 ${O.n} ${O.n}"><rect x="-.5" y="-.5" width="${O.n}" height="${O.n}" fill="#1E2A44"/>${O.shape.map(([x,y])=>`<circle cx="${x}" cy="${y}" r=".2" fill="#7FB8D6"/>`).join('')}</svg><svg viewBox="-.5 -.5 ${O.n} ${O.n}"><rect x="-.5" y="-.5" width="${O.n}" height="${O.n}" fill="#2D2244"/>${O.top.map(([x,y])=>`<circle cx="${x}" cy="${y}" r=".2" fill="#F2C553"/>`).join('')}</svg></div><div class="pqdoors">${[0,1,2,3].map(k=>`<button class="pqd" data-k="${k}"><small>${XAR(k)}</small></button>`).join('')}</div>`;
+    else{say('«كم مرة تدوّر الخريطة الذهبية (ربع دورة) لتطابق الزرقاء؟»');b.innerHTML=`<div class="ztw" style="grid-template-columns:1fr 1fr">${chart(O.shape,false)}${chart(O.top,true)}</div><div class="pqdoors">${[0,1,2,3].map(k=>`<button class="pqd" data-k="${k}"><small>${XAR(k)}</small></button>`).join('')}</div>`;
       const good=[0,1,2,3].filter(k=>paRot(O.top,k).map(a=>a.join()).sort().join()===O.shape.map(a=>a.join()).sort().join());b.querySelectorAll('[data-k]').forEach(e=>e.onclick=()=>{if(api.ended||busy)return;good.includes(+e.dataset.k)?next():fail('«الخريطة ما زالت مائلة»')});H.a=()=>b.querySelector(`[data-k="${good[0]}"]`).click()}}
   render();api.msg('اختبار المهندس.');pzHook({st:()=>st,answer:()=>H.a()});return{hint:()=>['افترض كل سجين كاذبًا وتابع.','لكل ساعة: متى تصل ١٢ أول مرة، وكل كم دقة تعود؟','دوّر في ذهنك الشكل الذهبي ربع دورة باتجاه الساعة.'][st],reveal:()=>'المهندس لا يكشف أسراره.'}})}
 
@@ -7477,7 +7520,7 @@ function runPValve(){return pzPlay('pz_pvalve',api=>{
 /* ---------- the last prisoner ---------- */
 function runPLast(){return pzPlay('pz_plast',api=>{
   const lv=Math.min(8,api.lv+2),A=pjMake(Math.min(6,lv)),V=pvMake(Math.min(5,lv)),M=pcrMake(Math.min(3,lv));let st=0,miss=0,busy=false;const say=t=>{$('#plq').textContent=t};const H={};
-  api.body.innerHTML=xSheet(`<div class="pbk"><i>${XS_.prisoner}</i><div><b>السجين الأخير</b><p id="plq"></p></div></div><div class="pbstages">${['الشهادة','الماء','النقش'].map((s,i)=>`<span id="pls${i}" class="${i?'':'cur'}">${s}</span>`).join('')}</div><div id="plb"></div>`,820,611);
+  api.body.innerHTML=xSheet(`<div class="pbk"><i>${paintedProp('legacy/art/embedded-char_prisoner.webp','full-palace-person')}</i><div><b>السجين الأخير</b><p id="plq"></p></div></div><div class="pbstages">${['الشهادة','الماء','النقش'].map((s,i)=>`<span id="pls${i}" class="${i?'':'cur'}">${s}</span>`).join('')}</div><div id="plb"></div>`,820,611);
   function next(){$('#pls'+st).className='ok';st++;sfx.ok(2);if(st>2){busy=true;say('«أنت تستحق الحقيقة: القبطان الأول لم يختفِ… لقد بقي في القلب الأخير ينتظر وريثه».');later(()=>pWin(api,'pz_plast','حررت السجين الأخير، وعرفت أين ينتظر القبطان.'),1200);return}$('#pls'+st).className='cur';render()}
   function fail(t){miss++;api.wrong();say(t);if(miss>=3){busy=true;api.over('«ليس بعد…»، وعاد السجين إلى صمته.')}}
   function render(){const b=$('#plb');if(st===0){say('«قصتي مع رفاقي… من منا الكاذب؟»');b.innerHTML=`<ol class="xnote">${A.sts.map((s,i)=>`<li><b>${PJ_N[i]}:</b> ${pjText(s)}</li>`).join('')}</ol><div class="pqdoors">${A.sts.map((_,i)=>`<button class="pqd" data-i="${i}"><small>${PJ_N[i]}</small></button>`).join('')}</div>`;b.querySelectorAll('[data-i]').forEach(e=>e.onclick=()=>{if(api.ended||busy)return;+e.dataset.i===A.liar?next():fail('«بريء…»')});H.a=()=>b.querySelector(`[data-i="${A.liar}"]`).click()}

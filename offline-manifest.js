@@ -265,3 +265,25 @@ self.MINDLAB_OFFLINE_FILES.push(
   "motion/stages60/play.css",
   "motion/stages60/boards.json"
 );
+
+self.MINDLAB_OFFLINE_FILES.push(
+  "ui/fullscreen-puzzles.css",
+  "ui/art/play-backgrounds/01-pirate-letter.webp",
+  "ui/art/play-backgrounds/02-athran-map.webp",
+  "ui/art/play-backgrounds/03-coastal-letter.webp",
+  "ui/art/play-backgrounds/04-mirror-palace.webp",
+  "ui/art/play-backgrounds/05-movement.webp",
+  "ui/art/play-backgrounds/06-logic.webp"
+);
+self.MINDLAB_OFFLINE_FILES.push(
+  "motion/shared-raster/bell.webp",
+  "motion/shared-raster/clock-engineer.webp",
+  "motion/shared-raster/crate.webp",
+  "motion/shared-raster/gatekeeper.webp",
+  "motion/shared-raster/lamp-off.webp",
+  "motion/shared-raster/lamp-on.webp",
+  "motion/shared-raster/laser-lamp.webp",
+  "motion/shared-raster/laser-target.webp",
+  "motion/shared-raster/map.webp",
+  "motion/shared-raster/mirror-queen.webp"
+);

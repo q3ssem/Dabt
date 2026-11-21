@@ -200,7 +200,7 @@ try {
     'ui/designs_art/journey/v3/stations.js',
     'ui/journey-hub.js'
   ];
-  const styles = ['atheran/campaign/campaign.css', 'atheran/bindings/bindings.css', 'motion/motion.css', 'motion/lab10.css', 'ui/fit.css', 'ui/openings.css', 'ui/journey-hub.css', 'motion/correction-art.css', 'motion/expedition-art.css', 'motion/logic-revised/board.css', 'motion/sea-painted.css', 'motion/adventure35.css'];
+  const styles = ['atheran/campaign/campaign.css', 'atheran/bindings/bindings.css', 'motion/motion.css', 'motion/lab10.css', 'ui/fit.css', 'ui/openings.css', 'ui/journey-hub.css', 'motion/correction-art.css', 'motion/expedition-art.css', 'motion/logic-revised/board.css', 'motion/sea-painted.css', 'motion/adventure35.css', 'ui/fullscreen-puzzles.css'];
   const layers = ['ui/puzzle-design.js', 'ui/adventure-design.js'];
   let loading = null;
   const idle = cb => (window.requestIdleCallback ? requestIdleCallback(cb, { timeout: 1200 }) : setTimeout(cb, 200));
@@ -289,9 +289,9 @@ return done=>{
       if (authored) window.mlAuthoredStages.result(authored, won);
     }, won?1500:300)};
   const api={lv,kid,id,authored,body:$('#pzb'),msg:h=>{const m=$('#m');if(m)m.innerHTML=h},get ended(){return ended},get hints(){return hints},get wrongs(){return wrongs},
-    wrong(){if(ended)return;paintState('wrong');wrongs++;sfx.bad();if(!kid)setP(pts-Math.round(base*.1))},
+    wrong({feedback=true}={}){if(ended)return;if(feedback){paintState('wrong');sfx.bad()}wrongs++;if(!kid)setP(pts-Math.round(base*.1))},
     win(detail){if(!ended)fin(true,detail)},over(detail){if(!ended)fin(false,detail)}};
-  const mount=()=>{const R=Math.random;Math.random=seeded(seed);try{P=build(api)||{};if(typeof XOLD!=='undefined'&&XOLD.has(id)&&id!=='pz_pipe')try{xWrapOld(api.body,id)}catch(e){}}finally{Math.random=R}};
+  const mount=()=>{const R=Math.random;Math.random=seeded(seed);try{P=build(api)||{};if(typeof XOLD!=='undefined'&&XOLD.has(id)&&!['pz_pipe','pz_lock'].includes(id))try{xWrapOld(api.body,id)}catch(e){}}finally{Math.random=R}};
   mount();
   window.mindlabOffline?.rememberPuzzle(id);
   window.mindlabOffline?.warmPuzzle(id);
@@ -320,9 +320,9 @@ return done=>{
   // perf-cleanup: loaded with the play-layer bundle above (window.mindlabPlayLayers).
 })();
 
-/* The authored stages are an optional track from the original puzzle intro. */
+/* Show the authored track first when opening these puzzles from the catalogue. */
 (function () {
-  const authoredIds = new Set(['pz_river', 'pz_stat', 'pz_rush']);
+  const authoredIds = new Set(['pz_river', 'pz_rush', 'pz_stat', 'pz_pipe', 'pz_flow', 'pz_tan', 'pz_untangle', 'pz_ice']);
   let loading;
   function loadStages() {
     if (loading) return loading;
@@ -343,19 +343,16 @@ return done=>{
     if (RUN) delete RUN.authoredStage;
     originalIntro.apply(this, arguments);
     const run = RUN;
-    if (!run || run.daily || run.wk || run.journeyStation || run.queue.length !== 1) return;
+    if (!run || run.daily || run.wk || run.replay || run.journeyStation || run.queue.length !== 1) return;
     const id = curGame()?.id;
     if (!authoredIds.has(id)) return;
-    const start = document.querySelector('#stage #go');
-    if (!start) return;
+    const stage = document.querySelector('#stage');
     const button = document.createElement('button');
     button.type = 'button';
     button.className = 'cta ghost ml-authored-open';
-    button.textContent = 'المراحل الجديدة · ٢٠ مرحلة';
-    start.before(button);
-    if ('requestIdleCallback' in window && !navigator.connection?.saveData) {
-      requestIdleCallback(() => { if (button.isConnected) loadStages().catch(() => {}); });
-    }
+    button.textContent = 'جارٍ تحميل المراحل';
+    button.disabled = true;
+    stage.replaceChildren(button);
     button.onclick = async () => {
       button.disabled = true;
       try {
@@ -366,5 +363,6 @@ return done=>{
         button.disabled = false;
       }
     };
+    button.onclick();
   };
 })();

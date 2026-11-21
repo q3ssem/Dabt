@@ -355,12 +355,13 @@
   if (GM.pz_stat && typeof stMake === 'function') GM.pz_stat.run = function () {
     return pzPlay('pz_stat', api => {
       const P = api.authored ? window.mlAuthoredStages.statues(api.authored.board) : stMake(api.lv);
-      const n = P.n; let s = P.s.slice(), presses = 0; const ang = P.s.map((d, i) => (P.tgt[i] + d) * 90);
+      const n = P.n; let s = P.s.slice(), presses = 0, mode = 1; const ang = P.s.map((d, i) => (P.tgt[i] + d) * 90);
       const rule = P.twist ? 'الضغط يدير التمثال يمينًا وجيرانه المرتبطين يسارًا ربع لفة' : P.R.some(v => v.includes(2)) ? 'الضغط يدير التمثال ربع لفة، وجاره المرتبط نصف لفة' : 'الضغط يدير التمثال وجيرانه المرتبطين ربع لفة في الاتجاه نفسه';
       const sound = sfx.roundScene?.();
       const poses = ['north', 'east', 'south', 'west'].map(pose => DESIGNS + `work_review/pz_stat/guardian--${pose}.png`);
       poses.forEach(path => { new Image().src = path; });
-      frame(api, { id: 'stat', layout: 'mechanical', lead: api.authored ? 'طابق مؤشر اتجاه كل تمثال مع ماسته الذهبية. تضيء التماثيل التي تتأثر بكل ضغطة.' : `طابق مؤشر اتجاه التمثال الأخضر مع الماسة الذهبية. ${rule}${P.ring ? '، والتماثيل في حلقة مغلقة' : ''}.` });
+      const compassRules = P.reversible ? ' بدّل اتجاه البوصلة في الوسط لعكس دوران التماثيل المرتبطة.' : '';
+      frame(api, { id: 'stat', layout: 'mechanical', lead: api.authored ? 'طابق مؤشر اتجاه كل تمثال مع ماسته الذهبية. تضيء التماثيل التي تتأثر بكل ضغطة.' + compassRules : `طابق مؤشر اتجاه التمثال الأخضر مع الماسة الذهبية. ${rule}${P.ring ? '، والتماثيل في حلقة مغلقة' : ''}.` });
       const radius = 32;
       const pos = Array.from({length: n}, (_, i) => {
         const a = -Math.PI / 2 + i * 2 * Math.PI / n;
@@ -375,18 +376,33 @@
         return `<span class="st10-link" data-a="${a}" data-b="${b}"
           style="left:${x}%;top:${y}%;width:${length}%;transform:rotate(${angle}deg)"></span>`;
       }).join('');
-      $('#lbb').innerHTML = `<div class="st10" id="st10">${piece('stat', 'door_closed', 'st10-door')}${piece('stat', 'door_open', 'st10-open')}<div class="st10-links" aria-hidden="true">${links}</div>
+      $('#lbb').innerHTML = `<div class="st10" id="st10">${P.reversible ? '<button type="button" class="st-compass" aria-pressed="false" aria-label="عكس اتجاه الدوران"><img src="motion/pirate-revised/compass/bezel.webp" alt=""><span aria-hidden="true">↻</span></button>' : piece('stat', 'door_closed', 'st10-door')}${piece('stat', 'door_open', 'st10-open')}<div class="st10-links" aria-hidden="true">${links}</div>
         ${pos.map(([x, y], i) => `<button class="st10-s" data-i="${i}" style="left:${x}%;top:${y}%;width:${sz}%" aria-label="تمثال ${N(i + 1)}"> <i class="st10-tgt" style="--a:${P.tgt[i] * 90}deg"></i><img class="st10-g" src="${poses[0]}" alt="" draggable="false"><span class="st10-current"><i class="st10-dot"></i></span></button>`).join('')}</div>`;
       const stage = $('#st10');
       const snapshot = () => ({angles: ang.map(angle => angle / 90)});
       const view = window.mlScene?.mount('pz_stat', stage, snapshot());
       const btns = [...stage.querySelectorAll('.st10-s')], lines = [...stage.querySelectorAll('.st10-link')];
+      const compass = stage.querySelector('.st-compass');
+      if (compass) compass.onclick = () => {
+        if (api.ended) return;
+        mode *= -1;
+        compass.setAttribute('aria-pressed', String(mode === -1));
+        compass.querySelector('span').textContent = mode === 1 ? '↻' : '↺';
+        stage.dataset.reverse = String(mode === -1);
+        compass.classList.remove('hint');
+        sound?.play('stat.match', .12);
+        api.msg(mode === 1 ? 'البوصلة على الحركة الأصلية.' : 'البوصلة تعكس حركة كل حارس مرتبط.');
+      };
       function draw() { btns.forEach((b, i) => {
         const heading = ((ang[i] / 90) % 4 + 4) % 4;
         b.querySelector('.st10-g').src = poses[heading];
         b.querySelector('.st10-current').style.transform = `rotate(${ang[i]}deg)`;
         b.classList.toggle('ok', s[i] === 0); b.setAttribute('aria-label', `تمثال ${N(i + 1)}: ${s[i] === 0 ? 'يطابق ماسته' : 'لا يطابق'}`); }); stage.classList.toggle('all', s.every(d => d === 0)); view?.update(snapshot()); }
-      function press(i) { if (api.ended) return; const matchedBefore = s.filter(d => d === 0).length; P.R[i].forEach((r, j) => { if (r) { s[j] = (s[j] + r) % 4; ang[j] += r === 3 ? -90 : r * 90; } }); presses++;
+      function press(i) { if (api.ended) return; const matchedBefore = s.filter(d => d === 0).length;
+        if (P.turn) s = P.turn(s, i, mode);
+        P.R[i].forEach((r, j) => { if (r) { if (!P.turn) s[j] = (s[j] + r) % 4; ang[j] += mode * (r === 3 ? -90 : r * 90); } });
+        compass?.classList.remove('hint');
+        presses++;
         btns.forEach((b, j) => {
           b.classList.remove('hint');
           if (P.R[i][j]) {
@@ -406,7 +422,17 @@
         }
       }
       btns.forEach((b, i) => b.onclick = () => press(i)); draw(); api.msg(`أقل حل: ${N(P.min)} ضغطات.`); pzHook({ P, press, s: () => s, presses: () => presses });
-      return { hint: k => { if (k === 1) return `أقل حل ${arN(P.min, AN.press)}. ترتيب الضغطات لا يهم، المهم عدد مرات ضغط كل تمثال. الخطوط تريك من يحرّك من.`; const i = P.nxt[P.enc(s)]; if (i < 0) return null; btns[i].classList.add('hint'); return 'اضغط التمثال المضيء.'; },
+      return { hint: k => {
+          if (k === 1) return `أقل حل ${arN(P.min, AN.press)}. الخطوط تريك من يحرّك من.${compassRules}`;
+          const state = P.enc(s), i = P.nxt[state];
+          if (i < 0) return null;
+          btns[i].classList.add('hint');
+          if (compass && P.nextMode[state] !== mode) {
+            compass.classList.add('hint');
+            return 'بدّل اتجاه البوصلة، ثم اضغط التمثال المضيء.';
+          }
+          return 'اضغط التمثال المضيء.';
+        },
         reveal: () => `كان أقل حل ${arN(P.min, AN.press)}.` };
     });
   };
@@ -415,7 +441,8 @@
      Same masks (ppMake), rotation (ppRot = a quarter turn clockwise), flow (ppPowered) and win (ppSolved). */
   if (GM.pz_pipe && typeof ppMake === 'function') GM.pz_pipe.run = function () {
     return pzPlay('pz_pipe', api => {
-      const P = ppMake(api.lv), lock = new Set(), deg = m => [1, 2, 4, 8].filter(b => m & b).length;
+      const P = api.authored ? window.mlAuthoredStages.pipes(api.authored.board) : ppMake(api.lv);
+      const lock = new Set(P.fixed), deg = m => [1, 2, 4, 8].filter(b => m & b).length;
       const base = P.cur.slice(), turn = P.cur.map(() => 0); let taps = 0;
       // Every layer uses the same centre and reaches the active cell edges.
       function channel(mask) {
@@ -428,9 +455,9 @@
       }
       const home = wet => `<img class="pp10-house${wet ? ' wet' : ''}" src="motion/revised/cottage-${wet ? 'wet' : 'dry'}.webp" alt="" draggable="false">`;
       frame(api, { id: 'pipe', lead: 'اضغط القطعة لتدويرها ربع لفة. تتحقق اللعبة تلقائيًا عند الاكتمال.' });
-      $('#lbb').innerHTML = `<div class="pp10" id="pp10" style="--w:${P.w}">${base.map((m, i) => {
+      $('#lbb').innerHTML = `<div class="pp10" id="pp10" style="--w:${P.w};--h:${P.h}">${base.map((m, i) => {
         const src = i === P.src, house = !src && deg(P.sol[i]) === 1;
-        return `<button class="pp10-c${src ? ' src' : ''}${house ? ' house' : ''}" data-i="${i}" aria-label="${src ? 'النبع' : house ? 'بيت' : 'أنبوب'}"><span class="pp10-rot">${channel(m)}</span>${src ? piece('pipe', 'spring_source', 'pp10-spring') : house ? home(false) + home(true) + '<i class="pp10-intake" aria-hidden="true"></i>' : ''}</button>`;
+        return `<button class="pp10-c${src ? ' src' : ''}${house ? ' house' : ''}" data-i="${i}" aria-label="${src ? 'النبع' : house ? 'بيت' : 'أنبوب'}، الصف ${N(Math.floor(i/P.w)+1)}، العمود ${N(i%P.w+1)}"><span class="pp10-rot">${channel(m)}</span>${src ? piece('pipe', 'spring_source', 'pp10-spring') : house ? home(false) + home(true) + '<i class="pp10-intake" aria-hidden="true"></i>' : ''}${lock.has(i) ? '<img class="pp10-pin" src="ui/designs_art/priority7/padlock.png" alt="">' : ''}</button>`;
       }).join('')}</div>`;
       const cells = [...$('#pp10').children];
       const ports = [[0, -1, 1, 4], [1, 0, 2, 8], [0, 1, 4, 1], [-1, 0, 8, 2]];
@@ -443,8 +470,9 @@
       }
       function draw() { const on = ppPowered(P); cells.forEach((b, i) => { b.querySelector('.pp10-rot').style.transform = `rotate(${turn[i] * 90}deg)`; b.classList.toggle('on', on.has(i)); b.classList.toggle('leak', on.has(i) && hasLeak(i)); b.classList.toggle('lock', lock.has(i));
           if (b.classList.contains('house')) b.style.setProperty('--intake-angle', Math.log2(P.cur[i]) * 90 + 'deg');
+          b.setAttribute('aria-disabled', String(lock.has(i)));
         });
-        const homes = P.sol.filter((m, i) => deg(m) === 1 && i !== P.src).length, lit = P.sol.filter((m, i) => deg(m) === 1 && i !== P.src && on.has(i)).length; api.msg(`البيوت التي وصلها الماء: ${N(lit)} من ${N(homes)}`); }
+        const homes = P.sol.filter((m, i) => deg(m) === 1 && i !== P.src).length, lit = P.sol.filter((m, i) => deg(m) === 1 && i !== P.src && on.has(i)).length; api.msg(`البيوت التي وصلها الماء: ${N(lit)} من ${N(homes)}${P.min ? ' · أقل حل: ' + N(P.min) : ''}`); }
       function rot(i) { if (api.ended || lock.has(i)) return; P.cur[i] = ppRot(P.cur[i]); turn[i]++; taps++; tone(500, .04); draw(); if (ppSolved(P)) { $('#pp10').classList.add('won'); api.win(`وصل الماء لكل البيوت بلا أطراف مفتوحة بعد ${arN(taps, AN.press)}.`); } }
       cells.forEach((b, i) => b.onclick = () => rot(i)); draw(); pzHook({ P, rot, turn: () => turn.slice() });
       return { hint: k => { if (k === 1) return 'ابدأ من الأطراف والزوايا: القطعة في الزاوية لها اتجاهات قليلة ممكنة، والبيت دائمًا نهاية طريق.'; const bad = P.cur.map((m, i) => i).filter(i => !lock.has(i) && P.cur[i] !== P.sol[i]), c = bad.length ? pick(bad) : -1; if (c < 0) return null;
@@ -573,7 +601,8 @@
   if (GM.pz_flow && typeof flMake === 'function') GM.pz_flow.run = function () {
     return pzPlay('pz_flow', api => {
       const COL = ['#FF5F7A', '#3FD0E8', '#8BE36A', '#FFD45A', '#B48CFF', '#FF8A3D', '#5EE6C0', '#FF8FD1', '#7DA2FF'], ART = ['coral', 'teal', 'sage', 'gold', 'plum', 'amber', 'mint', 'pink', 'blue'];
-      const P = flMake(api.lv), n = P.n, K = P.ends.length, paths = P.ends.map(() => []), endOf = new Map(); P.ends.forEach(([a, b], k) => { endOf.set(a, k); endOf.set(b, k); }); let cur = -1, drag = false; const lockK = new Set();
+      const P = api.authored?.board || flMake(api.lv);
+      const n = P.n, K = P.ends.length, paths = P.ends.map(() => []), endOf = new Map(); P.ends.forEach(([a, b], k) => { endOf.set(a, k); endOf.set(b, k); }); let cur = -1, drag = false; const lockK = new Set();
       frame(api, { id: 'flow', lead: 'وصّل كل رمزين متطابقين بخط متصل واملأ اللوحة كلها. الخطوط لا تتقاطع.' });
       $('#lbb').innerHTML = `<div class="fl10" id="fl10" style="--n:${n}">${Array.from({ length: n * n }, (_, i) => {
         const e = endOf.get(i);
@@ -626,7 +655,17 @@
   if (GM.pz_tan && typeof tgMake === 'function') GM.pz_tan.run = function () {
     return pzPlay('pz_tan', api => {
       const TILE = ['tan_tile_0_coral', 'tan_tile_1_teal', 'tan_tile_2_gold', 'tan_tile_3_sage', 'tan_tile_4_plum', 'tan_tile_5_amber', 'tan_tile_6_navy', 'tan_tile_7_crimson'];
-      const P = tgMake(api.lv), n = P.n, R = new Set(P.reg), pcs = P.pieces.map((p, i) => ({ i, shape: shuffle([p.shape, tgRot(p.shape), tgRot(tgRot(p.shape)), tgFlip(p.shape)])[0], at: null, lock: false })); let sel = 0;
+      const P = api.authored?.board || tgMake(api.lv), n = P.n, R = new Set(P.reg);
+      const pcs = P.pieces.map((p, i) => {
+        let shape;
+        if (p.mask == null) shape = shuffle([p.shape, tgRot(p.shape), tgRot(tgRot(p.shape)), tgFlip(p.shape)])[0];
+        else {
+          shape = p.mask & 4 ? tgFlip(p.shape) : p.shape;
+          for (let turns = p.mask & 3; turns > 0; turns--) shape = tgRot(shape);
+        }
+        return { i, shape, at: null, lock: false };
+      });
+      let sel = 0;
       const root = frame(api, { id: 'tan', lead: 'غطِّ المحيط المنقّط كله بالقطع. اختر قطعة ودوّرها، ثم اسحبها أو اضغط الخانة التي يقع عليها مربعها المعلَّم.' });
       $('#lbb').innerHTML = `<div class="tg10" id="tg10" style="--n:${n}"></div><div class="tg10-ctl"><button type="button" id="tgf">قلب</button><button type="button" id="tgr">تدوير</button></div><div class="tg10-tray" id="tg10t" data-tray="tray"></div>`;
       const cellsOf = p => p.at == null ? [] : p.shape.map(([x, y]) => [x + p.at[0] - p.shape[0][0], y + p.at[1] - p.shape[0][1]]);

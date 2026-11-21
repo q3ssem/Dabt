@@ -11,7 +11,7 @@
   // story / framing → info sheet (hidden on the board)
   const STORY = '.mla-adventure-intro,.castle-lore,.atheran-story,.lb-intro';
   // rule sentences → info sheet (hidden on the board); clue lists inside them stay visible
-  const RULE = '.lb-lead,.lb-rule,#pzb .mk-lead,#pzb .pl-lead,details.ui-rules > summary,#play[data-la-game="pz_avsong"] #pzb .xnote';
+  const RULE = '.ml-river-rules,.lb-lead,.lb-rule,#pzb .mk-lead,#pzb .pl-lead,details.ui-rules > summary,#play[data-la-game="pz_avsong"] #pzb .xnote';
   const JOURNAL = '.castle-book-open,.atheran-journal-open';
   const SEEN_KEY = 'mindlab:fit:seen:v1';
   const seen = () => { try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); } catch (e) { return {}; } };
@@ -39,8 +39,8 @@
       b.innerHTML = `<span>وصل: <bdi dir="ltr">${waterAmount(values[0])}</bdi></span><span>المطلوب: <bdi dir="ltr">${waterAmount(values[1])}</bdi></span>`;
     });
   }
-  const I_INFO = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round"><circle cx="12" cy="12" r="9"/><path d="M12 11v6M12 7.5v.5"/></svg>';
-  const I_SOUND = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"><path d="M3 9h4l5-4v14l-5-4H3zM16 9a4 4 0 0 1 0 6M19 6a8 8 0 0 1 0 12"/></svg>';
+  const I_INFO = '<i class="fit-info-icon" aria-hidden="true">؟</i>';
+  const I_SOUND = '<i class="fit-sound-icon" aria-hidden="true"></i>';
   const I_BOOK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5.5C6.5 4 9.5 4 12 6c2.5-2 5.5-2 8-.5V19c-2.5-1.5-5.5-1.5-8 .5-2.5-2-5.5-2-8-.5z"/><path d="M12 6v13.5"/></svg>';
 
   let body = null, mo = null, raf = 0, fitting = false, sheetPrevFocus = null;
@@ -48,9 +48,10 @@
 
   function sheetHTML() {
     const story = $$(STORY, body).map(e => { const c = e.cloneNode(true); $$('button', c).forEach(b => b.remove()); return txt(c); }).filter(Boolean);
-    const rules = $$(RULE, body).map(e => { const c = e.cloneNode(true); $$('i', c).forEach(i => { if (/التفاصيل/.test(i.textContent)) i.remove(); }); return txt(c).replace(/^القاعدة\s*/, ''); }).filter(Boolean);
+    let rules = $$(RULE, body).map(e => { const c = e.cloneNode(true); $$('i', c).forEach(i => { if (/التفاصيل/.test(i.textContent)) i.remove(); }); return txt(c).replace(/^القاعدة\s*/, ''); }).filter(Boolean);
     const title = txt($('#pt'));
     const id = gid();
+    if (!rules.length) rules = (GM[id]?.how || []).map(h => esc(h));
     const hasOpening = !!(id && window.__MINDLAB_OPENINGS_DATA && window.__MINDLAB_OPENINGS_DATA[id] && window.fitOpenings);
     return `<div class="fit-sheet-card" role="dialog" aria-modal="true" aria-label="${title}"><h3>${title}</h3>${rules.length ? `<div class="fit-sh-rule"><b>القاعدة</b>${rules.map(r => `<p>${r}</p>`).join('')}</div>` : ''}${story.length ? `<div class="fit-sh-story">${story.map(s => `<p>${s}</p>`).join('')}</div>` : ''}${hasOpening ? '<button class="fit-sh-replay" type="button">عرض مقدمة اللغز</button>' : ''}<button class="fit-sh-go" type="button">فهمت</button></div>`;
   }
@@ -93,7 +94,7 @@
 
   function bubble() {
     const id = gid(); if (!id || seen()[id]) return;
-    if (window.__MINDLAB_OPENINGS_DATA && window.__MINDLAB_OPENINGS_DATA[id]) return;
+    if (window.fitOpenings) return;
     const r = $$(RULE, body).map(e => txt(e).replace(/^القاعدة\s*/, '').replace(/التفاصيل$/, '').trim()).filter(Boolean)[0];
     if (!r) return; markSeen(id);
     const b = document.createElement('div'); b.className = 'fit-bubble'; b.innerHTML = `<span>${I_INFO}</span><p>${r}</p><button type="button" class="fit-bubble-x" aria-label="إغلاق">×</button>`;
@@ -109,7 +110,7 @@
     const lv = $('.pzlv', h);
     if (lv && !lv.dataset.short) { const m = (lv.innerText || '').match(/(\d+)\s*من\s*(\d+)/); if (m) { lv.dataset.short = `${m[1]}/${m[2]}`; lv.setAttribute('aria-label', lv.innerText.split('\n')[0]); } }
     let tools = $('.fit-tools', h); if (!tools) { tools = document.createElement('span'); tools.className = 'fit-tools'; h.append(tools); }
-    if (!$('.fit-info', tools) && $$(STORY + ',' + RULE, body).length) {
+    if (!$('.fit-info', tools) && ($$(STORY + ',' + RULE, body).length || GM[gid()]?.how?.length)) {
       const ib = document.createElement('button'); ib.type = 'button'; ib.className = 'pzhb fit-info'; ib.id = 'fitinfo'; ib.setAttribute('aria-label', 'القاعدة والقصة'); ib.innerHTML = I_INFO;
       ib.onclick = openSheet; tools.prepend(ib);
     }
@@ -215,6 +216,7 @@
       const vv = window.visualViewport;
       const viewportBottom = vv ? vv.offsetTop + vv.height : window.innerHeight;
       const avail = Math.max(1, Math.min(bounds.bottom - safe, viewportBottom - safe) - body.getBoundingClientRect().top);
+      body.style.setProperty('--fit-room', `${avail}px`);
       if ($('.lb[data-layout]', body)) {
         const minHeight = $('.lb[data-layout="adventure"]', body) ? 215 : 200;
         body.style.removeProperty('--fit-z');
@@ -224,7 +226,6 @@
         body.classList.toggle('fit-scroll', avail < minHeight + 8);
         return;
       }
-      body.style.removeProperty('--fit-room');
       const keep = body.scrollTop;
       const natural = () => { body.scrollTop = 0; const r0 = body.getBoundingClientRect().top; let b = 0; for (const c of body.children) { const r = c.getBoundingClientRect(); if (r.height) b = Math.max(b, r.bottom); } return b - r0 + 4; };
       const floor = ['pz_avsong','pz_ashade'].includes(gid()) ? 1 : ['pz_grid','pz_xbottle','pz_tpath','pz_door'].includes(gid()) ? 0.85 : MIN_ZOOM;

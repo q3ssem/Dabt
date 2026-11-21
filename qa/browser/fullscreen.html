@@ -1,0 +1,211 @@
+<!doctype html>
+<html lang="ar">
+<meta charset="utf-8">
+<title>فحص مساحة ألغاز مختبر العقل</title>
+<style>
+body { font: 15px system-ui; margin: 12px; background: #f6f4ed; }
+main { display: flex; flex-wrap: wrap; gap: 12px; align-items: start; }
+iframe { border: 1px solid #7e7666; }
+button { min-height: 38px; }
+pre { white-space: pre-wrap; }
+</style>
+<h1>فحص مساحة ألغاز مختبر العقل</h1>
+<button id="fresh">إعادة تحميل نسخة الفحص</button>
+<button id="run">فحص المكتبة</button>
+<button id="svg">تفاصيل الرسوم المتجهة</button>
+<button id="checks">اختبار الحركة والقواعد</button>
+<label for="puzzle">معاينة</label>
+<select id="puzzle">
+  <option value="pz_river">عبور النهر</option><option value="pz_rush">موقف السيارات</option><option value="pz_pmirror">مرايا الألوان</option>
+  <option value="pz_pipe">الأنابيب</option><option value="pz_ice">الجليد المنزلق</option><option value="pz_pobs">الخريطتان الشفافتان</option>
+</select>
+<button id="preview">عرض المعاينة</button>
+<pre id="status" aria-live="polite"></pre>
+<main id="frames"></main>
+<script>
+const status = document.querySelector('#status');
+const frames = document.querySelector('#frames');
+const sizes = [[320,640],[390,844],[430,932],[844,390]];
+const wait = ms => new Promise(resolve => setTimeout(resolve, ms));
+async function until(check, description) {
+  for (let n = 0; n < 100; n++) {
+    const result = check();
+    if (result) return result;
+    await wait(25);
+  }
+  throw new Error(description);
+}
+function frame(width, height) {
+  const element = document.createElement('iframe');
+  element.title = `مختبر العقل ${width}×${height}`;
+  element.width = width;
+  element.height = height;
+  element.src = '../../index.html?fullscreen-qa';
+  return new Promise(resolve => {
+    element.onload = () => resolve(element);
+    frames.append(element);
+  });
+}
+async function begin(element, id) {
+  const w = element.contentWindow;
+  const d = w.document;
+  const q = s => d.querySelector(s);
+  const game = w.eval(`GM[${JSON.stringify(id)}]`);
+  if (!game) throw new Error('missing game');
+  const prev = game.nocd;
+  game.nocd = true; // Skip the visual countdown in this layout test only.
+  try {
+    await w.startRun([id]);
+    const pick = ['pz_river','pz_rush','pz_stat','pz_pipe','pz_ice','pz_flow','pz_tan','pz_untangle'].includes(id);
+    if (pick) {
+      const first = await until(() => q('.ml-authored-levels button'), 'stage picker');
+      if (d.querySelectorAll('.ml-authored-levels button').length !== 20) throw new Error('stage count');
+      first.click();
+    }
+    const opening = await until(() => q('#fit-op-start'), 'opening rules');
+    if (!q('.fit-opening-rules li')) throw new Error('empty rules');
+    opening.click();
+    return await until(() => q('#pzb'), 'puzzle board');
+  } finally {
+    game.nocd = prev;
+  }
+}
+async function audit(vectorOnly = false) {
+  status.textContent = 'جارٍ الاختبار…';
+  frames.replaceChildren();
+  const checks = await Promise.all((vectorOnly ? [sizes[1]] : sizes).map(async ([width,height]) => {
+    const element = await frame(width,height);
+    const w = element.contentWindow;
+    await w.mindlabPlayLayers.start();
+    const ids = w.eval("Object.values(GM).filter(g => g.puz && g.id.startsWith('pz_')).map(g => g.id)");
+    const candidates = vectorOnly ? ids.filter(id => 'pz_lock pz_scale pz_laser pz_soko pz_lights pz_stroke pz_ybell pz_ymap pz_pboss1 pz_pqueen pz_parm pz_pobs pz_peng pz_plast'.split(' ').includes(id)) : ids;
+    const result = {size: `${width}×${height}`, count: ids.length, issues: [], inlineSvg: [], paper: {}};
+    for (const id of candidates) {
+      try {
+        const board = await begin(element,id);
+        await new Promise(resolve => w.requestAnimationFrame(() => w.requestAnimationFrame(resolve)));
+        const p = w.document.querySelector('#play');
+        const paper = p.dataset.playPaper || 'none';
+        result.paper[paper] = (result.paper[paper] || 0) + 1;
+        const style = w.getComputedStyle(board);
+        const rect = board.getBoundingClientRect();
+        if (style.backgroundColor !== 'rgba(0, 0, 0, 0)' || style.borderTopWidth !== '0px' || paper === 'none') {
+          result.issues.push([id,'frame',style.backgroundColor,style.borderTopWidth,paper]);
+        }
+        if (rect.left < -1 || rect.right > width + 1) result.issues.push([id,'horizontal overflow',rect.left,rect.right]);
+        const vectors = [...board.querySelectorAll('svg,img[src$=".svg"]')];
+        if (vectors.length) result.inlineSvg.push(vectorOnly ? [id,[...new Set(vectors.map(x => [x.id,x.getAttribute('class'), x.parentElement.id || x.parentElement.className].filter(Boolean).join('/')))]] : id);
+        if (![...board.children].some(x => x.getBoundingClientRect().width > 0)) result.issues.push([id,'empty board']);
+        if (id === 'pz_river' && !w.document.querySelector('#fitinfo')) result.issues.push([id,'rules shortcut']);
+        if (board.scrollWidth > board.clientWidth + 2) result.issues.push([id,'inner horizontal scroll',board.scrollWidth,board.clientWidth]);
+      } catch (error) {
+        result.issues.push([id,error.message]);
+      } finally {
+        w.closePlay();
+      }
+    }
+    return result;
+  }));
+  status.textContent = JSON.stringify(checks, null, 2);
+}
+document.querySelector('#fresh').onclick = async () => {
+  if (navigator.serviceWorker) {
+    const worker = await navigator.serviceWorker.getRegistration();
+    if (worker) {
+      try { await worker.update(); } catch {}
+      await worker.unregister();
+    }
+  }
+  location.reload();
+};
+document.querySelector('#run').onclick = () => audit().catch(error => { status.textContent = error.stack; });
+document.querySelector('#svg').onclick = () => audit(true).catch(error => { status.textContent = error.stack; });
+async function functionalChecks() {
+  status.textContent = 'جارٍ اختبار الحركة…';
+  frames.replaceChildren();
+  const element = await frame(390,844);
+  const w = element.contentWindow;
+  await w.mindlabPlayLayers.start();
+  const q = selector => w.document.querySelector(selector);
+  const out = {};
+  await begin(element, 'pz_river');
+  const info = await until(() => q('#fitinfo'), 'river rules button');
+  info.click();
+  out.rulesReopen = !!q('.fit-sheet');
+  q('.fit-sh-go').click();
+  await new Promise(resolve => w.requestAnimationFrame(() => w.requestAnimationFrame(resolve)));
+  out.riverControlsFit = q('.ml-river-controls').getBoundingClientRect().bottom <= q('#pzb').getBoundingClientRect().bottom + 1;
+  const invalid = q('[data-river-to="1"]');
+  invalid.click();
+  out.invalidWithoutRed = q('#stage').dataset.expState !== 'wrong' && !!q('#m').textContent;
+  const route=[[1,'خروف'],[0,null],[1,'ذئب'],[0,'خروف'],[1,'عشب'],[0,null],[1,'خروف']];
+  for (const [dock,item] of route) {
+    if (item) (await until(() => [...w.document.querySelectorAll('[data-river-item]')]
+      .find(button => !button.disabled && button.dataset.riverItem === item), 'river passenger')).click();
+    const boat = await until(() => {
+      const control = q(`[data-river-to="${dock}"]`);
+      return control && !control.disabled && control;
+    },'boat ready');
+    boat.click();
+    await until(() => !q('.sailing'), 'boat arriving');
+  }
+  await until(() => q('#stage .res'), 'river result');
+  out.riverWin = JSON.parse(w.localStorage.getItem('mindlab:authored-stages:v1')).pz_river.cleared >= 1;
+  w.closePlay();
+  await begin(element,'pz_rush');
+  await until(() => q('.rhb2 .rhcar.red'), 'parking car');
+  const board = q('.rhb2').getBoundingClientRect();
+  out.parkingCars = [...w.document.querySelectorAll('.rhb2 .rhcar')].map(car => {
+    const rect = car.getBoundingClientRect();
+    return [Math.round(rect.width/board.width*6), Math.round(rect.height/board.height*6)];
+  });
+  out.parkingRed = [...w.document.querySelectorAll('.rhb2 .rhcar')].find(car => car.classList.contains('red')).getBoundingClientRect().width / (board.width/6);
+  w.closePlay();
+  await begin(element,'pz_pobs');
+  out.mapSvg = q('#pzb').querySelectorAll('svg').length;
+  const before = q('#potop').innerHTML;
+  q('.po-pad [data-m="t"]').click();
+  out.mapRotates = before !== q('#potop').innerHTML;
+  w.closePlay();
+  await begin(element,'pz_pipe');
+  const pipes = w.eval('RUN.authoredStage.board');
+  out.pipesNoGap = w.getComputedStyle(q('.pp10')).columnGap === '0px';
+  out.pipesPins = w.document.querySelectorAll('.pp10-c[aria-disabled="true"]').length === pipes.fixed.length;
+  pipes.cur.forEach((current,i) => {
+    for (let j = 0; j < 4 && current !== pipes.sol[i]; j++) {
+      q(`.pp10-c[data-i="${i}"]`).click();
+      current = ((current << 1) | (current >> 3)) & 15;
+    }
+  });
+  out.pipesWin = !!(await until(() => q('#stage .res'), 'pipe result'));
+  w.closePlay();
+  await begin(element,'pz_ice');
+  const slides = w.eval('const p = window.mlAuthoredStages.ice(RUN.authoredStage.board); icSolve(p,p.start)');
+  for (const direction of slides) {
+    q(`.icpad [data-d="Arrow${['Up','Right','Down','Left'][direction]}"]`).click();
+    await until(() => !q('#ict.slide'), 'ice stop');
+  }
+  out.iceWin = !!(await until(() => q('#stage .res'), 'ice result'));
+  w.closePlay();
+  w.T7.open(0);
+  const treasureOpening = await until(() => q('.mlj-station-rules #fit-op-start'), 'treasure rules');
+  out.treasureRulesVisible = Boolean(q('.mlj-station-rule')?.textContent);
+  treasureOpening.click();
+  out.treasureBoardVisible = Boolean(await until(() => q('.t7-puzzle-pane'), 'treasure board'));
+  await w.mindlabSide.start();
+  w.ML10.renderIntro(0);
+  const sideOpening = await until(() => q('.mlj-station-rules #fit-op-start'), 'side journey rules');
+  out.sideRulesVisible = Boolean(q('.mlj-station-rule')?.textContent);
+  sideOpening.click();
+  out.sideBoardVisible = Boolean(await until(() => q('.ex10-game-content'), 'side journey board'));
+  status.textContent = JSON.stringify(out,null,2);
+}
+document.querySelector('#checks').onclick = () => functionalChecks().catch(error => { status.textContent = error.stack; });
+document.querySelector('#preview').onclick = async () => {
+  frames.replaceChildren();
+  status.textContent = '';
+  const element = await frame(390,844);
+  await element.contentWindow.mindlabPlayLayers.start();
+  await begin(element,document.querySelector('#puzzle').value);
+};
+</script>

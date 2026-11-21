@@ -20,12 +20,9 @@ ok(layer.includes("id === 'pz_river'"), 'river-crossing screen is identified by 
 ok(layer.includes('mlp-logic-meter') && layer.includes('updateLogicProgress'), 'logic grid has a live completion meter');
 ok(layer.includes('mlp-river-status') && layer.includes('updateRiverStatus'), 'river crossing has a live delivery meter');
 ok(layer.includes('aria-label') && layer.includes('aria-pressed'), 'interactive controls receive accessible labels and state');
-ok(layer.includes('S.st.puzzleMusicOff') && layer.includes('S.save()'), 'per-game music choice persists with existing app state');
-ok(layer.includes('!S.st.mute'), 'background music respects global mute');
-ok(layer.includes("tone(f, cfg.padSeconds, 'sine', cfg.padVolume"), 'music uses the existing synthesised audio path');
+ok(!/puzzleMusicOff|startMusic|setInterval/.test(layer), 'the presentation layer adds no ambient music');
 ok(layer.includes('state.logicTable !== table') && layer.includes('state.riverScene !== scene'), 'observers reattach after a game remount or restart');
-ok(layer.includes('state.game && state.game !== id'), 'observers and music are released when switching puzzle types');
-ok(layer.includes("state.audioPrimed") && layer.includes("event.target.closest(\'#play\')"), 'background music waits for the first player gesture before starting');
+ok(layer.includes('state.game && state.game !== id'), 'observers are released when switching puzzle types');
 ok(app.includes('loadPuzzleDesign558') && app.includes('ui/puzzle-design.js'), 'presentation layer is loaded additively');
 ok(css.includes('#play[data-ml-puzzle="logic"]') && css.includes('#play[data-ml-puzzle="river"]'), 'both mobile game themes have dedicated responsive styles');
 ok(manifest.includes('"ui/puzzle-design.js"'), 'presentation layer is included in offline cache');
