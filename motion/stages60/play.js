@@ -58,7 +58,7 @@
     host.innerHTML = `<section class="ml-authored-picker"><header><h2>اختر مرحلة</h2>
       <p>أنجزت ${XAR(cleared)} من ${XAR(track.length)} · ${esc(GM[id].name)}</p></header>
       <button type="button" class="go-btn" data-level="${last}">تابع المرحلة ${XAR(last)}</button>
-      <div class="ml-authored-levels">${track.map((board, i) => `<button type="button" data-level="${i + 1}" ${i >= available ? 'disabled' : ''}
+      <div class="ml-authored-levels">${track.map((board, i) => `<button type="button" data-level="${i + 1}" ${i >= available ? 'disabled' : ''} ${i + 1 === last ? 'aria-current="step"' : ''}
         aria-label="المرحلة ${XAR(i + 1)}${i < cleared ? ' · محلولة' : i >= available ? ' · مقفلة' : ''}">
         <b>${XAR(i + 1)}</b>${board.title ? `<span>${esc(board.title)}</span>` : ''}</button>`).join('')}</div>
       <button type="button" class="cta ghost" data-back>رجوع إلى المكتبة</button></section>`;

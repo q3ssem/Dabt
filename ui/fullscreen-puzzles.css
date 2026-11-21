@@ -400,3 +400,686 @@ html[data-skin="dark"] #ose .ose.on { background: #73e0a5; }
 }
 #play[data-play-paper] #pzb #icb { background-color: #c8e2e7; border-radius: 0; }
 html[data-skin="dark"] #play[data-play-paper] #pzb #icb { background-color: #355975; }
+
+/* Illustrated puzzle identity shared by the library's play surfaces. */
+#play[data-play-paper] {
+  --identity-ink: #172b52;
+  --identity-paper: linear-gradient(#fffef9, #fff1d5);
+  --identity-edge: #d4ab65;
+  --identity-rim: #fff8e7;
+  --identity-shadow: #63471835;
+  --identity-green: #74d748, #26851d;
+  --identity-teal: #29cec1, #007e80;
+}
+html[data-skin="dark"] #play[data-play-paper] {
+  --identity-ink: #fff3d7;
+  --identity-paper: linear-gradient(#383b4d, #222738);
+  --identity-edge: #937a50;
+  --identity-rim: #cfb785;
+  --identity-shadow: #0007;
+}
+@media (prefers-color-scheme: dark) {
+  html[data-skin="auto"] #play[data-play-paper] {
+    --identity-ink: #fff3d7;
+    --identity-paper: linear-gradient(#383b4d, #222738);
+    --identity-edge: #937a50;
+    --identity-rim: #cfb785;
+    --identity-shadow: #0007;
+    --paper-overlay: linear-gradient(#121827df, #121827df);
+  }
+}
+html #play[data-play-paper] .pin > .pbar {
+  display: grid;
+  grid-template-columns: 44px minmax(0, 1fr) 44px;
+  align-items: center;
+  padding-inline: 4px !important;
+  border: 1px solid var(--identity-edge);
+  border-radius: 24px;
+  background: var(--identity-paper) !important;
+  color: var(--identity-ink);
+  box-shadow: 0 3px 5px var(--identity-shadow);
+}
+#play[data-play-paper] .pbar > .t { grid-area: 1 / 2; min-width: 0; text-align: center; }
+#play[data-play-paper] .pbar #pt { color: var(--identity-ink); font-size: clamp(17px, 4vw, 25px); }
+#play[data-play-paper] .pbar #quit { grid-area: 1 / 1; }
+#play[data-play-paper] .pbar #dxPauseBtn { grid-area: 1 / 3; }
+#play[data-play-paper] .pbar > .wkdots:empty { display: none; }
+#play[data-play-paper] .pbar > .wkdots:not(:empty) { grid-area: 2 / 1 / 3 / -1; justify-self: center; }
+#play[data-play-paper][data-play-paper] :is(.pbar .x, .pzhud .pzhb, .fit-tools .pzgive) {
+  background: transparent !important;
+  border: 1.5px solid currentColor !important;
+  border-radius: 50% !important;
+  color: var(--control-ink, var(--puzzle-title, currentColor)) !important;
+  box-shadow: none;
+  text-shadow: none;
+}
+#play[data-play-paper] :is(.pbar .x, .pzhud .pzhb) svg { color: inherit; background: none; }
+#play[data-play-paper] :is(#quit, .pzgive.arm) { --control-ink: #a43731; }
+#play[data-play-paper] #pzr { --control-ink: #276931; }
+#play[data-play-paper] #pzh { --control-ink: #8b5414; }
+#play[data-play-paper] .fit-sound { --control-ink: #6b4494; }
+html #play.fit[data-play-paper] .fit-tools { background: transparent !important; }
+#play.fit[data-play-paper] :is(#quit, #pzh, #pzr, #fitinfo)::after { content: none; }
+#play.fit[data-play-paper] :is(#quit, #pzh, #pzr) > svg { opacity: 1; color: inherit; }
+#play.fit[data-play-paper] .fit-sound::after { content: none; }
+#play.fit[data-play-paper] .fit-sound[aria-pressed="false"]::after {
+  content: "";
+  width: auto;
+  height: auto;
+  margin: 0;
+  background: none;
+}
+#play.fit[data-play-paper] .fit-tools :is(.fit-info-icon, .fit-sound-icon) {
+  background: transparent;
+  border: 0;
+  color: inherit;
+}
+
+#play[data-play-paper] #pzhn { background: #bc231c !important; color: #fff !important; }
+#play[data-play-paper] .fit-journal i { color: #654a23; }
+#play[data-play-paper] .pzcoin,
+#play[data-play-paper] .pzlv[data-short]::after {
+  background: var(--identity-paper) !important;
+  border: 1px solid var(--identity-edge);
+  color: var(--identity-ink);
+  border-radius: 999px;
+  box-shadow: 0 2px 3px var(--identity-shadow);
+}
+#play[data-play-paper] #m:not(:empty) { color: var(--identity-ink); font-weight: 800; text-align: center; }
+#play[data-play-paper] #pzb :is(.pp10, .fl10, .rhb.rhb2, .tn10, .mirror-board) {
+  outline: 2px solid var(--identity-edge);
+  border-radius: 12px;
+  box-shadow: 0 0 0 4px var(--identity-rim), 0 5px 12px var(--identity-shadow);
+}
+#play[data-play-paper] #pzb .fl10-node { filter: drop-shadow(0 2px 2px #301a1270) saturate(1.15); }
+#play[data-play-paper] #pzb .tn10-c { inline-size: 100%; min-inline-size: 0; }
+#play[data-play-paper] #pzb .ml-river-board::before { border-radius: 16px; }
+#play[data-play-paper] #pzb [data-river-to]:not(:disabled) {
+  background: linear-gradient(var(--identity-green));
+  border-color: var(--identity-edge);
+  color: #fff;
+}
+#play[data-play-paper] .res {
+  overflow: auto;
+  max-block-size: 100%;
+  min-block-size: 0;
+  background: var(--identity-paper) !important;
+  border: 1px solid var(--identity-edge);
+  border-radius: 24px;
+  color: var(--identity-ink);
+  box-shadow: 0 5px 15px var(--identity-shadow);
+}
+#play[data-play-paper] .res .bigstars {
+  background: radial-gradient(ellipse, #ffcf5355, transparent 68%);
+  filter: drop-shadow(0 3px 3px #8c5a3e50);
+}
+#play[data-play-paper] .res :is(.pts, .rline, .rdetail) { color: var(--identity-ink); }
+#play[data-play-paper] .res .rbtns button { min-height: 44px; border-radius: 18px; }
+#play[data-play-paper] .res .rbtns .go-btn {
+  background: linear-gradient(var(--identity-teal)) !important;
+  color: #fff !important;
+}
+#play[data-play-paper] :is(.pbar button, .pzhud button, .res button):focus-visible {
+  outline: 2px solid var(--identity-ink);
+  outline-offset: 2px;
+}
+@media (max-width: 360px) {
+  #play[data-play-paper] .fit-tools { margin-inline-start: 0; }
+}
+
+/* Individual art follows the puzzle, including when replaying or opening a saved stage. */
+#play[data-puzzle-illustration] {
+  --illustration-veil: linear-gradient(#fff6e7b8, #f6f2e5e8 47%, #ffefd2bd);
+}
+html[data-skin="dark"] #play[data-puzzle-illustration] {
+  --illustration-veil: linear-gradient(#131a2bbc, #171b2ced 47%, #131a2bcf);
+}
+@media (prefers-color-scheme: dark) {
+  html[data-skin="auto"] #play[data-puzzle-illustration] {
+    --illustration-veil: linear-gradient(#131a2bbc, #171b2ced 47%, #131a2bcf);
+  }
+}
+html[data-skin] #play[data-play-paper][data-puzzle-illustration="scene"],
+html #play[data-play-paper][data-puzzle-illustration="scene"] {
+  background: var(--illustration-veil), var(--puzzle-illustration) center / cover no-repeat, var(--paper) !important;
+}
+html[data-skin] #play[data-play-paper][data-puzzle-illustration="emblem"],
+html #play[data-play-paper][data-puzzle-illustration="emblem"] {
+  background: var(--illustration-veil),
+    var(--puzzle-illustration) right -14px bottom 4px / clamp(72px, 22vw, 168px) auto no-repeat,
+    var(--paper-overlay), var(--paper-art) center / cover no-repeat, var(--paper) !important;
+}
+
+#play[data-puzzle-illustration] :is(.fit-opening-card, .ml-authored-picker) {
+  background: var(--identity-paper);
+  border: 1px solid var(--identity-edge);
+  border-radius: 22px;
+  color: var(--identity-ink);
+  box-shadow: 0 6px 22px var(--identity-shadow), inset 0 0 0 2px var(--identity-rim);
+}
+#play[data-puzzle-illustration] .ml-authored-picker {
+  max-block-size: 100%;
+  overflow: auto;
+  padding: clamp(10px, 3vw, 20px);
+}
+#play[data-puzzle-illustration] .ml-authored-levels button:not(:disabled) {
+  background: var(--identity-paper);
+  border-color: var(--identity-edge);
+  color: var(--identity-ink);
+}
+#play[data-puzzle-illustration] .ml-authored-levels button[aria-current="step"] {
+  background: linear-gradient(var(--identity-teal));
+  color: #fff;
+}
+#play[data-puzzle-illustration] .fit-opening-card {
+  border-block-start-width: 3px;
+}
+#play[data-puzzle-illustration] .res :is(.rline, .spark) {
+  padding: 6px 12px;
+  border: 1px solid var(--identity-edge);
+  border-radius: 14px;
+  background: var(--identity-paper);
+}
+
+/* Frame the playable surface, keeping its engine's coordinate system intact. */
+#play[data-puzzle-illustration] #pzb :is(#st10, .tg10, .unb, .icb2, .mirror-field) {
+  outline: 2px solid var(--identity-edge);
+  border-radius: 10px;
+  box-shadow: 0 0 0 3px var(--identity-rim), 0 5px 12px var(--identity-shadow);
+}
+#play[data-puzzle-illustration] #pzb .st10-s[aria-pressed="true"] {
+  outline: 2px solid #f3c665;
+  outline-offset: 2px;
+}
+#play[data-puzzle-illustration] #pzb .lb[data-lb="flow"] .fl10-c:not(.on) {
+  background-color: #fff3d9;
+}
+#play[data-puzzle-illustration] #pzb .lb[data-lb="flow"] .fl10-c.end {
+  background-color: transparent;
+}
+html[data-skin="dark"] #play[data-puzzle-illustration] #pzb .lb[data-lb="flow"] .fl10-c:not(.on, .end) {
+  background-color: #394357;
+}
+@media (prefers-color-scheme: dark) {
+  html[data-skin="auto"] #play[data-puzzle-illustration] #pzb .lb[data-lb="flow"] .fl10-c:not(.on, .end) {
+    background-color: #394357;
+  }
+}
+
+/* The path sits below each embossed endpoint, with a distinct symbol per pair. */
+#play[data-play-paper] #pzb .fl10-c { container-type: inline-size; }
+#play[data-play-paper] #pzb .fl10-medallion {
+  display: grid;
+  place-items: center;
+  width: 76%;
+  height: 76%;
+  box-sizing: border-box;
+  border: 1px solid #fff8dc;
+  border-radius: 50%;
+  background: radial-gradient(ellipse at 38% 17%, #ffffff69, transparent 53%),
+    linear-gradient(var(--token-ink), color-mix(in srgb, var(--token-ink), #180d2c 32%));
+  color: #fffdf5;
+  font: 750 clamp(12px, 48cqw, 32px)/1 system-ui, sans-serif;
+  box-shadow: inset 0 -2px #190b272f, 0 2px 3px #402c4367;
+  text-shadow: 0 1px 2px #26192f;
+  filter: none;
+}
+
+#play[data-play-paper] #pzb .pp10-spring,
+#play[data-play-paper] #pzb .pp10-house {
+  filter: drop-shadow(0 2px 2px #472d1d55);
+}
+#play[data-play-paper] #pzb .pp10-c.on .pp10-water { --track-color: #0781b0; }
+#play[data-play-paper] #pzb .pp10-c.on .pp10-glint { --track-color: #72deed; }
+#play[data-play-paper] #pzb .pp10-c.on .pp10-house.wet {
+  filter: drop-shadow(0 1px 2px #1a4437) drop-shadow(0 0 3px #fff2aa);
+}
+
+#play[data-play-paper] #pzb .ml-river-place h4 {
+  padding-inline: 7px;
+  border: 1px solid #edc573;
+  box-shadow: 0 2px 4px #39281859;
+}
+#play[data-play-paper] #pzb .ml-river-place button:not(:disabled) {
+  border-radius: 10px;
+  background: #174c3c78;
+}
+#play[data-play-paper] #pzb .ml-river-place button[aria-pressed="true"]:not(:disabled) {
+  box-shadow: inset 0 0 0 2px #ffd67c;
+}
+#play[data-play-paper] #pzb .ml-river-controls {
+  background: var(--identity-paper);
+  border: 1px solid var(--identity-edge);
+  border-radius: 18px;
+  color: var(--identity-ink);
+  padding: 3px 5px;
+}
+#play[data-play-paper] #pzb .ml-river-actions [data-river-to] {
+  grid-auto-flow: column;
+  gap: 6px;
+  align-items: center;
+  border-radius: 12px;
+}
+
+#play[data-play-paper] #pzb .rhcar.red .rh10-img {
+  filter: drop-shadow(0 0 2px #ffcc9b) drop-shadow(0 2px 3px #5c231ba3);
+}
+#play[data-play-paper] #pzb .rhcar.sel .rh10 {
+  box-shadow: inset 0 0 0 2px #efad4c;
+}
+#play[data-play-paper] #pzb :is(.tg10-ctl, .ml-river-actions) button:focus-visible {
+  outline: 2px solid var(--identity-ink);
+  outline-offset: 2px;
+}
+#play[data-play-paper] #pzb .tg10-ctl button {
+  background: var(--identity-paper);
+  border-color: var(--identity-edge);
+  color: var(--identity-ink);
+}
+#play[data-play-paper] #pzb .tn10-c:is(.tent, .tree) img {
+  filter: drop-shadow(0 2px 2px #45391755);
+}
+#play[data-play-paper] #pzb .tn10-h.done {
+  box-shadow: inset 0 -2px #5d9a68;
+}
+#play[data-play-paper] #pzb .tn10-h.over {
+  box-shadow: inset 0 -2px #b7594d;
+}
+#play[data-play-paper] #pzb .mirror-turn {
+  background: radial-gradient(ellipse at 35% 22%, #465877, #171f37 75%);
+}
+#play[data-play-paper] #pzb .mirror-turn span {
+  background: linear-gradient(#fffde0, #deaf62);
+}
+#play[data-play-paper] #pzb .mirror-crystal.lit img {
+  filter: drop-shadow(0 0 5px var(--light)) drop-shadow(0 0 2px #fff4cc);
+}
+
+/* Keep each puzzle's emblem visible once the opening card gives way to gameplay. */
+#play[data-puzzle-tone] { --puzzle-accent: #286b60; }
+#play[data-puzzle-tone="pirate"] { --puzzle-accent: #1d6485; }
+#play[data-puzzle-tone="palace"] { --puzzle-accent: #675184; }
+#play[data-puzzle-tone="athran"] { --puzzle-accent: #835630; }
+#play[data-puzzle-tone="secret"] { --puzzle-accent: #506644; }
+#play[data-puzzle-tone] .pbar > .t {
+  position: relative;
+  padding-inline: 30px;
+}
+#play[data-puzzle-tone] .pbar > .t::before {
+  content: "";
+  position: absolute;
+  inset-inline-start: 4px;
+  inset-block: 0;
+  width: 22px;
+  background: var(--puzzle-piece) center / contain no-repeat;
+  pointer-events: none;
+}
+#play[data-puzzle-tone] .fit-opening-preview {
+  display: grid;
+  grid-template-columns: 64px minmax(0, 1fr);
+  align-items: center;
+  gap: 10px;
+  min-height: 70px;
+  padding: 4px 8px;
+  border: 1px solid var(--identity-edge);
+  border-radius: 12px;
+  background-color: var(--puzzle-accent);
+  background-image: linear-gradient(#151d2b8c, #151d2bd9), var(--opening-scene, none);
+  background-size: cover;
+  background-position: center;
+  color: #fff6df;
+}
+#play[data-puzzle-tone] .fit-opening-preview img {
+  width: 64px;
+  height: 60px;
+  object-fit: contain;
+  filter: drop-shadow(0 2px 3px #17101b99);
+}
+#play[data-puzzle-tone] .fit-opening-preview p {
+  margin: 0;
+  font-weight: 800;
+}
+@media (max-height: 450px) {
+  #play[data-puzzle-tone] .fit-opening-preview { grid-template-columns: 44px minmax(0, 1fr); min-height: 44px; }
+  #play[data-puzzle-tone] .fit-opening-preview img { width: 44px; height: 40px; }
+}
+
+/* Player-facing board surfaces. Geometry and interaction remain engine-owned. */
+#play[data-play-paper] #pzb :is(.pp10, .fl10, .rhb.rhb2, .tn10) {
+  border-radius: 14px;
+  box-shadow: 0 0 0 2px var(--identity-rim), 0 0 0 5px var(--identity-edge),
+    0 8px 15px var(--identity-shadow);
+}
+#play[data-play-paper] #pzb .pp10 { overflow: hidden; }
+#play[data-play-paper] #pzb .pp10-c {
+  background-image: linear-gradient(155deg, #fff9e550, #85643a18);
+}
+#play[data-play-paper] #pzb .pp10-c.on {
+  background-image: linear-gradient(155deg, #95e4e62b, #16728a29);
+}
+#play[data-play-paper] #pzb .pp10-c.on .pp10-glint :is(.n, .s) {
+  background: linear-gradient(90deg, #65c5da, #a7f0f5 55%, #579cbf);
+}
+#play[data-play-paper] #pzb .pp10-c.on .pp10-glint :is(.e, .w) {
+  background: linear-gradient(180deg, #65c5da, #a7f0f5 55%, #579cbf);
+}
+#play[data-play-paper] #pzb .pp10-c.house.on .pp10-intake::before {
+  background: #9ce6eb;
+  box-shadow: 0 0 5px #9bffffa8;
+}
+
+#play[data-play-paper] #pzb .fl10-c {
+  background-image: linear-gradient(155deg, #ffffff2c, #ad744917);
+  box-shadow: inset -1px -1px #ae885948, inset 1px 1px #fff8de50;
+}
+#play[data-play-paper] #pzb .fl10-c.joined .fl10-medallion {
+  border-color: #ffda87;
+  box-shadow: inset 0 -2px #260d3b5c, 0 0 0 2px #ffe1a6,
+    0 0 7px var(--token-ink);
+}
+#play[data-play-paper] #pzb .fl10-c.joined .fl10-medallion::after {
+  content: "";
+  position: absolute;
+  inset-inline-end: -1px;
+  inset-block-end: -1px;
+  width: 20%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  background: #fff2b8;
+  border: 1px solid #8d682c;
+}
+
+#play[data-play-paper] #pzb .rhb2 > i {
+  background-image: linear-gradient(150deg, #fff0cb42, #85643717);
+}
+#play[data-play-paper] #pzb .rhlot.won .rhexit {
+  box-shadow: 0 0 0 2px #ffe3a3, 0 0 10px #75e5a1;
+}
+#play[data-play-paper] #pzb .tn10-h {
+  border-radius: 5px;
+  box-shadow: inset 0 1px #ffffff60;
+}
+#play[data-play-paper] #pzb .tn10-c.tent:not(.bad, .lock) {
+  box-shadow: inset 0 0 0 1px #b58543;
+}
+#play[data-play-paper] #pzb .tn10-c.tent.bad {
+  box-shadow: inset 0 0 0 2px #a43a38;
+}
+
+#play[data-play-paper] #pzb .st10-s.ok .st10-tgt {
+  filter: drop-shadow(0 0 4px #ffd277);
+}
+#play[data-play-paper] #pzb .mirror-tile.mirror-crystal.lit {
+  box-shadow: inset 0 0 0 1px #ffe3a781, inset 0 0 9px var(--light);
+}
+@media (orientation: portrait) {
+  #play[data-play-paper] #pzb .ml-river-board[data-docks="2"] .ml-river-place > div {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(44px, 1fr));
+  }
+  #play[data-play-paper] #pzb .ml-river-board[data-docks="2"] .ml-river-place button {
+    padding-inline: 2px;
+  }
+}
+
+#play[data-play-paper] #pzb #icb {
+  border-radius: 14px;
+  box-shadow: 0 0 0 2px #dff6fb, 0 0 0 4px #6294a8;
+}
+#play[data-play-paper] #pzb .icc2.goal {
+  background: radial-gradient(ellipse, #fff3c79e, transparent 70%);
+}
+#play[data-play-paper] #pzb .icw2.done .icc2.goal {
+  box-shadow: inset 0 0 0 2px #f2cc6f, inset 0 0 9px #ffef9bb3;
+}
+#play[data-play-paper] #pzb .tg10-c.reg:not(.on) {
+  background-image: linear-gradient(135deg, #fff6de5e, transparent);
+}
+#play[data-play-paper] #pzb .tg10.won .tg10-c.reg::after {
+  border-color: #c99837;
+}
+#play[data-play-paper] #pzb #unsv .unode.drag {
+  box-shadow: 0 0 0 2px #ffe2a4, 0 0 8px #ffd4728c;
+}
+#play[data-play-paper] #pzb #unsv.done .un-edge {
+  box-shadow: 0 0 4px #caf2a5;
+}
+
+/* Each catalog board uses its illustration and a material chosen for its mechanics. */
+#play[data-puzzle-board] {
+  --board-grain: repeating-linear-gradient(120deg, #b17d3920 0 1px, transparent 1px 11px);
+  --board-plate: #fff1d8;
+  --board-wash: #ffedd7ba;
+  --board-trim: #a96f2f;
+  --board-ink-accent: #8f581e;
+}
+#play[data-puzzle-board="stone"] {
+  --board-grain: repeating-linear-gradient(148deg, #624c3926 0 1px, transparent 1px 25px);
+  --board-plate: #e9dbc5;
+  --board-wash: #e6d7c3b8;
+  --board-trim: #8c7153;
+  --board-ink-accent: #855925;
+}
+#play[data-puzzle-board="wood"] {
+  --board-grain: repeating-linear-gradient(4deg, #8c4b2728 0 1px, transparent 1px 19px);
+  --board-plate: #efd0a5;
+  --board-wash: #f2debab8;
+  --board-trim: #946034;
+  --board-ink-accent: #8d4f25;
+}
+#play[data-puzzle-board="water"] {
+  --board-grain: repeating-linear-gradient(163deg, #247e8f28 0 1px, transparent 1px 18px);
+  --board-plate: #d6efe8;
+  --board-wash: #e1f7ecbd;
+  --board-trim: #4b8785;
+  --board-ink-accent: #326f78;
+}
+#play[data-puzzle-board="glass"] {
+  --board-grain: linear-gradient(132deg, transparent 21%, #fffaff50 37%, transparent 51%);
+  --board-plate: #e7e3f4;
+  --board-wash: #f1eafaac;
+  --board-trim: #7a698d;
+  --board-ink-accent: #745a94;
+}
+#play[data-puzzle-board="map"] {
+  --board-grain: repeating-linear-gradient(90deg, #7c724326 0 1px, transparent 1px 25px),
+    repeating-linear-gradient(0deg, #7c724326 0 1px, transparent 1px 25px);
+  --board-plate: #f4e7bc;
+  --board-wash: #f5e6c3ad;
+  --board-trim: #877049;
+  --board-ink-accent: #766336;
+}
+#play[data-puzzle-board="porcelain"] {
+  --board-grain: radial-gradient(ellipse at 36% 8%, #ffffffa0, transparent 65%);
+  --board-plate: #e9eff7;
+  --board-wash: #edf3fac4;
+  --board-trim: #677d9e;
+  --board-ink-accent: #49678d;
+}
+html[data-skin="dark"] #play[data-puzzle-board] {
+  --board-plate: #2b2b38;
+  --board-wash: #171e2bdc;
+  --board-ink-accent: #ffda94;
+}
+@media (prefers-color-scheme: dark) {
+  html[data-skin="auto"] #play[data-puzzle-board] {
+    --board-plate: #2b2b38;
+    --board-wash: #171e2bdc;
+    --board-ink-accent: #ffda94;
+  }
+}
+html #play[data-play-paper][data-puzzle-board] #pzb {
+  background: var(--board-grain),
+    linear-gradient(var(--board-wash), var(--board-wash)),
+    var(--puzzle-illustration) center / cover no-repeat,
+    var(--board-plate) !important;
+  border-radius: 12px !important;
+  box-shadow: inset 0 0 0 1px var(--board-trim),
+    inset 0 0 0 3px var(--identity-rim) !important;
+}
+/* Emblems are piece artwork and should remain at piece scale. */
+html #play[data-play-paper][data-puzzle-board][data-puzzle-illustration="emblem"] #pzb {
+  background: var(--board-grain),
+    linear-gradient(var(--board-wash), var(--board-wash)),
+    var(--puzzle-piece) right 6px bottom 6px / clamp(48px, 15vw, 96px) auto no-repeat,
+    var(--board-plate) !important;
+}
+#play[data-puzzle-board] #pzb :where(button, [role="button"]):focus-visible {
+  outline: 2px solid var(--board-ink-accent);
+  outline-offset: -2px;
+}
+#play[data-puzzle-board] #pzb :where(button, [role="button"]):is([aria-pressed="true"], [aria-selected="true"], .mk-sel):not(:focus-visible) {
+  outline: 2px solid var(--board-ink-accent);
+  outline-offset: -2px;
+}
+html #play[data-play-paper][data-puzzle-board] #pzb.solved {
+  box-shadow: inset 0 0 0 2px #c39c4d, inset 0 0 12px #efcd764f !important;
+}
+
+/* These effects follow states exposed by the individual puzzle engines. */
+#play[data-puzzle-board="parchment"] #pzb .lg10-clues li.ok .lg10-st {
+  border-radius: 50%;
+  box-shadow: 0 0 0 1px #6c9c67, 0 1px 3px #28452145;
+}
+#play[data-puzzle-board="glass"] #pzb .lzc.gem.on .lzspr {
+  filter: drop-shadow(0 0 5px #ffe399);
+}
+#play[data-puzzle-board="stone"] #pzb .skc2.goal.full .pad {
+  outline: 2px solid #f0cc72;
+  outline-offset: 2px;
+}
+#play[data-puzzle-board="porcelain"] #pzb .sd10-c:is(.bad, .clash) {
+  outline: 2px solid #b64349;
+  outline-offset: -3px;
+}
+
+/* A stable hue per puzzle, with independent readable tones for light and dark. */
+#play[data-puzzle-tone] {
+  --puzzle-title: hsl(var(--puzzle-hue) 63% 25%);
+  --puzzle-tint: hsl(var(--puzzle-hue) 64% 80%);
+  --puzzle-frame: hsl(var(--puzzle-hue) 45% 47%);
+  --identity-edge: var(--puzzle-frame);
+  --identity-rim: color-mix(in srgb, var(--puzzle-tint) 45%, white);
+  --identity-paper: linear-gradient(#fffdf7, var(--puzzle-tint));
+  --board-trim: var(--puzzle-frame);
+  --board-ink-accent: var(--puzzle-title);
+  --board-wash: color-mix(in srgb, var(--puzzle-tint) 76%, transparent);
+  --illustration-veil: linear-gradient(
+    color-mix(in srgb, var(--puzzle-tint) 54%, transparent),
+    color-mix(in srgb, var(--puzzle-tint) 86%, transparent) 50%,
+    color-mix(in srgb, var(--puzzle-tint) 54%, transparent));
+}
+html[data-skin="dark"] #play[data-puzzle-tone] {
+  --puzzle-title: hsl(var(--puzzle-hue) 72% 84%);
+  --puzzle-tint: hsl(var(--puzzle-hue) 31% 22%);
+  --puzzle-frame: hsl(var(--puzzle-hue) 45% 60%);
+  --identity-edge: var(--puzzle-frame);
+  --identity-rim: var(--puzzle-tint);
+  --identity-paper: linear-gradient(#242733, var(--puzzle-tint));
+  --board-ink-accent: var(--puzzle-title);
+  --board-wash: color-mix(in srgb, var(--puzzle-tint) 89%, transparent);
+  --illustration-veil: linear-gradient(#131a2bab, var(--board-wash) 50%, #131a2bae);
+}
+@media (prefers-color-scheme: dark) {
+  html[data-skin="auto"] #play[data-puzzle-tone] {
+    --puzzle-title: hsl(var(--puzzle-hue) 72% 84%);
+    --puzzle-tint: hsl(var(--puzzle-hue) 31% 22%);
+    --puzzle-frame: hsl(var(--puzzle-hue) 45% 60%);
+    --identity-edge: var(--puzzle-frame);
+    --identity-rim: var(--puzzle-tint);
+    --identity-paper: linear-gradient(#242733, var(--puzzle-tint));
+    --board-ink-accent: var(--puzzle-title);
+    --board-wash: color-mix(in srgb, var(--puzzle-tint) 89%, transparent);
+    --illustration-veil: linear-gradient(#131a2bab, var(--board-wash) 50%, #131a2bae);
+  }
+}
+html[data-skin="dark"] #play[data-puzzle-tone] :is(#quit,#pzr,#pzh,.fit-sound,.pzgive.arm) {
+  color: var(--puzzle-title) !important;
+}
+@media (prefers-color-scheme: dark) {
+  html[data-skin="auto"] #play[data-puzzle-tone] :is(#quit,#pzr,#pzh,.fit-sound,.pzgive.arm) {
+    color: var(--puzzle-title) !important;
+  }
+}
+#play[data-puzzle-tone] .pbar #pt { color: var(--puzzle-title); }
+#play[data-puzzle-tone] #pzb :is(.mirror-field, #icb) {
+  box-shadow: 0 0 0 2px var(--identity-rim), 0 0 0 4px var(--puzzle-frame);
+}
+
+/* Use the available phone width while reserving room for the car exit and beam source. */
+@media (orientation: portrait) {
+  #play.fit:not(.xframe)[data-puzzle-tone] #pzb:has(.lb[data-lb="rush"]) {
+    justify-content: flex-start;
+  }
+  #play.fit[data-puzzle-tone] #pzb .lb[data-lb="rush"] .rhb.rhb2 {
+    width: min(calc(100% - 27px), calc(var(--fit-room, 320px) - 10px), 540px);
+    margin-inline-end: 27px;
+  }
+  #play.fit[data-puzzle-tone] #pzb .lb[data-lb="rush"] .rhwrap2 {
+    width: 100%;
+    padding-inline: 2px;
+  }
+  #play[data-puzzle-tone] #pzb :is(.fl10, .tn10, .sd10) {
+    width: min(100% - 8px, var(--fit-room, 60dvh) - 58px, 540px);
+    max-width: none;
+  }
+  #play[data-puzzle-tone] #pzb .mirror-field {
+    width: min(calc(100% - 30px), calc(var(--fit-room, 55dvh) - 78px), 540px);
+    margin-inline: auto 3px;
+  }
+}
+
+/* Keep the same artwork proportions for vehicles travelling on either axis. */
+#play #pzb .rh10-fleet .rh10-img {
+  inset: 0;
+  margin: auto;
+  width: 98%;
+  height: 98%;
+  filter: hue-rotate(var(--vehicle-finish)) saturate(1.2);
+}
+#play #pzb .rhcar.v .rh10-fleet .rh10-img {
+  inset: 50% auto auto 50%;
+  width: calc(98% * var(--vehicle-length));
+  height: calc(98% / var(--vehicle-length));
+  max-width: none;
+  transform: translate(-50%, -50%) rotate(90deg);
+}
+
+/* Full-width playing area on phones, using each board's existing aspect ratio. */
+@media (orientation: portrait) {
+  html #play.fit:not(.xframe)[data-play-paper] > .pin {
+    padding-inline: max(2px, env(safe-area-inset-left, 0px)) max(2px, env(safe-area-inset-right, 0px));
+  }
+  html #play.fit:not(.xframe)[data-play-paper] #pzb {
+    padding-inline: 3px !important;
+    justify-content: flex-start;
+  }
+  html #play.fit:not(.xframe)[data-play-paper] #pzb:has(.lb[data-lb="authored-river"]) {
+    padding-inline: 0 !important;
+  }
+  #play.fit[data-play-paper] #pzb .lb-board {
+    padding-inline: 2px;
+  }
+  #play.fit[data-play-paper] #pzb .lb[data-lb="rush"] .rhwrap2 {
+    padding-inline: 0;
+  }
+  #play.fit[data-play-paper] #pzb .lb[data-lb="rush"] .rhb.rhb2 {
+    width: min(calc(100% - 22px), calc(var(--fit-room, 320px) - 10px), 620px);
+    margin-inline-end: 22px;
+  }
+  #play.fit[data-play-paper] #pzb .lb[data-lb="rush"] .rhexit {
+    width: 22px;
+    right: -22px;
+  }
+  #play[data-play-paper] #pzb :is(.fl10, .tn10, .sd10, .tg10) {
+    width: min(calc(100% - 3px), calc(var(--fit-room, 60dvh) - 52px), 620px);
+    max-width: none;
+  }
+  #play[data-play-paper] #pzb .mirror-field {
+    width: min(calc(100% - 25px), calc(var(--fit-room, 55dvh) - 78px), 620px);
+    margin-inline: auto 2px;
+  }
+  #play[data-play-paper] #pzb :is(.pp10, .icw2, #zrw, #zgw, #xrw) {
+    max-width: 100%;
+  }
+}

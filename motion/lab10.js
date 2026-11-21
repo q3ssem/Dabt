@@ -324,17 +324,24 @@
   /* ================================================================ 03 موقف السيارات — pz_rush
      rushEngine keeps the moves, drag, tap + arrows, hint and win; only the vehicle art and the board frame change. */
   if (GM.pz_rush && typeof rushEngine === 'function' && typeof rhMake === 'function') {
-    const paintCar = (v, red) => {
-      const asset = red ? 'car_rescue_2x1' : v.len === 3 ? 'truck_heavy_3x1' : 'cart_cargo_2x1';
-      const kind = red ? 'rescue' : v.len === 3 ? 'truck' : 'cargo';
-      return `<span class="rh10" data-vehicle="${kind}">${im('rush-fitted/' + asset + (v.h ? '_h' : '_v'), 'rh10-img')}</span>`;
+    const shortFleet = ['rush_car_coupe_2x1', 'rush_car_van_2x1', 'rush_car_taxi_2x1', 'rush_car_teal_2x1'];
+    const longFleet = ['rush_truck_3x1', 'rush_bus_3x1'];
+    const paintCar = (v, red, index, stage) => {
+      if (red) return `<span class="rh10" data-vehicle="rescue">${im('rush-fitted/car_rescue_2x1_' + (v.h ? 'h' : 'v'), 'rh10-img')}</span>`;
+      const fleet = v.len === 3 ? longFleet : shortFleet;
+      const asset = fleet[(stage - 1 + index - 1) % fleet.length];
+      const finish = ((stage - 1) * 18 + (index - 1) * 29) % 360;
+      return `<span class="rh10 rh10-fleet" data-vehicle="${v.len === 3 ? 'truck' : 'cargo'}"
+        data-model="${asset}" style="--vehicle-length:${v.len};--vehicle-finish:${finish}deg">
+        ${im(asset, 'rh10-img')}
+      </span>`;
     };
     GM.pz_rush.run = function () {
       return pzPlay('pz_rush', api => {
         const P = api.authored ? window.mlAuthoredStages.parking(api.authored.board) : rhMake(api.lv);
         const sound = sfx.roundScene?.();
         const R = rushEngine(api, P, m => api.win(`أخرجت السيارة في ${arN(m, AN.mv)}، والحل الأمثل ${arN(P.min, AN.mv)}.`), {
-          paintCar,
+          paintCar: (vehicle, red, index) => paintCar(vehicle, red, index, api.authored?.number ?? api.lv),
           play(event, vehicle, delay) {
             const clip = event === 'move' ? (vehicle.len === 3 ? 'rush.truck' : 'rush.car') : 'rush.' + event;
             sound?.play(clip, delay);
@@ -597,18 +604,26 @@
   };
 
   /* ================================================================ 08 وصّل الألوان — pz_flow
-     Same ends and segs (flMake); every pair has its own colour and symbol (flow_node_0..8). Drag a path, or tap cell by cell. */
+     Same ends and segs (flMake); every pair has its own colour and symbol. Drag a path, or tap cell by cell. */
   if (GM.pz_flow && typeof flMake === 'function') GM.pz_flow.run = function () {
     return pzPlay('pz_flow', api => {
-      const COL = ['#FF5F7A', '#3FD0E8', '#8BE36A', '#FFD45A', '#B48CFF', '#FF8A3D', '#5EE6C0', '#FF8FD1', '#7DA2FF'], ART = ['coral', 'teal', 'sage', 'gold', 'plum', 'amber', 'mint', 'pink', 'blue'];
+      const COL = ['#D92B63', '#008CA9', '#438C24', '#AD6600', '#7950B3', '#AC4920', '#00836D', '#B12C89', '#4C62C9'];
+      const marks = [
+        ['⚓︎', 'مرساة'], ['∿', 'موجة'], ['◆', 'ماسة'], ['☀︎', 'شمس'], ['✦', 'نجمة'],
+        ['▲', 'مثلث'], ['●', 'دائرة'], ['♥', 'قلب'], ['■', 'مربع']
+      ];
       const P = api.authored?.board || flMake(api.lv);
       const n = P.n, K = P.ends.length, paths = P.ends.map(() => []), endOf = new Map(); P.ends.forEach(([a, b], k) => { endOf.set(a, k); endOf.set(b, k); }); let cur = -1, drag = false; const lockK = new Set();
       frame(api, { id: 'flow', lead: 'وصّل كل رمزين متطابقين بخط متصل واملأ اللوحة كلها. الخطوط لا تتقاطع.' });
       $('#lbb').innerHTML = `<div class="fl10" id="fl10" style="--n:${n}">${Array.from({ length: n * n }, (_, i) => {
         const e = endOf.get(i);
-        return `<button class="fl10-c${e != null ? ' end' : ''}" type="button" data-i="${i}" aria-label="${e != null ? 'رمز ' + N(e + 1) : 'خانة'}"><span class="fl10-track" hidden aria-hidden="true"></span>${e != null ? im('flow_node_' + e + '_' + ART[e], 'fl10-node') : ''}</button>`;
+        const mark = marks[e];
+        const position = `الصف ${N(Math.floor(i / n) + 1)}، العمود ${N(i % n + 1)}`;
+        const token = mark ? `<span class="fl10-node fl10-medallion" style="--token-ink:${COL[e]}" aria-hidden="true">${mark[0]}</span>` : '';
+        return `<button class="fl10-c${mark ? ' end' : ''}" type="button" data-i="${i}" aria-label="${mark ? mark[1] : 'خانة'}، ${position}"><span class="fl10-track" hidden aria-hidden="true"></span>${token}</button>`;
       }).join('')}</div>`;
       const G = $('#fl10'), cells = [...G.children];
+      const endpoints = P.ends.map(([a, b]) => [cells[a], cells[b]]);
       function markPath(from, to) {
         if (to == null) return '';
         const side = to === from - n ? 'n' : to === from + n ? 's' : to < from ? 'w' : 'e';
@@ -632,8 +647,15 @@
           track.hidden = path.length < 2;
           track.innerHTML = markPath(cellIndex, path[i - 1]) + markPath(cellIndex, path[i + 1]);
         }));
-        const all = paths.reduce((a, p) => a + p.length, 0), nd = [...Array(K).keys()].filter(done).length; if (!api.ended) api.msg(`وصلت ${N(nd)} من ${N(K)} أزواج · ${N(all)} من ${N(n * n)} خانة`);
-        if (!api.ended && all === n * n && paths.every((_, k) => done(k))) { $('#fl10').classList.add('won'); api.win(`وصّلت ${N(K)} أزواج وملأت اللوحة كلها.`); } }
+        let connected = 0;
+        endpoints.forEach(([a, b], k) => {
+          const linked = done(k);
+          for (const end of [a, b]) end.classList.toggle('joined', linked);
+          connected += Number(linked);
+        });
+        const occupied = paths.reduce((sum, path) => sum + path.length, 0);
+        if (!api.ended) api.msg(`وصلت ${N(connected)} من ${N(K)} أزواج · ${N(occupied)} من ${N(n * n)} خانة`);
+        if (!api.ended && occupied === n * n && connected === K) { $('#fl10').classList.add('won'); api.win(`وصّلت ${N(K)} أزواج وملأت اللوحة كلها.`); } }
       const finishes = c => cur >= 0 && endOf.get(c) === cur && !done(cur) &&
         c !== paths[cur][0] && adj(paths[cur].at(-1), c);
       const cellAt = e => { const el = document.elementFromPoint(e.clientX, e.clientY), b = el && el.closest && el.closest('.fl10-c'); return b && G.contains(b) ? +b.dataset.i : null; };

@@ -194,6 +194,7 @@ try {
     'ui/fit.js',
     'motion/wreck-painted.js',
     'ui/openings-data.js',
+    'ui/puzzle-designs-data.js',
     'ui/openings.js',
     'ui/journey-story-data.js',
     'ui/board-art-data.js',

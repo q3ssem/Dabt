@@ -23,6 +23,46 @@
     return 'logic';
   }
 
+  const designFor = id => window.mindlabPuzzleDesigns?.[id];
+  const artUrl = path => `url("${new URL(path, document.baseURI).href}")`;
+
+  function applyIllustration(current) {
+    const play = $('#play');
+    const design = current?.puz && designFor(current.id);
+    if (current?.puz) play.dataset.playPaper = paper(current.id);
+    else delete play.dataset.playPaper;
+    if (design) {
+      play.dataset.puzzleIllustration = design.scene ? 'scene' : 'emblem';
+      play.dataset.puzzleTone = design.tone;
+      if (design.board) play.dataset.puzzleBoard = design.board;
+      else delete play.dataset.puzzleBoard;
+      play.style.setProperty('--puzzle-illustration', artUrl(design.scene || design.piece));
+      play.style.setProperty('--puzzle-piece', artUrl(design.piece));
+      play.style.setProperty('--puzzle-hue', String(design.hue));
+    } else {
+      delete play.dataset.puzzleIllustration;
+      delete play.dataset.puzzleTone;
+      delete play.dataset.puzzleBoard;
+      play.style.removeProperty('--puzzle-illustration');
+      play.style.removeProperty('--puzzle-piece');
+      play.style.removeProperty('--puzzle-hue');
+    }
+  }
+
+  function addDesignPreview(card, design) {
+    const preview = document.createElement('div');
+    preview.className = 'fit-opening-preview';
+    if (design.scene) preview.style.setProperty('--opening-scene', artUrl(design.scene));
+    const piece = document.createElement('img');
+    piece.src = new URL(design.piece, document.baseURI).href;
+    piece.alt = '';
+    piece.decoding = 'async';
+    const action = document.createElement('p');
+    action.textContent = design.action;
+    preview.append(piece, action);
+    $('.fit-opening-title', card).after(preview);
+  }
+
   let lastFocus;
   function closeOpening() {
     $('#fit-opening-overlay')?.remove();
@@ -60,6 +100,8 @@
       </div>
     </div>`;
     $('#fit-opening-name', d).textContent = g.name;
+    const design = designFor(id);
+    if (design && !replay) addDesignPreview(d, design);
     const bubble = $('.fit-opening-bubble', d);
     if (entry?.dialogue) {
       bubble.hidden = false;
@@ -103,6 +145,7 @@
     const current = game();
     if (!current) return;
     const run = RUN;
+    applyIllustration(current);
     stopAll();
     openOpening(current.id, false, () => {
       if (RUN === run && game()?.id === current.id) oldCountdown.apply(this, arguments);
@@ -113,8 +156,7 @@
   showIntro = function () {
     const current = game();
     if (!current) return oldIntro.apply(this, arguments);
-    if (current.puz) $('#play').dataset.playPaper = paper(current.id);
-    else delete $('#play').dataset.playPaper;
+    applyIllustration(current);
     oldIntro.apply(this, arguments);
     // Authored tracks and story station pickers run their own stage selection.
     const go = $('#stage > #go');
@@ -128,7 +170,7 @@
   const oldClose = closePlay;
   closePlay = function () {
     closeOpening();
-    delete $('#play').dataset.playPaper;
+    applyIllustration(null);
     return oldClose.apply(this, arguments);
   };
   $('#quit').onclick = closePlay;
