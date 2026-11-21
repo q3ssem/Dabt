@@ -107,6 +107,17 @@ async def run():
                 r.bottom<=window.innerHeight+2;
             }""")
             assert stage_reachable,f"Last stage is clipped or unreachable on {width}px"
+            # The back-to-library action follows the 20 stages: it must also be reachable.
+            back=page.locator("#stage .ml-authored-picker [data-back]")
+            await back.scroll_into_view_if_needed(timeout=7000)
+            back_reachable=await page.evaluate("""()=>{
+              const picker=document.querySelector('#stage .ml-authored-picker');
+              const action=picker.querySelector('[data-back]');
+              const p=picker.getBoundingClientRect(),r=action.getBoundingClientRect();
+              return r.top>=p.top-2 && r.bottom<=p.bottom+2 &&
+                r.bottom<=window.innerHeight+2;
+            }""")
+            assert back_reachable,f"Return button is clipped or unreachable on {width}px"
             if SHOTS and width==320:
                 await page.screenshot(path=str(SHOTS/f"river-picker-last-stage-{skin}-{width}.png"))
             await page.evaluate("()=>document.querySelector('#stage .ml-authored-picker').scrollTop=0")
