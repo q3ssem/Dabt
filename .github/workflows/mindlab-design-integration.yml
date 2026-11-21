@@ -36,7 +36,10 @@ jobs:
           python qa/browser/phase5_game_matrix.py http://127.0.0.1:8765/ chromium
       - name: Compare active progress from published main with the candidate
         run: |
-          git fetch --depth=1 origin main
+          # A shallow checkout of merged main does not contain the original pre-merge commit.
+          # Fetch the immutable review baseline from the dedicated backup branch.
+          git fetch --no-tags --depth=1 origin refs/heads/backup/mindlab-main-before-cleanup-20261122
+          git cat-file -e '58409f7138d47f2ef44a4cf6438bcb96d42aa3a9^{commit}'
           git worktree add --detach /tmp/mindlab-baseline 58409f7138d47f2ef44a4cf6438bcb96d42aa3a9
           python -m http.server 8765 --bind 127.0.0.1 >/tmp/mindlab-phase3-http.log 2>&1 &
           python -m http.server 8768 --bind 127.0.0.1 --directory /tmp/mindlab-baseline >/tmp/mindlab-main-http.log 2>&1 &

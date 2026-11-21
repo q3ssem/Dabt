@@ -3,6 +3,8 @@
 const fs = require('node:fs'), assert = require('node:assert/strict'), vm = require('node:vm');
 const read = file => fs.readFileSync(file, 'utf8');
 const gone = [
+  'docs/SCENE_ASSET_SPEC_AR.md',
+  'qa/source_http_4_2.json',
   'ui/designs_art/work_review/pz_river/river-base--light.webp',
   'ui/designs_art/work_review/pz_river/river-base--dark-corrected.webp',
   'hasad/data.js', 'hasad/engine.js', 'hasad/game.js', 'hasad/style.css',
