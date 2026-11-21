@@ -454,8 +454,47 @@ html #v-puz .ex10 :is(.ex10-game-top,.ex10-objective,.ex10-stage-progress,.ex10-
   font-family:'Tajawal',system-ui,sans-serif!important;
   line-height:1.55;
 }
-html #v-puz .ex10 :is(.ex10-game-top,.ex10-stage-progress) {
-  color:var(--bp-ink);
+html #v-puz .ex10 .ex10-stage-progress {color:var(--bp-ink);}
+html #v-puz .ex10 .ex10-game-top {
+  color:#fff2d6!important;
+}
+html #v-puz .ex10 .ex10-game-top b {
+  color:#fff4df!important;
+  font-family:'Tajawal',system-ui,sans-serif!important;
+  font-size:clamp(15px,4vw,18px);
+  font-weight:900!important;
+}
+html #v-puz .ex10 .ex10-game-top small {
+  color:#d3e3df!important;
+  font-family:'Tajawal',system-ui,sans-serif!important;
+  font-size:12px;
+  line-height:1.4;
+}
+html #v-puz .ex10 .ex10-game-top .ex10-back {
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  padding:0!important;
+  border:1.5px solid #cfb877!important;
+  border-radius:50%!important;
+  background:#fff1d0!important;
+  color:#685025!important;
+  font-size:0!important;
+  display:inline-grid!important;
+  place-items:center!important;
+  box-shadow:0 2px 0 #1116;
+}
+html #v-puz .ex10 .ex10-game-top .ex10-back::before {
+  content:'↶';
+  font-family:'Tajawal',system-ui,sans-serif;
+  font-size:24px;
+  line-height:1;
+  font-weight:900;
+}
+html #v-puz .ex10 .ex10-game-top .ex10-back:focus-visible {
+  outline:3px solid #a3e4fb!important;
+  outline-offset:3px;
 }
 html #v-puz .ex10 :is(.ex10-back,.ex10-game-actions button,.ex10-cipher-controls button) {
   font-family:'Tajawal',system-ui,sans-serif;
@@ -465,6 +504,43 @@ html #v-puz .ex10 :is(.ex10-back,.ex10-game-actions button,.ex10-cipher-controls
 }
 html #v-puz .ex10 .ex10-objective {font-size:clamp(13px,3.5vw,15px);}
 
+/* Seven-Seas tool icons are decorative paintings inside uniform circular hits. */
+html #v-puz.t7 .t7-tools .t7-tool-icon {
+  display:inline-grid!important;
+  place-items:center!important;
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  padding:8px!important;
+  border:1.5px solid color-mix(in srgb,var(--bp-azure) 38%,var(--bp-stroke))!important;
+  border-radius:50%!important;
+  background:var(--bp-azure-soft)!important;
+  color:var(--bp-azure)!important;
+  box-shadow:var(--bp-shadow)!important;
+  font-size:0!important;
+}
+html #v-puz.t7 .t7-tools .t7-tool-icon:nth-child(2) {
+  background:var(--bp-violet-soft)!important;
+  color:var(--bp-violet)!important;
+  border-color:color-mix(in srgb,var(--bp-violet) 38%,var(--bp-stroke))!important;
+}
+html #v-puz.t7 .t7-tools .t7-tool-icon:nth-child(3) {
+  background:var(--bp-gold-soft)!important;
+  color:var(--bp-gold)!important;
+  border-color:color-mix(in srgb,var(--bp-gold) 38%,var(--bp-stroke))!important;
+}
+html #v-puz.t7 .t7-tools .t7-tool-icon img {
+  display:block;
+  width:28px!important;
+  height:28px!important;
+  object-fit:contain!important;
+  margin:0!important;
+}
+html #v-puz.t7 .t7-tools .t7-tool-icon:focus-visible {
+  outline:3px solid var(--bp-focus)!important;
+  outline-offset:3px!important;
+}
 /* Icons and badges: keep the provided hand-drawn graphics sharp and unstretched. */
 html #play :is(.pzhud,.fit-tools,.fit-sheet-card) img,
 html #v-puz :is(.v5-head,.v5-bar,.ex10-game-top) img {
