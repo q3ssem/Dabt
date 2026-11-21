@@ -1083,3 +1083,120 @@ html[data-skin="dark"] #play[data-puzzle-tone] :is(#quit,#pzr,#pzh,.fit-sound,.p
     max-width: 100%;
   }
 }
+
+/* Present puzzle instructions and round results directly on the full-screen artwork. */
+#play[data-play-paper] .puzzle-opening { background: inherit; }
+html .puzzle-opening.mlj-station-rules {
+  background: linear-gradient(#fff7e3db, #fff1d9f5),
+    url(art/play-backgrounds/01-pirate-letter.webp) center / cover, #fff1d9;
+  color: #302820;
+}
+html[data-skin="dark"] .puzzle-opening.mlj-station-rules {
+  background: linear-gradient(#131a2bdb, #131a2bf5),
+    url(art/play-backgrounds/01-pirate-letter.webp) center / cover, #131a2b;
+  color: #fff3d7;
+}
+@media (prefers-color-scheme: dark) {
+  html[data-skin="auto"] .puzzle-opening.mlj-station-rules {
+    background: linear-gradient(#131a2bdb, #131a2bf5),
+      url(art/play-backgrounds/01-pirate-letter.webp) center / cover, #131a2b;
+    color: #fff3d7;
+  }
+}
+html :is(#play[data-play-paper], body) .puzzle-opening :is(
+  .fit-opening-card, .fit-opening-body, .fit-opening-bubble, .fit-opening-scene,
+  .fit-opening-badge, .fit-opening-preview, .fit-opening-rules > li
+) {
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+  color: var(--identity-ink, inherit);
+}
+.puzzle-opening .fit-opening-card { width: min(100%, 540px); max-height: 90dvh; padding: 16px; }
+.puzzle-opening .fit-opening-bubble { padding: 0; }
+.puzzle-opening .fit-opening-badge { position: static; padding-inline: 0; }
+.puzzle-opening .fit-opening-title { font-size: clamp(20px, 5vw, 28px); }
+.puzzle-opening .fit-opening-rules { padding-inline-start: 22px; }
+.puzzle-opening .fit-opening-rules > li + li { margin-block-start: 8px; }
+
+html #play[data-play-paper]:has(#stage > .res) .pbar,
+html #play[data-play-paper] #stage .res,
+html #play[data-play-paper] #stage .res > div,
+html #play[data-play-paper] #stage .res :is(.rec, .delta, .rank, .chres, .pl, .rdetail, .eyebrow),
+html #play[data-play-paper] #stage .ml-authored-picker,
+html #v-puz :is(.v5-reward, .v544-crew-debrief, .v5-loot figure, .v5-reward .t7-help, .ex10-outcome, .ex10-outcome-story) {
+  background: none !important;
+  border: 0 !important;
+  box-shadow: none !important;
+}
+#play[data-play-paper] #stage .res {
+  gap: clamp(10px, 2dvh, 18px);
+  padding: clamp(10px, 4vw, 22px);
+  margin-block: auto;
+}
+html #play[data-play-paper] #stage .res :is(.pts, .pl, .rec, .rline, .rank, .rdetail, .eyebrow, .chres) {
+  color: var(--identity-ink) !important;
+}
+#play[data-play-paper] #stage .res .bigstars {
+  filter: none;
+  color: var(--identity-ink);
+}
+#play[data-play-paper] #stage .res .bigstars svg {
+  width: clamp(28px, 9vw, 42px);
+  height: auto;
+}
+#play[data-play-paper] #stage .res .bigstars path {
+  fill: none;
+  stroke: currentColor;
+  stroke-width: 1.5;
+  stroke-linejoin: round;
+}
+#play[data-play-paper] #stage .res .bigstars [data-earned="true"] {
+  color: color-mix(in srgb, #c47e16 70%, var(--identity-ink));
+}
+#play[data-play-paper] #stage .res .bigstars [data-earned="false"] { opacity: .5; }
+#play[data-play-paper] #stage .res .spark {
+  max-width: 460px;
+  padding-block: 0;
+  text-align: center;
+}
+#play[data-play-paper] #stage .res .spark polygon { fill: none; }
+#play[data-play-paper] #stage .res .spark :is(line, polyline, circle) {
+  stroke: var(--identity-ink);
+}
+#play[data-play-paper] #stage .res .spark line { opacity: .28; }
+#play[data-play-paper] #stage .res .spark circle { fill: none; }
+#play[data-play-paper] #stage .rbtns {
+  flex-flow: row wrap;
+  justify-content: center;
+  align-items: center;
+  gap: clamp(8px, 4vw, 22px);
+}
+#play[data-play-paper] .puzzle-share-status { flex-basis: 100%; }
+#play[data-play-paper] .ml-authored-picker header { color: var(--identity-ink); }
+
+html :is(#play, #v-puz, body) #fit-opening-overlay .puzzle-action,
+html #play[data-play-paper] #stage .puzzle-action,
+html #v-puz :is(.v5-reward, .ex10-outcome) .puzzle-action {
+  display: inline-grid;
+  place-items: center;
+  flex: 0 0 auto;
+  width: 48px;
+  height: 48px;
+  min-width: 44px;
+  min-height: 44px;
+  margin: 0;
+  padding: 8px;
+  border: 0 !important;
+  border-radius: 50%;
+  background: none !important;
+  color: var(--identity-ink, currentColor) !important;
+  box-shadow: none !important;
+  text-shadow: none;
+}
+html #fit-opening-overlay .puzzle-action { color: inherit !important; }
+html :is(#play, #v-puz, body) .puzzle-action svg { display: block; width: 25px; height: 25px; }
+html :is(#play, #v-puz, body) .puzzle-action:focus-visible {
+  outline: 2px solid currentColor;
+  outline-offset: 2px;
+}

@@ -5,6 +5,24 @@
   window.__MINDLAB_OPENINGS_UI = true;
 
   const $ = (s, r = document) => r.querySelector(s);
+  const PUZZLE_ACTION_PATHS = {
+    start: '<path d="m8 5 12 7-12 7z"/>',
+    close: '<path d="m6 6 12 12M18 6 6 18"/>',
+    next: '<path d="m14 5-7 7 7 7m-7-7h13"/>',
+    back: '<path d="m10 5 7 7-7 7m7-7H4"/>',
+    retry: '<path d="M4 4v6h6M4.5 10a8 8 0 1 1 .7 7"/>',
+    home: '<path d="m3 11 9-8 9 8m-16-2v11h5v-6h4v6h5V9"/>',
+    levels: '<path d="M4 4h6v6H4zm10 0h6v6h-6zM4 14h6v6H4zm10 0h6v6h-6z"/>',
+    map: '<path d="m3 6 6-3 6 3 6-3v15l-6 3-6-3-6 3zm6-3v15m6-12v15"/>',
+    share: '<path d="m12 15 0-12m-5 5 5-5 5 5m-10 3H4v10h16V11h-3"/>',
+    check: '<path d="m5 12 4 4L19 6"/>'
+  };
+  window.puzzleAction = function puzzleAction(button, icon, label = button.textContent.trim()) {
+    button.classList.add('puzzle-action');
+    button.setAttribute('aria-label', label);
+    button.title = label;
+    button.innerHTML = `<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true" focusable="false">${PUZZLE_ACTION_PATHS[icon]}</svg>`;
+  };
   const heroes = {
     rawaa: 'رواء', nuha: 'نهى', ward: 'ورد'
   };
@@ -52,7 +70,6 @@
   function addDesignPreview(card, design) {
     const preview = document.createElement('div');
     preview.className = 'fit-opening-preview';
-    if (design.scene) preview.style.setProperty('--opening-scene', artUrl(design.scene));
     const piece = document.createElement('img');
     piece.src = new URL(design.piece, document.baseURI).href;
     piece.alt = '';
@@ -87,7 +104,7 @@
 
     const d = document.createElement('div');
     d.id = 'fit-opening-overlay';
-    d.className = 'fit-opening-overlay';
+    d.className = 'fit-opening-overlay' + (g.puz ? ' puzzle-opening' : '');
     d.setAttribute('role', 'dialog');
     d.setAttribute('aria-modal', 'true');
     d.setAttribute('aria-labelledby', 'fit-opening-name');
@@ -129,6 +146,7 @@
       begin?.();
     };
     const button = $('#fit-op-start', d);
+    if (g.puz) puzzleAction(button, replay ? 'close' : 'start', replay ? 'إغلاق القواعد والعودة للعب' : 'ابدأ اللغز');
     button.addEventListener('click', dismiss);
     d.addEventListener('click', event => { if (event.target === d) dismiss(event); });
     d.addEventListener('keydown', event => {
@@ -166,6 +184,56 @@
       go.click();
     }
   };
+
+  function decorateResult(current) {
+    const result = $('#stage > .res');
+    if (!result) return;
+
+    const stars = $('.bigstars', result);
+    if (stars) {
+      let earned = 0;
+      for (const star of stars.querySelectorAll('svg')) {
+        const active = $('path', star)?.getAttribute('fill') === 'var(--gold)';
+        star.dataset.earned = String(active);
+        star.setAttribute('aria-hidden', 'true');
+        earned += Number(active);
+      }
+      stars.setAttribute('role', 'img');
+      stars.setAttribute('aria-label', `${earned} من ٣ نجوم`);
+    }
+
+    const actions = { nx: 'next', fin: 'check', ag: current.kid ? 'retry' : 'next', rpl: 'retry', shch: 'share', hm: 'home' };
+    const buttons = $('.rbtns', result);
+    for (const button of buttons.querySelectorAll('button')) puzzleAction(button, actions[button.id]);
+    const share = $('#shch', buttons);
+    if (share && !share.hidden) {
+      const click = share.onclick;
+      share.onclick = async function (event) {
+        const label = this.getAttribute('aria-label');
+        await click.call(this, event);
+        if (!this.isConnected || this.querySelector('svg')) return;
+        let status = $('.puzzle-share-status', buttons);
+        if (!status) {
+          status = document.createElement('small');
+          status.className = 'puzzle-share-status';
+          status.setAttribute('role', 'status');
+          buttons.append(status);
+        }
+        status.textContent = this.textContent;
+        puzzleAction(this, 'share', label);
+      };
+    }
+  }
+
+  if (typeof finish === 'function') {
+    const oldFinish = finish;
+    finish = function () {
+      const current = game();
+      const value = oldFinish.apply(this, arguments);
+      if (current?.puz) decorateResult(current);
+      return value;
+    };
+  }
 
   const oldClose = closePlay;
   closePlay = function () {

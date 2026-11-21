@@ -66,7 +66,10 @@
       button.onclick = () => play(id, Number(button.dataset.level));
     });
     host.querySelector('[data-back]').onclick = () => closePlay();
-    host.querySelector('.go-btn').focus();
+    const resume = host.querySelector('.go-btn');
+    puzzleAction(resume, 'start');
+    puzzleAction(host.querySelector('[data-back]'), 'back');
+    resume.focus();
   }
 
   function complete({ id, number }) {
@@ -81,7 +84,7 @@
     const buttons = document.querySelector('.rbtns');
     if (!again || !buttons) return;
     const hasNext = won && number < total;
-    again.textContent = hasNext ? 'المرحلة التالية' : 'أعد المرحلة';
+    puzzleAction(again, hasNext ? 'next' : 'retry', hasNext ? 'المرحلة التالية' : 'أعد المرحلة');
     again.onclick = () => play(id, number + Number(hasNext));
     document.querySelector('#rpl')?.remove();
     document.querySelector('#shch')?.remove(); // Legacy challenge links cannot address an authored board.
@@ -89,7 +92,7 @@
     const picker = document.createElement('button');
     picker.type = 'button';
     picker.className = 'cta ghost';
-    picker.textContent = 'اختيار مرحلة';
+    puzzleAction(picker, 'levels', 'اختيار مرحلة');
     picker.onclick = () => choose(id);
     buttons.append(picker);
   }

@@ -740,7 +740,7 @@
 
     const ov = document.createElement('div');
     ov.id = 'fit-opening-overlay';
-    ov.className = 'fit-opening-overlay mlj-station-rules' + (info.sprite ? ' mlj-v3-opening-overlay' : '');
+    ov.className = 'fit-opening-overlay puzzle-opening mlj-station-rules' + (info.sprite ? ' mlj-v3-opening-overlay' : '');
     ov.setAttribute('role', 'dialog');
     ov.setAttribute('aria-modal', 'true');
     ov.setAttribute('aria-label', info.title);
@@ -783,6 +783,8 @@
     ov.addEventListener('pointerdown', e => { if (e.target === ov) e.stopPropagation(); });
     ov.addEventListener('click', e => { if (e.target === ov) dismiss(e, true); });
     const sBtn = $('#fit-op-start', ov), back = $('#fit-op-skip', ov);
+    puzzleAction(sBtn, 'start', 'ابدأ المحطة');
+    puzzleAction(back, 'back');
     ov.addEventListener('keydown', e => {
       if (e.key === 'Escape') dismiss(e, true);
       if (e.key === 'Tab' && ((e.shiftKey && document.activeElement === sBtn) || (!e.shiftKey && document.activeElement === back))) {

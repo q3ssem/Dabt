@@ -202,6 +202,8 @@ function renderReward(){const s=D.stations[active];if(s.finale)return renderFina
   E('p',{class:'t7-help',text:T?'استعمالها: '+T.use+'. حُفظت في دفتر الرحلة.':seal?'حُفظ الختم والسر في دفتر الرحلة.':'حُفظت المحطة في دفتر الرحلة.'}),
   E('p',{class:'v5-stars',text:stars(s)+' · يمكنك العودة لنيل النجوم الباقية.'}),button('إلى المحطة التالية',continueJourney,'primary'),button('العب التحدي التالي',()=>{view='puzzle';render();}));
  if(seal)card.append(button('اقرأ '+Q.title,()=>openSecret(s.ch)));
+ const icons=['next','start','check'];
+ card.querySelectorAll(':scope > button').forEach((control,index)=>window.puzzleAction?.(control,icons[index]));
  v.append(E('div',{class:'t7-story-layout'},scene(s,true),card));}
 function sealMemory(){
  const grid=E('div',{class:'v546-seal-grid'});
