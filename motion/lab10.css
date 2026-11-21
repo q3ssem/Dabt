@@ -56,20 +56,9 @@
 .rv10-landscape{position:absolute;inset:0;z-index:-1;overflow:hidden;pointer-events:none}
 .rv10 .rv10-bank,.rv10 .rv10-bank.goal,.rv10 .rv10-water{background:transparent}
 .rv10 h4,.rv10-water small{color:#34241b;background:rgba(255,251,242,.94);padding:2px 5px;border-radius:6px;text-align:center;direction:rtl}
-/* Keep the complete 1600×1120 scene visible and calculate both mooring points on its fitted plane. */
-.rv10{container-type:size;--river-paint:url(../ui/designs_art/work_review/pz_river/river-base--light.webp);
-  background:#fcf6e4}
-html[data-skin="dark"] .rv10{--river-paint:url(../ui/designs_art/work_review/pz_river/river-base--dark-corrected.webp);
-  background:#72736e}
-/* perf-cleanup D: the painting is landscape (10:7). On a tall phone it sits at the bottom of the board and the room
-   above is the painting's own paper colour (sampled from its edge), which holds the bank labels and items — no
-   stretching, no empty water band. On narrow boards it may grow to 125% width (uniform scale; only the outer trees
-   are cropped, both docks stay inside). A taller portrait painting is requested from the art pass. */
-.rv10-landscape{background:var(--river-paint) center bottom/min(125cqw,142.857143cqh) auto no-repeat}
-.rv10-boat{--rv-image-width:min(125cqw,142.857143cqh);--rv-image-height:min(87.5cqw,100cqh);
-  --rv-dock-left:calc(50% - var(--rv-image-width)*.14);--rv-dock-right:calc(50% + var(--rv-image-width)*.14);
-  --rv-dock-height:calc(100% - var(--rv-image-height)*.414285714);
-  --rv-dock-return-height:calc(100% - var(--rv-image-height)*.407142857)}
+.rv10{container-type:size;background:#fcf6e4}
+html[data-skin="dark"] .rv10{background:#72736e}
+.rv10-boat{--rv-image-width:100cqw}
 .rv10-boat{position:absolute;top:var(--rv-dock-height,50%);left:var(--rv-dock-left);width:clamp(84px,calc(var(--rv-image-width,100cqw)*.29),146px);min-height:0;z-index:4;
   transform:translate(-50%,-50%);transition:left .65s ease-in-out,top .65s ease-in-out;pointer-events:auto}
 .rv10.at1 .rv10-boat,.rv10:not(.at1).sail .rv10-boat{left:var(--rv-dock-right);top:var(--rv-dock-return-height)}

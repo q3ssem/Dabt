@@ -1,1 +1,0 @@
-{"variant": "base", "puzzle": "pz_aarch", "rounds": 28, "result": "CRASH: Page.wait_for_timeout: Page crashed", "secs": 93, "new_segfaults": 1}

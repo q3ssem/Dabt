@@ -3,7 +3,7 @@ import asyncio
 import json
 from playwright.async_api import async_playwright
 
-ASSET = "ui/designs_art/work_review/pz_river/river-base--light.webp"
+ASSET = "motion/adventure35/river-day.webp"
 READY = "() => !!window.mindlabJourneyHub && !!window.fitOpenings"
 
 async def measure_start(page, url):
@@ -42,8 +42,7 @@ async def check_parking(browser, url):
     context = await browser.new_context(viewport={"width":844,"height":390},has_touch=True,service_workers="block",reduced_motion="reduce")
     page = await context.new_page()
     await measure_start(page, url)
-    await page.evaluate("()=>{startRun(['pz_rush']);RUN.replay={id:'pz_rush',lv:1,seed:8127};}")
-    await page.locator("#stage #go").click()
+    await page.evaluate("()=>{return startRun(['pz_rush'],null,{replay:{id:'pz_rush',lv:1,seed:8127}});}")
     opening = page.locator("#fit-op-start")
     board = page.locator("#rhb")
     await opening.or_(board).first.wait_for(state="visible")

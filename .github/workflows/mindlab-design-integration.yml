@@ -1,222 +1,25 @@
-name: MindLab 5.5.28 - Verified Design Integration
-run-name: MindLab design integration from release
+name: MindLab current build
 on:
-  release:
-    types: [published]
   push:
     branches: [main]
-    paths:
-      - '.github/workflows/mindlab-design-integration.yml'
+  pull_request:
+    branches: [main]
   workflow_dispatch:
-    inputs:
-      release_tag:
-        description: 'GitHub release tag containing the approved ZIP'
-        required: true
-        default: 'mindlab-design-5.5.28'
 
 permissions:
-  contents: write
-
-concurrency:
-  group: mindlab-design-integration-main
-  cancel-in-progress: false
+  contents: read
 
 jobs:
-  integrate:
-    name: Validate package, test, and fast-forward main
+  verify:
     runs-on: ubuntu-latest
-    timeout-minutes: 60
-    if: github.event_name == 'workflow_dispatch' || github.event_name == 'push' || github.event.release.tag_name == 'mindlab-design-5.5.28'
     steps:
-      - name: Checkout main with history
-        uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
         with:
-          ref: main
-          fetch-depth: 0
-          persist-credentials: true
-
-      - name: Require reviewed source version
-        shell: bash
-        run: |
-          set -euo pipefail
-          EXPECTED=11f4a9ac6222d1569c2e2b4a8cf83f6f647657c8
-          git merge-base --is-ancestor "$EXPECTED" HEAD || {
-            echo "::error::The reviewed base is not an ancestor of main"; exit 1;
-          }
-          UNREVIEWED="$(git diff --name-only "$EXPECTED" HEAD | grep -v -x '.github/workflows/mindlab-design-integration.yml' || true)"
-          if [[ -n "$UNREVIEWED" ]]; then
-            echo "::error::main includes changes beyond this integration workflow. Re-audit required."
-            printf '%s\n' "$UNREVIEWED"
-            exit 1
-          fi
-          echo "Reviewed application base $EXPECTED; workflow-only commits since base."
-
-      - name: Download attached ZIP from GitHub Release
-        shell: bash
-        env:
-          GH_TOKEN: ${{ github.token }}
-        run: |
-          set -euo pipefail
-          if [[ "$GITHUB_EVENT_NAME" == "release" ]]; then
-            TAG="$(python3 -c 'import json,os; print(json.load(open(os.environ["GITHUB_EVENT_PATH"]))["release"]["tag_name"])')"
-          else
-            TAG="$(python3 -c 'import json,os; print(json.load(open(os.environ["GITHUB_EVENT_PATH"])).get("inputs",{}).get("release_tag","mindlab-design-5.5.28"))')"
-          fi
-          if [[ "$TAG" != "mindlab-design-5.5.28" ]]; then
-            echo "::error::Unapproved release tag: $TAG"
-            exit 1
-          fi
-          mkdir -p /tmp/mindlab-integration
-          gh release download "$TAG" --repo "$GITHUB_REPOSITORY" \
-            --pattern 'MindLab_5.5.28_Design_Integration_Patch.zip' \
-            --dir /tmp/mindlab-integration
-          test -s /tmp/mindlab-integration/MindLab_5.5.28_Design_Integration_Patch.zip
-
-      - name: Verify SHA-256, contents, and extract safely
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path, PurePosixPath
-          import zipfile, hashlib, json, stat
-          file = Path('/tmp/mindlab-integration/MindLab_5.5.28_Design_Integration_Patch.zip')
-          expected = '8787e319c4aee6dd589af0372f4529aaf0fe86cc7537d9c03bacbaa8f2cb0174'
-          actual = hashlib.sha256(file.read_bytes()).hexdigest()
-          if actual != expected:
-              raise SystemExit(f'Checksum mismatch. Expected {expected}; received {actual}')
-          with zipfile.ZipFile(file) as z:
-              files = [i for i in z.infolist() if not i.is_dir()]
-              if len(files) != 173:
-                  raise SystemExit(f'Unexpected number of files: {len(files)}')
-              if sum(i.file_size for i in files) > 130_000_000:
-                  raise SystemExit('Archive too large when unpacked')
-              names = [i.filename for i in files]
-              if len(set(names)) != len(names):
-                  raise SystemExit('Duplicate ZIP paths')
-              mandatory = {
-                  'offline-manifest.js', 'ui/app.js', 'ui/fit.js', 'ui/fit.css',
-                  'ui/openings-data.js', 'ui/openings.js', 'ui/openings.css',
-                  'ui/journey-story-data.js', 'ui/board-art-data.js',
-                  'ui/journey-hub.js', 'ui/journey-hub.css',
-                  'ui/designs_art/openings/manifest.json',
-                  'ui/designs_art/characters/manifest.json',
-                  'ui/designs_art/journey/manifest.json',
-              }
-              if not mandatory.issubset(names):
-                  raise SystemExit('Expected integrated scripts or manifests are missing')
-              for item in files:
-                  path = PurePosixPath(item.filename)
-                  if path.is_absolute() or '..' in path.parts or '\\' in item.filename:
-                      raise SystemExit(f'Unsafe path: {item.filename}')
-                  if not (item.filename == 'offline-manifest.js' or item.filename.startswith('ui/')):
-                      raise SystemExit(f'Unexpected root path: {item.filename}')
-                  if stat.S_ISLNK(item.external_attr >> 16):
-                      raise SystemExit(f'Symlink forbidden: {item.filename}')
-                  if item.file_size > 25_000_000:
-                      raise SystemExit(f'Oversized entry: {item.filename}')
-              manifest = json.loads(z.read('ui/designs_art/openings/manifest.json'))
-              official = manifest.get('puzzles', [])
-              if len(official) != 80 or len({x['puzzle_id'] for x in official}) != 80:
-                  raise SystemExit('The 80 unique official puzzle openings are not present')
-              if z.testzip() is not None:
-                  raise SystemExit('Corrupt ZIP member')
-              for item in files:
-                  target = Path(item.filename)
-                  target.parent.mkdir(parents=True, exist_ok=True)
-                  target.write_bytes(z.read(item))
-          print(f'Verified {len(files)} files; 80 official openings; SHA256 {actual}')
-          PY
-
-      - name: Verify all JavaScript and JSON in patch
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 - <<'PY'
-          from pathlib import Path
-          import zipfile, json, subprocess
-          archive = '/tmp/mindlab-integration/MindLab_5.5.28_Design_Integration_Patch.zip'
-          with zipfile.ZipFile(archive) as z:
-              for item in z.namelist():
-                  if item.endswith('.js'):
-                      subprocess.run(['node', '--check', item], check=True)
-                  elif item.endswith('.json'):
-                      json.loads(Path(item).read_text(encoding='utf-8'))
-          js = Path('ui/app.js').read_text(encoding='utf-8')
-          for required in ('ui/openings-data.js','ui/openings.js','ui/journey-story-data.js',
-                           'ui/board-art-data.js','ui/journey-hub.js','ui/fit.js'):
-              if required not in js:
-                  raise SystemExit(f'App loader omits {required}')
-          print('Patched JS syntax, JSON and app-loader dependencies OK')
-          PY
-
-      - name: Set up Python for CSS generation
-        uses: actions/setup-python@v5
+          node-version: '22'
+      - uses: actions/setup-python@v5
         with:
           python-version: '3.12'
-
-      - name: Install the CSS parser used by the existing theme generator
-        shell: bash
-        run: python3 -m pip install --disable-pip-version-check 'tinycss2==1.4.0'
-
-      - name: Regenerate white-theme stylesheet from patched sources
-        shell: bash
-        run: |
-          set -euo pipefail
-          python3 tools/build_light_theme.py
-          python3 tools/build_light_theme.py --check
-          # Legacy sprite URLs in the source are relative to legacy/style.css.
-          # The generated file lives under ds/, so rebase these exact URLs.
-          python3 - <<'PY'
-          from pathlib import Path
-          import re
-          sheet = Path('ds/light-auto.css')
-          css = sheet.read_text(encoding='utf-8')
-          for name in ('rooms.webp', 'surfaces.webp', 'boards.webp'):
-              path = Path('legacy/art') / name
-              if not path.is_file():
-                  raise SystemExit(f'Missing legacy art referenced by generated CSS: {path}')
-              pattern = re.compile(r"url\((['\"]?)art/" + re.escape(name) + r"\1\)")
-              css, count = pattern.subn(lambda m: 'url(' + m.group(1) + '../legacy/art/' + name + m.group(1) + ')', css)
-              print(f'Rebased {count} generated CSS references for {name}')
-              if count == 0 and ('../legacy/art/' + name) not in css:
-                  raise SystemExit(f'Expected generated CSS references for {name}')
-          sheet.write_text(css, encoding='utf-8')
-          PY
-
-      - name: Run all project Node tests
-        shell: bash
-        run: npm test
-
-      - name: Check repo state has not changed while testing
-        shell: bash
-        run: |
-          set -euo pipefail
-          git fetch origin main
-          CURRENT="$(git rev-parse origin/main)"
-          BASE="$(git rev-parse HEAD)"
-          if [[ "$CURRENT" != "$BASE" ]]; then
-            echo "::error::main changed while tests ran. Refusing to overwrite."
-            exit 1
-          fi
-
-      - name: Make backup tag and publish verified integration
-        shell: bash
-        run: |
-          set -euo pipefail
-          git config user.name "github-actions[bot]"
-          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add -A -- ds/light-auto.css offline-manifest.js ui/app.js ui/fit.css ui/fit.js \
-            ui/openings-data.js ui/openings.js ui/openings.css \
-            ui/journey-story-data.js ui/board-art-data.js \
-            ui/journey-hub.js ui/journey-hub.css ui/designs_art
-          if git diff --cached --quiet; then
-            echo "No changes to publish."
-            exit 0
-          fi
-          git diff --cached --stat
-          BASE="$(git rev-parse HEAD)"
-          BACKUP_TAG="mindlab-before-design-integration-5.5.28"
-          git tag -a "$BACKUP_TAG" -m "Backup of main before approved Gemini design integration" "$BASE"
-          git push origin "refs/tags/$BACKUP_TAG"
-          git commit -m "design: integrate verified Gemini 5.5.28 assets and puzzle openings"
-          git push origin HEAD:main
+      - run: python -m pip install tinycss2==1.4.0
+      - run: npm test
+      - run: npm run test:authored-stages

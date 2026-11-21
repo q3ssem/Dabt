@@ -3,6 +3,8 @@
 const fs = require('node:fs'), assert = require('node:assert/strict'), vm = require('node:vm');
 const read = file => fs.readFileSync(file, 'utf8');
 const gone = [
+  'ui/designs_art/work_review/pz_river/river-base--light.webp',
+  'ui/designs_art/work_review/pz_river/river-base--dark-corrected.webp',
   'hasad/data.js', 'hasad/engine.js', 'hasad/game.js', 'hasad/style.css',
   'qa/tests/hasad.integration.cjs', 'ui/designs_art/journey/v3/games/hasad.webp',
   'ui/designs_art/river_stage1/05_opening_and_icon/05_opening_scene.png',
@@ -17,7 +19,7 @@ const ui = read('ui/app.js'), openings = read('ui/openings.js'), hub = read('ui/
 assert.ok(!ui.includes('loadHasadLayer') && !ui.includes('hasad/data.js'), 'Hasad must not be eagerly loaded');
 assert.ok(!read('package.json').includes('hasad.integration.cjs'), 'retired Hasad test must be removed');
 assert.ok(!openings.includes('entry.bg') && !openings.includes('bgUrl'), 'no large opening background in library');
-assert.ok(openings.includes('function openOpening(') && openings.includes('countdown0.apply('), 'start/timer gating stays intact');
+assert.ok(openings.includes('function openOpening(') && openings.includes('oldCountdown.apply('), 'start/timer gating stays intact');
 assert.ok(hub.includes('function showStationOpening(') && !hub.includes('station.openingBackground'), 'journey gate survives without background atlas');
 assert.ok(!hub.includes('fit-opening-scene" style="background-image'), 'journey preplay is text-first');
 const metadata = JSON.parse(read('ui/designs_art/openings/manifest.json'));
@@ -34,7 +36,7 @@ const manifest = read('offline-manifest.js'), realm={self:{}};vm.runInNewContext
 const all = [...realm.self.MINDLAB_OFFLINE_FILES,...realm.self.MINDLAB_JOURNEY_ART,...realm.self.MINDLAB_GAME_ART,...realm.self.MINDLAB_CORRECTION_ART,...Object.values(realm.self.MINDLAB_EXPEDITION_ART).flat()];
 assert.ok(all.every(x=>!x.startsWith('hasad/') && !gone.includes(x)), 'precache must not reference removed files');
 // The cache generation must have moved past the generation that still held the deleted assets.
-assert.ok(/PATCH='(retired-art-cleanup-1|perf-cleanup-\d+|engines-\d+)'/.test(read('sw.js')), 'cache generation must change after deleting assets');
-assert.ok(openings.includes("motion/art10/char_"),'lightweight heroine intro art retained');
-assert.ok(hub.includes('ابدأ اللغز') && openings.includes('ابدأ اللغز'),'start action retained in both journeys');
+assert.ok(/PATCH='(retired-art-cleanup-1|perf-cleanup-\d+|engines-\d+|fullscreen-current-\d+)'/.test(read('sw.js')), 'cache generation must change after deleting assets');
+assert.ok(openings.includes("treasure/art/story5/crew_full_"),'lightweight heroine intro art retained');
+assert.ok(hub.includes('إغلاق القواعد') && openings.includes('إغلاق القواعد'),'rules can be dismissed in both journeys');
 console.log('MindLab cleanup passed: 80 lightweight puzzle records, 88 library intros, '+map.stations.length+' journey stations; retired assets absent.');

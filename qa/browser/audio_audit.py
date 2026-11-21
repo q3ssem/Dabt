@@ -52,20 +52,17 @@ async def probe(pg):
     n = await pg.evaluate(POKE); await pg.wait_for_timeout(400)
     a1 = await pg.evaluate("()=>({...window.__au,ev:window.__ev.length})")
     ev = await pg.evaluate(f"()=>window.__ev.slice({a0['ev']})")
-    music = await pg.evaluate("()=>!!document.querySelector('.mla-music-toggle')")
-    m0 = await pg.evaluate("()=>window.__au.nodes"); await pg.wait_for_timeout(2000)
-    musicNodes = (await pg.evaluate("()=>window.__au.nodes")) - m0
-    # the adventure families play a designed background phrase; the idle check is with that music switched off
-    await pg.evaluate("()=>{S.st.puzzleMusicOff=true}"); await pg.wait_for_timeout(1200)
-    a1b = await pg.evaluate("()=>({...window.__au})"); await pg.wait_for_timeout(2000)
+    await pg.wait_for_timeout(1200)
+    a1b = await pg.evaluate("()=>({...window.__au})")
+    await pg.wait_for_timeout(2000)
     a2 = await pg.evaluate("()=>({...window.__au})")
-    # muted: music back on but the global mute set (one step, as the setting does), then play
-    await pg.evaluate("()=>{S.st.mute=true;S.st.puzzleMusicOff=false}"); await pg.wait_for_timeout(300)
-    a2 = await pg.evaluate("()=>({...window.__au})")
+    await pg.evaluate("()=>{S.st.mute=true}")
+    await pg.wait_for_timeout(300)
+    muted = await pg.evaluate("()=>({...window.__au})")
     await pg.evaluate(POKE); await pg.wait_for_timeout(2300)
     a3 = await pg.evaluate("()=>({...window.__au})")
     await pg.evaluate("()=>{S.st.mute=false}")
     return {'pokes': n, 'events': sorted(set(ev)), 'eventCount': len(ev), 'nodes': a1['nodes'] - a0['nodes'],
-            'idleNodes2s': a2['nodes'] - a1b['nodes'], 'music': music, 'musicNodes2s': musicNodes, 'mutedNodes': a3['nodes'] - a2['nodes'], 'contexts': a3['ctx'], 'buffers': a3['buffers'] - a0['buffers']}
+            'idleNodes2s': a2['nodes'] - a1b['nodes'], 'mutedNodes': a3['nodes'] - muted['nodes'], 'contexts': a3['ctx'], 'buffers': a3['buffers'] - a0['buffers']}
 
 asyncio.run(main())

@@ -67,10 +67,7 @@ const intro0=showIntro;showIntro=function(){intro0();const g=curGame();if(g.kid)
 let launchToken=0;const imageCache=new Map();
 LA.load=function(file){if(imageCache.has(file))return imageCache.get(file);const promise=new Promise(resolve=>{const im=new Image();let finished=false;const finish=ok=>{if(finished)return;finished=true;clearTimeout(timer);(ok?LA.loaded:LA.failed).add(file);if(!ok)LA.fallback(file);resolve(ok);};const timer=setTimeout(()=>finish(false),8000);im.onload=()=>{if(im.decode)im.decode().then(()=>finish(true),()=>finish(true));else finish(true);};im.onerror=()=>finish(false);im.src='legacy/art/'+file+'.webp';if(im.complete&&im.naturalWidth)finish(true);});imageCache.set(file,promise);return promise;};
 LA.assets=function(g){const list=['surfaces'];if(g.id==='faces')list.push('portraits');if(['loci','crash','mmap','mylist','delay','scene'].includes(g.id)||g.puz)list.push('objects-a','objects-b','objects-c','objects-d','objects-e');if(g.puz||g.id==='tol')list.push('puzzle-parts');if(g.id==='loci'||g.id==='mylist')list.push('rooms');return [...new Set(list)];};
-/* perf-cleanup: a puzzle start waited for every legacy atlas LA.assets() lists (~5.4 MB: surfaces, objects-a..e, puzzle-parts,
-   boards, world-a..e, classic) although the redesigned boards paint at most one of them (measured over all 88 puzzles,
-   qa/reports/perf-cleanup/PERFORMANCE_BEFORE_AFTER.md). LA.needed() is what a board paints; anything else a board might
-   still show later is fetched by the browser when it is painted. Brain games keep their full list. */
+// Load each puzzle's initial atlas on entry. Fetch later artwork when the board renders it.
 const PUZ_ATLAS={pz_rush:['surfaces'],pz_lock:['surfaces'],pz_soko:['surfaces'],pz_scale:['puzzle-parts'],pz_laser:['classic'],pz_xreef:['objects-c'],pz_zroute:['objects-c']};
 LA.needed=function(g){if(!g)return[];if(g.puz&&g.id!=='tol')return PUZ_ATLAS[g.id]||[];return LA.assets(g);};
 const countdown0=countdown;countdown=async function(){const g=curGame();if(g.kid)return countdown0();const token=++launchToken,run=RUN,b=$('#go');const need=LA.needed(g);if(b&&need.length){b.disabled=true;b.textContent='جارٍ تجهيز الرسوم…';}await Promise.all(need.map(LA.load));if(token!==launchToken||RUN!==run||!RUN)return;countdown0();};

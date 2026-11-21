@@ -6,12 +6,9 @@
   if (window.__MINDLAB_JOURNEY_HUB) return;
   window.__MINDLAB_JOURNEY_HUB = true;
 
-  const SEEN_KEY = 'mindlab:openings:journey:v1';
   const TRANSITIONS_KEY = 'mindlab:transitions:seen:v1';
 
   const $ = (s, r = document) => r.querySelector(s);
-  const readSeen = () => { try { return JSON.parse(localStorage.getItem(SEEN_KEY) || '{}'); } catch (_) { return {}; } };
-  const markSeen = k => { try { const s = readSeen(); s[k] = 1; localStorage.setItem(SEEN_KEY, JSON.stringify(s)); } catch (_) {} };
 
   function bgPos(rect) {
     if (!rect) return '0% 0%';
@@ -399,7 +396,7 @@
       const sea = station.chapter === 'seven_seas';
       if (!sea && !window.ML10) { sideReady().then(() => { if (window.ML10) openStation(station); }); return; }
       if (!(sea ? window.T7?.unlocked(index) : window.ML10?.unlocked(index))) return;
-      showStationOpening(`${sea ? 't7' : 'ex10'}:${station.id}`, {
+      showStationOpening({
         title: station.title,
         badge: station.region,
         heroName: station.heroName,
@@ -735,7 +732,7 @@
   }
 
   /* ---- 46 Non-Library Openings (21 Treasure Island + 25 Side Journey) ---- */
-  function showStationOpening(key, info, start) {
+  function showStationOpening(info, start) {
     const prev = document.activeElement;
     const old = $('#fit-opening-overlay');
     if (old) old.remove();
@@ -776,7 +773,6 @@
       event.stopPropagation();
       ov.remove();
       if (play) {
-        markSeen(key);
         start();
         return;
       }
@@ -800,15 +796,14 @@
     sBtn.focus({ preventScroll: true });
   }
 
-  function beforeStation(id, scene, start, rule) {
+  function beforeStation(id, start, rule) {
     const story = window.__MINDLAB_JOURNEY_STORY;
     const sea = story?.treasureStations.find(st => st.saveKey === id);
     const expedition = story?.expeditionStations.find(st => st.stageId === id);
     const station = sea || expedition;
-    const key = `${sea ? 't7' : 'ex10'}:${id}`;
     if (!station) return start();
 
-    showStationOpening(key, {
+    showStationOpening({
       title: `${sea ? sea.storyTitle : expedition.title} · ${station.location}`,
       badge: sea ? `البحر ${sea.sea} · ${station.heroName}` : station.heroName,
       hero: station.hero,

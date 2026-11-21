@@ -33,7 +33,8 @@ for(const [id,rec] of Object.entries(board.fourPuzzles)){
 ok(load.includes('ui/journey-hub.js')&&load.includes('motion/lab10.js'),'design runtime scripts are loaded');
 ok(load.includes('ui/board-art-data.js')&&load.includes('ui/openings-data.js'),'board and opening registries are loaded');
 
-ok(riverCss.includes('--rv-dock-left:calc(50% - var(--rv-image-width)*.14)')&&riverCss.includes('--rv-dock-right:calc(50% + var(--rv-image-width)*.14)'), 'boat uses responsive design coordinates');
+const currentRiver=read('motion/stages60/play.css');
+ok(currentRiver.includes('river-day.webp')&&currentRiver.includes('--dock'), 'current river uses the shared painting and moving dock coordinates');
 ok(riverCss.includes('.rv10:not(.at1).sail .rv10-boat')&&riverCss.includes('.rv10.at1.sail .rv10-boat'),'CSS supplies movement in both directions');
 ok(riverJs.includes('classList.add('+"'sail'"+')')&&riverJs.includes('classList.remove('+"'sail'"+')'),'board transitions in and out of sailing state');
 ok(riverJs.includes('data-slot="boat"')&&riverJs.includes('class="rv10-water"')&&
@@ -50,8 +51,7 @@ for(const animal of ['wolf','sheep','grass'])
   for(const pose of ['bank','boarding','seated']){
     ok(exists('ui/designs_art/river_stage1/03_passengers/'+animal+'_'+pose+'.png'),'passenger '+animal+'_'+pose);
   }
-for(const theme of ['light','dark-corrected'])
-  ok(exists('ui/designs_art/work_review/pz_river/river-base--'+theme+'.webp'),'current river art '+theme);
+ok(exists('motion/adventure35/river-day.webp'),'current river painting');
 ok(hubCss.includes('.mlj-palace-station')&&hubCss.includes('art/series_mirrors.webp'),'illustrated Palace map has responsive station links');
 
 /* Exercise actual chapter routing with a small DOM; no static name-only guesses. */

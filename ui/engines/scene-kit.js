@@ -10,7 +10,7 @@
      only the engine it needs (PixiJS 8 or Konva), once. If anything fails the DOM board stays as it is.
 
    Art for the redesign is delivered by the art team (ChatGPT Work) against these scene files;
-   see qa/reports/engines/WORK_ASSET_SPEC_AR.md. */
+   see docs/SCENE_ASSET_SPEC_AR.md. */
 (function () {
   'use strict';
   if (window.mlScene) return;

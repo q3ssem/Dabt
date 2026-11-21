@@ -169,10 +169,7 @@ html,body{overflow-x:hidden}
 #play[data-ml-puzzle="river"] .rvbk.dry{background:radial-gradient(circle at 20% 70%,#9c714c55 0 1.5px,transparent 2.5px) 0 0/14px 13px,linear-gradient(180deg,#e7c991,#c7985c)}
 #play[data-ml-puzzle="river"] .rvbk.meadow{background:radial-gradient(circle at 30% 40%,#fff4b5 0 1.5px,transparent 2.5px) 0 0/22px 19px,radial-gradient(circle at 70% 70%,#e9a4ac 0 1.5px,transparent 2.5px) 3px 6px/26px 23px,linear-gradient(180deg,#b0d987,#77b66d)}
 #play[data-ml-puzzle="river"] #rvgo{display:block;width:min(100%,340px);min-height:48px;margin:10px auto 0;border-radius:15px}
-#play[data-ml-puzzle] .mlp-music-toggle{display:inline-flex;align-items:center;justify-content:center;gap:5px;min-height:34px;padding:5px 9px;border:1px solid #cbb78e;border-radius:999px;background:#fff9ec;color:#75572d;font-size:10px;font-weight:800;white-space:nowrap}
-#play[data-ml-puzzle] .mlp-music-toggle svg{width:14px;height:14px;fill:none;stroke:currentColor;stroke-width:1.8;stroke-linecap:round;stroke-linejoin:round}
-#play[data-ml-puzzle] .mlp-music-toggle.on{border-color:#87b6a5;background:#eaf5ee;color:#286a58}
-@media(max-width:390px){#play[data-ml-puzzle] .mlp-music-toggle span{max-width:72px;overflow:hidden;text-overflow:ellipsis}#play[data-ml-puzzle="logic"] .lgt{min-width:430px}#play[data-ml-puzzle="river"] .rvland{min-height:204px}}
+@media(max-width:390px){#play[data-ml-puzzle="logic"] .lgt{min-width:430px}#play[data-ml-puzzle="river"] .rvland{min-height:204px}}
 @media(prefers-reduced-motion:reduce){#play[data-ml-puzzle] .mlp-meter-fill,#play[data-ml-puzzle] .mlp-river-fill{transition:none!important}}
 
 /* ---------- 5.5.9 — pirate / wreck / temple adventure design ---------- */
@@ -185,9 +182,6 @@ html,body{overflow-x:hidden}
 #play[data-mla-theme="pirate"] .mla-adventure-intro{background:linear-gradient(135deg,#fff6df,#ead4a4 60%,#c7d7b4);border-color:#c9b17d}
 #play[data-mla-theme="wreck"] .mla-adventure-intro{background:linear-gradient(135deg,#f5f5e9,#d6e4d9 58%,#b8d1cf);border-color:#a8c5bb}
 #play[data-mla-theme="temple"] .mla-adventure-intro{background:linear-gradient(135deg,#fff6df,#e6d4ad 58%,#c6b8a0);border-color:#c4ad83}
-#play[data-mla-theme] .mla-music-toggle{display:inline-flex;align-items:center;justify-content:center;min-height:34px;padding:5px 9px;border:1px solid #cbb78e;border-radius:999px;background:#fff9ec;color:#75572d;font-size:10px;font-weight:850;white-space:nowrap}
-#play[data-mla-theme] .mla-music-toggle[aria-pressed="true"]{border-color:#87b6a5;background:#eaf5ee;color:#286a58}
-@media(max-width:390px){#play[data-mla-theme] .mla-music-toggle{max-width:118px;overflow:hidden;text-overflow:ellipsis}}
 @media(prefers-reduced-motion:reduce){#play[data-mla-theme] *{scroll-behavior:auto!important;transition:none!important;animation:none!important}}
 /* perf-cleanup D: visible theme row at the top of «مستواي» (proxies the existing setting buttons) */
 .ui-look{display:flex;align-items:center;gap:6px;margin:8px 0 12px;padding:6px 8px;border-radius:14px;background:var(--surface,rgba(20,30,80,.05));border:1px solid var(--line,rgba(20,30,80,.14))}

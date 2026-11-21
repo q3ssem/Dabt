@@ -178,7 +178,7 @@ function renderStory(){
  const story=E('details',{class:'t7-story-more'},E('summary',{text:'مشهد القصة'}),...lines);
  const begin=()=>{view='puzzle';render();window.scrollTo(0,0);};
  const opening=window.mindlabJourneyHub;
- const rules=()=>opening ? opening.beforeStation(s.id,ART+s.scene+'.webp',begin,s.goal) : begin();
+ const rules=()=>opening ? opening.beforeStation(s.id,begin,s.goal) : begin();
  const card=E('section',{class:'t7-dialog v5-intro t7-compact-intro'},E('h2',{class:'v5-intro-title',text:s.title}),bubble,
   button('قواعد المحطة',rules,'primary v5-intro-go'),story);
  v.append(E('div',{class:'t7-story-layout'},scene(s),card));
