@@ -130,6 +130,11 @@
     try { worker.postMessage({type:'preload-all'}, [channel.port2]); }
     catch (_) { fail('تعذر بدء التحميل المسبق. يمكنك دخول التطبيق ثم إعادة المحاولة لاحقًا.'); }
   }
+  // An existing installation may still run the old worker, which does not handle preload-all.
+  // Resume automatically when the newly installed worker takes control.
+  serviceWorker.addEventListener('controllerchange', () => {
+    if (!finished && serviceWorker.controller) preload(serviceWorker.controller);
+  });
   retry.onclick = async () => {
     try { const registration = await serviceWorker.ready; preload(registration.active || serviceWorker.controller); }
     catch (_) { fail('تعذر الوصول إلى التخزين دون اتصال.'); }
