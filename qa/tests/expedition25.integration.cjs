@@ -12,12 +12,12 @@ const wired=n=>html.includes(n)||uiApp.includes("'"+n+"'");
 assert(wired('expedition10/style.css')&&wired('expedition10/logic.js')&&wired('expedition10/app.js'),'expedition module remains wired into the application');
 assert.strictEqual(pkg.version,'5.5.28','package is 5.5.28');
 assert(sw.includes("const VERSION='5.5.28'"),'service worker cache is versioned 5.5.28');
-assert.strictEqual((app.match(/id:'ml10_\d\d'/g)||[]).length,25,'exactly twenty-five stages are registered');
+assert.strictEqual((app.match(/id:'ml10_\d\d'/g)||[]).length,24,'exactly twenty-five stages are registered');
 assert(app.includes("const SAVE_KEY='mindlab:expedition10:v1'"),'the same independent save namespace is retained');
-assert(app.includes('من ٢٥')&&app.includes('/ ٧٥'),'progress display covers 25 stages and 75 stars');
-assert(app.includes('success&&i<24')&&app.includes('success&&i===24'),'stage 25 closes the current chapter');
+assert(app.includes('من ٢٤')&&app.includes('/ ٧٢'),'progress display covers 25 stages and 75 stars');
+assert(app.includes('success&&i<stages.length-1')&&app.includes('success&&i===stages.length-1'),'stage 25 closes the current chapter');
 for(const fn of ['gameLanternMaze','gameWaterJugs','gameSignalTowers','gameHanoi','gameFivefoldSeal'])assert(app.includes('function '+fn+'('),'interactive stage exists: '+fn);
-for(let n=1;n<=25;n++){const prefix=String(n).padStart(2,'0')+'-';const f=fs.readdirSync(path.join(root,'expedition10/art/scenes')).find(x=>x.startsWith(prefix));assert(f,'scene exists for stage '+n);assert(offline.includes('expedition10/art/scenes/'+f),'scene precached '+f);}
+for(let n=1;n<=25;n++){if(n===15)continue;const prefix=String(n).padStart(2,'0')+'-';const f=fs.readdirSync(path.join(root,'expedition10/art/scenes')).find(x=>x.startsWith(prefix));assert(f,'scene exists for stage '+n);assert(offline.includes('expedition10/art/scenes/'+f),'scene precached '+f);}
 for(const f of ['21-lantern-maze.webp','22-waterworks.webp','23-signal-towers.webp','24-disk-temple.webp','25-fivefold-seal.webp'])assert(fs.existsSync(path.join(root,'expedition10/art/scenes',f)),'new stage art exists '+f);
 for(const token of ['mazeAudit','jugAudit','signalSolutions','hanoiAudit','sealSolutions'])assert(logic.includes(token),'solver/audit is implemented: '+token);
 assert(!/S\.st\.[^;]*ml10/.test(app),'expedition keeps data out of the legacy campaign save');

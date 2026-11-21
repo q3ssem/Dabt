@@ -40,16 +40,6 @@
       "status": "text_only_intro"
     },
     {
-      "csv_num": 4,
-      "puzzle_id": "pz_stat",
-      "name": "التماثيل الدوّارة",
-      "hero": "nuha",
-      "hero_name": "نهى",
-      "expression": "thinking",
-      "dialogue": "هذه التماثيل متصلة بآلية واحدة. لنراقب ما يتغير حين ندير أحدها.",
-      "status": "text_only_intro"
-    },
-    {
       "csv_num": 5,
       "puzzle_id": "pz_pipe",
       "name": "الأنابيب",
@@ -147,16 +137,6 @@
       "hero_name": "ورد",
       "expression": "thinking",
       "dialogue": "الجليد لا يسمح بتوقف عشوائي. لنرسم الطريق إلى الكوخ قبل أول انزلاقة.",
-      "status": "text_only_intro"
-    },
-    {
-      "csv_num": 15,
-      "puzzle_id": "pz_xbottle",
-      "name": "رسالة الزجاجة",
-      "hero": "rawaa",
-      "hero_name": "رواء",
-      "expression": "thinking",
-      "dialogue": "وصلتنا رسالة من البحر، لكن حروفها غريبة. لنضبط العجلات ونقرأها أولًا.",
       "status": "text_only_intro"
     },
     {

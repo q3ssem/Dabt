@@ -1,7 +1,7 @@
 'use strict';
 importScripts('./offline-manifest.js');
 
-const VERSION='5.5.28', PATCH='puzzle-identity-10', PREFIX='mindlab-';
+const VERSION='5.5.28', PATCH='asset-preload-11', PREFIX='mindlab-';
 const CORE = PREFIX+VERSION+'-'+PATCH+'-core';
 const RUNTIME = PREFIX+VERSION+'-'+PATCH+'-images';
 const SCENES = PREFIX+VERSION+'-'+PATCH+'-scenes';
@@ -30,7 +30,7 @@ self.addEventListener('activate', event => {
 // Storage policy: puzzle art is cached as it is used, and the image cache keeps at most MAX_IMAGES files
 // (oldest first out), so a long session through every world cannot fill the phone. Code and the app shell are
 // not trimmed. Player progress lives in localStorage and is never touched here.
-const MAX_IMAGES = 1200;
+const MAX_IMAGES = 2200;
 let trimming = null;
 function trimImages() {
   if (trimming) return trimming;
@@ -127,6 +127,11 @@ async function warmScene(files) {
 self.addEventListener('message', event => {
   if (!event.data) return;
   const {type, puzzleId} = event.data;
+  if (type === 'preload-all') {
+    const port = event.ports?.[0];
+    if (port) event.waitUntil(preloadAll(port));
+    return;
+  }
   if (type === 'warm-puzzle-scene') {
     const files = self.MINDLAB_SCENE_FILES[puzzleId];
     if (Array.isArray(files)) event.waitUntil(warmScene(files));
@@ -145,3 +150,65 @@ self.addEventListener('message', event => {
     ...(self.MINDLAB_GAME_ART||[])
   ]));
 });
+
+/* Prepare the complete active puzzle asset set once; subsequent launches verify the persistent CacheStorage. */
+const PRELOAD_FILES = [...new Set([
+  ...self.MINDLAB_OFFLINE_FILES,
+  ...(self.MINDLAB_JOURNEY_ART || []),
+  ...(self.MINDLAB_GAME_ART || []),
+  ...(self.MINDLAB_CORRECTION_ART || []),
+  ...Object.values(self.MINDLAB_EXPEDITION_ART || {}).flat()
+].filter(file => file && file !== './' && !file.includes('/pz_stat/') && !file.includes('/pz_xbottle/')))];
+let activePreload = null;
+async function preloadAll(port) {
+  if (activePreload) {
+    // A new page can request a fresh cache check; do not run two competing downloads.
+    try { await activePreload; } catch (_) {}
+  }
+  const job = (async () => {
+    const core = await caches.open(CORE), images = await caches.open(RUNTIME);
+    const scenes = await caches.open(SCENES);
+    const cacheByType = {core, images, scenes};
+    const stored = {};
+    for (const [name, cache] of Object.entries(cacheByType))
+      stored[name] = new Set((await cache.keys()).map(request => request.url));
+    const tasks = PRELOAD_FILES.map(path => {
+      const url = new URL(path, BASE).href;
+      return {url, type: sceneURLs.has(url) ? 'scenes' : ART.test(path) ? 'images' : 'core'};
+    });
+    const total = tasks.length;
+    let cursor = 0, done = 0, downloaded = 0, cached = 0, failed = 0;
+    const failedFiles = [];
+    const report = type => {
+      try { port.postMessage({type, total, done, downloaded, cached, failed, failedFiles: type === 'complete' ? failedFiles.slice(0, 12) : undefined}); }
+      catch (_) { /* The page may have closed. */ }
+    };
+    report('progress');
+    async function runner() {
+      while (cursor < total) {
+        const task = tasks[cursor++];
+        const cache = cacheByType[task.type];
+        if (stored[task.type].has(task.url)) {
+          cached++;
+        } else {
+          try {
+            const response = await fetch(new Request(task.url, {credentials: 'same-origin'}));
+            if (!response.ok || response.type === 'opaque') throw new Error('HTTP ' + response.status);
+            await cache.put(task.url, response);
+            stored[task.type].add(task.url);
+            downloaded++;
+          } catch (_) {
+            failed++;
+            failedFiles.push(task.url.slice(BASE.href.length));
+          }
+        }
+        done++;
+        if (done % 8 === 0 || done === total) report('progress');
+      }
+    }
+    await Promise.all(Array.from({length: 4}, () => runner()));
+    report('complete');
+  })();
+  activePreload = job;
+  try { await job; } finally { if (activePreload === job) activePreload = null; }
+}

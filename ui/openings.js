@@ -27,7 +27,7 @@
     rawaa: 'رواء', nuha: 'نهى', ward: 'ورد'
   };
   const families = {
-    movement: new Set(['pz_river', 'pz_rush', 'pz_stat', 'pz_pipe', 'pz_flow', 'pz_ice', 'pz_untangle', 'pz_tan']),
+    movement: new Set(['pz_river', 'pz_rush', 'pz_pipe', 'pz_flow', 'pz_ice', 'pz_untangle', 'pz_tan']),
     coast: new Set(['pz_xreef', 'pz_zroute', 'pz_zcur', 'pz_acur', 'pz_aport', 'pz_ashell', 'pz_alight'])
   };
   const game = () => RUN && curGame();

@@ -27,22 +27,6 @@ const rotatePipe = vm.runInContext('ppRot', context);
 const baselineCrossings = [7, 5, 5, 5, 3, 7, 7, 5, 5, 3, 7, 3, 4, 4, 5, 3, 3, 3, 3, 10];
 
 for (const track of Object.values(stages)) assert.equal(track.length, 20);
-let reverseMoves = 0;
-for (const board of stages.pz_stat) {
-  const puzzle = engine.statues(board);
-  let state = board.s;
-  assert(puzzle.min > 0 && puzzle.min <= board.min);
-  if (!board.reversible) assert.equal(puzzle.min, board.min);
-  for (let i = 0; i < puzzle.min; i++) {
-    assert(state.some(Boolean));
-    const key = puzzle.enc(state), press = puzzle.nxt[key], mode = puzzle.nextMode[key];
-    assert(press >= 0 && (mode === 1 || board.reversible && mode === -1));
-    reverseMoves += Number(mode === -1);
-    state = puzzle.turn(state, press, mode);
-  }
-  assert(state.every(angle => angle === 0));
-}
-assert(reverseMoves > 0, 'the reverse compass participates in optimal routes');
 for (const board of stages.pz_rush) {
   const puzzle = engine.parking(board);
   assert.equal(context.rhSolve(puzzle.vs, 200000)?.length, board.min, `Parking ${board.level}`);
@@ -207,4 +191,4 @@ assert(grain.groups(divided).some(group => group.name === 'نصف-أ'));
 assert(grain.groups(divided).some(group => group.name === 'نصف-ب'));
 assert(grain.best(divided));
 
-console.log('Authored tracks: 160 fixed boards validated. Unique pipe solutions, unique shortest ice routes without traps, flow coverage, tangram footprints, untangle anchors, river rules and reversible statue routes passed.');
+console.log('Authored tracks: 140 fixed boards validated. Unique pipe solutions, unique shortest ice routes without traps, flow coverage, tangram footprints, untangle anchors, river rules and seven active movement tracks passed.');

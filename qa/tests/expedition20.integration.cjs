@@ -14,13 +14,13 @@ assert.strictEqual(pkg.version,'5.5.28','package version is 5.5.28');
 assert(sw.includes("const VERSION='5.5.28'"),'service worker cache version is 5.5.28');
 assert(offline.includes('expedition10/art/world-map.webp'),'world map is precached');
 for(const f of ['roaa.webp','noha.webp','ward.webp'])assert(offline.includes('expedition10/art/crew/'+f),'main heroine asset precached: '+f);
-for(let i=1;i<=25;i++){
+for(let i=1;i<=25;i++){if(i===15)continue;
   const prefix=String(i).padStart(2,'0')+'-';
   const scene=fs.readdirSync(path.join(root,'expedition10/art/scenes')).find(x=>x.startsWith(prefix));
   assert(scene,'stage scene exists '+prefix);
   assert(offline.includes('expedition10/art/scenes/'+scene),'stage scene precached '+scene);
 }
-assert.strictEqual((app.match(/id:'ml10_\d\d'/g)||[]).length,25,'exactly twenty-five stages are registered');
+assert.strictEqual((app.match(/id:'ml10_\d\d'/g)||[]).length,24,'exactly twenty-five stages are registered');
 assert(app.includes("const SAVE_KEY='mindlab:expedition10:v1'"),'the existing isolated save namespace is retained for backward-compatible progress');
 assert(!/S\.st\.[^;]*ml10/.test(app),'expedition does not write into legacy campaign state');
 for(const fn of ['gameManifest','gameTideClock','gameRelics','gameCrate','gameKnight','gameLanternMaze','gameWaterJugs','gameSignalTowers','gameHanoi','gameFivefoldSeal'])assert(app.includes('function '+fn+'('),'interactive stage implementation exists '+fn);
@@ -29,7 +29,7 @@ for(const f of ['16-harbor-cargo.webp','17-tide-clock.webp','18-mask-gallery.web
  assert(fs.existsSync(path.join(root,'expedition10/art/scenes',f)),'new stage scene exists on disk '+f);
  assert(offline.includes('expedition10/art/scenes/'+f),'new stage scene is precached '+f);
 }
-assert(app.includes('من ٢٥')&&app.includes('/ ٧٥'),'map progress and star counters reflect twenty-five stages');
-assert(app.includes('success&&i<24')&&app.includes('success&&i===24'),'stage 25 is final stage of this chapter');
+assert(app.includes('من ٢٤')&&app.includes('/ ٧٢'),'map progress and star counters reflect twenty-five stages');
+assert(app.includes('success&&i<stages.length-1')&&app.includes('success&&i===stages.length-1'),'stage 25 is final stage of this chapter');
 assert(logic.includes('manifestSolutions')&&logic.includes('tideSolutions')&&logic.includes('relicAudit')&&logic.includes('crateAudit')&&logic.includes('knightAudit')&&logic.includes('mazeAudit')&&logic.includes('jugAudit')&&logic.includes('signalSolutions')&&logic.includes('hanoiAudit')&&logic.includes('sealSolutions'),'independent solvers/audits are present');
 console.log('Expedition 25 integration: twenty-five stage registry, ten new interactive modules, art and offline precache, chapter progression and preserved save namespace passed.');

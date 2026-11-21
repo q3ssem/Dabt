@@ -149,11 +149,6 @@
       "family": "puzzle",
       "icon": "oldkey"
     },
-    "pz_stat": {
-      "file": "pack-puzzle-craft-1",
-      "family": "puzzle",
-      "icon": "guard"
-    },
     "pz_pipe": {
       "file": "pipes",
       "family": "puzzle",
@@ -228,11 +223,6 @@
       "file": "pack-puzzle-worlds-3",
       "family": "puzzle",
       "icon": "penguin"
-    },
-    "pz_xbottle": {
-      "file": "pack-puzzle-worlds-0",
-      "family": "puzzle",
-      "icon": "bottle"
     },
     "pz_tpath": {
       "file": "pack-puzzle-worlds-0",

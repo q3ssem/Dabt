@@ -1,6 +1,6 @@
 /* design-01-10 — مختبر العقل: ألغاز 02–10 على تصميم الحزمة المصحّحة (MindLab_Design_01-10_Reviewed_AR).
    Each board is built from the live generator and calls the existing rules, hint chain, win path and save:
-     02 pz_river rvMake/rvPath   03 pz_rush rhMake + rushEngine   04 pz_stat stMake   05 pz_pipe ppMake/ppPowered/ppSolved
+     02 pz_river rvMake/rvPath   03 pz_rush rhMake + rushEngine   05 pz_pipe ppMake/ppPowered/ppSolved
      06 pz_grid lgMake/lgText    07 pz_sudo sdMake/sdBox          08 pz_flow flMake   09 pz_tan tgMake/tgRot/tgFlip
      10 pz_tent tnMake
    Ids, levels, rules, keys (miran:v2) and the hint/restart/surrender chrome of pzPlay are unchanged.
@@ -19,7 +19,6 @@
   const OPENINGS = {
     pz_river: ['rawaa', 'رواء', 'قبل ما نحرّك القارب، شوفي مين بيبقى على الضفة.'],
     pz_rush: ['rawaa', 'رواء', 'أي مركبة تفتح مجال للسيارة الحمراء إذا حرّكناها على مسارها؟'],
-    pz_stat: ['nuha', 'نهى', 'لمسة وحدة تغيّر أكثر من تمثال. شوفي الروابط قبل ما تدوّرينه.'],
     pz_pipe: ['nuha', 'نهى', 'خلّينا نتتبّع الماء من المنبع. وين أول وصلة توقفه؟'],
     pz_grid: ['ward', 'ورد', 'كل قرينة تضيّق الخيارات. خلّينا نشوف مين يطابقها كلها.'],
     pz_sudo: ['ward', 'ورد', 'قبل ما تحطين الشكل، شيّكي صفّه وعموده ومجموعته.'],
@@ -355,94 +354,6 @@
       });
     };
   }
-
-  /* ================================================================ 04 التماثيل الدوّارة — pz_stat
-     Same matrix R, same presses. Each statue is the guardian on its pedestal; the gold diamond marks its target
-     direction, the green dot its current direction. */
-  if (GM.pz_stat && typeof stMake === 'function') GM.pz_stat.run = function () {
-    return pzPlay('pz_stat', api => {
-      const P = api.authored ? window.mlAuthoredStages.statues(api.authored.board) : stMake(api.lv);
-      const n = P.n; let s = P.s.slice(), presses = 0, mode = 1; const ang = P.s.map((d, i) => (P.tgt[i] + d) * 90);
-      const rule = P.twist ? 'الضغط يدير التمثال يمينًا وجيرانه المرتبطين يسارًا ربع لفة' : P.R.some(v => v.includes(2)) ? 'الضغط يدير التمثال ربع لفة، وجاره المرتبط نصف لفة' : 'الضغط يدير التمثال وجيرانه المرتبطين ربع لفة في الاتجاه نفسه';
-      const sound = sfx.roundScene?.();
-      const poses = ['north', 'east', 'south', 'west'].map(pose => DESIGNS + `work_review/pz_stat/guardian--${pose}.png`);
-      poses.forEach(path => { new Image().src = path; });
-      const compassRules = P.reversible ? ' بدّل اتجاه البوصلة في الوسط لعكس دوران التماثيل المرتبطة.' : '';
-      frame(api, { id: 'stat', layout: 'mechanical', lead: api.authored ? 'طابق مؤشر اتجاه كل تمثال مع ماسته الذهبية. تضيء التماثيل التي تتأثر بكل ضغطة.' + compassRules : `طابق مؤشر اتجاه التمثال الأخضر مع الماسة الذهبية. ${rule}${P.ring ? '، والتماثيل في حلقة مغلقة' : ''}.` });
-      const radius = 32;
-      const pos = Array.from({length: n}, (_, i) => {
-        const a = -Math.PI / 2 + i * 2 * Math.PI / n;
-        return [50 + radius * Math.cos(a), 55 + radius * .78 * Math.sin(a)];
-      });
-      const sz = n <= 4 ? 26 : n <= 5 ? 24 : 21;
-      const pairs = []; for (let i = 0; i < n; i++) for (let j = 0; j < n; j++) if (i !== j && P.R[i][j]) { const k = i < j ? i + '-' + j : j + '-' + i; if (!pairs.includes(k)) pairs.push(k); }
-      const links = pairs.map(k => {
-        const [a, b] = k.split('-').map(Number), [x, y] = pos[a], [endX, endY] = pos[b];
-        const length = Math.hypot(endX - x, endY - y);
-        const angle = Math.atan2(endY - y, endX - x) * 180 / Math.PI;
-        return `<span class="st10-link" data-a="${a}" data-b="${b}"
-          style="left:${x}%;top:${y}%;width:${length}%;transform:rotate(${angle}deg)"></span>`;
-      }).join('');
-      $('#lbb').innerHTML = `<div class="st10" id="st10">${P.reversible ? '<button type="button" class="st-compass" aria-pressed="false" aria-label="عكس اتجاه الدوران"><img src="motion/pirate-revised/compass/bezel.webp" alt=""><span aria-hidden="true">↻</span></button>' : piece('stat', 'door_closed', 'st10-door')}${piece('stat', 'door_open', 'st10-open')}<div class="st10-links" aria-hidden="true">${links}</div>
-        ${pos.map(([x, y], i) => `<button class="st10-s" data-i="${i}" style="left:${x}%;top:${y}%;width:${sz}%" aria-label="تمثال ${N(i + 1)}"> <i class="st10-tgt" style="--a:${P.tgt[i] * 90}deg"></i><img class="st10-g" src="${poses[0]}" alt="" draggable="false"><span class="st10-current"><i class="st10-dot"></i></span></button>`).join('')}</div>`;
-      const stage = $('#st10');
-      const snapshot = () => ({angles: ang.map(angle => angle / 90)});
-      const view = window.mlScene?.mount('pz_stat', stage, snapshot());
-      const btns = [...stage.querySelectorAll('.st10-s')], lines = [...stage.querySelectorAll('.st10-link')];
-      const compass = stage.querySelector('.st-compass');
-      if (compass) compass.onclick = () => {
-        if (api.ended) return;
-        mode *= -1;
-        compass.setAttribute('aria-pressed', String(mode === -1));
-        compass.querySelector('span').textContent = mode === 1 ? '↻' : '↺';
-        stage.dataset.reverse = String(mode === -1);
-        compass.classList.remove('hint');
-        sound?.play('stat.match', .12);
-        api.msg(mode === 1 ? 'البوصلة على الحركة الأصلية.' : 'البوصلة تعكس حركة كل حارس مرتبط.');
-      };
-      function draw() { btns.forEach((b, i) => {
-        const heading = ((ang[i] / 90) % 4 + 4) % 4;
-        b.querySelector('.st10-g').src = poses[heading];
-        b.querySelector('.st10-current').style.transform = `rotate(${ang[i]}deg)`;
-        b.classList.toggle('ok', s[i] === 0); b.setAttribute('aria-label', `تمثال ${N(i + 1)}: ${s[i] === 0 ? 'يطابق ماسته' : 'لا يطابق'}`); }); stage.classList.toggle('all', s.every(d => d === 0)); view?.update(snapshot()); }
-      function press(i) { if (api.ended) return; const matchedBefore = s.filter(d => d === 0).length;
-        if (P.turn) s = P.turn(s, i, mode);
-        P.R[i].forEach((r, j) => { if (r) { if (!P.turn) s[j] = (s[j] + r) % 4; ang[j] += mode * (r === 3 ? -90 : r * 90); } });
-        compass?.classList.remove('hint');
-        presses++;
-        btns.forEach((b, j) => {
-          b.classList.remove('hint');
-          if (P.R[i][j]) {
-            b.dataset.turn = P.R[i][j] === 2 ? 'half' : 'quarter';
-            flash(b, j === i ? 'turned' : 'linked', 400);
-          }
-        }); lines.forEach(l => { if (+l.dataset.a === i || +l.dataset.b === i) flash(l, 'zap', 500); });
-        draw();
-        const matched = s.filter(d => d === 0).length;
-        if (matched === n) {
-          api.win(`طابقت اتجاهات التماثيل في ${arN(presses, AN.press)}، والأقل ${arN(P.min, AN.press)}.`);
-          sfx.roundScene?.().play('stat.open');
-        } else {
-          sound?.play('stat.turn');
-          if (matched > matchedBefore) sound?.play('stat.match', .14);
-          api.msg(`الضغطات: ${N(presses)} · أقل حل: ${N(P.min)}`);
-        }
-      }
-      btns.forEach((b, i) => b.onclick = () => press(i)); draw(); api.msg(`أقل حل: ${N(P.min)} ضغطات.`); pzHook({ P, press, s: () => s, presses: () => presses });
-      return { hint: k => {
-          if (k === 1) return `أقل حل ${arN(P.min, AN.press)}. الخطوط تريك من يحرّك من.${compassRules}`;
-          const state = P.enc(s), i = P.nxt[state];
-          if (i < 0) return null;
-          btns[i].classList.add('hint');
-          if (compass && P.nextMode[state] !== mode) {
-            compass.classList.add('hint');
-            return 'بدّل اتجاه البوصلة، ثم اضغط التمثال المضيء.';
-          }
-          return 'اضغط التمثال المضيء.';
-        },
-        reveal: () => `كان أقل حل ${arN(P.min, AN.press)}.` };
-    });
-  };
 
   /* ================================================================ 05 الأنابيب — pz_pipe
      Same masks (ppMake), rotation (ppRot = a quarter turn clockwise), flow (ppPowered) and win (ppSolved). */

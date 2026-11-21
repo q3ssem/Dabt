@@ -1200,3 +1200,122 @@ html :is(#play, #v-puz, body) .puzzle-action:focus-visible {
   outline: 2px solid currentColor;
   outline-offset: 2px;
 }
+
+/* Larger, centered outlined start icon across every puzzle rules opening. */
+html body .puzzle-opening .fit-opening-card {
+  display:flex;
+  flex-direction:column;
+  align-items:center;
+  justify-content:flex-start;
+  width:min(100%,560px);
+  max-height:min(94dvh,960px);
+  overflow-y:auto;
+  gap:clamp(10px,1.5dvh,18px);
+  padding:clamp(12px,3.5vw,24px);
+}
+html body .puzzle-opening .fit-opening-body {
+  order:1;
+  width:100%;
+  flex:0 0 auto;
+}
+html body .puzzle-opening #fit-op-start.puzzle-action {
+  order:2;
+  position:relative !important;
+  inset:auto !important;
+  transform:none !important;
+  display:grid;
+  place-items:center;
+  flex:none;
+  width:clamp(70px,19vw,90px) !important;
+  height:clamp(70px,19vw,90px) !important;
+  min-width:70px !important;
+  min-height:70px !important;
+  padding:12px !important;
+  margin:clamp(6px,2dvh,18px) auto 0 !important;
+  border:0 !important;
+  border-radius:50% !important;
+  background:transparent !important;
+  box-shadow:none !important;
+  color:var(--identity-ink,currentColor) !important;
+  cursor:pointer;
+  touch-action:manipulation;
+}
+html body .puzzle-opening #fit-op-start.puzzle-action svg {
+  width:clamp(39px,11vw,51px) !important;
+  height:clamp(39px,11vw,51px) !important;
+  stroke-width:2.2;
+}
+html body .puzzle-opening #fit-op-start.puzzle-action:hover {opacity:.75}
+@media (max-height:520px) and (orientation:landscape) {
+  html body .puzzle-opening .fit-opening-card {max-height:96dvh;gap:7px}
+  html body .puzzle-opening #fit-op-start.puzzle-action {
+    width:64px !important;height:64px !important;min-width:64px !important;min-height:64px !important;
+    margin-block:4px !important
+  }
+}
+
+/* River: landmarks and passengers should be visually on their banks, not floating in the water. */
+#play[data-la-game="pz_river"] .ml-river-board[data-docks="2"] .ml-river-places {
+  inset:0;display:block;pointer-events:none;
+}
+#play[data-la-game="pz_river"] .ml-river-board[data-docks="2"] .ml-river-place {
+  position:absolute;
+  width:46%;
+  pointer-events:auto;
+}
+#play[data-la-game="pz_river"] .ml-river-board[data-docks="2"] .ml-river-place:first-child {
+  left:2%;bottom:3%;top:auto;
+}
+#play[data-la-game="pz_river"] .ml-river-board[data-docks="2"] .ml-river-place:last-child {
+  right:2%;top:6%;bottom:auto;
+}
+#play[data-la-game="pz_river"] .ml-river-place > div {
+  display:flex;flex-wrap:wrap;gap:3px;justify-content:center;align-items:flex-end;
+}
+#play[data-la-game="pz_river"] .ml-river-place button {
+  display:grid;justify-items:center;align-content:end;gap:2px;
+  min-width:54px;min-height:65px;padding:3px;
+  max-width:33%;border:0;background:none;box-shadow:none;
+  color:#112f38;font-size:clamp(11px,2.6vw,14px);font-weight:800;
+  text-shadow:0 1px 1px #ffffffee,0 0 4px #ffffffcc;
+}
+#play[data-la-game="pz_river"] .ml-river-place button img {
+  width:clamp(42px,13cqw,64px);
+  height:clamp(43px,12cqw,66px);
+  object-fit:contain;
+  filter:drop-shadow(0 2px 3px #24343880);
+}
+#play[data-la-game="pz_river"] .ml-river-place button > span:last-child {
+  padding:0 2px;line-height:1.2;max-width:100%;overflow-wrap:anywhere;
+}
+#play[data-la-game="pz_river"] .ml-river-token {
+  display:grid;place-items:center;min-height:44px;
+  font-size:clamp(12px,3vw,15px);line-height:1.3;
+  color:#14303a;background:#fff9e0cf;border:1px solid #98785080;
+  border-radius:12px;padding:5px;
+}
+#play[data-la-game="pz_river"] .ml-river-vessel {
+  width:clamp(98px,31%,175px);z-index:3;
+}
+#play[data-la-game="pz_river"] .ml-river-seats {
+  inset:-25% 9% 32%;align-items:flex-end;gap:3px;overflow:visible;
+}
+#play[data-la-game="pz_river"] .ml-river-seats img {
+  max-width:46px;width:auto;flex:1 1 0;height:80%;object-fit:contain;object-position:bottom;
+}
+#play[data-la-game="pz_river"] .ml-river-seat-token {
+  display:grid;place-items:center;
+  width:auto;min-width:32px;min-height:35px;max-width:52px;
+  padding:3px;background:#fff8dce8;border-radius:8px;
+  color:#123540;font-size:11px;font-weight:700;line-height:1.15;
+}
+#play[data-la-game="pz_river"] .ml-river-hop {z-index:7;pointer-events:none;}
+#play[data-la-game="pz_river"] .ml-river-actions {
+  gap:clamp(8px,2vw,14px);padding-block:6px;
+}
+#play[data-la-game="pz_river"] .ml-river-actions button {min-width:56px;min-height:52px;}
+@media (max-width:360px) {
+  #play[data-la-game="pz_river"] .ml-river-place button {min-width:44px;min-height:55px}
+  #play[data-la-game="pz_river"] .ml-river-place button img {width:43px;height:44px}
+  #play[data-la-game="pz_river"] .ml-river-vessel {width:95px}
+}
