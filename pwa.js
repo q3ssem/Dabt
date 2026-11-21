@@ -24,18 +24,9 @@
   }
   window.mindlabOffline = {warmPuzzle, rememberPuzzle() {}};
 
-  let journeyRequested = false;
   document.addEventListener('click', event => {
     const puzzle = event.target.closest?.('[data-legacy-puzzle]');
     if (puzzle) warmPuzzle(puzzle.dataset.legacyPuzzle);
-    if (journeyRequested || navigator.connection?.saveData ||
-        !event.target.closest?.('#mlj-journey-entry, #t7-homego')) return;
-    journeyRequested = true;
-    defer(() => {
-      const worker = serviceWorker.controller;
-      if (worker) worker.postMessage({type:'warm-journey'});
-      else journeyRequested = false;
-    });
   });
 
   // Prepare all assets only when the player explicitly requests offline download.
