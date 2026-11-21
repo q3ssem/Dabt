@@ -8,7 +8,7 @@ from pathlib import Path
 from playwright.async_api import async_playwright
 from player_openings import dismiss_opening
 
-SAMPLES = {'pz_river': '.rv10', 'pz_rush': '#rhb', 'pz_stat': '.st10'}
+SAMPLES = {'pz_river': '.rv10', 'pz_rush': '#rhb'}
 SIZES = [(320, 640), (390, 844), (430, 932), (844, 390)]
 METRICS = """(selector)=>{
  const host = document.querySelector('#pzb'), scene = host?.querySelector(selector);
