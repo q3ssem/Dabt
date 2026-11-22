@@ -1,0 +1,57 @@
+name: MindLab Phase 2 library mechanics inventory
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/mindlab-jaziran-mechanics.yml'
+      - 'qa/browser/jaziran_86_mechanics_probe.py'
+      - 'qa/browser/player_openings.py'
+      - 'docs/JAZIRAN_PUZZLE_INDEX_2026-11-22.json'
+      - 'index.html'
+      - 'ui/**'
+      - 'legacy/**'
+      - 'motion/stages60/**'
+      - 'upgrade/**'
+  workflow_dispatch:
+
+concurrency:
+  group: jaziran-mechanics-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    timeout-minutes: 23
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+        chapter: [training, seven_seas, palace, atheran, first_trace]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - name: Install browser
+        run: |
+          if [ "${{ matrix.engine }}" = "webkit" ]; then
+            python -m playwright install --with-deps webkit
+          else
+            command -v google-chrome
+          fi
+      - name: Inspect each real puzzle and its read-only solution API
+        run: |
+          mkdir -p /tmp/jaziran-mechanics
+          python -m http.server 8791 --bind 127.0.0.1 >/tmp/jaziran-mechanics-http.log 2>&1 &
+          python qa/browser/jaziran_86_mechanics_probe.py \
+            http://127.0.0.1:8791/ "${{ matrix.engine }}" "${{ matrix.chapter }}" /tmp/jaziran-mechanics
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jaziran-mechanics-${{ matrix.engine }}-${{ matrix.chapter }}
+          path: /tmp/jaziran-mechanics/*
+          if-no-files-found: warn
+          retention-days: 30
