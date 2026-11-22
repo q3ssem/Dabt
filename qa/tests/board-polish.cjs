@@ -53,6 +53,10 @@ assert.ok(fitCSS.includes('max-height: calc(100dvh - 168px)') &&
   fitCSS.includes('overflow-y: auto !important'),
   'The six small-screen WebKit boards must scroll internally if fit becomes stale');
 
+assert.ok(fitCSS.includes('.pl-range i.ref{width:20px;height:20px;flex:0 0 20px;overflow:hidden') &&
+  fitCSS.includes('.pl-range i.ref img{display:block;width:100%;height:100%;max-width:100%'),
+  'Palace badge icons must fit their fixed-size reference slots without horizontal bleed');
+
 const fitUI = fs.readFileSync('ui/fit.js','utf8');
 assert.ok(fitUI.includes("for (const el of $$('#play .pin, #play .pbar, #stage .pzhud, #stage #m')"),
   'Puzzle fitting must iterate all viewport-height observer targets in mobile WebKit');

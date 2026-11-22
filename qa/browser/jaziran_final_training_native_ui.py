@@ -174,6 +174,11 @@ async def scale(page):
                 actions+=1
         await tap(page,'#sgo');actions+=1
         await page.wait_for_function("()=>['L','R','E'].includes(document.querySelector('#sclw')?.dataset.r)",timeout=15000)
+        # The physical weighing resolves in two UI phases: outcome at 720ms,
+        # history + auto-accusation at 800ms. Waiting only for the outcome
+        # races with #sac's auto-toggle in slower WebKit mobile emulation.
+        await page.wait_for_function("(completed)=>document.querySelectorAll('#slg li').length===completed",
+            arg=round_index+1,timeout=12000)
         actual=await page.evaluate("()=>document.querySelector('#sclw').dataset.r")
         split=outcome(H,where)
         H=split.get(actual,())
@@ -184,6 +189,9 @@ async def scale(page):
     selected=next(iter(coins_in(H)))
     if 'أعرف' in await page.locator('#sac').inner_text():
         await tap(page,'#sac');actions+=1
+    # Confirm that the real player accusation UI, not just a test hook, is active.
+    await page.wait_for_function("()=>document.querySelector('#sac')?.classList.contains('on')",
+        timeout=5000)
     await tap(page,f'#pzb .coin2[data-c="{selected}"]')
     return actions+1
 

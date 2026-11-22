@@ -95,7 +95,11 @@ html[data-skin="dark"] #play.fit .fit-tools .pzgive{background:#253538;border-co
 .fit-sh-go{width:100%;min-height:46px;border:0;border-radius:14px;background:#1F6E66;color:#fff;font-weight:800;font-size:16px}
 /* talking statues: three in a row so the hall fits */
 #play.fit .pl-statues{grid-template-columns:repeat(auto-fit,minmax(max(100px,31%),1fr))!important;gap:5px!important}
-#play.fit .pl-range i{width:12px}#play.fit .pl-range i.ref,#play.fit .pl-range i.ref img{width:20px;height:20px}#play.fit .pl-plaque{padding:3px;gap:3px;min-width:0}#play.fit .pl-range{flex-wrap:wrap;justify-content:center;max-width:100%}
+#play.fit .pl-range i{width:12px}
+#play.fit .pl-range i.ref{width:20px;height:20px;flex:0 0 20px;overflow:hidden;padding:0;box-sizing:border-box}
+#play.fit .pl-range i.ref img{display:block;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain}
+#play.fit .pl-plaque{padding:3px;gap:3px;min-width:0}
+#play.fit .pl-range{flex-wrap:wrap;justify-content:center;max-width:100%;min-width:0}
 #play.fit .pl-turn{height:74px!important}
 /* spare height: centre the board vertically (collapses to nothing when the board scrolls) */
 #play.fit:not(.xframe) #pzb::before,#play.fit:not(.xframe) #pzb::after{content:'';flex:1 1 0;min-height:0}
