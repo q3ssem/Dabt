@@ -27,10 +27,13 @@ assert.ok(!/#[a-zA-Z0-9_-]*board\s*\*\s*\{/.test(style), 'Never blindly recolor 
 assert.ok(!/\#pzb\s*\*\s*\{/.test(style), 'Never change all puzzle content at once');
 
 const fitCSS = fs.readFileSync('ui/fit.css','utf8');
-assert.ok(fitCSS.includes('[data-la-game="pz_tpath"] #pzb') &&
-  fitCSS.includes('max-height: calc(100dvh - 168px)') &&
+for (const id of ['pz_rid','pz_scale','pz_tpath','pz_ybell','pz_plock','pz_aarch']) {
+  assert.ok(fitCSS.includes('[data-la-game="'+id+'"]'),
+    'Missing small-screen WebKit clipping guard for '+id);
+}
+assert.ok(fitCSS.includes('max-height: calc(100dvh - 168px)') &&
   fitCSS.includes('overflow-y: auto !important'),
-  '320px route board must scroll internally if WebKit retains a stale fit height');
+  'The six small-screen WebKit boards must scroll internally if fit becomes stale');
 
 const fitUI = fs.readFileSync('ui/fit.js','utf8');
 assert.ok(fitUI.includes("for (const el of $$('#play .pin, #play .pbar, #stage .pzhud, #stage #m')"),
