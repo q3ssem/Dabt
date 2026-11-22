@@ -26,6 +26,12 @@ assert.ok(sw.includes("PATCH='board-polish-29'"), 'Update PWA cache identity whe
 assert.ok(!/#[a-zA-Z0-9_-]*board\s*\*\s*\{/.test(style), 'Never blindly recolor game pieces');
 assert.ok(!/\#pzb\s*\*\s*\{/.test(style), 'Never change all puzzle content at once');
 
+const fitCSS = fs.readFileSync('ui/fit.css','utf8');
+assert.ok(fitCSS.includes('[data-la-game="pz_tpath"] #pzb') &&
+  fitCSS.includes('max-height: calc(100dvh - 168px)') &&
+  fitCSS.includes('overflow-y: auto !important'),
+  '320px route board must scroll internally if WebKit retains a stale fit height');
+
 const fitUI = fs.readFileSync('ui/fit.js','utf8');
 assert.ok(fitUI.includes("for (const el of $$('#play .pin, #play .pbar, #stage .pzhud, #stage #m')"),
   'Puzzle fitting must iterate all viewport-height observer targets in mobile WebKit');
