@@ -5,6 +5,7 @@ const read = file => fs.readFileSync(file, 'utf8');
 const gone = [
   'docs/SCENE_ASSET_SPEC_AR.md',
   'qa/source_http_4_2.json',
+  'qa/assets_4_2.json', 'qa/npm_test_4_2.txt', 'qa/browser/result_4_2.txt',
   'ui/designs_art/work_review/pz_river/river-base--light.webp',
   'ui/designs_art/work_review/pz_river/river-base--dark-corrected.webp',
   'hasad/data.js', 'hasad/engine.js', 'hasad/game.js', 'hasad/style.css',
@@ -84,4 +85,33 @@ assert.ok(!read('qa/browser/perf_bench.py').includes('pz_stat,pz_'), 'retired st
 assert.ok(openings.includes("treasure/art/story5/crew_full_"),'lightweight heroine intro art retained');
 assert.ok(hub.includes('إغلاق القواعد') && openings.includes('إغلاق القواعد'),'rules can be dismissed in both journeys');
 assert.ok(JSON.parse(read('package.json')).scripts.test.includes('node qa/tests/journey-transitions.cjs'), 'journey integrity gate must run in npm test');
+
+// Preserve the actual, dynamically generated gameplay art. In wreck-painted.js
+// the filename is assembled from the puzzle state, not present as a full literal.
+const wreckSource = read('motion/wreck-painted.js');
+assert.ok(wreckSource.includes("sprite('hold/' + type)") &&
+          wreckSource.includes("sprite(scene + '/player')"),
+          'wrecker dynamically resolves its hold scene and interactive sprites');
+for (const asset of ['scene','player','barrel','door','hatch','key','lever'])
+  assert.ok(fs.existsSync('motion/pirate-revised/hold/'+asset+'.webp'),
+    'retain active dynamically selected wreck illustration '+asset);
+
+// All work_review images are active. Two large visual layers plus corrections
+// reference them via CSS and must never be swept based on directory naming.
+const reviewRoot='ui/designs_art/work_review';
+const reviewFiles=[];
+function walkReview(dir){
+  for(const ent of fs.readdirSync(dir,{withFileTypes:true})){
+    const name=dir+'/'+ent.name;
+    if(ent.isDirectory()) walkReview(name);
+    else if(/\.(?:png|webp)$/.test(ent.name)) reviewFiles.push(name);
+  }
+}
+walkReview(reviewRoot);
+const paintedCSS=['motion/expedition-art.css','motion/correction-art.css',
+                  'motion/lab10.css','motion/adventure35.css'].map(read).join('\n');
+assert.equal(reviewFiles.length,372,'review artwork remains complete after safe cleanup');
+for(const asset of reviewFiles)
+  assert.ok(paintedCSS.includes(asset),'active painted asset must have a CSS consumer: '+asset);
+
 console.log('MindLab cleanup passed: 78 lightweight puzzle records, 86 library intros, '+map.stations.length+' journey stations; retired assets absent.');
