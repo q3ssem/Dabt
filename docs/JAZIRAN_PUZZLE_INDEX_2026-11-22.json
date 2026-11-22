@@ -1,0 +1,574 @@
+{
+  "title": "جزيرة الكنز — الخريطة التي تُترك مفتوحة",
+  "source_document": "جزران.pdf",
+  "source_pages_total": 36,
+  "index_as_of": "2026-11-22",
+  "source_scope": "Proposed game/story specifications, not proof of shipped mechanics",
+  "source_puzzle_count": 88,
+  "active_runtime_puzzle_count": 86,
+  "retired_ids": [
+    "pz_stat",
+    "pz_xbottle"
+  ],
+  "notes": [
+    "Color values transcribed from PDF cards; do not apply globally without theme/accessibility validation.",
+    "Training/puzzle-library IDs are distinct from 21 main treasure station IDs and 24 side-journey station IDs.",
+    "The optional five-puzzle first-trace branch is distinct from the existing 24-stage side journey.",
+    "Retired IDs remain documented only; do not restore the deleted engines or associated assets."
+  ],
+  "sections": [
+    {
+      "chapter": "training",
+      "entries": [
+        {
+          "id": "pz_rid",
+          "source_page": 9,
+          "proposed_color": "#977E26",
+          "status": "active"
+        },
+        {
+          "id": "pz_river",
+          "source_page": 9,
+          "proposed_color": "#268097",
+          "status": "active"
+        },
+        {
+          "id": "pz_rush",
+          "source_page": 9,
+          "proposed_color": "#974426",
+          "status": "active"
+        },
+        {
+          "id": "pz_lock",
+          "source_page": 9,
+          "proposed_color": "#26972F",
+          "status": "active"
+        },
+        {
+          "id": "pz_stat",
+          "source_page": 10,
+          "proposed_color": "#977526",
+          "status": "retired"
+        },
+        {
+          "id": "pz_pipe",
+          "source_page": 10,
+          "proposed_color": "#269771",
+          "status": "active"
+        },
+        {
+          "id": "pz_grid",
+          "source_page": 10,
+          "proposed_color": "#512697",
+          "status": "active"
+        },
+        {
+          "id": "pz_scale",
+          "source_page": 10,
+          "proposed_color": "#977126",
+          "status": "active"
+        },
+        {
+          "id": "pz_laser",
+          "source_page": 11,
+          "proposed_color": "#269793",
+          "status": "active"
+        },
+        {
+          "id": "pz_soko",
+          "source_page": 11,
+          "proposed_color": "#972679",
+          "status": "active"
+        },
+        {
+          "id": "pz_sudo",
+          "source_page": 11,
+          "proposed_color": "#976826",
+          "status": "active"
+        },
+        {
+          "id": "pz_flow",
+          "source_page": 11,
+          "proposed_color": "#772697",
+          "status": "active"
+        },
+        {
+          "id": "pz_tan",
+          "source_page": 12,
+          "proposed_color": "#97267B",
+          "status": "active"
+        },
+        {
+          "id": "pz_tent",
+          "source_page": 12,
+          "proposed_color": "#429726",
+          "status": "active"
+        },
+        {
+          "id": "pz_door",
+          "source_page": 12,
+          "proposed_color": "#599726",
+          "status": "active"
+        },
+        {
+          "id": "pz_lights",
+          "source_page": 12,
+          "proposed_color": "#263997",
+          "status": "active"
+        },
+        {
+          "id": "pz_untangle",
+          "source_page": 13,
+          "proposed_color": "#26978E",
+          "status": "active"
+        },
+        {
+          "id": "pz_stroke",
+          "source_page": 13,
+          "proposed_color": "#973526",
+          "status": "active"
+        },
+        {
+          "id": "pz_binary",
+          "source_page": 13,
+          "proposed_color": "#269755",
+          "status": "active"
+        },
+        {
+          "id": "pz_ice",
+          "source_page": 13,
+          "proposed_color": "#266897",
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "chapter": "seven_seas",
+      "entries": [
+        {
+          "id": "pz_xbottle",
+          "source_page": 14,
+          "proposed_color": "#792697",
+          "status": "retired"
+        },
+        {
+          "id": "pz_tpath",
+          "source_page": 14,
+          "proposed_color": "#979726",
+          "status": "active"
+        },
+        {
+          "id": "pz_xreef",
+          "source_page": 14,
+          "proposed_color": "#267597",
+          "status": "active"
+        },
+        {
+          "id": "pz_xbridge",
+          "source_page": 14,
+          "proposed_color": "#972655",
+          "status": "active"
+        },
+        {
+          "id": "pz_xcave",
+          "source_page": 15,
+          "proposed_color": "#972631",
+          "status": "active"
+        },
+        {
+          "id": "pz_xloot",
+          "source_page": 15,
+          "proposed_color": "#339726",
+          "status": "active"
+        },
+        {
+          "id": "pz_tmap",
+          "source_page": 15,
+          "proposed_color": "#392697",
+          "status": "active"
+        },
+        {
+          "id": "pz_tdig",
+          "source_page": 15,
+          "proposed_color": "#975B26",
+          "status": "active"
+        },
+        {
+          "id": "pz_xlock",
+          "source_page": 16,
+          "proposed_color": "#26977B",
+          "status": "active"
+        },
+        {
+          "id": "pz_ybell",
+          "source_page": 16,
+          "proposed_color": "#972691",
+          "status": "active"
+        },
+        {
+          "id": "pz_ymap",
+          "source_page": 16,
+          "proposed_color": "#719726",
+          "status": "active"
+        },
+        {
+          "id": "pz_yhold",
+          "source_page": 16,
+          "proposed_color": "#264F97",
+          "status": "active"
+        },
+        {
+          "id": "pz_ytide",
+          "source_page": 17,
+          "proposed_color": "#97262F",
+          "status": "active"
+        },
+        {
+          "id": "pz_ydoor",
+          "source_page": 17,
+          "proposed_color": "#26973E",
+          "status": "active"
+        },
+        {
+          "id": "pz_zcomp",
+          "source_page": 17,
+          "proposed_color": "#5E2697",
+          "status": "active"
+        },
+        {
+          "id": "pz_zroute",
+          "source_page": 17,
+          "proposed_color": "#978026",
+          "status": "active"
+        },
+        {
+          "id": "pz_zcur",
+          "source_page": 18,
+          "proposed_color": "#268E97",
+          "status": "active"
+        },
+        {
+          "id": "pz_zcode",
+          "source_page": 18,
+          "proposed_color": "#97266C",
+          "status": "active"
+        },
+        {
+          "id": "pz_zharp",
+          "source_page": 18,
+          "proposed_color": "#4B9726",
+          "status": "active"
+        },
+        {
+          "id": "pz_zshadow",
+          "source_page": 18,
+          "proposed_color": "#262A97",
+          "status": "active"
+        },
+        {
+          "id": "pz_znim",
+          "source_page": 19,
+          "proposed_color": "#974226",
+          "status": "active"
+        },
+        {
+          "id": "pz_zstars",
+          "source_page": 19,
+          "proposed_color": "#269764",
+          "status": "active"
+        },
+        {
+          "id": "pz_zthrone",
+          "source_page": 19,
+          "proposed_color": "#842697",
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "chapter": "palace",
+      "entries": [
+        {
+          "id": "pz_plock",
+          "source_page": 20,
+          "proposed_color": "#889726",
+          "status": "active"
+        },
+        {
+          "id": "pz_pliar",
+          "source_page": 20,
+          "proposed_color": "#266697",
+          "status": "active"
+        },
+        {
+          "id": "pz_pclock",
+          "source_page": 20,
+          "proposed_color": "#972646",
+          "status": "active"
+        },
+        {
+          "id": "pz_pboss1",
+          "source_page": 20,
+          "proposed_color": "#269726",
+          "status": "active"
+        },
+        {
+          "id": "pz_plib",
+          "source_page": 21,
+          "proposed_color": "#482697",
+          "status": "active"
+        },
+        {
+          "id": "pz_pmirror",
+          "source_page": 21,
+          "proposed_color": "#332697",
+          "status": "active"
+        },
+        {
+          "id": "pz_pgarden",
+          "source_page": 21,
+          "proposed_color": "#976A26",
+          "status": "active"
+        },
+        {
+          "id": "pz_pqueen",
+          "source_page": 21,
+          "proposed_color": "#26978A",
+          "status": "active"
+        },
+        {
+          "id": "pz_parm",
+          "source_page": 22,
+          "proposed_color": "#972684",
+          "status": "active"
+        },
+        {
+          "id": "pz_pjail",
+          "source_page": 22,
+          "proposed_color": "#629726",
+          "status": "active"
+        },
+        {
+          "id": "pz_pobs",
+          "source_page": 22,
+          "proposed_color": "#264297",
+          "status": "active"
+        },
+        {
+          "id": "pz_peng",
+          "source_page": 22,
+          "proposed_color": "#972B26",
+          "status": "active"
+        },
+        {
+          "id": "pz_pmaze",
+          "source_page": 23,
+          "proposed_color": "#26974B",
+          "status": "active"
+        },
+        {
+          "id": "pz_pcrypt",
+          "source_page": 23,
+          "proposed_color": "#6D2697",
+          "status": "active"
+        },
+        {
+          "id": "pz_pvalve",
+          "source_page": 23,
+          "proposed_color": "#978E26",
+          "status": "active"
+        },
+        {
+          "id": "pz_plast",
+          "source_page": 23,
+          "proposed_color": "#267E97",
+          "status": "active"
+        },
+        {
+          "id": "pz_pdragon",
+          "source_page": 24,
+          "proposed_color": "#97265E",
+          "status": "active"
+        },
+        {
+          "id": "pz_phall",
+          "source_page": 24,
+          "proposed_color": "#3C9726",
+          "status": "active"
+        },
+        {
+          "id": "pz_pheart",
+          "source_page": 24,
+          "proposed_color": "#2F2697",
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "chapter": "atheran",
+      "entries": [
+        {
+          "id": "pz_aarch",
+          "source_page": 25,
+          "proposed_color": "#975126",
+          "status": "active"
+        },
+        {
+          "id": "pz_aport",
+          "source_page": 25,
+          "proposed_color": "#269773",
+          "status": "active"
+        },
+        {
+          "id": "pz_alight",
+          "source_page": 25,
+          "proposed_color": "#932697",
+          "status": "active"
+        },
+        {
+          "id": "pz_acur",
+          "source_page": 25,
+          "proposed_color": "#799726",
+          "status": "active"
+        },
+        {
+          "id": "pz_ashell",
+          "source_page": 26,
+          "proposed_color": "#265997",
+          "status": "active"
+        },
+        {
+          "id": "pz_aroot",
+          "source_page": 26,
+          "proposed_color": "#972637",
+          "status": "active"
+        },
+        {
+          "id": "pz_aring",
+          "source_page": 26,
+          "proposed_color": "#269735",
+          "status": "active"
+        },
+        {
+          "id": "pz_ashade",
+          "source_page": 26,
+          "proposed_color": "#572697",
+          "status": "active"
+        },
+        {
+          "id": "pz_aswarm",
+          "source_page": 27,
+          "proposed_color": "#977726",
+          "status": "active"
+        },
+        {
+          "id": "pz_aecho",
+          "source_page": 27,
+          "proposed_color": "#269597",
+          "status": "active"
+        },
+        {
+          "id": "pz_avsong",
+          "source_page": 27,
+          "proposed_color": "#972675",
+          "status": "active"
+        },
+        {
+          "id": "pz_agiant",
+          "source_page": 27,
+          "proposed_color": "#539726",
+          "status": "active"
+        },
+        {
+          "id": "pz_aherd",
+          "source_page": 28,
+          "proposed_color": "#263397",
+          "status": "active"
+        },
+        {
+          "id": "pz_abridge",
+          "source_page": 28,
+          "proposed_color": "#973A26",
+          "status": "active"
+        },
+        {
+          "id": "pz_asilent",
+          "source_page": 28,
+          "proposed_color": "#26975B",
+          "status": "active"
+        },
+        {
+          "id": "pz_alayer",
+          "source_page": 29,
+          "proposed_color": "#7D2697",
+          "status": "active"
+        },
+        {
+          "id": "pz_acity",
+          "source_page": 29,
+          "proposed_color": "#269742",
+          "status": "active"
+        },
+        {
+          "id": "pz_asong",
+          "source_page": 29,
+          "proposed_color": "#919726",
+          "status": "active"
+        },
+        {
+          "id": "pz_aflow",
+          "source_page": 30,
+          "proposed_color": "#266F97",
+          "status": "active"
+        },
+        {
+          "id": "pz_arelic",
+          "source_page": 30,
+          "proposed_color": "#97264F",
+          "status": "active"
+        },
+        {
+          "id": "pz_aheart",
+          "source_page": 30,
+          "proposed_color": "#2D9726",
+          "status": "active"
+        }
+      ]
+    },
+    {
+      "chapter": "first_trace",
+      "entries": [
+        {
+          "id": "pz_wbone",
+          "source_page": 31,
+          "proposed_color": "#3E2697",
+          "status": "active"
+        },
+        {
+          "id": "pz_wspore",
+          "source_page": 31,
+          "proposed_color": "#976026",
+          "status": "active"
+        },
+        {
+          "id": "pz_wlog",
+          "source_page": 31,
+          "proposed_color": "#269780",
+          "status": "active"
+        },
+        {
+          "id": "pz_wlake",
+          "source_page": 32,
+          "proposed_color": "#97268C",
+          "status": "active"
+        },
+        {
+          "id": "pz_wfirst",
+          "source_page": 32,
+          "proposed_color": "#6C9726",
+          "status": "active"
+        }
+      ]
+    }
+  ]
+}
