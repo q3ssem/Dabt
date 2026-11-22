@@ -709,3 +709,46 @@ html[data-skin="dark"] .mlj-evidence-actions button { background: #2c8175; borde
   .mlj-evidence-card { padding: 12px; }
   .mlj-evidence-tabs button { flex-basis: 100%; }
 }
+
+/* Jaziran evidence validation and seals (scoped to notebook). */
+.mlj-evidence-review,
+.mlj-evidence-inference {
+  display: grid;
+  gap: 8px;
+  border: 1px solid #b9c7bd;
+  border-radius: 11px;
+  padding: 10px;
+  line-height: 1.6;
+}
+.mlj-evidence-review[hidden] { display: none !important; }
+.mlj-evidence-inference { border-inline-start: 4px solid #856627; }
+.mlj-evidence-review p,.mlj-evidence-inference p,.mlj-evidence-quote { margin: 0; font-size: 13px; }
+.mlj-evidence-quote { width: 100%; padding: 7px 8px; border-radius: 8px; background: rgba(28, 103, 91, .08); }
+.mlj-evidence-options { display: grid; grid-template-columns: 1fr; gap: 6px; }
+.mlj-evidence-options button,
+.mlj-evidence-source-actions button {
+  font: inherit;
+  cursor: pointer;
+  min-height: 44px;
+  max-width: 100%;
+  white-space: normal;
+  border-radius: 9px;
+  border: 1px solid #688f83;
+  background: transparent;
+  color: inherit;
+  padding: 8px 10px;
+  text-align: start;
+}
+.mlj-evidence-options button:focus-visible,
+.mlj-evidence-source-actions button:focus-visible { outline: 3px solid #c68b25; outline-offset: 2px; }
+.mlj-evidence-source-actions { display: flex; flex-wrap: wrap; gap: 7px; width: 100%; }
+.mlj-evidence-source-actions button { flex: 1 1 132px; }
+.mlj-evidence-source-actions button:first-child { font-weight: 800; }
+.mlj-evidence-sources li { align-items: start; }
+.mlj-evidence-sources li[data-evidence-state="verified"] { border-color: #28785f; border-width: 2px; }
+html[data-skin="dark"] .mlj-evidence-review,
+html[data-skin="dark"] .mlj-evidence-inference { border-color: #849e9e; }
+html[data-skin="dark"] .mlj-evidence-inference { border-inline-start-color: #e0b95f; }
+html[data-skin="dark"] .mlj-evidence-options button,
+html[data-skin="dark"] .mlj-evidence-source-actions button { border-color: #8bbfb4; }
+html[data-skin="dark"] .mlj-evidence-quote { background: rgba(144, 208, 186, .12); }
