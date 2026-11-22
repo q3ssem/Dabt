@@ -1,0 +1,50 @@
+'use strict';
+const assert = require('node:assert/strict');
+const fs = require('node:fs'), vm = require('node:vm');
+const dataSrc=fs.readFileSync('ui/jaziran-scenes-data.js','utf8');
+const hubSrc=fs.readFileSync('ui/journey-hub.js','utf8');
+const root={};
+vm.runInNewContext(dataSrc,{window:root});
+const scenes=root.__MINDLAB_JAZIRAN_SCENES;
+assert.deepEqual(Object.keys(scenes).sort(),['palace_clock','prologue']);
+assert.equal(scenes.prologue.sourcePage,5);
+assert.equal(scenes.palace_clock.sourcePage,5);
+assert.equal(scenes.palace_clock.requiredPuzzle,'pz_pobs');
+for(const scene of Object.values(scenes)){
+  assert.equal(scene.dialogue.length,4,'four source-grounded dialogue beats');
+  assert.equal(scene.options.length,3);
+  assert(Number.isInteger(scene.answer)&&scene.answer>=0&&scene.answer<scene.options.length);
+  assert(scene.note && scene.reveal && scene.inspectResult);
+  assert(['measurement','testimony'].includes(scene.observationFile));
+  assert(scene.dialogue.some(x=>x[0]==='ورد'));
+  assert(scene.dialogue.some(x=>x[0]==='نهى'));
+  assert(scene.dialogue.some(x=>x[0]==='رواء'));
+}
+const native={done:{}};
+const saved=new Map([['miran:v2','{"coins":200}'],['treasureV3','{"done":{"sea7_0":1}}']]);
+const doc={readyState:'loading',addEventListener(){},querySelector(){return null;},querySelectorAll(){return []}};
+const ctx={window:root,document:doc,localStorage:{
+  getItem:k=>saved.get(k)||null,setItem(k,v){saved.set(k,String(v));}
+},pState:()=>native,console,showIntro(){},closePlay(){}};
+vm.runInNewContext(hubSrc,ctx);
+const api=root.mindlabJourneyHub;
+assert.equal(api.jaziranSceneAvailable('prologue'),true);
+assert.equal(api.jaziranSceneAvailable('palace_clock'),false);
+assert.equal(api.openJaziranScene('palace_clock'),false,'locked scene returns before any DOM effects');
+assert.equal(api.jaziranSceneAvailable('invalid'),false);
+native.done.pz_pclock=1;
+assert.equal(api.jaziranSceneAvailable('palace_clock'),false,'clock puzzle win is not enough to bypass map comparison');
+native.done.pz_pobs=1;
+assert.equal(api.jaziranSceneAvailable('palace_clock'),true);
+assert(hubSrc.includes("getEvidenceDraft(scene.observationFile).trim()"),'never overwrite prior player text');
+assert(hubSrc.includes("saveEvidenceDraft(scene.observationFile,scene.note)"),'only save with explicit user action');
+assert(hubSrc.includes("document.createTextNode(line)"),'speaker dialogue uses text nodes');
+assert(hubSrc.includes('motion/art10/char_ward.webp')&&hubSrc.includes('motion/art10/char_rawaa.webp')&&hubSrc.includes('motion/art10/char_nuha.webp'),'use existing hand-drawn heroines');
+assert(hubSrc.includes("jaziranSceneAvailable('palace_clock')")&&hubSrc.includes("id=\"mlj-open-jaziran\""),'journal exposes source scenes with gating');
+assert(!dataSrc.includes('pz_xbottle'),'retired bottle puzzle must not be restored');
+assert.equal(saved.size,2,'opening a locked scene must not write state');
+const app=fs.readFileSync('ui/app.js','utf8');
+const manifest=fs.readFileSync('offline-manifest.js','utf8');
+assert(app.includes("'ui/jaziran-scenes-data.js'")&&manifest.includes('"ui/jaziran-scenes-data.js"'),'scenes bundled offline');
+assert(fs.readFileSync('ui/journey-hub.css','utf8').includes('/* Jaziran chapter scenes:'),'responsive story scene CSS');
+console.log('JAZIRAN_SCENES_STATIC=passed: gated palace, no retired engine, canonical heroine art, notes never overwritten, no save mutations');
