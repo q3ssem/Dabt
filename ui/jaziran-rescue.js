@@ -32,7 +32,7 @@
     post:{title:'علّق نسخة عند المرسى',text:'تُنشر خطوط القياس ومعايرتها عند المرسى، ويصبح بإمكان الجميع اختبارها.'}
   };
   const nativeComplete=()=>{
-    try{const a=window.ATHERAN_CAMPAIGN?.summary();return !!(a?.open&&a?.a?.done?.pz_aheart);}
+    try{const a=window.ATHERAN_CAMPAIGN?.summary();return !!(a?.open && a?.done===21 && a?.a?.done?.pz_aheart);}
     catch(_){return false;}
   };
   function persisted(){
