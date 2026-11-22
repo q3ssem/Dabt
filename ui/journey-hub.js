@@ -565,6 +565,121 @@
     closeBtn.focus({ preventScroll: true });
   }
 
+
+  // Jaziran chapter scenes are adapted from the source PDF and do not drive game progress.
+  function jaziranSceneAvailable(id) {
+    const scene = window.__MINDLAB_JAZIRAN_SCENES?.[id];
+    if (!scene) return false;
+    if (!scene.requiredPuzzle) return true;
+    try { return !!(typeof pState === 'function' && pState()?.done?.[scene.requiredPuzzle]); }
+    catch (_) { return false; }
+  }
+  function openJaziranScene(id) {
+    if (!jaziranSceneAvailable(id)) return false;
+    const scene = window.__MINDLAB_JAZIRAN_SCENES[id];
+    const previous = document.activeElement;
+    $('#mlj-jaziran-modal')?.remove();
+    const modal = document.createElement('div');
+    modal.id = 'mlj-jaziran-modal';
+    modal.className = 'mlj-modal mlj-jaziran-modal';
+    modal.setAttribute('role','dialog');
+    modal.setAttribute('aria-modal','true');
+    modal.setAttribute('aria-label',scene.title);
+    modal.innerHTML =
+      '<section class="mlj-modal-card mlj-jaziran-card" dir="rtl">' +
+        '<header class="mlj-head"><h2 id="mlj-jaziran-title"></h2><button type="button" id="mlj-jaziran-close">إغلاق</button></header>' +
+        '<p class="mlj-jaziran-location"></p>' +
+        '<div class="mlj-jaziran-heroines" aria-label="ورد ورواء ونهى">' +
+          '<figure><img src="motion/art10/char_ward.webp" alt=""><figcaption>ورد</figcaption></figure>' +
+          '<figure><img src="motion/art10/char_rawaa.webp" alt=""><figcaption>رواء</figcaption></figure>' +
+          '<figure><img src="motion/art10/char_nuha.webp" alt=""><figcaption>نهى</figcaption></figure>' +
+        '</div>' +
+        '<div class="mlj-jaziran-dialogue"></div>' +
+        '<div class="mlj-jaziran-inspection"><button type="button" id="mlj-jaziran-inspect"></button>' +
+        '<p id="mlj-jaziran-result" aria-live="polite"></p></div>' +
+        '<div id="mlj-jaziran-choices" hidden><p id="mlj-jaziran-question"></p><div class="mlj-jaziran-options"></div></div>' +
+        '<div id="mlj-jaziran-final" hidden><strong id="mlj-jaziran-reveal"></strong>' +
+          '<p id="mlj-jaziran-end"></p><div class="mlj-jaziran-actions">' +
+            '<button type="button" id="mlj-jaziran-save">أضف الملاحظة إلى دفتر الأدلة</button>' +
+            '<button type="button" id="mlj-jaziran-book">افتح دفتر الأدلة</button>' +
+          '</div></div>' +
+        '<p id="mlj-jaziran-status" role="status" aria-live="polite"></p>' +
+      '</section>';
+    const title = $('#mlj-jaziran-title',modal);
+    const inspection = $('#mlj-jaziran-inspect',modal);
+    const result = $('#mlj-jaziran-result',modal);
+    const options = $('#mlj-jaziran-choices',modal);
+    const final = $('#mlj-jaziran-final',modal);
+    const message = $('#mlj-jaziran-status',modal);
+    title.textContent=scene.title;
+    $('.mlj-jaziran-location',modal).textContent=scene.location;
+    inspection.textContent=scene.inspectLabel;
+    $('#mlj-jaziran-question',modal).textContent=scene.question;
+    const dialogue=$('.mlj-jaziran-dialogue',modal);
+    for (const [speaker,line] of scene.dialogue) {
+      const row=document.createElement('p');
+      const name=document.createElement('strong');
+      name.textContent=speaker+' : ';
+      row.append(name,document.createTextNode(line));
+      dialogue.append(row);
+    }
+    function dismiss() {
+      modal.remove();
+      if (previous?.isConnected && typeof previous.focus === 'function')
+        previous.focus({preventScroll:true});
+    }
+    inspection.onclick=() => {
+      result.textContent=scene.inspectResult;
+      inspection.hidden=true;
+      options.hidden=false;
+      $('.mlj-jaziran-options button',modal)?.focus({preventScroll:true});
+    };
+    const optionBox=$('.mlj-jaziran-options',modal);
+    scene.options.forEach((option,index) => {
+      const button=document.createElement('button');
+      button.type='button';
+      button.textContent=option;
+      button.onclick=() => {
+        if (index!==scene.answer) {
+          message.textContent='هذه المقارنة لا تفسر القرينة. راجع أثر الماء أو أصل السجل.';
+          return;
+        }
+        message.textContent='وصلت إلى ملاحظة جديدة قابلة للمراجعة.';
+        options.hidden=true;
+        final.hidden=false;
+        $('#mlj-jaziran-reveal',modal).textContent=scene.reveal;
+        $('#mlj-jaziran-end',modal).textContent=scene.endText;
+        $('#mlj-jaziran-save',modal).focus({preventScroll:true});
+      };
+      optionBox.append(button);
+    });
+    $('#mlj-jaziran-save',modal).onclick=() => {
+      // Never overwrite existing player-authored notes; no verified evidence granted here.
+      if (getEvidenceDraft(scene.observationFile).trim()) {
+        message.textContent='توجد ملاحظة محفوظة في الملف. افتح الدفتر لمراجعتها دون استبدالها.';
+        return;
+      }
+      message.textContent=saveEvidenceDraft(scene.observationFile,scene.note)
+        ? 'حُفظت الملاحظة في ملفها على هذا الجهاز، دون ختم أو مكافأة.'
+        : 'تعذر حفظ الملاحظة. يمكنك تدوينها يدويًا في دفتر الأدلة.';
+    };
+    $('#mlj-jaziran-book',modal).onclick=() => { dismiss(); openEvidenceBook(); };
+    $('#mlj-jaziran-close',modal).onclick=dismiss;
+    modal.addEventListener('click',event=>{if(event.target===modal)dismiss();});
+    modal.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){event.preventDefault();dismiss();return;}
+      if(event.key!=='Tab')return;
+      const controls=[...modal.querySelectorAll('button')].filter(el=>!el.disabled&&!el.hidden&&
+        !el.closest('[hidden]'));
+      const first=controls[0],last=controls.at(-1);
+      if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+      else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+    });
+    document.body.append(modal);
+    $('#mlj-jaziran-close',modal).focus({preventScroll:true});
+    return true;
+  }
+
   function mountLegacyHub() {
     const v = $('#v-puz');
     const entry = v && $('.v5-hubcard', v);
@@ -608,6 +723,8 @@
       <div class="mlj-foot">
         <button type="button" class="mlj-trans-btn" id="mlj-open-trans">مشاهد الرحلة (${discoveredTransitions().length})</button>
         <button type="button" class="mlj-trans-btn" id="mlj-open-evidence">دفتر الأدلة</button>
+        <button type="button" class="mlj-trans-btn" id="mlj-open-jaziran">قصة الصندوق</button>
+        ${jaziranSceneAvailable('palace_clock') ? '<button type="button" class="mlj-trans-btn" id="mlj-open-jaziran-clock">ساعة القصر</button>' : ''}
         <span class="mlj-pill">البحار السبعة: ${prog.seaDone} / 21</span>
         <span class="mlj-pill">أَثْرَان: ${prog.atheranDone} / 21</span>
         <span class="mlj-pill">${prog.secretsUnlocked > 0 ? `عوالم سرية مكتشفة: ${prog.secretsUnlocked} / 5` : 'العوالم السرية محجوبة حتى اكتشافها'}</span>
@@ -673,6 +790,10 @@
     if (trBtn) trBtn.onclick = () => { closeAtlas(false); openTransitionsModal(0); };
     const evidenceBtn = $('#mlj-open-evidence', sec);
     if (evidenceBtn) evidenceBtn.onclick = openEvidenceBook;
+    const prologueBtn = $('#mlj-open-jaziran', sec);
+    if (prologueBtn) prologueBtn.onclick = () => openJaziranScene('prologue');
+    const clockBtn = $('#mlj-open-jaziran-clock', sec);
+    if (clockBtn) clockBtn.onclick = () => openJaziranScene('palace_clock');
     sec.querySelectorAll('[data-mlj-ch]').forEach(b => {
       b.onclick = () => { closeAtlas(false); triggerChapter(b.dataset.mljCh); };
     });
@@ -845,6 +966,18 @@
       evidenceButton.textContent = 'ملفات الأدلة والملاحظات';
       evidenceButton.onclick = openEvidenceBook; // Keep journal open so closing the modal restores visible focus.
       list.append(evidenceButton);
+      const prologueButton = document.createElement('button');
+      prologueButton.type = 'button';
+      prologueButton.textContent = 'قصة الصندوق · افحص العلامة';
+      prologueButton.onclick = () => openJaziranScene('prologue');
+      list.append(prologueButton);
+      if (jaziranSceneAvailable('palace_clock')) {
+        const clockButton = document.createElement('button');
+        clockButton.type = 'button';
+        clockButton.textContent = 'ساعة القصر · قارن الشهادات';
+        clockButton.onclick = () => openJaziranScene('palace_clock');
+        list.append(clockButton);
+      }
       const actions = window.ATHERAN_CAMPAIGN?.journeyActions() || [];
       if (sea) {
         actions.unshift({ label: 'كنوز البحار', open: () => T7.openJournal('treasures') });
@@ -1213,7 +1346,7 @@
     }
   }
 
-  window.mindlabJourneyHub = { openChapter: triggerChapter, openTransitions: openTransitionsModal, discoveredTransitions, beforeStation, mountUnifiedHub, applyBoardArt, returnToMap, openEvidenceBook, getEvidenceDraft, saveEvidenceDraft, getEvidenceSnapshot, evidenceVisibleFiles };
+  window.mindlabJourneyHub = { openChapter: triggerChapter, openTransitions: openTransitionsModal, discoveredTransitions, beforeStation, mountUnifiedHub, applyBoardArt, returnToMap, openEvidenceBook, getEvidenceDraft, saveEvidenceDraft, getEvidenceSnapshot, evidenceVisibleFiles, jaziranSceneAvailable, openJaziranScene };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchAll);
   else watchAll();
 })();
