@@ -246,8 +246,11 @@
     {id:'testimony',name:'الساعة والشهادة',question:'متى عبر القارب ومن رآه مباشرة؟',
       sources:[['pz_pclock','برج الساعات'],['pz_pjail','شهادات السجناء'],['pz_pobs','الخريطتان الشفافتان']]},
     {id:'traces',name:'العمر والأثر',question:'أي خريطة تصف المدينة وقت المد المقصود؟',
-      sources:[['pz_alayer','طبقات الزمن'],['pz_acity','المدينة الحية'],['pz_arelic','أرشيف الآثار الأولى']]}
+      sources:[['pz_alayer','طبقات الزمن'],['pz_acity','المدينة الحية'],['pz_arelic','أرشيف الآثار الأولى']]},
+    {id:'people',name:'أسماء أصحاب الأثر',question:'من يحمل ذاكرة المكان بعد الإخلاء؟',
+      sources:[['pz_wbone','وادي الهياكل'],['pz_wspore','أبواغ الليل'],['pz_wlog','سجل السفينة'],['pz_wlake','بحيرة الذاكرة'],['pz_wfirst','الأثر الأول']]}
   ];
+  const EVIDENCE_SECRET_KEYS = {pz_wbone:'bones',pz_wspore:'spores',pz_wlog:'ship',pz_wlake:'lake',pz_wfirst:'first'};
   const evidenceFile = id => EVIDENCE_FILES.find(file => file.id === id);
   function evidenceDrafts() {
     try {
@@ -270,15 +273,45 @@
       return true;
     } catch (_) { return false; }
   }
-  function evidenceProgress(id) {
-    // Do not conflate library game access with completing a campaign station.
+  function evidenceSourceStatus(id) {
+    // Engine-owned completion is the sole proof of *finishing a game*.
+    // Finishing a game does not itself validate a historical claim or an inference.
     try {
-      if (id.startsWith('pz_p') && typeof pState === 'function')
-        return !!pState()?.done?.[id];
-      if (id.startsWith('pz_a'))
-        return !!window.ATHERAN_CAMPAIGN?.summary()?.a?.done?.[id];
+      if (id.startsWith('pz_p')) {
+        const done = typeof pState === 'function' && !!pState()?.done?.[id];
+        return {id, done: !!done, origin:'قصر المرايا', state:done ? 'completed' : 'pending'};
+      }
+      if (id.startsWith('pz_a')) {
+        const done = !!window.ATHERAN_CAMPAIGN?.summary()?.a?.done?.[id];
+        return {id, done, origin:'أَثْران', state:done ? 'completed' : 'pending'};
+      }
+      if (Object.hasOwn(EVIDENCE_SECRET_KEYS, id)) {
+        const key = EVIDENCE_SECRET_KEYS[id];
+        const data = window.ATHERAN_CAMPAIGN?.summary()?.a;
+        const done = !!data?.swd?.[key];
+        const found = !!data?.sw?.[key];
+        return {id, done, origin:'موطن الأثر الأول', state:done ? 'completed' : found ? 'pending' : 'undiscovered'};
+      }
     } catch (_) {}
-    return false;
+    // The three library IDs are not sea7_* stations, and cannot inherit completion
+    // from the Treasure Island campaign or from the mere visibility of library cards.
+    return {id, done:false, origin:'مكتبة الألغاز', state:'unlinked'};
+  }
+  function evidenceVisibleFiles() {
+    // The optional names/secret-world file appears only after native Atheran finale.
+    let finished = false;
+    try { finished = !!window.ATHERAN_CAMPAIGN?.summary()?.a?.done?.pz_aheart; } catch (_) {}
+    return EVIDENCE_FILES.filter(file => file.id !== 'people' || finished);
+  }
+  function getEvidenceSnapshot(fileId) {
+    const file = evidenceFile(fileId);
+    if (!file) return null;
+    const sources = file.sources.map(([id,name]) => ({name, ...evidenceSourceStatus(id)}));
+    const nativeCompleted = [...new Set(sources.filter(source => source.done).map(source => source.id))].length;
+    // Different completed station IDs make comparison possible, but do not prove
+    // that documents are independent or that their testimony is accurate.
+    return {id:file.id, name:file.name, sources, nativeCompleted,
+      sourceCount:sources.length, readyToCompare:nativeCompleted >= 2, inferenceVerified:false};
   }
   function openEvidenceBook() {
     const previous = document.activeElement;
@@ -295,6 +328,7 @@
       '<p class="mlj-evidence-intro">دوّن ملاحظتك من المشهد، ثم قارن مصادر مستقلة. هذه مسودة شخصية؛ ليست دليلًا مثبتًا ولا تفتح أختامًا.</p>' +
       '<div class="mlj-evidence-tabs" role="group" aria-label="ملفات الأدلة"></div>' +
       '<h3 class="mlj-evidence-title"></h3><p class="mlj-evidence-question"></p>' +
+      '<p class="mlj-evidence-summary" aria-live="polite"></p>' +
       '<ul class="mlj-evidence-sources"></ul><label for="mlj-evidence-note">ملاحظتك عن هذا الملف</label>' +
       '<textarea id="mlj-evidence-note" maxlength="600" rows="4" placeholder="ماذا لاحظت؟ ومن أين حصلت على المعلومة؟"></textarea>' +
       '<div class="mlj-evidence-actions"><button type="button" id="mlj-evidence-save">حفظ الملاحظة</button>' +
@@ -305,8 +339,9 @@
     const status = $('#mlj-evidence-status', modal);
     const closeBtn = $('#mlj-evidence-close', modal);
     const saveBtn = $('#mlj-evidence-save', modal);
-    let selected = EVIDENCE_FILES[0].id;
-    for (const file of EVIDENCE_FILES) {
+    const visibleFiles = evidenceVisibleFiles();
+    let selected = visibleFiles[0].id;
+    for (const file of visibleFiles) {
       const btn = document.createElement('button');
       btn.type = 'button';
       btn.textContent = file.name;
@@ -318,14 +353,25 @@
       const file = evidenceFile(selected);
       $('.mlj-evidence-title', modal).textContent = file.name;
       $('.mlj-evidence-question', modal).textContent = file.question;
+      const snapshot = getEvidenceSnapshot(selected);
+      const plural = snapshot.nativeCompleted;
+      $('.mlj-evidence-summary', modal).textContent =
+        'إنجازات مؤكدة من المحرك: ' + plural + ' / ' + snapshot.sourceCount +
+        (snapshot.readyToCompare
+          ? ' · يمكنك مقارنة مصادر المحطات المكتملة، لكن استقلال الشهادات وصحة الاستنتاج لم يُتحقّق منهما بعد.'
+          : ' · أكمل مصادر مختلفة ثم قارن أدلتها قبل تكوين الاستنتاج.');
       const list = $('.mlj-evidence-sources', modal);
       list.replaceChildren();
-      for (const [id, name] of file.sources) {
+      for (const src of snapshot.sources) {
         const item = document.createElement('li');
+        item.dataset.evidenceState = src.state;
         const heading = document.createElement('strong');
-        heading.textContent = name;
+        heading.textContent = src.name;
         const source = document.createElement('small');
-        source.textContent = evidenceProgress(id) ? 'مكتمل في الحملة · راجع قرينته' : 'مصدر للمراجعة';
+        source.textContent = src.state === 'completed' ? 'أنجزت المحطة · سجل ' + src.origin
+          : src.state === 'pending' ? 'لم يثبت إنجاز المحطة في سجل ' + src.origin
+          : src.state === 'undiscovered' ? 'لم يُكتشف هذا الفرع بعد'
+          : 'مصدر في المكتبة · لم يُربط إثبات إنجازه بالحملة';
         item.append(heading, source);
         list.append(item);
       }
@@ -1006,7 +1052,7 @@
     }
   }
 
-  window.mindlabJourneyHub = { openChapter: triggerChapter, openTransitions: openTransitionsModal, discoveredTransitions, beforeStation, mountUnifiedHub, applyBoardArt, returnToMap, openEvidenceBook, getEvidenceDraft, saveEvidenceDraft };
+  window.mindlabJourneyHub = { openChapter: triggerChapter, openTransitions: openTransitionsModal, discoveredTransitions, beforeStation, mountUnifiedHub, applyBoardArt, returnToMap, openEvidenceBook, getEvidenceDraft, saveEvidenceDraft, getEvidenceSnapshot, evidenceVisibleFiles };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchAll);
   else watchAll();
 })();
