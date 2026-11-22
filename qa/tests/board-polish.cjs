@@ -26,6 +26,10 @@ assert.ok(sw.includes("PATCH='board-polish-29'"), 'Update PWA cache identity whe
 assert.ok(!/#[a-zA-Z0-9_-]*board\s*\*\s*\{/.test(style), 'Never blindly recolor game pieces');
 assert.ok(!/\#pzb\s*\*\s*\{/.test(style), 'Never change all puzzle content at once');
 
+const fitUI = fs.readFileSync('ui/fit.js','utf8');
+assert.ok(fitUI.includes("#play .pin, #play .pbar, #stage .pzhud, #stage #m"),
+  'Puzzle fitting must track .pin viewport-height changes in mobile WebKit');
+
 const faces = fs.readFileSync('fonts/fonts.css','utf8');
 assert.ok(faces.includes("font-family: 'Tajawal'"),'Hosted Arabic text font must remain');
 assert.ok(faces.includes("font-family: 'Aref Ruqaa'"),'Hosted historical title font must remain');
