@@ -51,6 +51,24 @@ async def run():
             assert n>=5, f'movement has only {n} puzzles'
             assert not await tiles.nth(0).is_disabled(),'initial puzzle is locked'
             assert await tiles.nth(1).is_disabled(),'second puzzle open without completing first'
+            # Contrast of locked Arabic text must be readable; status stays visibly disabled.
+            for skin in ('light','dark'):
+                await page.evaluate('(skin)=>document.documentElement.dataset.skin=skin',skin)
+                ratio=await page.locator('#v-puz .ml-folder-grid .ml-folder-locked').first.evaluate("""tile=>{
+                  const rgb=v=>v.match(/[0-9.]+/g).slice(0,3).map(Number);
+                  const lum=v=>{
+                    const channels=rgb(v).map(x=>x/255).map(x=>x<=.04045?x/12.92:Math.pow((x+.055)/1.055,2.4));
+                    return channels[0]*.2126+channels[1]*.7152+channels[2]*.0722;
+                  };
+                  const fg=getComputedStyle(tile.querySelector('b')).color;
+                  const bg=getComputedStyle(tile).backgroundColor;
+                  const a=lum(fg),b=lum(bg);
+                  return {ratio:(Math.max(a,b)+.05)/(Math.min(a,b)+.05),
+                          opacity:getComputedStyle(tile).opacity};
+                }""")
+                assert ratio['ratio']>=4.5,f'{skin} locked Arabic label low contrast: {ratio}'
+                assert ratio['opacity']=='1',f'{skin} locked card faded: {ratio}'
+            await page.evaluate("()=>document.documentElement.dataset.skin='light'")
             gridcols=await page.locator('#v-puz .ml-folder-grid').evaluate('(el)=>getComputedStyle(el).gridTemplateColumns.split(" ").length')
             assert gridcols==4,f'{width} screen not four columns: {gridcols}'
             coords=await tiles.nth(0).bounding_box(),await tiles.nth(1).bounding_box(),await tiles.nth(3).bounding_box(),await tiles.nth(4).bounding_box()
