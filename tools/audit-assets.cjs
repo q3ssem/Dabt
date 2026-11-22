@@ -22,7 +22,13 @@ const asSet = new Set(files);
 const assets = files.filter(f => assetExt.has(path.extname(f).toLowerCase()));
 const texts = files.filter(f => codeExt.has(path.extname(f).toLowerCase()));
 const textSources = texts.map(f => ({path:f, body:fs.readFileSync(path.join(root, f), 'utf8')}));
-const corpus = textSources.map(x=>x.body).join('\n');
+// Separate production references from QA/doc mentions: a test that names an asset
+// is evidence of an expectation, not evidence that the browser actually loads it.
+const runtimeSources = textSources.filter(x => !/^(?:docs|qa|tools|\.github)\//.test(x.path)
+  && !/\.(?:md|txt|py|yml|yaml)$/.test(x.path));
+const supportSources = textSources.filter(x => !runtimeSources.includes(x));
+const runtimeCorpus = runtimeSources.map(x => x.body).join('\n');
+const supportCorpus = supportSources.map(x => x.body).join('\n');
 const refs = new Map();
 const missingStaticRefs = [];
 function addRef(target, owner, kind) {
@@ -48,11 +54,15 @@ for (const source of textSources) {
 }
 const entries = assets.map(f => {
   const sz = fs.statSync(path.join(root, f)).size;
-  const explicit = corpus.includes(f);
+  const explicit = runtimeCorpus.includes(f);
+  const supportOnly = !explicit && supportCorpus.includes(f);
   const css = refs.get(f) || [];
   const folder = path.posix.dirname(f) + '/';
-  const dynamicPossible = corpus.includes(folder) || corpus.includes(path.posix.basename(f));
-  const status = explicit || css.length ? 'referenced' : dynamicPossible ? 'possible-dynamic-reference' : 'unresolved-review-only';
+  const dynamicPossible = runtimeCorpus.includes(folder) || runtimeCorpus.includes(path.posix.basename(f));
+  const status = explicit || css.length ? 'referenced-runtime'
+    : dynamicPossible ? 'possible-dynamic-runtime'
+    : supportOnly ? 'mentioned-in-support-only'
+    : 'unresolved-review-only';
   return {path:f, bytes:sz, status, cssReferences:css};
 });
 const byHash = new Map();
@@ -77,8 +87,9 @@ const summary = {
   duplicateGroups:duplicates.length,
   duplicateExtraPaths:duplicates.reduce((n,g)=>n+g.paths.length-1,0),
   duplicateCheckoutBytes:duplicates.reduce((n,g)=>n+g.redundantCheckoutBytes,0),
-  explicitlyReferenced:entries.filter(v=>v.status==='referenced').length,
-  possibleDynamic:entries.filter(v=>v.status==='possible-dynamic-reference').length,
+  explicitlyReferenced:entries.filter(v=>v.status==='referenced-runtime').length,
+  possibleDynamic:entries.filter(v=>v.status==='possible-dynamic-runtime').length,
+  mentionedInSupportOnly:entries.filter(v=>v.status==='mentioned-in-support-only').length,
   unresolvedRequiresReview:entries.filter(v=>v.status==='unresolved-review-only').length,
   missingStaticCssReferences:missingStaticRefs.length
 };
