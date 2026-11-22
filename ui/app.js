@@ -237,7 +237,7 @@ try {
     }
     return Promise.all([...scripts, ...layers].map(insert)).then(() => { window.__mlPlayReady = true; window.dispatchEvent(new Event('mindlab:play-layers')); });
   };
-  // The side journey (24 stations, its own save) loads on demand only when its map is opened.
+  // The 24-stage side journey loads on demand when its independent chapter is selected.
   const side = { css: ['expedition10/style.css'], js: ['expedition10/logic.js', 'expedition10/app.js'] };
   let sideLoading = null;
   const startSide = () => {
