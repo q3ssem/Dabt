@@ -4,9 +4,12 @@ Fixture progress is written in a disposable Playwright profile only; it is NOT
 evidence of a solved puzzle or an instruction to change anyone's real save.
 """
 import asyncio, json, os, sys
+from pathlib import Path
 from playwright.async_api import async_playwright
 URL=sys.argv[1] if len(sys.argv)>1 else 'http://127.0.0.1:8830/'
 ENGINE=sys.argv[2] if len(sys.argv)>2 else 'chromium'
+SHOTS=Path(os.getenv('SHOTS','/tmp/mindlab-puzzle-folders-screens'))
+SHOTS.mkdir(parents=True,exist_ok=True)
 
 async def run():
     assert ENGINE in ('chromium','webkit')
@@ -27,11 +30,13 @@ async def run():
             folders=page.locator('#v-puz .ml-folder-category')
             await folders.first.wait_for(state='visible',timeout=20000)
             count=await folders.count()
+            await page.screenshot(path=str(SHOTS/f'folders-{ENGINE}-{width}.png'),full_page=True)
             assert count>=4, f'only {count} library folders'
             assert await page.locator('#v-puz .la-section').count()==0,'old all-puzzles-at-once layout remains'
             await page.locator('[data-folder-name="حركة ومسارات"]').click()
             tiles=page.locator('#v-puz .ml-folder-grid .ml-folder-puzzle')
             n=await tiles.count()
+            await page.screenshot(path=str(SHOTS/f'movement-grid-{ENGINE}-{width}.png'),full_page=True)
             assert n>=5, f'movement has only {n} puzzles'
             assert not await tiles.nth(0).is_disabled(),'initial puzzle is locked'
             assert await tiles.nth(1).is_disabled(),'second puzzle open without completing first'
@@ -64,9 +69,11 @@ async def run():
             assert await page.locator('#mlj-unified-hub.ml-folder-journey').is_visible(),'story folder dialog does not open'
             assert await page.locator('#mlj-unified-hub .mlj-v3-map-scroll, #mlj-unified-hub .mlj-map-img').count()==0,'legacy map still present'
             assert await page.locator('#mlj-unified-hub .ml-folder-chapter').count()==4,'story chapters missing'
+            await page.screenshot(path=str(SHOTS/f'story-chapters-{ENGINE}-{width}.png'))
             await page.locator('#mlj-unified-hub [data-chapter="seven_seas"]').click()
             sts=page.locator('#mlj-unified-hub .ml-folder-stations .ml-folder-station')
             assert await sts.count()==21,f'seven seas stations {await sts.count()}, expected 21'
+            await page.screenshot(path=str(SHOTS/f'story-stations-{ENGINE}-{width}.png'))
             assert not await sts.nth(0).is_disabled(),'first sea station locked'
             assert await sts.nth(1).is_disabled(),'second sea station unlocked without first real win'
             assert await page.locator('#mlj-unified-hub .ml-folder-stations').evaluate("(e)=>getComputedStyle(e).gridTemplateColumns.split(' ').length")==4
