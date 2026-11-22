@@ -681,6 +681,54 @@ html.fit-ex10 #v-puz .ex10-outcome .ex10-actions-row button {
   min-width:46px!important;
   min-height:46px!important;
 }
+/* Side-journey results inherit parchment-brown text from the light layout.
+   Restore accessible ink on the actual dark outcome surface. */
+html[data-skin="dark"] #v-puz .ex10 .ex10-outcome h2 {
+  color:var(--bp-gold)!important;
+}
+html[data-skin="dark"] #v-puz .ex10 .ex10-outcome :is(p,.ex10-outcome-story p,.ex10-outcome-story span) {
+  color:var(--bp-ink)!important;
+}
+html[data-skin="dark"] #v-puz .ex10 .ex10-outcome .ex10-outcome-story span {
+  color:var(--bp-gold)!important;
+}
+/* Result navigation: the app's painted icons remain intact, with one
+   circular touch surface per action and a distinct functional color. */
+html #v-puz .ex10 .ex10-outcome .ex10-actions-row button {
+  display:inline-grid!important;
+  place-items:center!important;
+  flex:0 0 52px!important;
+  width:52px!important;
+  height:52px!important;
+  min-width:52px!important;
+  min-height:52px!important;
+  padding:9px!important;
+  border:1.5px solid var(--bp-azure)!important;
+  border-radius:50%!important;
+  background:var(--bp-azure-soft)!important;
+  color:var(--bp-azure)!important;
+  box-shadow:var(--bp-shadow)!important;
+}
+html #v-puz .ex10 .ex10-outcome .ex10-actions-row button[data-ex10="next"],
+html #v-puz .ex10 .ex10-outcome .ex10-actions-row button[data-ex10="epilogue"] {
+  background:var(--bp-green-soft)!important;
+  color:var(--bp-green)!important;
+  border-color:var(--bp-green)!important;
+}
+html #v-puz .ex10 .ex10-outcome .ex10-actions-row button[data-ex10="retry"] {
+  background:var(--bp-gold-soft)!important;
+  color:var(--bp-gold)!important;
+  border-color:var(--bp-gold)!important;
+}
+html #v-puz .ex10 .ex10-outcome .ex10-actions-row button :is(svg,img) {
+  width:26px!important;
+  height:26px!important;
+  object-fit:contain!important;
+}
+html #v-puz .ex10 .ex10-outcome .ex10-actions-row button:focus-visible {
+  outline:3px solid var(--bp-focus)!important;
+  outline-offset:3px!important;
+}
 @media (max-width:360px) {
   html.fit-ex10 #v-puz .ex10-game-content {
     padding-inline:clamp(6px,2.5vw,10px);
