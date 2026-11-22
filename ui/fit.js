@@ -268,7 +268,7 @@
     arrange(); hud(); schedule();
     // Observe the viewport-height play container as well: some mobile WebKit resizes
     // change .pin height without changing toolbar dimensions or firing window resize.
-    for (const el of $('#play .pin, #play .pbar, #stage .pzhud, #stage #m')) layoutObserver?.observe(el); setTimeout(() => { hud(); schedule(); }, 120); setTimeout(() => { hud(); schedule(); }, 600);
+    for (const el of $$('#play .pin, #play .pbar, #stage .pzhud, #stage #m')) layoutObserver?.observe(el); setTimeout(() => { hud(); schedule(); }, 120); setTimeout(() => { hud(); schedule(); }, 600);
     setTimeout(() => { if (body === b) bubble(); }, 250);
     mo = new MutationObserver(() => { hud(); pageClues(b); $$('details.ui-rules:not([open])', b).forEach(d => { d.open = true; }); schedule(); });
     mo.observe(b, { childList: true, subtree: true });
