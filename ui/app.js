@@ -325,7 +325,7 @@ return done=>{
   hb.onclick=()=>{if(ended||hints>=3||!P.hint)return;const before=pts;hints++;if(!kid)setP(pts-Math.round(base*.2));const t=P.hint(hints);if(t==null){hints--;if(!kid)setP(before);const box=$('#pzt');box.hidden=false;box.textContent='اكتملت خطوات المساعدة المتاحة في هذه المحاولة. اختبر الحل أو أكمل ما بقي بنفسك.';hb.disabled=true;hb.setAttribute('aria-label','لا توجد تلميحات إضافية');return}$('#pzhn').textContent=3-hints;
     const box=$('#pzt');box.hidden=false;box.innerHTML=`<b>تلميح ${hints}:</b> ${t}`;sfx.lit();if(hints>=3||ended)hb.disabled=true};
   const rb=$('#pzr');if(rb)rb.onclick=()=>{if(ended)return;stopAll();delete st.dataset.expState;const b=$('#pzb');b.className='pzbody';b.innerHTML='';const hintBox=$('#pzt');hintBox.hidden=true;hintBox.innerHTML='';api.msg('');
-    pts=base;hints=0;wrongs=0;setP(pts);$('#pzhn').textContent='3';hb.disabled=false;hb.hidden=false;
+    pts=base;hints=0;wrongs=0;setP(pts);$('#pzhn').textContent='3';hb.disabled=false;hb.hidden=false;hb.setAttribute('aria-label','تلميح');
     rb.classList.remove('spin');void rb.offsetWidth;rb.classList.add('spin');sfx.flip();mount();hb.hidden=!P.hint;hb.disabled=!P.hint;b.classList.add('rebuilt')};
   let arm=0;$('#pzq').onclick=()=>{if(ended)return;if(kid){closePlay();return}const q=$('#pzq');
     if(!arm){arm=1;q.textContent='متأكد؟ اضغط مرة ثانية';q.classList.add('arm');setTimeout(()=>{arm=0;if(!ended&&q.isConnected){q.textContent='استسلم';q.classList.remove('arm')}},3000);return}
