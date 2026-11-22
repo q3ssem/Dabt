@@ -36,11 +36,9 @@ REG = r"""() => { const real = window.drMake; window.__realDr = real; window.drM
 async def boot(ctx):
     pg = await ctx.new_page(); errs = []; pg.on('pageerror', lambda e: errs.append(str(e)[:200]))
     await pg.goto(URL); await pg.wait_for_timeout(2200); await pg.evaluate("async()=>{const p=document.querySelector('.mpc[data-m=main]');if(p&&p.getClientRects().length)p.click();tab('puz');await mindlabPlayLayers.start()}"); await pg.wait_for_function("()=>window.mindlabPlayLayers?.ready===true", timeout=45000)
-    if await pg.locator('.mpc[data-m=main]').count() and await pg.locator('.mpc[data-m=main]').is_visible(): await pg.click('.mpc[data-m=main]')
     return pg, errs
 async def start(pg, gid, lv=None, seed=None, pre=None):
     await pg.goto(URL); await pg.wait_for_timeout(1600); await pg.evaluate("async()=>{const p=document.querySelector('.mpc[data-m=main]');if(p&&p.getClientRects().length)p.click();tab('puz');await mindlabPlayLayers.start()}"); await pg.wait_for_function("()=>window.mindlabPlayLayers?.ready===true", timeout=45000)
-    if await pg.locator('.mpc[data-m=main]').count() and await pg.locator('.mpc[data-m=main]').is_visible(): await pg.click('.mpc[data-m=main]')
     if pre: await pg.evaluate(pre)
     await pg.evaluate("([g, lv, s]) => { startRun([g]); if (lv) RUN.replay = { id: g, lv, seed: s } }", [gid, lv, seed]); await pg.wait_for_timeout(300)
     if await pg.locator('#stage #go').count() and await pg.locator('#stage #go').first.is_visible(): await pg.click('#stage #go')
