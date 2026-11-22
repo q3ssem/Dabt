@@ -39,7 +39,7 @@ assert(src.includes('ملفات الأدلة والملاحظات'),'V3 map expo
 assert(src.includes('دفتر الأدلة') && src.includes('القياس والاتجاه') && src.includes('الساعة والشهادة') && src.includes('العمر والأثر'),'three authored files');
 assert(src.includes('btn.setAttribute') && src.includes("'aria-pressed'"),'tab state is announced');
 assert(src.includes("modal.setAttribute('aria-modal', 'true')") && src.includes("e.key === 'Escape'"),'dialog keyboard controls');
-assert(css.includes('/* Jaziran evidence notebook */') && css.includes('html[data-skin="dark"] .mlj-evidence-card textarea'),'theme support');
+assert(css.includes('/* Jaziran evidence notebook:') && css.includes('html[data-skin="dark"] .mlj-evidence-card textarea'),'theme support');
 state.set(notesKey,'{broken');
 assert.equal(api.getEvidenceDraft('measurement'),'','corrupt drafts do not interfere with campaign save');
 assert.equal(api.saveEvidenceDraft('measurement','تعافي'),true,'bad notebook draft can be safely replaced');
