@@ -400,4 +400,5 @@ async def boot_after_reload(page):
     await page.wait_for_function("()=>!!window.ML10?.renderMap",timeout=30000)
     await page.evaluate("()=>ML10.renderMap()")
 
-asyncio.run(run())
+if __name__ == '__main__':
+    asyncio.run(run())
