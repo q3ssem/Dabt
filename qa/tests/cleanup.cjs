@@ -82,4 +82,5 @@ assert.ok(!read('qa/browser/authored_stages.py').includes("'pz_stat':"), 'retire
 assert.ok(!read('qa/browser/perf_bench.py').includes('pz_stat,pz_'), 'retired statue performance scenario removed');
 assert.ok(openings.includes("treasure/art/story5/crew_full_"),'lightweight heroine intro art retained');
 assert.ok(hub.includes('إغلاق القواعد') && openings.includes('إغلاق القواعد'),'rules can be dismissed in both journeys');
+assert.ok(JSON.parse(read('package.json')).scripts.test.includes('node qa/tests/journey-transitions.cjs'), 'journey integrity gate must run in npm test');
 console.log('MindLab cleanup passed: 78 lightweight puzzle records, 86 library intros, '+map.stations.length+' journey stations; retired assets absent.');
