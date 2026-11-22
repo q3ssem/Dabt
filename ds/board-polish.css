@@ -578,18 +578,21 @@ html.fit-page #v-puz :is(.t7-tools,.ex10-top-right) .fit-pinfo:focus-visible {
   outline:3px solid var(--bp-focus)!important;
   outline-offset:3px!important;
 }
-/* 5.5.29 refinement: balanced N-Back layout. This is the exact two-answer
+/* 5.5.29 refinement: balanced N-Back layout. Unlike authored motion
+   puzzles, legacy brain games have NO #pzb and therefore never get .fit.
+   Match the #bd + .duo pair directly so both engines style correctly.
+   This is the exact two-answer
    3×3 board, not a global rule for puzzle tiles or drag-and-drop canvases. */
-html #play.fit #stage:has(> #bd.board + .duo) {
+html #play #stage:has(> #bd.board + .duo) {
   gap:clamp(8px,1.7dvh,16px);
 }
 @media (min-height:700px) and (orientation:portrait) {
-  html #play.fit #stage:has(> #bd.board + .duo) {
+  html #play #stage:has(> #bd.board + .duo) {
     justify-content:space-evenly;
     padding-block:clamp(4px,1dvh,14px);
   }
 }
-html #play.fit #stage:has(> #bd.board + .duo) > .msg {
+html #play #stage:has(> #bd.board + .duo) > .msg {
   width:100%;
   max-width:420px;
   margin-inline:auto;
@@ -599,21 +602,21 @@ html #play.fit #stage:has(> #bd.board + .duo) > .msg {
   line-height:1.55;
   text-wrap:balance;
 }
-html #play.fit #stage:has(> #bd.board + .duo) > #bd.board {
+html #play #stage:has(> #bd.board + .duo) > #bd.board {
   width:min(100%,420px);
   max-width:420px;
   margin-inline:auto;
   flex-shrink:0;
   gap:clamp(6px,1.8vw,10px);
 }
-html #play.fit #stage:has(> #bd.board + .duo) > .duo {
+html #play #stage:has(> #bd.board + .duo) > .duo {
   width:100%;
   max-width:420px;
   margin-inline:auto;
   gap:clamp(8px,3vw,14px);
   flex-shrink:0;
 }
-html #play.fit #stage:has(> #bd.board + .duo) > .duo .match {
+html #play #stage:has(> #bd.board + .duo) > .duo .match {
   min-height:58px;
   padding:clamp(10px,2.6vw,16px);
   font-family:'Tajawal',system-ui,sans-serif;
