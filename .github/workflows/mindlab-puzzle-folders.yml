@@ -44,9 +44,17 @@ jobs:
       - name: Four columns, native unlocks and story chapters
         env:
           ENGINE: ${{ matrix.browser }}
+          SHOTS: /tmp/mindlab-puzzle-folders-${{ matrix.browser }}
         shell: bash
         run: |
           set -euo pipefail
           python -m http.server 8830 --bind 127.0.0.1 >/tmp/ml-folders-http.log 2>&1 &
           sleep 2
           python -u qa/browser/puzzle_folders_acceptance.py http://127.0.0.1:8830/ "$ENGINE"
+      - name: Upload category and story screenshots for design review
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mindlab-puzzle-folders-${{ matrix.browser }}
+          path: /tmp/mindlab-puzzle-folders-${{ matrix.browser }}/*.png
+          if-no-files-found: ignore
