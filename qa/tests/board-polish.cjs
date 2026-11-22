@@ -33,6 +33,17 @@ const brainAudit = fs.readFileSync('qa/browser/brain_game_board_audit.py','utf8'
 assert.ok(brainAudit.includes('criticalControls') && brainAudit.includes('labelled_control_below_44px'),
   'Browser acceptance must measure post-layout brain-game touch geometry');
 
+for (const token of ['.xkb {', 'repeat(6, minmax(0, 1fr))', '.pkeys .pkey', '.dx-board:has(#dxSum) .dx-row .dx-tile']) {
+  assert.ok(style.includes(token),'Dense brain input mobile display rule missing '+token);
+}
+assert.ok(brainAudit.includes('dense_input_target_below_44px'),
+  'Phone audit must reject undersized crossword, piano and balance controls');
+const index=fs.readFileSync('index.html','utf8');
+assert.ok(index.includes('aria-label="اعزف نغمة ${PNAME[i]}"'),
+  'Piano note needs a spoken Arabic name');
+assert.ok(index.includes("b.onclick=()=>press(i,b)"),
+  'Piano notes must be reachable by keyboard and screen-reader activation');
+
 const fitCSS = fs.readFileSync('ui/fit.css','utf8');
 for (const id of ['pz_rid','pz_scale','pz_tpath','pz_ybell','pz_plock','pz_aarch']) {
   assert.ok(fitCSS.includes('[data-la-game="'+id+'"]'),
