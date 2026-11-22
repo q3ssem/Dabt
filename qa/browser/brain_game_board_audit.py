@@ -55,7 +55,7 @@ MEASURE = r"""() => {
   const board=box(stage);
   const criticalControls=[...stage.querySelectorAll('#pk.peek,#xp.xnav,#xn.xnav')]
     .filter(shown).map(e=>({id:e.id,box:box(e)}));
-  const denseControls=[...stage.querySelectorAll('#xk button,.pkeys .pkey,.dx-balance-weight')]
+  const denseControls=[...stage.querySelectorAll('#xk button,.pkeys .pkey,.dx-board:has(#dxSum) .dx-row .dx-tile')]
     .filter(shown).map(e=>({label:(e.getAttribute('aria-label')||e.textContent||'').trim(),
       className:e.className,box:box(e)}));
   const duo=stage.querySelector('.duo');
