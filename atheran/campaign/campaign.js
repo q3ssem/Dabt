@@ -152,7 +152,7 @@
       S.save();
       aSwOpen('spores');
     } });
-    if (a.done.pz_aheart) actions.push({ label: window.MindlabRescue?.state()?.completed ?
+    if (s.done === ASTN.length && a.done.pz_aheart) actions.push({ label: window.MindlabRescue?.state()?.completed ?
         'طريق الإخلاء · الخريطة والقرار الأخير' : 'إخلاء أَثْرَان · جرّب الخريطة المفتوحة',
       open: () => {
         const current = aState();
