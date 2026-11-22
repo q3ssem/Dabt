@@ -807,3 +807,21 @@ html #play button,html #v-puz :is(.t7-puzzle-layout,.ex10-game-shell) button {
   object-fit:contain!important;
   object-position:center center;
 }
+
+/* Brain-game phone touch polish — measured on WebKit at 320/390/430.
+   These are independent, labelled controls, not coordinate-dependent board
+   cells. Keep their visible hit rectangles at least 44px on both themes. */
+#play #stage #pk.peek {
+  box-sizing: border-box;
+  min-height: 44px !important;
+  padding-block: 8px;
+}
+#play #stage :is(#xp.xnav,#xn.xnav) {
+  box-sizing: border-box;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  display: inline-grid;
+  place-items: center;
+}
+/* Do not apply the rule to crossword cells, piano keys, or balance pieces:
+   their dense geometry requires a separate alternative-input design. */
