@@ -654,6 +654,12 @@
       ['side','رحلة جانبية','markers/marker_side.webp']
     ];
     const chapterAr=key=>chapters.find(ch=>ch[0]===key)?.[1]||key;
+    const chapterStory={
+      seven_seas:'تبدأ رحلة رواء ونهى وورد بصندوق الجد في المرسى. عبر البحار السبعة تجمع البطلات الأدلة والأختام، وكل محطة تفتح الطريق إلى التالية.',
+      palace:'تقود أدلة البحار إلى قصر المرايا. داخل القصر تُقارن البطلات الشهادات والتوقيتات وتفكن الآليات، قبل أن يصبح طريق أَثْرَان متاحًا.',
+      atheran:'بعد إكمال قصر المرايا، تنطلق البعثة إلى أرض أَثْرَان. توثّق البطلات آثار الرحلات وتستعدن الطريق الآمن، ثم تصل القصة إلى القرار الأخير.',
+      side:'رحلة أسرار أَثْرَان مغامرة اختيارية مستقلة من أربع وعشرين محطة. أحداثها وألغازها لا تختصر الفصل الرسمي ولا تفتح أسراره.'
+    };
     const num=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
     let chapter=null;
     const done=st=>{
@@ -722,7 +728,9 @@
       const back=document.createElement('button');back.type='button';back.className='ml-folder-back';
       back.textContent='رجوع إلى الفصول';back.onclick=()=>select(null);
       header.append(back,pill(chapterAr(which),'ml-folder-chapter-heading'));
-      content.append(header);
+      const story=document.createElement('section');story.className='ml-folder-story-intro';
+      story.append(pill('من حكاية الرحلة','ml-folder-story-kicker'),pill(chapterStory[which],'ml-folder-story-text'));
+      content.append(header,story);
       const grid=document.createElement('div');grid.className='ml-folder-stations';
       const rows=data.stations.filter(st=>st.chapter===which).sort((a,b)=>a.order-b.order);
       rows.forEach(st=>{
@@ -800,7 +808,9 @@
         <button type="button" class="fit-opening-dismiss" id="fit-op-start" aria-label="إغلاق القواعد">×</button>
         <div class="fit-opening-scene fit-opening-scene--plain">
           <span class="fit-opening-badge">${info.badge}</span>
-          ${info.sprite ? `<img class="mlj-v3-opening-person" src="${info.sprite}" alt="">` : window.fitOpenings.crewMarkup(info.hero, info.expr)}
+          ${info.sprite ? `<div class="mlj-station-crew" aria-label="رواء ونهى وورد">
+            ${[['rawaa','رواء'],['nuha','نهى'],['ward','ورد']].map(([id,name])=>`<figure class="mlj-station-crew-person ${id===info.hero?'speaking':''}"><img src="${artV3}heroes/${id}.webp" alt="${name}"><figcaption>${name}</figcaption></figure>`).join('')}
+          </div>` : window.fitOpenings.crewMarkup(info.hero, info.expr)}
         </div>
         <div class="fit-opening-body">
           <h3 class="fit-opening-title">${info.title}</h3>

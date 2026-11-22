@@ -200,3 +200,11 @@ html #v-puz .ml-folder-group-title{display:block;margin:16px 0 9px;color:var(--i
 html #v-puz .ml-folder-side-title{padding-top:16px;border-top:1px solid #a8bdb1}
 html #v-puz .ml-folder-side-categories{grid-template-columns:minmax(0,1fr);max-width:240px}
 html[data-skin="dark"] #v-puz .ml-folder-group-title{color:#e6f1ec}
+
+/* Story synopsis is in prose, never a world-map image. */
+#v-puz .ml-folder-story-intro{display:grid;gap:6px;padding:13px 14px;margin:6px 0 15px;border:1.5px solid #a5bcad;background:#f4f8f4;border-radius:15px;text-align:start}
+#v-puz .ml-folder-story-kicker{font:800 12px/1.4 Tajawal,system-ui,sans-serif;color:#376e5e}
+#v-puz .ml-folder-story-text{font:600 13px/1.75 Tajawal,system-ui,sans-serif;color:#253f36}
+html[data-skin="dark"] #v-puz .ml-folder-story-intro{background:#1b2929;border-color:#6b9686}
+html[data-skin="dark"] #v-puz .ml-folder-story-kicker{color:#aadccb}
+html[data-skin="dark"] #v-puz .ml-folder-story-text{color:#e0ece7}

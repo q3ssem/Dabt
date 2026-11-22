@@ -429,3 +429,12 @@ html[data-skin="dark"] #v-puz .mlj-journey-entry{background:linear-gradient(115d
 #v-puz .mlj-v3-extras>div{display:flex;gap:7px;flex-wrap:wrap;max-height:35dvh;overflow:auto}
 #v-puz .mlj-v3-extras:not([open])>div{display:none}
 @media(max-width:360px){#v-puz .mlj-journey-entry{padding:11px;gap:8px}#v-puz .mlj-entry-action{font-size:11px;white-space:normal}}
+
+/* Three original hand-painted protagonists appear in each sea/side opening. */
+.mlj-station-rules .mlj-station-crew{display:flex;justify-content:center;align-items:end;gap:clamp(6px,2vw,18px);width:100%;padding:7px 10px 0}
+.mlj-station-rules .mlj-station-crew-person{display:grid;justify-items:center;gap:1px;flex:0 1 88px;min-width:0;margin:0;opacity:.82;filter:saturate(.85)}
+.mlj-station-rules .mlj-station-crew-person.speaking{opacity:1;filter:none}
+.mlj-station-rules .mlj-station-crew-person img{width:clamp(48px,17vw,82px);height:clamp(55px,18vw,90px);max-width:100%;object-fit:contain;object-position:center bottom}
+.mlj-station-rules .mlj-station-crew-person figcaption{font:800 11px/1.4 Tajawal,system-ui,sans-serif;color:inherit}
+.mlj-station-rules .fit-opening-scene--plain{min-height:118px;height:auto!important;overflow:visible}
+@media(max-width:360px){.mlj-station-rules .mlj-station-crew-person img{width:48px;height:61px}}
