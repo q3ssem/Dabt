@@ -1,4 +1,4 @@
-/* 5.5.28 — Unified Journey Map Hub («رحلة الكنز»), 46 Non-Library Openings (21 Treasure + 25 Side-Journey),
+/* 5.5.28 — Unified Journey Map Hub («رحلة الكنز»), 45 Non-Library Openings (21 Treasure + 24 Side-Journey),
    12 Transitions Viewer, and Priority 7 / Four Puzzles Board Art Accents.
    Presentation only: never alters save keys, puzzle rules, or secret-world unlock gating. */
 (function () {
