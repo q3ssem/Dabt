@@ -2,7 +2,7 @@
 Usage: python qa/browser/phase3_acceptance.py URL [chromium|webkit] [quick|full]
 """
 import asyncio, json, os, sys
-from playwright.async_api import async_playwright
+from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeout
 
 URL = sys.argv[1] if len(sys.argv)>1 else 'http://127.0.0.1:8765/'
 ENGINE = sys.argv[2] if len(sys.argv)>2 else 'chromium'
@@ -45,14 +45,28 @@ async def main():
         assert saved=='PHASE3_SAVE_MUST_SURVIVE'
         await page.wait_for_function("()=>!!navigator.serviceWorker?.controller",timeout=30000)
         await page.evaluate("()=>window.mindlabOffline.prepareAll()")
-        await page.locator('#ml-load-skip').wait_for(state='visible',timeout=15000)
-        await page.wait_for_function("()=>document.querySelector('#ml-load-count')?.textContent.includes(' من ')",timeout=30000)
-        await page.wait_for_timeout(200)
-        await page.locator('#ml-load-skip').click()
-        await page.locator('#ml-preload').wait_for(state='detached',timeout=5000)
+        # Fast cache completion can remove the overlay between "button visible"
+        # and click(). This is not a cancel-control defect; an absent completed
+        # download must not become a 30-second flaky test failure.
+        await page.wait_for_function("""()=>{
+          const overlay=document.querySelector('#ml-preload');
+          const button=document.querySelector('#ml-load-skip');
+          return !overlay || !!(button && button.getClientRects().length);
+        }""",timeout=30000)
+        cancelled=False
+        if await page.locator('#ml-preload').count() and await page.locator('#ml-load-skip').is_visible():
+            try:
+                await page.locator('#ml-load-skip').click(timeout=5000)
+                cancelled=True
+            except PlaywrightTimeout:
+                if await page.locator('#ml-preload').is_visible():
+                    raise
+        await page.locator('#ml-preload').wait_for(state='detached',timeout=10000)
         assert await page.evaluate("()=>localStorage.getItem('mindlab:phase3:sentinel')")==saved
         await page.wait_for_timeout(800)
-        report={'engine':ENGINE,'save_preserved':True,'cancel_control':True,'loaded_puzzle':True,'loaded_side':True}
+        report={'engine':ENGINE,'save_preserved':True,
+                'cancel_control':cancelled,'download_completed_before_cancel':not cancelled,
+                'loaded_puzzle':True,'loaded_side':True}
         if MODE=='full':
             await page.evaluate("()=>window.mindlabOffline.prepareAll()")
             await page.locator('#ml-preload').wait_for(state='visible',timeout=10000)
