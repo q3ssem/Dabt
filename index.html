@@ -7053,7 +7053,7 @@ function runPMirror(){return pzPlay('pz_pmirror',api=>{
     return solved;
   }
   function finish(message){
-    busy=true;sfx.lvl();
+    busy=true;const hintButton=$('#pzh');if(hintButton)hintButton.disabled=true;sfx.lvl();
     later(()=>pWin(api,'pz_pmirror',message),600);
   }
   mirrors.forEach(b=>b.onclick=()=>{
@@ -8245,7 +8245,7 @@ function runARing(){return pzPlay('pz_aring',api=>{
   function check(){if(api.ended||busy)return;if(P.S.every((s,k)=>u[k]===s.end)){busy=true;sfx.lvl();const o=P.S.map((s,k)=>[s.end,k]).sort((a,b)=>a[0]-b[0]);later(()=>aWin(api,'pz_aring',`أقدم خشبة: ${nm[o[0][1]]} سنة ${XAR(P.y0+o[0][0])}، وآخرها ${nm[o[o.length-1][1]]} سنة ${XAR(P.y0+o[o.length-1][0])}.`),500);return}
     miss++;api.wrong();const n=P.S.filter((s,k)=>u[k]!==s.end).length;if(miss>=3){busy=true;P.S.forEach((s,k)=>u[k]=s.end);draw();api.over('هذه التواريخ الصحيحة.');return}api.msg(`${arN(n,AN.beam)} في غير مكانها.`)}
   $('#arggo').onclick=check;draw();api.msg('طابق حلقات الأخشاب.');pzHook({P,positions:()=>u.slice(),set:()=>{P.S.forEach((s,k)=>u[k]=s.end);draw()},check});
-  return{hint:k=>{if(k===1)return'ابحث في الشريط الطويل عن أبرز ما في الخشبة: سنتان ممطرتان متتاليتان، أو سنة جافة جدًا بين ممطرتين.';const q=P.S.findIndex((s,j)=>u[j]!==s.end);if(q<0)return null;u[q]=P.S[q].end;sel=q;draw();return`ثبّت لك ${nm[q]}.`},reveal:()=>{P.S.forEach((s,k)=>u[k]=s.end);draw();return'هذه التواريخ.'}}})}
+  return{hint:k=>{if(k===1)return'ابحث في الشريط الطويل عن أبرز ما في الخشبة: سنتان ممطرتان متتاليتان، أو سنة جافة جدًا بين ممطرتين.';const q=P.S.findIndex((s,j)=>u[j]!==s.end);if(q<0)return'اكتملت محاذاة الأخشاب. اضغط «ثبّت التواريخ» للتحقق من النتيجة.';u[q]=P.S[q].end;sel=q;draw();return`ثبّت لك ${nm[q]}.`},reveal:()=>{P.S.forEach((s,k)=>u[k]=s.end);draw();return'هذه التواريخ.'}}})}
 Object.assign(AN,{beam:['خشبة واحدة','خشبتان','أخشاب','خشبة']});
 
 /* ================= desert 1: ساعة الظل — find the one cell the shadows agree on ================= */
