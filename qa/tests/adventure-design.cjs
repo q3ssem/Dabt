@@ -15,5 +15,5 @@ assert(css.includes('#play[data-mla-theme="pirate"]'));
 assert(css.includes('#play[data-mla-theme="wreck"]'));
 assert(css.includes('#play[data-mla-theme="temple"]'));
 assert(offline.includes('ui/adventure-design.js'));
-assert(sw.includes("VERSION='5.5.28'"));
+assert(sw.includes("VERSION='5.5.29'"));
 console.log(`Adventure design: ${ids.length} game IDs, 3 themed families, scene lifecycle and offline cache checks passed.`);
