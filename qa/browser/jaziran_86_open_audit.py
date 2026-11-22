@@ -214,6 +214,8 @@ async def run():
                 if run['pageErrors']:
                     run['issues'].append('javascript_error')
                 if (run['issues'] or index==0 or
+                    gid in ('pz_laser','pz_pmirror','pz_tdig','pz_zcode',
+                            'pz_pdragon','pz_aheart','pz_tpath','pz_zroute','pz_wlog','pz_aarch','pz_rid') or
                     any((d.get('interactiveMin') or 999)<29 for d in run['cases'])):
                     await page.set_viewport_size({'width':390,'height':844})
                     await page.screenshot(path=str(OUT/f'{CHAPTER}-{ENGINE}-{gid}.png'),timeout=9000)
