@@ -1,6 +1,8 @@
 name: MindLab side journey 24 real-solution acceptance
 
 on:
+  push:
+    branches: [review/mindlab-side-native-compat-20261123]
   pull_request:
     branches: [main]
     paths:
