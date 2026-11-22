@@ -36,18 +36,9 @@
 
 /* ---------- UI frames: 9-slice borders cut from the approved frames (originals untouched) ---------- */
 html body .ah-framed,html body #play .ah-framed,html body #play #pzb .ah-framed,html body #v-puz .ah-framed{border-style:solid!important;border-width:10px!important;border-image:var(--ah-frame) 24 / 10px stretch!important;border-radius:0!important}
-#v-puz.ah-view .amapw.ah-framed{border-width:8px!important;border-image-width:8px!important}
 html body #play .pzhint.ah-framed.ah-framed{border-style:solid!important;border-width:8px!important;border-image:var(--ah-frame) 24 / 8px stretch!important;border-radius:0!important;position:relative}
 
-/* ---------- atlas on narrow phones: 30 px station buttons (WCAG 2.5.8 minimum is 24 px), spread apart by JS ---------- */
-@media (max-width:360px){#v-puz .ahub .amst{width:30px;height:30px}#v-puz .ahub .amst i{width:22px;height:22px}}
 
-/* ---------- atlas: the approved state pins (open / done / locked) were drawn under the 34 px station seals and never
-   showed. Lift them above each seal's upper corner, out of the way of its number and of taps. ---------- */
-#v-puz .ah-station-map-markers{z-index:7!important;pointer-events:none!important}
-#v-puz .ah-map-marker{width:20px!important;height:20px!important;transform:translate(-2px,-34px)!important;pointer-events:none;filter:drop-shadow(0 1px 1px rgba(40,25,5,.45))}
-#v-puz .ah-map-marker .ah-marker-base{display:none}
-@media (max-width:360px){#v-puz .ah-map-marker{width:17px!important;height:17px!important;transform:translate(-2px,-30px)!important}}
 
 /* ---------- relics: 14-slot strip (found icon / missing silhouette) ---------- */
 .ah-relic-strip{display:grid;grid-template-columns:repeat(7,1fr);gap:6px;margin:8px 0 12px}

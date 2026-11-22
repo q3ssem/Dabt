@@ -1,7 +1,4 @@
 /* MindLab 5.5.28 — Atheran visual asset integration */
-.ah-world-map-art{position:absolute;inset:0;z-index:0;overflow:hidden;border-radius:8px}
-.ah-world-map-art img{position:absolute;inset:0;width:100%;height:100%;object-fit:fill;pointer-events:none;user-select:none}
-.amapw .xmapo{z-index:1}.amapw .amreg{z-index:2}
 .ah-station-art{display:grid;gap:8px;margin:8px 0 12px}
 .ah-station-entry{width:100%;aspect-ratio:16/7;object-fit:cover;border-radius:10px;border:1px solid rgba(58,38,22,.36);display:block}
 .ah-station-main{height:74px;border-radius:8px;background-position:center;background-size:cover;border:1px solid rgba(58,38,22,.25)}
@@ -22,13 +19,6 @@
 #play.ah-stage-art{background-image:linear-gradient(rgba(250,245,230,.86),rgba(250,245,230,.86)),var(--ah-stage-bg)!important;background-size:cover!important;background-position:center!important;background-repeat:no-repeat!important}
 @media(max-width:420px){.ah-station-main{height:60px}.ah-stage-previews figcaption{font-size:9px}.ah-region-art{grid-template-columns:1fr 76px}.ah-region-map{width:76px}}
 
-/* Coordinate-aware station pins; the 128px marker files are icons, never map-sized layers. */
-.ah-world-map-art{isolation:isolate;z-index:0}
-.ah-world-map-art>img:nth-child(1){z-index:0}.ah-world-map-art>img:nth-child(2){z-index:1}.ah-world-map-art>img:nth-child(3){z-index:2}.ah-world-map-art>img:nth-child(4){z-index:3}.ah-world-map-art>img:nth-child(5){z-index:4}
-.ah-station-map-markers{position:absolute;inset:0;z-index:2;pointer-events:none}
-.ah-map-marker{position:absolute;width:26px;height:26px;transform:translate(-50%,-50%);display:block}
-.ah-map-marker img{position:absolute;inset:0;width:100%;height:100%;object-fit:contain}
-.ah-map-marker .ah-marker-base{z-index:0}.ah-map-marker .ah-marker-state{z-index:1}
 .ah-region-art{display:grid;grid-template-columns:minmax(0,1fr) 82px;gap:7px;align-items:stretch;margin:8px 0 12px}
 .ah-region-scene{position:relative;grid-column:1;grid-row:1;min-height:94px;aspect-ratio:16/9;overflow:hidden;border-radius:8px;border:1px solid rgba(58,38,22,.3);background:#d7c9a9}
 .ah-region-scene img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
@@ -40,7 +30,6 @@
 .ah-secret-side{grid-column:2;grid-row:1;display:grid;gap:6px}
 .ah-secret-side img{width:100%;height:52px;object-fit:cover;border-radius:6px}
 .ah-secret-interactive{grid-column:1 / -1;width:100%;max-height:100px;object-fit:contain;border-radius:7px;background:rgba(244,233,204,.35)}
-@media(max-width:420px){.ah-map-marker{width:22px;height:22px}.ah-region-art{grid-template-columns:minmax(0,1fr) 72px}.ah-region-map{width:72px}.ah-secret-open-art{grid-template-columns:minmax(0,1fr) 78px}}
 
 .atrl li{display:flex;align-items:center;gap:7px;flex-wrap:wrap}
 .ah-relic-icon{flex:0 0 30px;width:30px;height:30px;object-fit:contain;vertical-align:middle;margin:0}
@@ -50,4 +39,3 @@
 .ah-entry-environment img{position:absolute;inset:0;width:100%;height:100%;object-fit:cover}
 .ah-entry-environment .ah-entry-bg{z-index:0}.ah-entry-environment .ah-entry-fg{z-index:1}.ah-entry-environment .ah-entry-landmarks{z-index:2}
 
-.amapw .xmapo{z-index:1}.amapw .amreg{z-index:3}.amapw .pveil{z-index:4}
