@@ -825,3 +825,18 @@ html #play button,html #v-puz :is(.t7-puzzle-layout,.ex10-game-shell) button {
 }
 /* Do not apply the rule to crossword cells, piano keys, or balance pieces:
    their dense geometry requires a separate alternative-input design. */
+
+/* The balance engine scales its play surface on narrow phones. Give each
+   weight a separate, perceivable target after that transform, without
+   changing the underlying weight-selection / scoring logic. */
+html #play #stage .dx-balance-weight {
+  box-sizing: border-box;
+  min-width: 78px !important;
+  min-height: 78px !important;
+  padding: 12px !important;
+  touch-action: manipulation;
+}
+html #play #stage .dx-balance-weight[aria-pressed="true"] {
+  outline: 3px solid var(--bp-focus);
+  outline-offset: 2px;
+}
