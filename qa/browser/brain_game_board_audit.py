@@ -187,7 +187,7 @@ async def run():
                                for r in reports if r["issues"]],
                    "results":reports,"saveSentinelPreserved":True}
         (OUT/f"brain-board-{ENGINE}.json").write_text(
-            json.dumps(summary,ensure_ascii=False,indent=2),encoding="utf-8")
+            json.dumps(summary,ensure_ascii=True,indent=2),encoding="utf-8")
         print("BRAIN_BOARD_SUMMARY="+json.dumps(
             {k:v for k,v in summary.items() if k not in ("results","catalog")},
             ensure_ascii=False),flush=True)
