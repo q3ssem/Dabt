@@ -61,6 +61,8 @@ async def main():
         msg=await page.locator('.mlj-evidence-inference').inner_text()
         assert 'صفحة واحدة' in msg and 'شاهد' in msg,'duplicate witness not rejected'
         assert 'اختبر الاستنتاج' not in msg
+        await page.get_by_role('button',name='عرض الأدلة الناقصة').click()
+        assert await page.evaluate("()=>document.activeElement?.textContent==='تحقق من القرينة'"),'incomplete seal should focus its first missing evidence'
         await prove_source(page,1,0)  # independent witness from the shore
         assert 'اختبر الاستنتاج' in await page.locator('.mlj-evidence-inference').inner_text()
         await page.locator('.mlj-evidence-inference .mlj-evidence-options button').nth(2).click()
