@@ -29,6 +29,8 @@ assert.ok(!/\#pzb\s*\*\s*\{/.test(style), 'Never change all puzzle content at on
 const fitUI = fs.readFileSync('ui/fit.js','utf8');
 assert.ok(fitUI.includes("for (const el of $$('#play .pin, #play .pbar, #stage .pzhud, #stage #m')"),
   'Puzzle fitting must iterate all viewport-height observer targets in mobile WebKit');
+assert.ok(fitUI.includes('viewportProbe = setInterval') && fitUI.includes('if (viewportProbe) { clearInterval(viewportProbe);'),
+  'WebKit viewport fallback must be created and disposed per puzzle');
 
 const faces = fs.readFileSync('fonts/fonts.css','utf8');
 assert.ok(faces.includes("font-family: 'Tajawal'"),'Hosted Arabic text font must remain');
