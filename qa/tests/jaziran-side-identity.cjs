@@ -23,6 +23,12 @@ for(const s of stages){
 }
 assert(!/\bpz_[a-z0-9]+\b/.test(side),'side adventure should not directly launch library puzzle IDs');
 assert(side.includes("mindlab:expedition10:v1"),'side progress remains separately saved');
+const activeScene=side.slice(side.indexOf('function commonGame('),side.indexOf('function bindCommon('));
+assert(activeScene.includes(`data-state="${save.done[s.id]?'done':'open'}"`),
+  'active side-journey scene must not display a locked badge');
+assert(activeScene.includes(`\${stateBadge(save.done[s.id]?'done':'open')}`),
+  'active playable stage badge must announce open or done, not locked');
+
 const props=new Map();
 for(const s of stages){
   const ids=props.get(s.prop)||[];ids.push(s.id);props.set(s.prop,ids);
