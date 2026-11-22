@@ -30,7 +30,7 @@ async def check(ok,label):
 
 async def click(page,selector):
     target=page.locator(selector).first
-    if selector.startswith('[data-route-node='):
+    if selector.startswith('[data-route-node=') or selector.startswith('[data-star='):
         # Playwright Locator.click performs an extra automatic scroll and may
         # hit the moving graph container instead of its correctly hit-tested
         # 44px node. A real touch at the verified node centre models the
@@ -95,6 +95,13 @@ async def drag_order(page,host,items):
         src=page.locator(f'{host} [data-tray] [data-tok="{item}"]')
         dst=page.locator(f'{host} [data-slot="{slot}"]')
         await src.drag_to(dst,timeout=9000)
+        # A completed drag can synchronously render the victory screen and
+        # remove every tray/slot node; that is success, not a lost token.
+        if await page.locator('.ex10-outcome h2').count():
+            await check(slot==len(items)-1 and
+                        await page.locator('.ex10-outcome h2').inner_text()=="نجاح!",
+                        f"last dragged token {item} completed the stage")
+            break
         await check(await dst.locator(f'[data-tok="{item}"]').count()==1,
                     f"dragged {item} into position {slot+1} via pointer")
         
@@ -136,6 +143,7 @@ async def solve(page,index):
     elif index==2:
         # Determine the real map's current slots and swap two physical cards.
         for pos in range(4):
+            if await page.locator('.ex10-outcome h2').count():break
             original=await js(page,"()=>[...document.querySelectorAll('[data-tile-pos]')].map(x=>x.querySelector('b').textContent)")
             labels=["المنارة","البوصلة","النهر","المفتاح"]
             if original[pos]==labels[pos]:continue
