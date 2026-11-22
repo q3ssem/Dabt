@@ -626,3 +626,66 @@ html #v-games .ui-grid article .ui-gmain .ico { width: 60px !important; height: 
 /* 5.5.28 cleanup: lightweight station intro, no pre-game painted background. */
 .mlj-v3-opening-art--plain{height:92px!important;background:none!important;overflow:visible}
 .mlj-v3-opening-art--plain img{width:92px;height:92px;object-fit:contain}
+
+
+/* Jaziran evidence notebook: drafts never claim puzzle verification or award campaign rewards. */
+.mlj-evidence-modal { z-index: 132; }
+.mlj-evidence-card { width: min(100%, 540px); gap: 10px; }
+.mlj-evidence-card h2, .mlj-evidence-card h3, .mlj-evidence-card p { margin: 0; }
+.mlj-evidence-card .mlj-head button,
+.mlj-evidence-tabs button,
+.mlj-evidence-actions button {
+  min-height: 44px;
+  padding: 8px 12px;
+  border: 1px solid #8b9e99;
+  background: transparent;
+  color: inherit;
+  border-radius: 11px;
+  font: inherit;
+  cursor: pointer;
+}
+.mlj-evidence-tabs { display: flex; flex-wrap: wrap; gap: 6px; }
+.mlj-evidence-tabs button { flex: 1 1 118px; font-weight: 700; }
+.mlj-evidence-tabs button[aria-pressed="true"],
+.mlj-evidence-actions button {
+  background: #12695e;
+  border-color: #12695e;
+  color: #fff;
+}
+.mlj-evidence-question { font-weight: 700; line-height: 1.5; }
+.mlj-evidence-intro, .mlj-evidence-caveat { font-size: 13px; line-height: 1.6; }
+.mlj-evidence-sources { display: grid; gap: 6px; padding: 0; margin: 0; list-style: none; }
+.mlj-evidence-sources li {
+  display: flex; flex-wrap: wrap; align-items: baseline; justify-content: space-between;
+  gap: 4px 14px; padding: 9px; border-radius: 9px;
+  border: 1px solid #bbccc4;
+}
+.mlj-evidence-sources small { font-size: 12px; }
+.mlj-evidence-card label { font-weight: 700; }
+.mlj-evidence-card textarea {
+  box-sizing: border-box;
+  width: 100%;
+  max-width: 100%;
+  min-height: 100px;
+  resize: vertical;
+  padding: 10px;
+  border: 1.5px solid #708d87;
+  border-radius: 11px;
+  font: inherit;
+  line-height: 1.6;
+  background: #fff;
+  color: #20322e;
+}
+.mlj-evidence-actions { display: flex; align-items: center; flex-wrap: wrap; gap: 9px; }
+.mlj-evidence-actions [role="status"] { flex: 1 1 140px; font-size: 13px; }
+.mlj-evidence-modal :is(button,textarea):focus-visible {
+  outline: 3px solid #df9c24; outline-offset: 2px;
+}
+html[data-skin="dark"] .mlj-evidence-sources li { border-color: #6b898a; }
+html[data-skin="dark"] .mlj-evidence-card textarea { background: #223740; color: #fff9ea; border-color: #9ab7b2; }
+html[data-skin="dark"] .mlj-evidence-tabs button[aria-pressed="true"],
+html[data-skin="dark"] .mlj-evidence-actions button { background: #2c8175; border-color: #85b9a8; color: #fff; }
+@media (max-width: 350px) {
+  .mlj-evidence-card { padding: 12px; }
+  .mlj-evidence-tabs button { flex-basis: 100%; }
+}
