@@ -30,12 +30,18 @@ async def run():
             folders=page.locator('#v-puz .ml-folder-category')
             await folders.first.wait_for(state='visible',timeout=20000)
             count=await folders.count()
+            await page.wait_for_function("""() => curTab === 'puz' &&
+              [...document.querySelectorAll('#v-puz .ml-folder-category img')].every(img=>img.complete && img.naturalWidth>0)
+            """,timeout=15000)
             await page.screenshot(path=str(SHOTS/f'folders-{ENGINE}-{width}.png'),full_page=True)
             assert count>=4, f'only {count} library folders'
             assert await page.locator('#v-puz .la-section').count()==0,'old all-puzzles-at-once layout remains'
             await page.locator('[data-folder-name="حركة ومسارات"]').click()
             tiles=page.locator('#v-puz .ml-folder-grid .ml-folder-puzzle')
             n=await tiles.count()
+            await page.wait_for_function("""() => 
+              [...document.querySelectorAll('#v-puz .ml-folder-grid img')].every(img=>img.complete && img.naturalWidth>0)
+            """,timeout=15000)
             await page.screenshot(path=str(SHOTS/f'movement-grid-{ENGINE}-{width}.png'),full_page=True)
             assert n>=5, f'movement has only {n} puzzles'
             assert not await tiles.nth(0).is_disabled(),'initial puzzle is locked'
@@ -69,6 +75,9 @@ async def run():
             assert await page.locator('#mlj-unified-hub.ml-folder-journey').is_visible(),'story folder dialog does not open'
             assert await page.locator('#mlj-unified-hub .mlj-v3-map-scroll, #mlj-unified-hub .mlj-map-img').count()==0,'legacy map still present'
             assert await page.locator('#mlj-unified-hub .ml-folder-chapter').count()==4,'story chapters missing'
+            await page.wait_for_function("""() =>
+              [...document.querySelectorAll('#mlj-unified-hub .ml-folder-chapter img')].every(img=>img.complete && img.naturalWidth>0)
+            """,timeout=15000)
             await page.screenshot(path=str(SHOTS/f'story-chapters-{ENGINE}-{width}.png'))
             await page.locator('#mlj-unified-hub [data-chapter="seven_seas"]').click()
             sts=page.locator('#mlj-unified-hub .ml-folder-stations .ml-folder-station')
