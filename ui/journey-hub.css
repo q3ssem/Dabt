@@ -661,6 +661,26 @@ html #v-games .ui-grid article .ui-gmain .ico { width: 60px !important; height: 
   border: 1px solid #bbccc4;
 }
 .mlj-evidence-sources small { font-size: 12px; }
+.mlj-evidence-summary {
+  border-inline-start: 3px solid #1b796d;
+  padding: 7px 9px;
+  background: rgba(27, 121, 109, 0.07);
+  font-size: 13px;
+  line-height: 1.65;
+}
+.mlj-evidence-sources li[data-evidence-state="completed"] {
+  border-color: #31836f;
+  background: rgba(46, 134, 104, 0.08);
+}
+.mlj-evidence-sources li[data-evidence-state="unlinked"],
+.mlj-evidence-sources li[data-evidence-state="undiscovered"] {
+  border-style: dashed;
+}
+html[data-skin="dark"] .mlj-evidence-summary { border-color: #70d2b9; background: rgba(112, 210, 185, 0.08); }
+html[data-skin="dark"] .mlj-evidence-sources li[data-evidence-state="completed"] {
+  background: rgba(83, 166, 143, 0.12);
+  border-color: #88cead;
+}
 .mlj-evidence-card label { font-weight: 700; }
 .mlj-evidence-card textarea {
   box-sizing: border-box;
