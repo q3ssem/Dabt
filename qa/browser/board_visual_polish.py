@@ -166,6 +166,33 @@ async def run():
         }""")
         await page.wait_for_function("()=>document.documentElement.dataset.skin==='light'",timeout=7000)
         await open_game(page,"dual")
+        # Verify the N-Back grid and both response buttons use portrait height
+        # without stretching the 3x3 tiles or moving buttons off-screen.
+        dual_metrics=[]
+        for bw,bh in [(320,760),(390,844),(430,932)]:
+            await page.set_viewport_size({"width":bw,"height":bh})
+            measured=await page.evaluate("""()=>{
+                const b=document.querySelector('#stage > #bd.board');
+                const btn=document.querySelector('#stage > .duo');
+                const body=document.querySelector('#stage');
+                if(!b||!btn)return null;
+                const r=b.getBoundingClientRect(),q=btn.getBoundingClientRect();
+                const cs=getComputedStyle(body);
+                return {boardWidth:Math.round(r.width),boardHeight:Math.round(r.height),
+                  matchBottom:Math.round(q.bottom),below:Math.round(innerHeight-q.bottom),
+                  justify:cs.justifyContent,
+                  controls:btn.querySelectorAll('button').length,
+                  overflow:document.documentElement.scrollWidth>innerWidth+3};
+            }""")
+            assert measured and measured["controls"]==2,f"N-Back match controls missing at {bw}px: {measured}"
+            assert abs(measured["boardWidth"]-measured["boardHeight"])<=3,f"N-Back tiles distorted: {measured}"
+            assert measured["below"]>=8 and not measured["overflow"],f"N-Back controls cropped at {bw}px: {measured}"
+            if bh>=844:
+                assert measured["justify"]=="space-evenly",f"Brain-game height was not redistributed: {measured}"
+                assert measured["below"]<=140,f"Excessive blank space under N-Back at {bw}px: {measured}"
+            dual_metrics.append({"width":bw,**measured})
+            if SHOTS: await page.screenshot(path=str(SHOTS/f"brain-dual-light-{bw}.png"))
+        await page.set_viewport_size({"width":390,"height":844})
         legacy=await page.evaluate(MEASURE)
         assert legacy["skin"]=="light" and legacy["ink"]==rows[0]["ink"],"Brain-game screenshot does not use the saved light theme"
         assert legacy["button"] and legacy["button"]["radius"]>=19,"Legacy brain-game HUD not polished"
@@ -271,6 +298,27 @@ async def run():
                 overflow:document.documentElement.scrollWidth>innerWidth+3};
             }""")
             assert side_mobile["icons"]>=2 and side_mobile["bounded"],f"Side toolbar does not fit {width}px: {side_mobile}"
+            # Lighthouse evidence should be readable text rows, not stacked
+            # bordered cards. Verify typography and preserve every clue.
+            evidence=await page.evaluate("""()=>{
+              const box=document.querySelector('#v-puz .ex10-game-content .ex10-clues');
+              if(!box)return null;
+              const clues=[...box.querySelectorAll('.ex10-clue')];
+              const rows=clues.map(el=>{
+                const x=el.getBoundingClientRect(),s=getComputedStyle(el);
+                return {left:Math.round(x.left),width:Math.round(x.width),
+                  font:parseFloat(s.fontSize),bg:s.backgroundColor,
+                  text:el.textContent.trim().length,rounded:parseFloat(s.borderRadius)};
+              });
+              return {count:clues.length,rows,
+                grid:getComputedStyle(box).gridTemplateColumns,
+                overflow:document.documentElement.scrollWidth>innerWidth+3};
+            }""")
+            assert evidence and evidence["count"]>=5,f"Lighthouse clue list incomplete at {width}px: {evidence}"
+            assert all(x["font"]>=12 and x["text"]>6 and x["rounded"]==0 for x in evidence["rows"]),f"Side clues too small or still heavy cards: {evidence}"
+            assert len(set(x["left"] for x in evidence["rows"]))==1,f"Clues are misaligned at {width}px: {evidence}"
+            assert not evidence["overflow"],f"Side clues horizontally overflow at {width}px"
+
             assert not side_mobile["titleCollision"] and not side_mobile["overflow"],f"Side title collides on {width}px: {side_mobile}"
             if SHOTS: await page.screenshot(path=str(SHOTS/f"side-lighthouse-light-{width}.png"))
         assert not errors,errors[:5]
@@ -278,7 +326,8 @@ async def run():
           "engine":ENGINE,"panels":len(rows)+3,"themes":["light","dark"],
           "widths":[320,390,430],"picker_levels":rows[0]["pickerButtons"],
           "close_contrast":[row["button"]["contrast"] for row in rows],
-          "hud_icon_counts":[len(row["hudIcons"]) for row in rows],"errors":errors
+          "hud_icon_counts":[len(row["hudIcons"]) for row in rows],
+          "dual_layout":dual_metrics,"errors":errors
         },ensure_ascii=False),flush=True)
         await browser.close()
 
