@@ -1,6 +1,9 @@
 name: MindLab full offline pack + old-save acceptance (release candidate)
 
 on:
+  # Recheck the new folder bundle's SW generation and manifest before release.
+  push:
+    branches: [review/mindlab-puzzle-folders-safety-20261122]
   pull_request:
     branches: [main]
     paths:
