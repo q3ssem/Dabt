@@ -6504,17 +6504,17 @@ function zsMake(lv){const[n,k,np]=ZS_LV[lv-1],offs=[[0,0],[1,0],[-1,0],[0,1],[0,
     const all=[];const rec=(i,a)=>{if(all.length>5)return;if(i===k){const s=zsShadow(P,a);if(s.size===T.size&&[...s].every(c=>T.has(c)))all.push(a.slice());return}for(let p=0;p<np;p++){a.push(p);rec(i+1,a);a.pop()}};rec(0,[]);
     const start=st.map(()=>rnd(np));const S0=zsShadow(P,start);if(all.length!==1||(S0.size===T.size&&[...S0].every(c=>T.has(c))))continue;return{...P,T,sol,start}}return zsMake(Math.max(1,lv-1))}
 function runZShadow(){return pzPlay('pz_zshadow',api=>{
-  const P=zsMake(api.lv),n=P.n;let pos=P.start.slice(),moves=0;const lim=P.st.length*3+4;
+  const P=zsMake(api.lv),n=P.n;let pos=P.start.slice(),moves=0,solvingByHint=false;const lim=P.st.length*3+4;
   const lampPos=d=>{const[dx,dy]=P.offs[d];return`left:${50-dx*36}%;top:${50-dy*36}%`};
   api.body.innerHTML=xSheet(`${xHead(seaArt('shadow/statue'),'ظلال الخندق')}<ol class="xnote"><li>كل تمثال له مصباح. المصباح يرمي ظل التمثال على الجدار في الاتجاه المعاكس له.</li><li>حرّك المصابيح حتى يطابق الظل الرمز المنقوش (الإطار الأحمر).</li><li>معك ${arN(lim,AN.mv)}.</li></ol>
    <div class="zswall ltr" id="zsw" style="--n:${n}">${[...Array(n*n)].map((_,i)=>`<i class="${P.T.has(i)?'t':''}"></i>`).join('')}</div>
    <div class="zsst">${P.st.map((s,i)=>`<div class="zss" data-i="${i}"><div class="zsmini">${s.cells.map(([x,y])=>`<i style="left:${x*33}%;top:${y*33}%"></i>`).join('')}<b class="zslamp" style="${lampPos(pos[i])}">${seaArt('shadow/lamp')}</b></div><button data-i="${i}" aria-label="حرّك مصباح التمثال ${XAR(i+1)}">حرّك المصباح ${XAR(i+1)}</button></div>`).join('')}</div>
    <div class="xtools"><span>الحركات: <b id="zsm"></b> من ${XAR(lim)}</span></div>`,820,251);
   const draw=()=>{const S=zsShadow(P,pos);[...$('#zsw').children].forEach((e,i)=>e.classList.toggle('s',S.has(i)));api.body.querySelectorAll('.zss').forEach(e=>{e.querySelector('.zslamp').style.cssText=lampPos(pos[+e.dataset.i])});$('#zsm').textContent=XAR(moves);return S.size===P.T.size&&[...S].every(c=>P.T.has(c))};
-  function move(i){if(api.ended)return;pos[i]=(pos[i]+1)%P.offs.length;moves++;tone(330+i*60,.05);if(draw()){$('#zsw').classList.add('done');sfx.ok(3);later(()=>zWin(api,'pz_zshadow','الظلال رسمت الرمز، وظهر ساكن الخندق على الجدار.',moves<=P.st.length*2),800);return}
+  function move(i){if(api.ended||solvingByHint)return;pos[i]=(pos[i]+1)%P.offs.length;moves++;tone(330+i*60,.05);if(draw()){$('#zsw').classList.add('done');sfx.ok(3);later(()=>zWin(api,'pz_zshadow','الظلال رسمت الرمز، وظهر ساكن الخندق على الجدار.',moves<=P.st.length*2),800);return}
     if(moves>=lim)api.over('انتهت الحركات. فكّر بكل تمثال على حدة: أي جزء من الرمز يقدر يغطيه؟')}
   api.body.querySelectorAll('.zss button').forEach(b=>b.onclick=()=>move(+b.dataset.i));draw();api.msg('حرّك المصابيح.');pzHook({P,move,pos:()=>pos});
-  return{hint:k=>{if(k===1)return'كل تمثال يترك ظلًا بنفس شكله. ابحث في الرمز عن شكل كل تمثال، وحرّك مصباحه حتى ينطبق.';const i=pos.findIndex((p,j)=>p!==P.sol[j]);if(i<0)return null;pos[i]=P.sol[i];moves++;draw();return`ضبطت لك مصباح التمثال رقم ${XAR(i+1)}.`},reveal:()=>{pos=P.sol.slice();draw();return'هذا وضع المصابيح الصحيح.'}}})}
+  return{hint:k=>{if(k===1)return'كل تمثال يترك ظلًا بنفس شكله. ابحث في الرمز عن شكل كل تمثال، وحرّك مصباحه حتى ينطبق.';const i=pos.findIndex((p,j)=>p!==P.sol[j]);if(i<0)return null;pos[i]=P.sol[i];moves++;const complete=draw();if(complete&&!solvingByHint){solvingByHint=true;$('#zsw').classList.add('done');later(()=>{if(!api.ended&&api.body.isConnected)zWin(api,'pz_zshadow','بمساعدة التلميحات اكتمل رمز الظلال.',false)},450)}return`ضبطت لك مصباح التمثال رقم ${XAR(i+1)}.`},reveal:()=>{pos=P.sol.slice();draw();return'هذا وضع المصابيح الصحيح.'}}})}
 
 const PZ_Z2=[
  {id:'pz_zcode',maxLv:8,col:['#9C5A6A','#3A2616'],name:'سجلات القبطان',lab:'Cryptogram',cat:'flx',why:'فك شيفرة استبدال بالرموز: استنتاج لغوي من تكرار الحروف وشكل الكلمات.',how:['اضغط رمزًا.','اختر حرفه.','اقرأ السجل واختر المكان.'],run:runZCode},
