@@ -420,6 +420,13 @@ async def run():
             await browser.close()
 
 async def boot_after_reload(page):
+    # Puzzle layers load on demand; a reload returns to the normal landing tab.
+    # Re-enter the puzzle tab as the returning player would, then await its
+    # promise before showing the saved side map.
+    pick=page.locator('.mpc[data-m=main]')
+    if await pick.count() and await pick.is_visible():await pick.click()
+    await page.evaluate("()=>tab('puz')")
+    await page.evaluate("async()=>await window.mindlabPlayLayers.start()")
     await page.wait_for_function("()=>window.mindlabPlayLayers?.ready===true",timeout=45000)
     await page.evaluate("async()=>await window.mindlabSide.start()")
     await page.wait_for_function("()=>!!window.ML10?.renderMap",timeout=30000)
