@@ -133,6 +133,31 @@ async def run():
                         if len(critical)!=expected or any(
                           min(x["box"]["w"],x["box"]["h"])<44 for x in critical):
                             row["issues"].append(f"{width}/{skin}:labelled_control_below_44px")
+                    # A tall brain board is acceptable only when its final
+                    # action can actually be reached by scrolling on a 320px
+                    # phone. Rectangles alone are not evidence of tap access.
+                    if width==320 and data.get("board",{}).get("bottom",0)>height+4:
+                        last=page.locator("#stage button:not([disabled]):visible").last
+                        if await last.count():
+                            try:
+                                await last.scroll_into_view_if_needed(timeout=4200)
+                                data["lastActionReachable"]=await last.evaluate("""el=>{
+                                  const r=el.getBoundingClientRect();
+                                  const x=r.left+r.width/2,y=r.top+r.height/2;
+                                  const hit=document.elementFromPoint(x,y);
+                                  return r.top>=-2&&r.bottom<=innerHeight+2&&
+                                    (hit===el||el.contains(hit));
+                                }""")
+                            except Exception:
+                                data["lastActionReachable"]=False
+                            if not data["lastActionReachable"]:
+                                row["issues"].append("320:bottom_action_unreachable")
+                            await page.evaluate("""()=>{
+                              document.querySelector('#play')?.scrollTo(0,0);
+                              window.scrollTo(0,0);
+                            }""")
+                        else:
+                            data["lastActionReachable"]=None
                     if gid=="dual":
                         matches=data.get("dualMatches",[])
                         if len(matches)!=2 or any(x["w"]<40 or x["h"]<40 for x in matches):
