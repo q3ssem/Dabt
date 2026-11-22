@@ -685,6 +685,8 @@
         {label:'قصة الصندوق',open:()=>openJaziranScene('prologue')}];
       if(jaziranSceneAvailable('palace_clock'))actions.push({label:'ساعة القصر',open:()=>openJaziranScene('palace_clock')});
       actions.push(...(window.ATHERAN_CAMPAIGN?.journeyActions()||[]));
+      if(window.MINDLAB_ATHERAN_JOURNAL?.open && window.ATHERAN_CAMPAIGN?.summary()?.open)
+        actions.push({label:'دفتر أَثْرَان · صفحات القصة',open:()=>window.MINDLAB_ATHERAN_JOURNAL.open()});
       const sea=window.T7?.state();
       if(sea){
         actions.push({label:'كنوز البحار',open:()=>T7.openJournal('treasures')});
