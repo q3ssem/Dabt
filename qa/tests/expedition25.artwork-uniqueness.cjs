@@ -1,3 +1,4 @@
+const {scenePath}=require('./scene-aliases.cjs');
 'use strict';
 const assert = require('node:assert/strict');
 const fs = require('node:fs');
@@ -15,7 +16,7 @@ assert.ok(sw.includes("const VERSION='5.5.29'"), 'service-worker cache is 5.5.28
 assert.equal(matches.length, 24, 'exactly 24 active stage backgrounds are declared');
 assert.equal(new Set(matches).size, 24, 'stage background paths are unique');
 const files = matches.map(name => {
-  const rel = `expedition10/art/scenes/${name}`;
+  const rel = scenePath(name);
   const full = path.join(root, rel);
   assert.ok(fs.existsSync(full), `stage background exists: ${name}`);
   const bytes = fs.readFileSync(full);

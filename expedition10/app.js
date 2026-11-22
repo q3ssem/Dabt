@@ -302,7 +302,8 @@ const expeditionArtDetails=[
 ];
 stages.forEach((stage,index)=>{stage.prop=ART+'props/'+expeditionPropFiles[index];stage.artDetails=expeditionArtDetails[index];});
 const itemNames={map:'الخريطة',compass:'البوصلة',lantern:'الفانوس',telescope:'المنظار',key:'المفتاح',moon:'القمر',anchor:'المرساة',sun:'الشمس'};
-const scenePaths=st=>SC+st.scene;
+const REUSED_SCENES=Object.freeze({"01-lighthouse.webp":"treasure/art/story5/ch1_s3_scene.webp","02-river.webp":"treasure/art/story5/ch3_s3_scene.webp","03-map.webp":"treasure/art/story5/ch2_s2_scene.webp","04-balance.webp":"treasure/art/story5/ch3_s2_scene.webp","05-crystal.webp":"treasure/art/story5/ch2_s3_scene.webp","06-mirror.webp":"treasure/art/story5/ch4_s3_scene.webp","07-hourglass.webp":"treasure/art/story5/ch5_s2_scene.webp","08-islands.webp":"treasure/art/story5/ch6_s3_scene.webp","09-library.webp":"treasure/art/story5/ch7_s2_scene.webp","10-heart.webp":"treasure/art/story5/ch7_s3_scene.webp","12-ice.webp":"treasure/art/story5/ch4_s2_scene.webp","13-dragon.webp":"treasure/art/story5/ch6_s2_scene.webp"});
+const scenePaths=st=>REUSED_SCENES[st.scene]||SC+st.scene;
 function artDetailsHtml(st,mode='game'){return `<div class="ex10-art-details ${mode}" aria-label="عناصر مرسومة خاصة باللغز">${(st.artDetails||[]).map(item=>`<span class="ex10-art-detail"><img src="${item.src}" alt="${item.label}" loading="lazy" decoding="async"><small>${item.label}</small></span>`).join('')}</div>`;}
 let view='hub',active=-1,timerId=null,previewTimer=null,timerLeft=0,gameState=null,root=$('#v-puz'),baseRender=null,charMoods=[],lastStoryBeat=null;
 function emptySave(){return{done:{},stars:{},best:{},totalStars:0,updated:0};}
@@ -313,9 +314,9 @@ function unlocked(i){return i===0||!!save.done[stages[i-1].id];}
 function stopTimer(){if(timerId){clearInterval(timerId);timerId=null;}if(previewTimer){clearTimeout(previewTimer);previewTimer=null;}}
 function ar(n){return String(n).replace(/[0-9]/g,d=>'٠١٢٣٤٥٦٧٨٩'[+d]);}
 function heroImages(){return[
- {key:'roaa',name:'رواء',role:'قائدة الطاقم',src:CREW+'roaa.webp'},
- {key:'noha',name:'نهى',role:'مهندسة الآلات',src:CREW+'noha.webp'},
- {key:'ward',name:'ورد',role:'قارئة الأدلة',src:CREW+'ward.webp'}];}
+ {key:'roaa',name:'رواء',role:'قائدة الطاقم',src:'treasure/art/story5/crew_full_rawaa.webp'},
+ {key:'noha',name:'نهى',role:'مهندسة الآلات',src:'treasure/art/story5/crew_full_nuha.webp'},
+ {key:'ward',name:'ورد',role:'قارئة الأدلة',src:'treasure/art/story5/crew_full_ward.webp'}];}
 function poseForMood(mood){if(mood==='thinking')return'thinking';if(mood==='worried'||mood==='alert')return'worried';if(mood==='curious')return'curious';if(mood==='happy'||mood==='celebrate')return'happy';return'welcome';}
 function heroPoseSrc(key,mood){return CREW+'poses/'+key+'-'+poseForMood(mood)+'.webp';}
 function crewHtml(i,mini=false,override){const st=stages[i],moods=override||st.moods;return `<div class="${mini?'ex10-crew-mini':'ex10-crew'}" aria-label="الشخصيات الرئيسية">${heroImages().map((c,k)=>{const mood=moods[k]||'thinking',src=heroPoseSrc(c.key,mood);return `<article class="ex10-heroine" data-character="${c.key}" data-mood="${mood}" data-action="${poseForMood(mood)}"><img src="${src}" data-pose-src="${src}" data-fallback-src="${c.src}" alt="${c.name} — ${c.role}" loading="eager" decoding="async"><div><b>${c.name}</b><small>${c.role}</small></div></article>`;}).join('')}</div>`;}

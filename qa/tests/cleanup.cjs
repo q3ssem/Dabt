@@ -46,6 +46,20 @@ assert.ok(all.every(x=>!x.startsWith('hasad/') && !gone.includes(x)), 'precache 
 const uniqueAssets = [...new Set(all.filter(file => file && file !== './'))];
 const missingAssets = uniqueAssets.filter(file => !fs.existsSync(file));
 assert.deepEqual(missingAssets, [], 'all optional offline pack resources must exist');
+
+const aliasesSource = read('expedition10/app.js').split('const REUSED_SCENES=Object.freeze(')[1];
+assert.ok(aliasesSource, 'side journey uses canonical scene aliases');
+const sceneAliases = JSON.parse(aliasesSource.split(');')[0]);
+assert.equal(Object.keys(sceneAliases).length, 12, 'twelve identical scene copies replaced');
+for (const [name, canonical] of Object.entries(sceneAliases)) {
+  assert.ok(!fs.existsSync('expedition10/art/scenes/' + name), 'duplicate side-scene absent: ' + name);
+  assert.ok(fs.existsSync(canonical) && all.includes(canonical), 'canonical scene precached: ' + canonical);
+}
+for (const [name, canonical] of Object.entries({roaa:'treasure/art/story5/crew_full_rawaa.webp', noha:'treasure/art/story5/crew_full_nuha.webp', ward:'treasure/art/story5/crew_full_ward.webp'})) {
+  assert.ok(!fs.existsSync('expedition10/art/crew/' + name + '.webp'), 'duplicate heroine absent: ' + name);
+  assert.ok(fs.existsSync(canonical) && all.includes(canonical), 'canonical heroine precached: ' + canonical);
+}
+
 assert.ok(!read('ui/app.js').includes('ui/engines/scene-kit.js'), 'unneeded engine loader removed from startup');
 assert.ok(!read('offline-manifest.js').includes('ui/engines/scene-kit.js'), 'unused renderer loader removed from precache');
 for (const dead of ['ui/engines/scene-kit.js', ...['flow','ice','pipe','rush','tan','untangle'].map(id=>'ui/engines/scenes/pz_'+id+'.json'), 'vendor/pixi/pixi.min.js', 'vendor/konva/konva.min.js']) assert.ok(!fs.existsSync(dead), 'unused external scene runtime removed: '+dead);
@@ -59,7 +73,7 @@ assert.ok(!read('qa/browser/design10_play.py').includes('pz_stat'), 'deleted des
 assert.ok(!read('qa/browser/motion_batch_fixes.py').includes('pz_xbottle'), 'deleted bottle replay removed');
 
 // The cache generation must have moved past the generation that still held the deleted assets.
-assert.ok(read('sw.js').includes("PATCH='brain-touch-32'"), 'cache generation must change after switching to deferred assets');
+assert.ok(read('sw.js').includes("PATCH='brain-touch-33'"), 'cache generation must change after switching to deferred assets');
 const pwa = read('pwa.js');
 assert.ok(pwa.includes('window.mindlabOffline.prepareAll = function prepareAll()'), 'offline bulk download must be opt-in');
 assert.ok(pwa.includes('window.mindlabOffline.clearOptionalCaches'), 'optional image cache cleanup available');
@@ -72,7 +86,7 @@ assert.ok(swSource.includes('++imageWrites % 32 === 0'), 'image eviction scan is
 
 const runtime = read('sw.js');
 const startUi = read('ui/app.js');
-assert.ok(runtime.includes("PATCH='brain-touch-32'"), 'second-stage cache generation');
+assert.ok(runtime.includes("PATCH='brain-touch-33'"), 'second-stage cache generation');
 const shell = runtime.slice(runtime.indexOf('const shell = ['), runtime.indexOf('];', runtime.indexOf('const shell = ['))+2);
 const listed = [...shell.matchAll(/'([^']+)'/g)].map(m=>m[1]);
 assert.equal(listed.length,19,'core shell includes 11 startup resources and 8 assessment dependencies');
