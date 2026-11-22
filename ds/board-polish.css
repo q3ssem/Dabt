@@ -674,6 +674,13 @@ html.fit-ex10 #v-puz .ex10-game-content .ex10-controls button {
   font-size:clamp(12px,3.4vw,15px);
   line-height:1.35;
 }
+/* WebKit fractional scaling can render a CSS 44px button as 43.4px.
+   Give only lighthouse controls and side-journey outcome actions a safe cushion. */
+html.fit-ex10 #v-puz .ex10-game-shell[data-stage-id="ml10_01"] .ex10-controls button,
+html.fit-ex10 #v-puz .ex10-outcome .ex10-actions-row button {
+  min-width:46px!important;
+  min-height:46px!important;
+}
 @media (max-width:360px) {
   html.fit-ex10 #v-puz .ex10-game-content {
     padding-inline:clamp(6px,2.5vw,10px);
