@@ -322,7 +322,7 @@ return done=>{
   window.mindlabOffline?.rememberPuzzle(id);
   window.mindlabOffline?.warmPuzzle(id);
   const hb=$('#pzh');if(!P.hint)hb.hidden=true;
-  hb.onclick=()=>{if(ended||hints>=3||!P.hint)return;const before=pts;hints++;if(!kid)setP(pts-Math.round(base*.2));const t=P.hint(hints);if(t==null){hints--;if(!kid)setP(before);return}$('#pzhn').textContent=3-hints;
+  hb.onclick=()=>{if(ended||hints>=3||!P.hint)return;const before=pts;hints++;if(!kid)setP(pts-Math.round(base*.2));const t=P.hint(hints);if(t==null){hints--;if(!kid)setP(before);const box=$('#pzt');box.hidden=false;box.textContent='اكتملت خطوات المساعدة المتاحة في هذه المحاولة. اختبر الحل أو أكمل ما بقي بنفسك.';hb.disabled=true;hb.setAttribute('aria-label','لا توجد تلميحات إضافية');return}$('#pzhn').textContent=3-hints;
     const box=$('#pzt');box.hidden=false;box.innerHTML=`<b>تلميح ${hints}:</b> ${t}`;sfx.lit();if(hints>=3||ended)hb.disabled=true};
   const rb=$('#pzr');if(rb)rb.onclick=()=>{if(ended)return;stopAll();delete st.dataset.expState;const b=$('#pzb');b.className='pzbody';b.innerHTML='';const hintBox=$('#pzt');hintBox.hidden=true;hintBox.innerHTML='';api.msg('');
     pts=base;hints=0;wrongs=0;setP(pts);$('#pzhn').textContent='3';hb.disabled=false;hb.hidden=false;
