@@ -1,0 +1,73 @@
+/* Jaziran hand-drawn Atheran rescue finale — white primary, dark secondary. */
+.mljr-modal { z-index: 138; }
+.mljr-card {
+  width: min(100%, 650px); max-height: min(90dvh, 920px); overflow-y: auto;
+  overscroll-behavior: contain; gap: 12px;
+}
+.mljr-card h2,.mljr-card h3,.mljr-card p,.mljr-card fieldset { margin: 0; }
+.mljr-card .mlj-head small { display: block; margin-bottom: 3px; }
+.mljr-heroes { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }
+.mljr-heroes img {
+  display:block; width: min(100%,90px); height: 82px;
+  object-fit:contain; margin-inline:auto;
+}
+.mljr-intro,.mljr-instructions { line-height: 1.7; font-size: 14px; }
+.mljr-instructions { font-size: 13px; }
+.mljr-game,.mljr-anchors { display:grid; gap: 12px; }
+.mljr-anchor { border: 1px solid #c1cfc7; padding: 12px; border-radius: 12px; }
+.mljr-anchor strong { display:block; margin-bottom: 6px; }
+.mljr-anchor p { line-height: 1.5; font-size: 13px; margin-bottom: 9px; }
+.mljr-options { display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 7px; }
+.mljr-fieldset { min-width: 0; border: 1px solid #b9cbc0; border-radius: 12px; padding: 12px; }
+.mljr-fieldset legend { font-weight: 800; padding: 0 7px; }
+.mljr-map-options { display:grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 7px; }
+.mljr-time-options { display:grid; grid-template-columns: repeat(4,minmax(0,1fr)); gap: 7px; }
+.mljr-actions { display:grid; grid-template-columns: 1fr 1fr; gap: 9px; }
+.mljr-card button {
+  font: inherit; cursor: pointer; min-width: 0; min-height: 44px;
+  padding: 9px 8px; border: 1px solid #698c80; border-radius: 10px;
+  background: transparent; color: inherit; line-height: 1.5; text-align: center;
+  white-space: normal; overflow-wrap: anywhere;
+}
+.mljr-card button[aria-pressed="true"] {
+  border: 2px solid #136b5f; background: rgba(15,109,94,.12); font-weight: 800;
+}
+#mljr-run { background: #176a59; border-color: #176a59; color: white; font-weight: 800; }
+.mljr-card button:focus-visible { outline: 3px solid #d69c35; outline-offset: 2px; }
+.mljr-status { font-size: 14px; line-height:1.7; min-height:1.4em; }
+.mljr-success[hidden],.mljr-game[hidden] { display: none !important; }
+.mljr-success { display: grid; gap: 12px; }
+.mljr-success h3 { font-size: 17px; }
+.mljr-success>p { line-height: 1.6; }
+.mljr-timeline { padding:0; margin:0; display:grid; gap:6px; list-style:none; }
+.mljr-timeline li {
+  display:flex; gap: 10px; align-items: baseline; padding: 10px;
+  border-radius: 9px; border: 1px solid #afc1b8;
+  line-height: 1.5;
+}
+.mljr-timeline b { flex: 0 0 76px; }
+.mljr-timeline li:nth-child(2),.mljr-timeline li:nth-child(3) {
+  border-color:#37967d; background:rgba(49,132,99,.08);
+}
+.mljr-decision { display:grid; gap: 9px; border-top:1px solid #bfd0c4; padding-top:10px; }
+.mljr-decision-options { display:grid; grid-template-columns: 1fr 1fr; gap:8px; }
+.mljr-decision-result { min-height:2em; line-height: 1.6; }
+.mljr-last { border-inline-start: 3px solid #ab8337; padding: 10px; line-height:1.65; }
+html[data-skin="dark"] .mljr-anchor,
+html[data-skin="dark"] .mljr-fieldset,
+html[data-skin="dark"] .mljr-timeline li { border-color:#7b9893; }
+html[data-skin="dark"] .mljr-card button { border-color:#96c1b2; }
+html[data-skin="dark"] .mljr-card button[aria-pressed="true"] {
+  border-color:#78cbb6; background:rgba(117,206,176,.17);
+}
+html[data-skin="dark"] #mljr-run { background:#247d6d; color:white; }
+html[data-skin="dark"] .mljr-last { border-color:#e4b96c; }
+@media(max-width:400px) {
+  .mljr-card { padding: 12px; }
+  .mljr-options,.mljr-map-options { grid-template-columns:1fr; }
+  .mljr-time-options { grid-template-columns: repeat(2,minmax(0,1fr)); }
+}
+@media(max-width:330px) {
+  .mljr-actions,.mljr-decision-options { grid-template-columns:1fr; }
+  .mljr-heroes img { height: 68px; }
+}
