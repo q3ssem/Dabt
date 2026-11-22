@@ -95,7 +95,12 @@ html[data-skin="dark"] #play.fit .fit-tools .pzgive{background:#253538;border-co
 .fit-sh-go{width:100%;min-height:46px;border:0;border-radius:14px;background:#1F6E66;color:#fff;font-weight:800;font-size:16px}
 /* talking statues: three in a row so the hall fits */
 #play.fit .pl-statues{grid-template-columns:repeat(auto-fit,minmax(max(100px,31%),1fr))!important;gap:5px!important}
-#play.fit .pl-range i{width:12px}#play.fit .pl-range i.ref,#play.fit .pl-range i.ref img{width:20px;height:20px}#play.fit .pl-plaque{padding:3px;gap:3px;min-width:0}#play.fit .pl-range{flex-wrap:wrap;justify-content:center;max-width:100%}
+#play.fit .pl-range i{width:12px}
+#play.fit #pzb .pl-range i.ref{width:20px;height:20px;flex:0 0 20px;overflow:hidden;padding:0;box-sizing:border-box}
+#play.fit #pzb .pl-range i.ref img{display:block;width:18px!important;height:18px!important;max-width:18px!important;max-height:18px!important;min-width:0!important;object-fit:contain!important;transform:none!important}
+#play.fit #pzb .pl-range{margin-inline:5px;min-width:0}
+#play.fit .pl-plaque{padding:3px;gap:3px;min-width:0}
+#play.fit .pl-range{flex-wrap:wrap;justify-content:center;max-width:100%;min-width:0}
 #play.fit .pl-turn{height:74px!important}
 /* spare height: centre the board vertically (collapses to nothing when the board scrolls) */
 #play.fit:not(.xframe) #pzb::before,#play.fit:not(.xframe) #pzb::after{content:'';flex:1 1 0;min-height:0}
@@ -292,4 +297,112 @@ html[data-skin="dark"] #play.fit .fit-sh-sound{border-color:#7f9599;color:#EEF1F
   background: transparent;
   border-color: transparent;
   box-shadow: none;
+}
+
+
+/* Batch 3: user-initiated large-touch mode. Default one-screen fit is unchanged.
+   Enlarged puzzles scroll *within* the board, not the surrounding page.
+   Avoid stretching images, changing puzzle coordinates or altering win/save logic. */
+#play.fit:not(.xframe) #pzb.fit-large {
+  overflow: auto !important;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scroll-behavior: auto;
+}
+#play.fit #pzb.fit-large .xkbtns button,
+#play.fit #pzb.fit-large .fit-clue-controls button,
+#play.fit #pzb.fit-large .zkkb button,
+#play.fit #pzb.fit-large .heart-tools button {
+  min-height: 44px !important;
+}
+#play.fit #pzb.fit-large .zkkb button {
+  min-width: 44px !important;
+}
+#play.fit #pzb.fit-large #zrt {
+  min-height: 44px !important;
+}
+#play.fit #pzb.fit-large .journal-timeline [data-wlg-slot] {
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  cursor: pointer;
+}
+.fit-sh-magnify {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  margin: 6px 0 10px;
+  padding: 9px 12px;
+  border: 1px solid #487a6c;
+  border-radius: 12px;
+  background: #e5f2ed;
+  color: #184d46;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.fit-sh-magnify[aria-pressed="true"] {
+  border-width: 2px;
+  background: #d2e9e0;
+}
+.fit-sh-magnify:focus-visible {
+  outline: 3px solid #c48b35;
+  outline-offset: 2px;
+}
+html[data-skin="dark"] .fit-sh-magnify {
+  color: #f5f0dc;
+  background: #29473f;
+  border-color: #9ecbbb;
+}
+html[data-skin="dark"] .fit-sh-magnify[aria-pressed="true"] {
+  background: #355b51;
+}
+
+/* Batch 3: safe 44px controls for labelled choices in the optional
+   enlarged/scrollable board. Do not resize absolute-positioned nodes or stars:
+   their hit areas require separate geometry and overlap review. */
+#play.fit #pzb.fit-large :is(
+  .fit-clue-controls button,
+  .pl-rot,
+  .jail-card button,
+  .heart-tools button,
+  .pdseq button,
+  .aswg button,
+  .seg.xseg button
+) {
+  min-height:44px!important;
+}
+#play.fit #pzb.fit-large :is(.pl-rot,.pdseq button) {
+  min-width:44px!important;
+}
+
+/* Batch 3: eight-column dig grid needs a larger touch surface at 320px.
+   This is opt-in only: the natural-size board scrolls within #pzb, so the
+   interactive square is never shrunk or obscured by global page overflow. */
+#play[data-la-game="pz_tdig"].fit #pzb.fit-large .xbg {
+  min-width:352px!important;
+}
+#play[data-la-game="pz_tdig"].fit #pzb.fit-large .xbg button.xc {
+  min-width:44px!important;
+  min-height:44px!important;
+}
+
+/* WebKit 320px: recorded intermittent stale-fit clipping in the six
+   named puzzle boards. Keep their controls reachable by scrolling *inside*
+   the board if its height cannot be recomputed after a viewport change.
+   Scoped to the confirmed cases; do not resize pieces or change moves. */
+@media (max-width: 360px) {
+  #play.fit:not(.xframe):is(
+    [data-la-game="pz_rid"],
+    [data-la-game="pz_scale"],
+    [data-la-game="pz_tpath"],
+    [data-la-game="pz_ybell"],
+    [data-la-game="pz_plock"],
+    [data-la-game="pz_aarch"]
+  ) #pzb {
+    max-height: calc(100dvh - 168px);
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+  }
 }

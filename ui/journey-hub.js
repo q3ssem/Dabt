@@ -1,4 +1,4 @@
-/* 5.5.28 — Unified Journey Map Hub («رحلة الكنز»), 46 Non-Library Openings (21 Treasure + 25 Side-Journey),
+/* 5.5.28 — Unified Journey Map Hub («رحلة الكنز»), 45 Non-Library Openings (21 Treasure + 24 Side-Journey),
    12 Transitions Viewer, and Priority 7 / Four Puzzles Board Art Accents.
    Presentation only: never alters save keys, puzzle rules, or secret-world unlock gating. */
 (function () {
@@ -49,7 +49,12 @@
       while (stations && completed < stations.length && sea.done[stations[completed].id]) completed++;
       const atlas = window.ATHERAN_CAMPAIGN && window.ATHERAN_CAMPAIGN.summary();
       atlasOpen = !!atlas?.open;
-      returned = !!atlas && atlas.done === 21 && atlas.cleared === 5;
+      // Modern finale ends after the playable rescue; the five optional secret worlds
+      // are not a gate. Keep the legacy all-secrets path for old completed saves.
+      returned = !!atlas && (
+        (atlas.done === 21 && atlas.cleared === 5) ||
+        (atlas.done === 21 && !!atlas.a?.done?.pz_aheart && !!window.MindlabRescue?.state()?.completed)
+      );
     } catch (_) {}
     const thresholds = {departure: 0, coral_light: 3, mist_bells: 6, oasis_water: 9,
       ice_observatory: 12, wind_engine: 15, moon_vow: 18, eighth_route: 21, letter: 21, palace: 21};
@@ -237,6 +242,449 @@
     }
   }
 
+
+  // Jaziran narrative: personal draft notes. Never infer proof or award unlocks from typed text.
+  const EVIDENCE_NOTES_KEY = 'mindlab:journey:evidence-notes:v1';
+  const EVIDENCE_FILES = [
+    {id:'measurement',name:'القياس والاتجاه',question:'من أين نقيس وأين يتجه الطريق؟',
+      sources:[['pz_xlock','قفل الصندوق'],['pz_zstars','كوكبة المعبد'],['pz_zthrone','عرش المحيط']]},
+    {id:'testimony',name:'الساعة والشهادة',question:'متى عبر القارب ومن رآه مباشرة؟',
+      sources:[['pz_pclock','برج الساعات'],['pz_pjail','شهادات السجناء'],['pz_pobs','الخريطتان الشفافتان']]},
+    {id:'traces',name:'العمر والأثر',question:'أي خريطة تصف المدينة وقت المد المقصود؟',
+      sources:[['pz_alayer','طبقات الزمن'],['pz_acity','المدينة الحية'],['pz_arelic','أرشيف الآثار الأولى']]},
+    {id:'people',name:'أسماء أصحاب الأثر',question:'من يحمل ذاكرة المكان بعد الإخلاء؟',
+      sources:[['pz_wbone','وادي الهياكل'],['pz_wspore','حديقة الأبواغ'],['pz_wlog','السفينة التي لم تُبحر'],['pz_wlake','بحيرة السماء'],['pz_wfirst','موطن الأثر الأول']]}
+  ];
+  const EVIDENCE_SECRET_KEYS = {pz_wbone:'bones',pz_wspore:'spores',pz_wlog:'ship',pz_wlake:'lake',pz_wfirst:'first'};
+  const evidenceFile = id => EVIDENCE_FILES.find(file => file.id === id);
+  function evidenceDrafts() {
+    try {
+      const data = JSON.parse(localStorage.getItem(EVIDENCE_NOTES_KEY) || '{}');
+      return data && typeof data === 'object' && !Array.isArray(data) ? data : {};
+    } catch (_) { return {}; }
+  }
+  function getEvidenceDraft(id) {
+    if (!evidenceFile(id)) return '';
+    const value = evidenceDrafts()[id];
+    return typeof value === 'string' ? value.slice(0, 600) : '';
+  }
+  function saveEvidenceDraft(id, note) {
+    if (!evidenceFile(id) || typeof note !== 'string') return false;
+    try {
+      const drafts = evidenceDrafts();
+      const value = note.trim().slice(0, 600);
+      if (value) drafts[id] = value; else delete drafts[id];
+      localStorage.setItem(EVIDENCE_NOTES_KEY, JSON.stringify(drafts));
+      return true;
+    } catch (_) { return false; }
+  }
+  function evidenceSourceStatus(id) {
+    // Engine-owned completion is the sole proof of *finishing a game*.
+    // Finishing a game does not itself validate a historical claim or an inference.
+    try {
+      if (id.startsWith('pz_p')) {
+        const done = typeof pState === 'function' && !!pState()?.done?.[id];
+        return {id, done: !!done, origin:'قصر المرايا', state:done ? 'completed' : 'pending'};
+      }
+      if (id.startsWith('pz_a')) {
+        const done = !!window.ATHERAN_CAMPAIGN?.summary()?.a?.done?.[id];
+        return {id, done, origin:'أَثْران', state:done ? 'completed' : 'pending'};
+      }
+      if (Object.hasOwn(EVIDENCE_SECRET_KEYS, id)) {
+        const key = EVIDENCE_SECRET_KEYS[id];
+        const data = window.ATHERAN_CAMPAIGN?.summary()?.a;
+        const done = !!data?.swd?.[key];
+        const found = !!data?.sw?.[key];
+        return {id, done, origin:'موطن الأثر الأول', state:done ? 'completed' : found ? 'pending' : 'undiscovered'};
+      }
+    } catch (_) {}
+    // Puzzle-library wins have their own native counter. This is not a sea7_* station.
+    // Only a real completed round counts; mere card visibility or level access never does.
+    try {
+      if (typeof pzState !== 'function') return {id,done:false,origin:'مكتبة الألغاز',state:'unlinked'};
+      const won = Number(pzState()?.n?.[id]) > 0;
+      return {id, done:!!won, origin:'مكتبة الألغاز',
+        state:won ? 'completed' : 'pending'};
+    } catch (_) {}
+    return {id, done:false, origin:'مكتبة الألغاز', state:'unlinked'};
+  }
+  function evidenceVisibleFiles() {
+    // The optional names/secret-world file appears only after native Atheran finale.
+    let finished = false;
+    try { finished = !!window.ATHERAN_CAMPAIGN?.summary()?.a?.done?.pz_aheart; } catch (_) {}
+    return EVIDENCE_FILES.filter(file => file.id !== 'people' || finished);
+  }
+  function getEvidenceSnapshot(fileId) {
+    const file = evidenceFile(fileId);
+    if (!file) return null;
+    const verified = window.MindlabEvidence?.getFile(fileId,evidenceSourceStatus);
+    const sources = file.sources.map(([id,name]) => {
+      const native = evidenceSourceStatus(id);
+      const proof = verified?.sources.find(s => s.id === id);
+      return {name, ...native, verified:!!proof?.verified,
+        verifiedAt:proof?.verifiedAt || null, clue:proof?.text || '',
+        challenge:proof ? {question:proof.question,choices:proof.choices} : null,
+        state:proof?.verified ? 'verified' : native.state};
+    });
+    const nativeCompleted = sources.filter(source => source.done).length;
+    return {id:file.id, name:file.name, sources, nativeCompleted,
+      sourceCount:sources.length, readyToCompare:nativeCompleted >= 2,
+      verifiedCount:verified?.verifiedCount || 0, independentCount:verified?.independentCount || 0,
+      readyToInfer:!!verified?.ready, inferenceVerified:!!verified?.sealed,
+      sealAt:verified?.sealAt || null, inference:verified?.inference || null,
+      missing:verified?.missing || sources.map(s=>s.id)};
+  }
+  function openEvidenceBook() {
+    const previous = document.activeElement;
+    $('#mlj-evidence-modal')?.remove();
+    const modal = document.createElement('div');
+    modal.id = 'mlj-evidence-modal';
+    modal.className = 'mlj-modal mlj-evidence-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'دفتر أدلة الرحلة');
+    modal.innerHTML =
+      '<div class="mlj-modal-card mlj-evidence-card" dir="rtl">' +
+      '<div class="mlj-head"><h2>دفتر الأدلة</h2><button type="button" id="mlj-evidence-close">إغلاق</button></div>' +
+      '<p class="mlj-evidence-intro">دفتر القصة: الملاحظة مسودة شخصية، والقرينة تُثبت بعد حل اللغز وفحص بطاقة المراجعة. الختم هنا مستقل عن أختام الحملة.</p>' +
+      '<div class="mlj-evidence-tabs" role="group" aria-label="ملفات الأدلة"></div>' +
+      '<h3 class="mlj-evidence-title"></h3><p class="mlj-evidence-question"></p>' +
+      '<p class="mlj-evidence-summary" aria-live="polite"></p>' +
+      '<ul class="mlj-evidence-sources"></ul>' +
+      '<div class="mlj-evidence-review" hidden aria-label="اختبار القرينة"></div>' +
+      '<div class="mlj-evidence-inference" aria-label="استنتاج الملف"></div>' +
+      '<label for="mlj-evidence-note">ملاحظتك عن هذا الملف</label>' +
+      '<textarea id="mlj-evidence-note" maxlength="600" rows="4" placeholder="ماذا لاحظت؟ ومن أين حصلت على المعلومة؟"></textarea>' +
+      '<div class="mlj-evidence-actions"><button type="button" id="mlj-evidence-save">حفظ الملاحظة</button>' +
+      '<span role="status" aria-live="polite" id="mlj-evidence-status"></span></div>' +
+      '<p class="mlj-evidence-caveat">هذه بطاقات مراجعة مؤلفة من وثيقة «جزران»؛ لا تعني أن نص القرينة معروض بالفعل على اللوحة القديمة. الختم لا يغيّر المكافآت أو شروط الفتح الحالية.</p></div>';
+    const tabs = $('.mlj-evidence-tabs', modal);
+    const note = $('#mlj-evidence-note', modal);
+    const status = $('#mlj-evidence-status', modal);
+    const closeBtn = $('#mlj-evidence-close', modal);
+    const saveBtn = $('#mlj-evidence-save', modal);
+    const visibleFiles = evidenceVisibleFiles();
+    let selected = visibleFiles[0].id;
+    for (const file of visibleFiles) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = file.name;
+      btn.dataset.file = file.id;
+      btn.onclick = () => { selected = file.id; render(); };
+      tabs.append(btn);
+    }
+    function noteStatus(message) {
+      status.textContent = message;
+    }
+    function returnToEvidenceSource(id) {
+      // Use only the native UI/gates: no direct startRun, no force-complete, no save writes.
+      try {
+        if (id.startsWith('pz_a') || id.startsWith('pz_w')) {
+          const stations = typeof ASTN !== 'undefined' ? ASTN : [];
+          const index = stations.findIndex(st => st.id === id);
+          if (index >= 0 && window.ATHERAN_CAMPAIGN?.canOpenStation(index)) {
+            dismiss();
+            window.ATHERAN_CAMPAIGN.openJourneyStation(index);
+            return true;
+          }
+        }
+        const tile = palaceTile(id);
+        if (tile && typeof tile.click === 'function') {
+          dismiss();
+          tile.click();
+          return true;
+        }
+      } catch (_) {}
+      return false;
+    }
+    function sourceChallenge(src) {
+      const target = $('.mlj-evidence-review', modal);
+      target.hidden = false;
+      target.replaceChildren();
+      const header = document.createElement('strong');
+      header.textContent = 'التحقق من قرينة: ' + src.name;
+      const observation = document.createElement('p');
+      observation.textContent = 'ملاحظة من وثيقة القصة: ' + src.clue;
+      const intro = document.createElement('p');
+      intro.textContent = 'بعد إنجاز اللغز الأصلي، راجع الملاحظة ثم أجب: ' + src.challenge.question;
+      target.append(header, observation, intro);
+      const actions = document.createElement('div');
+      actions.className = 'mlj-evidence-options';
+      src.challenge.choices.forEach((label, index) => {
+        const option = document.createElement('button');
+        option.type = 'button';
+        option.textContent = label;
+        option.onclick = () => {
+          const result = window.MindlabEvidence?.verifySource(src.id, index, evidenceSourceStatus);
+          if (result?.ok) {
+            render();
+            noteStatus(result.awarded ? 'ثُبتت القرينة بمصدرها ووقت مراجعتها.' : 'هذه القرينة مثبتة من قبل.');
+          } else noteStatus(result?.reason === 'wrong-answer'
+            ? 'الإجابة لا تطابق قرينة القصة. راجع النص وحاول مرة أخرى.'
+            : 'لا يمكن تثبيت القرينة دون إنجاز لغزها أو إتاحة التخزين.');
+        };
+        actions.append(option);
+      });
+      target.append(actions);
+      target.scrollIntoView({block:'nearest'});
+    }
+    function renderInference(snapshot) {
+      const area = $('.mlj-evidence-inference', modal);
+      area.replaceChildren();
+      const title = document.createElement('strong');
+      title.textContent = snapshot.inferenceVerified ? 'ختم الملف · ثبت مرة واحدة'
+        : snapshot.readyToInfer ? 'اختبر الاستنتاج من مصادر مستقلة' : 'ما ينقص الاستنتاج';
+      area.append(title);
+      const message = document.createElement('p');
+      if (snapshot.inferenceVerified) {
+        message.textContent = 'تمت مراجعة الأدلة وربط الاستنتاج. وقت الختم: ' +
+          new Date(snapshot.sealAt).toLocaleString('ar-SA') + '. لا تتكرر المكافأة عند الإعادة.';
+      } else if (!snapshot.readyToInfer) {
+        message.textContent = 'قرائن مثبتة: ' + snapshot.verifiedCount + '، مراجع مستقلة: ' +
+          snapshot.independentCount + '. تحتاج إلى ' +
+          (selected === 'people' ? 'العوالم الخمسة بعد الخاتمة' : 'مرجعين مستقلين على الأقل') +
+          ' قبل ختم هذا الملف.';
+        if (selected === 'testimony' && snapshot.verifiedCount >= 2 && snapshot.independentCount < 2)
+          message.textContent += ' هاتان النسختان تعودان إلى صفحة واحدة. ابحث عن شاهد رأى القارب.';
+      } else {
+        message.textContent = snapshot.inference.question;
+      }
+      area.append(message);
+      if (!snapshot.readyToInfer && snapshot.missing.length) {
+        const missingBtn = document.createElement('button');
+        missingBtn.type = 'button';
+        missingBtn.className = 'mlj-evidence-missing';
+        missingBtn.textContent = 'عرض الأدلة الناقصة';
+        missingBtn.onclick = () => {
+          const target = [...modal.querySelectorAll('.mlj-evidence-sources li')]
+            .find(li => li.dataset.evidenceState !== 'verified');
+          if (target) {
+            target.scrollIntoView({block:'center'});
+            target.querySelector('button')?.focus({preventScroll:true});
+          }
+        };
+        area.append(missingBtn);
+      }
+      if (snapshot.readyToInfer && !snapshot.inferenceVerified) {
+        const choices = document.createElement('div');
+        choices.className = 'mlj-evidence-options';
+        snapshot.inference.choices.forEach((label, index) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.textContent = label;
+          button.onclick = () => {
+            const result = window.MindlabEvidence?.infer(selected, index, evidenceSourceStatus);
+            if (result?.ok) {
+              render();
+              noteStatus(result.awarded ? 'صدر ختم دفتر الأدلة مرة واحدة، دون تغيير جوائز الحملة.'
+                : 'الختم مثبت سابقًا.');
+            } else noteStatus(result?.reason === 'wrong-answer'
+              ? 'الاستنتاج لا يجمع القرائن بشكل صحيح. راجع المصادر المستقلة.'
+              : 'هناك أدلة ناقصة أو تخزين غير متاح؛ لا يمكن إصدار الختم.');
+          };
+          choices.append(button);
+        });
+        area.append(choices);
+      }
+    }
+    function render() {
+      const file = evidenceFile(selected);
+      const snapshot = getEvidenceSnapshot(selected);
+      $('.mlj-evidence-title', modal).textContent = file.name;
+      $('.mlj-evidence-question', modal).textContent = file.question;
+      $('.mlj-evidence-summary', modal).textContent =
+        'منجز في محركات الألغاز: ' + snapshot.nativeCompleted + ' / ' + snapshot.sourceCount +
+        ' · قرائن مثبتة: ' + snapshot.verifiedCount +
+        ' · مراجع مستقلة: ' + snapshot.independentCount +
+        (snapshot.inferenceVerified ? ' · ختم الدفتر مكتمل' : ' · الختم غير مكتمل');
+      const list = $('.mlj-evidence-sources', modal);
+      list.replaceChildren();
+      for (const src of snapshot.sources) {
+        const item = document.createElement('li');
+        item.dataset.evidenceState = src.state;
+        const heading = document.createElement('strong');
+        heading.textContent = src.name;
+        const source = document.createElement('small');
+        source.textContent = src.verified ? 'قرينة مثبتة · ' + src.origin +
+            ' · ' + new Date(src.verifiedAt).toLocaleString('ar-SA')
+          : src.state === 'completed' ? 'أنجزت اللغز · افحص قرينته'
+          : src.state === 'pending' ? 'لم يثبت إنجاز اللغز في سجل ' + src.origin
+          : src.state === 'undiscovered' ? 'لم يُكتشف هذا الفرع بعد'
+          : 'لا يتوفر سجل إنجاز موثوق لهذا المصدر';
+        item.append(heading, source);
+        if (src.verified && src.clue) {
+          const quote = document.createElement('p');
+          quote.className = 'mlj-evidence-quote';
+          quote.textContent = src.clue;
+          item.append(quote);
+        }
+        const actions = document.createElement('div');
+        actions.className = 'mlj-evidence-source-actions';
+        if (src.done && !src.verified && src.challenge) {
+          const check = document.createElement('button');
+          check.type = 'button';
+          check.textContent = 'تحقق من القرينة';
+          check.onclick = () => sourceChallenge(src);
+          actions.append(check);
+        }
+        const revisit = document.createElement('button');
+        revisit.type = 'button';
+        revisit.textContent = 'ارجع للمشهد';
+        revisit.onclick = () => {
+          if (!returnToEvidenceSource(src.id))
+            noteStatus('المحطة لم تُفتح بعد، أو لا يمكن الوصول إليها من المكتبة دون تجاوز شروطها.');
+        };
+        actions.append(revisit);
+        item.append(actions);
+        list.append(item);
+      }
+      tabs.querySelectorAll('button').forEach(btn =>
+        btn.setAttribute('aria-pressed', String(btn.dataset.file === selected)));
+      $('.mlj-evidence-review', modal).replaceChildren();
+      $('.mlj-evidence-review', modal).hidden = true;
+      renderInference(snapshot);
+      note.value = getEvidenceDraft(selected);
+      noteStatus('');
+    }
+    function dismiss() {
+      modal.remove();
+      if (previous?.isConnected && typeof previous.focus === 'function')
+        previous.focus({ preventScroll: true });
+    }
+    closeBtn.onclick = dismiss;
+    saveBtn.onclick = () => {
+      status.textContent = saveEvidenceDraft(selected, note.value)
+        ? 'حُفظت ملاحظتك على هذا الجهاز' : 'تعذّر الحفظ. تأكد من سماح المتصفح بالتخزين.';
+    };
+    modal.addEventListener('click', e => { if (e.target === modal) dismiss(); });
+    modal.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { e.preventDefault(); dismiss(); }
+      if (e.key !== 'Tab') return;
+      const controls = [...modal.querySelectorAll('button,textarea')].filter(el => !el.disabled);
+      const first = controls[0], last = controls.at(-1);
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+    document.body.append(modal);
+    render();
+    closeBtn.focus({ preventScroll: true });
+  }
+
+
+  // Jaziran chapter scenes are adapted from the source PDF and do not drive game progress.
+  function jaziranSceneAvailable(id) {
+    const scene = window.__MINDLAB_JAZIRAN_SCENES?.[id];
+    if (!scene) return false;
+    if (!scene.requiredPuzzle) return true;
+    try { return !!(typeof pState === 'function' && pState()?.done?.[scene.requiredPuzzle]); }
+    catch (_) { return false; }
+  }
+  function openJaziranScene(id) {
+    if (!jaziranSceneAvailable(id)) return false;
+    const scene = window.__MINDLAB_JAZIRAN_SCENES[id];
+    const previous = document.activeElement;
+    $('#mlj-jaziran-modal')?.remove();
+    const modal = document.createElement('div');
+    modal.id = 'mlj-jaziran-modal';
+    modal.className = 'mlj-modal mlj-jaziran-modal';
+    modal.setAttribute('role','dialog');
+    modal.setAttribute('aria-modal','true');
+    modal.setAttribute('aria-label',scene.title);
+    modal.innerHTML =
+      '<section class="mlj-modal-card mlj-jaziran-card" dir="rtl">' +
+        '<header class="mlj-head"><h2 id="mlj-jaziran-title"></h2><button type="button" id="mlj-jaziran-close">إغلاق</button></header>' +
+        '<p class="mlj-jaziran-location"></p>' +
+        '<div class="mlj-jaziran-heroines" aria-label="ورد ورواء ونهى">' +
+          '<figure><img src="motion/art10/char_ward.webp" alt=""><figcaption>ورد</figcaption></figure>' +
+          '<figure><img src="motion/art10/char_rawaa.webp" alt=""><figcaption>رواء</figcaption></figure>' +
+          '<figure><img src="motion/art10/char_nuha.webp" alt=""><figcaption>نهى</figcaption></figure>' +
+        '</div>' +
+        '<div class="mlj-jaziran-dialogue"></div>' +
+        '<div class="mlj-jaziran-inspection"><button type="button" id="mlj-jaziran-inspect"></button>' +
+        '<p id="mlj-jaziran-result" aria-live="polite"></p></div>' +
+        '<div id="mlj-jaziran-choices" hidden><p id="mlj-jaziran-question"></p><div class="mlj-jaziran-options"></div></div>' +
+        '<div id="mlj-jaziran-final" hidden><strong id="mlj-jaziran-reveal"></strong>' +
+          '<p id="mlj-jaziran-end"></p><div class="mlj-jaziran-actions">' +
+            '<button type="button" id="mlj-jaziran-save">أضف الملاحظة إلى دفتر الأدلة</button>' +
+            '<button type="button" id="mlj-jaziran-book">افتح دفتر الأدلة</button>' +
+          '</div></div>' +
+        '<p id="mlj-jaziran-status" role="status" aria-live="polite"></p>' +
+      '</section>';
+    const title = $('#mlj-jaziran-title',modal);
+    const inspection = $('#mlj-jaziran-inspect',modal);
+    const result = $('#mlj-jaziran-result',modal);
+    const options = $('#mlj-jaziran-choices',modal);
+    const final = $('#mlj-jaziran-final',modal);
+    const message = $('#mlj-jaziran-status',modal);
+    title.textContent=scene.title;
+    $('.mlj-jaziran-location',modal).textContent=scene.location;
+    inspection.textContent=scene.inspectLabel;
+    $('#mlj-jaziran-question',modal).textContent=scene.question;
+    const dialogue=$('.mlj-jaziran-dialogue',modal);
+    for (const [speaker,line] of scene.dialogue) {
+      const row=document.createElement('p');
+      const name=document.createElement('strong');
+      name.textContent=speaker+' : ';
+      row.append(name,document.createTextNode(line));
+      dialogue.append(row);
+    }
+    function dismiss() {
+      modal.remove();
+      if (previous?.isConnected && typeof previous.focus === 'function')
+        previous.focus({preventScroll:true});
+    }
+    inspection.onclick=() => {
+      result.textContent=scene.inspectResult;
+      inspection.hidden=true;
+      options.hidden=false;
+      $('.mlj-jaziran-options button',modal)?.focus({preventScroll:true});
+    };
+    const optionBox=$('.mlj-jaziran-options',modal);
+    scene.options.forEach((option,index) => {
+      const button=document.createElement('button');
+      button.type='button';
+      button.textContent=option;
+      button.onclick=() => {
+        if (index!==scene.answer) {
+          message.textContent='هذه المقارنة لا تفسر القرينة. راجع أثر الماء أو أصل السجل.';
+          return;
+        }
+        message.textContent='وصلت إلى ملاحظة جديدة قابلة للمراجعة.';
+        options.hidden=true;
+        final.hidden=false;
+        $('#mlj-jaziran-reveal',modal).textContent=scene.reveal;
+        $('#mlj-jaziran-end',modal).textContent=scene.endText;
+        $('#mlj-jaziran-save',modal).focus({preventScroll:true});
+      };
+      optionBox.append(button);
+    });
+    $('#mlj-jaziran-save',modal).onclick=() => {
+      // Never overwrite existing player-authored notes; no verified evidence granted here.
+      if (getEvidenceDraft(scene.observationFile).trim()) {
+        message.textContent='توجد ملاحظة محفوظة في الملف. افتح الدفتر لمراجعتها دون استبدالها.';
+        return;
+      }
+      message.textContent=saveEvidenceDraft(scene.observationFile,scene.note)
+        ? 'حُفظت الملاحظة في ملفها على هذا الجهاز، دون ختم أو مكافأة.'
+        : 'تعذر حفظ الملاحظة. يمكنك تدوينها يدويًا في دفتر الأدلة.';
+    };
+    $('#mlj-jaziran-book',modal).onclick=() => { dismiss(); openEvidenceBook(); };
+    $('#mlj-jaziran-close',modal).onclick=dismiss;
+    modal.addEventListener('click',event=>{if(event.target===modal)dismiss();});
+    modal.addEventListener('keydown',event=>{
+      if(event.key==='Escape'){event.preventDefault();dismiss();return;}
+      if(event.key!=='Tab')return;
+      const controls=[...modal.querySelectorAll('button')].filter(el=>!el.disabled&&!el.hidden&&
+        !el.closest('[hidden]'));
+      const first=controls[0],last=controls.at(-1);
+      if(event.shiftKey&&document.activeElement===first){event.preventDefault();last.focus();}
+      else if(!event.shiftKey&&document.activeElement===last){event.preventDefault();first.focus();}
+    });
+    document.body.append(modal);
+    $('#mlj-jaziran-close',modal).focus({preventScroll:true});
+    return true;
+  }
+
   function mountLegacyHub() {
     const v = $('#v-puz');
     const entry = v && $('.v5-hubcard', v);
@@ -279,6 +727,9 @@
       </div>
       <div class="mlj-foot">
         <button type="button" class="mlj-trans-btn" id="mlj-open-trans">مشاهد الرحلة (${discoveredTransitions().length})</button>
+        <button type="button" class="mlj-trans-btn" id="mlj-open-evidence">دفتر الأدلة</button>
+        <button type="button" class="mlj-trans-btn" id="mlj-open-jaziran">قصة الصندوق</button>
+        ${jaziranSceneAvailable('palace_clock') ? '<button type="button" class="mlj-trans-btn" id="mlj-open-jaziran-clock">ساعة القصر</button>' : ''}
         <span class="mlj-pill">البحار السبعة: ${prog.seaDone} / 21</span>
         <span class="mlj-pill">أَثْرَان: ${prog.atheranDone} / 21</span>
         <span class="mlj-pill">${prog.secretsUnlocked > 0 ? `عوالم سرية مكتشفة: ${prog.secretsUnlocked} / 5` : 'العوالم السرية محجوبة حتى اكتشافها'}</span>
@@ -309,7 +760,7 @@
       }
       if (side && window.ML10) {
         const saved = window.ML10.state();
-        side.textContent = Object.values(saved.done || {}).filter(Boolean).length + ' / 25 محطة · حفظ مستقل';
+        side.textContent = Object.values(saved.done || {}).filter(Boolean).length + ' / 24 محطة · حفظ مستقل';
       }
     } catch (_) {}
     
@@ -342,6 +793,12 @@
     $('#mlj-close-atlas', sec).onclick = () => closeAtlas();
     const trBtn = $('#mlj-open-trans', sec);
     if (trBtn) trBtn.onclick = () => { closeAtlas(false); openTransitionsModal(0); };
+    const evidenceBtn = $('#mlj-open-evidence', sec);
+    if (evidenceBtn) evidenceBtn.onclick = openEvidenceBook;
+    const prologueBtn = $('#mlj-open-jaziran', sec);
+    if (prologueBtn) prologueBtn.onclick = () => openJaziranScene('prologue');
+    const clockBtn = $('#mlj-open-jaziran-clock', sec);
+    if (clockBtn) clockBtn.onclick = () => openJaziranScene('palace_clock');
     sec.querySelectorAll('[data-mlj-ch]').forEach(b => {
       b.onclick = () => { closeAtlas(false); triggerChapter(b.dataset.mljCh); };
     });
@@ -509,6 +966,23 @@
 
       const list = $('div', extras);
       list.replaceChildren();
+      const evidenceButton = document.createElement('button');
+      evidenceButton.type = 'button';
+      evidenceButton.textContent = 'ملفات الأدلة والملاحظات';
+      evidenceButton.onclick = openEvidenceBook; // Keep journal open so closing the modal restores visible focus.
+      list.append(evidenceButton);
+      const prologueButton = document.createElement('button');
+      prologueButton.type = 'button';
+      prologueButton.textContent = 'قصة الصندوق · افحص العلامة';
+      prologueButton.onclick = () => openJaziranScene('prologue');
+      list.append(prologueButton);
+      if (jaziranSceneAvailable('palace_clock')) {
+        const clockButton = document.createElement('button');
+        clockButton.type = 'button';
+        clockButton.textContent = 'ساعة القصر · قارن الشهادات';
+        clockButton.onclick = () => openJaziranScene('palace_clock');
+        list.append(clockButton);
+      }
       const actions = window.ATHERAN_CAMPAIGN?.journeyActions() || [];
       if (sea) {
         actions.unshift({ label: 'كنوز البحار', open: () => T7.openJournal('treasures') });
@@ -525,7 +999,7 @@
         button.onclick = () => { extras.open = false; closeAtlas(); action.open(); };
         list.append(button);
       });
-      extras.hidden = actions.length === 0;
+      extras.hidden = false; // The evidence drafts remain accessible before the first puzzle.
     }
 
     function showPreview(st, pin) {
@@ -731,7 +1205,7 @@
     $('#mlj-journey-entry')?.click();
   }
 
-  /* ---- 46 Non-Library Openings (21 Treasure Island + 25 Side Journey) ---- */
+  /* ---- 45 Non-Library Openings (21 Treasure Island + 24 Side Journey) ---- */
   function showStationOpening(info, start) {
     const prev = document.activeElement;
     const old = $('#fit-opening-overlay');
@@ -877,7 +1351,7 @@
     }
   }
 
-  window.mindlabJourneyHub = { openChapter: triggerChapter, openTransitions: openTransitionsModal, discoveredTransitions, beforeStation, mountUnifiedHub, applyBoardArt, returnToMap };
+  window.mindlabJourneyHub = { openChapter: triggerChapter, openTransitions: openTransitionsModal, discoveredTransitions, beforeStation, mountUnifiedHub, applyBoardArt, returnToMap, openEvidenceBook, getEvidenceDraft, saveEvidenceDraft, getEvidenceSnapshot, evidenceVisibleFiles, jaziranSceneAvailable, openJaziranScene };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchAll);
   else watchAll();
 })();

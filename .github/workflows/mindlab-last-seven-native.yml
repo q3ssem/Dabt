@@ -1,0 +1,56 @@
+name: MindLab remaining Athran and Palace native controls
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/mindlab-last-seven-native.yml'
+      - 'qa/browser/jaziran_last_seven_native_ui.py'
+      - 'qa/browser/jaziran_sea_six_native_ui.py'
+      - 'qa/browser/player_openings.py'
+      - 'index.html'
+      - 'ui/**'
+      - 'motion/**'
+  workflow_dispatch:
+concurrency:
+  group: last-seven-native-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  native-play:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+        group: [athran, palace]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - name: Install browser
+        shell: bash
+        run: |
+          if [ "${{ matrix.engine }}" = "webkit" ]; then
+            python -m playwright install --with-deps webkit
+          else
+            command -v google-chrome
+          fi
+      - name: Solve each level through physical player controls
+        shell: bash
+        run: |
+          mkdir -p /tmp/mindlab-last-seven
+          python -m http.server 8803 --bind 127.0.0.1 >/tmp/mindlab-last-seven-http.log 2>&1 &
+          python qa/browser/jaziran_last_seven_native_ui.py \
+            http://127.0.0.1:8803/ "${{ matrix.engine }}" "${{ matrix.group }}" /tmp/mindlab-last-seven
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: last-seven-${{ matrix.engine }}-${{ matrix.group }}
+          path: /tmp/mindlab-last-seven/*
+          if-no-files-found: warn
+          retention-days: 30

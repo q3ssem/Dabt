@@ -59,7 +59,9 @@
     try { txBind(); } catch (e) { console.warn('[atheran] bind', e); }
     v.querySelector('[data-ah="back"]').onclick = back;
     window.scrollTo(0, 0); document.body.scrollTop = 0; document.documentElement.scrollTop = 0;
-    if (s.done === ASTN.length && s.cleared === ASW.length && typeof window.dispatchEvent === 'function' && typeof CustomEvent === 'function')
+    if (s.done === ASTN.length &&
+      (s.cleared === ASW.length || window.MindlabRescue?.state()?.completed) &&
+      typeof window.dispatchEvent === 'function' && typeof CustomEvent === 'function')
       window.dispatchEvent(new CustomEvent('mindlab:journey-progress', {detail: {chapter: 'atheran'}}));
   }
   function back() { LA.view = null; const v = document.getElementById('v-puz'); if (v) v.classList.remove('ah-view'); renderPuz(); }
@@ -70,7 +72,10 @@
     const v = document.getElementById('v-puz'); if (!v || LA.view || !v.querySelector('.v5-hublib') || v.querySelector('.ah-launch')) return;
     const s = summary();
     const card = document.createElement('section'); card.className = 'ah-launch';
-    const state = !s.open ? `مقفلة حتى إكمال قصر الملوك السبعة · ${AR(s.palace)}/${AR(PW.length)}` : s.done >= ASTN.length ? 'اكتملت المحطات · عُد للأسرار والخاتمة' : `${AR(s.done)} من ${AR(ASTN.length)} محطة · ${AR(s.cleared)} من ${AR(ASW.length)} عوالم سرية`;
+    const state = !s.open ? `مقفلة حتى إكمال قصر الملوك السبعة · ${AR(s.palace)}/${AR(PW.length)}` : s.done >= ASTN.length ? window.MindlabRescue?.state()?.completed ?
+      'اكتملت المحطات ووصل قارب الإخلاء · راجع الخريطة والقرار' :
+      'اكتملت المحطات · مهمة الإخلاء والفرع الاختياري متاحتان' :
+      `${AR(s.done)} من ${AR(ASTN.length)} محطة · ${AR(s.cleared)} من ${AR(ASW.length)} عوالم سرية`;
     card.innerHTML = `<div class="ah-launch-crew">${HEROINES.map(([k]) => `<img src="${heroSrc(k)}" alt="" loading="lazy" decoding="async">`).join('')}</div>
       <div class="ah-launch-text"><span class="ah-kicker">الفصل الرسمي · ٢١ محطة · ٦٣ مرحلة</span><h2>أَثْرَان: أطلس المجهول</h2><p>${esc(state)}</p></div>
       <button class="ah-launch-go" type="button">اعرض الأطلس</button>`;
@@ -119,7 +124,8 @@
     const a = aState();
     if (!aOpen() || !a.finPend || !a.done.pz_aheart) return false;
     a.finPend = 0;
-    aFinale();
+    if (window.MindlabRescue?.open?.()) return true;
+    aFinale(); // Fallback for older/offline bundles without the new rescue UI.
     return true;
   }
 
@@ -146,12 +152,14 @@
       S.save();
       aSwOpen('spores');
     } });
-    if (a.done.pz_aheart) actions.push({ label: 'شاهد خاتمة أَثْرَان', open: () => {
-      const current = aState();
-      if (!aOpen() || !current.done.pz_aheart) return;
-      current.finPend = 0;
-      aFinale();
-    } });
+    if (s.done === ASTN.length && a.done.pz_aheart) actions.push({ label: window.MindlabRescue?.state()?.completed ?
+        'طريق الإخلاء · الخريطة والقرار الأخير' : 'إخلاء أَثْرَان · جرّب الخريطة المفتوحة',
+      open: () => {
+        const current = aState();
+        if (!aOpen() || !current.done.pz_aheart) return;
+        current.finPend = 0;
+        if (!window.MindlabRescue?.open?.()) aFinale();
+      } });
     return actions;
   }
 

@@ -53,7 +53,7 @@ assert.ok(!read('qa/browser/design10_play.py').includes('pz_stat'), 'deleted des
 assert.ok(!read('qa/browser/motion_batch_fixes.py').includes('pz_xbottle'), 'deleted bottle replay removed');
 
 // The cache generation must have moved past the generation that still held the deleted assets.
-assert.ok(read('sw.js').includes("PATCH='final-cleanup-14'"), 'cache generation must change after switching to deferred assets');
+assert.ok(read('sw.js').includes("PATCH='brain-touch-32'"), 'cache generation must change after switching to deferred assets');
 const pwa = read('pwa.js');
 assert.ok(pwa.includes('window.mindlabOffline.prepareAll = function prepareAll()'), 'offline bulk download must be opt-in');
 assert.ok(pwa.includes('window.mindlabOffline.clearOptionalCaches'), 'optional image cache cleanup available');
@@ -66,10 +66,11 @@ assert.ok(swSource.includes('++imageWrites % 32 === 0'), 'image eviction scan is
 
 const runtime = read('sw.js');
 const startUi = read('ui/app.js');
-assert.ok(runtime.includes("PATCH='final-cleanup-14'"), 'second-stage cache generation');
+assert.ok(runtime.includes("PATCH='brain-touch-32'"), 'second-stage cache generation');
 const shell = runtime.slice(runtime.indexOf('const shell = ['), runtime.indexOf('];', runtime.indexOf('const shell = ['))+2);
 const listed = [...shell.matchAll(/'([^']+)'/g)].map(m=>m[1]);
-assert.equal(listed.length,18,'core shell includes 10 startup resources and 8 assessment dependencies');
+assert.equal(listed.length,19,'core shell includes 11 startup resources and 8 assessment dependencies');
+assert.ok(listed.includes('ui/tide-scroll.css'),'responsive tide-hour stylesheet remains in offline startup shell');
 assert.ok(listed.every(file=>fs.existsSync(file)),'core shell resources exist');
 assert.ok(!startUi.includes('idle(startSide)'), 'side journey never loads automatically');
 assert.ok(!startUi.includes("document.addEventListener('pointerdown', start"), 'unrelated taps do not preload play bundle');
@@ -82,4 +83,5 @@ assert.ok(!read('qa/browser/authored_stages.py').includes("'pz_stat':"), 'retire
 assert.ok(!read('qa/browser/perf_bench.py').includes('pz_stat,pz_'), 'retired statue performance scenario removed');
 assert.ok(openings.includes("treasure/art/story5/crew_full_"),'lightweight heroine intro art retained');
 assert.ok(hub.includes('إغلاق القواعد') && openings.includes('إغلاق القواعد'),'rules can be dismissed in both journeys');
+assert.ok(JSON.parse(read('package.json')).scripts.test.includes('node qa/tests/journey-transitions.cjs'), 'journey integrity gate must run in npm test');
 console.log('MindLab cleanup passed: 78 lightweight puzzle records, 86 library intros, '+map.stations.length+' journey stations; retired assets absent.');

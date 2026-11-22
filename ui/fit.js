@@ -44,6 +44,11 @@
   const I_BOOK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5.5C6.5 4 9.5 4 12 6c2.5-2 5.5-2 8-.5V19c-2.5-1.5-5.5-1.5-8 .5-2.5-2-5.5-2-8-.5z"/><path d="M12 6v13.5"/></svg>';
 
   let body = null, mo = null, raf = 0, fitting = false, sheetPrevFocus = null;
+  // Mobile WebKit can miss a resize event after an in-place viewport-height change.
+  // Probe dimensions only while a puzzle is mounted; no work outside gameplay.
+  let viewportProbe = null, viewportKey = '';
+  // Optional, session-only enlarged board. Native saves, zoom defaults and gameplay stay unchanged.
+  let largeView = false;
   const layoutObserver = typeof ResizeObserver === 'function' ? new ResizeObserver(() => schedule()) : null;
 
   function sheetHTML() {
@@ -53,13 +58,19 @@
     const id = gid();
     if (!rules.length) rules = (GM[id]?.how || []).map(h => esc(h));
     const hasOpening = !!(id && window.__MINDLAB_OPENINGS_DATA && window.__MINDLAB_OPENINGS_DATA[id] && window.fitOpenings);
-    return `<div class="fit-sheet-card" role="dialog" aria-modal="true" aria-label="${title}"><h3>${title}</h3>${rules.length ? `<div class="fit-sh-rule"><b>القاعدة</b>${rules.map(r => `<p>${r}</p>`).join('')}</div>` : ''}${story.length ? `<div class="fit-sh-story">${story.map(s => `<p>${s}</p>`).join('')}</div>` : ''}${hasOpening ? '<button class="fit-sh-replay" type="button">عرض مقدمة اللغز</button>' : ''}<button class="fit-sh-go" type="button">فهمت</button></div>`;
+    const zoomChoice = body && !$('.lb[data-layout]', body)
+      ? `<button class="fit-sh-magnify" type="button" aria-pressed="${largeView}">${largeView?'العودة إلى ملاءمة الشاشة':'تكبير لوحة اللغز والتمرير داخلها'}</button>`
+      : '';
+    return `<div class="fit-sheet-card" role="dialog" aria-modal="true" aria-label="${title}"><h3>${title}</h3>${rules.length ? `<div class="fit-sh-rule"><b>القاعدة</b>${rules.map(r => `<p>${r}</p>`).join('')}</div>` : ''}${story.length ? `<div class="fit-sh-story">${story.map(s => `<p>${s}</p>`).join('')}</div>` : ''}${hasOpening ? '<button class="fit-sh-replay" type="button">عرض مقدمة اللغز</button>' : ''}${zoomChoice}<button class="fit-sh-go" type="button">فهمت</button></div>`;
   }
   function openSheet() {
     closeSheet(); sheetPrevFocus = document.activeElement;
     const d = document.createElement('div'); d.className = 'fit-sheet'; d.innerHTML = sheetHTML();
     const extra = sheetExtras(); if (extra) { const go = $('.fit-sh-go', d); if (go) go.insertAdjacentHTML('beforebegin', extra); }
     d.addEventListener('click', e => {
+      if (e.target.closest('.fit-sh-magnify')) {
+        largeView = !largeView; closeSheet(); schedule(); return;
+      }
       if (e.target.closest('.fit-sh-replay')) { const id = gid(); closeSheet(); if (id && window.fitOpenings) window.fitOpenings.open(id, true); return; }
       const give = e.target.closest('.fit-sh-give'), q = $('#pzq');
       if (give && q) {
@@ -218,6 +229,7 @@
       const avail = Math.max(1, Math.min(bounds.bottom - safe, viewportBottom - safe) - body.getBoundingClientRect().top);
       body.style.setProperty('--fit-room', `${avail}px`);
       if ($('.lb[data-layout]', body)) {
+        body.classList.remove('fit-large');
         const minHeight = $('.lb[data-layout="adventure"]', body) ? 215 : 200;
         body.style.removeProperty('--fit-z');
         body.style.setProperty('--fit-room', `${Math.max(minHeight, avail - 8)}px`);
@@ -227,6 +239,17 @@
         return;
       }
       const keep = body.scrollTop;
+      if (largeView) {
+        // Preserve the available phone screen height, but no longer shrink game
+        // controls below their native size. Scroll INSIDE the board instead.
+        body.style.setProperty('--fit-z', '1');
+        body.style.height = `${avail}px`;
+        body.dataset.fitZoom = '1.00';
+        body.classList.add('fit-scroll', 'fit-large');
+        body.scrollTop = keep;
+        return;
+      }
+      body.classList.remove('fit-large');
       const natural = () => { body.scrollTop = 0; const r0 = body.getBoundingClientRect().top; let b = 0; for (const c of body.children) { const r = c.getBoundingClientRect(); if (r.height) b = Math.max(b, r.bottom); } return b - r0 + 4; };
       const floor = ['pz_avsong','pz_ashade'].includes(gid()) ? 1 : ['pz_grid','pz_tpath','pz_door'].includes(gid()) ? 0.85 : MIN_ZOOM;
       let z = 1; body.style.removeProperty('--fit-z'); body.style.height = ''; let need = natural();
@@ -243,14 +266,32 @@
   function mount() {
     const b = $('#stage #pzb');
     if (b === body) return;
-    if (mo) mo.disconnect(); layoutObserver?.disconnect(); body = b; closeSheet();
+    if (mo) mo.disconnect(); layoutObserver?.disconnect();
+    if (viewportProbe) { clearInterval(viewportProbe); viewportProbe = null; }
+    body = b; closeSheet();
     if (!b) { const p = $('#play'); if (p) p.classList.remove('fit'); return; }
     arrange(); hud(); schedule();
-    for (const el of $$('#play .pbar, #stage .pzhud, #stage #m')) layoutObserver?.observe(el); setTimeout(() => { hud(); schedule(); }, 120); setTimeout(() => { hud(); schedule(); }, 600);
+    // Observe the viewport-height play container as well: some mobile WebKit resizes
+    // change .pin height without changing toolbar dimensions or firing window resize.
+    for (const el of $$('#play .pin, #play .pbar, #stage .pzhud, #stage #m')) layoutObserver?.observe(el); setTimeout(() => { hud(); schedule(); }, 120); setTimeout(() => { hud(); schedule(); }, 600);
     setTimeout(() => { if (body === b) bubble(); }, 250);
     mo = new MutationObserver(() => { hud(); pageClues(b); $$('details.ui-rules:not([open])', b).forEach(d => { d.open = true; }); schedule(); });
     mo.observe(b, { childList: true, subtree: true });
     b.addEventListener('load', schedule, true); b.addEventListener('toggle', schedule, true);
+    // Request a fresh fit if WebKit changes its visual viewport without dispatching
+    // resize/ResizeObserver callbacks. Keep this bounded to the live game board.
+    const viewportSignature = () => {
+      const pin = $('#play > .pin'), vv = window.visualViewport;
+      if (!pin) return '';
+      return [innerWidth, innerHeight, Math.round(pin.getBoundingClientRect().bottom),
+        Math.round(vv?.height || 0), Math.round(vv?.offsetTop || 0)].join(':');
+    };
+    viewportKey = viewportSignature();
+    viewportProbe = setInterval(() => {
+      if (body !== b || !b.isConnected || document.hidden) return;
+      const next = viewportSignature();
+      if (next !== viewportKey) { viewportKey = next; schedule(); }
+    }, 250);
   }
   function watch() {
     const st = $('#stage'); if (!st) return setTimeout(watch, 300);
@@ -274,6 +315,14 @@
   function pageFit() {
     pageRaf = 0; if (!page || !pageEl || !pageEl.isConnected || !pageEl.offsetParent) return;
     const z0 = pageEl; z0.style.removeProperty('--fit-z');
+    // Side-journey boards already have an internal scroll container. Zooming
+    // the whole stage on phones made nominally 44px controls just 30–37px.
+    // Prefer real-size interaction targets with scrolling over shrinking taps.
+    if (page.key === 'ex10' && window.innerWidth <= 430) {
+      z0.style.setProperty('--fit-z', '1');
+      z0.dataset.fitZoom = '1.00';
+      return;
+    }
     const top = z0.getBoundingClientRect().top + window.scrollY + document.body.scrollTop, avail = Math.max(200, window.innerHeight - top - 10);
     const nat = () => { let b = 0; for (const c of z0.children) { const r = c.getBoundingClientRect(); if (r.height) b = Math.max(b, r.bottom); } return b - z0.getBoundingClientRect().top + 6; };
     let z = 1, need = nat();
@@ -286,7 +335,11 @@
     const el = P && $(P.zoom, $(P.ready).closest('#v-puz') || document);
     document.documentElement.classList.toggle('fit-page', !!P);
     PAGES.forEach(p => document.documentElement.classList.toggle('fit-' + p.key, p === P));
-    if (!P) { page = pageEl = null; return; }
+    if (!P) {
+      document.querySelectorAll('.fit-pbubble').forEach(node => node.remove());
+      page = pageEl = null;
+      return;
+    }
     const fresh = el !== pageEl; page = P; pageEl = el;
     const tools = $(P.tools);
     if (tools && !$('.fit-info', tools) && ((P.rule && $(P.rule)) || (P.story && $(P.story)))) {
@@ -295,13 +348,13 @@
     if (fresh) {
       if (window.scrollY) window.scrollTo(0, 0); if (document.body.scrollTop) document.body.scrollTop = 0;
       pageSchedule(); setTimeout(pageSchedule, 150); setTimeout(pageSchedule, 700);
+      // The full-width automatic rule bubble covered clues and survived a
+      // page-to-page transition for up to five seconds. The rules already
+      // remain available through the accessible information control above.
+      // Never put a transient instruction panel over an active board.
+      document.querySelectorAll('.fit-pbubble').forEach(node => node.remove());
       const id = P.id(), r = P.rule && txt($(P.rule));
-      if (r && !seen()[id]) { markSeen(id); setTimeout(() => {
-        const b = document.createElement('div'); b.className = 'fit-bubble fit-pbubble'; b.innerHTML = `<span>${I_INFO}</span><p>${r}</p>`;
-        b.style.setProperty('--fit-bt', `${Math.max(8, Math.round(el.getBoundingClientRect().top))}px`); document.body.append(b);
-        const off = () => { b.classList.add('gone'); setTimeout(() => b.remove(), 300); document.removeEventListener('pointerdown', off, true); };
-        setTimeout(() => document.addEventListener('pointerdown', off, true), 50); setTimeout(off, 5000);
-      }, 200); }
+      if (r && !seen()[id]) markSeen(id);
     } else pageSchedule();
   }
   function pageWatch() {

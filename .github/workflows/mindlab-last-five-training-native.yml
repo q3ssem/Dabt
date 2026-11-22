@@ -1,0 +1,56 @@
+name: MindLab last five training puzzle engines native UI acceptance
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/mindlab-last-five-training-native.yml'
+      - 'qa/browser/jaziran_final_training_native_ui.py'
+      - 'qa/browser/jaziran_sea_six_native_ui.py'
+      - 'qa/browser/player_openings.py'
+      - 'index.html'
+      - 'motion/**'
+      - 'ui/**'
+  workflow_dispatch:
+concurrency:
+  group: mindlab-final-training-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  native-training:
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+        group: [movement, balance]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - name: Install browser and validate test syntax
+        shell: bash
+        run: |
+          python -m py_compile qa/browser/jaziran_final_training_native_ui.py
+          if [ "${{ matrix.engine }}" = "webkit" ]; then
+            python -m playwright install --with-deps webkit
+          else
+            command -v google-chrome
+          fi
+      - name: Play all levels through visible native controls, verify wins and reload
+        shell: bash
+        run: |
+          mkdir -p /tmp/mindlab-final-training
+          python -m http.server 8806 --bind 127.0.0.1 >/tmp/mindlab-final-training-http.log 2>&1 &
+          python qa/browser/jaziran_final_training_native_ui.py \
+            http://127.0.0.1:8806/ "${{ matrix.engine }}" "${{ matrix.group }}" /tmp/mindlab-final-training
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: final-training-${{ matrix.engine }}-${{ matrix.group }}
+          path: /tmp/mindlab-final-training/*
+          if-no-files-found: warn
+          retention-days: 30

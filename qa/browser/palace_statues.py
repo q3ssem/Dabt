@@ -35,15 +35,13 @@ REG = r"""() => { const real = window.drMake; window.__realDr = real; window.drM
 
 async def boot(ctx):
     pg = await ctx.new_page(); errs = []; pg.on('pageerror', lambda e: errs.append(str(e)[:200]))
-    await pg.goto(URL); await pg.wait_for_timeout(2200); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
-    if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
+    await pg.goto(URL); await pg.wait_for_timeout(2200); await pg.evaluate("async()=>{const p=document.querySelector('.mpc[data-m=main]');if(p&&p.getClientRects().length)p.click();tab('puz');await mindlabPlayLayers.start()}"); await pg.wait_for_function("()=>window.mindlabPlayLayers?.ready===true", timeout=45000)
     return pg, errs
 async def start(pg, gid, lv=None, seed=None, pre=None):
-    await pg.goto(URL); await pg.wait_for_timeout(1600); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
-    if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
+    await pg.goto(URL); await pg.wait_for_timeout(1600); await pg.evaluate("async()=>{const p=document.querySelector('.mpc[data-m=main]');if(p&&p.getClientRects().length)p.click();tab('puz');await mindlabPlayLayers.start()}"); await pg.wait_for_function("()=>window.mindlabPlayLayers?.ready===true", timeout=45000)
     if pre: await pg.evaluate(pre)
     await pg.evaluate("([g, lv, s]) => { startRun([g]); if (lv) RUN.replay = { id: g, lv, seed: s } }", [gid, lv, seed]); await pg.wait_for_timeout(300)
-    if await pg.locator('#stage #go').count(): await pg.click('#stage #go')
+    if await pg.locator('#stage #go').count() and await pg.locator('#stage #go').first.is_visible(): await pg.click('#stage #go')
     await dismiss_opening(pg, 1500)
     await pg.wait_for_timeout(2200)
 async def result(pg, t=6000):
@@ -76,7 +74,7 @@ async def turn_to(pg, i, want, D, label):
 async def nothing_open(pg):
     return await pg.evaluate("() => !document.querySelector('.pl-door.open') && [...document.querySelectorAll('.pl-dimg')].every(i => /door_closed/.test(i.src))")
 async def overflow(pg):
-    return await pg.evaluate("() => { const W = document.documentElement.clientWidth; return [...document.querySelectorAll('#stage *')].filter(e => { const b = e.getBoundingClientRect(); return b.width && (b.right > W + 1 || b.left < -1) && getComputedStyle(e).position !== 'fixed' }).map(e => e.className.baseVal ?? e.className).slice(0, 4) }")
+    return await pg.evaluate("() => { const W = document.documentElement.clientWidth; return [...document.querySelectorAll('#stage *')].filter(e => { const b = e.getBoundingClientRect(); return b.width && (b.right > W + 1 || b.left < -1) && getComputedStyle(e).position !== 'fixed' }).map(e => ({tag:e.tagName,id:e.id,cls:e.className.baseVal??e.className,left:Math.round(e.getBoundingClientRect().left),right:Math.round(e.getBoundingClientRect().right),width:Math.round(e.getBoundingClientRect().width),src:e.getAttribute('src')||'',parent:e.parentElement?.className?.baseVal??e.parentElement?.className??''})).slice(0, 4) }")
 async def clipped(pg):
     return await pg.evaluate("() => [...document.querySelectorAll('.pl-sthead b, .pl-face, .pl-rule small, .pl-lead')].filter(e => e.scrollWidth > e.clientWidth + 2).length")
 
@@ -167,7 +165,7 @@ async def pliar(pg, w, lv):
     await tap(pg, '#plgo'); ok(await result(pg) is True, f'{lab}: the hall wins')
     await pg.wait_for_timeout(700); st1 = await pg.evaluate("() => JSON.stringify([txStageOf('pz_pliar'), pState().done.pz_pliar || 0])")
     ok(st1 != st0, f'{lab}: one palace stage recorded', [st0, st1])
-    await pg.reload(); await pg.wait_for_timeout(2000); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
+    await pg.reload(); await pg.wait_for_timeout(2000); await pg.evaluate("async()=>{const p=document.querySelector('.mpc[data-m=main]');if(p&&p.getClientRects().length)p.click();tab('puz');await mindlabPlayLayers.start()}"); await pg.wait_for_function("()=>window.mindlabPlayLayers?.ready===true", timeout=45000)
     ok(await pg.evaluate("() => JSON.stringify([txStageOf('pz_pliar'), pState().done.pz_pliar || 0])") == st1, f'{lab}: kept after reload')
 
 async def main():
@@ -190,7 +188,7 @@ async def main():
                     await pg.evaluate("() => window.__test.pz.set()"); await tap(pg, '#plgo'); ok(await result(pg) is True, f'pz_door lv{lv}: solved board wins')
             for kind in ('regression', 'mixed', 'mix'): await door_case(pg, w, kind)
             lv0 = await pg.evaluate("() => pzLv('pz_door')")
-            await pg.reload(); await pg.wait_for_timeout(2000); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000); ok(await pg.evaluate("() => pzLv('pz_door')") == lv0, f'pz_door@{w}: level kept after reload')
+            await pg.reload(); await pg.wait_for_timeout(2000); await pg.evaluate("async()=>{const p=document.querySelector('.mpc[data-m=main]');if(p&&p.getClientRects().length)p.click();tab('puz');await mindlabPlayLayers.start()}"); await pg.wait_for_function("()=>window.mindlabPlayLayers?.ready===true", timeout=45000); ok(await pg.evaluate("() => pzLv('pz_door')") == lv0, f'pz_door@{w}: level kept after reload')
             ok(not errs, f'pz_door@{w} no page errors', errs); await ctx.close()
             # pz_pliar in its own context (fresh profile → its own first stage)
             ctx = await b.new_context(viewport={'width': w, 'height': 820}, has_touch=True); await ctx.add_init_script('window.__test={}')

@@ -90,3 +90,9 @@ html[data-skin="dark"] .ml-river-board::before { filter: brightness(.73) saturat
   .ml-river-vessel, .ml-river-rig { transition: none; }
   .sailing :is(.ml-river-rig,.ml-river-wake) { animation: none; }
 }
+
+/* Side journey Phase 2: keep unselectable remote river-bank cargo from intercepting a tap. */
+.ml-river-place[data-current="false"]{pointer-events:none}
+.ml-river-place[data-current="true"]{position:relative;z-index:3}
+.ml-river-place button{max-width:100%;overflow-wrap:anywhere}
+.ml-river-place .ml-river-token{display:inline-block;max-width:100%;white-space:normal;font-size:clamp(12px,3.5cqw,16px);line-height:1.2}

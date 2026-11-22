@@ -1,0 +1,68 @@
+name: MindLab prioritized native UI regression (7 puzzles)
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/mindlab-priority-real-ui-regression.yml'
+      - 'qa/browser/priority7_play.py'
+      - 'qa/browser/palace_statues.py'
+      - 'qa/browser/player_openings.py'
+      - 'index.html'
+      - 'ui/**'
+      - 'motion/**'
+      - 'upgrade/**'
+  workflow_dispatch:
+
+concurrency:
+  group: mindlab-priority-native-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  real-ui-regression:
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+        suite: [priority7, palace-statues]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - name: Install browser
+        shell: bash
+        run: |
+          if [ "${{ matrix.engine }}" = "webkit" ]; then
+            python -m playwright install --with-deps webkit
+          else
+            command -v google-chrome
+          fi
+      - name: Run existing native user-control regression
+        shell: bash
+        env:
+          ENGINE: ${{ matrix.engine }}
+          WIDTHS: '390'
+        run: |
+          mkdir -p /tmp/mindlab-priority-native
+          python -m http.server 8794 --bind 127.0.0.1 >/tmp/mindlab-priority-http.log 2>&1 &
+          if [ "${{ matrix.suite }}" = "priority7" ]; then
+            python qa/browser/priority7_play.py http://127.0.0.1:8794/ 2>&1 | tee /tmp/mindlab-priority-native/priority7.log
+            exit ${PIPESTATUS[0]}
+          else
+            python qa/browser/palace_statues.py http://127.0.0.1:8794/ 2>&1 | tee /tmp/mindlab-priority-native/palace-statues.log
+            exit ${PIPESTATUS[0]}
+          fi
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: priority-native-${{ matrix.engine }}-${{ matrix.suite }}
+          path: /tmp/mindlab-priority-native/*
+          if-no-files-found: warn
+          retention-days: 30

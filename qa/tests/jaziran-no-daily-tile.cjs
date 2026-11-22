@@ -1,0 +1,22 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const root=path.join(__dirname,'../..');
+const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const campaign=fs.readFileSync(path.join(root,'atheran/campaign/campaign.js'),'utf8');
+assert(!index.includes('id="pzday"'),'deprecated daily square must be absent');
+assert(!index.includes("$('#pzday')"),'daily square must have no dead event listener');
+assert(index.includes('function tripCardHTML()'),'main treasure journey card must remain');
+assert(index.includes("v.querySelector('.pzstory')"),'journey card must have a real insertion anchor');
+assert(index.includes('pzDailyType'),"daily puzzle content rotation must not be deleted");
+assert(campaign.includes("const main = v.querySelector('.ah-launch')"),'official campaign still leads');
+assert(campaign.includes("const day = v.querySelector('#pzday')"),'legacy already-rendered day squares remain safely cleaned');
+const tide=fs.readFileSync(path.join(root,'ui/tide-scroll.css'),'utf8');
+const offline=fs.readFileSync(path.join(root,'offline-manifest.js'),'utf8');
+const sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');
+assert(index.includes('href="ui/tide-scroll.css"'),'Tide hour sheet must load its responsive stylesheet');
+assert(tide.includes('minmax(44px,1fr)'),'Hour controls must retain a 44 px touch target');
+assert(tide.includes('overflow-x:auto'),'Hour strip must scroll horizontally on narrow screens');
+assert(offline.includes('"ui/tide-scroll.css"'),'Tide sheet must be available in offline full download');
+assert(sw.includes("'ui/tide-scroll.css'"),'Tide sheet must be in offline installation shell');
+assert(sw.includes("PATCH='brain-touch-32'"),'Cached app must refresh after the new responsive stylesheet');
+
+console.log('Daily square removed; treasure card, library puzzle rotation, campaign navigation preserved');

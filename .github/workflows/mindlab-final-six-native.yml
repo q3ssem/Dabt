@@ -1,0 +1,56 @@
+name: MindLab last six puzzle engines all-level native proof
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/mindlab-final-six-native.yml'
+      - 'qa/browser/jaziran_final_six_native_ui.py'
+      - 'qa/browser/jaziran_sea_six_native_ui.py'
+      - 'index.html'
+      - 'motion/**'
+      - 'atheran/**'
+      - 'ui/**'
+  workflow_dispatch:
+concurrency:
+  group: final-six-native-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  final-six:
+    runs-on: ubuntu-latest
+    timeout-minutes: 36
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+        group: [athran, palace]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - name: Install browser
+        shell: bash
+        run: |
+          if [ "${{ matrix.engine }}" = "webkit" ]; then
+            python -m playwright install --with-deps webkit
+          else
+            command -v google-chrome
+          fi
+      - name: Native player controls, win counter and saved progress, every level
+        shell: bash
+        run: |
+          mkdir -p /tmp/mindlab-final-six
+          python -m http.server 8805 --bind 127.0.0.1 >/tmp/mindlab-final-six-http.log 2>&1 &
+          python qa/browser/jaziran_final_six_native_ui.py \
+            http://127.0.0.1:8805/ "${{ matrix.engine }}" "${{ matrix.group }}" /tmp/mindlab-final-six
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: final-six-${{ matrix.engine }}-${{ matrix.group }}
+          path: /tmp/mindlab-final-six/*
+          if-no-files-found: warn
+          retention-days: 30

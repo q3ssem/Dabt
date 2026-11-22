@@ -10,8 +10,8 @@ const manifest = read('offline-manifest.js');
 const pkg = JSON.parse(read('package.json'));
 const sw = read('sw.js');
 const matches = [...app.matchAll(/scene:'([^']+\.webp)'/g)].map(m => m[1]);
-assert.equal(pkg.version, '5.5.28', 'package release is 5.5.28');
-assert.ok(sw.includes("const VERSION='5.5.28'"), 'service-worker cache is 5.5.28');
+assert.equal(pkg.version, '5.5.29', 'package release is 5.5.28');
+assert.ok(sw.includes("const VERSION='5.5.29'"), 'service-worker cache is 5.5.28');
 assert.equal(matches.length, 24, 'exactly 24 active stage backgrounds are declared');
 assert.equal(new Set(matches).size, 24, 'stage background paths are unique');
 const files = matches.map(name => {

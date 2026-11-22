@@ -15,11 +15,10 @@ def ok(c, label, extra=None):
     (checks if c else problems).append(label if c else f'{label} :: {extra}'); return c
 
 async def start(pg, gid, lv, seed):
-    await pg.goto(URL); await pg.wait_for_timeout(1500); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
-    if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
+    await pg.goto(URL); await pg.wait_for_timeout(1500); await pg.evaluate("async()=>{const p=document.querySelector('.mpc[data-m=main]');if(p&&p.getClientRects().length)p.click();tab('puz');await mindlabPlayLayers.start()}"); await pg.wait_for_function("()=>window.mindlabPlayLayers?.ready===true", timeout=45000)
     # with a level: a replay (fixed level + seed, records no progress); without: the player's own next stage (records progress)
     await pg.evaluate("([g, lv, s]) => { startRun([g]); if (lv) RUN.replay = { id: g, lv, seed: s } }", [gid, lv, seed]); await pg.wait_for_timeout(300)
-    if await pg.locator('#stage #go').count(): await pg.click('#stage #go')
+    if await pg.locator('#stage #go').count() and await pg.locator('#stage #go').first.is_visible(): await pg.click('#stage #go')
     await dismiss_opening(pg, 1500)
     await pg.wait_for_timeout(2300)
 async def result(pg, t=6000):
@@ -47,7 +46,7 @@ async def clipped(pg, sel):
 async def stage(pg, gid): return await pg.evaluate("(g) => JSON.stringify([typeof txStageOf === 'function' ? txStageOf(g) : null, pzLv(g)])", gid)
 async def kept(pg, gid, before, lab):
     await pg.wait_for_timeout(700); after = await stage(pg, gid); ok(after != before, f'{lab}: win recorded', [before, after])
-    await pg.reload(); await pg.wait_for_timeout(1900); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000); ok(await stage(pg, gid) == after, f'{lab}: kept after reload')
+    await pg.reload(); await pg.wait_for_timeout(1900); await pg.evaluate("async()=>{const p=document.querySelector('.mpc[data-m=main]');if(p&&p.getClientRects().length)p.click();tab('puz');await mindlabPlayLayers.start()}"); await pg.wait_for_function("()=>window.mindlabPlayLayers?.ready===true", timeout=45000); ok(await stage(pg, gid) == after, f'{lab}: kept after reload')
 async def finish(pg, lab, go, gid, persist):
     ov = await overflow(pg); ok(not ov, f'{lab}: no horizontal overflow', ov)
     if SHOTS and ' 390' in lab and 'drag' in lab: await pg.screenshot(path=f'{SHOTS}/{gid}_after_390.png', full_page=True)
@@ -59,7 +58,7 @@ async def acity(pg, w, lv, mode):
     lab = f'pz_acity {w} lv{lv or "-own"} {mode}'; await start(pg, 'pz_acity', lv, 70 + (lv or 0))
     P = await pg.evaluate("() => { const P = window.__test.pz.P; return { n: P.n, gone: P.gone, al: P.al, any: P.req.some(r => r.or) } }")
     ok(await pg.evaluate("(n) => document.querySelectorAll('#actweb .mk-sp').length === n", P['n']), f'{lab}: {P["n"]} species drawn from actMake')
-    ok(await pg.evaluate("() => [...document.querySelectorAll('#actweb .mk-sp image')].filter(e => /motion[/]art[/]|designs_art[/]priority7[/]/.test(e.getAttribute('href') || '')).length === document.querySelectorAll('#actweb .mk-sp').length"), f'{lab}: every species is its picture')
+    ok(await pg.evaluate("() => [...document.querySelectorAll('#actweb .mk-sp img')].filter(e => /motion[/]art[/]|designs_art[/]priority7[/]/.test(e.getAttribute('src') || '')).length === document.querySelectorAll('#actweb .mk-sp').length"), f'{lab}: every species is its picture')
     if P['any']: ok(await pg.evaluate("() => document.querySelectorAll('#actweb .ae.any').length > 0 && document.querySelectorAll('#actweb .ae.all').length > 0"), f'{lab}: «all» and «any one» lines both drawn')
     lit = P['al'].index(True); await tap(pg, f'#actweb [data-sp="{lit}"]')
     ok(await pg.evaluate("() => window.__test.pz.state().sel") == -1, f'{lab}: a lit species cannot be the first to vanish')
@@ -120,8 +119,7 @@ FULL = r"""(want) => { const R = Math.random; for (let s = 1; s < 60000; s++) { 
 async def pobs_hint(pg, w, want):
     """hint 3 through the screen's hint button on a sheet as tall (h) or as wide (w) as the board"""
     lab = f'pz_pobs {w} hint3 full-{"height" if want == "h" else "width"}'
-    await pg.goto(URL); await pg.wait_for_timeout(1500); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
-    if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
+    await pg.goto(URL); await pg.wait_for_timeout(1500); await pg.evaluate("async()=>{const p=document.querySelector('.mpc[data-m=main]');if(p&&p.getClientRects().length)p.click();tab('puz');await mindlabPlayLayers.start()}"); await pg.wait_for_function("()=>window.mindlabPlayLayers?.ready===true", timeout=45000)
     s = await pg.evaluate(FULL, want)
     if not ok(s > 0, f'{lab}: such a board exists in poMake(8)', s): return
     await start(pg, 'pz_pobs', 8, s)
@@ -164,7 +162,7 @@ async def alayer(pg, w, lv, mode):
     wrong = order[:]; wrong[0], wrong[1] = wrong[1], wrong[0]
     for q, j in enumerate(wrong):
         await mv(pg, f'[data-tray="t"] [data-tok="{j}"]', f'.mk-slot.tl[data-slot="{q}"]')
-        if q == 1: ok(await pg.evaluate("() => document.querySelectorAll('#alynums .aly-num').length === 2"), f'{lab}: the section numbers the placed cards as you go')
+        if q == 1: ok(await pg.evaluate("() => document.querySelectorAll('#alynums .board70-layer-index').length === 2"), f'{lab}: the section numbers the placed cards as you go')
     ok(await pg.evaluate("() => /مكتمل/.test(document.querySelector('#alystat').textContent)"), f'{lab}: complete when every card is placed')
     await tap(pg, '#alygo'); ok(await result(pg, 800) is None and await pg.evaluate("() => !!document.querySelector('.mk-slot.tl.mk-wrong')"), f'{lab}: wrong order refused, first error marked')
     await mv(pg, f'.mk-slot.tl[data-slot="1"] [data-tok="{order[0]}"]', '.mk-slot.tl[data-slot="0"]')
@@ -195,7 +193,7 @@ async def main():
             # headless here crashes intermittently in very long sessions (see the report)
             ctx = await b.new_context(viewport={'width': w, 'height': 820}, has_touch=True); await ctx.add_init_script('window.__test={}')
             pg = await ctx.new_page(); errs = []; pg.on('pageerror', lambda e: errs.append(str(e)[:200]))
-            await pg.goto(URL); await pg.wait_for_timeout(2000); await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000); return ctx, pg, errs
+            await pg.goto(URL); await pg.wait_for_timeout(2000); await pg.evaluate("async()=>{const p=document.querySelector('.mpc[data-m=main]');if(p&&p.getClientRects().length)p.click();tab('puz');await mindlabPlayLayers.start()}"); await pg.wait_for_function("()=>window.mindlabPlayLayers?.ready===true", timeout=45000); return ctx, pg, errs
         groups = [('pobshint', lambda pg, w: [pobs_hint(pg, w, 'h'), pobs_hint(pg, w, 'w')]),
                   ('acity', lambda pg, w: [acity(pg, w, 1, 'tap'), acity(pg, w, 8, 'tap'), acity(pg, w, None, 'tap')]),
                   ('pobs', lambda pg, w: [pobs(pg, w, 8, 'drag'), pobs(pg, w, None, 'drag')]),

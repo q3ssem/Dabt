@@ -210,11 +210,15 @@ try {
     'ui/puzzle-designs-data.js',
     'ui/openings.js',
     'ui/journey-story-data.js',
+    'ui/jaziran-scenes-data.js',
+    'ui/journey-evidence.js',
     'ui/board-art-data.js',
     'ui/designs_art/journey/v3/stations.js',
-    'ui/journey-hub.js'
+    'ui/journey-hub.js',
+    'ui/jaziran-rescue.js',
+    'ui/jaziran-rescue-ui.js'
   ];
-  const styles = ['atheran/campaign/campaign.css', 'atheran/bindings/bindings.css', 'motion/motion.css', 'motion/lab10.css', 'ui/fit.css', 'ui/openings.css', 'ui/journey-hub.css', 'motion/correction-art.css', 'motion/expedition-art.css', 'motion/logic-revised/board.css', 'motion/sea-painted.css', 'motion/adventure35.css', 'ui/fullscreen-puzzles.css'];
+  const styles = ['atheran/campaign/campaign.css', 'atheran/bindings/bindings.css', 'motion/motion.css', 'motion/lab10.css', 'ui/fit.css', 'ui/openings.css', 'ui/journey-hub.css', 'motion/correction-art.css', 'motion/expedition-art.css', 'motion/logic-revised/board.css', 'motion/sea-painted.css', 'motion/adventure35.css', 'ui/fullscreen-puzzles.css', 'ds/board-polish.css', 'ui/jaziran-puzzle-accents.css', 'ui/jaziran-rescue.css'];
   const layers = ['ui/puzzle-design.js', 'ui/adventure-design.js'];
   let loading = null;
   const insert = src => new Promise(done => {
@@ -318,10 +322,10 @@ return done=>{
   window.mindlabOffline?.rememberPuzzle(id);
   window.mindlabOffline?.warmPuzzle(id);
   const hb=$('#pzh');if(!P.hint)hb.hidden=true;
-  hb.onclick=()=>{if(ended||hints>=3||!P.hint)return;const before=pts;hints++;if(!kid)setP(pts-Math.round(base*.2));const t=P.hint(hints);if(t==null){hints--;if(!kid)setP(before);return}$('#pzhn').textContent=3-hints;
+  hb.onclick=()=>{if(ended||hints>=3||!P.hint)return;const before=pts;hints++;if(!kid)setP(pts-Math.round(base*.2));const t=P.hint(hints);if(t==null){hints--;if(!kid)setP(before);const box=$('#pzt');box.hidden=false;box.textContent='اكتملت خطوات المساعدة المتاحة في هذه المحاولة. اختبر الحل أو أكمل ما بقي بنفسك.';hb.disabled=true;hb.setAttribute('aria-label','لا توجد تلميحات إضافية');return}$('#pzhn').textContent=3-hints;
     const box=$('#pzt');box.hidden=false;box.innerHTML=`<b>تلميح ${hints}:</b> ${t}`;sfx.lit();if(hints>=3||ended)hb.disabled=true};
   const rb=$('#pzr');if(rb)rb.onclick=()=>{if(ended)return;stopAll();delete st.dataset.expState;const b=$('#pzb');b.className='pzbody';b.innerHTML='';const hintBox=$('#pzt');hintBox.hidden=true;hintBox.innerHTML='';api.msg('');
-    pts=base;hints=0;wrongs=0;setP(pts);$('#pzhn').textContent='3';hb.disabled=false;hb.hidden=false;
+    pts=base;hints=0;wrongs=0;setP(pts);$('#pzhn').textContent='3';hb.disabled=false;hb.hidden=false;hb.setAttribute('aria-label','تلميح');
     rb.classList.remove('spin');void rb.offsetWidth;rb.classList.add('spin');sfx.flip();mount();hb.hidden=!P.hint;hb.disabled=!P.hint;b.classList.add('rebuilt')};
   let arm=0;$('#pzq').onclick=()=>{if(ended)return;if(kid){closePlay();return}const q=$('#pzq');
     if(!arm){arm=1;q.textContent='متأكد؟ اضغط مرة ثانية';q.classList.add('arm');setTimeout(()=>{arm=0;if(!ended&&q.isConnected){q.textContent='استسلم';q.classList.remove('arm')}},3000);return}

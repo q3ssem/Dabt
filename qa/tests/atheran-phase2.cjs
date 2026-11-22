@@ -8,8 +8,8 @@ let n = 0; const ok = (v, m) => { assert.ok(v, m); n++; };
 const html = read('index.html'), pkg = JSON.parse(read('package.json')), sw = read('sw.js'), man = read('offline-manifest.js');
 
 // release + offline
-ok(pkg.version === '5.5.28', 'package 5.5.28');
-ok(sw.includes("const VERSION='5.5.28'"), 'service worker cache 5.5.28');
+ok(pkg.version === '5.5.29', 'package 5.5.28');
+ok(sw.includes("const VERSION='5.5.29'"), 'service worker cache 5.5.28');
 ['atheran/campaign/story.js', 'atheran/campaign/campaign.js', 'atheran/campaign/campaign.css'].forEach(f => { ok(fs.existsSync(f), f + ' exists'); ok(man.includes(`"${f}"`), f + ' cached offline'); });
 const ui = read('ui/app.js');
 const campaignScripts = [...(ui.match(/const scripts = \[([\s\S]*?)\];/)?.[1] || '').matchAll(/'([^']+)'/g)].map(match => match[1]);

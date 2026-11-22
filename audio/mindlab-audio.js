@@ -74,6 +74,21 @@
     chime(){osc(1318,.28,'sine',.06,1.0);osc(1760,.2,'sine',.025,1,.045);}
   };
   sfx.material=sounds;
+  /* Batch 3: subtle per-puzzle auditory signature for taps that would otherwise
+     be silent. Contact material remains dominant, shared AudioContext only;
+     IDs transcribed from 86 active cards in جزران.pdf, excluding retired games.
+     Never play for already-sonified actions, on mute or while idle. */
+  const puzzleIdentityIds = ["pz_rid","pz_river","pz_rush","pz_lock","pz_pipe","pz_grid","pz_scale","pz_laser","pz_soko","pz_sudo","pz_flow","pz_tan","pz_tent","pz_door","pz_lights","pz_untangle","pz_stroke","pz_binary","pz_ice","pz_tpath","pz_xreef","pz_xbridge","pz_xcave","pz_xloot","pz_tmap","pz_tdig","pz_xlock","pz_ybell","pz_ymap","pz_yhold","pz_ytide","pz_ydoor","pz_zcomp","pz_zroute","pz_zcur","pz_zcode","pz_zharp","pz_zshadow","pz_znim","pz_zstars","pz_zthrone","pz_plock","pz_pliar","pz_pclock","pz_pboss1","pz_plib","pz_pmirror","pz_pgarden","pz_pqueen","pz_parm","pz_pjail","pz_pobs","pz_peng","pz_pmaze","pz_pcrypt","pz_pvalve","pz_plast","pz_pdragon","pz_phall","pz_pheart","pz_aarch","pz_aport","pz_alight","pz_acur","pz_ashell","pz_aroot","pz_aring","pz_ashade","pz_aswarm","pz_aecho","pz_avsong","pz_agiant","pz_aherd","pz_abridge","pz_asilent","pz_alayer","pz_acity","pz_asong","pz_aflow","pz_arelic","pz_aheart","pz_wbone","pz_wspore","pz_wlog","pz_wlake","pz_wfirst"];
+  const puzzleIdentityIndex = new Map(puzzleIdentityIds.map((id,index) => [id,index]));
+  sfx.puzzleIdentity = id => {
+    const index = puzzleIdentityIndex.get(id);
+    if (index === undefined || !ready()) return false;
+    // 89 is prime; 37 permutes indices 0..85 without collision.
+    const frequency = 320 + ((index * 37) % 89) * 13;
+    osc(frequency, .052, 'triangle', .012, .87, .016);
+    return true;
+  };
+
   let lastMove=0,lastKind='';
   sfx.puzzleMove=(kind)=>{
     const now=performance.now();if(kind===lastKind&&now-lastMove<35)return;lastMove=now;lastKind=kind;
@@ -222,6 +237,7 @@
         let id = ''; try { const g = typeof curGame === 'function' ? curGame() : null; id = g && g.id || ''; } catch (_) {}
         if (!id && document.querySelector('#v-puz .t7-puzzle-pane, #v-puz .ex10-game-content')) id = 'pz_x';
         (M[kind(id)] || M.switch)();
+        sfx.puzzleIdentity?.(id); // unique fingerprint, only on the silent-action fallback
       }, 90);
     } catch (_) {}
   }, { capture: true, passive: true });

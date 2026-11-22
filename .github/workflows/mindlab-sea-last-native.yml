@@ -1,0 +1,54 @@
+name: MindLab final five seas native UI tests
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/mindlab-sea-last-native.yml'
+      - 'qa/browser/jaziran_sea_last_native_ui.py'
+      - 'qa/browser/jaziran_sea_six_native_ui.py'
+      - 'qa/browser/player_openings.py'
+      - 'index.html'
+      - 'ui/**'
+      - 'motion/**'
+  workflow_dispatch:
+concurrency:
+  group: sea-last-native-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  sea-native:
+    runs-on: ubuntu-latest
+    timeout-minutes: 34
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - name: Install browser
+        shell: bash
+        run: |
+          if [ "${{ matrix.engine }}" = "webkit" ]; then
+            python -m playwright install --with-deps webkit
+          else
+            command -v google-chrome
+          fi
+      - name: Solve five remaining Seven Seas games by native controls
+        shell: bash
+        run: |
+          mkdir -p /tmp/mindlab-sea-last
+          python -m http.server 8802 --bind 127.0.0.1 >/tmp/mindlab-sea-last-http.log 2>&1 &
+          python qa/browser/jaziran_sea_last_native_ui.py             http://127.0.0.1:8802/ "${{ matrix.engine }}" /tmp/mindlab-sea-last
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: sea-last-${{ matrix.engine }}
+          path: /tmp/mindlab-sea-last/*
+          if-no-files-found: warn
+          retention-days: 30

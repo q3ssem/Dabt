@@ -10,8 +10,8 @@ const uiApp=fs.readFileSync(path.join(root,'ui/app.js'),'utf8');
 // perf-cleanup: the side journey is wired as an on-demand bundle in ui/app.js (window.mindlabSide) instead of start-up tags.
 const wired=n=>html.includes(n)||uiApp.includes("'"+n+"'");
 assert(wired('expedition10/style.css')&&wired('expedition10/logic.js')&&wired('expedition10/app.js'),'chapter scripts and styles are wired');
-assert.strictEqual(pkg.version,'5.5.28','package version is 5.5.28');
-assert(sw.includes("const VERSION='5.5.28'"),'service worker cache version is 5.5.28');
+assert.strictEqual(pkg.version,'5.5.29','package version is 5.5.28');
+assert(sw.includes("const VERSION='5.5.29'"),'service worker cache version is 5.5.28');
 assert(offline.includes('expedition10/art/world-map.webp'),'world map is precached');
 for(const f of ['roaa.webp','noha.webp','ward.webp'])assert(offline.includes('expedition10/art/crew/'+f),'main heroine asset precached: '+f);
 for(let i=1;i<=25;i++){if(i===15)continue;

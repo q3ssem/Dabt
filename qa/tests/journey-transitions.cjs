@@ -24,6 +24,13 @@ assert.equal(discover().length,10);
 atlas.open=true;assert.equal(discover().at(-1),'atheran');
 atlas.done=21;atlas.cleared=4;assert.equal(discover().includes('return'),false);
 atlas.cleared=5;assert.deepEqual(discover(),ids);
+atlas.cleared=0;
+atlas.a={done:{pz_aheart:1}};
+win.MindlabRescue={state:()=>({completed:true})};
+assert.deepEqual(discover(),ids,'successful evacuation reveals return without clearing optional secret worlds');
+win.MindlabRescue={state:()=>({completed:false})};
+assert.equal(discover().includes('return'),false,'unfinished evacuation and uncleared secrets keep return hidden');
+atlas.cleared=5;assert.deepEqual(discover(),ids,'legacy fully completed saves preserve the old return scene');
 // Restoring an earlier campaign hides later scenes despite their presentation history.
 saved.set('mindlab:transitions:seen:v1',JSON.stringify(Object.fromEntries(ids.map(x=>[x,true]))));
 sea.done={};atlas.open=false;atlas.done=0;atlas.cleared=0;
@@ -31,4 +38,33 @@ assert.deepEqual(discover(),['departure']);
 const side=fs.readFileSync('expedition10/app.js','utf8');
 assert(!side.includes('انفتحت بوابة قصر المرايا'));
 assert(!side.includes('ظهر الطريق إلى الفصل الثاني'));
+
+// Cross-check the 24 playable side stages, map clusters and narrative against stable IDs.
+const mapSource=fs.readFileSync('ui/designs_art/journey/v3/stations.js','utf8');
+const mapData=JSON.parse(mapSource.slice(mapSource.indexOf(' = ')+3).trim().replace(/;\s*$/,''));
+const storySource=fs.readFileSync('ui/journey-story-data.js','utf8');
+const storyData=JSON.parse(storySource.slice(storySource.indexOf(' = ')+3).trim().replace(/;\s*$/,''));
+const sideStops=mapData.stations.filter(st=>st.chapter==='side');
+const engineIds=[...side.matchAll(/\{id:'(ml10_\d+)'/g)].map(m=>m[1]);
+assert.equal(engineIds.length,24,'exactly 24 playable side-journey stages');
+assert.equal(new Set(engineIds).size,24,'side-journey save IDs are unique');
+assert.deepEqual(sideStops.map(s=>s.id),engineIds,'atlas and engine have identical ordered stages');
+assert.equal(storyData.chapters.find(ch=>ch.id==='side').stationCount,engineIds.length,'chapter count matches engine');
+for(const cluster of mapData.clusters.filter(x=>x.chapter==='side')){
+ const expected=sideStops.filter(st=>st.clusterGroup===cluster.id).map(st=>st.order);
+ assert.deepEqual(cluster.orders,expected,'cluster membership agrees with real stations: '+cluster.id);
+}
+assert.equal(new Set(sideStops.map(st=>st.openingTextAr)).size,engineIds.length,'side introductions unique');
+assert.deepEqual(storyData.expeditionStations.map(st=>st.stageId),engineIds,'opening data uses the same stage IDs');
+assert.deepEqual(storyData.expeditionStations.map(st=>st.dialogue),sideStops.map(st=>st.openingTextAr),'opening overlay and atlas preview use identical dialogue');
+assert.equal(new Set(storyData.expeditionStations.map(st=>st.dialogue)).size,engineIds.length,'all displayed side dialogue is distinctive');
+assert(sideStops.every(st=>!st.openingTextAr.includes('لنبدأ بهدوء ونختبر خطواتنا')),'no duplicated template openings');
+assert(side.includes("i===stages.length-1?'اكتملت الرحلة الجانبية'"),'final completion uses length');
+assert(side.includes('العلامات الأربع والعشرون'),'epilogue count reflects 24 stages');
+assert(!side.includes('وفتح الفصل التالي.'),'side story is independent of campaign order');
+assert(side.includes('STAGE_LIMIT_LABEL[s.id]'),'stage constraints keyed by ID');
+for(const id of ['ml10_07','ml10_12','ml10_17','ml10_18','ml10_19','ml10_20','ml10_21','ml10_22','ml10_23','ml10_24','ml10_25'])
+ assert(side.includes(id+':'),'correct stage label declared: '+id);
+assert(fs.readFileSync('ui/journey-hub.js','utf8').includes(' / 24 محطة · حفظ مستقل'),'hub shows 24 side stops');
+
 console.log('Journey transitions: fresh, partial, noncontiguous, old/reset saves, all milestones and independent side finale passed.');

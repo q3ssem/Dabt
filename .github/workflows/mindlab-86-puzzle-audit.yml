@@ -1,0 +1,62 @@
+name: MindLab Jaziran 86 puzzle browser audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - 'qa/browser/jaziran_86_open_audit.py'
+      - '.github/workflows/mindlab-86-puzzle-audit.yml'
+      - 'ui/**'
+      - 'motion/**'
+      - 'atheran/**'
+      - 'legacy/**'
+      - 'audio/**'
+      - 'ds/**'
+      - 'index.html'
+      - 'sw.js'
+      - 'pwa.js'
+  workflow_dispatch:
+
+concurrency:
+  group: jaziran86-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  per-puzzle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    strategy:
+      fail-fast: false
+      matrix:
+        chapter: [training, seven_seas, palace, atheran, first_trace]
+        engine: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - name: Prepare browser
+        shell: bash
+        run: |
+          if [ "${{ matrix.engine }}" = "webkit" ]; then
+            python -m playwright install --with-deps webkit
+          else
+            command -v google-chrome
+          fi
+      - name: Audit actual puzzle opening and phone layouts
+        run: |
+          mkdir -p /tmp/mindlab-jaziran-86
+          python -m http.server 8789 --bind 127.0.0.1 > /tmp/mindlab-86-http.log 2>&1 &
+          python qa/browser/jaziran_86_open_audit.py http://127.0.0.1:8789/ \
+            "${{ matrix.engine }}" "${{ matrix.chapter }}" /tmp/mindlab-jaziran-86
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jaziran86-${{ matrix.chapter }}-${{ matrix.engine }}
+          path: /tmp/mindlab-jaziran-86/*
+          if-no-files-found: warn
+          retention-days: 14

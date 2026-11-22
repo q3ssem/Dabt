@@ -1,0 +1,102 @@
+/* MindLab / Jaziran v1 — 86 per-puzzle accents transcribed from جزران.pdf pp. 9–32.
+   Only the title-bar rim is tinted. The hand-painted board, its pieces, selected cells,
+   accessibility status colors and game geometry are never recolored globally.
+   Values are documentary art-direction tokens, not proof every board is visually accepted. */
+html #play[data-la-game^="pz_"] .pbar {
+  border-block-start: 3px solid color-mix(in srgb, var(--mlj-puzzle-accent, #307b73) 78%, #1d2831) !important;
+}
+html[data-skin="dark"] #play[data-la-game^="pz_"] .pbar {
+  border-block-start-color: color-mix(in srgb, var(--mlj-puzzle-accent, #60b1a6) 48%, #f2e7cf) !important;
+}
+@media (prefers-color-scheme: dark) {
+  html[data-skin="auto"] #play[data-la-game^="pz_"] .pbar {
+    border-block-start-color: color-mix(in srgb, var(--mlj-puzzle-accent, #60b1a6) 48%, #f2e7cf) !important;
+  }
+}
+/* Each game has exactly one identity token. Never apply to the entire app or the game board. */
+html #play[data-la-game="pz_rid"] { --mlj-puzzle-accent: #977E26; } /* PDF p.9 */
+html #play[data-la-game="pz_river"] { --mlj-puzzle-accent: #268097; } /* PDF p.9 */
+html #play[data-la-game="pz_rush"] { --mlj-puzzle-accent: #974426; } /* PDF p.9 */
+html #play[data-la-game="pz_lock"] { --mlj-puzzle-accent: #26972F; } /* PDF p.9 */
+html #play[data-la-game="pz_pipe"] { --mlj-puzzle-accent: #269771; } /* PDF p.10 */
+html #play[data-la-game="pz_grid"] { --mlj-puzzle-accent: #512697; } /* PDF p.10 */
+html #play[data-la-game="pz_scale"] { --mlj-puzzle-accent: #977126; } /* PDF p.10 */
+html #play[data-la-game="pz_laser"] { --mlj-puzzle-accent: #269793; } /* PDF p.11 */
+html #play[data-la-game="pz_soko"] { --mlj-puzzle-accent: #972679; } /* PDF p.11 */
+html #play[data-la-game="pz_sudo"] { --mlj-puzzle-accent: #976826; } /* PDF p.11 */
+html #play[data-la-game="pz_flow"] { --mlj-puzzle-accent: #772697; } /* PDF p.11 */
+html #play[data-la-game="pz_tan"] { --mlj-puzzle-accent: #97267B; } /* PDF p.12 */
+html #play[data-la-game="pz_tent"] { --mlj-puzzle-accent: #429726; } /* PDF p.12 */
+html #play[data-la-game="pz_door"] { --mlj-puzzle-accent: #599726; } /* PDF p.12 */
+html #play[data-la-game="pz_lights"] { --mlj-puzzle-accent: #263997; } /* PDF p.12 */
+html #play[data-la-game="pz_untangle"] { --mlj-puzzle-accent: #26978E; } /* PDF p.13 */
+html #play[data-la-game="pz_stroke"] { --mlj-puzzle-accent: #973526; } /* PDF p.13 */
+html #play[data-la-game="pz_binary"] { --mlj-puzzle-accent: #269755; } /* PDF p.13 */
+html #play[data-la-game="pz_ice"] { --mlj-puzzle-accent: #266897; } /* PDF p.13 */
+html #play[data-la-game="pz_tpath"] { --mlj-puzzle-accent: #979726; } /* PDF p.14 */
+html #play[data-la-game="pz_xreef"] { --mlj-puzzle-accent: #267597; } /* PDF p.14 */
+html #play[data-la-game="pz_xbridge"] { --mlj-puzzle-accent: #972655; } /* PDF p.14 */
+html #play[data-la-game="pz_xcave"] { --mlj-puzzle-accent: #972631; } /* PDF p.15 */
+html #play[data-la-game="pz_xloot"] { --mlj-puzzle-accent: #339726; } /* PDF p.15 */
+html #play[data-la-game="pz_tmap"] { --mlj-puzzle-accent: #392697; } /* PDF p.15 */
+html #play[data-la-game="pz_tdig"] { --mlj-puzzle-accent: #975B26; } /* PDF p.15 */
+html #play[data-la-game="pz_xlock"] { --mlj-puzzle-accent: #26977B; } /* PDF p.16 */
+html #play[data-la-game="pz_ybell"] { --mlj-puzzle-accent: #972691; } /* PDF p.16 */
+html #play[data-la-game="pz_ymap"] { --mlj-puzzle-accent: #719726; } /* PDF p.16 */
+html #play[data-la-game="pz_yhold"] { --mlj-puzzle-accent: #264F97; } /* PDF p.16 */
+html #play[data-la-game="pz_ytide"] { --mlj-puzzle-accent: #97262F; } /* PDF p.17 */
+html #play[data-la-game="pz_ydoor"] { --mlj-puzzle-accent: #26973E; } /* PDF p.17 */
+html #play[data-la-game="pz_zcomp"] { --mlj-puzzle-accent: #5E2697; } /* PDF p.17 */
+html #play[data-la-game="pz_zroute"] { --mlj-puzzle-accent: #978026; } /* PDF p.17 */
+html #play[data-la-game="pz_zcur"] { --mlj-puzzle-accent: #268E97; } /* PDF p.18 */
+html #play[data-la-game="pz_zcode"] { --mlj-puzzle-accent: #97266C; } /* PDF p.18 */
+html #play[data-la-game="pz_zharp"] { --mlj-puzzle-accent: #4B9726; } /* PDF p.18 */
+html #play[data-la-game="pz_zshadow"] { --mlj-puzzle-accent: #262A97; } /* PDF p.18 */
+html #play[data-la-game="pz_znim"] { --mlj-puzzle-accent: #974226; } /* PDF p.19 */
+html #play[data-la-game="pz_zstars"] { --mlj-puzzle-accent: #269764; } /* PDF p.19 */
+html #play[data-la-game="pz_zthrone"] { --mlj-puzzle-accent: #842697; } /* PDF p.19 */
+html #play[data-la-game="pz_plock"] { --mlj-puzzle-accent: #889726; } /* PDF p.20 */
+html #play[data-la-game="pz_pliar"] { --mlj-puzzle-accent: #266697; } /* PDF p.20 */
+html #play[data-la-game="pz_pclock"] { --mlj-puzzle-accent: #972646; } /* PDF p.20 */
+html #play[data-la-game="pz_pboss1"] { --mlj-puzzle-accent: #269726; } /* PDF p.20 */
+html #play[data-la-game="pz_plib"] { --mlj-puzzle-accent: #482697; } /* PDF p.21 */
+html #play[data-la-game="pz_pmirror"] { --mlj-puzzle-accent: #332697; } /* PDF p.21 */
+html #play[data-la-game="pz_pgarden"] { --mlj-puzzle-accent: #976A26; } /* PDF p.21 */
+html #play[data-la-game="pz_pqueen"] { --mlj-puzzle-accent: #26978A; } /* PDF p.21 */
+html #play[data-la-game="pz_parm"] { --mlj-puzzle-accent: #972684; } /* PDF p.22 */
+html #play[data-la-game="pz_pjail"] { --mlj-puzzle-accent: #629726; } /* PDF p.22 */
+html #play[data-la-game="pz_pobs"] { --mlj-puzzle-accent: #264297; } /* PDF p.22 */
+html #play[data-la-game="pz_peng"] { --mlj-puzzle-accent: #972B26; } /* PDF p.22 */
+html #play[data-la-game="pz_pmaze"] { --mlj-puzzle-accent: #26974B; } /* PDF p.23 */
+html #play[data-la-game="pz_pcrypt"] { --mlj-puzzle-accent: #6D2697; } /* PDF p.23 */
+html #play[data-la-game="pz_pvalve"] { --mlj-puzzle-accent: #978E26; } /* PDF p.23 */
+html #play[data-la-game="pz_plast"] { --mlj-puzzle-accent: #267E97; } /* PDF p.23 */
+html #play[data-la-game="pz_pdragon"] { --mlj-puzzle-accent: #97265E; } /* PDF p.24 */
+html #play[data-la-game="pz_phall"] { --mlj-puzzle-accent: #3C9726; } /* PDF p.24 */
+html #play[data-la-game="pz_pheart"] { --mlj-puzzle-accent: #2F2697; } /* PDF p.24 */
+html #play[data-la-game="pz_aarch"] { --mlj-puzzle-accent: #975126; } /* PDF p.25 */
+html #play[data-la-game="pz_aport"] { --mlj-puzzle-accent: #269773; } /* PDF p.25 */
+html #play[data-la-game="pz_alight"] { --mlj-puzzle-accent: #932697; } /* PDF p.25 */
+html #play[data-la-game="pz_acur"] { --mlj-puzzle-accent: #799726; } /* PDF p.25 */
+html #play[data-la-game="pz_ashell"] { --mlj-puzzle-accent: #265997; } /* PDF p.26 */
+html #play[data-la-game="pz_aroot"] { --mlj-puzzle-accent: #972637; } /* PDF p.26 */
+html #play[data-la-game="pz_aring"] { --mlj-puzzle-accent: #269735; } /* PDF p.26 */
+html #play[data-la-game="pz_ashade"] { --mlj-puzzle-accent: #572697; } /* PDF p.26 */
+html #play[data-la-game="pz_aswarm"] { --mlj-puzzle-accent: #977726; } /* PDF p.27 */
+html #play[data-la-game="pz_aecho"] { --mlj-puzzle-accent: #269597; } /* PDF p.27 */
+html #play[data-la-game="pz_avsong"] { --mlj-puzzle-accent: #972675; } /* PDF p.27 */
+html #play[data-la-game="pz_agiant"] { --mlj-puzzle-accent: #539726; } /* PDF p.27 */
+html #play[data-la-game="pz_aherd"] { --mlj-puzzle-accent: #263397; } /* PDF p.28 */
+html #play[data-la-game="pz_abridge"] { --mlj-puzzle-accent: #973A26; } /* PDF p.28 */
+html #play[data-la-game="pz_asilent"] { --mlj-puzzle-accent: #26975B; } /* PDF p.28 */
+html #play[data-la-game="pz_alayer"] { --mlj-puzzle-accent: #7D2697; } /* PDF p.29 */
+html #play[data-la-game="pz_acity"] { --mlj-puzzle-accent: #269742; } /* PDF p.29 */
+html #play[data-la-game="pz_asong"] { --mlj-puzzle-accent: #919726; } /* PDF p.29 */
+html #play[data-la-game="pz_aflow"] { --mlj-puzzle-accent: #266F97; } /* PDF p.30 */
+html #play[data-la-game="pz_arelic"] { --mlj-puzzle-accent: #97264F; } /* PDF p.30 */
+html #play[data-la-game="pz_aheart"] { --mlj-puzzle-accent: #2D9726; } /* PDF p.30 */
+html #play[data-la-game="pz_wbone"] { --mlj-puzzle-accent: #3E2697; } /* PDF p.31 */
+html #play[data-la-game="pz_wspore"] { --mlj-puzzle-accent: #976026; } /* PDF p.31 */
+html #play[data-la-game="pz_wlog"] { --mlj-puzzle-accent: #269780; } /* PDF p.31 */
+html #play[data-la-game="pz_wlake"] { --mlj-puzzle-accent: #97268C; } /* PDF p.32 */
+html #play[data-la-game="pz_wfirst"] { --mlj-puzzle-accent: #6C9726; } /* PDF p.32 */
