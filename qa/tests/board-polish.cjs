@@ -27,8 +27,8 @@ assert.ok(!/#[a-zA-Z0-9_-]*board\s*\*\s*\{/.test(style), 'Never blindly recolor 
 assert.ok(!/\#pzb\s*\*\s*\{/.test(style), 'Never change all puzzle content at once');
 
 const fitUI = fs.readFileSync('ui/fit.js','utf8');
-assert.ok(fitUI.includes("#play .pin, #play .pbar, #stage .pzhud, #stage #m"),
-  'Puzzle fitting must track .pin viewport-height changes in mobile WebKit');
+assert.ok(fitUI.includes("for (const el of $$('#play .pin, #play .pbar, #stage .pzhud, #stage #m')"),
+  'Puzzle fitting must iterate all viewport-height observer targets in mobile WebKit');
 
 const faces = fs.readFileSync('fonts/fonts.css','utf8');
 assert.ok(faces.includes("font-family: 'Tajawal'"),'Hosted Arabic text font must remain');
