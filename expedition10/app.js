@@ -643,5 +643,6 @@ function openFromJourney(i){
   root.querySelector('.ex10-game-top')?.after(context);
  }
 }
-window.ML10={stages,renderMap,renderIntro,startStage,openFromJourney,unlocked,state:()=>JSON.parse(JSON.stringify(save)),audit:()=>L.audit(),resetProgress(){save=emptySave();saveNow();renderMap();}};
+function legacyRenderMap(){journeyEntry=false;renderMap();}
+window.ML10={stages,renderMap,legacyRenderMap,renderIntro,startStage,openFromJourney,unlocked,state:()=>JSON.parse(JSON.stringify(save)),audit:()=>L.audit(),resetProgress(){save=emptySave();saveNow();renderMap();}};
 })();
