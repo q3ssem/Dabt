@@ -49,7 +49,12 @@
       while (stations && completed < stations.length && sea.done[stations[completed].id]) completed++;
       const atlas = window.ATHERAN_CAMPAIGN && window.ATHERAN_CAMPAIGN.summary();
       atlasOpen = !!atlas?.open;
-      returned = !!atlas && atlas.done === 21 && atlas.cleared === 5;
+      // Modern finale ends after the playable rescue; the five optional secret worlds
+      // are not a gate. Keep the legacy all-secrets path for old completed saves.
+      returned = !!atlas && (
+        (atlas.done === 21 && atlas.cleared === 5) ||
+        (!!atlas.a?.done?.pz_aheart && !!window.MindlabRescue?.state()?.completed)
+      );
     } catch (_) {}
     const thresholds = {departure: 0, coral_light: 3, mist_bells: 6, oasis_water: 9,
       ice_observatory: 12, wind_engine: 15, moon_vow: 18, eighth_route: 21, letter: 21, palace: 21};
