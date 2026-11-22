@@ -155,8 +155,7 @@ async def run():
               return ['قصر المرايا','أرض أثران'].every(name=>
                 all.find(s=>s.name===name).items.some(x=>x.done))
             }"""),'historical chapter-only wins vanished after reload'
-            await page.locator('.ml-folder-back').first.click()
-            assert await page.locator('.ml-folder-category').count()>=4,'return to folder grid fails'
+            assert await page.locator('.ml-folder-category').count()==6,'folder grid missing after historical reload'
             await page.locator('#mlj-journey-entry').click()
             assert await page.locator('#mlj-unified-hub.ml-folder-journey').is_visible(),'story folder dialog does not open'
             assert await page.locator('#mlj-unified-hub .mlj-v3-map-scroll, #mlj-unified-hub .mlj-map-img').count()==0,'legacy map still present'
