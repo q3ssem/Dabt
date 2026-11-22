@@ -86,6 +86,7 @@ const report={summary,duplicateGroups:duplicates,missingStaticCssReferences:miss
 // Important: this report is an inventory, never a list of safe deletion targets.
 console.log('MindLab READ-ONLY asset inventory: '+JSON.stringify(summary));
 console.log('No asset was deleted. Unresolved and duplicate paths must be checked against runtime, save, test and offline dependencies before removal.');
+console.log('Unresolved candidates (NOT safe to delete): '+JSON.stringify(entries.filter(v=>v.status==='unresolved-review-only').map(v=>({path:v.path,bytes:v.bytes}))));
 const outputFlag=process.argv.indexOf('--json');
 if (outputFlag !== -1 && process.argv[outputFlag+1]) {
   const dest=path.resolve(root,process.argv[outputFlag+1]);
