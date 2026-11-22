@@ -20,8 +20,8 @@ async def tap(page,sel):
     await page.locator(sel).first.click(timeout=9000)
     await page.wait_for_timeout(65)
 
-async def open_board(page,gid):
-    await page.evaluate('id=>startRun([id])',gid)
+async def open_board(page,gid,level):
+    await page.evaluate('([id,lv])=>{startRun([id]);RUN.replay={id,lv,seed:4000+lv}}',[gid,level])
     await page.wait_for_timeout(180)
     starter=page.locator('#stage #go')
     if await starter.count() and await starter.first.is_visible():
@@ -111,11 +111,13 @@ async def main():
             await page.evaluate("()=>{S.st.mute=true}")
             for gid in TRACKS:
                 for level in range(1,9):
-                    await open_board(page,gid)
+                    await open_board(page,gid,level)
                     before=await page.evaluate("""id=>({
                         lv:pzLv(id),n:pzState().n[id]||0,
                         stored:JSON.parse(localStorage.getItem('miran:v2')||'{}').puz?.n?.[id]||0})""",gid)
                     assert before['lv']==level and before['n']==before['stored'],(gid,level,before)
+                    active=await page.evaluate("()=>({id:RUN.last?.id,lv:RUN.last?.lv})")
+                    assert active=={'id':gid,'lv':level},f'wrong actual stage: {gid} {level} {active}'
                     actions=await solve(page,gid)
                     await page.wait_for_function("""()=>{
                         const b=document.querySelector('#pzb'),a=document.querySelector('#play #ag');
