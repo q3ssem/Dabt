@@ -846,7 +846,7 @@
   function openStation(station) {
     const index = station.order - 1;
     if (station.chapter === 'palace') {
-      palaceTile(station.id)?.onclick({ journeyStation: true });
+      startRun([station.id], null, { journeyStation: true });
     } else if (station.chapter === 'atheran') {
       window.ATHERAN_CAMPAIGN?.openJourneyStation(index);
     } else {
@@ -864,7 +864,154 @@
     }
   }
 
+  /* Four-per-row journey navigation. This replaces the massive illustrated atlas,
+     but keeps the native chapter engines, story scenes, and their existing saves. */
+  function mountStationFolders() {
+    const data=window.__MINDLAB_JOURNEY_MAP;
+    const v=$('#v-puz');
+    const entry=v&&$('.v5-hubcard',v);
+    if(!data || !entry || !$('.v5-hublib',v) || v.classList.contains('ah-view') || $('#mlj-unified-hub',v)) return;
+    const launch=document.createElement('button');
+    launch.id='mlj-journey-entry';launch.type='button';launch.className='mlj-journey-entry';
+    launch.setAttribute('aria-expanded','false');
+    launch.innerHTML='<strong>رحلة الكنز</strong><span class="mlj-entry-action">افتح الفصول والمحطات</span>';
+    const panel=document.createElement('section');panel.id='mlj-unified-hub';
+    panel.className='mlj-atlas-dialog ml-folder-journey';
+    panel.hidden=true;panel.setAttribute('role','dialog');panel.setAttribute('aria-modal','true');
+    panel.setAttribute('aria-label','فصول ومحطات رحلة الكنز');
+    panel.innerHTML='<div class="ml-folder-dialog"><header class="ml-folder-dialog-head">'+
+      '<h2>رحلة الكنز</h2><button type="button" id="mlj-close-atlas">إغلاق</button></header>'+
+      '<div class="ml-folder-chapter-content"></div>'+
+      '<footer class="ml-folder-footer"><button type="button" id="mlj-open-trans">مشاهد الرحلة</button>'+
+      '<details class="mlj-v3-extras"><summary>دفتر الرحلة والأدلة</summary><div></div></details></footer></div>';
+    const content=$('.ml-folder-chapter-content',panel);
+    const extras=$('.mlj-v3-extras',panel);
+    const chapters=[
+      ['seven_seas','البحار السبعة','chapters/ch1_seven_seas.webp'],
+      ['palace','قصر المرايا','chapters/ch2_mirror_palace.webp'],
+      ['atheran','أرض أَثْرَان','chapters/ch3_atheran.webp'],
+      ['side','رحلة جانبية','markers/marker_side.webp']
+    ];
+    const chapterAr=key=>chapters.find(ch=>ch[0]===key)?.[1]||key;
+    const num=n=>String(n).replace(/\\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+    let chapter=null,previousFocus=null;
+    const done=st=>{
+      try{
+        if(st.chapter==='seven_seas')return !!window.T7?.state()?.done?.[st.id];
+        if(st.chapter==='side')return !!window.ML10?.state()?.done?.[st.id];
+        if(st.chapter==='atheran')return !!window.ATHERAN_CAMPAIGN?.summary()?.a?.done?.[st.id];
+        return !!(typeof pState==='function'&&pState().done?.[st.id]) ||
+          Number(typeof pzState==='function'?pzState().n?.[st.id]||0:0)>0;
+      }catch(_){return false;}
+    };
+    const unlocked=st=>{
+      if(done(st))return true;
+      const i=st.order-1;
+      const stations=data.stations.filter(x=>x.chapter===st.chapter).sort((a,b)=>a.order-b.order);
+      const before=stations.find(x=>x.order===i);
+      if(before&&!done(before))return false;
+      if(st.chapter==='seven_seas')return !!window.T7?.unlocked(i);
+      if(st.chapter==='side')return !!window.ML10?.unlocked(i);
+      if(st.chapter==='atheran')return !!window.ATHERAN_CAMPAIGN?.canOpenStation(i);
+      return true;
+    };
+    const pill=(txt,cls='')=>{const x=document.createElement('span');x.className=cls;x.textContent=txt;return x;};
+    function close(restore=true){
+      panel.hidden=true;launch.setAttribute('aria-expanded','false');
+      if(restore&&launch.isConnected)launch.focus({preventScroll:true});
+    }
+    function populateExtras(){
+      const div=$('div',extras);div.replaceChildren();
+      const actions=[{label:'ملفات الأدلة والملاحظات',open:openEvidenceBook},
+        {label:'قصة الصندوق',open:()=>openJaziranScene('prologue')}];
+      if(jaziranSceneAvailable('palace_clock'))actions.push({label:'ساعة القصر',open:()=>openJaziranScene('palace_clock')});
+      actions.push(...(window.ATHERAN_CAMPAIGN?.journeyActions()||[]));
+      const sea=window.T7?.state();
+      if(sea){
+        actions.push({label:'كنوز البحار',open:()=>T7.openJournal('treasures')});
+        for(const secret of T7.data.secrets.filter(q=>sea.bonus?.[q.id]))
+          actions.push({label:secret.collectible,open:()=>T7.openSecret(secret.ch,true)});
+        if(sea.done?.sea7_20)actions.push({label:'رسالة الجد',open:()=>T7.openFinaleFromJourney()});
+      }
+      actions.forEach(a=>{const b=document.createElement('button');b.type='button';b.textContent=a.label;
+        b.onclick=()=>{close(false);a.open();};div.append(b);});
+    }
+    function select(which){
+      chapter=which;content.replaceChildren();
+      if(!which){
+        content.append(pill('اختر فصلًا لعرض المحطات. يتم فتح المحطة التالية بعد إكمال السابقة.','ml-folder-journey-note'));
+        const grid=document.createElement('div');grid.className='ml-folder-journey-categories';
+        chapters.forEach(([id,name,icon])=>{
+          const rows=data.stations.filter(st=>st.chapter===id);
+          const completed=rows.filter(done).length;
+          const b=document.createElement('button');b.type='button';b.className='ml-folder-chapter';
+          b.dataset.chapter=id;
+          const art=document.createElement('span');art.className='ml-folder-chapter-art';
+          const img=document.createElement('img');img.src=artV3+icon;img.alt='';img.loading='lazy';art.append(img);
+          b.append(art,pill(name,'ml-folder-chapter-name'),
+            pill(num(completed)+' / '+num(rows.length)+' محطة','ml-folder-chapter-progress'));
+          b.onclick=()=>select(id);grid.append(b);
+        });
+        content.append(grid);
+        return;
+      }
+      const header=document.createElement('div');header.className='ml-folder-bar';
+      const back=document.createElement('button');back.type='button';back.className='ml-folder-back';
+      back.textContent='رجوع إلى الفصول';back.onclick=()=>select(null);
+      header.append(back,pill(chapterAr(which),'ml-folder-chapter-heading'));
+      content.append(header);
+      const grid=document.createElement('div');grid.className='ml-folder-stations';
+      const rows=data.stations.filter(st=>st.chapter===which).sort((a,b)=>a.order-b.order);
+      rows.forEach(st=>{
+        const ready=unlocked(st),complete=done(st);
+        const button=document.createElement('button');button.type='button';
+        button.className='ml-folder-station'+(complete?' completed':ready?' available':' locked');
+        button.dataset.stationId=st.id;button.dataset.status=complete?'done':ready?'current':'locked';
+        const label=num(st.order)+'. '+st.title+' · '+(complete?'مكتملة':ready?'متاحة':'مقفلة');
+        button.setAttribute('aria-label',label);
+        button.append(pill(num(st.order),'ml-folder-station-number'),
+                      pill(st.title,'ml-folder-station-name'),
+                      pill(complete?'✓':ready?'ابدأ':'مقفل','ml-folder-station-state'));
+        if(!ready)button.disabled=true;
+        else button.onclick=()=>{
+          close(false);
+          const milestone={seven_seas:'departure',palace:'palace',atheran:'atheran'}[st.chapter];
+          const open=()=>openStation(st);
+          if(milestone)showMilestone([milestone],open);
+          else open();
+        };
+        grid.append(button);
+      });
+      content.append(grid);
+      if(which==='side'&&!window.ML10&&window.mindlabSide?.start){
+        const note=pill('يُجهَّز الفصل الجانبي…','ml-folder-journey-note');content.append(note);
+        window.mindlabSide.start().then(()=>{if(chapter==='side'&&!panel.hidden)select('side');})
+          .catch(()=>{note.textContent='تعذر تحميل الفصل؛ تحقق من الاتصال وأعد المحاولة.';});
+      }
+    }
+    launch.onclick=()=>{previousFocus=document.activeElement;panel.hidden=false;
+      launch.setAttribute('aria-expanded','true');populateExtras();select(chapter);$('#mlj-close-atlas',panel).focus({preventScroll:true});};
+    $('#mlj-close-atlas',panel).onclick=()=>close();
+    $('#mlj-open-trans',panel).onclick=()=>{close(false);openTransitionsModal();};
+    panel.addEventListener('click',e=>{if(e.target===panel)close();});
+    panel.addEventListener('keydown',e=>{
+      if(e.key==='Escape'){e.preventDefault();close();return;}
+      if(e.key!=='Tab')return;
+      const buttons=[...panel.querySelectorAll('button, summary')].filter(x=>x.getClientRects().length&&!x.disabled);
+      if(!buttons.length)return;
+      if(e.shiftKey&&document.activeElement===buttons[0]){e.preventDefault();buttons.at(-1).focus();}
+      else if(!e.shiftKey&&document.activeElement===buttons.at(-1)){e.preventDefault();buttons[0].focus();}
+    });
+    v.classList.add('mlj-single-entry');
+    ($('.t7-top',v)||entry).after(launch);launch.after(panel);
+    panel.dataset.ready='true';
+    panel.addEventListener('mlj:remove',()=>{}, {once:true});
+    // Direct entry from existing story links may request a specific chapter.
+    panel.openChapter=which=>{if(panel.hidden)launch.click();select(which||null);};
+  }
+
   function mountUnifiedHub() {
+    if (window.__MINDLAB_JOURNEY_MAP) return mountStationFolders();
     const data = window.__MINDLAB_JOURNEY_MAP;
     if (!data) return mountLegacyHub();
     const v = $('#v-puz');
@@ -1199,10 +1346,12 @@
     launch.after(atlas);
   }
 
-  function returnToMap() {
+  function returnToMap(chapter) {
     mountUnifiedHub();
     if (!$('#mlj-journey-entry') && window.T7) { T7.hub(); mountUnifiedHub(); }
-    $('#mlj-journey-entry')?.click();
+    const panel=$('#mlj-unified-hub');
+    if(panel?.openChapter)panel.openChapter(chapter || null);
+    else $('#mlj-journey-entry')?.click();
   }
 
   /* ---- 45 Non-Library Openings (21 Treasure Island + 24 Side Journey) ---- */
