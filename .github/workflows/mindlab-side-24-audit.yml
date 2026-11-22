@@ -1,0 +1,56 @@
+name: MindLab 24-stage side journey mobile audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/mindlab-side-24-audit.yml'
+      - 'qa/browser/side_journey_24_mobile.py'
+      - 'expedition10/**'
+      - 'ui/journey-**'
+      - 'ui/designs_art/journey/**'
+      - 'ds/**'
+      - 'index.html'
+  workflow_dispatch:
+
+concurrency:
+  group: side-24-${ref}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  mobile-side-stage:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - name: Prepare browser
+        run: |
+          if [ "${engine}" = "webkit" ]; then
+            python -m playwright install --with-deps webkit
+          else
+            command -v google-chrome
+          fi
+      - name: Check all 24 side stages on phone sizes
+        run: |
+          mkdir -p /tmp/mindlab-side24
+          python -m http.server 8791 --bind 127.0.0.1 >/tmp/side24-http.log 2>&1 &
+          python qa/browser/side_journey_24_mobile.py http://127.0.0.1:8791/ \
+            "${engine}" /tmp/mindlab-side24
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: side24-${engine}
+          path: /tmp/mindlab-side24/*
+          if-no-files-found: warn
+          retention-days: 14
