@@ -23,8 +23,20 @@
     return node;
   };
   function wins(id) {
-    try { return Math.max(0, Number(pzState()?.n?.[id] || 0)); }
-    catch (_) { return 0; }
+    let count = 0;
+    try { count = Math.max(0, Number(pzState()?.n?.[id] || 0)); } catch (_) {}
+    // Pre-folder campaign versions may record a cleared palace/Atheran station
+    // in their chapter save even when the general puzzle counter is absent.
+    // Read that native proof without migrating, editing or resetting either key.
+    try {
+      if (/^pz_p/.test(id) && typeof pState === 'function' && pState().done?.[id])
+        count = Math.max(1, count);
+    } catch (_) {}
+    try {
+      if (/^pz_a/.test(id) && typeof aState === 'function' && aState().done?.[id])
+        count = Math.max(1, count);
+    } catch (_) {}
+    return count;
   }
   function sections() {
     // The 5.5.2 mini-games layer combines two historical categories into one.
