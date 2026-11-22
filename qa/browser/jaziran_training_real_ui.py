@@ -162,6 +162,7 @@ async def run():
             row={'id':gid};at=len(errors)
             try:
                 row['route']=await launch(page,gid)
+                before=await page.evaluate("id=>({wins:pzState().n[id]||0,level:pzLv(id)})",gid)
                 await solve(page,gid)
                 # Success animations in native engines are async.
                 for _ in range(30):
@@ -170,8 +171,25 @@ async def run():
                     await page.wait_for_timeout(120)
                 row['win']=result['next'] or result['hidden'] or result['solved']
                 row['outcome']=result
-                row['saved']=await page.evaluate("id=>pState()?.done?.[id]??null",gid)
-                if not row['win']:row['error']='no native win after real-control solution'
+                if not row['win']:
+                    row['error']='no native win after real-control solution'
+                else:
+                    await page.wait_for_function("""([id,n])=>(pzState().n[id]||0)>n""",
+                        arg=[gid,before['wins']],timeout=7000)
+                    # The native result animation writes miran:v2 asynchronously.
+                    await page.wait_for_function("""([id,n])=>{
+                        try{const x=JSON.parse(localStorage.getItem('miran:v2')||'{}');
+                            return (x.puz?.n?.[id]||0)>n;}
+                        catch(e){return false;}
+                    }""",arg=[gid,before['wins']],timeout=8500)
+                    after=await page.evaluate("id=>({wins:pzState().n[id]||0,level:pzLv(id),persisted:JSON.parse(localStorage.getItem('miran:v2')).puz?.n?.[id]||0})",gid)
+                    row['nativeWins']=after['wins']
+                    row['saved']=after['persisted']==after['wins']
+                    row['levelBefore']=before['level']
+                    row['levelAfter']=after['level']
+                    if not row['saved']:row['error']='native win not persisted'
+                    if gid not in ('pz_pipe','pz_ice') and after['level']<before['level']:
+                        row['error']='level regressed after a win'
             except Exception as ex:row['error']=str(ex)[:450]
             if len(errors)>at:row['jsErrors']=errors[at:][:3]
             if row.get('error') or row.get('jsErrors'):
@@ -186,6 +204,11 @@ async def run():
             json.dumps(summary,ensure_ascii=True,indent=2),encoding='utf8')
         print('JAZIRAN_REAL_UI_SUMMARY='+json.dumps({
             k:v for k,v in summary.items() if k!='results'},ensure_ascii=True),flush=True)
+        # Reopen from storage, not the previous JS heap: all wins must remain.
+        await page.reload(wait_until='load')
+        stored=await page.evaluate("()=>JSON.parse(localStorage.getItem('miran:v2')||'{}').puz?.n||{}")
+        assert all(stored.get(row['id'],0)==row.get('nativeWins') for row in rows),(
+            'winning counts lost or duplicated after browser reload')
         await browser.close()
         assert not summary['gaps'],f"{len(summary['gaps'])}/{len(rows)} need manual UI audit"
 
