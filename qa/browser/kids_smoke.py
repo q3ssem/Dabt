@@ -46,6 +46,26 @@ async def main():
                         if not await pg.locator('#stage .cd').count(): break
                         await pg.wait_for_timeout(100)
                     await pg.wait_for_timeout(500)
+                    # Some child games show an intentional memory preview,
+                    # while bubble targets move into the tank asynchronously.
+                    # Wait until a *gameplay* target can really be hit, instead
+                    # of inventing DOM events or counting the tutorial as input.
+                    if g == 'k_diff':
+                        await pg.locator('#stage .kopt').first.wait_for(
+                            state='visible', timeout=10000)
+                    elif g == 'k_bubble':
+                        await pg.wait_for_function("""() => {
+                          const tank=document.querySelector('#kbt');
+                          if(!tank)return false;
+                          const t=tank.getBoundingClientRect();
+                          return [...tank.querySelectorAll('.kbubble')].some(e=>{
+                            const r=e.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
+                            const hit=document.elementFromPoint(x,y);
+                            return x>=t.left+2&&x<t.right-2&&y>=t.top+2&&y<t.bottom-2&&
+                              x>=1&&x<innerWidth-1&&y>=1&&y<innerHeight-1&&
+                              (hit===e||e.contains(hit));
+                          });
+                        }""",timeout=20000)
                     # Use the browser's actual hit-testing, scrolling and pointer events.
                     # Dispatching MouseEvent from page.evaluate bypasses occlusion and
                     # is not proof that a child can touch a game control.
