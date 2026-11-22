@@ -74,6 +74,35 @@ async def main():
                         '#stage [role="button"], #stage [data-i], #stage .cell, #stage canvas'
                     )
                     native_taps = 0
+                    if g == 'k_bubble':
+                        # A bubble moves continuously. Playwright locator.click()
+                        # can resolve a stale bubble after another becomes hittable;
+                        # use a *real touchscreen tap at a freshly hit-tested point*.
+                        # A DOM class change confirms the game received the touch.
+                        for _ in range(8):
+                            point = await pg.evaluate("""() => {
+                              const tank=document.querySelector('#kbt');
+                              if(!tank)return null;
+                              const t=tank.getBoundingClientRect();
+                              for(const e of tank.querySelectorAll('.kbubble')){
+                                const r=e.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
+                                const hit=document.elementFromPoint(x,y);
+                                if(x>=t.left+3&&x<t.right-3&&y>=t.top+3&&y<t.bottom-3&&
+                                   x>=3&&x<innerWidth-3&&y>=3&&y<innerHeight-3&&
+                                   (hit===e||e.contains(hit)))return {x,y};
+                              }
+                              return null;
+                            }""")
+                            if not point:
+                                await pg.wait_for_timeout(160)
+                                continue
+                            await pg.touchscreen.tap(point['x'],point['y'])
+                            await pg.wait_for_timeout(110)
+                            registered = await pg.evaluate(
+                                "() => !!document.querySelector('#kbt .kbubble.pop, #kbt .kbubble.nope')")
+                            if registered:
+                                native_taps = 1
+                                break
                     for i in range(min(await controls.count(), 20)):
                         if native_taps >= 1: break
                         target = controls.nth(i)
