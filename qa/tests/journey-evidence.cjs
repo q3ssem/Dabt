@@ -12,9 +12,12 @@ const storage = {
   getItem(k) { return state.get(k) ?? null; },
   setItem(k, v) { state.set(k, String(v)); }
 };
-const window = {T7:{state:()=>({done:{}}),data:{stations:[]}}};
+const nativePalace = {done:{}};
+const nativeAtheran = {done:{},sw:{},swd:{}};
+const window = {T7:{state:()=>({done:{}}),data:{stations:[]}},
+  ATHERAN_CAMPAIGN:{summary:()=>({a:nativeAtheran})}};
 const document = {readyState:'loading',addEventListener(){},querySelector(){return null;},querySelectorAll(){return [];}};
-vm.runInNewContext(src,{window,T7:window.T7,document,localStorage:storage,showIntro(){},closePlay(){},console});
+vm.runInNewContext(src,{window,T7:window.T7,document,localStorage:storage,pState:()=>nativePalace,showIntro(){},closePlay(){},console});
 const api=window.mindlabJourneyHub;
 assert.equal(typeof api.openEvidenceBook,'function');
 assert.equal(api.getEvidenceDraft('measurement'),'');
@@ -43,6 +46,31 @@ assert(css.includes('/* Jaziran evidence notebook:') && css.includes('html[data-
 state.set(notesKey,'{broken');
 assert.equal(api.getEvidenceDraft('measurement'),'','corrupt drafts do not interfere with campaign save');
 assert.equal(api.saveEvidenceDraft('measurement','تعافي'),true,'bad notebook draft can be safely replaced');
+// Game completion is read only from the campaign's native state, not notebook text.
+assert.equal(api.getEvidenceSnapshot('measurement').nativeCompleted,0,'sea library entries are not sea7 campaign stations');
+assert.equal(api.getEvidenceSnapshot('measurement').sources.every(s=>s.state==='unlinked'),true);
+assert.equal(api.getEvidenceSnapshot('testimony').readyToCompare,false);
+nativePalace.done.pz_pclock=1;
+assert.equal(api.getEvidenceSnapshot('testimony').nativeCompleted,1);
+nativePalace.done.pz_pjail=1;
+const palaceEvidence=api.getEvidenceSnapshot('testimony');
+assert.equal(palaceEvidence.nativeCompleted,2);
+assert.equal(palaceEvidence.readyToCompare,true,'two different completed stations are ready for manual comparison');
+assert.equal(palaceEvidence.inferenceVerified,false,'game completion alone never certifies an inference');
+assert.equal(palaceEvidence.sources.find(s=>s.id==='pz_pobs').state,'pending');
+nativeAtheran.done.pz_alayer=1;
+nativeAtheran.done.pz_acity=1;
+assert.equal(api.getEvidenceSnapshot('traces').nativeCompleted,2);
+assert.equal(api.getEvidenceSnapshot('traces').readyToCompare,true);
+assert.equal(api.evidenceVisibleFiles().length,3,'optional secret branch must be hidden before official finale');
+nativeAtheran.sw.bones=1;
+assert.equal(api.getEvidenceSnapshot('people').sources[0].state,'pending','discovery alone does not count as solving a secret');
+nativeAtheran.swd.bones=1;
+assert.equal(api.getEvidenceSnapshot('people').nativeCompleted,1,'cleared world is engine-confirmed');
+nativeAtheran.done.pz_aheart=1;
+assert.equal(api.evidenceVisibleFiles().length,4,'optional names file appears only after native finale');
+assert.equal(api.getEvidenceSnapshot('invalid'),null);
+assert.equal(JSON.parse(state.get('treasureV3')).done.sea7_0,true);
 const allKeys=[...state.keys()];
 assert.equal(allKeys.length,4,'new notebook creates just one isolated localStorage key');
-console.log('Journey evidence notebook: 3 files, isolated drafts, corrupt-store recovery, no progression/save mutations passed.');
+console.log('Journey evidence notebook: 3 core dossiers + 1 gated optional dossier, native completion provenance, notes isolated, no invented inferences passed.');
