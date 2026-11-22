@@ -49,7 +49,10 @@ async def main():
                     # Use the browser's actual hit-testing, scrolling and pointer events.
                     # Dispatching MouseEvent from page.evaluate bypasses occlusion and
                     # is not proof that a child can touch a game control.
-                    controls = pg.locator('#pzb button:not([disabled]), #pzb [role="button"], #pzb [data-i], #pzb .cell, #pzb canvas')
+                    controls = pg.locator(
+                        '#stage button:not([disabled]):not(#go):not(#pzq):not(#pzh):not(#pzr):not(#quit), '
+                        '#stage [role="button"], #stage [data-i], #stage .cell, #stage canvas'
+                    )
                     native_taps = 0
                     for i in range(min(await controls.count(), 20)):
                         if native_taps >= 1: break
@@ -66,6 +69,18 @@ async def main():
                             # A covered or non-interactive tile is not evidence
                             # of real touch acceptance; try another target.
                             continue
+                    if native_taps == 0:
+                        diagnosis = await pg.evaluate("""() => {
+                          const st=document.querySelector('#stage'),board=document.querySelector('#pzb');
+                          const visible=e=>!!e.getClientRects().length;
+                          return {stageChildren:st?.children.length||0,boardPresent:!!board,
+                            boardElements:board?.querySelectorAll('*').length||0,
+                            buttons:[...st.querySelectorAll('button')].filter(visible).slice(0,12).map(e=>({
+                              id:e.id,cls:String(e.className).slice(0,70),text:e.textContent.trim().slice(0,35)})),
+                            html:st?.innerHTML.slice(0,600)};
+                        }""")
+                        print('KID_TAP_DIAG='+json.dumps({'game':g,'width':w,'diagnosis':diagnosis},
+                              ensure_ascii=False),flush=True)
                     ok(native_taps > 0, f'{lab}: at least one real Playwright tap accepted')
                     wide = await pg.evaluate("()=>document.documentElement.scrollWidth-innerWidth")
                     ok(wide <= 1, f'{lab}: nothing wider than the screen ({wide}px)')
