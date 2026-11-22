@@ -10,29 +10,34 @@ from jaziran_sea_six_native_ui import tap
 from player_openings import dismiss_opening
 
 async def open_training_board(page,gid,level):
-    # Training games can prepare a story introduction after startRun; unlike
-    # the Sea-only helper, never silently skip a temporarily hidden Start.
-    await page.evaluate("([id,lv])=>{pzSetLv(id,lv);startRun([id]);RUN.replay={id,lv,seed:4000+lv}}",
+    # The puzzle intro intentionally hides #stage #go and triggers it
+    # programmatically (ui/openings.js). The REAL player action is closing
+    # #fit-op-start; waiting for a visible #go will deadlock every puzzle.
+    # Install replay in RUN options before showIntro, not after the auto-go.
+    await page.evaluate("([id,lv])=>startRun([id],null,{replay:{id,lv,seed:4000+lv}})",
         [gid,level])
     starter=page.locator('#stage #go')
-    await starter.wait_for(state='visible',timeout=20000)
-    await starter.click(timeout=9000)
-    await dismiss_opening(page,wait=1400)
+    if await starter.count() and await starter.first.is_visible():
+        await starter.first.click(timeout=9000)
+    await dismiss_opening(page,wait=1800)
     try:await page.wait_for_function("()=>!document.querySelector('#stage .cd')",timeout=18000)
     except Exception:pass
     try:await page.locator('#pzb').wait_for(state='visible',timeout=18000)
     except Exception as e:
         diag=await page.evaluate("""()=>({
-            stage:document.querySelector('#stage')?.innerText.slice(0,300),
-            go:!!document.querySelector('#stage #go'),
+            stage:document.querySelector('#stage')?.innerText.slice(0,400),
+            go:document.querySelector('#stage #go')?.hidden,
             playHidden:document.querySelector('#play')?.hidden,
             opening:!!document.querySelector('#fit-opening-overlay #fit-op-start'),
-            board:!!document.querySelector('#pzb')
+            stageDisplay:getComputedStyle(document.querySelector('#stage')).display,
+            board:!!document.querySelector('#pzb'),
+            boardDisplay:document.querySelector('#pzb')?
+                getComputedStyle(document.querySelector('#pzb')).display:null,
+            runId:RUN?.queue?.[RUN?.pos],lastId:RUN?.last?.id
         })""")
         raise AssertionError(f'{gid}@{level}: board did not open: {diag}') from e
     await page.wait_for_function("id=>document.querySelector('#play')?.dataset.laGame===id",
         arg=gid,timeout=10000)
-
 
 URL=sys.argv[1] if len(sys.argv)>1 else 'http://127.0.0.1:8806/'
 ENGINE=sys.argv[2] if len(sys.argv)>2 else 'chromium'
