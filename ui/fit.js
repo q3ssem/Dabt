@@ -315,6 +315,14 @@
   function pageFit() {
     pageRaf = 0; if (!page || !pageEl || !pageEl.isConnected || !pageEl.offsetParent) return;
     const z0 = pageEl; z0.style.removeProperty('--fit-z');
+    // Side-journey boards already have an internal scroll container. Zooming
+    // the whole stage on phones made nominally 44px controls just 30–37px.
+    // Prefer real-size interaction targets with scrolling over shrinking taps.
+    if (page.key === 'ex10' && window.innerWidth <= 430) {
+      z0.style.setProperty('--fit-z', '1');
+      z0.dataset.fitZoom = '1.00';
+      return;
+    }
     const top = z0.getBoundingClientRect().top + window.scrollY + document.body.scrollTop, avail = Math.max(200, window.innerHeight - top - 10);
     const nat = () => { let b = 0; for (const c of z0.children) { const r = c.getBoundingClientRect(); if (r.height) b = Math.max(b, r.bottom); } return b - z0.getBoundingClientRect().top + 6; };
     let z = 1, need = nat();
