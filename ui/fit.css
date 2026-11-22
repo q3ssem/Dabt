@@ -293,3 +293,63 @@ html[data-skin="dark"] #play.fit .fit-sh-sound{border-color:#7f9599;color:#EEF1F
   border-color: transparent;
   box-shadow: none;
 }
+
+
+/* Batch 3: user-initiated large-touch mode. Default one-screen fit is unchanged.
+   Enlarged puzzles scroll *within* the board, not the surrounding page.
+   Avoid stretching images, changing puzzle coordinates or altering win/save logic. */
+#play.fit:not(.xframe) #pzb.fit-large {
+  overflow: auto !important;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scroll-behavior: auto;
+}
+#play.fit #pzb.fit-large .xkbtns button,
+#play.fit #pzb.fit-large .fit-clue-controls button,
+#play.fit #pzb.fit-large .zkkb button,
+#play.fit #pzb.fit-large .heart-tools button {
+  min-height: 44px !important;
+}
+#play.fit #pzb.fit-large .zkkb button {
+  min-width: 44px !important;
+}
+#play.fit #pzb.fit-large #zrt {
+  min-height: 44px !important;
+}
+#play.fit #pzb.fit-large .journal-timeline [data-wlg-slot] {
+  display: inline-grid;
+  place-items: center;
+  min-width: 44px !important;
+  min-height: 44px !important;
+  cursor: pointer;
+}
+.fit-sh-magnify {
+  display: block;
+  width: 100%;
+  min-height: 48px;
+  margin: 6px 0 10px;
+  padding: 9px 12px;
+  border: 1px solid #487a6c;
+  border-radius: 12px;
+  background: #e5f2ed;
+  color: #184d46;
+  font: inherit;
+  font-weight: 700;
+  cursor: pointer;
+}
+.fit-sh-magnify[aria-pressed="true"] {
+  border-width: 2px;
+  background: #d2e9e0;
+}
+.fit-sh-magnify:focus-visible {
+  outline: 3px solid #c48b35;
+  outline-offset: 2px;
+}
+html[data-skin="dark"] .fit-sh-magnify {
+  color: #f5f0dc;
+  background: #29473f;
+  border-color: #9ecbbb;
+}
+html[data-skin="dark"] .fit-sh-magnify[aria-pressed="true"] {
+  background: #355b51;
+}
