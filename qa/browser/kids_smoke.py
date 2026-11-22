@@ -28,7 +28,10 @@ async def main():
             await pg.goto(URL); await pg.wait_for_timeout(1200)
             if await pg.locator('.mpc[data-m=kid]').count(): await pg.click('.mpc[data-m=kid]'); await pg.wait_for_timeout(500)
             await pg.evaluate("()=>{const k=kidSt();if(!k.list.length){k.list.push({id:'qa1',name:'تجربة',av:'🦁',age:7});k.active='qa1';S.save();}}")
-            await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
+            # The play bundle is intentionally lazy-loaded after the profile picker.
+            # Await the public loader, rather than treating an idle home screen as hung.
+            await pg.evaluate("async()=>{if(window.mindlabPlayLayers && !window.mindlabPlayLayers.ready) await window.mindlabPlayLayers.start()}")
+            await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=45000)
             ids = await pg.evaluate("()=>KID_GAMES.map(g=>typeof g==='string'?g:g.id).filter(id=>GM[id])")
             ok(len(ids) >= 20, f'{w}: kid games listed ({len(ids)})')
             for g in ids:
