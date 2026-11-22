@@ -207,4 +207,4 @@ self.MINDLAB_OFFLINE_FILES.push(
 );
 
 // 5.5.29: keep the shared visual board system available after full offline preparation.
-self.MINDLAB_OFFLINE_FILES.push("ds/board-polish.css");
+self.MINDLAB_OFFLINE_FILES.push("ds/board-polish.css", "ui/jaziran-puzzle-accents.css");
