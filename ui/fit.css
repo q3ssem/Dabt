@@ -406,3 +406,18 @@ html[data-skin="dark"] .fit-sh-magnify[aria-pressed="true"] {
     overscroll-behavior: contain;
   }
 }
+
+/* Mobile WebKit sometimes keeps a previous 844px board height after the
+   viewport shrinks in-place to 640px. For the tall bone-chain panel, cap
+   the native-size (1.00 zoom) surface to the visible play space, and allow
+   scrolling *inside the board* instead of clipping puzzle controls.
+   A correctly recomputed smaller zoom remains owned by fit.js. */
+@media (max-width:360px) and (max-height:700px) {
+  #play.fit:not(.xframe)[data-la-game="pz_wbone"] #pzb[data-fit-zoom="1.00"] {
+    max-height:calc(100dvh - 142px)!important;
+    min-height:0!important;
+    overflow-y:auto!important;
+    overscroll-behavior:contain;
+    -webkit-overflow-scrolling:touch;
+  }
+}
