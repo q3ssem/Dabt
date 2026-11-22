@@ -611,6 +611,8 @@
         hero: station.hero,
         dialogue: station.openingTextAr,
         sprite: artV3 + 'heroes/' + station.hero + '.webp',
+        storyLines: sea ? (window.TreasureData?.stations[index]?.dialog || []) :
+          [['الراوي',window.ML10.stages[index]?.story || '']],
         rule: sea ? window.TreasureData?.stations[index]?.goal : window.ML10.stages[index]?.objective
       }, () => sea ? T7.open(index, true) : ML10.openFromJourney(index));
     }
@@ -808,6 +810,7 @@
             <span class="fit-opening-speaker">${info.heroName}</span>
             <span>${info.dialogue}</span>
           </div>
+          <details class="mlj-station-full-story"><summary>اقرأ مشهد القصة كاملًا</summary><div class="mlj-station-story-lines"></div></details>
           <p class="mlj-station-rule"></p>
           <div class="fit-opening-actions">
             <button type="button" class="fit-op-skip" id="fit-op-skip">رجوع</button>
@@ -815,6 +818,20 @@
         </div>
       </div>
     `;
+    // The map-free shortcut must not discard the complete authored scene.
+    const storyBox=$('.mlj-station-full-story',ov);
+    const storyHost=$('.mlj-station-story-lines',storyBox);
+    const storyLines=(Array.isArray(info.storyLines)?info.storyLines:[]).filter(line=>Array.isArray(line)&&line[1]);
+    storyBox.hidden=!storyLines.length;
+    storyLines.forEach(([who,dialogue])=>{
+      const line=document.createElement('p');
+      if(who&&who!=='الراوي'){
+        const speaker=document.createElement('strong');speaker.textContent=who+': ';line.append(speaker);
+      }
+      line.append(document.createTextNode(dialogue));
+      storyHost.append(line);
+    });
+
     const rule = $('.mlj-station-rule', ov);
     rule.textContent = info.rule || '';
     rule.hidden = !info.rule;

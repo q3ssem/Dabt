@@ -438,3 +438,11 @@ html[data-skin="dark"] #v-puz .mlj-journey-entry{background:linear-gradient(115d
 .mlj-station-rules .mlj-station-crew-person figcaption{font:800 11px/1.4 Tajawal,system-ui,sans-serif;color:inherit}
 .mlj-station-rules .fit-opening-scene--plain{min-height:118px;height:auto!important;overflow:visible}
 @media(max-width:360px){.mlj-station-rules .mlj-station-crew-person img{width:48px;height:61px}}
+
+/* The complete authored scene stays readable but collapsed below the concise clue. */
+.mlj-station-rules .mlj-station-full-story{margin:10px 0 8px;padding:10px 12px;border:1px solid #9fb9ac;border-radius:12px;background:#fbfdfb;text-align:start;color:#263b34}
+.mlj-station-rules .mlj-station-full-story[hidden]{display:none!important}
+.mlj-station-rules .mlj-station-full-story summary{cursor:pointer;font:800 13px/1.6 Tajawal,system-ui,sans-serif}
+.mlj-station-rules .mlj-station-story-lines{max-height:28dvh;overflow-y:auto;overscroll-behavior:contain;padding-top:7px}
+.mlj-station-rules .mlj-station-story-lines p{margin:0 0 7px;font:600 13px/1.75 Tajawal,system-ui,sans-serif}
+html[data-skin="dark"] .mlj-station-rules .mlj-station-full-story{background:#1a2b2c;color:#e5f2e9;border-color:#6e9786}
