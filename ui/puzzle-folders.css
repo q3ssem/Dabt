@@ -158,3 +158,23 @@ html[data-skin="dark"] #v-puz.mlj-single-entry #mlj-journey-entry {color:#f2efe5
     font:700 10px/1.3 Tajawal,system-ui,sans-serif;padding:8px 6px;
   }
 }
+
+/* Contrast correction: disabled stages remain visibly locked through dashed borders,
+   not by fading their Arabic labels. A 10px label with opacity .72 was illegible. */
+html #v-puz .ml-folder-grid .ml-folder-locked,
+html #v-puz .ml-folder-stations .ml-folder-station.locked {
+  opacity:1!important;
+  color:#52665e!important;
+}
+html #v-puz .ml-folder-grid .ml-folder-locked .ml-folder-state {
+  color:#52665e!important;
+}
+html[data-skin="dark"] #v-puz .ml-folder-grid .ml-folder-locked,
+html[data-skin="dark"] #v-puz .ml-folder-stations .ml-folder-station.locked,
+html[data-skin="dark"] #v-puz .ml-folder-grid .ml-folder-locked .ml-folder-state {
+  color:#c0d0c7!important;
+}
+html #v-puz .ml-folder-grid .ml-folder-puzzle b,
+html #v-puz .ml-folder-stations .ml-folder-station-name {
+  font-size:11px!important;
+}
