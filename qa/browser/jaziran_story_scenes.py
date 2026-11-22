@@ -83,7 +83,7 @@ async def run():
         await page.locator('.mlj-jaziran-options button').nth(1).click()
         assert 'شاهد رأى القارب' in await page.locator('#mlj-jaziran-reveal').inner_text()
         await page.locator('#mlj-jaziran-save').click()
-        assert await page.evaluate("""()=>JSON.parse(localStorage.getItem('mindlab:journey:evidence-notes:v1')).testimony""") .startswith('ملاحظة القصر')
+        assert (await page.evaluate("""()=>JSON.parse(localStorage.getItem('mindlab:journey:evidence-notes:v1')).testimony""")).startswith('ملاحظة القصر')
         await page.locator('#mlj-jaziran-close').click()
         assert not errors,errors[:4]
         print('JAZIRAN_STORY_SCENES='+json.dumps({'engine':ENGINE,'scenes':2,'palace_gate':'pz_pobs',
