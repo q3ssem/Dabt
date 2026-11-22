@@ -26,6 +26,13 @@ assert.ok(sw.includes("PATCH='board-polish-29'"), 'Update PWA cache identity whe
 assert.ok(!/#[a-zA-Z0-9_-]*board\s*\*\s*\{/.test(style), 'Never blindly recolor game pieces');
 assert.ok(!/\#pzb\s*\*\s*\{/.test(style), 'Never change all puzzle content at once');
 
+for (const token of ['#pk.peek', '#xp.xnav', '#xn.xnav', 'min-height: 44px !important']) {
+  assert.ok(style.includes(token),'Measured brain-game touch target guard missing '+token);
+}
+const brainAudit = fs.readFileSync('qa/browser/brain_game_board_audit.py','utf8');
+assert.ok(brainAudit.includes('criticalControls') && brainAudit.includes('labelled_control_below_44px'),
+  'Browser acceptance must measure post-layout brain-game touch geometry');
+
 const fitCSS = fs.readFileSync('ui/fit.css','utf8');
 for (const id of ['pz_rid','pz_scale','pz_tpath','pz_ybell','pz_plock','pz_aarch']) {
   assert.ok(fitCSS.includes('[data-la-game="'+id+'"]'),
