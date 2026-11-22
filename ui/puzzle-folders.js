@@ -23,14 +23,38 @@
     return node;
   };
   function wins(id) {
-    try { return Math.max(0, Number(pzState()?.n?.[id] || 0)); }
-    catch (_) { return 0; }
+    let count = 0;
+    try { count = Math.max(0, Number(pzState()?.n?.[id] || 0)); } catch (_) {}
+    // Pre-folder campaign versions may record a cleared palace/Atheran station
+    // in their chapter save even when the general puzzle counter is absent.
+    // Read that native proof without migrating, editing or resetting either key.
+    try {
+      if (/^pz_p/.test(id) && typeof pState === 'function' && pState().done?.[id])
+        count = Math.max(1, count);
+    } catch (_) {}
+    try {
+      if (/^pz_a/.test(id) && typeof aState === 'function' && aState().done?.[id])
+        count = Math.max(1, count);
+    } catch (_) {}
+    return count;
   }
-  function sections() { return LA.librarySections().filter(row => row[1].length); }
+  function sections() {
+    // The 5.5.2 mini-games layer combines two historical categories into one.
+    // This folder-first navigation restores their independent sections without
+    // changing game IDs, secret visibility, puzzle engines or stored progress.
+    return LA.librarySections().flatMap(([name, games]) => {
+      if (name !== 'ألعاب القراصنة المصغّرة') return [[name, games]];
+      return [
+        ['مغامرة القرصان', games.filter(g => /^pz_[xt]/.test(g.id))],
+        ['الحطام والمعبد', games.filter(g => /^pz_[yz]/.test(g.id))]
+      ];
+    }).filter(row => row[1].length);
+  }
   function available(list, i) {
-    // First in each folder is available. A real recorded victory unlocks the next.
-    // Preserve old players' previously won entries even if they changed folder order.
-    return i === 0 || wins(list[i - 1].id) > 0 || wins(list[i].id) > 0;
+    // A new player starts with puzzle 1; each recorded win unlocks only the next.
+    // Older saves can be sparse because the library was previously non-sequential:
+    // a later completed puzzle must never re-lock earlier accessible puzzles.
+    return i === 0 || list.slice(i - 1).some(g => wins(g.id) > 0);
   }
   function render(host) {
     host.replaceChildren();
@@ -71,13 +95,13 @@
     const grid = el('div','ml-folder-grid');
     games.forEach((g,i) => {
       const complete = wins(g.id)>0,open=available(games,i),tile=LA.puzzleTile(g);
-      tile.classList.add('ml-folder-puzzle',open?'ml-folder-open':'ml-folder-locked');
+      tile.classList.add('ml-folder-puzzle',complete?'ml-folder-completed':open?'ml-folder-open':'ml-folder-locked');
       tile.dataset.folderIndex=String(i+1);
       tile.setAttribute('aria-label',arabic(i+1)+'. '+g.name+'، '+(complete?'مكتمل':open?'متاح':'مقفل حتى حل السابق'));
       const icon = tile.querySelector('.la-library-image');
       if (icon) icon.setAttribute('aria-hidden','true');
       tile.prepend(el('span','ml-folder-number',arabic(i+1)));
-      tile.append(el('span','ml-folder-state',complete?'✓':open?'ابدأ':'مقفل'));
+      tile.append(el('span','ml-folder-state',complete?'✓ مكتمل':open?'ابدأ':'مقفل'));
       if (!open) {tile.disabled=true;tile.removeAttribute('data-legacy-puzzle');tile.onclick=null;}
       grid.append(tile);
     });
