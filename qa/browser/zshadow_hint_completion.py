@@ -61,14 +61,17 @@ async def main():
               sceneStatus:document.querySelector('#m')?.textContent?.slice(0,110)||''};
         }""")
         print('ZSHADOW_ENGINE_STATE='+json.dumps(state,ensure_ascii=False),flush=True)
-        assert state['solved'] and not state['perfect'],state
+        # The exercise is launched from the *library* with startRun(), not
+        # through Z3.openStation(). Native library completion is recorded in
+        # pzState().n; it must NEVER silently unlock a story station in zState().
+        assert state['progress']>=1 and not state['solved'] and not state['perfect'],state
         initial=state['progress']
         await page.wait_for_timeout(550)
         assert await page.evaluate("()=>Number(pzState().n.pz_zshadow||0)")==initial,\
             'guided final hint duplicated a reward'
         assert not errors,errors[:5]
         print('JAZIRAN_ZSHADOW_HINT='+json.dumps({'engine':ENGINE,'lamps':fixture['lamps'],
-            'guided_win':True,'perfect_undelivered':True,'no_duplicate':True,
+            'guided_win':True,'perfect_undelivered':True,'campaign_gate_preserved':True,'no_duplicate':True,
             'persisted_count':initial,'errors':errors},ensure_ascii=False),flush=True)
         await browser.close()
 
