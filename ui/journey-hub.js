@@ -23,21 +23,6 @@
     return `${Math.round(100 / (rect.width || 0.5))}% ${Math.round(100 / (rect.height || 0.2))}%`;
   }
 
-  function readProgressSummary() {
-    let seaDone = 0;
-    let atheranDone = 0;
-    let secretsUnlocked = 0;
-    try {
-      if (window.T7) seaDone = Object.values(window.T7.state().done).filter(Boolean).length;
-      if (window.ATHERAN_CAMPAIGN) {
-        const summary = window.ATHERAN_CAMPAIGN.summary();
-        atheranDone = summary.done;
-        secretsUnlocked = summary.found;
-      }
-    } catch (_) {}
-    return { seaDone, atheranDone, secretsUnlocked };
-  }
-
   // Derive discovery from campaign progress, never from presentation/seen flags.
   function discoveredTransitions() {
     const data = window.__MINDLAB_JOURNEY_STORY;
@@ -923,7 +908,7 @@
         if (raf) return;
         raf = requestAnimationFrame(() => {
           raf = 0;
-          mountUnifiedHub();
+          mountStationFolders();
         });
       };
       new MutationObserver(records => {
