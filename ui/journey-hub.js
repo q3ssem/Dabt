@@ -309,7 +309,7 @@
       }
       if (side && window.ML10) {
         const saved = window.ML10.state();
-        side.textContent = Object.values(saved.done || {}).filter(Boolean).length + ' / 25 محطة · حفظ مستقل';
+        side.textContent = Object.values(saved.done || {}).filter(Boolean).length + ' / 24 محطة · حفظ مستقل';
       }
     } catch (_) {}
     
@@ -731,7 +731,7 @@
     $('#mlj-journey-entry')?.click();
   }
 
-  /* ---- 46 Non-Library Openings (21 Treasure Island + 25 Side Journey) ---- */
+  /* ---- 45 Non-Library Openings (21 Treasure Island + 24 Side Journey) ---- */
   function showStationOpening(info, start) {
     const prev = document.activeElement;
     const old = $('#fit-opening-overlay');
