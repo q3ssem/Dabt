@@ -218,7 +218,7 @@ try {
     'ui/jaziran-rescue.js',
     'ui/jaziran-rescue-ui.js'
   ];
-  const styles = ['atheran/campaign/campaign.css', 'atheran/bindings/bindings.css', 'motion/motion.css', 'motion/lab10.css', 'ui/fit.css', 'ui/openings.css', 'ui/journey-hub.css', 'motion/correction-art.css', 'motion/expedition-art.css', 'motion/logic-revised/board.css', 'motion/sea-painted.css', 'motion/adventure35.css', 'ui/fullscreen-puzzles.css', 'ds/board-polish.css', 'ui/jaziran-rescue.css'];
+  const styles = ['atheran/campaign/campaign.css', 'atheran/bindings/bindings.css', 'motion/motion.css', 'motion/lab10.css', 'ui/fit.css', 'ui/openings.css', 'ui/journey-hub.css', 'motion/correction-art.css', 'motion/expedition-art.css', 'motion/logic-revised/board.css', 'motion/sea-painted.css', 'motion/adventure35.css', 'ui/fullscreen-puzzles.css', 'ds/board-polish.css', 'ui/jaziran-puzzle-accents.css', 'ui/jaziran-rescue.css'];
   const layers = ['ui/puzzle-design.js', 'ui/adventure-design.js'];
   let loading = null;
   const insert = src => new Promise(done => {
