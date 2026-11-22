@@ -962,6 +962,7 @@
                       pill(complete?'✓':ready?'ابدأ':'مقفل','ml-folder-station-state'));
         if(!ready)button.disabled=true;
         else button.onclick=()=>{
+          lastStationId=st.id;
           close(false);
           const milestone={seven_seas:'departure',palace:'palace',atheran:'atheran'}[st.chapter];
           const open=()=>openStation(st);
@@ -995,7 +996,8 @@
     panel.dataset.ready='true';
     panel.addEventListener('mlj:remove',()=>{}, {once:true});
     // Direct entry from existing story links may request a specific chapter.
-    panel.openChapter=which=>{if(panel.hidden)launch.click();select(which||null);};
+    panel.openChapter=which=>{if(panel.hidden)launch.click();
+      select(which||data.stations.find(st=>st.id===lastStationId)?.chapter||null);};
   }
 
   function mountUnifiedHub() {
