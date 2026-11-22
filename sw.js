@@ -1,7 +1,7 @@
 'use strict';
 importScripts('./offline-manifest.js');
 
-const VERSION='5.5.28', PATCH='brain-touch-29', PREFIX='mindlab-';
+const VERSION='5.5.28', PATCH='brain-touch-30', PREFIX='mindlab-';
 const CORE = PREFIX+VERSION+'-'+PATCH+'-core';
 const RUNTIME = PREFIX+VERSION+'-'+PATCH+'-images';
 const SCENES = PREFIX+VERSION+'-'+PATCH+'-scenes';
@@ -19,7 +19,7 @@ const sceneURLs = new Set(Object.values(self.MINDLAB_SCENE_FILES)
 const shell = [
   'index.html', 'manifest.webmanifest', 'pwa.js', 'ui/app.js',
   'ui/mini.js', 'release54.js', 'audio/mindlab-audio.js',
-  'ds/light-auto.css', 'ds/mindlab-ds.css', 'ui/style.css',
+  'ds/light-auto.css', 'ds/mindlab-ds.css', 'ui/style.css', 'ui/tide-scroll.css',
   // Assessment dashboard remains usable offline after first installation.
   'assessment/dashboard.html', 'assessment/rule-switch.html',
   'assessment/dashboard.js', 'assessment/rule-switch.js',

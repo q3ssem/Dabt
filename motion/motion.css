@@ -150,7 +150,7 @@
 .pl-door.mk-over{box-shadow:0 0 0 3px #C8932F}
 .pl-door .pl-lock{display:none;position:absolute;inset:auto 0 18px;margin:auto;width:24px}.pl-door .pl-lock img{width:24px;height:24px}
 .pl-door.ruled .pl-lock{display:block}.pl-door.ruled .pl-dimg{filter:grayscale(1);opacity:.6}
-.pl-keyspot{position:absolute;top:-6px;left:8px}.pl-keyspot .pl-key{width:34px;height:34px}.pl-keyspot .pl-key img{width:32px;height:32px;transform:rotate(-30deg)}
+.pl-keyspot{position:absolute;top:-4px;left:50%;transform:translateX(-50%)}.pl-keyspot .pl-key{width:34px;height:34px}.pl-keyspot .pl-key img{width:32px;height:32px;transform:rotate(-30deg)}
 .pl-statues{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
 .pl-st{background:#FFFBF2;border:2px solid #E2D3B6;border-radius:14px;padding:6px 6px 8px;display:flex;flex-direction:column;gap:4px;min-width:0}
 .pl-st.faces{border-color:#2E8A80}.pl-st.back{border-color:#B5523A}
