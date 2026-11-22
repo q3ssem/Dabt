@@ -132,7 +132,7 @@ async def solve(page,gid):
         # mutation of its active state. Only the arrow buttons perform moves.
         steps=await page.evaluate("()=>icSolve(window.__test.pz.P,window.__test.pz.P.start)")
         assert isinstance(steps,list) and steps,'ice route is absent'
-        keys=['ArrowLeft','ArrowDown','ArrowRight','ArrowUp']
+        keys=['ArrowUp','ArrowRight','ArrowDown','ArrowLeft']
         for d in steps:await tap(page,f'#pzb [data-d="{keys[d]}"]')
     else:raise AssertionError(gid+' has no UI solver')
 
