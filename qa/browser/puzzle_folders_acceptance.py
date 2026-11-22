@@ -32,6 +32,9 @@ async def run():
             count=await folders.count()
             names=await folders.evaluate_all("(nodes)=>nodes.map(n=>n.dataset.folderName)")
             assert len(names)==len(set(names)),f'duplicate library folders: {names}'
+            expected={'منطق وأرقام','حركة ومسارات','مغامرة القرصان',
+                      'الحطام والمعبد','قصر المرايا','أرض أثران'}
+            assert set(names)==expected,f'expected six original sections, found {names}'
             await page.wait_for_function("""() => curTab === 'puz' &&
               [...document.querySelectorAll('#v-puz .ml-folder-category img')].every(img=>img.complete && img.naturalWidth>0)
             """,timeout=15000)
