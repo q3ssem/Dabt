@@ -35,6 +35,9 @@ async def run():
             expected={'منطق وأرقام','حركة ومسارات','مغامرة القرصان',
                       'الحطام والمعبد','قصر المرايا','أرض أثران'}
             assert set(names)==expected,f'expected six original sections, found {names}'
+            secret_ids={'pz_wbone','pz_wspore','pz_wlake','pz_wlog','pz_wfirst'}
+            visible_ids=set(await page.evaluate("()=>LA.folderStatus().flatMap(s=>s.items.map(g=>g.id))"))
+            assert not secret_ids.intersection(visible_ids),f'undiscovered secret puzzles leaked into library: {secret_ids.intersection(visible_ids)}'
             await page.wait_for_function("""() => curTab === 'puz' &&
               [...document.querySelectorAll('#v-puz .ml-folder-category img')].every(img=>img.complete && img.naturalWidth>0)
             """,timeout=15000)
@@ -139,6 +142,14 @@ async def run():
             assert not await sts.nth(0).is_disabled(),'first sea station locked'
             assert await sts.nth(1).is_disabled(),'second sea station unlocked without first real win'
             assert await page.locator('#mlj-unified-hub .ml-folder-stations').evaluate("(e)=>getComputedStyle(e).gridTemplateColumns.split(' ').length")==4
+            await page.locator('#mlj-unified-hub .ml-folder-back').click()
+            await page.locator('#mlj-unified-hub [data-chapter="palace"]').click()
+            assert await page.locator('#mlj-unified-hub .ml-folder-station').count()==19,'palace station count changed'
+            await page.locator('#mlj-unified-hub .ml-folder-back').click()
+            await page.locator('#mlj-unified-hub [data-chapter="atheran"]').click()
+            atheran=page.locator('#mlj-unified-hub .ml-folder-station')
+            assert await atheran.count()==21,'official Atheran station count changed'
+            assert await atheran.first.is_disabled(),'official Atheran unlocked before palace completion'
             await page.locator('#mlj-unified-hub .ml-folder-back').click()
             await page.locator('#mlj-unified-hub [data-chapter="side"]').click()
             await page.wait_for_function("()=>!!window.ML10",timeout=45000)
