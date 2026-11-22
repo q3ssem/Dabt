@@ -40,4 +40,27 @@ assert.deepEqual(map.stations.filter(s => s.chapter === 'side').map(s => s.id),
   story.expeditionStations.map(s => s.stageId), 'side-stage IDs continue to match story scenes');
 assert.equal(source.sections.at(-1).chapter, 'first_trace', 'five optional legacy puzzle IDs must not be conflated with side journey');
 assert.ok(!map.stations.some(s => /^pz_w/.test(s.id) && s.chapter === 'side'), 'optional document branch is not pre-mapped as an existing side stage');
+// Page 34 of the source requires all 20 Rush Hour boards to differ geometrically,
+// independent of car labels/skins. Keep this guard at the source-board level.
+const rush = JSON.parse(read('motion/stages60/boards.json')).pz_rush;
+assert.equal(rush.length, 20, 'PDF references 20 authored parking boards');
+function rushGeometry(board) {
+  assert.equal(board.grid.length, 36, '6×6 parking layout');
+  assert.ok(Number.isInteger(board.min) && board.min > 0, 'recorded solution bound');
+  const pieces = new Map();
+  [...board.grid].forEach((mark, i) => {
+    if (mark === 'o') return;
+    if (!pieces.has(mark)) pieces.set(mark, []);
+    pieces.get(mark).push([Math.floor(i / 6), i % 6]);
+  });
+  return [...pieces.values()].map(points => {
+    const row = Math.min(...points.map(p => p[0]));
+    const col = Math.min(...points.map(p => p[1]));
+    const axis = points.length > 1 && points[0][0] === points[1][0] ? 'H' : 'V';
+    return [points.length, axis, row, col].join(':');
+  }).sort().join('|');
+}
+assert.equal(new Set(rush.map(rushGeometry)).size, 20,
+  'parking boards must be distinct after ignoring cosmetic vehicle IDs');
+
 console.log('Jaziran story index passed: 88 documented, 86 live, 2 retired; 21 official sea stations, 24 independent side stages.');
