@@ -49,13 +49,13 @@ async def main():
                     controls = pg.locator('#stage button:not([disabled]), #stage [role="button"], #stage [data-i], #stage .cell')
                     native_taps = 0
                     for i in range(min(await controls.count(), 20)):
-                        if native_taps >= 3: break
+                        if native_taps >= 1: break
                         target = controls.nth(i)
-                        if await target.get_attribute('id') == 'pzq': continue
-                        if not await target.is_visible(): continue
-                        box = await target.bounding_box()
-                        if not box or box['width'] < 6 or box['height'] < 6: continue
                         try:
+                            if await target.get_attribute('id', timeout=1300) == 'pzq': continue
+                            if not await target.is_visible(): continue
+                            box = await target.bounding_box()
+                            if not box or box['width'] < 6 or box['height'] < 6: continue
                             await target.click(timeout=1300)
                             native_taps += 1
                             await pg.wait_for_timeout(90)
