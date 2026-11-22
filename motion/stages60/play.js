@@ -275,7 +275,7 @@
         <h4>${labels[bank]}</h4><div>${groups.filter(group => state.loc[group.indices[0]] === bank).map(group =>
           `<button type="button" data-river-item="${esc(group.name)}" aria-pressed="${selected.has(group.name)}"
               ${busy || bank !== state.bank ? 'disabled' : ''}>
-              ${portrait(group.name) ? icon(portrait(group.name)) : '<span class="ml-river-token" aria-hidden="true">${esc(group.name)}</span>'}<span>${esc(group.name)}</span>
+              ${portrait(group.name) ? icon(portrait(group.name)) : `<span class="ml-river-token" aria-hidden="true">${esc(group.name)}</span>`}<span>${esc(group.name)}</span>
             </button>`).join('')}</div></section>`).join('');
       banks.querySelectorAll('button').forEach(button => {
         const name = button.dataset.riverItem;
