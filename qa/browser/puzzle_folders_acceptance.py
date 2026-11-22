@@ -56,6 +56,15 @@ async def run():
             coords=await tiles.nth(0).bounding_box(),await tiles.nth(1).bounding_box(),await tiles.nth(3).bounding_box(),await tiles.nth(4).bounding_box()
             a,b,d,e=coords
             assert a and b and d and e and abs(a['y']-d['y'])<=3 and e['y']>a['y']+20, f'{width}: incorrect four per row {coords}'
+            # Exercise the real native tile handler, not just the disabled CSS state.
+            await tiles.nth(0).click()
+            await page.locator('#stage .ml-authored-picker .go-btn[data-level]').first.wait_for(
+                state='visible',timeout=25000)
+            active=await page.evaluate("()=>curGame()?.id")
+            assert active=='pz_river',f'folder did not launch its native puzzle: {active}'
+            await page.evaluate("()=>{closePlay();LA.folderBack();tab('puz');renderPuz()}")
+            await page.locator('[data-folder-name="حركة ومسارات"]').click()
+            tiles=page.locator('#v-puz .ml-folder-grid .ml-folder-puzzle')
             ids=await page.evaluate("""() => {
               const row=LA.folderStatus().find(x=>x.name==='حركة ومسارات');
               return row.items.map(x=>x.id);
