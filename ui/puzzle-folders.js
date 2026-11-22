@@ -28,9 +28,10 @@
   }
   function sections() { return LA.librarySections().filter(row => row[1].length); }
   function available(list, i) {
-    // First in each folder is available. A real recorded victory unlocks the next.
-    // Preserve old players' previously won entries even if they changed folder order.
-    return i === 0 || wins(list[i - 1].id) > 0 || wins(list[i].id) > 0;
+    // A new player starts with puzzle 1; each recorded win unlocks only the next.
+    // Older saves can be sparse because the library was previously non-sequential:
+    // a later completed puzzle must never re-lock earlier accessible puzzles.
+    return i === 0 || list.slice(i - 1).some(g => wins(g.id) > 0);
   }
   function render(host) {
     host.replaceChildren();
