@@ -567,7 +567,6 @@
           <button id="mlj-v3-compass" type="button" aria-label="العودة إلى المحطة الحالية"><img alt="" src="${artV3}ui/btn_compass_return.webp"></button>
           <button id="mlj-v3-overview" type="button">عرض التجمعات</button>
           <button id="mlj-open-trans" type="button">مشاهد الرحلة</button>
-          <button id="mlj-open-evidence" type="button">دفتر الأدلة</button>
           <details class="mlj-v3-extras"><summary>دفتر الرحلة</summary><div></div></details>
         </footer>
         <section class="mlj-v3-preview" hidden aria-label="معاينة المحطة">
@@ -634,6 +633,11 @@
 
       const list = $('div', extras);
       list.replaceChildren();
+      const evidenceButton = document.createElement('button');
+      evidenceButton.type = 'button';
+      evidenceButton.textContent = 'ملفات الأدلة والملاحظات';
+      evidenceButton.onclick = () => { extras.open = false; openEvidenceBook(); };
+      list.append(evidenceButton);
       const actions = window.ATHERAN_CAMPAIGN?.journeyActions() || [];
       if (sea) {
         actions.unshift({ label: 'كنوز البحار', open: () => T7.openJournal('treasures') });
@@ -650,7 +654,7 @@
         button.onclick = () => { extras.open = false; closeAtlas(); action.open(); };
         list.append(button);
       });
-      extras.hidden = actions.length === 0;
+      extras.hidden = false; // The evidence drafts remain accessible before the first puzzle.
     }
 
     function showPreview(st, pin) {
@@ -828,7 +832,6 @@
     };
     $('#mlj-v3-compass', atlas).onclick = () => { expanded = true; dismissPreview(); renderMap(currentStation()); };
     $('#mlj-open-trans', atlas).onclick = () => openTransitionsModal();
-    $('#mlj-open-evidence', atlas).onclick = openEvidenceBook;
     $('.mlj-v3-dismiss', preview).onclick = () => dismissPreview(true);
     atlas.addEventListener('click', e => { if (e.target === atlas) closeAtlas(); });
     atlas.addEventListener('keydown', e => {
