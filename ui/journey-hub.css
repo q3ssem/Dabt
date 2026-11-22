@@ -755,3 +755,43 @@ html[data-skin="dark"] .mlj-evidence-options button,
 html[data-skin="dark"] .mlj-evidence-source-actions button,
 html[data-skin="dark"] .mlj-evidence-missing { border-color: #8bbfb4; }
 html[data-skin="dark"] .mlj-evidence-quote { background: rgba(144, 208, 186, .12); }
+
+
+/* Jaziran chapter scenes: hand-drawn existing portraits; no SVG characters or new game saves. */
+.mlj-jaziran-modal { z-index: 134; }
+.mlj-jaziran-card { width: min(100%, 600px); gap: 10px; }
+.mlj-jaziran-card h2, .mlj-jaziran-card p,
+.mlj-jaziran-card figure { margin: 0; }
+.mlj-jaziran-location { font-size: 13px; font-weight: 600; }
+.mlj-jaziran-heroines { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 6px; }
+.mlj-jaziran-heroines figure { min-width: 0; text-align: center; }
+.mlj-jaziran-heroines img {
+  display: block; width: clamp(54px, 17vw, 84px); height: clamp(54px, 17vw, 84px);
+  object-fit: contain; margin: 0 auto;
+}
+.mlj-jaziran-heroines figcaption { font-weight: 700; font-size: 13px; }
+.mlj-jaziran-dialogue { display: grid; gap: 7px; }
+.mlj-jaziran-dialogue p { font-size: 14px; line-height: 1.65; }
+.mlj-jaziran-dialogue strong { font-weight: 800; }
+.mlj-jaziran-inspection { border-inline-start: 3px solid #9b7638; padding-inline-start: 9px; }
+.mlj-jaziran-inspection p { margin-top: 8px; line-height: 1.6; }
+.mlj-jaziran-options, .mlj-jaziran-actions { display: grid; gap: 8px; margin-top: 9px; }
+.mlj-jaziran-options { grid-template-columns: 1fr; }
+.mlj-jaziran-actions { grid-template-columns: repeat(2,minmax(0,1fr)); }
+.mlj-jaziran-card button {
+  font: inherit; min-height: 44px; max-width: 100%; white-space: normal;
+  text-align: start; padding: 9px 11px; border-radius: 10px;
+  background: transparent; color: inherit; border: 1px solid #698980; cursor: pointer;
+}
+.mlj-jaziran-card button:focus-visible { outline: 3px solid #d69b31; outline-offset: 2px; }
+.mlj-jaziran-card [hidden] { display: none !important; }
+#mlj-jaziran-final { border: 1px solid #83a999; padding: 11px; border-radius: 11px; line-height: 1.6; }
+#mlj-jaziran-final strong { display: block; font-size: 16px; }
+#mlj-jaziran-status { min-height: 1.4em; font-size: 13px; line-height: 1.5; }
+html[data-skin="dark"] .mlj-jaziran-card button { border-color: #90b4a7; }
+html[data-skin="dark"] #mlj-jaziran-final { border-color: #77ac97; }
+html[data-skin="dark"] .mlj-jaziran-inspection { border-color: #e3b866; }
+@media (max-width: 360px) {
+  .mlj-jaziran-card { padding: 12px; }
+  .mlj-jaziran-actions { grid-template-columns: 1fr; }
+}
