@@ -541,6 +541,43 @@ html #v-puz.t7 .t7-tools .t7-tool-icon:focus-visible {
   outline:3px solid var(--bp-focus)!important;
   outline-offset:3px!important;
 }
+/* Dynamic rules buttons are injected after page render by ui/fit.js.
+   They must match the three painted top tools, not its legacy 12px rectangle. */
+html.fit-page #v-puz :is(.t7-tools,.ex10-top-right) .fit-pinfo {
+  display:inline-grid!important;
+  place-items:center!important;
+  flex:0 0 44px!important;
+  width:44px!important;
+  height:44px!important;
+  min-width:44px!important;
+  min-height:44px!important;
+  padding:0!important;
+  margin:0!important;
+  border:1.5px solid var(--bp-teal)!important;
+  border-radius:50%!important;
+  background:var(--bp-teal-soft)!important;
+  color:var(--bp-teal)!important;
+  box-shadow:var(--bp-shadow)!important;
+  font-family:'Tajawal',system-ui,sans-serif!important;
+  font-weight:900!important;
+  font-size:20px!important;
+  line-height:1!important;
+  -webkit-tap-highlight-color:transparent;
+}
+html.fit-page #v-puz :is(.t7-tools,.ex10-top-right) .fit-pinfo .fit-info-icon {
+  display:grid;
+  place-items:center;
+  width:23px;
+  height:23px;
+  line-height:1;
+  font-size:20px;
+  font-style:normal;
+  color:inherit;
+}
+html.fit-page #v-puz :is(.t7-tools,.ex10-top-right) .fit-pinfo:focus-visible {
+  outline:3px solid var(--bp-focus)!important;
+  outline-offset:3px!important;
+}
 /* Icons and badges: keep the provided hand-drawn graphics sharp and unstretched. */
 html #play :is(.pzhud,.fit-tools,.fit-sheet-card) img,
 html #v-puz :is(.v5-head,.v5-bar,.ex10-game-top) img {
