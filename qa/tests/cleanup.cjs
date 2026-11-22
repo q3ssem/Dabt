@@ -66,7 +66,7 @@ assert.ok(swSource.includes('++imageWrites % 32 === 0'), 'image eviction scan is
 
 const runtime = read('sw.js');
 const startUi = read('ui/app.js');
-assert.ok(runtime.includes("PATCH='brain-touch-32'"), 'second-stage cache generation');
+assert.ok(Number((runtime.match(/PATCH='brain-touch-(\d+)'/) || [])[1]) >= 33, 'second-stage cache generation');
 const shell = runtime.slice(runtime.indexOf('const shell = ['), runtime.indexOf('];', runtime.indexOf('const shell = ['))+2);
 const listed = [...shell.matchAll(/'([^']+)'/g)].map(m=>m[1]);
 assert.equal(listed.length,19,'core shell includes 11 startup resources and 8 assessment dependencies');
