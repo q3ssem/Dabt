@@ -152,4 +152,31 @@ for(const [oldName,sharedName] of [['roaa','rawaa'],['noha','nuha'],['ward','war
 assert.ok(expeditionSource.includes("const scenePaths=st=>st.scene.includes('/')?st.scene:SC+st.scene;"),
   'scene path resolver handles both original short names and shared full paths');
 
+// Scan production code and asset metadata, not just the side-journey module:
+// the same background can also appear in a library card or story thumbnail.
+// This protects against deleting an image while a secondary view still loads it.
+const staleScenePaths=duplicates.map(([oldName])=>'expedition10/art/scenes/'+oldName);
+const staleCrewPaths=['roaa','noha','ward'].map(name=>'expedition10/art/crew/'+name+'.webp');
+const retiredPaths=[...staleScenePaths,...staleCrewPaths];
+const runtimeFiles=['index.html','offline-manifest.js','sw.js','pwa.js'];
+function walkRuntime(dir){
+  for(const ent of fs.readdirSync(dir,{withFileTypes:true})){
+    const name=dir+'/'+ent.name;
+    if(ent.isDirectory()) walkRuntime(name);
+    else if(/\.(?:js|css|json|html|csv|webmanifest)$/.test(ent.name)) runtimeFiles.push(name);
+  }
+}
+for(const dir of ['ui','motion','expedition10','treasure','atheran','legacy',
+                  'watercolor','ds','audio','upgrade','assessment','tv'])
+  if(fs.existsSync(dir)) walkRuntime(dir);
+const staleReferences=[];
+for(const path of runtimeFiles){
+  const source=read(path);
+  for(const stale of retiredPaths) if(source.includes(stale))
+    staleReferences.push(path+' -> '+stale);
+}
+assert.deepEqual(staleReferences,[],
+  'retired duplicate art cannot remain referenced by production views');
+
+
 console.log('MindLab cleanup passed: 78 lightweight puzzle records, 86 library intros, '+map.stations.length+' journey stations; retired assets absent.');
