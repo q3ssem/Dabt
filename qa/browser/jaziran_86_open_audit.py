@@ -60,7 +60,13 @@ MEASURE=r"""()=>{
 
 async def launch(page,game):
     await page.evaluate("(g)=>startRun([g])",game)
-    await page.wait_for_timeout(250)
+    # The seven authored engines load asynchronously. WebKit sometimes needed
+    # more than 250 ms, so never classify a half-loaded stage as the real board.
+    if game in {'pz_river','pz_rush','pz_pipe','pz_flow','pz_ice','pz_tan','pz_untangle'}:
+        await page.locator('#stage .ml-authored-picker .go-btn[data-level]').first.wait_for(
+            state='visible',timeout=18000)
+    else:
+        await page.wait_for_timeout(250)
     picker=page.locator('#stage .ml-authored-picker .go-btn[data-level]')
     start=page.locator('#stage #go')
     mode='direct'
@@ -103,8 +109,15 @@ async def probe_hints_and_reset(page):
         except Exception as ex:
             result['issues'].append('hint_interaction:'+str(ex)[:110])
             break
+    # A hint is permitted to solve a puzzle (laser mirrors do this on the
+    # last correction). Its result screen intentionally locks restart.
+    # Report the auto-solve, not a broken reset button.
+    result['solvedByHint']=await page.evaluate("""()=>{
+      return !!document.querySelector('#pzb.solved') ||
+        document.querySelector('#stage')?.dataset.expState==='solved';
+    }""")
     reset=page.locator('#pzr')
-    if await reset.count() and await reset.is_visible():
+    if not result['solvedByHint'] and await reset.count() and await reset.is_visible():
         try:
             await reset.click(timeout=2600)
             await page.wait_for_timeout(110)
