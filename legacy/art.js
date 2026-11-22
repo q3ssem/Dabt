@@ -105,6 +105,8 @@ function tileFor(g) {
  tile.innerHTML = `<span class="la-library-image"><img src="${image}" alt="" loading="lazy" decoding="async"></span><b>${escape(g.name)}</b>`;
  return tile;
 }
+/* Reuse the exact native puzzle button in the new folder navigation. */
+LA.puzzleTile = tileFor;
 LA.libraryInto=function(host){const input=E('input',{class:'dx-search',type:'search',placeholder:'ابحث عن لغز…','aria-label':'ابحث عن لغز'}),box=E('div',{class:'la-sections'});host.append(input,box);const secs=LA.librarySections();LA.puzzleCount=secs.reduce((n,s)=>n+s[1].length,0);
  const fill=()=>{const q=input.value?.trim()||'';box.innerHTML='';let any=false;secs.forEach(([name,list])=>{const found=list.filter(g=>g.name.includes(q));if(!found.length)return;any=true;const grid=E('div',{class:'la-library-grid'});found.forEach(g=>grid.append(tileFor(g)));box.append(E('section',{class:'la-section'},secHead(name,found.length),grid));});if(!any)box.append(E('p',{class:'t7-help',text:'لا توجد ألغاز مطابقة.'}));};input.oninput=fill;fill();};
 function library(){const v=$('#v-puz');v.classList.remove('trip');v.classList.add('t7');v.innerHTML='';v.append(E('header',{class:'t7-top'},E('div',{},E('span',{class:'t7-kicker',text:'نفس الألغاز · رسم متجدد'}),E('h1',{text:'مكتبة الألغاز'})),E('button',{class:'t7-btn',type:'button',text:'كل الألغاز',onclick:()=>{LA.view=null;T7.hub?T7.hub():T7.map();}})));LA.libraryInto(v);}

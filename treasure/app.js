@@ -31,7 +31,7 @@ function dailyDone(moves,min,hints){const x=state();x.daily=x.daily&&typeof x.da
 /* ---------- navigation ---------- */
 function open(i, fromJourney=journeyEntry){if(!D.stations[i]||!unlocked(i))return;journeyEntry=fromJourney;D.stations.forEach(q=>{delete q.daily;});const x=state(),a=B.v5state(x).att[D.stations[i].id];if(a&&a.c===4)delete B.v5state(x).att[D.stations[i].id];active=i;dialogAt=0;view=fromJourney?'puzzle':'story';state().resume=i;save();go();}
 function continueJourney(){if(journeyEntry)return map();const target=active+1;if(target>=D.stations.length){map();return;}const from=D.stations[active],to=D.stations[target];if(from.ch!==to.ch&&sealHere(from)&&done(from.i)){passageTarget=target;view='passage';try{sfx.seaTransition();}catch(e){}render();window.scrollTo(0,0);return;}open(target);}
-function map(){if(journeyEntry&&window.mindlabJourneyHub?.returnToMap){hub();window.mindlabJourneyHub.returnToMap();return}view='map';if(window.LA)LA.view=null;render();window.scrollTo(0,0);}
+function map(){if(window.mindlabJourneyHub?.returnToMap){journeyEntry=false;hub();window.mindlabJourneyHub.returnToMap('seven_seas');return}view='map';if(window.LA)LA.view=null;render();window.scrollTo(0,0);}
 function hub(){journeyEntry=false;view='hub';if(window.LA)LA.view=null;renderPuz();window.scrollTo(0,0);}
 function openSecret(ch,fromJourney=false){if(!D.chapters[ch]||!done(sealIndex(ch)))return;journeyEntry=fromJourney;active=sealIndex(ch);letterCh=ch;view='letter';go();}
 function go(){if(curTab!=='puz')tab('puz');else render();window.scrollTo(0,0);}
@@ -48,11 +48,11 @@ function toolIcon(text, fn, src) {
 function top(v,sub,title){
  const focus=view==='story'||view==='puzzle';
  const tools=focus?[
-  toolIcon('الخريطة',map,'watercolor/art/icons54/map.webp'),
+  toolIcon('المحطات',map,'watercolor/art/icons54/map.webp'),
   toolIcon('دفتر الرحلة',()=>modal('notebook'),ART+'icon_journal.webp'),
   toolIcon('الكنوز',()=>modal('treasures'),'watercolor/art/icons54/chest.webp')
  ]:[
-  view==='map'?button('كل الألغاز',hub):button('الخريطة',map),
+  view==='map'?button('كل الألغاز',hub):button('المحطات',map),
   button('دفتر الرحلة',()=>modal('notebook')),button('الكنوز',()=>modal('treasures'))
  ];
  v.append(E('header',{class:'t7-top'+(focus?' t7-compact-top':'')},E('div',{},E('span',{class:'t7-kicker',text:sub}),E('h1',{text:title})),E('div',{class:'t7-tools'},...tools)));
@@ -276,7 +276,7 @@ if(typeof DX.validateBackup==='function'){const validate0=DX.validateBackup;DX.v
 
 /* ---------- entry points ---------- */
 renderPuz=render;
-const h0=renderHome;renderHome=function(){h0();const host=$('#v-home');host.querySelectorAll('.dx-covers,.dx-head').forEach(n=>{if(n.parentElement?.querySelector('[data-world]'))n.parentElement.remove();});host.prepend(E('div',{html:heroCard()}));$('#t7-homego').onclick=()=>{view='map';tab('puz');};};
+const h0=renderHome;renderHome=function(){h0();const host=$('#v-home');host.querySelectorAll('.dx-covers,.dx-head').forEach(n=>{if(n.parentElement?.querySelector('[data-world]'))n.parentElement.remove();});host.prepend(E('div',{html:heroCard()}));$('#t7-homego').onclick=()=>{view='hub';tab('puz');window.mindlabPlayLayers?.start()?.then(()=>map());};};
 const quit0=closePlay;closePlay=function(){document.body.classList.remove('t7-classic-play');quit0();};$('#quit')&&($('#quit').onclick=closePlay);
 const p0=renderMe;renderMe=function(){p0();const t=$('#dxBackupStatus');if(t)t.textContent='تشمل النسخة ألعابك وملفات الأطفال ودفتر رحلة جزيرة الكنز.';};
 const nav=document.querySelector('.tab[data-tab="puz"]');if(nav){const label=nav.querySelector('span:last-child');if(label)label.textContent='جزيرة الكنز';}

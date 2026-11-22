@@ -41,7 +41,7 @@
     const lock = s.open ? '' : `<p class="ah-lock"><b>الحملة مقفلة.</b> تنفتح بعد إكمال قصر الملوك السبعة (${AR(s.palace)} من ${AR(PW.length)} محطة). المحطات ظاهرة على الأطلس لتعرف الطريق.</p>`;
     return `<header class="triph ah-top">
       <div class="ah-bar"><button class="t7-btn ah-back" type="button" data-ah="back">رجوع</button><span class="ah-kicker">الفصل الرسمي</span></div>
-      <h1 class="ah-title">أَثْرَان: أطلس المجهول</h1>
+      <h1 class="ah-title">أَثْرَان: المحطات</h1>
       <p class="ah-lead">رواء ونهى وورد في قارة لا تظهر في أي خريطة صحيحة، ومعهن من أهلها ليان وبدر والعم نوّار.</p>
       <div class="ah-crew">${crew}</div>
       <dl class="ah-stats">
@@ -65,7 +65,14 @@
       window.dispatchEvent(new CustomEvent('mindlab:journey-progress', {detail: {chapter: 'atheran'}}));
   }
   function back() { LA.view = null; const v = document.getElementById('v-puz'); if (v) v.classList.remove('ah-view'); renderPuz(); }
-  function open() { LA.view = 'atheran'; if (typeof curTab !== 'undefined' && curTab !== 'puz') tab('puz'); else render(); }
+  function open() {
+    if (window.mindlabJourneyHub?.returnToMap) {
+      LA.view = null;
+      window.mindlabJourneyHub.returnToMap('atheran');
+      return;
+    }
+    LA.view = 'atheran'; if (typeof curTab !== 'undefined' && curTab !== 'puz') tab('puz'); else render();
+  }
 
   /* ---------- بطاقة الدخول في تبويب الألغاز ---------- */
   function launchCard() {
@@ -73,12 +80,12 @@
     const s = summary();
     const card = document.createElement('section'); card.className = 'ah-launch';
     const state = !s.open ? `مقفلة حتى إكمال قصر الملوك السبعة · ${AR(s.palace)}/${AR(PW.length)}` : s.done >= ASTN.length ? window.MindlabRescue?.state()?.completed ?
-      'اكتملت المحطات ووصل قارب الإخلاء · راجع الخريطة والقرار' :
+      'اكتملت المحطات ووصل قارب الإخلاء · راجع المحطات والقرار' :
       'اكتملت المحطات · مهمة الإخلاء والفرع الاختياري متاحتان' :
       `${AR(s.done)} من ${AR(ASTN.length)} محطة · ${AR(s.cleared)} من ${AR(ASW.length)} عوالم سرية`;
     card.innerHTML = `<div class="ah-launch-crew">${HEROINES.map(([k]) => `<img src="${heroSrc(k)}" alt="" loading="lazy" decoding="async">`).join('')}</div>
       <div class="ah-launch-text"><span class="ah-kicker">الفصل الرسمي · ٢١ محطة · ٦٣ مرحلة</span><h2>أَثْرَان: أطلس المجهول</h2><p>${esc(state)}</p></div>
-      <button class="ah-launch-go" type="button">اعرض الأطلس</button>`;
+      <button class="ah-launch-go" type="button">افتح المحطات</button>`;
     card.querySelector('button').onclick = open;
     const anchor = v.querySelector('.ex10-launch');
     if (anchor) anchor.before(card); else v.insertBefore(card, v.querySelector('.pzstory') || v.children[1] || null);

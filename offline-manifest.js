@@ -208,3 +208,6 @@ self.MINDLAB_OFFLINE_FILES.push(
 
 // 5.5.29: keep the shared visual board system available after full offline preparation.
 self.MINDLAB_OFFLINE_FILES.push("ds/board-polish.css", "ui/jaziran-puzzle-accents.css");
+
+// The compact puzzle folder navigation is a lazy play-layer dependency and part of full offline prep.
+self.MINDLAB_OFFLINE_FILES.push("ui/puzzle-folders.js", "ui/puzzle-folders.css");
