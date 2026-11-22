@@ -1,0 +1,52 @@
+name: MindLab four Palace composite boss native playthroughs
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/mindlab-palace-boss-native.yml'
+      - 'qa/browser/jaziran_palace_boss_native_ui.py'
+      - 'qa/browser/jaziran_sea_six_native_ui.py'
+      - 'index.html'
+      - 'ui/**'
+  workflow_dispatch:
+concurrency:
+  group: palace-boss-native-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  palace-boss:
+    runs-on: ubuntu-latest
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - name: Install browser
+        shell: bash
+        run: |
+          if [ "${{ matrix.engine }}" = "webkit" ]; then
+            python -m playwright install --with-deps webkit
+          else
+            command -v google-chrome
+          fi
+      - name: Play all composite Palace stages through original controls
+        shell: bash
+        run: |
+          mkdir -p /tmp/mindlab-palace-boss
+          python -m http.server 8804 --bind 127.0.0.1 >/tmp/mindlab-palace-boss-http.log 2>&1 &
+          python qa/browser/jaziran_palace_boss_native_ui.py \
+            http://127.0.0.1:8804/ "${{ matrix.engine }}" /tmp/mindlab-palace-boss
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: palace-boss-${{ matrix.engine }}
+          path: /tmp/mindlab-palace-boss/*
+          if-no-files-found: warn
+          retention-days: 30
