@@ -10,6 +10,23 @@ ENGINE=sys.argv[2] if len(sys.argv)>2 else 'chromium'
 SHOTS=Path(sys.argv[3]) if len(sys.argv)>3 else None
 if SHOTS: SHOTS.mkdir(parents=True,exist_ok=True)
 
+LAYOUT = r"""() => {
+  const card=document.querySelector('#mljr-modal .mljr-card');
+  if(!card)return {error:'rescue card missing'};
+  const shown=e=>!e.hidden&&getComputedStyle(e).display!=='none';
+  const children=[...card.children].filter(shown).map(e=>{
+    const r=e.getBoundingClientRect();
+    return {name:e.tagName.toLowerCase()+'.'+String(e.className).split(' ').join('.'),
+            top:r.top,bottom:r.bottom};
+  });
+  const overlaps=[];
+  for(let i=1;i<children.length;i++)
+    if(children[i].top+2<children[i-1].bottom)
+      overlaps.push({before:children[i-1],after:children[i]});
+  return {overlaps,scrollHeight:card.scrollHeight,clientHeight:card.clientHeight,
+          overflowY:getComputedStyle(card).overflowY,sections:children.length};
+}"""
+
 async def open_route(page,name):
     await page.evaluate("()=>tab('puz')")
     await page.wait_for_function("()=>window.mindlabPlayLayers?.ready && !!window.MindlabRescue?.open",timeout=45000)
@@ -108,10 +125,25 @@ async def run():
             await page.set_viewport_size({'width':width,'height':844})
             await page.wait_for_timeout(70)
             assert await page.evaluate("()=>document.documentElement.scrollWidth<=innerWidth+5"),f'overflow at {width}px'
+            layout=await page.evaluate(LAYOUT)
+            assert not layout.get('error') and not layout['overlaps'], (
+                f'rescue status and heading overlap at {width}px: {layout}')
+            assert layout['overflowY'] in ('auto','scroll'), (
+                f'tall rescue modal must remain scrollable at {width}px: {layout}')
             if SHOTS and width in (320,390):
                 await page.screenshot(path=str(SHOTS/f'jaziran-rescue-{ENGINE}-{width}.png'))
         await page.evaluate("()=>{S.st.skin='dark';document.documentElement.dataset.skin='dark'}")
         await page.wait_for_function("()=>document.documentElement.dataset.skin==='dark'")
+        dark_layout=await page.evaluate(LAYOUT)
+        assert not dark_layout.get('error') and not dark_layout['overlaps'], (
+            f'rescue dark-theme status overlap: {dark_layout}')
+        # Ensure the player can reach the final replay action by scrolling
+        # within the modal instead of having clipped, unclickable controls.
+        await page.locator('#mljr-replay').scroll_into_view_if_needed(timeout=8000)
+        replay=await page.locator('#mljr-replay').bounding_box()
+        assert replay and replay['y']>=-2 and replay['y']+replay['height']<=844+2, (
+            f'rescue final action unreachable: {replay}')
+        await page.evaluate("()=>{document.querySelector('.mljr-card').scrollTop=0}")
         if SHOTS:await page.screenshot(path=str(SHOTS/f'jaziran-rescue-{ENGINE}-dark.png'))
         await page.locator('#mljr-close').click()
         await page.reload(wait_until='domcontentloaded',timeout=45000)
