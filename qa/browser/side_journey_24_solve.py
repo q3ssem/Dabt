@@ -92,6 +92,21 @@ async def solve(page,index):
     elif index==1:
         path=await js(page,"()=>ML10Logic.audit().river.path")
         # Undo and reset are actual user actions; neither may unlock a stage.
+        await page.locator('[data-route-node="A"]').scroll_into_view_if_needed(timeout=5000)
+        hit=await js(page,"""()=>{
+          const b=document.querySelector('[data-route-node="A"]'),
+            parent=document.querySelector('#ex10-route'),r=b.getBoundingClientRect(),
+            p=parent.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2,
+            st=getComputedStyle(b),sp=getComputedStyle(parent);
+          return {button:{x:r.x,y:r.y,w:r.width,h:r.height,z:st.zIndex,pe:st.pointerEvents,
+            transform:st.transform,position:st.position},
+            parent:{x:p.x,y:p.y,w:p.width,h:p.height,pe:sp.pointerEvents,overflow:sp.overflow},
+            pseudo:{pe:getComputedStyle(parent,'::before').pointerEvents,
+              z:getComputedStyle(parent,'::before').zIndex},
+            hitAtCenter:document.elementsFromPoint(x,y).slice(0,8)
+              .map(e=>({tag:e.tagName,id:e.id,className:typeof e.className==='string'?e.className:'SVG'}))};
+        }""")
+        print("SIDE24_ROUTE_HIT="+json.dumps(hit,ensure_ascii=True),flush=True)
         await click(page,'[data-route-node="A"]')
         await click(page,'[data-ex10="undo-route"]')
         await check(not await page.locator('[data-route-node="A"]').evaluate(
