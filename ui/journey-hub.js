@@ -293,8 +293,13 @@
         return {id, done, origin:'موطن الأثر الأول', state:done ? 'completed' : found ? 'pending' : 'undiscovered'};
       }
     } catch (_) {}
-    // The three library IDs are not sea7_* stations, and cannot inherit completion
-    // from the Treasure Island campaign or from the mere visibility of library cards.
+    // Puzzle-library wins have their own native counter. This is not a sea7_* station.
+    // Only a real completed round counts; mere card visibility or level access never does.
+    try {
+      const won = typeof pzState === 'function' && Number(pzState()?.n?.[id]) > 0;
+      return {id, done:!!won, origin:'مكتبة الألغاز',
+        state:won ? 'completed' : 'pending'};
+    } catch (_) {}
     return {id, done:false, origin:'مكتبة الألغاز', state:'unlinked'};
   }
   function evidenceVisibleFiles() {
@@ -306,12 +311,22 @@
   function getEvidenceSnapshot(fileId) {
     const file = evidenceFile(fileId);
     if (!file) return null;
-    const sources = file.sources.map(([id,name]) => ({name, ...evidenceSourceStatus(id)}));
-    const nativeCompleted = [...new Set(sources.filter(source => source.done).map(source => source.id))].length;
-    // Different completed station IDs make comparison possible, but do not prove
-    // that documents are independent or that their testimony is accurate.
+    const verified = window.MindlabEvidence?.getFile(fileId,evidenceSourceStatus);
+    const sources = file.sources.map(([id,name]) => {
+      const native = evidenceSourceStatus(id);
+      const proof = verified?.sources.find(s => s.id === id);
+      return {name, ...native, verified:!!proof?.verified,
+        verifiedAt:proof?.verifiedAt || null, clue:proof?.text || '',
+        challenge:proof ? {question:proof.question,choices:proof.choices} : null,
+        state:proof?.verified ? 'verified' : native.state};
+    });
+    const nativeCompleted = sources.filter(source => source.done).length;
     return {id:file.id, name:file.name, sources, nativeCompleted,
-      sourceCount:sources.length, readyToCompare:nativeCompleted >= 2, inferenceVerified:false};
+      sourceCount:sources.length, readyToCompare:nativeCompleted >= 2,
+      verifiedCount:verified?.verifiedCount || 0, independentCount:verified?.independentCount || 0,
+      readyToInfer:!!verified?.ready, inferenceVerified:!!verified?.sealed,
+      sealAt:verified?.sealAt || null, inference:verified?.inference || null,
+      missing:verified?.missing || sources.map(s=>s.id)};
   }
   function openEvidenceBook() {
     const previous = document.activeElement;
