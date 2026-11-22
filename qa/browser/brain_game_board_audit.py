@@ -55,13 +55,16 @@ MEASURE = r"""() => {
   const board=box(stage);
   const criticalControls=[...stage.querySelectorAll('#pk.peek,#xp.xnav,#xn.xnav')]
     .filter(shown).map(e=>({id:e.id,box:box(e)}));
+  const denseControls=[...stage.querySelectorAll('#xk button,.pkeys .pkey,.dx-balance-weight')]
+    .filter(shown).map(e=>({label:(e.getAttribute('aria-label')||e.textContent||'').trim(),
+      className:e.className,box:box(e)}));
   const duo=stage.querySelector('.duo');
   const matches=duo?[...duo.querySelectorAll('.match')].map(box):[];
   return {skin:document.documentElement.dataset.skin,
     width:innerWidth,height:innerHeight,board,
     visible:getComputedStyle(play).display!=='none'&&board.w>60&&board.h>40,
     elements:stage.querySelectorAll('*').length,controls:interactive.length,
-    smallTouchCount:smallAll.length,smallExamples:small,criticalControls,
+    smallTouchCount:smallAll.length,smallExamples:small,criticalControls,denseControls,
     brokenImages:broken,stretchedImages:stretched,
     pageOverflowsX:document.documentElement.scrollWidth>innerWidth+3,
     quit:q,dualMatches:matches,stageText:stage.textContent.trim().slice(0,100),
@@ -158,6 +161,12 @@ async def run():
                             }""")
                         else:
                             data["lastActionReachable"]=None
+                    if gid in ("xw","piano","dx_balance"):
+                        keys=data.get("denseControls",[])
+                        minimum={"xw":25,"piano":7,"dx_balance":3}[gid]
+                        if len(keys)<minimum or any(min(
+                            item["box"]["w"],item["box"]["h"])<44 for item in keys):
+                            row["issues"].append(f"{width}/{skin}:dense_input_target_below_44px")
                     if gid=="dual":
                         matches=data.get("dualMatches",[])
                         if len(matches)!=2 or any(x["w"]<40 or x["h"]<40 for x in matches):
