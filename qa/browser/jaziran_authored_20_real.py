@@ -87,7 +87,7 @@ async def solve_pipe(page,number):
 async def solve_ice(page,number):
     ds=await get(page,"()=>icSolve(__test.pz.P,__test.pz.P.start)")
     assert isinstance(ds,list) and ds,f'ice level {number} no path'
-    names=['ArrowLeft','ArrowDown','ArrowRight','ArrowUp']
+    names=['ArrowUp','ArrowRight','ArrowDown','ArrowLeft']
     for d in ds:
         assert isinstance(d,int) and 0<=d<4,f'invalid ice direction {d}'
         await click(page,f'#pzb [data-d="{names[d]}"]')
