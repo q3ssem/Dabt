@@ -66,7 +66,7 @@ async def main():
         await page.evaluate("()=>tab('puz')")
         await page.wait_for_function("()=>!!window.mindlabPlayLayers?.ready",timeout=45000)
         results=[]
-        for gid in ('pz_zroute','pz_wlog','pz_zcode'):
+        for gid in ('pz_zroute','pz_wlog','pz_zcode','pz_pliar','pz_pjail','pz_aheart'):
             await launch(page,gid)
             saved=await page.evaluate("""()=>JSON.stringify({
               original:localStorage.getItem('miran:v2'),
@@ -102,6 +102,23 @@ async def main():
                 await available.click()
                 await letter.click()
                 assert await page.locator('#zkm button.zkc.sel b').first.inner_text()=='ا',                    'magnified cipher key did not reach the native symbol mapping'
+            if gid=='pz_pliar':
+                turns=page.locator('#pzb button.pl-rot')
+                assert await turns.count()>=2,'palace rotator buttons missing'
+                boxes=[await turns.nth(i).bounding_box() for i in range(min(4,await turns.count()))]
+                assert all(b and b['width']>=44 and b['height']>=44 for b in boxes),boxes
+                await turns.first.click(timeout=4000)
+            if gid=='pz_pjail':
+                suspect=page.locator('#pzb .jail-card button').first
+                await suspect.wait_for(state='visible',timeout=7000)
+                bounds=await suspect.bounding_box()
+                assert bounds and bounds['height']>=44,bounds
+                await suspect.click(timeout=4000)
+            if gid=='pz_aheart':
+                controls=page.locator('#pzb .heart-tools button')
+                assert await controls.count()>=2,'native heart undo/retry controls missing'
+                sizes=[await controls.nth(i).bounding_box() for i in range(min(2,await controls.count()))]
+                assert all(box and box['height']>=44 for box in sizes),sizes
             if OUT:await page.screenshot(path=str(OUT/f'jaziran-magnify-{ENGINE}-{gid}-320.png'))
             await toggle(page,False)
             restored=await measure(page)
@@ -115,7 +132,7 @@ async def main():
             await page.evaluate("()=>closePlay()")
             await page.wait_for_timeout(110)
         assert not errors,errors[:5]
-        print('JAZIRAN_MAGNIFY='+json.dumps({'engine':ENGINE,'checked':3,'viewport':'320x640',
+        print('JAZIRAN_MAGNIFY='+json.dumps({'engine':ENGINE,'checked':6,'viewport':'320x640',
           'native_scrolled':True,'keyboard_wlog':True,'slider_zroute':True,'cipher_zcode':True,
           'native_save_unchanged':True,'errors':errors},ensure_ascii=False),flush=True)
         await browser.close()
