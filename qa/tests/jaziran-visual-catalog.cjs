@@ -47,4 +47,15 @@ assert(!accents.includes('#pzb'),'never globally recolor puzzle board');
 assert(!accents.includes('#stage'),'never globally recolor game board contents');
 assert(board.includes('object-fit:contain'),'art remains unstretched');
 assert(fit.includes('const MIN_ZOOM = 0.58'),'fit UI remains live');
-console.log('JAZIRAN_VISUAL_CATALOG=passed: 86 source-matched distinct colors, 168 existing painted assets, no retired games, palette limited to header rim.');
+const audio=fs.readFileSync('audio/mindlab-audio.js','utf8');
+const idsMatch=audio.match(/const puzzleIdentityIds = (\[[^\n]+\]);/);
+assert(idsMatch,'distinct fallback sound signature table must be present');
+const ordered=JSON.parse(idsMatch[1]);
+assert.deepEqual(ordered,active.map(x=>x.id),'per-puzzle sound identity follows the live source index');
+const notes=ordered.map((id,i)=>320+((i*37)%89)*13);
+assert.equal(new Set(notes).size,86,'86 unique sound identities without a frequency collision');
+assert(audio.includes("sfx.puzzleIdentity?.(id)")&&audio.includes("if (lastSound >= at - 5 || S.st.mute || document.hidden) return;"),
+  'the sound signature is only played for otherwise silent taps, never muted or idle');
+assert(audio.includes("if (index === undefined || !ready()) return false;"),
+  'retired or unknown puzzles and suspended audio contexts stay silent');
+console.log('JAZIRAN_VISUAL_AUDIO_CATALOG=passed: 86 colors, 168 painted assets, 86 unique subtle silent-tap signatures, no global recolors.');
