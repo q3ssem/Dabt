@@ -17,7 +17,13 @@ assert(app.includes("const SAVE_KEY='mindlab:expedition10:v1'"),'the same indepe
 assert(app.includes('من ٢٤')&&app.includes('/ ٧٢'),'progress display covers 25 stages and 75 stars');
 assert(app.includes('success&&i<stages.length-1')&&app.includes('success&&i===stages.length-1'),'stage 25 closes the current chapter');
 for(const fn of ['gameLanternMaze','gameWaterJugs','gameSignalTowers','gameHanoi','gameFivefoldSeal'])assert(app.includes('function '+fn+'('),'interactive stage exists: '+fn);
-for(let n=1;n<=25;n++){if(n===15)continue;const prefix=String(n).padStart(2,'0')+'-';const f=fs.readdirSync(path.join(root,'expedition10/art/scenes')).find(x=>x.startsWith(prefix));assert(f,'scene exists for stage '+n);assert(offline.includes('expedition10/art/scenes/'+f),'scene precached '+f);}
+const stageScenes=[...app.matchAll(/scene:'([^']+\.webp)'/g)].map(m=>m[1]);
+assert.strictEqual(stageScenes.length,24,'all 24 side-journey scenes are registered');
+for(const name of stageScenes) {
+  const rel=name.includes('/')?name:'expedition10/art/scenes/'+name;
+  assert(fs.existsSync(path.join(root,rel)),'stage scene exists: '+rel);
+  assert(offline.includes('"'+rel+'"'),'stage scene is precached: '+rel);
+}
 for(const f of ['21-lantern-maze.webp','22-waterworks.webp','23-signal-towers.webp','24-disk-temple.webp','25-fivefold-seal.webp'])assert(fs.existsSync(path.join(root,'expedition10/art/scenes',f)),'new stage art exists '+f);
 for(const token of ['mazeAudit','jugAudit','signalSolutions','hanoiAudit','sealSolutions'])assert(logic.includes(token),'solver/audit is implemented: '+token);
 assert(!/S\.st\.[^;]*ml10/.test(app),'expedition keeps data out of the legacy campaign save');
