@@ -57,7 +57,9 @@ async def run():
             await page.wait_for_timeout(90)
             assert await page.evaluate("()=>document.documentElement.scrollWidth<=innerWidth+5"),f'horizontal overflow at {width}'
             if SHOTS and width==320: await page.screenshot(path=str(SHOTS/f'evidence-{ENGINE}-light-320.png'))
-        await page.evaluate("()=>document.documentElement.dataset.skin='dark'")
+        # The app's theme observer re-applies S.st.skin; change the preference and DOM together.
+        await page.evaluate("()=>{S.st.skin='dark';document.documentElement.dataset.skin='dark'}")
+        await page.wait_for_function("()=>document.documentElement.dataset.skin==='dark'")
         dark_colors=await page.evaluate("""()=>{
             const area=document.querySelector('#mlj-evidence-note'),x=getComputedStyle(area);
             return {background:x.backgroundColor,color:x.color,theme:document.documentElement.dataset.skin};
