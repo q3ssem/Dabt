@@ -62,6 +62,9 @@ async def enter_stage(page,stage,from_previous=False):
     else:
         if not await page.locator('#v-puz .ex10-map').count():
             await page.evaluate("()=>ML10.renderMap()")
+        # The journey hub finishes its deferred first paint asynchronously;
+        # wait for the card/list mutation to settle before a native tap.
+        await page.wait_for_timeout(500)
         button=page.locator(f'#v-puz .ex10-level-card[data-ex10-node="{stage}"]')
         await check(await button.get_attribute('aria-disabled') is None,
                     f"stage {stage+1} actually unlocked through prior wins")
