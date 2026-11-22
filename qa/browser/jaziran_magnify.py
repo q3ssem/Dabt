@@ -66,7 +66,7 @@ async def main():
         await page.evaluate("()=>tab('puz')")
         await page.wait_for_function("()=>!!window.mindlabPlayLayers?.ready",timeout=45000)
         results=[]
-        for gid in ('pz_zroute','pz_wlog'):
+        for gid in ('pz_zroute','pz_wlog','pz_zcode'):
             await launch(page,gid)
             saved=await page.evaluate("""()=>JSON.stringify({
               original:localStorage.getItem('miran:v2'),
@@ -94,6 +94,14 @@ async def main():
                 await page.keyboard.press('Enter')
                 assert await page.locator('[data-wlg-slot="0"] img').count()>=1,\
                     'keyboard-placed page was not shown in the journal timeline'
+            if gid=='pz_zcode':
+                letter=page.locator('#zkb button[data-c="ا"]')
+                box=await letter.bounding_box()
+                assert box and box['width']>=44 and box['height']>=44,                    f'dense cipher keyboard stayed tiny in enlarged mode: {box}'
+                available=page.locator('#zkm button.zkc:not([disabled])').first
+                await available.click()
+                await letter.click()
+                assert await page.locator('#zkm button.zkc.sel b').first.inner_text()=='ا',                    'magnified cipher key did not reach the native symbol mapping'
             if OUT:await page.screenshot(path=str(OUT/f'jaziran-magnify-{ENGINE}-{gid}-320.png'))
             await toggle(page,False)
             restored=await measure(page)
@@ -107,8 +115,8 @@ async def main():
             await page.evaluate("()=>closePlay()")
             await page.wait_for_timeout(110)
         assert not errors,errors[:5]
-        print('JAZIRAN_MAGNIFY='+json.dumps({'engine':ENGINE,'checked':2,'viewport':'320x640',
-          'native_scrolled':True,'keyboard_wlog':True,'slider_zroute':True,
+        print('JAZIRAN_MAGNIFY='+json.dumps({'engine':ENGINE,'checked':3,'viewport':'320x640',
+          'native_scrolled':True,'keyboard_wlog':True,'slider_zroute':True,'cipher_zcode':True,
           'native_save_unchanged':True,'errors':errors},ensure_ascii=False),flush=True)
         await browser.close()
 
