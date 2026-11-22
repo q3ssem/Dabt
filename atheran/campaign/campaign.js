@@ -4,13 +4,7 @@
    لا يغيّر المحركات ولا المعرّفات ولا مفاتيح الحفظ ولا شرط الفتح aOpen. */
 (function () {
   'use strict';
-  if (typeof ASTN === 'undefined' || typeof aHubHTML !== 'function' || !window.LA || window.ATHERAN_CAMPAIGN) return;
-  const AR = n => String(n).replace(/\d/g, d => '٠١٢٣٤٥٦٧٨٩'[d]);
-  const POSE = 'expedition10/art/crew/poses/';
-  const HERO_ART = { roaa: 'char_rawaa_ref', noha: 'char_noha_ref', ward: 'char_ward_ref' };
-  const heroSrc = k => window.MINDLAB_ATHRAN_ASSETS?.url(HERO_ART[k]) || `${POSE}${k}-welcome.webp`;
-  const HEROINES = [['roaa', 'رواء', 'قائدة الطاقم'], ['noha', 'نهى', 'مهندسة الآلات'], ['ward', 'ورد', 'قارئة الأدلة']];
-
+  if (typeof ASTN === 'undefined' || !window.LA || window.ATHERAN_CAMPAIGN) return;
   /* ---------- التقدّم: المحطات تُحتسب بالتتابع مهما كان مكان اللعب ----------
      aWin لا يحرّك a.prog إلا إذا كانت المحطة هي التالية بالضبط، فاللعب من المكتبة خارج الترتيب
      يسجّل الإنجاز ولا يفتح ما بعده. نعيد حساب prog = عدد المحطات المتتالية المنجزة من البداية،

@@ -28,7 +28,8 @@ assert(!runtime.includes('finalObs.observe(document.body'), 'finale observer mus
 assert(!runtime.includes("wrap('aHubHTML'")&&!runtime.includes('map_layer_01_bg'), 'retired world-map renderer and asset records must be absent');
 assert(runtime.includes("puzzle(id)||byStation[id]") || runtime.includes('byPuzzle[id]||byStation[id]'), 'puzzle lookup must support both puzzle_id and station_id');
 const campaign = fs.readFileSync(path.join(root,'atheran','campaign','campaign.js'),'utf8');
-assert(campaign.includes('heroSrc(k)'), 'campaign header should use approved hero assets');
+assert(!campaign.includes('legacyOpen')&&!campaign.includes('aHubHTML('),'Atheran no longer renders old navigation atlas');
+assert(fs.readFileSync(path.join(root,'ui','journey-hub.js'),'utf8').includes('mlj-station-crew'),'story opening retains hand-painted protagonists');
 const counts = manifest.completed_assets.reduce((o,a)=>(o[a.asset_type]=(o[a.asset_type]||0)+1,o),{});
 assert(counts.puzzle_piece_state === 80, '80 puzzle-state sprites must be indexed');
 assert(counts.station_stage_bg === 63, '63 stage backgrounds must be indexed');
