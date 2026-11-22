@@ -54,8 +54,8 @@ assert.ok(fitCSS.includes('max-height: calc(100dvh - 168px)') &&
   'The six small-screen WebKit boards must scroll internally if fit becomes stale');
 
 assert.ok(fitCSS.includes('.pl-range i.ref{width:20px;height:20px;flex:0 0 20px;overflow:hidden') &&
-  fitCSS.includes('.pl-range i.ref img{display:block;width:100%;height:100%;max-width:100%'),
-  'Palace badge icons must fit their fixed-size reference slots without horizontal bleed');
+  fitCSS.includes('.pl-range i.ref img{display:block;width:18px!important;height:18px!important;max-width:18px!important'),
+  'Palace reference badge art must have an absolute 18px visual footprint instead of percentage sizing');
 
 const fitUI = fs.readFileSync('ui/fit.js','utf8');
 assert.ok(fitUI.includes("for (const el of $$('#play .pin, #play .pbar, #stage .pzhud, #stage #m')"),

@@ -75,7 +75,7 @@ async def flow(page):
     actions=0
     for seg in segs:
         for k,i in enumerate(seg):
-            cell=page.locator(f'#flg .flc[data-i="{i}"]')
+            cell=page.locator(f'#fl10 .fl10-c[data-i="{i}"]')
             box=await cell.bounding_box()
             assert box and box['width']>0,(i,box)
             x,y=box['x']+box['width']/2,box['y']+box['height']/2
@@ -107,7 +107,7 @@ async def tangram(page):
        current:__test.pz.pcs.map(p=>p.shape)})""")
     n=meta['n'];actions=0
     for i,p in enumerate(meta['pieces']):
-        await tap(page,f'#tgt .tgp[data-p="{i}"]');actions+=1
+        await tap(page,f'#tg10t .tg10-p[data-tok="{i}"]');actions+=1
         mirror,turns=orient(meta['current'][i],p['shape'])
         if mirror:
             await tap(page,'#tgf');actions+=1
@@ -116,30 +116,62 @@ async def tangram(page):
         shape=norm(p['shape'])
         xs=[v%n for v in p['sol']];ys=[v//n for v in p['sol']]
         anchor=(min(ys)+shape[0][1])*n+min(xs)+shape[0][0]
-        await tap(page,f'#tgb .tgc[data-i="{anchor}"]');actions+=1
+        await tap(page,f'#tg10 .tg10-c[data-i="{anchor}"]');actions+=1
         state=await page.evaluate("(i)=>__test.pz.pcs[i].at",i)
         assert state is not None,(i,anchor)
     return actions
 
 async def untangle(page):
-    P=await page.evaluate("()=>({sol:__test.pz.P.sol,pos:__test.pz.pos,fixed:__test.pz.P.fixed||[]})")
+    P=await page.evaluate("()=>({sol:__test.pz.P.sol,pos:__test.pz.pos,fixed:__test.pz.P.fixed||[],solCross:unCross(__test.pz.P,__test.pz.P.sol).c})")
+    assert P['solCross']==0,('generator published crossing solution',P['solCross'])
     actions=0
     board=page.locator('#unsv')
+    area=await board.bounding_box()
+    assert area and area['width']>0 and area['height']>0
     for i,goal in enumerate(P['sol']):
         if i in P['fixed']:continue
         if await page.evaluate("()=>!!document.querySelector('#pzb.solved')"):break
-        node=page.locator(f'#unsv .unode[data-i="{i}"]')
-        bounds=await node.bounding_box()
-        area=await board.bounding_box()
-        assert bounds and area and area['width']>0 and area['height']>0
-        origin=(bounds['x']+bounds['width']/2,bounds['y']+bounds['height']/2)
-        target=(area['x']+area['width']*goal[0]/100,area['y']+area['height']*goal[1]/100)
-        await page.mouse.move(*origin)
-        await page.mouse.down()
-        await page.mouse.move(*target,steps=12)
-        await page.mouse.up()
-        actions+=1
-        await page.wait_for_timeout(80)
+        # Buttons can overlap on 12/14/16-node boards; use a truly exposed
+        # point of the visible button, not merely its geometrical centre.
+        for attempt in range(4):
+            now=await page.evaluate("(i)=>__test.pz.pos[i]",i)
+            if max(abs(now[k]-goal[k]) for k in (0,1))<.55:break
+            spot=await page.evaluate("""(i)=>{
+              const node=document.querySelector('#unsv .unode[data-i="'+i+'"]');
+              if(!node)return null;const b=node.getBoundingClientRect();
+              for(const [u,v] of [[.5,.5],[.28,.5],[.72,.5],[.5,.28],[.5,.72],
+                                   [.28,.28],[.72,.72],[.28,.72],[.72,.28]]) {
+                const x=b.left+b.width*u,y=b.top+b.height*v;
+                const hit=document.elementFromPoint(x,y)?.closest('.unode');
+                if(hit===node)return [x,y];
+              }
+              return null;
+            }""",i)
+            if spot is None:
+                # Real keyboard controls let a covered node emerge from a pile.
+                node=page.locator(f'#unsv .unode[data-i="{i}"]')
+                await node.focus()
+                await page.keyboard.press('Shift+ArrowDown')
+                actions+=1
+                continue
+            move=(area['width']*(goal[0]-now[0])/100,
+                  area['height']*(goal[1]-now[1])/100)
+            await page.mouse.move(*spot)
+            await page.mouse.down()
+            await page.mouse.move(spot[0]+move[0],spot[1]+move[1],steps=16)
+            await page.mouse.up()
+            actions+=1
+            await page.wait_for_timeout(85)
+        after=await page.evaluate("(i)=>__test.pz.pos[i]",i)
+        assert max(abs(after[k]-goal[k]) for k in (0,1))<.8,            ('real pointer/keyboard placement not recorded',i,goal,after)
+    if not await page.evaluate("()=>!!document.querySelector('#pzb.solved')"):
+        detail=await page.evaluate("""()=>({
+           crossing:unCross(__test.pz.P,__test.pz.pos).c,
+           solCross:unCross(__test.pz.P,__test.pz.P.sol).c,
+           maxOffset:Math.max(...__test.pz.pos.map((p,i)=>
+             Math.hypot(p[0]-__test.pz.P.sol[i][0],p[1]-__test.pz.P.sol[i][1])))
+        })""")
+        assert False,('untangle still has intersections after physical placements',detail)
     return actions
 
 def coins_in(H):

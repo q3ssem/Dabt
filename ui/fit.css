@@ -96,8 +96,9 @@ html[data-skin="dark"] #play.fit .fit-tools .pzgive{background:#253538;border-co
 /* talking statues: three in a row so the hall fits */
 #play.fit .pl-statues{grid-template-columns:repeat(auto-fit,minmax(max(100px,31%),1fr))!important;gap:5px!important}
 #play.fit .pl-range i{width:12px}
-#play.fit .pl-range i.ref{width:20px;height:20px;flex:0 0 20px;overflow:hidden;padding:0;box-sizing:border-box}
-#play.fit .pl-range i.ref img{display:block;width:100%;height:100%;max-width:100%;max-height:100%;object-fit:contain}
+#play.fit #pzb .pl-range i.ref{width:20px;height:20px;flex:0 0 20px;overflow:hidden;padding:0;box-sizing:border-box}
+#play.fit #pzb .pl-range i.ref img{display:block;width:18px!important;height:18px!important;max-width:18px!important;max-height:18px!important;min-width:0!important;object-fit:contain!important;transform:none!important}
+#play.fit #pzb .pl-range{margin-inline:5px;min-width:0}
 #play.fit .pl-plaque{padding:3px;gap:3px;min-width:0}
 #play.fit .pl-range{flex-wrap:wrap;justify-content:center;max-width:100%;min-width:0}
 #play.fit .pl-turn{height:74px!important}
