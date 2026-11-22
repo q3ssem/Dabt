@@ -726,7 +726,8 @@ html[data-skin="dark"] .mlj-evidence-actions button { background: #2c8175; borde
 .mlj-evidence-quote { width: 100%; padding: 7px 8px; border-radius: 8px; background: rgba(28, 103, 91, .08); }
 .mlj-evidence-options { display: grid; grid-template-columns: 1fr; gap: 6px; }
 .mlj-evidence-options button,
-.mlj-evidence-source-actions button {
+.mlj-evidence-source-actions button,
+.mlj-evidence-missing {
   font: inherit;
   cursor: pointer;
   min-height: 44px;
@@ -740,7 +741,8 @@ html[data-skin="dark"] .mlj-evidence-actions button { background: #2c8175; borde
   text-align: start;
 }
 .mlj-evidence-options button:focus-visible,
-.mlj-evidence-source-actions button:focus-visible { outline: 3px solid #c68b25; outline-offset: 2px; }
+.mlj-evidence-source-actions button:focus-visible,
+.mlj-evidence-missing:focus-visible { outline: 3px solid #c68b25; outline-offset: 2px; }
 .mlj-evidence-source-actions { display: flex; flex-wrap: wrap; gap: 7px; width: 100%; }
 .mlj-evidence-source-actions button { flex: 1 1 132px; }
 .mlj-evidence-source-actions button:first-child { font-weight: 800; }
@@ -750,5 +752,6 @@ html[data-skin="dark"] .mlj-evidence-review,
 html[data-skin="dark"] .mlj-evidence-inference { border-color: #849e9e; }
 html[data-skin="dark"] .mlj-evidence-inference { border-inline-start-color: #e0b95f; }
 html[data-skin="dark"] .mlj-evidence-options button,
-html[data-skin="dark"] .mlj-evidence-source-actions button { border-color: #8bbfb4; }
+html[data-skin="dark"] .mlj-evidence-source-actions button,
+html[data-skin="dark"] .mlj-evidence-missing { border-color: #8bbfb4; }
 html[data-skin="dark"] .mlj-evidence-quote { background: rgba(144, 208, 186, .12); }
