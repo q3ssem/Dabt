@@ -445,6 +445,21 @@
         message.textContent = snapshot.inference.question;
       }
       area.append(message);
+      if (!snapshot.readyToInfer && snapshot.missing.length) {
+        const missingBtn = document.createElement('button');
+        missingBtn.type = 'button';
+        missingBtn.className = 'mlj-evidence-missing';
+        missingBtn.textContent = 'عرض الأدلة الناقصة';
+        missingBtn.onclick = () => {
+          const target = [...modal.querySelectorAll('.mlj-evidence-sources li')]
+            .find(li => li.dataset.evidenceState !== 'verified');
+          if (target) {
+            target.scrollIntoView({block:'center'});
+            target.querySelector('button')?.focus({preventScroll:true});
+          }
+        };
+        area.append(missingBtn);
+      }
       if (snapshot.readyToInfer && !snapshot.inferenceVerified) {
         const choices = document.createElement('div');
         choices.className = 'mlj-evidence-options';
