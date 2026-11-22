@@ -296,7 +296,8 @@
     // Puzzle-library wins have their own native counter. This is not a sea7_* station.
     // Only a real completed round counts; mere card visibility or level access never does.
     try {
-      const won = typeof pzState === 'function' && Number(pzState()?.n?.[id]) > 0;
+      if (typeof pzState !== 'function') return {id,done:false,origin:'مكتبة الألغاز',state:'unlinked'};
+      const won = Number(pzState()?.n?.[id]) > 0;
       return {id, done:!!won, origin:'مكتبة الألغاز',
         state:won ? 'completed' : 'pending'};
     } catch (_) {}
