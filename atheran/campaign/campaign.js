@@ -65,13 +65,18 @@
       window.dispatchEvent(new CustomEvent('mindlab:journey-progress', {detail: {chapter: 'atheran'}}));
   }
   function back() { LA.view = null; const v = document.getElementById('v-puz'); if (v) v.classList.remove('ah-view'); renderPuz(); }
+  function legacyOpen() {
+    // Keep the original illustrated Atheran atlas available as a campaign view.
+    // It continues to rely on aOpen/canOpenStation and the native save guards.
+    LA.view = 'atheran'; if (typeof curTab !== 'undefined' && curTab !== 'puz') tab('puz'); else render();
+  }
   function open() {
     if (window.mindlabJourneyHub?.returnToMap) {
       LA.view = null;
       window.mindlabJourneyHub.returnToMap('atheran');
       return;
     }
-    LA.view = 'atheran'; if (typeof curTab !== 'undefined' && curTab !== 'puz') tab('puz'); else render();
+    legacyOpen();
   }
 
   /* ---------- بطاقة الدخول في تبويب الألغاز ---------- */
@@ -170,6 +175,6 @@
     return actions;
   }
 
-  window.ATHERAN_CAMPAIGN = { open, render, back, summary, contiguous, canOpenStation, openJourneyStation, finishJourneyScene, journeyActions };
+  window.ATHERAN_CAMPAIGN = { open, legacyOpen, render, back, summary, contiguous, canOpenStation, openJourneyStation, finishJourneyScene, journeyActions };
   if (typeof curTab !== 'undefined' && curTab === 'puz') renderPuz();
 })();
