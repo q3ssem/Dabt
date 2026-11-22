@@ -178,3 +178,19 @@ html #v-puz .ml-folder-grid .ml-folder-puzzle b,
 html #v-puz .ml-folder-stations .ml-folder-station-name {
   font-size:11px!important;
 }
+
+/* Victory is a third state, not a different spelling of the available tile. */
+html #v-puz .ml-folder-grid .ml-folder-puzzle.ml-folder-completed {
+  border-color:#a17d3e!important;
+  background:#fcf6e9!important;
+}
+html #v-puz .ml-folder-grid .ml-folder-puzzle.ml-folder-completed .ml-folder-state {
+  color:#735624!important;
+}
+html[data-skin="dark"] #v-puz .ml-folder-grid .ml-folder-puzzle.ml-folder-completed {
+  border-color:#d4b16f!important;
+  background:#342f28!important;
+}
+html[data-skin="dark"] #v-puz .ml-folder-grid .ml-folder-puzzle.ml-folder-completed .ml-folder-state {
+  color:#f4dfb2!important;
+}
