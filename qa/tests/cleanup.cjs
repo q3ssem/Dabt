@@ -3,6 +3,12 @@
 const fs = require('node:fs'), assert = require('node:assert/strict'), vm = require('node:vm');
 const read = file => fs.readFileSync(file, 'utf8');
 const gone = [
+  // Historical generated reports and v4.2 patch notes are preserved in Git history,
+  // not shipped as current runtime/QA evidence for 5.5.29.
+  'qa/npm_test_4_2.txt',
+  'qa/assets_4_2.json',
+  'qa/allowed_audio_change_4_2.json',
+  'qa/verification.json',
   'docs/SCENE_ASSET_SPEC_AR.md',
   'qa/source_http_4_2.json',
   'ui/designs_art/work_review/pz_river/river-base--light.webp',
