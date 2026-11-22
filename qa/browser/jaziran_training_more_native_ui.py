@@ -94,7 +94,9 @@ async def main():
             await page.wait_for_function("()=>mindlabPlayLayers?.ready===true",timeout=45000)
             await page.evaluate("()=>{S.st.mute=true}")
             for gid,solver in [('pz_grid',solve_grid),('pz_tent',solve_tents)]:
-                for level in range(1,9):
+                max_level=await page.evaluate("id=>pzMax(id)",gid)
+                assert isinstance(max_level,int) and 1<=max_level<=20,(gid,max_level)
+                for level in range(1,max_level+1):
                     row={'id':gid,'level':level};prior=len(errors)
                     try:
                         await open_board(page,gid,level)
@@ -149,7 +151,7 @@ async def main():
             assert not errors,errors[:5]
         finally:
             summary={'engine':ENGINE,'tested':len(rows),
-                'wins':sum(x.get('win') and not x.get('error') and not x.get('jsErrors') for x in rows),
+                'wins':sum(bool(x.get('win')) and not x.get('error') and not x.get('jsErrors') for x in rows),
                 'deficits':[x for x in rows if x.get('error') or x.get('jsErrors')],
                 'pageErrors':errors,'results':rows}
             (OUT/f'training-native-{ENGINE}.json').write_text(json.dumps(summary,ensure_ascii=True,indent=2))
