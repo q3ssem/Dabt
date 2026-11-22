@@ -48,6 +48,9 @@ for(const cluster of mapData.clusters.filter(x=>x.chapter==='side')){
  assert.deepEqual(cluster.orders,expected,'cluster membership agrees with real stations: '+cluster.id);
 }
 assert.equal(new Set(sideStops.map(st=>st.openingTextAr)).size,engineIds.length,'side introductions unique');
+assert.deepEqual(storyData.expeditionStations.map(st=>st.stageId),engineIds,'opening data uses the same stage IDs');
+assert.deepEqual(storyData.expeditionStations.map(st=>st.dialogue),sideStops.map(st=>st.openingTextAr),'opening overlay and atlas preview use identical dialogue');
+assert.equal(new Set(storyData.expeditionStations.map(st=>st.dialogue)).size,engineIds.length,'all displayed side dialogue is distinctive');
 assert(sideStops.every(st=>!st.openingTextAr.includes('لنبدأ بهدوء ونختبر خطواتنا')),'no duplicated template openings');
 assert(side.includes("i===stages.length-1?'اكتملت الرحلة الجانبية'"),'final completion uses length');
 assert(side.includes('العلامات الأربع والعشرون'),'epilogue count reflects 24 stages');
