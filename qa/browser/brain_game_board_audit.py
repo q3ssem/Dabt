@@ -174,12 +174,12 @@ async def run():
                 # Native interaction smoke-tests for the touch improvements;
                 # accessibility must not be only a CSS rectangle.
                 if gid=="xw":
-                    before=await page.evaluate("""()=>[...document.querySelectorAll('#xg .xcell b')]
+                    letters_before=await page.evaluate("""()=>[...document.querySelectorAll('#xg .xcell b')]
                       .map(e=>e.textContent).join('|')""")
                     await page.locator("#xk button").first.click(timeout=5000)
-                    after=await page.evaluate("""()=>[...document.querySelectorAll('#xg .xcell b')]
+                    letters_after=await page.evaluate("""()=>[...document.querySelectorAll('#xg .xcell b')]
                       .map(e=>e.textContent).join('|')""")
-                    if before==after:
+                    if letters_before==letters_after:
                         row["issues"].append("crossword:letter_key_did_not_enter")
                 if gid=="dx_balance":
                     key=page.locator("#stage .dx-board:has(#dxSum) .dx-row .dx-tile").first
