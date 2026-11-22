@@ -599,7 +599,7 @@ html #play.fit #stage:has(> #bd.board + .duo) > .msg {
   line-height:1.55;
   text-wrap:balance;
 }
-html #play.fit #stage > #bd.board:has(> .cell:nth-child(9)) {
+html #play.fit #stage:has(> #bd.board + .duo) > #bd.board {
   width:min(100%,420px);
   max-width:420px;
   margin-inline:auto;
@@ -622,16 +622,18 @@ html #play.fit #stage:has(> #bd.board + .duo) > .duo .match {
   font-weight:900;
 }
 
-/* Side-journey clues should read like aligned evidence rows rather than five
+/* Lighthouse-only evidence treatment; other expeditions keep their own
+   mechanical clue layouts.
+   Side-journey clues should read like aligned evidence rows rather than five
    heavy cards. Keep all original statements and their stage-specific order. */
-html.fit-ex10 #v-puz .ex10-game-content .ex10-clues {
+html.fit-ex10 #v-puz .ex10-game-shell[data-stage-id="ml10_01"] .ex10-game-content .ex10-clues {
   display:grid;
   grid-template-columns:minmax(0,1fr)!important;
   gap:0!important;
   margin:7px 0 9px!important;
   border-top:1px solid var(--bp-stroke);
 }
-html.fit-ex10 #v-puz .ex10-game-content .ex10-clues .ex10-clue {
+html.fit-ex10 #v-puz .ex10-game-shell[data-stage-id="ml10_01"] .ex10-game-content .ex10-clues .ex10-clue {
   min-width:0;
   width:100%;
   margin:0!important;
@@ -649,7 +651,7 @@ html.fit-ex10 #v-puz .ex10-game-content .ex10-clues .ex10-clue {
   text-align:start;
   overflow-wrap:anywhere;
 }
-html.fit-ex10 #v-puz .ex10-game-content .ex10-clue :is(b,strong) {
+html.fit-ex10 #v-puz .ex10-game-shell[data-stage-id="ml10_01"] .ex10-game-content .ex10-clue :is(b,strong) {
   color:var(--bp-ink)!important;
   font-weight:900;
 }
@@ -671,7 +673,7 @@ html.fit-ex10 #v-puz .ex10-game-content .ex10-controls button {
   html.fit-ex10 #v-puz .ex10-game-content {
     padding-inline:clamp(6px,2.5vw,10px);
   }
-  html.fit-ex10 #v-puz .ex10-game-content .ex10-clues .ex10-clue {
+  html.fit-ex10 #v-puz .ex10-game-shell[data-stage-id="ml10_01"] .ex10-game-content .ex10-clues .ex10-clue {
     padding-block:6px!important;
     line-height:1.46!important;
   }
