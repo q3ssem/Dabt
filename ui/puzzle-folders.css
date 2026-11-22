@@ -127,3 +127,20 @@ html[data-skin="dark"] #v-puz :is(.ml-folder-progress,.ml-folder-chapter-progres
 @media(prefers-reduced-motion:reduce){
   html #v-puz .ml-folder-puzzle,html #v-puz .ml-folder-station {transition:none!important;}
 }
+
+/* One chapter entry plus one compact library: hide superseded oversized hub and duplicate launch cards.
+   Keep their DOM nodes so native journey mounting and save/event integrations still work. */
+html #v-puz.mlj-single-entry > .v5-hubcard,
+html #v-puz.mlj-single-entry > .ah-launch,
+html #v-puz.mlj-single-entry > .ex10-launch,
+html #v-puz.mlj-single-entry > .ah-side-head {display:none!important;}
+html #v-puz.mlj-single-entry #mlj-journey-entry {
+  display:flex!important;align-items:center;justify-content:space-between;gap:12px;
+  width:100%;min-height:82px;margin:12px 0 18px;padding:15px 18px;
+  background:transparent!important;color:#263c33!important;
+  border:2px solid #a4c1b0!important;border-radius:20px!important;
+  box-shadow:none!important;text-align:start;font:inherit;
+}
+html #v-puz.mlj-single-entry #mlj-journey-entry strong {font:800 19px/1.5 Tajawal,system-ui,sans-serif;}
+html #v-puz.mlj-single-entry #mlj-journey-entry .mlj-entry-action {font:700 12px Tajawal,system-ui,sans-serif;}
+html[data-skin="dark"] #v-puz.mlj-single-entry #mlj-journey-entry {color:#f2efe5!important;border-color:#6d9487!important;}
