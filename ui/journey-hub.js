@@ -972,17 +972,22 @@
         grid.append(button);
       });
       content.append(grid);
-      if(['seven_seas','palace','atheran'].includes(which)){
-        // The library's large map is retired, but the official story atlases
-        // remain opt-in views and keep the native chapter unlock rules.
+      if(['seven_seas','palace','atheran','side'].includes(which)){
+        // Retain original maps as explicit alternatives. The compact folders
+        // remain the default and every station still uses its native gates.
         const atlas=document.createElement('button');atlas.type='button';
         atlas.className='ml-folder-original-map';
-        atlas.textContent='عرض الخريطة الرسمية للفصل';
+        atlas.textContent=which==='side'?'عرض خريطة الرحلة الجانبية':'عرض الخريطة الرسمية للفصل';
         atlas.onclick=()=>{
           close(false);
           if(which==='seven_seas')window.T7?.legacyMap?.();
           else if(which==='palace')openPalaceMap();
           else if(which==='atheran')window.ATHERAN_CAMPAIGN?.legacyOpen?.();
+          else if(which==='side'){
+            const open=()=>window.ML10?.legacyRenderMap?.();
+            if(window.ML10)open();
+            else window.mindlabSide?.start?.().then(open).catch(()=>{if(launch.isConnected)launch.click();});
+          }
         };
         content.append(atlas);
       }
