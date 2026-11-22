@@ -24,6 +24,13 @@ assert.equal(discover().length,10);
 atlas.open=true;assert.equal(discover().at(-1),'atheran');
 atlas.done=21;atlas.cleared=4;assert.equal(discover().includes('return'),false);
 atlas.cleared=5;assert.deepEqual(discover(),ids);
+atlas.cleared=0;
+atlas.a={done:{pz_aheart:1}};
+win.MindlabRescue={state:()=>({completed:true})};
+assert.deepEqual(discover(),ids,'successful evacuation reveals return without clearing optional secret worlds');
+win.MindlabRescue={state:()=>({completed:false})};
+assert.equal(discover().includes('return'),false,'unfinished evacuation and uncleared secrets keep return hidden');
+atlas.cleared=5;assert.deepEqual(discover(),ids,'legacy fully completed saves preserve the old return scene');
 // Restoring an earlier campaign hides later scenes despite their presentation history.
 saved.set('mindlab:transitions:seen:v1',JSON.stringify(Object.fromEntries(ids.map(x=>[x,true]))));
 sea.done={};atlas.open=false;atlas.done=0;atlas.cleared=0;
