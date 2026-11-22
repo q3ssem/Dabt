@@ -635,6 +635,8 @@ html.fit-ex10 #v-puz .ex10-game-shell[data-stage-id="ml10_01"] .ex10-game-conten
   gap:0!important;
   margin:7px 0 9px!important;
   border-top:1px solid var(--bp-stroke);
+  /* Dark skin previously left a cream parent behind pale clue text. */
+  background:var(--bp-paper)!important;
 }
 html.fit-ex10 #v-puz .ex10-game-shell[data-stage-id="ml10_01"] .ex10-game-content .ex10-clues .ex10-clue {
   min-width:0;
@@ -679,6 +681,21 @@ html.fit-ex10 #v-puz .ex10-game-content .ex10-controls button {
   html.fit-ex10 #v-puz .ex10-game-shell[data-stage-id="ml10_01"] .ex10-game-content .ex10-clues .ex10-clue {
     padding-block:6px!important;
     line-height:1.46!important;
+  }
+}
+/* Short 320px portrait viewports: reclaim vertical gaps, never shrink the
+   12px evidence text or 44px controls. Other stations are unaffected. */
+@media (max-width:360px) and (orientation:portrait) {
+  html.fit-ex10 #v-puz .ex10-game-shell[data-stage-id="ml10_01"] .ex10-game-content .ex10-clues {
+    margin-block:4px 6px!important;
+  }
+  html.fit-ex10 #v-puz .ex10-game-shell[data-stage-id="ml10_01"] .ex10-game-content .ex10-clue {
+    padding:4px 3px!important;
+    line-height:1.43!important;
+  }
+  html.fit-ex10 #v-puz .ex10-game-shell[data-stage-id="ml10_01"] .ex10-dials {
+    margin-block:8px!important;
+    padding-block:8px!important;
   }
 }
 

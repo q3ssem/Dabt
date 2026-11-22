@@ -321,6 +321,58 @@ async def run():
 
             assert not side_mobile["titleCollision"] and not side_mobile["overflow"],f"Side title collides on {width}px: {side_mobile}"
             if SHOTS: await page.screenshot(path=str(SHOTS/f"side-lighthouse-light-{width}.png"))
+            if width==320:
+                # WebKit formerly pushed the last row and status off the
+                # 760px screenshot. Keep all real buttons reachable and >=44px.
+                lower=await page.evaluate("""()=>{
+                    const shell=document.querySelector('#v-puz .ex10-game-shell[data-stage-id="ml10_01"]');
+                    const buttons=[...shell.querySelectorAll('.ex10-game-content > .ex10-controls button')];
+                    const status=shell.querySelector('#ex10-feedback')?.getBoundingClientRect();
+                    return {buttons:buttons.map(b=>{const r=b.getBoundingClientRect();return {
+                        left:r.left,right:r.right,height:r.height,bottom:r.bottom};}),
+                        statusTop:status?.top??null,viewport:innerHeight};
+                }""")
+                assert len(lower["buttons"])==3,f"Lighthouse recovery tools missing: {lower}"
+                assert all(b["height"]>=44 and b["left"]>=-1 and b["right"]<=width+1
+                           and b["bottom"]<=height-4 for b in lower["buttons"]),f"Lighthouse buttons clipped: {lower}"
+                assert lower["statusTop"] is not None and lower["statusTop"]<height-6,f"Lighthouse feedback entirely below fold: {lower}"
+        # Verify the lighthouse clue background in DARK mode independently:
+        # pale text must never be placed on the default light cream parent.
+        await page.set_viewport_size({"width":390,"height":844})
+        await page.evaluate("""()=>{
+            S.st.skin='dark';S.save();document.documentElement.dataset.skin='dark';
+            ML10.startStage(0);
+        }""")
+        await page.locator('#v-puz .ex10-game-shell[data-stage-id="ml10_01"] .ex10-clue').first.wait_for(state='visible',timeout=15000)
+        dark_clues=await page.evaluate("""()=>{
+            const p=document.querySelector('#v-puz .ex10-game-shell[data-stage-id="ml10_01"] .ex10-clues');
+            const clue=p.querySelector('.ex10-clue');
+            const s=getComputedStyle(p),c=getComputedStyle(clue);
+            const values=x=>[...x.matchAll(/[0-9.]+/g)].slice(0,3).map(v=>+v[0]);
+            const light=x=>{const v=values(x).map(z=>{z/=255;return z<=.04045?z/12.92:((z+.055)/1.055)**2.4;});
+                return .2126*v[0]+.7152*v[1]+.0722*v[2];};
+            const a=light(s.backgroundColor),b=light(c.color);
+            return {background:s.backgroundColor,ink:c.color,contrast:(Math.max(a,b)+.05)/(Math.min(a,b)+.05),
+                count:p.querySelectorAll('.ex10-clue').length,overflow:document.documentElement.scrollWidth>innerWidth+3};
+        }""")
+        assert dark_clues["contrast"]>=4.5 and dark_clues["count"]==5 and not dark_clues["overflow"],f"Dark lighthouse evidence unreadable: {dark_clues}"
+        if SHOTS: await page.screenshot(path=str(SHOTS/"side-lighthouse-dark-390.png"))
+        # Complete the actual lock and inspect the result panel and next/retry/map.
+        for digit,steps in ((1,4),(2,2)):
+            for _ in range(steps):
+                await page.locator(f'[data-dial="{digit}"][data-dir="up"]').click()
+        await page.locator('[data-ex10="check-code"]').click()
+        await page.locator('#v-puz .ex10-outcome').wait_for(state='visible',timeout=12000)
+        result=await page.evaluate("""()=>{
+            const p=document.querySelector('#v-puz .ex10-outcome');
+            const actions=[...p.querySelectorAll('.ex10-actions-row button')];
+            return {heading:p.querySelector('h2')?.textContent,actions:actions.map(b=>{
+                const r=b.getBoundingClientRect();return {height:r.height,width:r.width};}),
+                overflow:document.documentElement.scrollWidth>innerWidth+3};
+        }""")
+        assert result["heading"]=="نجاح!" and len(result["actions"])==3,f"Lighthouse outcome is incomplete: {result}"
+        assert all(min(b["width"],b["height"])>=44 for b in result["actions"]) and not result["overflow"],f"Result controls inaccessible: {result}"
+        if SHOTS: await page.screenshot(path=str(SHOTS/"side-lighthouse-result-dark-390.png"))
         assert not errors,errors[:5]
         print("BOARD_VISUAL_ACCEPTANCE="+json.dumps({
           "engine":ENGINE,"panels":len(rows)+3,"themes":["light","dark"],
