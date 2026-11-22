@@ -18,7 +18,9 @@
 - إلغاء رسامي خرائط التنقل القديمة في `ui/journey-hub.js` و`treasure/app.js` و`atheran/campaign/campaign.js` و`expedition10/app.js`.
 - استبدالها بمجلدات الفصول والمحطات، مع تقسيم الحملة الرسمية أعلى الرحلة الجانبية.
 - إزالة هندسة الإحداثيات والمجموعات غير اللازمة من `ui/designs_art/journey/v3/stations.js` مع حفظ ترتيب الـ85 محطة ومعرّفاتها.
-- حذف 5 صور تنقل قديمة: `expedition10/art/world-map.webp`، `treasure/art/map.webp`، `ui/designs_art/journey/journey_map.png`، `ui/designs_art/journey/journey_map.webp`، `ui/designs_art/journey/v3/map/world_map_vertical.webp`.
+- حذف 17 صورة خرائط تنقل قديمة، تشمل 5 صور رئيسية: `expedition10/art/world-map.webp`، `treasure/art/map.webp`، `ui/designs_art/journey/journey_map.png`، `ui/designs_art/journey/journey_map.webp`، `ui/designs_art/journey/v3/map/world_map_vertical.webp`.
+- إزالة 12 أصلًا قديمًا آخر من طبقات وعلامات وإطار خريطة أَثْرَان، مع تحديث جردها الموثق بالمجموع الاختباري من 546 إلى 535 أصلًا فعالًا؛ إبقاء أصول الألغاز ومشاهد المناطق.
+- نقل مدخل دفتر أَثْرَان من الخريطة القديمة إلى قائمة أدلة الفصول، مع المحافظة على تقدم صفحاته المكتشفة.
 - تقليل CSS البائد المرتبط بالخرائط، وتحديث الكاش دون الاتصال في الإصدار 5.5.30؛ تنظيف الاختبارات التي كانت تتوقع الخرائط القديمة.
 - بقاء الملاحظات والكنوز والأختام والانتقالات وأصول المشاهد وأدوات الألغاز والخرائط التي **تستخدم داخل ألغاز**.
 

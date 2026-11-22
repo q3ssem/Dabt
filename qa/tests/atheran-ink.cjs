@@ -48,7 +48,9 @@ assert.strictEqual(W.atheranSecrets().length,5,'journal consumes five existing s
 assert(icon.innerHTML.includes('<svg class="atheran-ink"'),'library card receives its dedicated SVG');
 assert(icon.className.includes('atheran-ink-box'),'library card receives art frame styling');
 W.cards();assert(icon.innerHTML.includes('<svg class="atheran-ink"'),'repeat card refresh does not overwrite bespoke art');
-const hub=win.aHubHTML();assert(hub.includes('دفتر أَثْرَان · 3/26'),'journal button count derives from existing saved discovery state');
+assert.strictEqual(win.MINDLAB_ATHERAN_JOURNAL.count(),3,'journal count derives from the original saved discovery state');
+assert(typeof win.MINDLAB_ATHERAN_JOURNAL.open==='function','map-free chapter folders can open the original journal');
+const hub=win.aHubHTML();assert(!hub.includes('atheran-journal-open'),'removed Atheran atlas does not inject a hidden journal button');
 W.atheranOpenJournal();
 const veil=body.children[0],entries=veil.querySelectorAll('.atheran-book-entry');
 assert.strictEqual(entries.length,26,'journal renders all 26 atlas pages');
@@ -60,4 +62,4 @@ assert.strictEqual(veil.querySelector('.atheran-book-count').textContent,'اكت
 assert.strictEqual(veil.querySelector('.atheran-book-progress').children[0].style.width,(3/26*100)+'%','journal progress bar is accurate');
 veil.querySelector('.atheran-book-close').listeners.click();assert.strictEqual(body.children.length,0,'journal close control removes the modal');
 activeGame={id:'pz_wbone'};observed.fn();const secretRibbon=sheet.querySelector('.atheran-story');assert(secretRibbon&&secretRibbon.all().some(n=>n.textContent==='عالم سري · عالم bones'),'secret-world puzzle screen also receives its story ribbon');
-console.log(`Atheran atlas: ${all.length} original SVG illustrations, ${mainIds.length} main pages, ${secretIds.length} secret worlds; discovery gating and journal state verified.`);
+console.log(`Atheran journal: ${all.length} original SVG illustrations, ${mainIds.length} main pages, ${secretIds.length} secret worlds; discovery gating and journal state verified.`);
