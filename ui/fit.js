@@ -44,6 +44,9 @@
   const I_BOOK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5.5C6.5 4 9.5 4 12 6c2.5-2 5.5-2 8-.5V19c-2.5-1.5-5.5-1.5-8 .5-2.5-2-5.5-2-8-.5z"/><path d="M12 6v13.5"/></svg>';
 
   let body = null, mo = null, raf = 0, fitting = false, sheetPrevFocus = null;
+  // Mobile WebKit can miss a resize event after an in-place viewport-height change.
+  // Probe dimensions only while a puzzle is mounted; no work outside gameplay.
+  let viewportProbe = null, viewportKey = '';
   // Optional, session-only enlarged board. Native saves, zoom defaults and gameplay stay unchanged.
   let largeView = false;
   const layoutObserver = typeof ResizeObserver === 'function' ? new ResizeObserver(() => schedule()) : null;
@@ -263,7 +266,9 @@
   function mount() {
     const b = $('#stage #pzb');
     if (b === body) return;
-    if (mo) mo.disconnect(); layoutObserver?.disconnect(); body = b; closeSheet();
+    if (mo) mo.disconnect(); layoutObserver?.disconnect();
+    if (viewportProbe) { clearInterval(viewportProbe); viewportProbe = null; }
+    body = b; closeSheet();
     if (!b) { const p = $('#play'); if (p) p.classList.remove('fit'); return; }
     arrange(); hud(); schedule();
     // Observe the viewport-height play container as well: some mobile WebKit resizes
@@ -273,6 +278,20 @@
     mo = new MutationObserver(() => { hud(); pageClues(b); $$('details.ui-rules:not([open])', b).forEach(d => { d.open = true; }); schedule(); });
     mo.observe(b, { childList: true, subtree: true });
     b.addEventListener('load', schedule, true); b.addEventListener('toggle', schedule, true);
+    // Request a fresh fit if WebKit changes its visual viewport without dispatching
+    // resize/ResizeObserver callbacks. Keep this bounded to the live game board.
+    const viewportSignature = () => {
+      const pin = $('#play > .pin'), vv = window.visualViewport;
+      if (!pin) return '';
+      return [innerWidth, innerHeight, Math.round(pin.getBoundingClientRect().bottom),
+        Math.round(vv?.height || 0), Math.round(vv?.offsetTop || 0)].join(':');
+    };
+    viewportKey = viewportSignature();
+    viewportProbe = setInterval(() => {
+      if (body !== b || !b.isConnected || document.hidden) return;
+      const next = viewportSignature();
+      if (next !== viewportKey) { viewportKey = next; schedule(); }
+    }, 250);
   }
   function watch() {
     const st = $('#stage'); if (!st) return setTimeout(watch, 300);
