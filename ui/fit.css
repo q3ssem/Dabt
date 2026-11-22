@@ -353,3 +353,21 @@ html[data-skin="dark"] .fit-sh-magnify {
 html[data-skin="dark"] .fit-sh-magnify[aria-pressed="true"] {
   background: #355b51;
 }
+
+/* Batch 3: safe 44px controls for labelled choices in the optional
+   enlarged/scrollable board. Do not resize absolute-positioned nodes or stars:
+   their hit areas require separate geometry and overlap review. */
+#play.fit #pzb.fit-large :is(
+  .fit-clue-controls button,
+  .pl-rot,
+  .jail-card button,
+  .heart-tools button,
+  .pdseq button,
+  .aswg button,
+  .seg.xseg button
+) {
+  min-height:44px!important;
+}
+#play.fit #pzb.fit-large :is(.pl-rot,.pdseq button) {
+  min-width:44px!important;
+}
