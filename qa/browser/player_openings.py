@@ -25,6 +25,6 @@ async def open_side_map(page):
     if await launch.count() and await launch.first.is_visible():
         await launch.first.click()
     else:
-        await page.evaluate("()=>window.ML10&&(ML10.legacyRenderMap?.()||ML10.renderMap())")
+        await page.evaluate("()=>window.ML10&&(ML10.legacyRenderMap?ML10.legacyRenderMap():ML10.renderMap())")
     await page.wait_for_timeout(250)
     await close_transition(page)
