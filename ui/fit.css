@@ -382,3 +382,14 @@ html[data-skin="dark"] .fit-sh-magnify[aria-pressed="true"] {
   min-width:44px!important;
   min-height:44px!important;
 }
+
+/* WebKit small-screen fallback for the coordinate-dense route puzzle.
+   Contain an asynchronously stale fit height inside the interactive board;
+   never clip route controls or scroll the whole page. */
+@media (max-width: 360px) {
+  #play.fit:not(.xframe)[data-la-game="pz_tpath"] #pzb {
+    max-height: calc(100dvh - 168px);
+    overflow-y: auto !important;
+    overscroll-behavior: contain;
+  }
+}
