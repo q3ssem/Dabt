@@ -94,6 +94,9 @@ async def run():
             tiles=page.locator('#v-puz .ml-folder-grid .ml-folder-puzzle')
             assert not await tiles.nth(1).is_disabled(),'real stored progress does not unlock the following puzzle'
             assert await tiles.nth(2).is_disabled(),'winning first puzzle incorrectly unlocks entire folder'
+            assert 'ml-folder-completed' in (await tiles.nth(0).get_attribute('class') or ''),'won card lacks distinct style'
+            assert 'مكتمل' in (await tiles.nth(0).inner_text()),'won card lacks a visible completion label'
+            assert not await tiles.nth(0).is_disabled(),'won puzzle cannot be replayed'
             await page.reload(wait_until='load')
             main=page.locator('.mpc[data-m=main]')
             if await main.count() and await main.is_visible(): await main.click()
