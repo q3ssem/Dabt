@@ -48,7 +48,7 @@ function toolIcon(text, fn, src) {
 function top(v,sub,title){
  const focus=view==='story'||view==='puzzle';
  const tools=focus?[
-  toolIcon('المحطات',map,'watercolor/art/icons54/map.webp'),
+  toolIcon('المحطات',map,'watercolor/art/icons54/compass.webp'),
   toolIcon('دفتر الرحلة',()=>modal('notebook'),ART+'icon_journal.webp'),
   toolIcon('الكنوز',()=>modal('treasures'),'watercolor/art/icons54/chest.webp')
  ]:[
@@ -101,9 +101,6 @@ function dailyCard(){const d=daily();if(!d)return E('section',{class:'v5-daily l
  return E('section',{class:'v5-daily'},E('div',{class:'v5-daily-art',style:`background-image:url('${ART}${d.s.scene}.webp')`}),E('div',{},E('span',{class:'t7-kicker',text:'لغز اليوم · ترتيب جديد كل يوم'}),E('h3',{text:d.s.title}),
   E('p',{text:d.done?`حللته اليوم في ${A(d.done.moves)} حركة (أقل عدد ${A(d.board.min)}).`:`أقل عدد للحل: ${A(d.board.min)} حركات.`}),button(d.done?'العبه مرة أخرى':'العب لغز اليوم',openDaily,'primary')));}
 // The final door fills seal by seal as the secrets are found.
-function secretsMap(){const x=state(),n=Object.keys(x.bonus).length;return E('section',{class:'v5-smap'},E('div',{class:'v5-smap-door'},...D.SECRETS5.map((Q,ch)=>{const got=!!x.bonus[D.secrets[ch].id];return E('button',{type:'button',class:'v5-smap-slot'+(got?' got':''),disabled:!got,'aria-label':got?Q.title:'سر لم يُكتشف بعد',onclick:()=>openSecret(ch)},got?img(Q.seal):E('i',{text:A(ch+1)}));})),
- E('p',{text:n===7?'اجتمعت الأختام السبعة على باب الطريق الثامن.':`${A(n)} من ٧ أختام على باب الطريق الثامن. كل سر تكتشفه يضيء ختمًا.`}));}
-
 /* ---------- chapter-to-chapter passages: narrative only, no changes to puzzle rules ---------- */
 const SEA_PASSAGES={
  1:{speaker:'رِواء',title:'نداء خلف الضباب',text:'عاد نور المنارة إلى البحر، لكنه لم يكشف الساحل التالي. حملت الريح نغمة جرس بعيدة، ثم أعادها الضباب ثلاث مرات. قالت رِواء: «هذه ليست مصادفة؛ هناك من يجيب عن إشارة جدّك. سنتبع الصوت، ونبقي المرفأ خلفنا آمنًا».',note:'أثبت ختم المرجان أن الضوء يبدأ من هنا. الآن نحتاج إلى الإصغاء لما يردّ عليه.',action:'اتبعوا نداء الأجراس حتى مملكة الضباب.'},
@@ -207,13 +204,13 @@ function renderFinale(){const s=D.stations[active],v=shell();top(v,'اكتملت
   E('p',{class:'t7-help',text:'بقي الجد بإرادته عند المرفأ الداخلي يرعى إشارات الطريق بعدما قطعت العواصف الاتصال بالمراسي، ووزّع الأدلة عند الأمناء حتى لا يحتكر طالبو الذهب الممر. ما أصلحته في رحلتك أعاد الاتصال، ففتح الطريق بأمان.'}),
   sealMemory(),
   E('p',{class:'v5-stars',text:stars(s)+' · يمكنك إعادة أي محطة لنيل النجوم الباقية.'}),
-  button('العودة إلى الخريطة',map,'primary'),button('دفتر الرحلة',()=>modal('notebook')),button('العب التحدي التالي',()=>{view='puzzle';render();}));
+  button('رجوع إلى المحطات',map,'primary'),button('دفتر الرحلة',()=>modal('notebook')),button('العب التحدي التالي',()=>{view='puzzle';render();}));
  v.append(E('div',{class:'t7-story-layout'},E('div',{class:'v5-finale'},E('img',{class:'v5-finale-scene',src:ART+s.scene+'.webp',alt:''}),E('i',{class:'v5-finale-light','aria-hidden':'true'}),E('img',{class:'v5-finale-gf',src:ART+'character_grandfather.webp',alt:'الجد'})),ending));}
 function renderLetter(){const v=shell(),Q=D.SECRETS5[letterCh],next=letterCh===6?20:(letterCh+1)*3;top(v,'سر '+D.chapters[letterCh][0],Q.title);
  const mark=E('div',{class:'v5-letter-mark'+(Q.col?' col':'')+(Q.after?' after':''),'aria-label':Q.mark},...Q.markArt.map(a=>img(a)),E('span',{text:Q.arrow}));
  v.append(E('div',{class:'t7-story-layout'},E('div',{class:'v5-letter'},img(Q.art),E('p',{text:Q.text}),mark),
   E('section',{class:'t7-paper'},E('span',{class:'t7-kicker',text:'دليل محفوظ للنهاية'}),E('h2',{text:Q.title}),E('p',{text:Q.mark+' احتفظ بها حتى تجتمع أدلة البحار السبعة.'}),
-   button('العودة إلى الخريطة',map,'primary'),next<21&&unlocked(next)?button('إلى '+(letterCh===6?D.stations[20].name:D.chapters[letterCh+1][0]),()=>journeyEntry?map():open(next)):null)));}
+   button('رجوع إلى المحطات',map,'primary'),next<21&&unlocked(next)?button('إلى '+(letterCh===6?D.stations[20].name:D.chapters[letterCh+1][0]),()=>journeyEntry?map():open(next)):null)));}
 
 /* ---------- notebook & treasures ---------- */
 function modal(kind){const nb=kind==='notebook',d=E('dialog',{class:'t7-modal','aria-label':nb?'دفتر الرحلة':'خزانة الكنوز'}),x=state(),T=B.v5state(x);

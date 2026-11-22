@@ -91,8 +91,13 @@ async def main(a):
             problems.append('fresh profile already has journey progress')
         # ---- new journey from the puzzles tab ----
         await page.click('.tab[data-tab=puz]'); await page.wait_for_timeout(400)
-        await page.click('.v5-hubcard'); await page.wait_for_timeout(400)
-        await page.locator('.t7-maphero .t7-btn.primary').click(); await page.wait_for_timeout(400)
+        # Open the native first sea station through the map-free chapter folders.
+        await page.locator('#mlj-journey-entry').click()
+        await page.locator('#mlj-unified-hub .ml-folder-chapter[data-chapter="seven_seas"]').click()
+        await page.locator('#mlj-unified-hub .ml-folder-station[data-station-id="sea7_0"]').click()
+        await close_transition(page)
+        await dismiss_opening(page,wait=1500)
+        await page.wait_for_timeout(350)
         tools_seen, passages, sound = {}, 0, {}
         for i in range(21):
             n0 = len(errs)
@@ -150,15 +155,19 @@ async def main(a):
         if nb['pages'] < 21 + 7 or not nb['oath']: problems.append(f'notebook incomplete {nb}')
         await page.locator('.t7-modal .v546-notebook-oath .t7-btn.primary').click(); await page.wait_for_timeout(400)
         if not await page.locator('.v5-finale').count(): problems.append('finale replay from notebook failed')
-        await page.get_by_role('button', name='العودة إلى الخريطة').click(); await page.wait_for_timeout(300)
-        slots = await page.locator('.v5-smap-slot.got').count()
-        if slots != 7: problems.append(f'eighth-road door shows {slots}/7 seals')
-        for ch in range(7):
-            await page.evaluate(f'()=>T7.openSecret({ch})'); await page.wait_for_timeout(150)
+        if await page.locator('.v546-seal-card').count() != 7:
+            problems.append('final scene lost its seven earned-seals visual record')
+        await page.get_by_role('button',name='رجوع إلى المحطات').click()
+        await page.locator('#mlj-unified-hub').wait_for(state='visible')
+        await page.locator('#mlj-unified-hub .mlj-v3-extras summary').click()
+        secrets=await page.evaluate('()=>T7.data.secrets.map(s=>({id:s.id,name:s.collectible}))')
+        for ch,rec in enumerate(secrets):
+            if not await page.locator('#mlj-unified-hub .mlj-v3-extras button',has_text=rec['name']).count():
+                problems.append(f'earned secret {ch} missing from journey journal')
+            await page.evaluate(f'()=>T7.openSecret({ch})'); await page.wait_for_timeout(160)
             if not await page.locator('.v5-letter').count(): problems.append(f'secret letter {ch} not shown')
-        await page.evaluate('()=>T7.map()'); await page.wait_for_timeout(200)
-        await page.get_by_role('button', name='إعادة مشاهدة الخاتمة').click(); await page.wait_for_timeout(400)
-        if not await page.locator('.v5-finale').count(): problems.append('finale replay from map failed')
+        await page.evaluate('()=>T7.openFinale()'); await page.wait_for_timeout(200)
+        if not await page.locator('.v5-finale').count(): problems.append('finale replay from native journey engine failed')
         if shots: await page.screenshot(path=str(shots / 'finale.png'), full_page=True)
         # ---- abrupt close: mid-board progress written before the tab dies ----
         await page.evaluate('()=>T7.open(4)'); await page.click('.v5-intro-go'); await page.wait_for_timeout(250)

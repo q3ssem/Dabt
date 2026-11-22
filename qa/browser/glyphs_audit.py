@@ -50,7 +50,7 @@ async def main():
             if tab == 'me': await pg.evaluate("()=>document.querySelectorAll('#v-me details').forEach(d=>d.open=true)"); await pg.wait_for_timeout(300)
             await scan('tab:' + tab)
         await pg.click('.tab[data-tab=puz]'); await pg.wait_for_timeout(400)
-        await pg.evaluate("()=>{ML10.renderMap();ML10.startStage?ML10.startStage(0):ML10.openFromJourney(0)}"); await pg.wait_for_timeout(700)
+        await pg.evaluate("async()=>{await window.mindlabSide.start();ML10.startStage(0)}"); await pg.wait_for_timeout(700)
         try: await dismiss_opening(pg)
         except Exception: pass
         st = pg.locator('[data-ex10="start"]')
