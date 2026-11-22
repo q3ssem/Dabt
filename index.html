@@ -7069,7 +7069,9 @@ function runPMirror(){return pzPlay('pz_pmirror',api=>{
       const i=st.findIndex((v,j)=>v!==P.sol[j]);
       if(i<0)return null;
       st[i]=P.sol[i];if(draw())finish('كل البلّورات أضاءت.');
-      return'قلبت لك مرآة.';
+      return k===2
+        ? `عدلت المرآة رقم ${XAR(i+1)} لتقود الشعاع نحو البلورات. راقب مسار الضوء قبل المحاولة التالية.`
+        : `قلبت المرآة رقم ${XAR(i+1)}، فاقترب الشعاع من إضاءة البلورات. راجع ما بقي من المرايا.`;
     },
     reveal:()=>{st=P.sol.slice();draw();return'هذا الوضع الصحيح.'}
   };
