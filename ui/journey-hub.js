@@ -340,15 +340,18 @@
     modal.innerHTML =
       '<div class="mlj-modal-card mlj-evidence-card" dir="rtl">' +
       '<div class="mlj-head"><h2>دفتر الأدلة</h2><button type="button" id="mlj-evidence-close">إغلاق</button></div>' +
-      '<p class="mlj-evidence-intro">دوّن ملاحظتك من المشهد، ثم قارن مصادر مستقلة. هذه مسودة شخصية؛ ليست دليلًا مثبتًا ولا تفتح أختامًا.</p>' +
+      '<p class="mlj-evidence-intro">دفتر القصة: الملاحظة مسودة شخصية، والقرينة تُثبت بعد حل اللغز وفحص بطاقة المراجعة. الختم هنا مستقل عن أختام الحملة.</p>' +
       '<div class="mlj-evidence-tabs" role="group" aria-label="ملفات الأدلة"></div>' +
       '<h3 class="mlj-evidence-title"></h3><p class="mlj-evidence-question"></p>' +
       '<p class="mlj-evidence-summary" aria-live="polite"></p>' +
-      '<ul class="mlj-evidence-sources"></ul><label for="mlj-evidence-note">ملاحظتك عن هذا الملف</label>' +
+      '<ul class="mlj-evidence-sources"></ul>' +
+      '<div class="mlj-evidence-review" hidden aria-label="اختبار القرينة"></div>' +
+      '<div class="mlj-evidence-inference" aria-label="استنتاج الملف"></div>' +
+      '<label for="mlj-evidence-note">ملاحظتك عن هذا الملف</label>' +
       '<textarea id="mlj-evidence-note" maxlength="600" rows="4" placeholder="ماذا لاحظت؟ ومن أين حصلت على المعلومة؟"></textarea>' +
       '<div class="mlj-evidence-actions"><button type="button" id="mlj-evidence-save">حفظ الملاحظة</button>' +
       '<span role="status" aria-live="polite" id="mlj-evidence-status"></span></div>' +
-      '<p class="mlj-evidence-caveat">حالة «الدليل المثبت» و«الاستنتاج» تحتاجان تحققًا داخل الألغاز. لا يُمنحان بمجرد كتابة ملاحظة.</p></div>';
+      '<p class="mlj-evidence-caveat">هذه بطاقات مراجعة مؤلفة من وثيقة «جزران»؛ لا تعني أن نص القرينة معروض بالفعل على اللوحة القديمة. الختم لا يغيّر المكافآت أو شروط الفتح الحالية.</p></div>';
     const tabs = $('.mlj-evidence-tabs', modal);
     const note = $('#mlj-evidence-note', modal);
     const status = $('#mlj-evidence-status', modal);
@@ -364,17 +367,113 @@
       btn.onclick = () => { selected = file.id; render(); };
       tabs.append(btn);
     }
+    function noteStatus(message) {
+      status.textContent = message;
+    }
+    function returnToEvidenceSource(id) {
+      // Use only the native UI/gates: no direct startRun, no force-complete, no save writes.
+      try {
+        if (id.startsWith('pz_a') || id.startsWith('pz_w')) {
+          const stations = typeof ASTN !== 'undefined' ? ASTN : [];
+          const index = stations.findIndex(st => st.id === id);
+          if (index >= 0 && window.ATHERAN_CAMPAIGN?.canOpenStation(index)) {
+            dismiss();
+            window.ATHERAN_CAMPAIGN.openJourneyStation(index);
+            return true;
+          }
+        }
+        const tile = palaceTile(id);
+        if (tile && typeof tile.click === 'function') {
+          dismiss();
+          tile.click();
+          return true;
+        }
+      } catch (_) {}
+      return false;
+    }
+    function sourceChallenge(src) {
+      const target = $('.mlj-evidence-review', modal);
+      target.hidden = false;
+      target.replaceChildren();
+      const header = document.createElement('strong');
+      header.textContent = 'التحقق من قرينة: ' + src.name;
+      const intro = document.createElement('p');
+      intro.textContent = 'سؤال مراجعة من القصة، بعد إنجاز اللغز الأصلي: ' + src.challenge.question;
+      target.append(header, intro);
+      const actions = document.createElement('div');
+      actions.className = 'mlj-evidence-options';
+      src.challenge.choices.forEach((label, index) => {
+        const option = document.createElement('button');
+        option.type = 'button';
+        option.textContent = label;
+        option.onclick = () => {
+          const result = window.MindlabEvidence?.verifySource(src.id, index, evidenceSourceStatus);
+          if (result?.ok) {
+            render();
+            noteStatus(result.awarded ? 'ثُبتت القرينة بمصدرها ووقت مراجعتها.' : 'هذه القرينة مثبتة من قبل.');
+          } else noteStatus(result?.reason === 'wrong-answer'
+            ? 'الإجابة لا تطابق قرينة القصة. راجع النص وحاول مرة أخرى.'
+            : 'لا يمكن تثبيت القرينة دون إنجاز لغزها أو إتاحة التخزين.');
+        };
+        actions.append(option);
+      });
+      target.append(actions);
+      target.scrollIntoView({block:'nearest'});
+    }
+    function renderInference(snapshot) {
+      const area = $('.mlj-evidence-inference', modal);
+      area.replaceChildren();
+      const title = document.createElement('strong');
+      title.textContent = snapshot.inferenceVerified ? 'ختم الملف · ثبت مرة واحدة'
+        : snapshot.readyToInfer ? 'اختبر الاستنتاج من مصادر مستقلة' : 'ما ينقص الاستنتاج';
+      area.append(title);
+      const message = document.createElement('p');
+      if (snapshot.inferenceVerified) {
+        message.textContent = 'تمت مراجعة الأدلة وربط الاستنتاج. وقت الختم: ' +
+          new Date(snapshot.sealAt).toLocaleString('ar-SA') + '. لا تتكرر المكافأة عند الإعادة.';
+      } else if (!snapshot.readyToInfer) {
+        message.textContent = 'قرائن مثبتة: ' + snapshot.verifiedCount + '، مراجع مستقلة: ' +
+          snapshot.independentCount + '. تحتاج إلى ' +
+          (selected === 'people' ? 'العوالم الخمسة بعد الخاتمة' : 'مرجعين مستقلين على الأقل') +
+          ' قبل ختم هذا الملف.';
+        if (selected === 'testimony' && snapshot.verifiedCount >= 2 && snapshot.independentCount < 2)
+          message.textContent += ' هاتان النسختان تعودان إلى صفحة واحدة. ابحث عن شاهد رأى القارب.';
+      } else {
+        message.textContent = snapshot.inference.question;
+      }
+      area.append(message);
+      if (snapshot.readyToInfer && !snapshot.inferenceVerified) {
+        const choices = document.createElement('div');
+        choices.className = 'mlj-evidence-options';
+        snapshot.inference.choices.forEach((label, index) => {
+          const button = document.createElement('button');
+          button.type = 'button';
+          button.textContent = label;
+          button.onclick = () => {
+            const result = window.MindlabEvidence?.infer(selected, index, evidenceSourceStatus);
+            if (result?.ok) {
+              render();
+              noteStatus(result.awarded ? 'صدر ختم دفتر الأدلة مرة واحدة، دون تغيير جوائز الحملة.'
+                : 'الختم مثبت سابقًا.');
+            } else noteStatus(result?.reason === 'wrong-answer'
+              ? 'الاستنتاج لا يجمع القرائن بشكل صحيح. راجع المصادر المستقلة.'
+              : 'هناك أدلة ناقصة أو تخزين غير متاح؛ لا يمكن إصدار الختم.');
+          };
+          choices.append(button);
+        });
+        area.append(choices);
+      }
+    }
     function render() {
       const file = evidenceFile(selected);
+      const snapshot = getEvidenceSnapshot(selected);
       $('.mlj-evidence-title', modal).textContent = file.name;
       $('.mlj-evidence-question', modal).textContent = file.question;
-      const snapshot = getEvidenceSnapshot(selected);
-      const plural = snapshot.nativeCompleted;
       $('.mlj-evidence-summary', modal).textContent =
-        'إنجازات مؤكدة من المحرك: ' + plural + ' / ' + snapshot.sourceCount +
-        (snapshot.readyToCompare
-          ? ' · يمكنك مقارنة مصادر المحطات المكتملة، لكن استقلال الشهادات وصحة الاستنتاج لم يُتحقّق منهما بعد.'
-          : ' · أكمل مصادر مختلفة ثم قارن أدلتها قبل تكوين الاستنتاج.');
+        'منجز في محركات الألغاز: ' + snapshot.nativeCompleted + ' / ' + snapshot.sourceCount +
+        ' · قرائن مثبتة: ' + snapshot.verifiedCount +
+        ' · مراجع مستقلة: ' + snapshot.independentCount +
+        (snapshot.inferenceVerified ? ' · ختم الدفتر مكتمل' : ' · الختم غير مكتمل');
       const list = $('.mlj-evidence-sources', modal);
       list.replaceChildren();
       for (const src of snapshot.sources) {
@@ -383,17 +482,46 @@
         const heading = document.createElement('strong');
         heading.textContent = src.name;
         const source = document.createElement('small');
-        source.textContent = src.state === 'completed' ? 'أنجزت المحطة · سجل ' + src.origin
-          : src.state === 'pending' ? 'لم يثبت إنجاز المحطة في سجل ' + src.origin
+        source.textContent = src.verified ? 'قرينة مثبتة · ' + src.origin +
+            ' · ' + new Date(src.verifiedAt).toLocaleString('ar-SA')
+          : src.state === 'completed' ? 'أنجزت اللغز · افحص قرينته'
+          : src.state === 'pending' ? 'لم يثبت إنجاز اللغز في سجل ' + src.origin
           : src.state === 'undiscovered' ? 'لم يُكتشف هذا الفرع بعد'
-          : 'مصدر في المكتبة · لم يُربط إثبات إنجازه بالحملة';
+          : 'لا يتوفر سجل إنجاز موثوق لهذا المصدر';
         item.append(heading, source);
+        if (src.verified && src.clue) {
+          const quote = document.createElement('p');
+          quote.className = 'mlj-evidence-quote';
+          quote.textContent = src.clue;
+          item.append(quote);
+        }
+        const actions = document.createElement('div');
+        actions.className = 'mlj-evidence-source-actions';
+        if (src.done && !src.verified && src.challenge) {
+          const check = document.createElement('button');
+          check.type = 'button';
+          check.textContent = 'تحقق من القرينة';
+          check.onclick = () => sourceChallenge(src);
+          actions.append(check);
+        }
+        const revisit = document.createElement('button');
+        revisit.type = 'button';
+        revisit.textContent = 'ارجع للمشهد';
+        revisit.onclick = () => {
+          if (!returnToEvidenceSource(src.id))
+            noteStatus('المحطة لم تُفتح بعد، أو لا يمكن الوصول إليها من المكتبة دون تجاوز شروطها.');
+        };
+        actions.append(revisit);
+        item.append(actions);
         list.append(item);
       }
       tabs.querySelectorAll('button').forEach(btn =>
         btn.setAttribute('aria-pressed', String(btn.dataset.file === selected)));
+      $('.mlj-evidence-review', modal).replaceChildren();
+      $('.mlj-evidence-review', modal).hidden = true;
+      renderInference(snapshot);
       note.value = getEvidenceDraft(selected);
-      status.textContent = '';
+      noteStatus('');
     }
     function dismiss() {
       modal.remove();
