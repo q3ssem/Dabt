@@ -62,6 +62,9 @@ async def main():
     await page.wait_for_function("()=>window.mindlabPlayLayers?.ready===true",timeout=45000)
     await page.evaluate("async()=>await window.mindlabSide.start()")
     await page.wait_for_function("()=>typeof window.ML10?.startStage==='function'",timeout=25000)
+    # The lazy puzzle tab may finish one final renderPuz() after side JS loads;
+    # let that initial tab paint settle before previewing the first side stage.
+    await page.wait_for_timeout(1000)
 
     catalog=await page.evaluate("()=>ML10.stages.map((s,i)=>({index:i,id:s.id,name:s.name}))")
     assert len(catalog)==24, "Side journey must have 24 distinct playable stages"
