@@ -48,6 +48,11 @@ assert(laser.includes('return k===2?')&&laser.includes('XAR(i+1)'),
   'laser hints explain different repaired mirrors');
 assert(palace.includes('return k===2')&&palace.includes('XAR(i+1)'),
   'palace mirror hints explain different repaired mirrors');
+assert(palace.includes("busy=true;const hintButton=$('#pzh');if(hintButton)hintButton.disabled=true"),
+  'solved palace mirrors must block repeat hint charging during win animation');
+const ring=src.slice(src.indexOf('function runARing()'),src.indexOf('function runAShade()'));
+assert(ring.includes("if(q<0)return'اكتملت محاذاة الأخشاب. اضغط «ثبّت التواريخ»"),
+  'final ring-workshop hint must explain validation when all boards are aligned');
 const runtime=fs.readFileSync('ui/app.js','utf8');
 const exhausted=runtime.match(/if\(t==null\)\{hints--;if\(!kid\)setP\(before\);[^}]+\}/)?.[0]||'';
 assert(exhausted.includes('اكتملت خطوات المساعدة المتاحة'),
