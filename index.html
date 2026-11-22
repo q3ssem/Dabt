@@ -4454,7 +4454,7 @@ function runLaser(){return pzPlay('pz_laser',api=>{
     $('#lzb').querySelectorAll('.lzc.gem').forEach(e=>{const g=P.gems[+e.dataset.g];e.classList.toggle('on',hit.has(g.x+','+g.y))});const t=$('#lzb .tgt'),on=!!r.out&&r.out[0]===P.out[0]&&r.out[1]===P.out[1];if(t)t.classList.toggle('on',on);$('#lzb').classList.toggle('reach',on)}
   function flip(i){if(api.ended||lock.has(i))return;ori[i]^=1;mang[i]+=90;tone(620,.05,'triangle');draw();if(lzWin(P,ori)){$('#lzb').classList.add('won');api.win('وصل الشعاع للهدف ومرّ على كل الجواهر.')}}
   $('#lzb').querySelectorAll('.lzc.mir').forEach(e=>e.onclick=()=>flip(+e.dataset.m));draw();pzHook({P,ori,flip});
-  return{hint:k=>{if(k===1)return'تتبّع الشعاع من المصباح خطوة خطوة، وبعض المرايا خدعة لا يمر عليها الحل أبدًا.';const c=P.mir.map((m,i)=>i).filter(i=>!P.mir[i].decoy&&ori[i]!==P.sol[i]&&!lock.has(i));if(!c.length)return null;const i=c[0];ori[i]=P.sol[i];mang[i]+=90;lock.add(i);draw();if(lzWin(P,ori))api.win('وصل الشعاع.');return'صحّحت لك أول مرآة خاطئة في طريق الشعاع (بإطار ذهبي).'},
+  return{hint:k=>{if(k===1)return'تتبّع الشعاع من المصباح خطوة خطوة، وبعض المرايا خدعة لا يمر عليها الحل أبدًا.';const c=P.mir.map((m,i)=>i).filter(i=>!P.mir[i].decoy&&ori[i]!==P.sol[i]&&!lock.has(i));if(!c.length)return null;const i=c[0];ori[i]=P.sol[i];mang[i]+=90;lock.add(i);draw();if(lzWin(P,ori))api.win('وصل الشعاع.');return k===2?`صححت المرآة رقم ${XAR(i+1)} من مسار الشعاع. راقب كيف تغيّر اتجاهه بعد هذه الخطوة.`:`ثبّتُّ اتجاه المرآة رقم ${XAR(i+1)}، وهي أقرب إلى الهدف. قارن المسار المضيء بما بقي من مرايا.`},
    reveal:()=>{P.sol.forEach((v,i)=>{if(ori[i]!==v){ori[i]=v;mang[i]+=90}});draw();return'هذا هو الطريق الصحيح.'}}})}
 
 /* ---------- المفتاح والأبواب ---------- */
