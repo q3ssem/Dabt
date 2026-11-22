@@ -15,7 +15,7 @@ import os
 import sys
 from collections import deque
 from pathlib import Path
-from playwright.async_api import async_playwright
+from playwright.async_api import async_playwright, TimeoutError as PlaywrightTimeoutError
 from player_openings import dismiss_opening,close_transition
 
 URL=sys.argv[1] if len(sys.argv)>1 else "http://127.0.0.1:8792/"
@@ -59,6 +59,8 @@ async def boot(page):
     await page.wait_for_function("()=>window.mindlabPlayLayers?.ready===true",timeout=45000)
     await page.evaluate("async()=>await window.mindlabSide.start()")
     await page.wait_for_function("()=>!!window.ML10?.renderMap && !!window.ML10Logic",timeout=30000)
+    # Settle the deferred puzzle-tab redraw before showing a side map.
+    await page.wait_for_timeout(850)
 
 async def clear_opening(page):
     for _ in range(18):
@@ -76,15 +78,24 @@ async def enter_stage(page,stage,from_previous=False):
     if from_previous:
         await click(page,'#v-puz .ex10-outcome [data-ex10="next"]')
     else:
-        if not await page.locator('#v-puz .ex10-map').count():
-            await page.evaluate("()=>ML10.renderMap()")
-        # The journey hub finishes its deferred first paint asynchronously;
-        # wait for the card/list mutation to settle before a native tap.
-        await page.wait_for_timeout(500)
-        button=page.locator(f'#v-puz .ex10-level-card[data-ex10-node="{stage}"]')
-        await check(await button.get_attribute('aria-disabled') is None,
+        # The puzzle tab schedules an additional delayed renderPuz() on
+        # startup. Its late paint can replace the side map while a card is
+        # being tapped. Restore the real map and retry its native card tap,
+        # never open a locked stage via direct engine invocation.
+        await check(await js(page,"i=>ML10.unlocked(i)",stage),
                     f"stage {stage+1} actually unlocked through prior wins")
-        await button.click(timeout=8500)
+        for attempt in range(4):
+            try:
+                await js(page,"()=>ML10.renderMap()")
+                button=page.locator(f'#v-puz .ex10-level-card[data-ex10-node="{stage}"]')
+                await button.wait_for(state="visible",timeout=3500)
+                await check(await button.get_attribute('aria-disabled',timeout=3500) is None,
+                            f"stage {stage+1} visible card is enabled")
+                await button.click(timeout=5000)
+                break
+            except PlaywrightTimeoutError:
+                if attempt==3:raise
+                await page.wait_for_timeout(250)
     await clear_opening(page)
     sid=await page.locator('#v-puz .ex10-game-shell').get_attribute('data-stage-id')
     expected=await js(page,"i=>ML10.stages[i].id",stage)
