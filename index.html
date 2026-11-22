@@ -6455,13 +6455,16 @@ Object.assign(XS_,{
 XCR[4].k='mermaid';
 
 /* ---------- station 4: سجلات القبطان — a symbol cryptogram solved by deduction ---------- */
+/* Captain ledger uses its own living word bank; the retired bottle game's data is not restored. */
+const ZK_PL=['الكهف','المعبد','البرج','الساحل','المخزن','الحجر','الصندوق','الممر','السفح'];
+const ZK_T=['الكنز تحت {P}','احفر عند {P}','سر القبطان في {P}','المفتاح قرب {P}','النقش خلف {P}','ابحث عن {P}'];
 const ZK_LV=[[4,0],[3,0],[3,1],[2,1],[2,1],[1,1],[1,2],[0,2]];
 const zkSym=k=>seaArt('captain/glyph-'+k);
 function zkMake(lv){const[give,extra]=ZK_LV[lv-1];
-  for(let t=0;t<200;t++){const place=pick(XB_PL);let words=pick(XB_T).replace('{P}',place).split(' ');if(extra)words=pick(['يا رفاقي','اسمعوا جيدا','سر القبطان']).split(' ').concat(words);
+  for(let t=0;t<200;t++){const place=pick(ZK_PL);let words=pick(ZK_T).replace('{P}',place).split(' ');if(extra)words=pick(['يا رفاقي','اسمعوا جيدا','سر القبطان']).split(' ').concat(words);
     const letters=[...new Set(words.join(''))];if(letters.some(c=>!XAL.includes(c))||letters.length>16)continue;const perm=shuffle([...Array(28).keys()]),key={};letters.forEach((c,i)=>key[c]=perm[i]);
     const freq={};words.join('').split('').forEach(c=>freq[c]=(freq[c]||0)+1);const known=shuffle(letters.filter(c=>c!=='ا'&&c!=='ل')).slice(0,give+Math.floor(letters.length/4));
-    return{words,place,letters,key,known,opts:shuffle([place,...shuffle(XB_PL.filter(p=>p!==place)).slice(0,3)])}}return zkMake(1)}
+    return{words,place,letters,key,known,opts:shuffle([place,...shuffle(ZK_PL.filter(p=>p!==place)).slice(0,3)])}}return zkMake(1)}
 function runZCode(){return pzPlay('pz_zcode',api=>{
   const P=zkMake(api.lv),inv={};P.letters.forEach(c=>inv[P.key[c]]=c);const guess={};P.known.forEach(c=>guess[P.key[c]]=c);let sel=null,miss=0,busy=false;
   api.body.innerHTML=xSheet(`${xHead(seaArt('captain/book'),'سجلات القبطان')}<ol class="xnote"><li>كل رمز = حرف واحد، ونفس الرمز = نفس الحرف دائمًا.</li><li>الكراكن كشف لك بعض الحروف. اضغط رمزًا ثم اختر حرفه من اللوحة.</li><li>الرسائل تحتوي كلمات مثل «الكنز» و«احفر» وأسماء أماكن الجزيرة.</li></ol>
@@ -7507,7 +7510,7 @@ function runPDragon(){return pzPlay('pz_pdragon',api=>{
 
 /* ---------- wing 15: قاعة الملوك السبعة — seven thrones, one trial from every arc ---------- */
 function runPHall(){return pzPlay('pz_phall',api=>{
-  const lv=Math.min(8,api.lv+2),T=[{n:'ملك الأقفال',g:()=>plMake(lv)},{n:'ملك التماثيل',g:()=>pqMake(lv)},{n:'ملك الساعات',g:()=>pcMake(lv)},{n:'ملك التنانين',g:()=>znMake(Math.min(5,lv))},{n:'ملك الشيفرات',g:()=>xbMake(Math.min(4,lv))},{n:'ملك الأنماط',g:()=>pdMake(Math.min(5,lv))},{n:'ملك البحار',g:()=>zoMake(lv)}].map(x=>({...x,P:x.g()}));
+  const lv=Math.min(8,api.lv+2),T=[{n:'ملك الأقفال',g:()=>plMake(lv)},{n:'ملك التماثيل',g:()=>pqMake(lv)},{n:'ملك الساعات',g:()=>pcMake(lv)},{n:'ملك التنانين',g:()=>znMake(Math.min(5,lv))},{n:'ملك الشيفرات',g:()=>zkMake(Math.min(8,lv))},{n:'ملك الأنماط',g:()=>pdMake(Math.min(5,lv))},{n:'ملك البحار',g:()=>zoMake(lv)}].map(x=>({...x,P:x.g()}));
   let st=0,miss=0,busy=false;const say=t=>{$('#phq').textContent=t};
   const hallRune=r=>`<img class="board70-icon" src="motion/revised/dragons/rune-${r}.webp" alt="رمز ${XAR(r+1)}">`;
   const tool=k=>`<img class="board70-icon" src="motion/pirate-revised/throne/${k}.webp" alt="${XTOOL[k].n}">`;
@@ -7531,30 +7534,63 @@ function runPHall(){return pzPlay('pz_phall',api=>{
     else if(st===3){const h=P.h.slice(),m=P.m;say(`«خذ من ١ إلى ${XAR(m)} حراشف. من يأخذ الأخيرة يفوز».`);const dr=()=>{b.innerHTML=`<div class="znpiles">${h.map((x,i)=>`<div class="znpile"><div class="hall-scales" aria-hidden="true">${Array.from({length:x},()=>board70Image('phall','dragon-scale')).join('')}</div><b>${XAR(x)}</b>${[...Array(m)].map((_,c)=>c<x?`<button class="phtk" data-i="${i}" data-c="${c+1}">خذ ${XAR(c+1)}</button>`:'').join('')}</div>`).join('')}</div>`;
         b.querySelectorAll('.phtk').forEach(e=>e.onclick=()=>{if(api.ended||busy)return;h[+e.dataset.i]-=+e.dataset.c;if(h.every(x=>!x)){next();return}const bb=znBest(h,m);h[bb[0]]-=bb[1];if(h.every(x=>!x)){fail();if(!api.ended){h.splice(0,h.length,...P.h);dr()}return}dr()})};dr();H.a=()=>{for(let g=0;g<40&&h.some(x=>x);g++){const bb=znBest(h,m);h[bb[0]]-=bb[1];if(h.every(x=>!x)){next();return}const cc=znBest(h,m);h[cc[0]]-=cc[1]}}}
     else if(st===4){
-      say('«أدر قرص الشيفرة حتى تستقيم الرسالة»');
-      b.innerHTML=`<p class="xbcode">${P.shown.join(' ')}</p>
-        <div class="hall-decoder">
-          <button type="button" id="phkd" aria-label="أدر القرص للخلف">↺</button>
-          <button type="button" id="phwheel" aria-label="قرص الشيفرة">${board70Image('pheart','cog')}<b id="phk">٠</b></button>
-          <button type="button" id="phku" aria-label="أدر القرص للأمام">↻</button>
-        </div>
-        <div class="hall-letters" id="phd" aria-live="polite"></div>
-        <div class="xkbtns"><button class="go-btn xsm" id="phgo">ثبّت القرص</button></div>`;
-      let key=0,turns=0;
-      const paint=()=>{
-        $('#phk').textContent=XAR(key);
-        $('#phwheel').style.setProperty('--angle',`${turns*360/28}deg`);
-        $('#phd').innerHTML=P.shown.map(w=>`<span>${xbDec(P.rev?[...w].reverse().join(''):w,key)}</span>`).join('');
+      say('«فك رموز سجل القبطان حتى تعرف المرسى الصحيح»');
+      const guess={};P.known.forEach(c=>guess[P.key[c]]=c);
+      let chosen=null;
+      b.innerHTML='<p class="phsm">اختر رمزًا ثم حرفه، واقرأ السجل قبل تحديد وجهة الحفر.</p>'+
+        '<div class="zkmsg" id="phcipher"></div><div class="xkb zkkb" id="phletters"></div>'+
+        '<div class="xbq" id="phplace" hidden><b>أين يشير سجل القبطان؟</b><div class="xbopts"></div></div>';
+      const alphabet=b.querySelector('#phletters');
+      for(const letter of [...XAL,'مسح']){
+        const button=document.createElement('button');
+        button.type='button';button.textContent=letter;
+        button.dataset.letter=letter==='مسح'?'':letter;
+        button.onclick=()=>{
+          if(chosen===null||api.ended||busy)return;
+          const value=button.dataset.letter;
+          if(P.known.includes(value))return;
+          for(const code of Object.keys(guess))if(guess[code]===value&&value)delete guess[code];
+          if(value)guess[chosen]=value;else delete guess[chosen];
+          tone(510,.03);draw();
+        };
+        alphabet.append(button);
+      }
+      const destination=b.querySelector('#phplace');
+      for(const place of P.opts){
+        const button=document.createElement('button');
+        button.type='button';button.textContent=place;button.dataset.place=place;
+        button.onclick=()=>{if(api.ended||busy)return;place===P.place?next():fail()};
+        destination.querySelector('.xbopts').append(button);
+      }
+      function draw(){
+        b.querySelector('#phcipher').innerHTML=P.words.map(word=>
+          '<span class="zkw">'+[...word].map(c=>{
+            const code=P.key[c],locked=P.known.includes(c);
+            return '<button type="button" class="zkc" data-code="'+code+'" '+
+              (locked?'disabled':'')+' aria-pressed="'+String(chosen===code)+'">'+
+              '<i>'+zkSym(code)+'</i><b>'+(guess[code]||'؟')+'</b></button>';
+          }).join('')+'</span>').join(' ');
+        b.querySelectorAll('#phcipher [data-code]').forEach(button=>button.onclick=()=>{
+          chosen=+button.dataset.code;draw();
+        });
+        const solved=P.letters.every(c=>guess[P.key[c]]===c);
+        destination.hidden=!solved;
+        if(solved)say('«فُك السجل. اختر الوجهة التي يذكرها النص»');
+      }
+      draw();
+      H.a=()=>{
+        P.letters.forEach(c=>guess[P.key[c]]=c);
+        draw();
+        destination.querySelectorAll('button').forEach(button=>{
+          if(button.dataset.place===P.place)button.click();
+        });
       };
-      const shift=delta=>{turns+=delta;key=(key+delta+28)%28;paint();tone(460,.035)};
-      $('#phku').onclick=$('#phwheel').onclick=()=>shift(1);$('#phkd').onclick=()=>shift(-1);
-      go(()=>key===P.s1);paint();H.a=()=>{key=P.s1;paint()};
     }
     else if(st===5){const x=P.dr[0];say(`«ما الرمز التالي في نمطي؟»`);b.innerHTML=`<div class="pdseq ltr" style="justify-content:center">${x.seq.map(r=>`<span class="pdr">${hallRune(r)}</span>`).join('')}</div><div class="pdpick ltr">${[0,1,2,3,4,5].map(r=>`<button data-r="${r}">${hallRune(r)}</button>`).join('')}</div>${x.bad>=0?'<small class="phsm">في النمط رمز خاطئ واحد، تجاهله.</small>':''}`;b.querySelectorAll('[data-r]').forEach(e=>e.onclick=()=>{if(api.ended||busy)return;+e.dataset.r===x.next?next():fail()});H.a=()=>b.querySelector(`[data-r="${x.next}"]`).click()}
     else{say('«ضع الأدوات حول العرش كما تقول النقوش».');const seat=Array(6).fill(-1);let sel=-1;const dr=()=>{b.innerHTML=`<ol class="xnote">${P.clues.map(c=>`<li>${zoText(c)}</li>`).join('')}</ol><div class="phseats hall-seats" dir="ltr">${seat.map((t,s)=>`<button class="zoslot full" data-s="${s}" style="--sx:${50+36*Math.sin(s*Math.PI/3)}%;--sy:${50-36*Math.cos(s*Math.PI/3)}%">${t>=0?tool(ZO_T[t]):XAR(s+1)}</button>`).join('')}</div><small class="phsm">الفتحة ١ هي العليا، والترقيم مع عقارب الساعة.</small><div class="zotools">${ZO_T.map((k,i)=>seat.includes(i)?'':`<button class="zotool${sel===i?' sel':''}" data-t="${i}"><i>${tool(k)}</i><small>${XTOOL[k].n}</small></button>`).join('')}</div><div class="xkbtns"><button class="go-btn xsm" id="phgo">أجب</button></div>`;
         b.querySelectorAll('[data-t]').forEach(e=>e.onclick=()=>{sel=+e.dataset.t;dr()});b.querySelectorAll('[data-s]').forEach(e=>e.onclick=()=>{const s=+e.dataset.s;if(seat[s]>=0)seat[s]=-1;else if(sel>=0){seat[s]=sel;sel=-1}dr()});go(()=>seat.every((t,s)=>P.ord[s]===t))};dr();H.a=()=>{P.ord.forEach((t,s)=>seat[s]=t);$('#phgo').click()}}}
   const H={};render();api.msg('العروش السبعة.');pzHook({st:()=>st,answer:()=>{const s=st;H.a();if(st===s&&$('#phgo'))$('#phgo').click()}});
-  return{hint:()=>`العرش ${XAR(st+1)}: فكّر كما فكرت في ${['أقفال البوابة','التماثيل المتكلمة','برج الساعات','لعبة التنين','رسالة الزجاجة','لغة التنانين','عرش المحيط'][st]}.`,reveal:()=>'الملوك لا يكشفون أسرارهم.'}})}
+  return{hint:()=>`العرش ${XAR(st+1)}: فكّر كما فكرت في ${['أقفال البوابة','التماثيل المتكلمة','برج الساعات','لعبة التنين','سجل القبطان','لغة التنانين','عرش المحيط'][st]}.`,reveal:()=>'الملوك لا يكشفون أسرارهم.'}})}
 
 /* ---------- the last heart: balance the sea scale with the pieces you gathered ---------- */
 const PH_LV=[[4,3],[4,3],[5,3],[5,4],[6,3],[6,4],[6,4],[6,4]];
