@@ -51,6 +51,8 @@ const aliasesSource = read('expedition10/app.js').split('const REUSED_SCENES=Obj
 assert.ok(aliasesSource, 'side journey uses canonical scene aliases');
 const sceneAliases = JSON.parse(aliasesSource.split(');')[0]);
 assert.equal(Object.keys(sceneAliases).length, 12, 'twelve identical scene copies replaced');
+const activeDesigns = read('ui/puzzle-designs-data.js');
+for(const scene of Object.keys(sceneAliases))assert.ok(!activeDesigns.includes('expedition10/art/scenes/' + scene), 'design registry uses canonical scene: '+scene);
 for (const [name, canonical] of Object.entries(sceneAliases)) {
   assert.ok(!fs.existsSync('expedition10/art/scenes/' + name), 'duplicate side-scene absent: ' + name);
   assert.ok(fs.existsSync(canonical) && all.includes(canonical), 'canonical scene precached: ' + canonical);
