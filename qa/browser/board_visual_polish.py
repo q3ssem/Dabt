@@ -366,12 +366,24 @@ async def run():
         result=await page.evaluate("""()=>{
             const p=document.querySelector('#v-puz .ex10-outcome');
             const actions=[...p.querySelectorAll('.ex10-actions-row button')];
-            return {heading:p.querySelector('h2')?.textContent,actions:actions.map(b=>{
-                const r=b.getBoundingClientRect();return {height:r.height,width:r.width};}),
+            const numbers=x=>[...String(x).matchAll(/[0-9.]+/g)].slice(0,3).map(v=>+v[0]);
+            const lum=x=>{const v=numbers(x).map(z=>{z/=255;return z<=.04045?z/12.92:((z+.055)/1.055)**2.4;});
+                return .2126*v[0]+.7152*v[1]+.0722*v[2];};
+            const ratio=(a,b)=>{const u=lum(a),v=lum(b);return (Math.max(u,v)+.05)/(Math.min(u,v)+.05);};
+            const bg=getComputedStyle(p).backgroundColor;
+            const heading=p.querySelector('h2'),body=p.querySelector(':scope > p');
+            return {heading:heading?.textContent,
+                headingContrast:heading?ratio(getComputedStyle(heading).color,bg):0,
+                bodyContrast:body?ratio(getComputedStyle(body).color,bg):0,
+                actions:actions.map(b=>{
+                    const r=b.getBoundingClientRect(),c=getComputedStyle(b);
+                    return {height:r.height,width:r.width,radius:parseFloat(c.borderTopLeftRadius),
+                            background:c.backgroundColor};}),
                 overflow:document.documentElement.scrollWidth>innerWidth+3};
         }""")
         assert result["heading"]=="نجاح!" and len(result["actions"])==3,f"Lighthouse outcome is incomplete: {result}"
-        assert all(min(b["width"],b["height"])>=44 for b in result["actions"]) and not result["overflow"],f"Result controls inaccessible: {result}"
+        assert result["headingContrast"]>=4.5 and result["bodyContrast"]>=4.5,f"Dark outcome text is unreadable: {result}"
+        assert all(min(b["width"],b["height"])>=48 and b["radius"]>=23 for b in result["actions"]) and not result["overflow"],f"Result controls inaccessible or not circular: {result}"
         if SHOTS: await page.screenshot(path=str(SHOTS/"side-lighthouse-result-dark-390.png"))
         assert not errors,errors[:5]
         print("BOARD_VISUAL_ACCEPTANCE="+json.dumps({
