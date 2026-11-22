@@ -80,6 +80,45 @@ async def launch(page,game):
     await page.wait_for_timeout(300)
     return mode
 
+async def probe_hints_and_reset(page):
+    """Exercise actual hint buttons at most three times and inspect reset controls.
+    This is diagnostic, not a puzzle solution. No player data leaves the isolated context.
+    """
+    result={'available':False,'levels':[],'reset':None,'issues':[]}
+    hint=page.locator('#pzh')
+    if not await hint.count() or not await hint.is_visible():
+        return result
+    result['available']=True
+    for expected in range(1,4):
+        if await hint.is_disabled():
+            break
+        try:
+            await hint.click(timeout=2600)
+            await page.wait_for_timeout(90)
+            hint_box=page.locator('#pzt')
+            text=(await hint_box.inner_text()).strip() if await hint_box.count() and await hint_box.is_visible() else ''
+            if not text or text==result['levels'][-1] if result['levels'] else not text:
+                result['issues'].append(f'hint_{expected}_missing_or_repeated')
+            result['levels'].append(text[:170])
+        except Exception as ex:
+            result['issues'].append('hint_interaction:'+str(ex)[:110])
+            break
+    reset=page.locator('#pzr')
+    if await reset.count() and await reset.is_visible():
+        try:
+            await reset.click(timeout=2600)
+            await page.wait_for_timeout(110)
+            result['reset']={
+                'hintCleared':await page.locator('#pzt').is_hidden(),
+                'remaining':(await page.locator('#pzhn').inner_text()).strip() if await page.locator('#pzhn').count() else None,
+                'boardPresent':await page.locator('#pzb').count()==1
+            }
+            if not result['reset']['hintCleared'] or not result['reset']['boardPresent']:
+                result['issues'].append('reset_did_not_restore_board')
+        except Exception as ex:
+            result['issues'].append('reset_interaction:'+str(ex)[:110])
+    return result
+
 async def run():
     async with async_playwright() as pw:
         if ENGINE=='webkit':browser=await pw.webkit.launch()
@@ -112,6 +151,7 @@ async def run():
                     data=await page.evaluate(MEASURE)
                     data['viewport']=[width,height]
                     run['cases'].append(data)
+                run['hintProbe']=await probe_hints_and_reset(page)
                 run['pageErrors']=page_errors[offset:]
                 run['issues']=[]
                 for d in run['cases']:
@@ -141,11 +181,16 @@ async def run():
                 await page.wait_for_timeout(100)
             results.append(run)
             print('JAZIRAN_86_CASE='+json.dumps({'id':gid,'route':run['route'],
-                   'issues':run.get('issues',[]),'cases':len(run['cases'])},ensure_ascii=False),flush=True)
+                   'issues':run.get('issues',[]),'hints':len(run.get('hintProbe',{}).get('levels',[])),
+                   'hint_issues':run.get('hintProbe',{}).get('issues',[]),'cases':len(run['cases'])},ensure_ascii=False),flush=True)
         summary={'engine':ENGINE,'chapter':CHAPTER,'expected':len(IDS),'opened':len(results),
                  'viewports':['390x844','320x640','430x932'],
                  'notable':[{'id':r['id'],'issues':r.get('issues',[]),'error':r.get('error','')}
                    for r in results if r.get('issues')],
+                 'hintGaps':[{'id':r['id'],'levels':len(r.get('hintProbe',{}).get('levels',[])),
+                              'issues':r.get('hintProbe',{}).get('issues',[])}
+                   for r in results if r.get('hintProbe',{}).get('available') and
+                     (len(r.get('hintProbe',{}).get('levels',[]))<3 or r.get('hintProbe',{}).get('issues'))],
                  'smallTargets':{r['id']:max((d.get('smallTouchTargets') or 0 for d in r['cases']),default=0)
                    for r in results},
                  'cases':results}
