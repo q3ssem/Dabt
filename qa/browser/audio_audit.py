@@ -13,8 +13,23 @@ for(const m of ['createOscillator','createBufferSource','createGain','createBiqu
 const ob=A.prototype.createBuffer;A.prototype.createBuffer=function(...a){window.__au.buffers++;return ob.apply(this,a)};})();"""
 WRAP = r"""()=>{if(window.__sfxw||typeof sfx==='undefined')return;window.__sfxw=1;window.__ev=[];for(const k of Object.keys(sfx)){const f=sfx[k];if(typeof f!=='function')continue;sfx[k]=function(...a){window.__ev.push(k+(typeof a[0]==='string'?':'+a[0]:''));return f.apply(this,a)}}
 if(window.Watercolor&&Watercolor.stone){const s=Watercolor.stone;Watercolor.stone=function(){window.__ev.push('watercolor.stone');return s.apply(this,arguments)}}}"""
-POKE = r"""async()=>{const els=[...document.querySelectorAll('#pzb button, #pzb [data-i], #pzb .cell, #pzb td, #pzb [role=button], #pzb svg [data-i], #lbb button, #lbb [data-slot]')].filter(e=>{const r=e.getBoundingClientRect();return r.width>4&&r.height>4});
-  let n=0;for(const e of els.slice(0,14)){const r=e.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;for(const t of ['pointerdown','pointerup'])e.dispatchEvent(new PointerEvent(t,{bubbles:true,cancelable:true,isPrimary:true,pointerId:1,clientX:x,clientY:y}));e.dispatchEvent(new MouseEvent('click',{bubbles:true,cancelable:true,clientX:x,clientY:y}));n++;await new Promise(r=>setTimeout(r,90));}return n}"""
+async def poke(page):
+    """Trigger game controls via Playwright hit testing, never synthetic DOM events."""
+    controls = page.locator('#pzb button:not([disabled]), #pzb [role="button"], #pzb [data-i], #pzb .cell, #pzb td, #lbb button, #lbb [data-slot]')
+    n = 0
+    for i in range(min(await controls.count(), 20)):
+        if n >= 5: break
+        el = controls.nth(i)
+        try:
+            if not await el.is_visible(): continue
+            box = await el.bounding_box()
+            if not box or box['width'] < 6 or box['height'] < 6: continue
+            await el.click(timeout=1300)
+            n += 1
+            await page.wait_for_timeout(90)
+        except Exception:
+            continue
+    return n
 
 async def main():
     ids = sys.argv[3].split(',') if len(sys.argv) > 3 else None
@@ -24,7 +39,9 @@ async def main():
         c = await b.new_context(viewport={'width': 390, 'height': 844}, is_mobile=True, has_touch=True, locale='ar-SA')
         await c.add_init_script(INIT); pg = await c.new_page(); await pg.goto(URL); await pg.wait_for_timeout(1200)
         if await pg.locator('.mpc[data-m=main]').count(): await pg.click('.mpc[data-m=main]')
-        await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
+        # Load puzzle dependencies through the app's deferred public entrypoint.
+        await pg.evaluate("async()=>{if(window.mindlabPlayLayers && !window.mindlabPlayLayers.ready) await window.mindlabPlayLayers.start()}")
+        await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=45000)
         await pg.mouse.click(5, 5)  # a real gesture unlocks audio, as on a phone
         await pg.evaluate(WRAP)
         await pg.evaluate("()=>{try{sfx.tick()}catch(e){}}")  # the engine's own context exists first, as in real play
@@ -49,7 +66,7 @@ async def main():
 
 async def probe(pg):
     a0 = await pg.evaluate("()=>({...window.__au,ev:window.__ev.length})")
-    n = await pg.evaluate(POKE); await pg.wait_for_timeout(400)
+    n = await poke(pg); await pg.wait_for_timeout(400)
     a1 = await pg.evaluate("()=>({...window.__au,ev:window.__ev.length})")
     ev = await pg.evaluate(f"()=>window.__ev.slice({a0['ev']})")
     await pg.wait_for_timeout(1200)
@@ -59,7 +76,7 @@ async def probe(pg):
     await pg.evaluate("()=>{S.st.mute=true}")
     await pg.wait_for_timeout(300)
     muted = await pg.evaluate("()=>({...window.__au})")
-    await pg.evaluate(POKE); await pg.wait_for_timeout(2300)
+    await poke(pg); await pg.wait_for_timeout(2300)
     a3 = await pg.evaluate("()=>({...window.__au})")
     await pg.evaluate("()=>{S.st.mute=false}")
     return {'pokes': n, 'events': sorted(set(ev)), 'eventCount': len(ev), 'nodes': a1['nodes'] - a0['nodes'],
