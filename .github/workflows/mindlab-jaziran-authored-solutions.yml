@@ -1,0 +1,55 @@
+name: MindLab Phase 2 authored 60 real UI playthrough
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/mindlab-jaziran-authored-solutions.yml'
+      - 'qa/browser/jaziran_authored_20_real.py'
+      - 'qa/browser/player_openings.py'
+      - 'motion/stages60/**'
+      - 'index.html'
+      - 'ui/**'
+      - 'upgrade/**'
+  workflow_dispatch:
+
+concurrency:
+  group: authored60-${{ github.ref }}
+  cancel-in-progress: true
+permissions:
+  contents: read
+jobs:
+  real-20-stage-chain:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+        track: [pz_river, pz_pipe, pz_ice]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - name: Install browser
+        run: |
+          if [ "${{ matrix.engine }}" = "webkit" ]; then
+            python -m playwright install --with-deps webkit
+          else
+            command -v google-chrome
+          fi
+      - name: Solve twenty actual game boards through player controls
+        run: |
+          mkdir -p /tmp/jaziran-authored
+          python -m http.server 8791 --bind 127.0.0.1 >/tmp/jaziran-authored-http.log 2>&1 &
+          python qa/browser/jaziran_authored_20_real.py \
+            http://127.0.0.1:8791/ "${{ matrix.engine }}" "${{ matrix.track }}" /tmp/jaziran-authored
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: jaziran-authored-${{ matrix.engine }}-${{ matrix.track }}
+          path: /tmp/jaziran-authored/*
+          if-no-files-found: warn
+          retention-days: 30
