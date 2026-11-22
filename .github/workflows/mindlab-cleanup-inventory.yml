@@ -1,0 +1,32 @@
+name: MindLab cleanup safety inventory
+
+on:
+  pull_request:
+    paths:
+      - 'tools/audit-assets.cjs'
+      - '.gitignore'
+      - '.github/workflows/mindlab-cleanup-inventory.yml'
+      - 'docs/CLEANUP_SAFETY_AUDIT_2026-11-22_AR.md'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  inventory:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Syntax check
+        run: node --check tools/audit-assets.cjs
+      - name: Generate evidence-only inventory
+        run: node tools/audit-assets.cjs --json cleanup-audit.json
+      - name: Keep audit evidence
+        uses: actions/upload-artifact@v4
+        with:
+          name: mindlab-cleanup-inventory
+          path: cleanup-audit.json
+          retention-days: 14
