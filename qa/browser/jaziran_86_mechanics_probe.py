@@ -56,7 +56,7 @@ PROBE=r"""()=> {
 async def launch(page,gid):
     await page.evaluate('(id)=>startRun([id])',gid)
     # Authored engines load asynchronously after their level-selector bundle.
-    if gid in ('pz_river','pz_rush','pz_pipe','pz_flow','pz_tan','pz_tent','pz_untangle','pz_ice'):
+    if gid in ('pz_river','pz_rush','pz_pipe','pz_flow','pz_tan','pz_untangle','pz_ice'):
         await page.locator('#stage .ml-authored-picker .go-btn[data-level]').first.wait_for(
             state='visible',timeout=18000)
     else:
