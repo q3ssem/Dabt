@@ -225,23 +225,11 @@
   }
 
   function triggerChapter(chId) {
-    if (chId === 'seven_seas') {
-      if (window.T7 && typeof T7.map === 'function') showMilestone(['departure'], () => T7.map());
-    } else if (chId === 'palace') {
-      showMilestone(['palace'], openPalaceMap);
-    } else if (chId === 'atheran') {
-      if (window.ATHERAN_CAMPAIGN && typeof window.ATHERAN_CAMPAIGN.open === 'function')
-        showMilestone(['atheran'], () => window.ATHERAN_CAMPAIGN.open());
-    } else if (chId === 'side') {
-      // perf-cleanup: the side journey's code is loaded on demand (window.mindlabSide); wait for it once.
-      const openSide = () => {
-        if (window.ML10 && typeof window.ML10.renderMap === 'function') window.ML10.renderMap();
-        else $('#v-puz .ex10-launch-go')?.click();
-      };
-      if (window.ML10) openSide(); else sideReady().then(openSide);
-    }
+    const scenes={seven_seas:'departure',palace:'palace',atheran:'atheran'};
+    const open=()=>returnToMap(chId);
+    if (scenes[chId]) showMilestone([scenes[chId]],open);
+    else open();
   }
-
 
   // Jaziran narrative: personal draft notes. Never infer proof or award unlocks from typed text.
   const EVIDENCE_NOTES_KEY = 'mindlab:journey:evidence-notes:v1';
