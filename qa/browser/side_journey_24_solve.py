@@ -58,7 +58,7 @@ async def boot(page):
     await page.evaluate("()=>tab('puz')")
     await page.wait_for_function("()=>window.mindlabPlayLayers?.ready===true",timeout=45000)
     await page.evaluate("async()=>await window.mindlabSide.start()")
-    await page.wait_for_function("()=>!!window.ML10?.renderMap && !!window.ML10Logic",timeout=30000)
+    await page.wait_for_function("()=>!!window.ML10?.legacyRenderMap && !!window.ML10Logic",timeout=30000)
     # Settle the deferred puzzle-tab redraw before showing a side map.
     await page.wait_for_timeout(850)
 
@@ -86,7 +86,7 @@ async def enter_stage(page,stage,from_previous=False):
                     f"stage {stage+1} actually unlocked through prior wins")
         for attempt in range(4):
             try:
-                await js(page,"()=>ML10.renderMap()")
+                await js(page,"()=>ML10.legacyRenderMap()")
                 button=page.locator(f'#v-puz .ex10-level-card[data-ex10-node="{stage}"]')
                 await button.wait_for(state="visible",timeout=3500)
                 await check(await button.get_attribute('aria-disabled',timeout=3500) is None,
@@ -307,7 +307,7 @@ async def run():
             catalog=await js(page,"()=>ML10.stages.map(s=>({id:s.id,name:s.name}))")
             await check(len(catalog)==24,"24 unique stations exist")
             await check(len(set(x["id"] for x in catalog))==24,"all station IDs unique")
-            await js(page,"()=>ML10.renderMap()")
+            await js(page,"()=>ML10.legacyRenderMap()")
             await check(await page.locator('#v-puz .ex10-level-card.locked').count()==23,
                 "fresh player sees 23 locked future stages")
             official=await js(page,"()=>JSON.stringify({sea:T7.state().done,palace:pState().done,atheran:ATHERAN_CAMPAIGN.summary().a.done})")
@@ -430,7 +430,7 @@ async def boot_after_reload(page):
     await page.wait_for_function("()=>window.mindlabPlayLayers?.ready===true",timeout=45000)
     await page.evaluate("async()=>await window.mindlabSide.start()")
     await page.wait_for_function("()=>!!window.ML10?.renderMap",timeout=30000)
-    await page.evaluate("()=>ML10.renderMap()")
+    await page.evaluate("()=>ML10.legacyRenderMap()")
 
 if __name__ == '__main__':
     asyncio.run(run())
