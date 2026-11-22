@@ -18,13 +18,9 @@ async def close_transition(page):
         await page.wait_for_timeout(100)
 
 async def open_side_map(page):
-    """Open the optional original side-journey map through its visible native controls.
-    In the folder-first release, use its explicit compatibility entry rather than
-    redirecting to the new hub; never unlock or complete any stage in this helper."""
-    launch = page.locator('.ex10-launch-go')
-    if await launch.count() and await launch.first.is_visible():
-        await launch.first.click()
-    else:
-        await page.evaluate("()=>window.ML10&&(ML10.legacyRenderMap?ML10.legacyRenderMap():ML10.renderMap())")
-    await page.wait_for_timeout(250)
+    """Compatibility helper: open visible side chapter folders, never render an atlas.
+    The player-facing stage cards preserve the original 24-stage unlock sequence.
+    """
+    await page.evaluate("async()=>{await window.mindlabSide.start();window.ML10?.openStations()}")
+    await page.locator("#mlj-unified-hub .ml-folder-station").first.wait_for(state="visible")
     await close_transition(page)
