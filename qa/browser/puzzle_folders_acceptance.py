@@ -125,6 +125,36 @@ async def run():
             assert not await tiles.nth(3).is_disabled(),'legacy earlier puzzle re-locked after reload'
             assert not await tiles.nth(5).is_disabled(),'legacy following puzzle re-locked after reload'
             assert await tiles.nth(6).is_disabled(),'legacy unlock advanced two stages after reload'
+            # Historical chapter-only wins must agree with the independent library.
+            # There is deliberately no pzState().n write for these two chapters.
+            await page.evaluate("""() => {
+              const all=LA.folderStatus();
+              const palace=all.find(s=>s.name==='قصر المرايا').items;
+              const athran=all.find(s=>s.name==='أرض أثران').items;
+              pState().done[palace[2].id]=1;
+              aState().done[athran[1].id]=1;
+              S.save();
+            }""")
+            legacy=await page.evaluate("""() => Object.fromEntries(
+              ['قصر المرايا','أرض أثران'].map(name=>[
+                name, LA.folderStatus().find(s=>s.name===name).items
+                  .slice(0,5).map(x=>({id:x.id,open:x.open,done:x.done}))
+              ])
+            )""")
+            assert legacy['قصر المرايا'][2]['done'] and legacy['قصر المرايا'][3]['open'],'palace native save missing from library'
+            assert not legacy['قصر المرايا'][4]['open'],'palace native save skipped an extra puzzle'
+            assert legacy['أرض أثران'][1]['done'] and legacy['أرض أثران'][2]['open'],'Atheran native save missing from library'
+            assert not legacy['أرض أثران'][3]['open'],'Atheran native save skipped an extra puzzle'
+            await page.reload(wait_until='load')
+            main=page.locator('.mpc[data-m=main]')
+            if await main.count() and await main.is_visible(): await main.click()
+            await page.evaluate("()=>tab('puz')")
+            await page.wait_for_function("()=>window.LA?.puzzleFoldersReady && window.mindlabPlayLayers?.ready",timeout=45000)
+            assert await page.evaluate("""() => {
+              const all=LA.folderStatus();
+              return ['قصر المرايا','أرض أثران'].every(name=>
+                all.find(s=>s.name===name).items.some(x=>x.done))
+            }"""),'historical chapter-only wins vanished after reload'
             await page.locator('.ml-folder-back').first.click()
             assert await page.locator('.ml-folder-category').count()>=4,'return to folder grid fails'
             await page.locator('#mlj-journey-entry').click()
