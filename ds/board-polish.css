@@ -792,3 +792,18 @@ html #play button,html #v-puz :is(.t7-puzzle-layout,.ex10-game-shell) button {
 @media (prefers-reduced-motion:reduce){
   html #play :is(.pbar .x,.pzhud .pzhb,.fit-tools .pzgive) {transition:none!important;}
 }
+
+/* Jaziran batch 3: four audited art dimensions (86-puzzle Chrome/WebKit sweep).
+   Do not stretch painted sprites to fill a tile with a different aspect ratio.
+   Tall structural supports keep their full tile via cropping, not skewing;
+   delicate clues (clock needle / cave slab) are kept entirely in view. */
+#play[data-la-game="pz_xbridge"] img[src$="/bridge/pier.webp"],
+#play[data-la-game="pz_abridge"] img[src$="/fogbridge/column.webp"] {
+  object-fit:cover!important;
+  object-position:center center;
+}
+#play[data-la-game="pz_xcave"] img[src$="/cave/slab.webp"],
+#play[data-la-game="pz_pclock"] img[src$="/clock/hand.webp"] {
+  object-fit:contain!important;
+  object-position:center center;
+}
