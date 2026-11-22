@@ -52,8 +52,15 @@ async def main():
         assert await page.evaluate("()=>Number(pzState().n.pz_zshadow||0)")>=1,'game win did not persist'
         state=await page.evaluate("""()=>{
             const done=zState().done.pz_zshadow;
-            return {perfect:!!done?.p,solved:!!done,progress:Number(pzState().n.pz_zshadow||0)};
+            const z=zState(),tx=txState();
+            return {perfect:!!done?.p,solved:!!done,progress:Number(pzState().n.pz_zshadow||0),
+              listIndex:Z3.findIndex(q=>q.id==='pz_zshadow'),currentStation:z.prog,
+              stationCount:Object.keys(z.done||{}).length,
+              currentFound:tx.found?.length,hasEntry:!!tx.a3,
+              txSame:tx.a3===z,
+              sceneStatus:document.querySelector('#m')?.textContent?.slice(0,110)||''};
         }""")
+        print('ZSHADOW_ENGINE_STATE='+json.dumps(state,ensure_ascii=False),flush=True)
         assert state['solved'] and not state['perfect'],state
         initial=state['progress']
         await page.wait_for_timeout(550)
