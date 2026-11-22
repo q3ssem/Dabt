@@ -1,0 +1,56 @@
+name: MindLab side journey 24 real-solution acceptance
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/mindlab-side-24-solutions.yml'
+      - 'qa/browser/side_journey_24_solve.py'
+      - 'qa/browser/player_openings.py'
+      - 'expedition10/**'
+      - 'ui/**'
+      - 'index.html'
+      - 'ds/**'
+  workflow_dispatch:
+
+concurrency:
+  group: side-24-solutions-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  full-playthrough:
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - name: Install browser dependencies
+        run: |
+          if [ "${{ matrix.engine }}" = "webkit" ]; then
+            python -m playwright install --with-deps webkit
+          else
+            command -v google-chrome
+          fi
+      - name: Real clicks and drags through 24 unique stages
+        run: |
+          mkdir -p /tmp/side24-real
+          python -m http.server 8792 --bind 127.0.0.1 >/tmp/side24-real-server.log 2>&1 &
+          python qa/browser/side_journey_24_solve.py \
+            http://127.0.0.1:8792/ "${{ matrix.engine }}" /tmp/side24-real
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: side24-real-${{ matrix.engine }}
+          path: /tmp/side24-real/*
+          if-no-files-found: warn
+          retention-days: 30
