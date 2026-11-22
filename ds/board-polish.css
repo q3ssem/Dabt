@@ -829,14 +829,14 @@ html #play button,html #v-puz :is(.t7-puzzle-layout,.ex10-game-shell) button {
 /* The balance engine scales its play surface on narrow phones. Give each
    weight a separate, perceivable target after that transform, without
    changing the underlying weight-selection / scoring logic. */
-html #play #stage .dx-balance-weight {
+html #play #stage .dx-board:has(#dxSum) .dx-row .dx-tile {
   box-sizing: border-box;
   min-width: 78px !important;
   min-height: 78px !important;
   padding: 12px !important;
   touch-action: manipulation;
 }
-html #play #stage .dx-balance-weight[aria-pressed="true"] {
+html #play #stage .dx-board:has(#dxSum) .dx-row .dx-tile.selected {
   outline: 3px solid var(--bp-focus);
   outline-offset: 2px;
 }
