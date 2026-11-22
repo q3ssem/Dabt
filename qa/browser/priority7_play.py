@@ -16,7 +16,6 @@ def ok(c, label, extra=None):
 
 async def start(pg, gid, lv, seed):
     await pg.goto(URL); await pg.wait_for_timeout(1500); await pg.evaluate("async()=>{const p=document.querySelector('.mpc[data-m=main]');if(p&&p.getClientRects().length)p.click();tab('puz');await mindlabPlayLayers.start()}"); await pg.wait_for_function("()=>window.mindlabPlayLayers?.ready===true", timeout=45000)
-    if await pg.locator('.mpc[data-m=main]').count() and await pg.locator('.mpc[data-m=main]').is_visible(): await pg.click('.mpc[data-m=main]')
     # with a level: a replay (fixed level + seed, records no progress); without: the player's own next stage (records progress)
     await pg.evaluate("([g, lv, s]) => { startRun([g]); if (lv) RUN.replay = { id: g, lv, seed: s } }", [gid, lv, seed]); await pg.wait_for_timeout(300)
     if await pg.locator('#stage #go').count() and await pg.locator('#stage #go').first.is_visible(): await pg.click('#stage #go')
@@ -121,7 +120,6 @@ async def pobs_hint(pg, w, want):
     """hint 3 through the screen's hint button on a sheet as tall (h) or as wide (w) as the board"""
     lab = f'pz_pobs {w} hint3 full-{"height" if want == "h" else "width"}'
     await pg.goto(URL); await pg.wait_for_timeout(1500); await pg.evaluate("async()=>{const p=document.querySelector('.mpc[data-m=main]');if(p&&p.getClientRects().length)p.click();tab('puz');await mindlabPlayLayers.start()}"); await pg.wait_for_function("()=>window.mindlabPlayLayers?.ready===true", timeout=45000)
-    if await pg.locator('.mpc[data-m=main]').count() and await pg.locator('.mpc[data-m=main]').is_visible(): await pg.click('.mpc[data-m=main]')
     s = await pg.evaluate(FULL, want)
     if not ok(s > 0, f'{lab}: such a board exists in poMake(8)', s): return
     await start(pg, 'pz_pobs', 8, s)
