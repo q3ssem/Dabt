@@ -26,7 +26,18 @@
     try { return Math.max(0, Number(pzState()?.n?.[id] || 0)); }
     catch (_) { return 0; }
   }
-  function sections() { return LA.librarySections().filter(row => row[1].length); }
+  function sections() {
+    // The 5.5.2 mini-games layer combines two historical categories into one.
+    // This folder-first navigation restores their independent sections without
+    // changing game IDs, secret visibility, puzzle engines or stored progress.
+    return LA.librarySections().flatMap(([name, games]) => {
+      if (name !== 'ألعاب القراصنة المصغّرة') return [[name, games]];
+      return [
+        ['مغامرة القرصان', games.filter(g => /^pz_[xt]/.test(g.id))],
+        ['الحطام والمعبد', games.filter(g => /^pz_[yz]/.test(g.id))]
+      ];
+    }).filter(row => row[1].length);
+  }
   function available(list, i) {
     // A new player starts with puzzle 1; each recorded win unlocks only the next.
     // Older saves can be sparse because the library was previously non-sequential:
