@@ -20,16 +20,50 @@ async def solve_grid(page):
     for ci,row in enumerate(P['sol']):
         for p,v in enumerate(row):
             for _ in range(v+1):
-                await tap(page,f'#lgt .lgc[data-c="{ci}"][data-p="{p}"]')
-    await tap(page,'#lgok')
+                await tap(page,f'#lg10t .lg10-c[data-c="{ci}"][data-p="{p}"]')
+    await tap(page,'#lbgo')
     return sum(sum(v+1 for v in row) for row in P['sol'])+1
 
 async def solve_tents(page):
     points=await page.evaluate("()=>__test.pz.P.sol")
     for p in points:
-        await tap(page,f'#tng .tnc2[data-i="{p}"]')
-        await tap(page,f'#tng .tnc2[data-i="{p}"]')
+        await tap(page,f'#tn10 .tn10-c[data-i="{p}"]')
+        await tap(page,f'#tn10 .tn10-c[data-i="{p}"]')
     return len(points)*2
+
+async def solve_riddle(page,i):
+    if i==0:
+        await tap(page,'#stage .rid-act-crate [data-open="2"]')
+        # The sampled fruit is player-visible. This choice uses the displayed
+        # artwork, not hidden variables or any test-hook setter.
+        picture=await page.locator('#stage .rid-act-sample img').first.get_attribute('src')
+        assert picture and ('fruit_apple' in picture or 'fruit_orange' in picture),picture
+        correct=[1,2,0] if 'fruit_apple' in picture else [2,0,1]
+        for slot,token in enumerate(correct):
+            await tap(page,f'#stage [data-tray] [data-tok="{token}"]')
+            await tap(page,f'#stage [data-slot="{slot}"]')
+        await tap(page,'#ridactcheck')
+        return 8
+    if i==1:
+        await tap(page,'#stage [data-tok="runner"]')
+        await tap(page,'#stage [data-slot="1"]')
+        return 2
+    if i==2:
+        for slot,token in enumerate([3,0,1,2]):
+            await tap(page,f'#stage [data-tray] [data-tok="{token}"]')
+            await tap(page,f'#stage [data-slot="{slot}"]')
+        await tap(page,'#ridmeasurecheck')
+        return 9
+    answer=await page.evaluate("(i)=>RIDDLES[i][1]",i)
+    correct=page.locator('#stage .ridopt').filter(has_text=answer)
+    assert await correct.count()==1,(i,answer)
+    wrong=page.locator('#stage .ridopt').filter(has_not_text=answer).first
+    if await wrong.count():
+        await wrong.click()
+        assert not await page.evaluate("()=>!!document.querySelector('#pzb.solved')"),\
+            'wrong riddle choice granted a win'
+    await correct.click()
+    return 2
 
 async def check_stored(page,gid,before):
     await page.wait_for_function("([id,n])=>(pzState().n[id]||0)>n",
@@ -67,7 +101,7 @@ async def main():
                         assert await page.evaluate("()=>RUN.last?.lv")==level
                         before=await page.evaluate('id=>pzState().n[id]||0',gid)
                         if gid=='pz_grid':
-                            await tap(page,'#lgok')
+                            await tap(page,'#lbgo')
                             assert not await page.evaluate("()=>!!document.querySelector('#pzb.solved')"),\
                               'incomplete grid won before solution'
                         row['actions']=await solver(page)
@@ -83,7 +117,8 @@ async def main():
                     rows.append(row);print('TRAIN_EXTRA_CASE='+json.dumps(row,ensure_ascii=True),flush=True)
             count=await page.evaluate("()=>RIDDLES.length")
             assert count>=16,'RIDDLES unexpectedly small'
-            # Exactly one genuine correct user click per riddle; never set RIDDLES progress.
+            # The first three riddles are picture/drag activities; later riddles
+            # use real multiple-choice buttons. No state/write shortcuts.
             for i in range(count):
                 row={'id':'pz_rid','riddle':i};prior=len(errors)
                 try:
@@ -91,22 +126,15 @@ async def main():
                     starter=page.locator('#stage #go')
                     if await starter.count() and await starter.is_visible():await starter.click()
                     await dismiss_opening(page,wait=700)
-                    await page.locator('#stage .ridopt').first.wait_for(state='visible',timeout=18000)
-                    answer=await page.evaluate("(i)=>RIDDLES[i][1]",i)
-                    correct=page.locator('#stage .ridopt').filter(has_text=answer)
-                    assert await correct.count()==1,(i,answer)
+                    await page.wait_for_function("""i=>document.querySelector('#play')?.dataset.laGame==='pz_rid' &&
+                        (i<3?!!document.querySelector('#stage .rid-act-board'):
+                            !!document.querySelector('#stage .ridopt'))""",arg=i,timeout=16000)
                     initial=await page.evaluate("i=>!!pzState().rid[i]",i)
-                    assert not initial,'riddle already marked completed before native answer'
-                    wrong=page.locator('#stage .ridopt').filter(has_not_text=answer).first
-                    if await wrong.count():
-                        await wrong.click()
-                        assert not await page.evaluate("()=>!!document.querySelector('#pzb.solved')"),\
-                          'wrong riddle choice granted a win'
-                    await correct.click()
+                    assert not initial,'riddle unexpectedly pre-completed'
+                    row['actions']=await solve_riddle(page,i)
                     await page.wait_for_function("i=>!!pzState().rid[i]",arg=i,timeout=12000)
-                    await page.wait_for_function("()=>!!document.querySelector('#pzb.solved')",timeout=9000)
+                    await page.wait_for_function("()=>!!document.querySelector('#pzb.solved')",timeout=10000)
                     row['win']=True
-                    row['actions']=2
                     await page.wait_for_timeout(1650)
                 except Exception as ex:
                     row['error']=str(ex)[:420]
