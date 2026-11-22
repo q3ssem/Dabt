@@ -48,6 +48,14 @@ assert(laser.includes('return k===2?')&&laser.includes('XAR(i+1)'),
   'laser hints explain different repaired mirrors');
 assert(palace.includes('return k===2')&&palace.includes('XAR(i+1)'),
   'palace mirror hints explain different repaired mirrors');
+const runtime=fs.readFileSync('ui/app.js','utf8');
+const exhausted=runtime.match(/if\(t==null\)\{hints--;if\(!kid\)setP\(before\);[^}]+\}/)?.[0]||'';
+assert(exhausted.includes('اكتملت خطوات المساعدة المتاحة'),
+  'hint exhaustion should give feedback rather than retaining stale hint');
+assert(exhausted.includes('hb.disabled=true')&&exhausted.includes("hb.setAttribute('aria-label'"),
+  'hint exhaustion must disable unavailable hint access');
+assert(runtime.includes("hb.disabled=false;hb.hidden=false;hb.setAttribute('aria-label','تلميح')"),
+  'restart restores hint button state and accessible label');
 const style=fs.readFileSync('ds/board-polish.css','utf8');
 for(const id of ['pz_xbridge','pz_abridge','pz_xcave','pz_pclock'])
   assert(style.includes('data-la-game="'+id+'"'),'image fit repair missing '+id);
