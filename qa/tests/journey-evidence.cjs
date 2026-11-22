@@ -71,6 +71,14 @@ nativeAtheran.done.pz_aheart=1;
 assert.equal(api.evidenceVisibleFiles().length,4,'optional names file appears only after native finale');
 assert.equal(api.getEvidenceSnapshot('invalid'),null);
 assert.equal(JSON.parse(state.get('treasureV3')).done.sea7_0,true);
+// The notebook never silently invents a puzzle or leaks a retired one.
+const liveIds = new Set(JSON.parse(fs.readFileSync('legacy/inventory.json','utf8')).puzzles.map(p=>p.id));
+for (const fileId of ['measurement','testimony','traces','people']) {
+  const sourceIds = api.getEvidenceSnapshot(fileId).sources.map(s=>s.id);
+  assert.equal(new Set(sourceIds).size,sourceIds.length,'all dossier sources distinct by puzzle ID: '+fileId);
+  for (const sourceId of sourceIds) assert(liveIds.has(sourceId),'notebook source must exist in live inventory: '+sourceId);
+}
+assert(!src.includes("['pz_stat'") && !src.includes("['pz_xbottle'"),'retired puzzle IDs must not return to the notebook');
 const allKeys=[...state.keys()];
 assert.equal(allKeys.length,4,'new notebook creates just one isolated localStorage key');
 console.log('Journey evidence notebook: 3 core dossiers + 1 gated optional dossier, native completion provenance, notes isolated, no invented inferences passed.');
