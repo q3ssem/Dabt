@@ -44,6 +44,8 @@
   const I_BOOK = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linejoin="round"><path d="M4 5.5C6.5 4 9.5 4 12 6c2.5-2 5.5-2 8-.5V19c-2.5-1.5-5.5-1.5-8 .5-2.5-2-5.5-2-8-.5z"/><path d="M12 6v13.5"/></svg>';
 
   let body = null, mo = null, raf = 0, fitting = false, sheetPrevFocus = null;
+  // Optional, session-only enlarged board. Native saves, zoom defaults and gameplay stay unchanged.
+  let largeView = false;
   const layoutObserver = typeof ResizeObserver === 'function' ? new ResizeObserver(() => schedule()) : null;
 
   function sheetHTML() {
@@ -53,13 +55,19 @@
     const id = gid();
     if (!rules.length) rules = (GM[id]?.how || []).map(h => esc(h));
     const hasOpening = !!(id && window.__MINDLAB_OPENINGS_DATA && window.__MINDLAB_OPENINGS_DATA[id] && window.fitOpenings);
-    return `<div class="fit-sheet-card" role="dialog" aria-modal="true" aria-label="${title}"><h3>${title}</h3>${rules.length ? `<div class="fit-sh-rule"><b>القاعدة</b>${rules.map(r => `<p>${r}</p>`).join('')}</div>` : ''}${story.length ? `<div class="fit-sh-story">${story.map(s => `<p>${s}</p>`).join('')}</div>` : ''}${hasOpening ? '<button class="fit-sh-replay" type="button">عرض مقدمة اللغز</button>' : ''}<button class="fit-sh-go" type="button">فهمت</button></div>`;
+    const zoomChoice = body && !$('.lb[data-layout]', body)
+      ? `<button class="fit-sh-magnify" type="button" aria-pressed="${largeView}">${largeView?'العودة إلى ملاءمة الشاشة':'تكبير لوحة اللغز والتمرير داخلها'}</button>`
+      : '';
+    return `<div class="fit-sheet-card" role="dialog" aria-modal="true" aria-label="${title}"><h3>${title}</h3>${rules.length ? `<div class="fit-sh-rule"><b>القاعدة</b>${rules.map(r => `<p>${r}</p>`).join('')}</div>` : ''}${story.length ? `<div class="fit-sh-story">${story.map(s => `<p>${s}</p>`).join('')}</div>` : ''}${hasOpening ? '<button class="fit-sh-replay" type="button">عرض مقدمة اللغز</button>' : ''}${zoomChoice}<button class="fit-sh-go" type="button">فهمت</button></div>`;
   }
   function openSheet() {
     closeSheet(); sheetPrevFocus = document.activeElement;
     const d = document.createElement('div'); d.className = 'fit-sheet'; d.innerHTML = sheetHTML();
     const extra = sheetExtras(); if (extra) { const go = $('.fit-sh-go', d); if (go) go.insertAdjacentHTML('beforebegin', extra); }
     d.addEventListener('click', e => {
+      if (e.target.closest('.fit-sh-magnify')) {
+        largeView = !largeView; closeSheet(); schedule(); return;
+      }
       if (e.target.closest('.fit-sh-replay')) { const id = gid(); closeSheet(); if (id && window.fitOpenings) window.fitOpenings.open(id, true); return; }
       const give = e.target.closest('.fit-sh-give'), q = $('#pzq');
       if (give && q) {
@@ -218,6 +226,7 @@
       const avail = Math.max(1, Math.min(bounds.bottom - safe, viewportBottom - safe) - body.getBoundingClientRect().top);
       body.style.setProperty('--fit-room', `${avail}px`);
       if ($('.lb[data-layout]', body)) {
+        body.classList.remove('fit-large');
         const minHeight = $('.lb[data-layout="adventure"]', body) ? 215 : 200;
         body.style.removeProperty('--fit-z');
         body.style.setProperty('--fit-room', `${Math.max(minHeight, avail - 8)}px`);
@@ -227,6 +236,17 @@
         return;
       }
       const keep = body.scrollTop;
+      if (largeView) {
+        // Preserve the available phone screen height, but no longer shrink game
+        // controls below their native size. Scroll INSIDE the board instead.
+        body.style.setProperty('--fit-z', '1');
+        body.style.height = `${avail}px`;
+        body.dataset.fitZoom = '1.00';
+        body.classList.add('fit-scroll', 'fit-large');
+        body.scrollTop = keep;
+        return;
+      }
+      body.classList.remove('fit-large');
       const natural = () => { body.scrollTop = 0; const r0 = body.getBoundingClientRect().top; let b = 0; for (const c of body.children) { const r = c.getBoundingClientRect(); if (r.height) b = Math.max(b, r.bottom); } return b - r0 + 4; };
       const floor = ['pz_avsong','pz_ashade'].includes(gid()) ? 1 : ['pz_grid','pz_tpath','pz_door'].includes(gid()) ? 0.85 : MIN_ZOOM;
       let z = 1; body.style.removeProperty('--fit-z'); body.style.height = ''; let need = natural();
