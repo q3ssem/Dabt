@@ -32,6 +32,18 @@ MEASURE=r"""()=>{
   const visible=e=>!!(e&&e.getClientRects().length&&getComputedStyle(e).visibility!=='hidden');
   const controls=[...(pzb||stage).querySelectorAll('button,[role="button"],input,select,textarea,[tabindex],canvas,[data-i],[data-tok],[data-slot]')].filter(visible);
   const touch=controls.map(e=>Math.min(R(e).w,R(e).h)).filter(x=>x>=4);
+  const smallExamples=controls.map(e=>({element:e,box:R(e)}))
+    .filter(v=>Math.min(v.box.w,v.box.h)>=4&&Math.min(v.box.w,v.box.h)<40)
+    .sort((a,b)=>Math.min(a.box.w,a.box.h)-Math.min(b.box.w,b.box.h))
+    .slice(0,15).map(v=>{
+      const e=v.element,p=e.parentElement;
+      return {tag:e.tagName.toLowerCase(),id:e.id||'',
+        classes:typeof e.className==='string'?e.className.slice(0,105):'',
+        parentClasses:typeof p?.className==='string'?p.className.slice(0,105):'',
+        role:e.getAttribute('role')||'',
+        label:(e.getAttribute('aria-label')||e.textContent||'').trim().slice(0,85),
+        size:[v.box.w,v.box.h],at:[v.box.x,v.box.y]};
+    });
   const images=[...(pzb||stage).querySelectorAll('img')].filter(visible);
   const drawn=images.filter(i=>i.complete&&i.naturalWidth>0).length;
   const broken=images.filter(i=>i.complete&&i.naturalWidth===0).map(i=>i.getAttribute('src')).slice(0,6);
@@ -45,7 +57,8 @@ MEASURE=r"""()=>{
   const renderable=!!(b&&b.w>40&&b.h>40&&stage.querySelectorAll('*').length>12);
   return {id:play.dataset.laGame||'',size:[innerWidth,innerHeight],
     board:b,play:v,hud:h,stage:s,controls:controls.length,interactiveMin:touch.length?Math.min(...touch):null,
-    smallTouchTargets:touch.filter(x=>x<40).length,hints:visible(document.querySelector('#pzh')),
+    smallTouchTargets:touch.filter(x=>x<40).length,smallTargetExamples:smallExamples,
+    hints:visible(document.querySelector('#pzh')),
     title:(document.querySelector('#play .pbar #pt')?.textContent||'').trim().slice(0,80),
     brokenImages:broken,imageCount:images.length,drawnImages:drawn,
     stretchedWithoutFit:ratios.filter(i=>i.distort&&i.style==='fill').slice(0,6),
@@ -183,7 +196,8 @@ async def run():
                         run['issues'].append(f"{d['viewport'][0]}:distorted_image")
                 if run['pageErrors']:
                     run['issues'].append('javascript_error')
-                if run['issues'] or index==0:
+                if (run['issues'] or index==0 or
+                    any((d.get('interactiveMin') or 999)<29 for d in run['cases'])):
                     await page.set_viewport_size({'width':390,'height':844})
                     await page.screenshot(path=str(OUT/f'{CHAPTER}-{ENGINE}-{gid}.png'),timeout=9000)
             except Exception as ex:
