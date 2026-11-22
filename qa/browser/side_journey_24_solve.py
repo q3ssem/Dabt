@@ -117,29 +117,19 @@ async def solve(page,index):
         await click(page,'[data-ex10="check-code"]')
     elif index==1:
         path=await js(page,"()=>ML10Logic.audit().river.path")
-        # Undo and reset are actual user actions; neither may unlock a stage.
-        await page.locator('[data-route-node="A"]').scroll_into_view_if_needed(timeout=5000)
-        hit=await js(page,"""()=>{
-          const b=document.querySelector('[data-route-node="A"]'),
-            parent=document.querySelector('#ex10-route'),r=b.getBoundingClientRect(),
-            p=parent.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2,
-            st=getComputedStyle(b),sp=getComputedStyle(parent);
-          return {button:{x:r.x,y:r.y,w:r.width,h:r.height,z:st.zIndex,pe:st.pointerEvents,
-            transform:st.transform,position:st.position},
-            parent:{x:p.x,y:p.y,w:p.width,h:p.height,pe:sp.pointerEvents,overflow:sp.overflow},
-            pseudo:{pe:getComputedStyle(parent,'::before').pointerEvents,
-              z:getComputedStyle(parent,'::before').zIndex},
-            hitAtCenter:document.elementsFromPoint(x,y).slice(0,8)
-              .map(e=>({tag:e.tagName,id:e.id,className:typeof e.className==='string'?e.className:'SVG'}))};
-        }""")
-        print("SIDE24_ROUTE_HIT="+json.dumps(hit,ensure_ascii=True),flush=True)
-        await click(page,'[data-route-node="A"]')
+        # Buttons list only legal adjacent stops; no injected state or bypass.
+        await check(await page.locator('[data-route-next="A"]').count()==1,
+                    "river exposes a physical next-stop button")
+        await click(page,'[data-route-next="A"]')
         await click(page,'[data-ex10="undo-route"]')
-        await check(not await page.locator('[data-route-node="A"]').evaluate(
-            "el=>el.classList.contains('visited')"),"river undo really clears selected route")
-        await click(page,'[data-route-node="A"]')
+        await check(await page.locator('[data-route-next="A"]').count()==1,
+                    "river undo returns to the original available stop")
+        await click(page,'[data-route-next="A"]')
         await click(page,'[data-ex10="reset-route"]')
-        for node in path[1:]:await click(page,f'[data-route-node="{node}"]')
+        for node in path[1:]:
+            await check(await page.locator(f'[data-route-next="{node}"]').count()==1,
+                        f"river lists only connected neighbor {node}")
+            await click(page,f'[data-route-next="{node}"]')
     elif index==2:
         # Determine the real map's current slots and swap two physical cards.
         for pos in range(4):
