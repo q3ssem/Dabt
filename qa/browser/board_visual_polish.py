@@ -330,12 +330,12 @@ async def run():
                     const status=shell.querySelector('#ex10-feedback')?.getBoundingClientRect();
                     return {buttons:buttons.map(b=>{const r=b.getBoundingClientRect();return {
                         left:r.left,right:r.right,height:r.height,bottom:r.bottom};}),
-                        statusTop:status?.top??null,viewport:innerHeight};
+                        statusTop:status?.top??null,statusBottom:status?.bottom??null,viewport:innerHeight};
                 }""")
-                assert len(lower["buttons"])==3,f"Lighthouse recovery tools missing: {lower}"
+                assert len(lower["buttons"])==4,f"Lighthouse submit and recovery tools missing: {lower}"
                 assert all(b["height"]>=44 and b["left"]>=-1 and b["right"]<=width+1
                            and b["bottom"]<=height-4 for b in lower["buttons"]),f"Lighthouse buttons clipped: {lower}"
-                assert lower["statusTop"] is not None and lower["statusTop"]<height-6,f"Lighthouse feedback entirely below fold: {lower}"
+                assert lower["statusBottom"] is not None and lower["statusBottom"]<=height-2,f"Lighthouse feedback clipped below fold: {lower}"
         # Verify the lighthouse clue background in DARK mode independently:
         # pale text must never be placed on the default light cream parent.
         await page.set_viewport_size({"width":390,"height":844})

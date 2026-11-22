@@ -694,8 +694,19 @@ html.fit-ex10 #v-puz .ex10-game-content .ex10-controls button {
     line-height:1.43!important;
   }
   html.fit-ex10 #v-puz .ex10-game-shell[data-stage-id="ml10_01"] .ex10-dials {
-    margin-block:8px!important;
-    padding-block:8px!important;
+    margin-block:6px!important;
+    padding-block:6px!important;
+  }
+  html.fit-ex10 #v-puz .ex10-game-shell[data-stage-id="ml10_01"] .ex10-dials .ex10-dial {
+    gap:3px!important;
+  }
+  html.fit-ex10 #v-puz .ex10-game-shell[data-stage-id="ml10_01"] .ex10-game-content .ex10-controls {
+    margin-block-start:4px!important;
+  }
+  html.fit-ex10 #v-puz .ex10-game-shell[data-stage-id="ml10_01"] .ex10-feedback {
+    margin-block:5px!important;
+    min-height:0!important;
+    padding:6px 9px!important;
   }
 }
 
