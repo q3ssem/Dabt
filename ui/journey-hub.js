@@ -237,6 +237,127 @@
     }
   }
 
+
+  // Jaziran narrative: personal draft notes. Never infer proof or award unlocks from typed text.
+  const EVIDENCE_NOTES_KEY = 'mindlab:journey:evidence-notes:v1';
+  const EVIDENCE_FILES = [
+    {id:'measurement',name:'القياس والاتجاه',question:'من أين نقيس وأين يتجه الطريق؟',
+      sources:[['pz_xlock','قفل الصندوق'],['pz_zstars','كوكبة المعبد'],['pz_zthrone','عرش المحيط']]},
+    {id:'testimony',name:'الساعة والشهادة',question:'متى عبر القارب ومن رآه مباشرة؟',
+      sources:[['pz_pclock','برج الساعات'],['pz_pjail','شهادات السجناء'],['pz_pobs','الخريطتان الشفافتان']]},
+    {id:'traces',name:'العمر والأثر',question:'أي خريطة تصف المدينة وقت المد المقصود؟',
+      sources:[['pz_alayer','طبقات الزمن'],['pz_acity','المدينة الحية'],['pz_arelic','أرشيف الآثار الأولى']]}
+  ];
+  const evidenceFile = id => EVIDENCE_FILES.find(file => file.id === id);
+  function evidenceDrafts() {
+    try {
+      const data = JSON.parse(localStorage.getItem(EVIDENCE_NOTES_KEY) || '{}');
+      return data && typeof data === 'object' && !Array.isArray(data) ? data : {};
+    } catch (_) { return {}; }
+  }
+  function getEvidenceDraft(id) {
+    if (!evidenceFile(id)) return '';
+    const value = evidenceDrafts()[id];
+    return typeof value === 'string' ? value.slice(0, 600) : '';
+  }
+  function saveEvidenceDraft(id, note) {
+    if (!evidenceFile(id) || typeof note !== 'string') return false;
+    try {
+      const drafts = evidenceDrafts();
+      const value = note.trim().slice(0, 600);
+      if (value) drafts[id] = value; else delete drafts[id];
+      localStorage.setItem(EVIDENCE_NOTES_KEY, JSON.stringify(drafts));
+      return true;
+    } catch (_) { return false; }
+  }
+  function evidenceProgress(id) {
+    // Do not conflate library game access with completing a campaign station.
+    try {
+      if (id.startsWith('pz_p') && typeof pState === 'function')
+        return !!pState()?.done?.[id];
+      if (id.startsWith('pz_a'))
+        return !!window.ATHERAN_CAMPAIGN?.summary()?.a?.done?.[id];
+    } catch (_) {}
+    return false;
+  }
+  function openEvidenceBook() {
+    const previous = document.activeElement;
+    $('#mlj-evidence-modal')?.remove();
+    const modal = document.createElement('div');
+    modal.id = 'mlj-evidence-modal';
+    modal.className = 'mlj-modal mlj-evidence-modal';
+    modal.setAttribute('role', 'dialog');
+    modal.setAttribute('aria-modal', 'true');
+    modal.setAttribute('aria-label', 'دفتر أدلة الرحلة');
+    modal.innerHTML =
+      '<div class="mlj-modal-card mlj-evidence-card" dir="rtl">' +
+      '<div class="mlj-head"><h2>دفتر الأدلة</h2><button type="button" id="mlj-evidence-close">إغلاق</button></div>' +
+      '<p class="mlj-evidence-intro">دوّن ملاحظتك من المشهد، ثم قارن مصادر مستقلة. هذه مسودة شخصية؛ ليست دليلًا مثبتًا ولا تفتح أختامًا.</p>' +
+      '<div class="mlj-evidence-tabs" role="group" aria-label="ملفات الأدلة"></div>' +
+      '<h3 class="mlj-evidence-title"></h3><p class="mlj-evidence-question"></p>' +
+      '<ul class="mlj-evidence-sources"></ul><label for="mlj-evidence-note">ملاحظتك عن هذا الملف</label>' +
+      '<textarea id="mlj-evidence-note" maxlength="600" rows="4" placeholder="ماذا لاحظت؟ ومن أين حصلت على المعلومة؟"></textarea>' +
+      '<div class="mlj-evidence-actions"><button type="button" id="mlj-evidence-save">حفظ الملاحظة</button>' +
+      '<span role="status" aria-live="polite" id="mlj-evidence-status"></span></div>' +
+      '<p class="mlj-evidence-caveat">حالة «الدليل المثبت» و«الاستنتاج» تحتاجان تحققًا داخل الألغاز. لا يُمنحان بمجرد كتابة ملاحظة.</p></div>';
+    const tabs = $('.mlj-evidence-tabs', modal);
+    const note = $('#mlj-evidence-note', modal);
+    const status = $('#mlj-evidence-status', modal);
+    const closeBtn = $('#mlj-evidence-close', modal);
+    const saveBtn = $('#mlj-evidence-save', modal);
+    let selected = EVIDENCE_FILES[0].id;
+    for (const file of EVIDENCE_FILES) {
+      const btn = document.createElement('button');
+      btn.type = 'button';
+      btn.textContent = file.name;
+      btn.dataset.file = file.id;
+      btn.onclick = () => { selected = file.id; render(); };
+      tabs.append(btn);
+    }
+    function render() {
+      const file = evidenceFile(selected);
+      $('.mlj-evidence-title', modal).textContent = file.name;
+      $('.mlj-evidence-question', modal).textContent = file.question;
+      const list = $('.mlj-evidence-sources', modal);
+      list.replaceChildren();
+      for (const [id, name] of file.sources) {
+        const item = document.createElement('li');
+        const heading = document.createElement('strong');
+        heading.textContent = name;
+        const source = document.createElement('small');
+        source.textContent = evidenceProgress(id) ? 'مكتمل في الحملة · راجع قرينته' : 'مصدر للمراجعة';
+        item.append(heading, source);
+        list.append(item);
+      }
+      tabs.querySelectorAll('button').forEach(btn =>
+        btn.setAttribute('aria-pressed', String(btn.dataset.file === selected)));
+      note.value = getEvidenceDraft(selected);
+      status.textContent = '';
+    }
+    function dismiss() {
+      modal.remove();
+      if (previous?.isConnected && typeof previous.focus === 'function')
+        previous.focus({ preventScroll: true });
+    }
+    closeBtn.onclick = dismiss;
+    saveBtn.onclick = () => {
+      status.textContent = saveEvidenceDraft(selected, note.value)
+        ? 'حُفظت ملاحظتك على هذا الجهاز' : 'تعذّر الحفظ. تأكد من سماح المتصفح بالتخزين.';
+    };
+    modal.addEventListener('click', e => { if (e.target === modal) dismiss(); });
+    modal.addEventListener('keydown', e => {
+      if (e.key === 'Escape') { e.preventDefault(); dismiss(); }
+      if (e.key !== 'Tab') return;
+      const controls = [...modal.querySelectorAll('button,textarea')].filter(el => !el.disabled);
+      const first = controls[0], last = controls.at(-1);
+      if (e.shiftKey && document.activeElement === first) { e.preventDefault(); last.focus(); }
+      else if (!e.shiftKey && document.activeElement === last) { e.preventDefault(); first.focus(); }
+    });
+    document.body.append(modal);
+    render();
+    closeBtn.focus({ preventScroll: true });
+  }
+
   function mountLegacyHub() {
     const v = $('#v-puz');
     const entry = v && $('.v5-hubcard', v);
@@ -279,6 +400,7 @@
       </div>
       <div class="mlj-foot">
         <button type="button" class="mlj-trans-btn" id="mlj-open-trans">مشاهد الرحلة (${discoveredTransitions().length})</button>
+        <button type="button" class="mlj-trans-btn" id="mlj-open-evidence">دفتر الأدلة</button>
         <span class="mlj-pill">البحار السبعة: ${prog.seaDone} / 21</span>
         <span class="mlj-pill">أَثْرَان: ${prog.atheranDone} / 21</span>
         <span class="mlj-pill">${prog.secretsUnlocked > 0 ? `عوالم سرية مكتشفة: ${prog.secretsUnlocked} / 5` : 'العوالم السرية محجوبة حتى اكتشافها'}</span>
@@ -342,6 +464,8 @@
     $('#mlj-close-atlas', sec).onclick = () => closeAtlas();
     const trBtn = $('#mlj-open-trans', sec);
     if (trBtn) trBtn.onclick = () => { closeAtlas(false); openTransitionsModal(0); };
+    const evidenceBtn = $('#mlj-open-evidence', sec);
+    if (evidenceBtn) evidenceBtn.onclick = openEvidenceBook;
     sec.querySelectorAll('[data-mlj-ch]').forEach(b => {
       b.onclick = () => { closeAtlas(false); triggerChapter(b.dataset.mljCh); };
     });
@@ -443,6 +567,7 @@
           <button id="mlj-v3-compass" type="button" aria-label="العودة إلى المحطة الحالية"><img alt="" src="${artV3}ui/btn_compass_return.webp"></button>
           <button id="mlj-v3-overview" type="button">عرض التجمعات</button>
           <button id="mlj-open-trans" type="button">مشاهد الرحلة</button>
+          <button id="mlj-open-evidence" type="button">دفتر الأدلة</button>
           <details class="mlj-v3-extras"><summary>دفتر الرحلة</summary><div></div></details>
         </footer>
         <section class="mlj-v3-preview" hidden aria-label="معاينة المحطة">
@@ -703,6 +828,7 @@
     };
     $('#mlj-v3-compass', atlas).onclick = () => { expanded = true; dismissPreview(); renderMap(currentStation()); };
     $('#mlj-open-trans', atlas).onclick = () => openTransitionsModal();
+    $('#mlj-open-evidence', atlas).onclick = openEvidenceBook;
     $('.mlj-v3-dismiss', preview).onclick = () => dismissPreview(true);
     atlas.addEventListener('click', e => { if (e.target === atlas) closeAtlas(); });
     atlas.addEventListener('keydown', e => {
@@ -877,7 +1003,7 @@
     }
   }
 
-  window.mindlabJourneyHub = { openChapter: triggerChapter, openTransitions: openTransitionsModal, discoveredTransitions, beforeStation, mountUnifiedHub, applyBoardArt, returnToMap };
+  window.mindlabJourneyHub = { openChapter: triggerChapter, openTransitions: openTransitionsModal, discoveredTransitions, beforeStation, mountUnifiedHub, applyBoardArt, returnToMap, openEvidenceBook, getEvidenceDraft, saveEvidenceDraft };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchAll);
   else watchAll();
 })();
