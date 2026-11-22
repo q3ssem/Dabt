@@ -861,12 +861,15 @@ html #play #stage .dx-board:has(#dxSum) .dx-row .dx-tile.selected {
      Split the seven existing, correctly-labelled notes across two rows.
      No sound, sequence, scoring or note order is changed. */
   html #play #stage .pkeys {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
+    /* Four notes on the first row, three centered below them. */
+    grid-template-columns: repeat(8, minmax(0, 1fr));
     grid-template-rows: repeat(2, minmax(0, 1fr));
     gap: 7px;
     height: min(44vh, 260px);
   }
-  html #play #stage .pkeys .pkey {
+  html #play #stage .pkeys .pkey:nth-child(5) { grid-column: 2 / span 2; }
+  html #play #stage .pkeys .pkey { 
+    grid-column: span 2;
     box-sizing: border-box;
     min-width: 0;
     min-height: 0;
