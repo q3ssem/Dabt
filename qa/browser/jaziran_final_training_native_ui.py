@@ -6,7 +6,33 @@ import asyncio, itertools, json, os, sys
 from functools import lru_cache
 from pathlib import Path
 from playwright.async_api import async_playwright
-from jaziran_sea_six_native_ui import tap, open_board
+from jaziran_sea_six_native_ui import tap
+from player_openings import dismiss_opening
+
+async def open_training_board(page,gid,level):
+    # Training games can prepare a story introduction after startRun; unlike
+    # the Sea-only helper, never silently skip a temporarily hidden Start.
+    await page.evaluate("([id,lv])=>{pzSetLv(id,lv);startRun([id]);RUN.replay={id,lv,seed:4000+lv}}",
+        [gid,level])
+    starter=page.locator('#stage #go')
+    await starter.wait_for(state='visible',timeout=20000)
+    await starter.click(timeout=9000)
+    await dismiss_opening(page,wait=1400)
+    try:await page.wait_for_function("()=>!document.querySelector('#stage .cd')",timeout=18000)
+    except Exception:pass
+    try:await page.locator('#pzb').wait_for(state='visible',timeout=18000)
+    except Exception as e:
+        diag=await page.evaluate("""()=>({
+            stage:document.querySelector('#stage')?.innerText.slice(0,300),
+            go:!!document.querySelector('#stage #go'),
+            playHidden:document.querySelector('#play')?.hidden,
+            opening:!!document.querySelector('#fit-opening-overlay #fit-op-start'),
+            board:!!document.querySelector('#pzb')
+        })""")
+        raise AssertionError(f'{gid}@{level}: board did not open: {diag}') from e
+    await page.wait_for_function("id=>document.querySelector('#play')?.dataset.laGame===id",
+        arg=gid,timeout=10000)
+
 
 URL=sys.argv[1] if len(sys.argv)>1 else 'http://127.0.0.1:8806/'
 ENGINE=sys.argv[2] if len(sys.argv)>2 else 'chromium'
@@ -223,7 +249,7 @@ async def main():
                 for level in range(1,count+1):
                     row={'id':gid,'level':level};baseline=len(errors)
                     try:
-                        await open_board(page,gid,level)
+                        await open_training_board(page,gid,level)
                         assert await page.evaluate("()=>RUN.last?.lv")==level
                         assert not await page.evaluate("()=>!!document.querySelector('#pzb.solved')"),'auto-win before player action'
                         prev=await page.evaluate("id=>pzState().n[id]||0",gid)
