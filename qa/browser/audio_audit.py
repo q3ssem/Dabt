@@ -4,7 +4,7 @@ Usage: python3 qa/browser/audio_audit.py URL OUT.json [ids,comma,separated]"""
 import asyncio, json, os, sys
 from playwright.async_api import async_playwright
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
-from smoke import open_game
+from player_openings import dismiss_opening
 
 URL = sys.argv[1]; OUT = sys.argv[2]
 INIT = r"""(()=>{const A=window.AudioContext||window.webkitAudioContext;if(!A)return;window.__au={ctx:0,nodes:0,buffers:0};
@@ -31,6 +31,26 @@ async def poke(page):
             continue
     return n
 
+async def open_puzzle_board(page, gid):
+    """Start through the game's real stage picker or start button, never a QA win hook."""
+    await page.evaluate("(id)=>startRun([id])", gid)
+    await page.wait_for_timeout(180)
+    picker = page.locator('#stage .ml-authored-picker .go-btn[data-level]')
+    go = page.locator('#stage #go')
+    if await picker.count() and await picker.first.is_visible():
+        await picker.first.click(timeout=10000)
+    elif await go.count() and await go.first.is_visible():
+        await go.first.click(timeout=10000)
+    await dismiss_opening(page, wait=850)
+    await page.locator('#pzb').wait_for(state='visible', timeout=15000)
+    await page.wait_for_function(
+        "(id)=>document.querySelector('#play')?.dataset.laGame===id",
+        arg=gid, timeout=12000)
+    try:
+        await page.wait_for_function("()=>!document.querySelector('#stage .cd')", timeout=12000)
+    except Exception:
+        pass
+
 async def main():
     ids = sys.argv[3].split(',') if len(sys.argv) > 3 else None
     res = {}
@@ -48,7 +68,7 @@ async def main():
         if not ids: ids = await pg.evaluate("()=>Object.keys(GM).filter(k=>/^pz_/.test(k))")
         for g in ids:
             try:
-                await pg.evaluate("()=>{try{closePlay()}catch(e){}}"); await asyncio.wait_for(open_game(pg, g), 25)
+                await pg.evaluate("()=>{try{closePlay()}catch(e){}}"); await asyncio.wait_for(open_puzzle_board(pg, g), 40)
             except Exception as e:
                 res[g] = {'error': str(e)[:80]}; continue
             await pg.wait_for_timeout(600)
