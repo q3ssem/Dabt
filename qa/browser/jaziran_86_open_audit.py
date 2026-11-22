@@ -103,7 +103,7 @@ async def probe_hints_and_reset(page):
     """Exercise actual hint buttons at most three times and inspect reset controls.
     This is diagnostic, not a puzzle solution. No player data leaves the isolated context.
     """
-    result={'available':False,'levels':[],'reset':None,'issues':[]}
+    result={'available':False,'levels':[],'reset':None,'issues':[],'exhausted':False}
     hint=page.locator('#pzh')
     if not await hint.count() or not await hint.is_visible():
         return result
@@ -112,11 +112,28 @@ async def probe_hints_and_reset(page):
         if await hint.is_disabled():
             break
         try:
+            before=await page.evaluate("""()=>{
+              return {
+                points:document.querySelector('#pzp')?.textContent||null,
+                remaining:document.querySelector('#pzhn')?.textContent||null
+              };
+            }""")
             await hint.click(timeout=2600)
             await page.wait_for_timeout(90)
             hint_box=page.locator('#pzt')
             text=(await hint_box.inner_text()).strip() if await hint_box.count() and await hint_box.is_visible() else ''
-            if not text or text==result['levels'][-1] if result['levels'] else not text:
+            if text.startswith('اكتملت خطوات المساعدة المتاحة'):
+                result['exhausted']=True
+                after=await page.evaluate("""()=>{
+                  return {
+                    points:document.querySelector('#pzp')?.textContent||null,
+                    remaining:document.querySelector('#pzhn')?.textContent||null
+                  };
+                }""")
+                if before!=after or not await hint.is_disabled():
+                    result['issues'].append('exhaustion_consumed_points_or_kept_button_active')
+                break
+            if not text or (result['levels'] and text==result['levels'][-1]):
                 result['issues'].append(f'hint_{expected}_missing_or_repeated')
             result['levels'].append(text[:170])
         except Exception as ex:
@@ -214,7 +231,8 @@ async def run():
             results.append(run)
             print('JAZIRAN_86_CASE='+json.dumps({'id':gid,'route':run['route'],
                    'issues':run.get('issues',[]),'hints':len(run.get('hintProbe',{}).get('levels',[])),
-                   'hint_issues':run.get('hintProbe',{}).get('issues',[]),'cases':len(run['cases'])},ensure_ascii=False),flush=True)
+                   'hint_issues':run.get('hintProbe',{}).get('issues',[]),
+                   'exhausted':run.get('hintProbe',{}).get('exhausted',False),'cases':len(run['cases'])},ensure_ascii=False),flush=True)
         summary={'engine':ENGINE,'chapter':CHAPTER,'expected':len(IDS),'opened':len(results),
                  'viewports':['390x844','320x640','430x932'],
                  'notable':[{'id':r['id'],'issues':r.get('issues',[]),'error':r.get('error','')}
@@ -225,6 +243,8 @@ async def run():
                      ((len(r.get('hintProbe',{}).get('levels',[]))<3
                        and not r.get('hintProbe',{}).get('solvedByHint')) or
                        r.get('hintProbe',{}).get('issues'))],
+                 'hintExhaustion':[r['id'] for r in results
+                   if r.get('hintProbe',{}).get('exhausted')],
                  'smallTargets':{r['id']:max((d.get('smallTouchTargets') or 0 for d in r['cases']),default=0)
                    for r in results},
                  'cases':results}
