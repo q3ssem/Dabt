@@ -972,6 +972,20 @@
         grid.append(button);
       });
       content.append(grid);
+      if(['seven_seas','palace','atheran'].includes(which)){
+        // The library's large map is retired, but the official story atlases
+        // remain opt-in views and keep the native chapter unlock rules.
+        const atlas=document.createElement('button');atlas.type='button';
+        atlas.className='ml-folder-original-map';
+        atlas.textContent='عرض الخريطة الرسمية للفصل';
+        atlas.onclick=()=>{
+          close(false);
+          if(which==='seven_seas')window.T7?.legacyMap?.();
+          else if(which==='palace')openPalaceMap();
+          else if(which==='atheran')window.ATHERAN_CAMPAIGN?.legacyOpen?.();
+        };
+        content.append(atlas);
+      }
       if(which==='side'&&!window.ML10&&window.mindlabSide?.start){
         const note=pill('يُجهَّز الفصل الجانبي…','ml-folder-journey-note');content.append(note);
         window.mindlabSide.start().then(()=>{if(chapter==='side'&&!panel.hidden)select('side');})
@@ -1490,7 +1504,7 @@
     }
   }
 
-  window.mindlabJourneyHub = { openChapter: triggerChapter, openTransitions: openTransitionsModal, discoveredTransitions, beforeStation, mountUnifiedHub, applyBoardArt, returnToMap, openEvidenceBook, getEvidenceDraft, saveEvidenceDraft, getEvidenceSnapshot, evidenceVisibleFiles, jaziranSceneAvailable, openJaziranScene };
+  window.mindlabJourneyHub = { openChapter: triggerChapter, openTransitions: openTransitionsModal, discoveredTransitions, beforeStation, mountUnifiedHub, openPalaceMap, applyBoardArt, returnToMap, openEvidenceBook, getEvidenceDraft, saveEvidenceDraft, getEvidenceSnapshot, evidenceVisibleFiles, jaziranSceneAvailable, openJaziranScene };
   if (document.readyState === 'loading') document.addEventListener('DOMContentLoaded', watchAll);
   else watchAll();
 })();
