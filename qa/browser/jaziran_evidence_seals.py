@@ -79,7 +79,12 @@ async def main():
             sea:T7.state().done,
             atheran:window.ATHERAN_CAMPAIGN?.summary()?.a?.done||{}
         })""")==native,'notebook must not modify game save'
-        if SHOTS: await page.screenshot(path=str(SHOTS/f'jaziran-proofs-{ENGINE}-light-390.png'))
+        for width in (320,390,430):
+            await page.set_viewport_size({'width':width,'height':844})
+            await page.wait_for_timeout(90)
+            assert await page.evaluate("()=>document.documentElement.scrollWidth<=innerWidth+5"),f'proof UI horizontal overflow at {width}px'
+            if SHOTS and width in (320,390):
+                await page.screenshot(path=str(SHOTS/f'jaziran-proofs-{ENGINE}-light-{width}.png'))
         await page.locator('#mlj-evidence-close').click()
         await page.reload(wait_until='domcontentloaded',timeout=45000)
         if await profile.count() and await profile.is_visible(): await profile.click()
@@ -89,12 +94,12 @@ async def main():
         assert await page.locator('.mlj-evidence-sources li[data-evidence-state=verified]').count()==3
         await page.evaluate("()=>{S.st.skin='dark';document.documentElement.dataset.skin='dark'}")
         await page.wait_for_function("()=>document.documentElement.dataset.skin==='dark'")
-        if SHOTS: await page.screenshot(path=str(SHOTS/f'jaziran-proofs-{ENGINE}-dark-390.png'))
+        if SHOTS: await page.screenshot(path=str(SHOTS/f'jaziran-proofs-{ENGINE}-dark-430.png'))
         assert not errors,errors[:5]
         print('JAZIRAN_PROOF_BROWSER='+json.dumps({
             'engine':ENGINE,'native_sources':5,'independent_witness_rejection':True,
             'notebook_seals':2,'seal_idempotence':True,'old_progress_unchanged':True,
-            'reload':True,'theme':'dark','errors':errors
+            'reload':True,'theme':'dark','widths':[320,390,430],'errors':errors
         },ensure_ascii=False),flush=True)
         await browser.close()
 
