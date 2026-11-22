@@ -636,7 +636,7 @@
       const evidenceButton = document.createElement('button');
       evidenceButton.type = 'button';
       evidenceButton.textContent = 'ملفات الأدلة والملاحظات';
-      evidenceButton.onclick = () => { extras.open = false; openEvidenceBook(); };
+      evidenceButton.onclick = openEvidenceBook; // Keep journal open so closing the modal restores visible focus.
       list.append(evidenceButton);
       const actions = window.ATHERAN_CAMPAIGN?.journeyActions() || [];
       if (sea) {
