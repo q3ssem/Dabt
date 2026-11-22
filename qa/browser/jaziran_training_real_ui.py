@@ -118,7 +118,9 @@ async def solve(page,gid):
                 await tap(page,f'#pzb .pp10-c[data-i="{k}"]')
             else:raise AssertionError(f'pipe {k} cannot rotate into solution')
     elif gid=='pz_stroke':
-        for vertex in P['trail'][1:]:
+        # One-stroke explicitly needs a first tap to set the starting node;
+        # skipping trail[0] loses the first edge even with the correct path.
+        for vertex in P['trail']:
             await tap(page,f'#pzb .osn[data-v="{vertex}"]')
     elif gid=='pz_soko':
         directions=route_sokoban(P)
