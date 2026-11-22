@@ -83,13 +83,13 @@
     const grid = el('div','ml-folder-grid');
     games.forEach((g,i) => {
       const complete = wins(g.id)>0,open=available(games,i),tile=LA.puzzleTile(g);
-      tile.classList.add('ml-folder-puzzle',open?'ml-folder-open':'ml-folder-locked');
+      tile.classList.add('ml-folder-puzzle',complete?'ml-folder-completed':open?'ml-folder-open':'ml-folder-locked');
       tile.dataset.folderIndex=String(i+1);
       tile.setAttribute('aria-label',arabic(i+1)+'. '+g.name+'، '+(complete?'مكتمل':open?'متاح':'مقفل حتى حل السابق'));
       const icon = tile.querySelector('.la-library-image');
       if (icon) icon.setAttribute('aria-hidden','true');
       tile.prepend(el('span','ml-folder-number',arabic(i+1)));
-      tile.append(el('span','ml-folder-state',complete?'✓':open?'ابدأ':'مقفل'));
+      tile.append(el('span','ml-folder-state',complete?'✓ مكتمل':open?'ابدأ':'مقفل'));
       if (!open) {tile.disabled=true;tile.removeAttribute('data-legacy-puzzle');tile.onclick=null;}
       grid.append(tile);
     });
