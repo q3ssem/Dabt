@@ -1,0 +1,48 @@
+name: MindLab review-only source snapshot for local QA
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/mindlab-review-snapshot.yml'
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  snapshot:
+    runs-on: ubuntu-latest
+    timeout-minutes: 22
+    steps:
+      - uses: actions/checkout@v4
+      - name: Package tracked code and exact PR revision
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import os, pathlib, subprocess, tarfile
+          paths=[os.fsdecode(p) for p in subprocess.check_output(['git','ls-files','-z']).split(b'\0') if p]
+          allowed={'.js','.css','.json','.html','.py','.mjs','.cjs','.yml','.yaml','.txt','.webmanifest','.svg'}
+          with tarfile.open('/tmp/mindlab-review-source.tar.gz','w:gz') as archive:
+              for name in paths:
+                  if pathlib.Path(name).suffix.lower() in allowed and os.path.isfile(name):
+                      archive.add(name,arcname=name,recursive=False)
+              archive.add('.github/workflows',arcname='.github/workflows')
+          print('tracked:',len(paths),'src:',os.path.getsize('/tmp/mindlab-review-source.tar.gz'))
+          PY
+          git rev-parse HEAD | tee /tmp/review-head-sha.txt
+      - uses: actions/upload-artifact@v4
+        with:
+          name: review-source-${{ github.sha }}
+          path: |
+            /tmp/mindlab-review-source.tar.gz
+            /tmp/review-head-sha.txt
+          retention-days: 3
+      - name: Package complete working-tree assets for visual QA
+        shell: bash
+        run: |
+          tar --exclude='./.git' --exclude='./node_modules' --exclude='./.playwright' -czf /tmp/mindlab-review-complete.tar.gz .
+          du -h /tmp/mindlab-review-complete.tar.gz
+      - uses: actions/upload-artifact@v4
+        with:
+          name: review-complete-${{ github.sha }}
+          path: /tmp/mindlab-review-complete.tar.gz
+          retention-days: 2
