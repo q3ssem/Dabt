@@ -65,4 +65,16 @@ const style=fs.readFileSync('ds/board-polish.css','utf8');
 for(const id of ['pz_xbridge','pz_abridge','pz_xcave','pz_pclock'])
   assert(style.includes('data-la-game="'+id+'"'),'image fit repair missing '+id);
 assert(style.includes('object-fit:cover!important')&&style.includes('object-fit:contain!important'));
+
+// Authored river multi-bank regression (stage 8+):
+// The output must show a cargo name, and a remote bank cannot steal its tap.
+const authoredRiver=fs.readFileSync('motion/stages60/play.js','utf8');
+assert(authoredRiver.includes('`<span class="ml-river-token" aria-hidden="true">${esc(group.name)}</span>`'),
+  'draw real cargo names in non-illustrated river tokens');
+assert(!authoredRiver.includes("'"+'<span class="ml-river-token" aria-hidden="true">${esc(group.name)}</span>'+"'"),
+  'raw JavaScript template markup must not appear on the game board');
+const riverCss=fs.readFileSync('motion/stages60/play.css','utf8');
+assert(riverCss.includes('.ml-river-place[data-current="false"]{pointer-events:none}'),
+  'inactive river docks must not intercept cargo selection');
+
 console.log('JAZIRAN_ACTIVE_GAME_REPAIR=passed: retired cryptogram dependency removed; 160 valid caption puzzles; 4 painted aspect fixes');
