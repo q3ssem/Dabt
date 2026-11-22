@@ -22,7 +22,7 @@ OUT.mkdir(parents=True, exist_ok=True)
 
 SIZES = [(320, 640, "light"), (390, 844, "light"),
          (390, 844, "dark"), (430, 932, "dark")]
-ILLUSTRATIVE = {"dual", "juggle", "mot", "piano", "xw", "cards", "racer"}
+ILLUSTRATIVE = {"dual", "juggle", "mot", "piano", "xw", "cards", "racer", "pm", "dx_balance"}
 
 MEASURE = r"""() => {
   const play=document.querySelector('#play');
@@ -38,8 +38,8 @@ MEASURE = r"""() => {
     'button:not([disabled]),input:not([disabled]),textarea:not([disabled]),select:not([disabled]),[role="button"],[tabindex]:not([tabindex="-1"])'
   )].filter(shown);
   const targets=interactive.map(e=>({el:e,box:box(e)}));
-  const small=targets.filter(t=>Math.min(t.box.w,t.box.h)<40 && t.box.w>0 && t.box.h>0)
-    .slice(0,12).map(t=>({id:t.el.id||'',className:typeof t.el.className==='string'?t.el.className.slice(0,75):'',
+  const smallAll=targets.filter(t=>Math.min(t.box.w,t.box.h)<40 && t.box.w>0 && t.box.h>0);
+  const small=smallAll.slice(0,12).map(t=>({id:t.el.id||'',className:typeof t.el.className==='string'?t.el.className.slice(0,75):'',
       label:(t.el.getAttribute('aria-label')||t.el.textContent||'').trim().slice(0,70),
       size:[t.box.w,t.box.h]}));
   const broken=[...stage.querySelectorAll('img')].filter(
@@ -53,13 +53,15 @@ MEASURE = r"""() => {
   const quit=play.querySelector('.pbar .x,#quit');
   const q=quit&&box(quit);
   const board=box(stage);
+  const criticalControls=[...stage.querySelectorAll('#pk.peek,#xp.xnav,#xn.xnav')]
+    .filter(shown).map(e=>({id:e.id,box:box(e)}));
   const duo=stage.querySelector('.duo');
   const matches=duo?[...duo.querySelectorAll('.match')].map(box):[];
   return {skin:document.documentElement.dataset.skin,
     width:innerWidth,height:innerHeight,board,
     visible:getComputedStyle(play).display!=='none'&&board.w>60&&board.h>40,
     elements:stage.querySelectorAll('*').length,controls:interactive.length,
-    smallTouchCount:small.length,smallExamples:small,
+    smallTouchCount:smallAll.length,smallExamples:small,criticalControls,
     brokenImages:broken,stretchedImages:stretched,
     pageOverflowsX:document.documentElement.scrollWidth>innerWidth+3,
     quit:q,dualMatches:matches,stageText:stage.textContent.trim().slice(0,100),
@@ -125,6 +127,12 @@ async def run():
                         row["issues"].append(f"{width}/{skin}:stretched_artwork")
                     if not data.get("quit") or min(data["quit"]["w"],data["quit"]["h"]) < 40:
                         row["issues"].append(f"{width}/{skin}:close_target_small")
+                    if gid in ("pm","xw"):
+                        critical=data.get("criticalControls",[])
+                        expected=1 if gid=="pm" else 2
+                        if len(critical)!=expected or any(
+                          min(x["box"]["w"],x["box"]["h"])<44 for x in critical):
+                            row["issues"].append(f"{width}/{skin}:labelled_control_below_44px")
                     if gid=="dual":
                         matches=data.get("dualMatches",[])
                         if len(matches)!=2 or any(x["w"]<40 or x["h"]<40 for x in matches):
