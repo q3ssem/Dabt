@@ -13,12 +13,17 @@ assert(wired('expedition10/style.css')&&wired('expedition10/logic.js')&&wired('e
 assert.strictEqual(pkg.version,'5.5.29','package version is 5.5.28');
 assert(sw.includes("const VERSION='5.5.29'"),'service worker cache version is 5.5.28');
 assert(offline.includes('expedition10/art/world-map.webp'),'world map is precached');
-for(const f of ['roaa.webp','noha.webp','ward.webp'])assert(offline.includes('expedition10/art/crew/'+f),'main heroine asset precached: '+f);
-for(let i=1;i<=25;i++){if(i===15)continue;
-  const prefix=String(i).padStart(2,'0')+'-';
-  const scene=fs.readdirSync(path.join(root,'expedition10/art/scenes')).find(x=>x.startsWith(prefix));
-  assert(scene,'stage scene exists '+prefix);
-  assert(offline.includes('expedition10/art/scenes/'+scene),'stage scene precached '+scene);
+for(const [id,file] of [['roaa','rawaa'],['noha','nuha'],['ward','ward']]) {
+  const rel='treasure/art/story5/crew_full_'+file+'.webp';
+  assert(app.includes("src:'"+rel+"'"),'side journey must use shared heroine asset '+id);
+  assert(offline.includes('"'+rel+'"'),'shared heroine asset precached: '+rel);
+}
+const stageScenes=[...app.matchAll(/scene:'([^']+\.webp)'/g)].map(m=>m[1]);
+assert.strictEqual(stageScenes.length,24,'all 24 side-journey scenes are registered');
+for(const name of stageScenes) {
+  const rel=name.includes('/')?name:'expedition10/art/scenes/'+name;
+  assert(fs.existsSync(path.join(root,rel)),'stage scene exists: '+rel);
+  assert(offline.includes('"'+rel+'"'),'stage scene is precached: '+rel);
 }
 assert.strictEqual((app.match(/id:'ml10_\d\d'/g)||[]).length,24,'exactly twenty-five stages are registered');
 assert(app.includes("const SAVE_KEY='mindlab:expedition10:v1'"),'the existing isolated save namespace is retained for backward-compatible progress');
