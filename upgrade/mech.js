@@ -533,9 +533,9 @@
         const on = new Set(), beam = E('g', { style: 'transform-origin:150px 62px;transition:transform .4s' }, E('rect', { x: 40, y: 57, width: 220, height: 10, rx: 5, fill: '#c98a3a', stroke: INK, 'stroke-width': 3 }),
           E('path', { d: 'M62 67v26m-26 0h52l-8 16h-36z', fill: '#e2b458', stroke: INK, 'stroke-width': 3 }), E('path', { d: 'M238 67v26m-26 0h52l-8 16h-36z', fill: '#e2b458', stroke: INK, 'stroke-width': 3 }), E('circle', { cx: 62, cy: 36, r: 19, fill: '#58d6d0', stroke: INK, 'stroke-width': 3 }), E('text', { x: 62, y: 42, 'text-anchor': 'middle', class: 'dx-tx dark', style: 'font-size:18px', text: AR(target) }), E('circle', { cx: 238, cy: 36, r: 19, fill: GOLD, stroke: INK, 'stroke-width': 3 }), E('text', { x: 238, y: 42, 'text-anchor': 'middle', class: 'dx-tx dark', style: 'font-size:18px', id: 'dxSum', text: '٠' }));
         board.append(svg(300, 160, E('path', { d: 'M150 62v80m-34 6h68', stroke: INK, 'stroke-width': 8, 'stroke-linecap': 'round' }), beam, E('circle', { cx: 150, cy: 62, r: 8, fill: GOLD, stroke: INK, 'stroke-width': 3 })), row(ws.map((w, i) => btn(o.dots ? '●'.repeat(w) : AR(w), b => {
-          on.has(i) ? on.delete(i) : on.add(i); b.classList.toggle('selected', on.has(i)); b.setAttribute('aria-pressed', String(on.has(i))); sfx.tick(); const sum = [...on].reduce((s, k) => s + ws[k], 0); beam.querySelector('#dxSum').textContent = AR(sum); beam.style.transform = `rotate(${Math.max(-12, Math.min(12, (sum - target) * 3))}deg)`;
+          on.has(i) ? on.delete(i) : on.add(i); b.classList.toggle('selected', on.has(i)); sfx.tick(); const sum = [...on].reduce((s, k) => s + ws[k], 0); beam.querySelector('#dxSum').textContent = AR(sum); beam.style.transform = `rotate(${Math.max(-12, Math.min(12, (sum - target) * 3))}deg)`;
           if (sum === target) api.later(() => api.win('توازن الميزان!'), 450); else if (sum > target) api.note('الكفة أثقل من المطلوب. أزل وزنًا.');
-        }, 'dx-tile dx-balance-weight' + (o.dots ? ' wide' : ''), { 'aria-label': `وزن ${AR(w)}`, 'aria-pressed': 'false' }))));
+        }, 'dx-tile' + (o.dots ? ' wide' : '')))));
         beam.style.transform = 'rotate(-12deg)';
       }
     };
