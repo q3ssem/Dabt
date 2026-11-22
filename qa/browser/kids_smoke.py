@@ -46,7 +46,7 @@ async def main():
                     # Use the browser's actual hit-testing, scrolling and pointer events.
                     # Dispatching MouseEvent from page.evaluate bypasses occlusion and
                     # is not proof that a child can touch a game control.
-                    controls = pg.locator('#stage button:not([disabled]), #stage [role="button"], #stage [data-i], #stage .cell')
+                    controls = pg.locator('#pzb button:not([disabled]), #pzb [role="button"], #pzb [data-i], #pzb .cell, #pzb canvas')
                     native_taps = 0
                     for i in range(min(await controls.count(), 20)):
                         if native_taps >= 1: break
