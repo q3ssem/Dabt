@@ -30,6 +30,8 @@ async def run():
             folders=page.locator('#v-puz .ml-folder-category')
             await folders.first.wait_for(state='visible',timeout=20000)
             count=await folders.count()
+            names=await folders.evaluate_all("(nodes)=>nodes.map(n=>n.dataset.folderName)")
+            assert len(names)==len(set(names)),f'duplicate library folders: {names}'
             await page.wait_for_function("""() => curTab === 'puz' &&
               [...document.querySelectorAll('#v-puz .ml-folder-category img')].every(img=>img.complete && img.naturalWidth>0)
             """,timeout=15000)
@@ -69,6 +71,24 @@ async def run():
             await page.wait_for_function("()=>window.LA?.puzzleFoldersReady && window.mindlabPlayLayers?.ready",timeout=45000)
             await page.locator('[data-folder-name="حركة ومسارات"]').click()
             assert not await page.locator('#v-puz .ml-folder-grid .ml-folder-puzzle').nth(1).is_disabled(),'unlock lost after reload'
+            # Sparse historical saves must not make formerly playable early puzzles inaccessible.
+            # This test changes only an isolated browser profile, never a real player's save.
+            await page.evaluate("(id)=>{pzState().n[id]=1;S.save()}",ids[4])
+            await page.evaluate("()=>renderPuz()")
+            tiles=page.locator('#v-puz .ml-folder-grid .ml-folder-puzzle')
+            for i in range(6):
+                assert not await tiles.nth(i).is_disabled(),f'sparse legacy win re-locked puzzle {i+1}'
+            assert await tiles.nth(6).is_disabled(),'sparse win unlocked more than one next puzzle'
+            await page.reload(wait_until='load')
+            main=page.locator('.mpc[data-m=main]')
+            if await main.count() and await main.is_visible(): await main.click()
+            await page.evaluate("()=>tab('puz')")
+            await page.wait_for_function("()=>window.LA?.puzzleFoldersReady && window.mindlabPlayLayers?.ready",timeout=45000)
+            await page.locator('[data-folder-name="حركة ومسارات"]').click()
+            tiles=page.locator('#v-puz .ml-folder-grid .ml-folder-puzzle')
+            assert not await tiles.nth(3).is_disabled(),'legacy earlier puzzle re-locked after reload'
+            assert not await tiles.nth(5).is_disabled(),'legacy following puzzle re-locked after reload'
+            assert await tiles.nth(6).is_disabled(),'legacy unlock advanced two stages after reload'
             await page.locator('.ml-folder-back').first.click()
             assert await page.locator('.ml-folder-category').count()>=4,'return to folder grid fails'
             await page.locator('#mlj-journey-entry').click()
@@ -95,7 +115,7 @@ async def run():
             assert await page.locator('#mlj-unified-hub').is_hidden()
             assert not await page.evaluate("()=>document.documentElement.scrollWidth>innerWidth+3"),'horizontal overflow'
             assert not errors,errors[:5]
-            stats.append({'width':width,'library_categories':count,'movement_puzzles':n,
+            stats.append({'width':width,'library_categories':count,'category_names':names,'movement_puzzles':n,
                           'columns':gridcols,'story_stations':21,'side_stations':24,
                           'persisted_unlock':True,'errors':errors})
             await browser.close()
