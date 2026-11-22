@@ -60,7 +60,7 @@ async def main():
             if SHOTS:await page.screenshot(path=str(SHOTS/f'jaziran-palette-{ENGINE}-{theme}.png'))
         # No dormant source or muted audio may become a sound-producing action.
         audio=await page.evaluate("""()=>{
-          if(!window.sfx?.puzzleIdentity)return {installed:false};
+          if(typeof sfx!=='object'||typeof sfx.puzzleIdentity!=='function')return {installed:false};
           const muted=S.st.mute;
           S.st.mute=true;
           const silent=sfx.puzzleIdentity('pz_river');
