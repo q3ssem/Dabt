@@ -29,7 +29,23 @@ async def check(ok,label):
     print("SIDE24_SOLVE_CHECK="+label,flush=True)
 
 async def click(page,selector):
-    await page.locator(selector).first.click(timeout=8500)
+    target=page.locator(selector).first
+    if selector.startswith('[data-route-node='):
+        # Playwright Locator.click performs an extra automatic scroll and may
+        # hit the moving graph container instead of its correctly hit-tested
+        # 44px node. A real touch at the verified node centre models the
+        # player's tap without bypassing hit testing or dispatching JS events.
+        await target.scroll_into_view_if_needed(timeout=5000)
+        hit=await target.evaluate("""el=>{
+          const r=el.getBoundingClientRect(),x=r.x+r.width/2,y=r.y+r.height/2;
+          const top=document.elementFromPoint(x,y);
+          return {x,y,reaches:top===el||el.contains(top)};
+        }""")
+        if not hit["reaches"]:
+            raise AssertionError("River graph button is physically blocked at tap location")
+        await page.touchscreen.tap(hit["x"],hit["y"])
+    else:
+        await target.click(timeout=8500)
 
 async def js(page,src,arg=None):
     if arg is None:return await page.evaluate(src)
