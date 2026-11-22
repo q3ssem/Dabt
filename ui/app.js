@@ -210,6 +210,7 @@ try {
     'ui/puzzle-designs-data.js',
     'ui/openings.js',
     'ui/journey-story-data.js',
+    'ui/jaziran-scenes-data.js',
     'ui/journey-evidence.js',
     'ui/board-art-data.js',
     'ui/designs_art/journey/v3/stations.js',
