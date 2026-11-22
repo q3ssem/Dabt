@@ -213,6 +213,17 @@ async def run():
         assert dual_landscape["grid"] and len(dual_landscape["buttons"])==2,f"Landscape N-Back controls missing: {dual_landscape}"
         assert all(x["width"]>=44 and x["left"]>=-2 and x["right"]<=844+2 for x in dual_landscape["buttons"]) and not dual_landscape["overflow"],f"Landscape N-Back horizontally cropped: {dual_landscape}"
         if SHOTS: await page.screenshot(path=str(SHOTS/"brain-dual-light-landscape-844x390.png"),full_page=True)
+        # Off-screen buttons must be reachable through an actual scroll, not
+        # merely present in DOM beneath a clipped fixed-height overlay.
+        await page.locator('#stage > .duo .match').last.scroll_into_view_if_needed(timeout=9000)
+        dual_reachable=await page.evaluate("""()=>{
+            const b=document.querySelector('#stage > .duo .match:last-child');
+            const r=b.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
+            const hit=document.elementFromPoint(x,y);
+            return {top:r.top,bottom:r.bottom,hit:hit===b||b.contains(hit),viewport:innerHeight};
+        }""")
+        assert dual_reachable["top"]>=0 and dual_reachable["bottom"]<=390 and dual_reachable["hit"],f"N-Back action cannot be tapped after landscape scroll: {dual_reachable}"
+        if SHOTS: await page.screenshot(path=str(SHOTS/"brain-dual-light-landscape-controls-visible.png"))
         await page.set_viewport_size({"width":390,"height":844})
         await page.evaluate("()=>closePlay()")
         # Verify the two separately-rendered campaign families also inherit
@@ -415,6 +426,15 @@ async def run():
         assert len(side_landscape["buttons"])==4 and not side_landscape["overflow"],f"Landscape lighthouse controls not usable: {side_landscape}"
         assert all(x["left"]>=-2 and x["right"]<=844+2 for x in side_landscape["buttons"]),f"Landscape lighthouse action horizontally clipped: {side_landscape}"
         if SHOTS: await page.screenshot(path=str(SHOTS/"side-lighthouse-dark-landscape-844x390.png"),full_page=True)
+        await page.locator('#v-puz [data-ex10="check-code"]').scroll_into_view_if_needed(timeout=9000)
+        side_reachable=await page.evaluate("""()=>{
+            const b=document.querySelector('#v-puz [data-ex10="check-code"]');
+            const r=b.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
+            const hit=document.elementFromPoint(x,y);
+            return {top:r.top,bottom:r.bottom,hit:hit===b||b.contains(hit),viewport:innerHeight};
+        }""")
+        assert side_reachable["top"]>=0 and side_reachable["bottom"]<=390 and side_reachable["hit"],f"Lighthouse submit action cannot be tapped after landscape scroll: {side_reachable}"
+        if SHOTS: await page.screenshot(path=str(SHOTS/"side-lighthouse-dark-landscape-controls-visible.png"))
         assert not errors,errors[:5]
         print("BOARD_VISUAL_ACCEPTANCE="+json.dumps({
           "engine":ENGINE,"panels":len(rows)+3,"themes":["light","dark"],
