@@ -43,7 +43,7 @@ async def start(pg, gid, lv=None, seed=None, pre=None):
     if await pg.locator('.mpc[data-m=main]').count() and await pg.locator('.mpc[data-m=main]').is_visible(): await pg.click('.mpc[data-m=main]')
     if pre: await pg.evaluate(pre)
     await pg.evaluate("([g, lv, s]) => { startRun([g]); if (lv) RUN.replay = { id: g, lv, seed: s } }", [gid, lv, seed]); await pg.wait_for_timeout(300)
-    if await pg.locator('#stage #go').count(): await pg.click('#stage #go')
+    if await pg.locator('#stage #go').count() and await pg.locator('#stage #go').first.is_visible(): await pg.click('#stage #go')
     await dismiss_opening(pg, 1500)
     await pg.wait_for_timeout(2200)
 async def result(pg, t=6000):
