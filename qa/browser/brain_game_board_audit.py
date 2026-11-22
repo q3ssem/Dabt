@@ -171,6 +171,35 @@ async def run():
                         matches=data.get("dualMatches",[])
                         if len(matches)!=2 or any(x["w"]<40 or x["h"]<40 for x in matches):
                             row["issues"].append(f"{width}/{skin}:nback_controls_too_small")
+                # Native interaction smoke-tests for the touch improvements;
+                # accessibility must not be only a CSS rectangle.
+                if gid=="xw":
+                    before=await page.evaluate("""()=>[...document.querySelectorAll('#xg .xcell b')]
+                      .map(e=>e.textContent).join('|')""")
+                    await page.locator("#xk button").first.click(timeout=5000)
+                    after=await page.evaluate("""()=>[...document.querySelectorAll('#xg .xcell b')]
+                      .map(e=>e.textContent).join('|')""")
+                    if before==after:
+                        row["issues"].append("crossword:letter_key_did_not_enter")
+                if gid=="dx_balance":
+                    key=page.locator("#stage .dx-board:has(#dxSum) .dx-row .dx-tile").first
+                    await key.click(timeout=5000)
+                    if not await key.evaluate("el=>el.classList.contains('selected')"):
+                        row["issues"].append("balance:weight_did_not_toggle")
+                if gid=="piano":
+                    key=page.locator("#pk .pkey").first
+                    await page.evaluate("""()=>{
+                      window.__pianoKeyFromKeyboard=false;
+                      const key=document.querySelector('#pk .pkey');
+                      key.addEventListener('click',()=>{
+                        queueMicrotask(()=>{window.__pianoKeyFromKeyboard=key.classList.contains('on')});
+                      },{once:true});
+                    }""")
+                    await key.focus()
+                    await page.keyboard.press("Enter")
+                    await page.wait_for_timeout(35)
+                    if not await page.evaluate("()=>window.__pianoKeyFromKeyboard"):
+                        row["issues"].append("piano:keyboard_activation_did_not_play_note")
                 if gid == "dual":
                     await page.set_viewport_size({"width":844,"height":390})
                     await page.wait_for_timeout(300)
