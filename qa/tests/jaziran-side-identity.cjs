@@ -23,6 +23,12 @@ for(const s of stages){
 }
 assert(!/\bpz_[a-z0-9]+\b/.test(side),'side adventure should not directly launch library puzzle IDs');
 assert(side.includes("mindlab:expedition10:v1"),'side progress remains separately saved');
+const riverBlock=side.slice(side.indexOf('function gameRiver(i)'),side.indexOf('function gameMap(i)'));
+assert(riverBlock.includes('data-route-next=')&&riverBlock.includes('b.onclick=()=>visit(b.dataset.routeNext)'),
+  'River must offer tappable, legal next-node buttons using its actual move rules');
+assert(side.includes('النجوم ${ar(save.totalStars)} من ٧٢'),
+  'Side map maximum is 24 stages times 3 stars, not retired 75');
+
 const activeScene=side.slice(side.indexOf('function commonGame('),side.indexOf('function bindCommon('));
 assert(activeScene.includes("data-state=\"${save.done[s.id]?'done':'open'}\""),
   'active side-journey scene must not display a locked badge');
