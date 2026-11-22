@@ -1,0 +1,47 @@
+name: MindLab Native Compatibility — Side Journey + Journal Focus
+
+on:
+  push:
+    branches: [review/mindlab-side-native-compat-20261123]
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mindlab-native-focus-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  evidence-focus:
+    name: Evidence notebook visible focus / ${{ matrix.browser }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - run: python -m playwright install --with-deps ${{ matrix.browser }}
+      - name: Exercise evidence journal, keyboard focus, themes and saved notes
+        env:
+          ENGINE: ${{ matrix.browser }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p "/tmp/mindlab-evidence-${ENGINE}"
+          python -m http.server 8765 --bind 127.0.0.1 >/tmp/mindlab-evidence-http.log 2>&1 &
+          sleep 2
+          python qa/browser/journey_evidence.py http://127.0.0.1:8765/ "${ENGINE}" "/tmp/mindlab-evidence-${ENGINE}"
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: mindlab-evidence-focus-${{ matrix.browser }}
+          path: /tmp/mindlab-evidence-*/
+          if-no-files-found: ignore
+          retention-days: 7
