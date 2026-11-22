@@ -41,7 +41,7 @@ async def solve(page,gid):
         return len(P['solution'])
     if gid=='pz_xcave':
         order=await page.evaluate("()=>__test.pz.P.ord")
-        for i in order:await tap(page,f'#xcw .xct[data-i="{i}"]')
+        for i in order:await tap(page,f'#xcw .xct2[data-i="{i}"]')
         return len(order)
     if gid=='pz_ymap':
         P=await page.evaluate("()=>{const p=__test.pz.P;return {cur:p.cur,rot:p.rot,n:p.n}}")
@@ -131,7 +131,7 @@ async def main():
             for row in rows:
                 if row.get('win') and stored.get(row['id'],0)<1:row['error']='win lost on reload'
         finally:
-            summary={'engine':ENGINE,'wins':sum(r.get('win') and not r.get('error') and not r.get('jsErrors') for r in rows),
+            summary={'engine':ENGINE,'wins':sum(bool(r.get('win') and not r.get('error') and not r.get('jsErrors')) for r in rows),
                 'total':len(rows),'deficits':[r for r in rows if r.get('error') or r.get('jsErrors')],
                 'pageErrors':errors,'results':rows}
             (OUT/f'sea-last-{ENGINE}.json').write_text(json.dumps(summary,indent=2,ensure_ascii=True))
