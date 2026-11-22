@@ -58,7 +58,7 @@ async def main():
                 res[g] = {'error': str(e)[:80]}
             print(g, json.dumps(res[g], ensure_ascii=False), flush=True)
         await b.close()
-    bad = {g: r for g, r in res.items() if 'error' not in r and (r['idleNodes2s'] or r['mutedNodes'] or r['contexts'] > 1)}
+    bad = {g: r for g, r in res.items() if ('error' in r or not r.get('pokes', 0) or r.get('idleNodes2s', 0) or r.get('mutedNodes', 0) or r.get('contexts', 0) > 1)}
     json.dump({'results': res, 'violations': bad}, open(OUT, 'w'), ensure_ascii=False, indent=1)
     print('puzzles', len(res), 'errors', sum('error' in r for r in res.values()), 'violations', len(bad), json.dumps(bad, ensure_ascii=False)[:600])
     sys.exit(1 if bad else 0)
