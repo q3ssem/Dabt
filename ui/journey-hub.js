@@ -248,7 +248,7 @@
     {id:'traces',name:'العمر والأثر',question:'أي خريطة تصف المدينة وقت المد المقصود؟',
       sources:[['pz_alayer','طبقات الزمن'],['pz_acity','المدينة الحية'],['pz_arelic','أرشيف الآثار الأولى']]},
     {id:'people',name:'أسماء أصحاب الأثر',question:'من يحمل ذاكرة المكان بعد الإخلاء؟',
-      sources:[['pz_wbone','وادي الهياكل'],['pz_wspore','أبواغ الليل'],['pz_wlog','سجل السفينة'],['pz_wlake','بحيرة الذاكرة'],['pz_wfirst','الأثر الأول']]}
+      sources:[['pz_wbone','وادي الهياكل'],['pz_wspore','حديقة الأبواغ'],['pz_wlog','السفينة التي لم تُبحر'],['pz_wlake','بحيرة السماء'],['pz_wfirst','موطن الأثر الأول']]}
   ];
   const EVIDENCE_SECRET_KEYS = {pz_wbone:'bones',pz_wspore:'spores',pz_wlog:'ship',pz_wlake:'lake',pz_wfirst:'first'};
   const evidenceFile = id => EVIDENCE_FILES.find(file => file.id === id);
