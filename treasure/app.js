@@ -31,7 +31,12 @@ function dailyDone(moves,min,hints){const x=state();x.daily=x.daily&&typeof x.da
 /* ---------- navigation ---------- */
 function open(i, fromJourney=journeyEntry){if(!D.stations[i]||!unlocked(i))return;journeyEntry=fromJourney;D.stations.forEach(q=>{delete q.daily;});const x=state(),a=B.v5state(x).att[D.stations[i].id];if(a&&a.c===4)delete B.v5state(x).att[D.stations[i].id];active=i;dialogAt=0;view=fromJourney?'puzzle':'story';state().resume=i;save();go();}
 function continueJourney(){if(journeyEntry)return map();const target=active+1;if(target>=D.stations.length){map();return;}const from=D.stations[active],to=D.stations[target];if(from.ch!==to.ch&&sealHere(from)&&done(from.i)){passageTarget=target;view='passage';try{sfx.seaTransition();}catch(e){}render();window.scrollTo(0,0);return;}open(target);}
-function map(){if(window.mindlabJourneyHub?.returnToMap){journeyEntry=false;hub();window.mindlabJourneyHub.returnToMap('seven_seas');return}view='map';if(window.LA)LA.view=null;render();window.scrollTo(0,0);}
+function legacyMap(){
+  // The official seven-seas illustrated map remains available alongside the
+  // compact folder navigation; chapter gates and saves are unchanged.
+  journeyEntry=false;view='map';if(window.LA)LA.view=null;render();window.scrollTo(0,0);
+}
+function map(){if(window.mindlabJourneyHub?.returnToMap){journeyEntry=false;hub();window.mindlabJourneyHub.returnToMap('seven_seas');return}legacyMap();}
 function hub(){journeyEntry=false;view='hub';if(window.LA)LA.view=null;renderPuz();window.scrollTo(0,0);}
 function openSecret(ch,fromJourney=false){if(!D.chapters[ch]||!done(sealIndex(ch)))return;journeyEntry=fromJourney;active=sealIndex(ch);letterCh=ch;view='letter';go();}
 function go(){if(curTab!=='puz')tab('puz');else render();window.scrollTo(0,0);}
@@ -48,11 +53,11 @@ function toolIcon(text, fn, src) {
 function top(v,sub,title){
  const focus=view==='story'||view==='puzzle';
  const tools=focus?[
-  toolIcon('المحطات',map,'watercolor/art/icons54/map.webp'),
+  toolIcon('الخريطة',legacyMap,'watercolor/art/icons54/map.webp'),
   toolIcon('دفتر الرحلة',()=>modal('notebook'),ART+'icon_journal.webp'),
   toolIcon('الكنوز',()=>modal('treasures'),'watercolor/art/icons54/chest.webp')
  ]:[
-  view==='map'?button('كل الألغاز',hub):button('المحطات',map),
+  view==='map'?button('كل الألغاز',hub):button('الخريطة',legacyMap),
   button('دفتر الرحلة',()=>modal('notebook')),button('الكنوز',()=>modal('treasures'))
  ];
  v.append(E('header',{class:'t7-top'+(focus?' t7-compact-top':'')},E('div',{},E('span',{class:'t7-kicker',text:sub}),E('h1',{text:title})),E('div',{class:'t7-tools'},...tools)));
@@ -253,7 +258,7 @@ function modal(kind){const nb=kind==='notebook',d=E('dialog',{class:'t7-modal','
  document.body.append(d);d.addEventListener('close',()=>d.remove());d.showModal();}
 
 function render(){({hub:renderHub,map:renderMap,story:renderStory,puzzle:renderPuzzle,reward:renderReward,letter:renderLetter,passage:renderPassage})[view]();}
-window.T7={open,openSecret,openFinale,openFinaleFromJourney,openJournal:modal,map,hub,render,state,unlocked,data:D,logic:L};
+window.T7={open,openSecret,openFinale,openFinaleFromJourney,openJournal:modal,map,legacyMap,hub,render,state,unlocked,data:D,logic:L};
 
 /* ---------- saves: cloud merge and backups ---------- */
 DX.KEYS.push('treasureV3');
