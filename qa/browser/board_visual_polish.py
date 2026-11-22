@@ -199,6 +199,21 @@ async def run():
         assert not legacy["overflow"],"Brain-game panel overflows"
         if SHOTS:
             await page.screenshot(path=str(SHOTS/"brain-dual-light-390.png"))
+        # A short landscape viewport is a separate layout mode, not merely a
+        # wider portrait; preserve both N-Back answer controls and a scroll path.
+        await page.set_viewport_size({"width":844,"height":390})
+        await page.wait_for_timeout(250)
+        dual_landscape=await page.evaluate("""()=>{
+            const b=document.querySelector('#stage > #bd.board');
+            const controls=[...document.querySelectorAll('#stage > .duo .match')];
+            return {grid:!!b,buttons:controls.map(el=>{const r=el.getBoundingClientRect();
+                return {left:r.left,right:r.right,width:r.width,height:r.height};}),
+                overflow:document.documentElement.scrollWidth>innerWidth+3};
+        }""")
+        assert dual_landscape["grid"] and len(dual_landscape["buttons"])==2,f"Landscape N-Back controls missing: {dual_landscape}"
+        assert all(x["width"]>=44 and x["left"]>=-2 and x["right"]<=844+2 for x in dual_landscape["buttons"]) and not dual_landscape["overflow"],f"Landscape N-Back horizontally cropped: {dual_landscape}"
+        if SHOTS: await page.screenshot(path=str(SHOTS/"brain-dual-light-landscape-844x390.png"),full_page=True)
+        await page.set_viewport_size({"width":390,"height":844})
         await page.evaluate("()=>closePlay()")
         # Verify the two separately-rendered campaign families also inherit
         # the visual typography while keeping their own handcrafted board art.
@@ -356,6 +371,7 @@ async def run():
                 count:p.querySelectorAll('.ex10-clue').length,overflow:document.documentElement.scrollWidth>innerWidth+3};
         }""")
         assert dark_clues["contrast"]>=4.5 and dark_clues["count"]==5 and not dark_clues["overflow"],f"Dark lighthouse evidence unreadable: {dark_clues}"
+        await page.locator('#v-puz .ex10-top-right .fit-pinfo').wait_for(state='visible',timeout=10000)
         if SHOTS: await page.screenshot(path=str(SHOTS/"side-lighthouse-dark-390.png"))
         # Complete the actual lock and inspect the result panel and next/retry/map.
         for digit,steps in ((1,4),(2,2)):
@@ -385,6 +401,20 @@ async def run():
         assert result["headingContrast"]>=4.5 and result["bodyContrast"]>=4.5,f"Dark outcome text is unreadable: {result}"
         assert all(min(b["width"],b["height"])>=48 and b["radius"]>=23 for b in result["actions"]) and not result["overflow"],f"Result controls inaccessible or not circular: {result}"
         if SHOTS: await page.screenshot(path=str(SHOTS/"side-lighthouse-result-dark-390.png"))
+        # Do not stretch landscape artwork or clip either row of puzzle actions.
+        await page.set_viewport_size({"width":844,"height":390})
+        await page.evaluate("()=>ML10.startStage(0)")
+        await page.locator('#v-puz .ex10-top-right .fit-pinfo').wait_for(state='visible',timeout=10000)
+        side_landscape=await page.evaluate("""()=>{
+            const scene=document.querySelector('#v-puz .ex10-game-shell[data-stage-id="ml10_01"]');
+            const buttons=[...scene.querySelectorAll('.ex10-game-content .ex10-controls button')];
+            return {buttons:buttons.map(x=>{const r=x.getBoundingClientRect();
+                return {left:r.left,right:r.right,height:r.height};}),
+                overflow:document.documentElement.scrollWidth>innerWidth+3};
+        }""")
+        assert len(side_landscape["buttons"])==4 and not side_landscape["overflow"],f"Landscape lighthouse controls not usable: {side_landscape}"
+        assert all(x["left"]>=-2 and x["right"]<=844+2 for x in side_landscape["buttons"]),f"Landscape lighthouse action horizontally clipped: {side_landscape}"
+        if SHOTS: await page.screenshot(path=str(SHOTS/"side-lighthouse-dark-landscape-844x390.png"),full_page=True)
         assert not errors,errors[:5]
         print("BOARD_VISUAL_ACCEPTANCE="+json.dumps({
           "engine":ENGINE,"panels":len(rows)+3,"themes":["light","dark"],
