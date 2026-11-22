@@ -506,3 +506,9 @@ html[data-skin="dark"] .ex10 .ex10-btn.secondary{background:#243148;color:#EEF1F
 .ex10-dial button::before{content:"";position:absolute;left:50%;top:50%;width:0;height:0;border-left:11px solid transparent;border-right:11px solid transparent;transform:translate(-50%,-50%)}
 .ex10-dial button[data-dir="up"]::before{border-bottom:13px solid currentColor}
 .ex10-dial button[data-dir="down"]::before{border-top:13px solid currentColor}
+
+/* Side-journey river: use large, directly tappable adjacent stations for
+   players whose mobile viewport makes map nodes difficult to select. */
+#v-puz .ex10-route-choices{display:flex;justify-content:center;align-items:center;flex-wrap:wrap;gap:8px;margin:10px auto 12px;max-width:620px}
+#v-puz .ex10-route-choice-label{flex:1 1 100%;font-weight:800;font-size:13px;text-align:center;color:inherit}
+#v-puz .ex10-route-choices button{min-height:48px;min-width:80px;padding:10px 16px;touch-action:manipulation;white-space:normal}
