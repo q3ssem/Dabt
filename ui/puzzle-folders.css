@@ -194,3 +194,16 @@ html[data-skin="dark"] #v-puz .ml-folder-grid .ml-folder-puzzle.ml-folder-comple
 html[data-skin="dark"] #v-puz .ml-folder-grid .ml-folder-puzzle.ml-folder-completed .ml-folder-state {
   color:#f4dfb2!important;
 }
+
+/* Chapter maps remain available inside the campaign, never in the puzzle library. */
+html #v-puz .ml-folder-original-map{
+  min-height:44px;width:100%;padding:10px 14px;border-radius:13px;
+  border:2px solid #8cae9d;background:transparent;color:#27554a;
+  font:800 13px/1.5 Tajawal,system-ui,sans-serif;cursor:pointer;
+}
+html[data-skin="dark"] #v-puz .ml-folder-original-map{
+  border-color:#83b4a1;color:#d5ede4;
+}
+html #v-puz .ml-folder-original-map:focus-visible{
+  outline:3px solid #bd8b29;outline-offset:3px;
+}
