@@ -17,7 +17,7 @@ for(const key of ['id','name','scene','objective','story'])
 const source=JSON.parse(story.slice(story.indexOf(' = ')+3).trim().replace(/;\s*$/,''));
 assert.deepEqual(stages.map(x=>x.id),source.expeditionStations.map(x=>x.stageId));
 for(const s of stages){
-  assert(fs.existsSync('expedition10/art/scenes/'+s.scene),'missing side scene '+s.id);
+  assert(fs.existsSync(s.scene.includes('/') ? s.scene : 'expedition10/art/scenes/'+s.scene),'missing side scene '+s.id);
   assert(s.objective.length>=20,'side stage needs its own playable goal '+s.id);
   assert(s.story.length>=40,'side stage needs distinct narrative '+s.id);
 }

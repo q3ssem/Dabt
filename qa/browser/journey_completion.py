@@ -1,4 +1,4 @@
-"""Journey acceptance: real start gating and milestone discovery, responsive maps,
+"""Journey acceptance: real start gating and milestone discovery, responsive chapter folders,
 and all 57 Palace rounds from a fresh save. Solvers use the existing QA hooks;
 they never call pWin/aWin or write a completed Palace save.
 MODE=palace or scenes; ENGINE=chromium or webkit; OUT=artifact directory.
@@ -67,13 +67,13 @@ async def scenes(browser):
             for chapter in ['seven_seas','palace','atheran','side']:
                 await ev('(id)=>mindlabJourneyHub.openChapter(id)',chapter);await close_transition(pg);await pg.wait_for_timeout(250)
                 check(await ev('()=>document.documentElement.dataset.skin')==skin,f'{w} {skin} {chapter}: requested theme remains active')
-                if chapter=='atheran' and skin=='dark':
-                    check(await ev('()=>{const c=getComputedStyle(document.querySelector(".ah-top")).backgroundColor.match(/\\d+/g).map(Number);return c.slice(0,3).every(n=>n<100)}'),f'{w}: Atheran header uses the dark palette')
-                if chapter=='side' and skin=='dark':
-                    check(await ev('()=>{const c=getComputedStyle(document.querySelector(".ex10-panel")).backgroundColor.match(/\\d+/g).map(Number);return c.slice(0,3).every(n=>n<100)}'),f'{w}: side map uses the dark palette')
+                check(await pg.locator('#mlj-unified-hub .ml-folder-station').count()=={'seven_seas':21,'palace':19,'atheran':21,'side':24}[chapter],f'{w} {skin} {chapter}: all folder stages visible')
+                check(await pg.locator('#mlj-unified-hub .mlj-map-img,#mlj-unified-hub .mlj-v3-pin').count()==0,f'{w} {skin} {chapter}: atlas absent')
+                if skin=='dark':
+                    check(await ev('()=>{const c=getComputedStyle(document.querySelector(".ml-folder-dialog")).backgroundColor.match(/\\d+/g).map(Number);return c.slice(0,3).every(n=>n<100)}'),f'{w} {chapter}: dark folder contrast')
                 check(await ev('()=>document.documentElement.scrollWidth<=innerWidth+2'),f'{w} {skin} {chapter}: no horizontal page overflow')
                 await pg.screenshot(path=str(OUT/f'{w}-{skin}-{chapter}.png'))
-                await pg.keyboard.press('Escape');await ev('()=>{document.querySelector("#mlj-palace-map")?.remove();if(LA.view==="atheran")ATHERAN_CAMPAIGN.back();T7.hub()}')
+                await pg.keyboard.press('Escape');await ev('()=>T7.hub()')
         check(not errors,f'{w}: no JavaScript errors: {errors}')
         await ctx.close()
 
@@ -106,10 +106,10 @@ async def palace(browser):
         await ev('()=>T7.hub()');await pg.locator('#mlj-journey-entry').wait_for()
         await pg.click('#mlj-journey-entry')
         hub = pg.locator('#mlj-unified-hub')
-        if await hub.locator('.mlj-v3-cluster').count():
-            await hub.locator('#mlj-v3-overview').click()
-        await hub.locator(f'[data-station-id="{gid}"]').click()
-        await hub.locator('.mlj-v3-start').click()
+        await hub.locator('.ml-folder-chapter[data-chapter="palace"]').click()
+        station=hub.locator(f'.ml-folder-station[data-station-id="{gid}"]')
+        check(await station.is_enabled(),f'{gid}: real Palace gate allows its next station')
+        await station.click()
         await close_transition(pg)
         for k in range(3):
             go=pg.locator('#stage #go')

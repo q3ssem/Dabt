@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scope": "design only; no application changes",
+  "scope": "Map-free chapter navigation; scene transition and puzzle art assets remain unchanged",
   "journey_title": "رحلة الكنز",
   "chapter_order": [
     "seven_seas",
@@ -8,7 +8,6 @@
     "atheran"
   ],
   "side_branch": "side",
-  "map": "art/journey_map.png",
   "seas": [
     "من أعاد الضوء؟",
     "أصوات خلف الضباب",

@@ -30,13 +30,8 @@ function dailyDone(moves,min,hints){const x=state();x.daily=x.daily&&typeof x.da
 
 /* ---------- navigation ---------- */
 function open(i, fromJourney=journeyEntry){if(!D.stations[i]||!unlocked(i))return;journeyEntry=fromJourney;D.stations.forEach(q=>{delete q.daily;});const x=state(),a=B.v5state(x).att[D.stations[i].id];if(a&&a.c===4)delete B.v5state(x).att[D.stations[i].id];active=i;dialogAt=0;view=fromJourney?'puzzle':'story';state().resume=i;save();go();}
-function continueJourney(){if(journeyEntry)return map();const target=active+1;if(target>=D.stations.length){map();return;}const from=D.stations[active],to=D.stations[target];if(from.ch!==to.ch&&sealHere(from)&&done(from.i)){passageTarget=target;view='passage';try{sfx.seaTransition();}catch(e){}render();window.scrollTo(0,0);return;}open(target);}
-function legacyMap(){
-  // The official seven-seas illustrated map remains available alongside the
-  // compact folder navigation; chapter gates and saves are unchanged.
-  journeyEntry=false;view='map';if(window.LA)LA.view=null;render();window.scrollTo(0,0);
-}
-function map(){if(window.mindlabJourneyHub?.returnToMap){journeyEntry=false;hub();window.mindlabJourneyHub.returnToMap('seven_seas');return}legacyMap();}
+function continueJourney(){const target=active+1;if(target>=D.stations.length){map();return;}const from=D.stations[active],to=D.stations[target];if(from.ch!==to.ch&&sealHere(from)&&done(from.i)){passageTarget=target;view='passage';try{sfx.seaTransition();}catch(e){}render();window.scrollTo(0,0);return;}if(journeyEntry)return map();open(target);}
+function map(){journeyEntry=false;hub();window.mindlabJourneyHub?.openChapters?.('seven_seas');}
 function hub(){journeyEntry=false;view='hub';if(window.LA)LA.view=null;renderPuz();window.scrollTo(0,0);}
 function openSecret(ch,fromJourney=false){if(!D.chapters[ch]||!done(sealIndex(ch)))return;journeyEntry=fromJourney;active=sealIndex(ch);letterCh=ch;view='letter';go();}
 function go(){if(curTab!=='puz')tab('puz');else render();window.scrollTo(0,0);}
@@ -53,11 +48,11 @@ function toolIcon(text, fn, src) {
 function top(v,sub,title){
  const focus=view==='story'||view==='puzzle';
  const tools=focus?[
-  toolIcon('الخريطة',legacyMap,'watercolor/art/icons54/map.webp'),
+  toolIcon('المحطات',map,'watercolor/art/icons54/compass.webp'),
   toolIcon('دفتر الرحلة',()=>modal('notebook'),ART+'icon_journal.webp'),
   toolIcon('الكنوز',()=>modal('treasures'),'watercolor/art/icons54/chest.webp')
  ]:[
-  view==='map'?button('كل الألغاز',hub):button('الخريطة',legacyMap),
+  button('الفصول والمحطات',map),
   button('دفتر الرحلة',()=>modal('notebook')),button('الكنوز',()=>modal('treasures'))
  ];
  v.append(E('header',{class:'t7-top'+(focus?' t7-compact-top':'')},E('div',{},E('span',{class:'t7-kicker',text:sub}),E('h1',{text:title})),E('div',{class:'t7-tools'},...tools)));
@@ -95,44 +90,17 @@ function portrait(who){const p=PORTRAIT[who]||['icon_journal','80%','center'];re
 /* ---------- puzzles hub: Treasure Island card + the puzzle library in sections ---------- */
 function renderHub(){const v=shell(),x=state(),count=Object.keys(x.done).length,stars=D.stations.reduce((n,s)=>n+B.chal(x,s.id).filter(Boolean).length,0);
  v.append(E('header',{class:'t7-top'},E('div',{},E('span',{class:'t7-kicker',text:'قصص وألغاز'}),E('h1',{text:'الألغاز'}))));
- v.append(E('button',{type:'button',class:'v5-hubcard',onclick:map,'aria-label':'جزيرة الكنز: افتح الخريطة'},E('span',{class:'v5-hubart'}),E('span',{class:'v5-hubtext'},E('span',{class:'t7-kicker',text:'حكايات البحار السبعة'}),E('b',{text:'جزيرة الكنز'}),
+ v.append(E('button',{type:'button',class:'v5-hubcard',onclick:map,'aria-label':'جزيرة الكنز: افتح الفصول والمحطات'},E('span',{class:'v5-hubart'}),E('span',{class:'v5-hubtext'},E('span',{class:'t7-kicker',text:'حكايات البحار السبعة'}),E('b',{text:'جزيرة الكنز'}),
   E('small',{text:`${A(count)} / ٢١ محطة · ${A(x.rewards.length)} / ٧ أختام · ${A(stars)} نجمة`}),E('span',{class:'t7-btn primary',text:count?'تابع الرحلة':'ابدأ الرحلة'}))));
 
  const lib=E('section',{class:'v5-hublib'},E('h2',{class:'la-section-head',text:'مكتبة الألغاز'}));v.append(lib);if(window.LA&&LA.libraryInto)LA.libraryInto(lib);}
 
 /* ---------- map ---------- */
 function heroCard(){const count=Object.keys(state().done).length;return `<section class="t7-homecover"><div><span class="t7-kicker">حكايات البحار السبعة</span><h2>جزيرة الكنز</h2><p>اتبع القصة، افحص الدليل، وافتح الطريق إلى المملكة التالية.</p><button class="t7-btn primary" id="t7-homego">${count?'تابع رحلتك':'ابدأ الرحلة'}</button><small>${A(count)} من ٢١ محطة</small></div></section>`;}
-function renderMap(){const v=shell(),x=state(),count=Object.keys(x.done).length;top(v,'جزيرة الكنز · القصة والألغاز','حكايات البحار السبعة');
- v.append(E('section',{class:'t7-maphero'},E('div',{},E('span',{class:'t7-kicker',text:'خريطة العهد'}),E('h2',{text:'كل لغز يفتح حكاية'}),E('p',{text:'سبعة بحار، سبع ممالك، وكنز ينتظر من يجمع أسرارها.'}),
-  E('p',{class:'t7-counter',text:`${A(count)} / ٢١ محطة · ${A(x.rewards.length)} / ٧ أختام · ${A(Object.keys(x.bonus).length)} / ٧ أسرار`}),
-  button(count===21?'أعد زيارة الرحلة':'تابع من حيث توقفت',()=>open(count===21?20:D.stations.findIndex(s=>!x.done[s.id])),'primary'))));
- v.append(crewRoster(),secretsMap());
- if(x.done['sea7_20'])v.append(E('section',{class:'v546-return-finale'},E('div',{},E('span',{class:'t7-kicker',text:'عهد الطريق الثامن'}),E('b',{text:'يمكنك العودة إلى كلمة الجد في أي وقت.'})),button('إعادة مشاهدة الخاتمة',openFinale,'primary')));
- const atlas=E('div',{class:'t7-atlas','aria-label':'أطلس البحار السبعة'}),places=[[20,15],[47,38],[24,65],[13,40],[85,43],[79,15],[80,77]];
- D.chapters.forEach((c,ch)=>{const first=D.stations.slice(ch*3,ch*3+3).find(s=>!x.done[s.id])||D.stations[ch*3+2],available=unlocked(ch*3),pos=places[ch];
-  atlas.append(E('button',{type:'button',class:'t7-map-marker '+(done(ch*3+2)?'complete':available?'active':'locked'),style:`left:${pos[0]}%;top:${pos[1]}%`,disabled:!available,'aria-label':`الفصل ${A(ch+1)}: ${c[0]}`,title:c[0],text:A(ch+1),onclick:()=>open(first.i)}));});
- v.append(atlas);
- const journey=E('div',{class:'t7-journey'});
- D.chapters.forEach((c,ch)=>{const row=E('section',{class:'t7-chapter'},E('header',{},E('span',{class:'t7-chapter-no',text:A(ch+1)}),E('div',{},E('span',{class:'t7-kicker',text:`الفصل ${A(ch+1)}`}),E('h2',{text:c[0]}))));
-  const list=E('div',{class:'t7-stations'});
-  D.stations.slice(ch*3,ch*3+3).forEach(s=>{const available=unlocked(s.i);list.append(E('button',{type:'button',class:'t7-station '+(done(s.i)?'complete':available?'available':'locked'),disabled:!available,'aria-label':`${s.name} · ${done(s.i)?'مكتملة':available?'متاحة':'مغلقة'}`,onclick:()=>open(s.i)},
-   E('div',{class:'t7-thumb',style:`background-image:url('${ART}thumbs/${s.scene}.webp');background-size:cover;background-position:center`},E('span',{class:'t7-badge',text:done(s.i)?'مكتملة ✓':available?'متاحة الآن':'بعد السابقة'})),
-   E('div',{class:'t7-station-label'},E('small',{text:['إبحار','مملكة','جزيرة'][s.zone]}),E('strong',{text:s.name}),E('small',{text:s.title}),
-    E('span',{class:'v5-station-guide'},E('img',{src:ART+'crew_'+stationGuide(s).key+'.webp',alt:'',loading:'lazy'}),E('span',{text:stationGuide(s).name})))));});
-  const secret=D.secrets[ch],ready=done(sealIndex(ch));
-  const chapterDone=D.stations.slice(ch*3,ch*3+3).filter(q=>!!x.done[q.id]).length;
-  const chapterArt=E('div',{class:'v544-chapter-art'},E('img',{src:ART+D.SECRETS5[ch].art+'.webp',alt:'مشهد '+c[0],loading:'lazy'}));
-  const chapterInfo=E('div',{class:'v544-chapter-info'},E('span',{class:'t7-kicker',text:'دليل البحر '+A(ch+1)}),E('h3',{text:c[1]}),E('p',{text:c[2]+' · '+c[3]}),E('div',{class:'v544-chapter-progress'},E('span',{text:`${A(chapterDone)} من ٣ محطات`}),E('span',{class:'v544-progress-track'},E('i',{style:`width:${chapterDone/3*100}%`}))));
-  row.append(E('div',{class:'v544-chapter-overview'},chapterArt,chapterInfo),list,E('button',{class:'t7-btn t7-secret-entry',type:'button',disabled:!ready,text:x.bonus[secret.id]?'سر مكتشف: '+secret.collectible:ready?'اقرأ سر البحر':'سر البحر · بعد ختمه',onclick:()=>openSecret(ch)}));journey.append(row);});
- v.append(journey,E('p',{class:'t7-footnote',text:'تقدمك محفوظ في هذا الجهاز، وتشمله النسخة الاحتياطية من «مستواي».'}));}
-
 function dailyCard(){const d=daily();if(!d)return E('section',{class:'v5-daily locked'},E('span',{class:'t7-kicker',text:'لغز اليوم'}),E('p',{text:'أكمل أول محطة ليفتح لك كل يوم لغز جديد من ألغاز الجزيرة.'}));
  return E('section',{class:'v5-daily'},E('div',{class:'v5-daily-art',style:`background-image:url('${ART}${d.s.scene}.webp')`}),E('div',{},E('span',{class:'t7-kicker',text:'لغز اليوم · ترتيب جديد كل يوم'}),E('h3',{text:d.s.title}),
   E('p',{text:d.done?`حللته اليوم في ${A(d.done.moves)} حركة (أقل عدد ${A(d.board.min)}).`:`أقل عدد للحل: ${A(d.board.min)} حركات.`}),button(d.done?'العبه مرة أخرى':'العب لغز اليوم',openDaily,'primary')));}
 // The final door fills seal by seal as the secrets are found.
-function secretsMap(){const x=state(),n=Object.keys(x.bonus).length;return E('section',{class:'v5-smap'},E('div',{class:'v5-smap-door'},...D.SECRETS5.map((Q,ch)=>{const got=!!x.bonus[D.secrets[ch].id];return E('button',{type:'button',class:'v5-smap-slot'+(got?' got':''),disabled:!got,'aria-label':got?Q.title:'سر لم يُكتشف بعد',onclick:()=>openSecret(ch)},got?img(Q.seal):E('i',{text:A(ch+1)}));})),
- E('p',{text:n===7?'اجتمعت الأختام السبعة على باب الطريق الثامن.':`${A(n)} من ٧ أختام على باب الطريق الثامن. كل سر تكتشفه يضيء ختمًا.`}));}
-
 /* ---------- chapter-to-chapter passages: narrative only, no changes to puzzle rules ---------- */
 const SEA_PASSAGES={
  1:{speaker:'رِواء',title:'نداء خلف الضباب',text:'عاد نور المنارة إلى البحر، لكنه لم يكشف الساحل التالي. حملت الريح نغمة جرس بعيدة، ثم أعادها الضباب ثلاث مرات. قالت رِواء: «هذه ليست مصادفة؛ هناك من يجيب عن إشارة جدّك. سنتبع الصوت، ونبقي المرفأ خلفنا آمنًا».',note:'أثبت ختم المرجان أن الضوء يبدأ من هنا. الآن نحتاج إلى الإصغاء لما يردّ عليه.',action:'اتبعوا نداء الأجراس حتى مملكة الضباب.'},
@@ -145,7 +113,8 @@ const SEA_PASSAGES={
 function renderPassage(){const target=D.stations[passageTarget],p=SEA_PASSAGES[target.ch],guide=CREW_INFO.find(c=>c.name===p.speaker)||CREW_INFO[0],v=shell();top(v,'بين البحرين · فصل جديد',D.chapters[target.ch][0]);
  const art=E('div',{class:'v545-passage-art'},E('img',{src:ART+target.scene+'.webp',alt:'مشهد '+D.chapters[target.ch][0],loading:'eager'}),E('span',{class:'v545-passage-number',text:'البحر '+A(target.ch+1)+' / ٧'}));
  const crew=E('aside',{class:'v545-passage-crew'},E('img',{src:ART+'crew_full_'+guide.key+'.webp',alt:guide.name+' — '+guide.role,loading:'eager'}),E('div',{},E('span',{class:'t7-kicker',text:'من ذاكرة الطاقم'}),E('b',{text:guide.name}),E('p',{text:'«'+p.note+'»'})));
- const card=E('section',{class:'t7-paper v545-passage-card'},E('span',{class:'t7-kicker',text:'عبور حكائي'}),E('h2',{text:p.title}),E('p',{text:p.text}),crew,E('div',{class:'v545-passage-destination'},E('small',{text:'المحطة التالية'}),E('b',{text:target.name}),E('span',{text:p.action})),button('ابدأ الفصل الجديد',()=>open(passageTarget),'primary v545-passage-go'),button('تجاوز المشهد',()=>open(passageTarget),'v545-passage-skip'));
+ const continuePassage=()=>{if(!journeyEntry)return open(passageTarget);const begin=()=>open(passageTarget,true);if(window.mindlabJourneyHub?.beforeStation)return window.mindlabJourneyHub.beforeStation(target.id,begin,target.goal);begin();};
+ const card=E('section',{class:'t7-paper v545-passage-card'},E('span',{class:'t7-kicker',text:'عبور حكائي'}),E('h2',{text:p.title}),E('p',{text:p.text}),crew,E('div',{class:'v545-passage-destination'},E('small',{text:'المحطة التالية'}),E('b',{text:target.name}),E('span',{text:p.action})),button('ابدأ الفصل الجديد',continuePassage,'primary v545-passage-go'),button('تجاوز المشهد',continuePassage,'v545-passage-skip'));
  v.append(E('div',{class:'t7-story-layout v545-passage-layout'},art,card));}
 
 /* ---------- story → puzzle → reward ---------- */
@@ -236,13 +205,13 @@ function renderFinale(){const s=D.stations[active],v=shell();top(v,'اكتملت
   E('p',{class:'t7-help',text:'بقي الجد بإرادته عند المرفأ الداخلي يرعى إشارات الطريق بعدما قطعت العواصف الاتصال بالمراسي، ووزّع الأدلة عند الأمناء حتى لا يحتكر طالبو الذهب الممر. ما أصلحته في رحلتك أعاد الاتصال، ففتح الطريق بأمان.'}),
   sealMemory(),
   E('p',{class:'v5-stars',text:stars(s)+' · يمكنك إعادة أي محطة لنيل النجوم الباقية.'}),
-  button('العودة إلى الخريطة',map,'primary'),button('دفتر الرحلة',()=>modal('notebook')),button('العب التحدي التالي',()=>{view='puzzle';render();}));
+  button('رجوع إلى المحطات',map,'primary'),button('دفتر الرحلة',()=>modal('notebook')),button('العب التحدي التالي',()=>{view='puzzle';render();}));
  v.append(E('div',{class:'t7-story-layout'},E('div',{class:'v5-finale'},E('img',{class:'v5-finale-scene',src:ART+s.scene+'.webp',alt:''}),E('i',{class:'v5-finale-light','aria-hidden':'true'}),E('img',{class:'v5-finale-gf',src:ART+'character_grandfather.webp',alt:'الجد'})),ending));}
 function renderLetter(){const v=shell(),Q=D.SECRETS5[letterCh],next=letterCh===6?20:(letterCh+1)*3;top(v,'سر '+D.chapters[letterCh][0],Q.title);
  const mark=E('div',{class:'v5-letter-mark'+(Q.col?' col':'')+(Q.after?' after':''),'aria-label':Q.mark},...Q.markArt.map(a=>img(a)),E('span',{text:Q.arrow}));
  v.append(E('div',{class:'t7-story-layout'},E('div',{class:'v5-letter'},img(Q.art),E('p',{text:Q.text}),mark),
   E('section',{class:'t7-paper'},E('span',{class:'t7-kicker',text:'دليل محفوظ للنهاية'}),E('h2',{text:Q.title}),E('p',{text:Q.mark+' احتفظ بها حتى تجتمع أدلة البحار السبعة.'}),
-   button('العودة إلى الخريطة',map,'primary'),next<21&&unlocked(next)?button('إلى '+(letterCh===6?D.stations[20].name:D.chapters[letterCh+1][0]),()=>journeyEntry?map():open(next)):null)));}
+   button('رجوع إلى المحطات',map,'primary'),next<21&&unlocked(next)?button('إلى '+(letterCh===6?D.stations[20].name:D.chapters[letterCh+1][0]),()=>journeyEntry?map():open(next)):null)));}
 
 /* ---------- notebook & treasures ---------- */
 function modal(kind){const nb=kind==='notebook',d=E('dialog',{class:'t7-modal','aria-label':nb?'دفتر الرحلة':'خزانة الكنوز'}),x=state(),T=B.v5state(x);
@@ -257,8 +226,8 @@ function modal(kind){const nb=kind==='notebook',d=E('dialog',{class:'t7-modal','
   d.append(E('h3',{text:'الأسرار'}));D.secrets.forEach(q=>d.append(E('p',{text:x.bonus[q.id]?'✓ '+q.collectible:'سر لم يُكتشف في '+D.chapters[q.ch][0]})));}
  document.body.append(d);d.addEventListener('close',()=>d.remove());d.showModal();}
 
-function render(){({hub:renderHub,map:renderMap,story:renderStory,puzzle:renderPuzzle,reward:renderReward,letter:renderLetter,passage:renderPassage})[view]();}
-window.T7={open,openSecret,openFinale,openFinaleFromJourney,openJournal:modal,map,legacyMap,hub,render,state,unlocked,data:D,logic:L};
+function render(){({hub:renderHub,map:renderHub,story:renderStory,puzzle:renderPuzzle,reward:renderReward,letter:renderLetter,passage:renderPassage})[view]();}
+window.T7={open,openSecret,openFinale,openFinaleFromJourney,openJournal:modal,map,hub,render,state,unlocked,data:D,logic:L};
 
 /* ---------- saves: cloud merge and backups ---------- */
 DX.KEYS.push('treasureV3');
