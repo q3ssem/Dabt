@@ -37,6 +37,7 @@ jobs:
           python qa/browser/board_visual_polish.py http://127.0.0.1:8765/ chromium /tmp/mindlab-visuals
           python qa/browser/journey_evidence.py http://127.0.0.1:8765/ chromium /tmp/mindlab-visuals
           python qa/browser/jaziran_evidence_seals.py http://127.0.0.1:8765/ chromium /tmp/mindlab-visuals
+          python qa/browser/jaziran_story_scenes.py http://127.0.0.1:8765/ chromium /tmp/mindlab-visuals
       - name: Validate board CSS parsing
         run: |
           python - <<'PY'
@@ -85,6 +86,7 @@ jobs:
           python qa/browser/board_visual_polish.py http://127.0.0.1:8767/ webkit /tmp/mindlab-webkit-visuals
           python qa/browser/journey_evidence.py http://127.0.0.1:8767/ webkit /tmp/mindlab-webkit-visuals
           python qa/browser/jaziran_evidence_seals.py http://127.0.0.1:8767/ webkit /tmp/mindlab-webkit-visuals
+          python qa/browser/jaziran_story_scenes.py http://127.0.0.1:8767/ webkit /tmp/mindlab-webkit-visuals
       - uses: actions/upload-artifact@v4
         if: always()
         with:
