@@ -893,7 +893,7 @@
       ['side','رحلة جانبية','markers/marker_side.webp']
     ];
     const chapterAr=key=>chapters.find(ch=>ch[0]===key)?.[1]||key;
-    const num=n=>String(n).replace(/\\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
+    const num=n=>String(n).replace(/\d/g,d=>'٠١٢٣٤٥٦٧٨٩'[d]);
     let chapter=null,previousFocus=null;
     const done=st=>{
       try{
