@@ -19,6 +19,10 @@ on:
       - 'pwa.js'
   workflow_dispatch:
 
+concurrency:
+  group: mindlab-acceptance-1to6-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
