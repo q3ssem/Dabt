@@ -33,12 +33,12 @@ async def run():
         profile=page.locator('.mpc[data-m=main]')
         if await profile.count() and await profile.is_visible(): await profile.click()
         await open_journal(page)
-        assert await page.get_by_role('button',name='ساعة القصر · قارن الشهادات').count()==0
+        assert await page.get_by_role('button',name='ساعة القصر',exact=True).count()==0
         assert await page.evaluate("()=>mindlabJourneyHub.openJaziranScene('palace_clock')") is False
         before=await page.evaluate("""()=>JSON.stringify({sea:T7.state().done,
             palace:pState().done,atheran:window.ATHERAN_CAMPAIGN?.summary()?.a?.done||{},
             seal:localStorage.getItem('mindlab:journey:evidence-ledger:v1')})""")
-        await page.get_by_role('button',name='قصة الصندوق · افحص العلامة').click()
+        await page.get_by_role('button',name='قصة الصندوق',exact=True).click()
         modal=page.locator('#mlj-jaziran-modal')
         await modal.wait_for(state='visible')
         assert await page.locator('.mlj-jaziran-heroines img').count()==3
@@ -78,8 +78,8 @@ async def run():
         await page.evaluate("()=>{const x=pState();x.done.pz_pobs=1;S.save();}")
         await page.evaluate("()=>document.querySelector('#mlj-close-atlas')?.click()")
         await open_journal(page)
-        assert await page.get_by_role('button',name='ساعة القصر · قارن الشهادات').count()==1
-        await page.get_by_role('button',name='ساعة القصر · قارن الشهادات').click()
+        assert await page.get_by_role('button',name='ساعة القصر',exact=True).count()==1
+        await page.get_by_role('button',name='ساعة القصر',exact=True).click()
         await page.locator('#mlj-jaziran-inspect').click()
         assert 'الكلمة المشطوبة' in await page.locator('#mlj-jaziran-result').inner_text()
         await page.locator('.mlj-jaziran-options button').nth(1).click()
