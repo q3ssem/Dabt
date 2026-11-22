@@ -1,0 +1,62 @@
+name: MindLab brain games phone-board audit
+
+on:
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/mindlab-brain-game-audit.yml'
+      - 'qa/browser/brain_game_board_audit.py'
+      - 'qa/browser/smoke.py'
+      - 'qa/browser/player_openings.py'
+      - 'ui/**'
+      - 'ds/**'
+      - 'watercolor/**'
+      - 'legacy/**'
+      - 'audio/**'
+      - 'index.html'
+      - 'sw.js'
+      - 'pwa.js'
+  workflow_dispatch:
+
+concurrency:
+  group: brain-boards-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  per-browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - name: Prepare browser
+        shell: bash
+        run: |
+          if [ "${{ matrix.engine }}" = "webkit" ]; then
+            python -m playwright install --with-deps webkit
+          else
+            command -v google-chrome
+          fi
+      - name: Inspect all visible brain-game boards on phones
+        run: |
+          mkdir -p /tmp/mindlab-brain-boards
+          python -m http.server 8790 --bind 127.0.0.1 >/tmp/mindlab-brain-http.log 2>&1 &
+          python qa/browser/brain_game_board_audit.py http://127.0.0.1:8790/ \
+            "${{ matrix.engine }}" /tmp/mindlab-brain-boards
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: brain-boards-${{ matrix.engine }}
+          path: /tmp/mindlab-brain-boards/*
+          if-no-files-found: warn
+          retention-days: 14
