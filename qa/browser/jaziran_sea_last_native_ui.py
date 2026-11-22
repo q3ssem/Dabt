@@ -66,7 +66,7 @@ async def solve(page,gid):
                 await tap(page,f'#ymg button[data-i="{i}"]')
                 await tap(page,f'#ymg button[data-i="{selected}"]')
                 await tap(page,f'#ymg button[data-i="{i}"]')
-                await tap(page,f'#ymg button[data-i="{selected}"]')
+                await tap(page,f'#ymg button[data-i="{i}"]')
                 actions+=4
                 selected=None
             if selected is None:
