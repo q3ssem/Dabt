@@ -88,7 +88,7 @@
   const timeOk = time => Number.isSafeInteger(time) && time > 0;
   function getFile(id, status) {
     const f = byFile.get(id);
-    if (!f || typeof status !== 'function') return null;
+    if (!f || typeof status !== 'function' || (f.optional && !done('pz_aheart',status))) return null;
     const entry = safeRead().files[id] || {};
     const entries = entry.proofs && typeof entry.proofs === 'object' ? entry.proofs : {};
     const sources = f.sources.map(s => {
@@ -112,6 +112,7 @@
   function verifySource(sourceId, answer, status) {
     const lookup = bySource.get(sourceId);
     if (!lookup || !Number.isInteger(answer)) return { ok:false, reason:'unknown' };
+    if (lookup.file.optional && !done('pz_aheart',status)) return {ok:false,reason:'locked'};
     if (!done(sourceId, status)) return { ok:false, reason:'not-completed' };
     if (answer !== lookup.source.answer) return { ok:false, reason:'wrong-answer' };
     const data = safeRead(), id=lookup.file.id;
