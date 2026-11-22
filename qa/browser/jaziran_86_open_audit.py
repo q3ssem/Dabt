@@ -247,10 +247,24 @@ async def run():
                    if r.get('hintProbe',{}).get('exhausted')],
                  'smallTargets':{r['id']:max((d.get('smallTouchTargets') or 0 for d in r['cases']),default=0)
                    for r in results},
+                 'touchHotspots':[{
+                   'id':r['id'],
+                   'count':max((d.get('smallTouchTargets') or 0 for d in r['cases']),default=0),
+                   'at320':next((d.get('smallTargetExamples',[]) for d in r['cases'] if d['viewport'][0]==320),[])
+                 } for r in results if any(d.get('smallTouchTargets',0)>0 for d in r['cases'])],
+                 'potentialClipping':[{'id':r['id'],'viewport':d['viewport'],
+                                        'board':d.get('board'),'stage':d.get('stage')}
+                      for r in results for d in r['cases'] if not d.get('boardBottomVisible',True)],
                  'cases':results}
         path=OUT/f'{CHAPTER}-{ENGINE}.json'
         path.write_text(json.dumps(summary,ensure_ascii=False,indent=2),encoding='utf-8')
-        print('JAZIRAN_86_SUMMARY='+json.dumps({k:v for k,v in summary.items() if k not in ('cases','smallTargets')},ensure_ascii=False),flush=True)
+        print('JAZIRAN_86_SUMMARY='+json.dumps({k:v for k,v in summary.items() if k not in ('cases','smallTargets','touchHotspots')},ensure_ascii=False),flush=True)
+        print('JAZIRAN_86_TOUCH='+json.dumps({
+            'engine':ENGINE,'chapter':CHAPTER,
+            'hotspots':[{'id':h['id'],'count':h['count'],'examples':h['at320'][:4]}
+                 for h in sorted(summary['touchHotspots'],key=lambda x:-x['count'])[:7]],
+            'clipping':summary['potentialClipping'][:7]
+        },ensure_ascii=False),flush=True)
         await browser.close()
         # Fail CI for missing boards, errors, overflow, or broken artwork, but keep
         # all per-puzzle JSON/screenshots for a targeted correction pass.
