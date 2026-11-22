@@ -5,7 +5,7 @@ Usage: python qa/browser/jaziran_batch3_palette.py URL [chromium|webkit] [screen
 import asyncio,json,os,sys
 from pathlib import Path
 from playwright.async_api import async_playwright
-from smoke import open_game
+from player_openings import dismiss_opening
 
 URL=sys.argv[1] if len(sys.argv)>1 else 'http://127.0.0.1:8765/'
 ENGINE=sys.argv[2] if len(sys.argv)>2 else 'chromium'
@@ -31,9 +31,14 @@ async def main():
         if await picker.count() and await picker.is_visible():await picker.click()
         await page.evaluate("()=>tab('puz')")
         await page.wait_for_function("()=>window.mindlabPlayLayers?.ready",timeout=45000)
-        await open_game(page,'pz_grid')
+        # Use a known authored level rather than the legacy #go intro: river opens a stage picker.
+        await page.evaluate("()=>startRun(['pz_river'])")
+        await page.locator('#stage .ml-authored-picker .go-btn[data-level]').wait_for(state='visible',timeout=20000)
+        await page.locator('#stage .ml-authored-picker .go-btn[data-level]').click()
+        await dismiss_opening(page,wait=1000)
+        await page.wait_for_function("()=>!document.querySelector('#stage .cd')",timeout=20000)
         actual=await page.evaluate("()=>document.querySelector('#play')?.dataset.laGame")
-        assert actual=='pz_grid',f'active game marker missing: {actual}'
+        assert actual=='pz_river',f'active game marker missing: {actual}'
         # The actual HUD is on screen; temporarily change only the marker to exercise
         # the CSS selector table, then restore it without touching any engine state.
         for theme in ('light','dark'):
@@ -72,7 +77,7 @@ async def main():
         assert not errors,errors[:5]
         print('JAZIRAN_BATCH3_PALETTE='+json.dumps({'engine':ENGINE,'verified_palette':86,
               'themes':['light','dark'],'audio_mute_safe':True,'retired_audio_safe':True,
-              'actual_game':'pz_grid','errors':errors},ensure_ascii=False),flush=True)
+              'actual_game':'pz_river','errors':errors},ensure_ascii=False),flush=True)
         await browser.close()
 
 asyncio.run(main())
