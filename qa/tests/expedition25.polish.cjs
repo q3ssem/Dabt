@@ -37,5 +37,5 @@ ok(idMatches.length===24,'24 active stage identifiers remain in source');
 ok(new Set(idMatches).size===24,'all 24 stage identifiers remain unique');
 const sceneMatches=[...app.matchAll(/scene:'([^']+\.webp)'/g)].map(m=>m[1]);
 ok(sceneMatches.length===24,'24 unique stage scene references remain in registry');
-for(const scene of new Set(sceneMatches)){ok(fs.existsSync(path.join(root,'expedition10/art/scenes',scene)),`stage art exists: ${scene}`);}
+for(const scene of new Set(sceneMatches)){const rel=scene.includes('/')?scene:'expedition10/art/scenes/'+scene;ok(fs.existsSync(path.join(root,rel)),`stage art exists: ${rel}`);}
 console.log(JSON.stringify({status:'passed',checks:checks.length,version:pkg.version,poseAssets:poses.length,stageIDs:idMatches.length,scenes:new Set(sceneMatches).size},null,2));
