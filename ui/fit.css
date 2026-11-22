@@ -383,11 +383,19 @@ html[data-skin="dark"] .fit-sh-magnify[aria-pressed="true"] {
   min-height:44px!important;
 }
 
-/* WebKit small-screen fallback for the coordinate-dense route puzzle.
-   Contain an asynchronously stale fit height inside the interactive board;
-   never clip route controls or scroll the whole page. */
+/* WebKit 320px: recorded intermittent stale-fit clipping in the six
+   named puzzle boards. Keep their controls reachable by scrolling *inside*
+   the board if its height cannot be recomputed after a viewport change.
+   Scoped to the confirmed cases; do not resize pieces or change moves. */
 @media (max-width: 360px) {
-  #play.fit:not(.xframe)[data-la-game="pz_tpath"] #pzb {
+  #play.fit:not(.xframe):is(
+    [data-la-game="pz_rid"],
+    [data-la-game="pz_scale"],
+    [data-la-game="pz_tpath"],
+    [data-la-game="pz_ybell"],
+    [data-la-game="pz_plock"],
+    [data-la-game="pz_aarch"]
+  ) #pzb {
     max-height: calc(100dvh - 168px);
     overflow-y: auto !important;
     overscroll-behavior: contain;
