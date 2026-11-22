@@ -3478,8 +3478,8 @@ function pianoNote(i,d=.42,delay=0){try{if(!audioOK())return;const t=AC.currentT
 function runPiano(){return done=>{
   const L=S.st.lv,st=$('#stage');let len=clamp(L.pianoLen||3,3,12),best=0,fails=0,round=0,pts=0,seq=[],pos=0,live=false,replays=0;const len0=len;const R=8;
   const ear=(L.pianoLen||3)>6,showKeys=()=>!ear;
-  st.innerHTML=hudHTML(false)+`<div class="msg" id="m"></div><div class="pkeys" id="pk">${PNOTE.map((_,i)=>`<button class="pkey" data-i="${i}" style="--k:${PCOL[i]}"><span>${PNAME[i]}</span></button>`).join('')}</div><button class="cta ghost" id="prp">أعد سماع اللحن</button>`;
-  const keys=[...$('#pk').children];keys.forEach((b,i)=>b.onpointerdown=e=>{e.preventDefault();press(i,b)});
+  st.innerHTML=hudHTML(false)+`<div class="msg" id="m"></div><div class="pkeys" id="pk">${PNOTE.map((_,i)=>`<button type="button" class="pkey" data-i="${i}" style="--k:${PCOL[i]}" aria-label="اعزف نغمة ${PNAME[i]}"><span>${PNAME[i]}</span></button>`).join('')}</div><button class="cta ghost" id="prp">أعد سماع اللحن</button>`;
+  const keys=[...$('#pk').children];keys.forEach((b,i)=>{b.onclick=()=>press(i,b)});
   const flash=(i,ms=300)=>{const b=keys[i];b.classList.add('on');setTimeout(()=>b.classList.remove('on'),ms)};
   function play(){live=false;$('#m').textContent=showKeys()?'استمع وراقب اللحن…':'استمع جيدًا (بالأذن فقط)…';const gap=Math.max(330,560-len*15);
     seq.forEach((n,j)=>{later(()=>{pianoNote(n);if(showKeys())flash(n,gap*.7)},400+j*gap)});later(()=>{live=true;pos=0;$('#m').textContent=`دورك: اعزف اللحن (${len} نغمات)`},400+seq.length*gap+150)}
