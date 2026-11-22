@@ -17,6 +17,10 @@ on:
       - 'pwa.js'
   workflow_dispatch:
 
+concurrency:
+  group: jaziran86-${{ github.ref }}
+  cancel-in-progress: true
+
 permissions:
   contents: read
 
