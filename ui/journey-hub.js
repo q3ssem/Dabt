@@ -591,17 +591,6 @@
   const artV3 = 'ui/designs_art/journey/v3/';
   let lastStationId = null;
 
-  function palaceTile(id) {
-    const find = () => [...document.querySelectorAll('#v-puz [data-legacy-puzzle]')]
-      .find(tile => tile.dataset.legacyPuzzle === id);
-    let tile = find();
-    if (!tile && typeof window.LA?.library === 'function') {
-      LA.library();
-      tile = find();
-    }
-    return tile;
-  }
-
   // The side journey (expedition10) is loaded on demand by ui/app.js; resolves at once when it is already here.
   const sideReady = () => (window.ML10 ? Promise.resolve() : window.mindlabSide ? window.mindlabSide.start() : Promise.resolve());
 
@@ -619,6 +608,7 @@
         title: station.title,
         badge: station.region,
         heroName: station.heroName,
+        hero: station.hero,
         dialogue: station.openingTextAr,
         sprite: artV3 + 'heroes/' + station.hero + '.webp',
         rule: sea ? window.TreasureData?.stations[index]?.goal : window.ML10.stages[index]?.objective

@@ -30,7 +30,7 @@ function dailyDone(moves,min,hints){const x=state();x.daily=x.daily&&typeof x.da
 
 /* ---------- navigation ---------- */
 function open(i, fromJourney=journeyEntry){if(!D.stations[i]||!unlocked(i))return;journeyEntry=fromJourney;D.stations.forEach(q=>{delete q.daily;});const x=state(),a=B.v5state(x).att[D.stations[i].id];if(a&&a.c===4)delete B.v5state(x).att[D.stations[i].id];active=i;dialogAt=0;view=fromJourney?'puzzle':'story';state().resume=i;save();go();}
-function continueJourney(){if(journeyEntry)return map();const target=active+1;if(target>=D.stations.length){map();return;}const from=D.stations[active],to=D.stations[target];if(from.ch!==to.ch&&sealHere(from)&&done(from.i)){passageTarget=target;view='passage';try{sfx.seaTransition();}catch(e){}render();window.scrollTo(0,0);return;}open(target);}
+function continueJourney(){const target=active+1;if(target>=D.stations.length){map();return;}const from=D.stations[active],to=D.stations[target];if(from.ch!==to.ch&&sealHere(from)&&done(from.i)){passageTarget=target;view='passage';try{sfx.seaTransition();}catch(e){}render();window.scrollTo(0,0);return;}if(journeyEntry)return map();open(target);}
 function map(){journeyEntry=false;hub();window.mindlabJourneyHub?.openChapters?.('seven_seas');}
 function hub(){journeyEntry=false;view='hub';if(window.LA)LA.view=null;renderPuz();window.scrollTo(0,0);}
 function openSecret(ch,fromJourney=false){if(!D.chapters[ch]||!done(sealIndex(ch)))return;journeyEntry=fromJourney;active=sealIndex(ch);letterCh=ch;view='letter';go();}
@@ -113,7 +113,8 @@ const SEA_PASSAGES={
 function renderPassage(){const target=D.stations[passageTarget],p=SEA_PASSAGES[target.ch],guide=CREW_INFO.find(c=>c.name===p.speaker)||CREW_INFO[0],v=shell();top(v,'بين البحرين · فصل جديد',D.chapters[target.ch][0]);
  const art=E('div',{class:'v545-passage-art'},E('img',{src:ART+target.scene+'.webp',alt:'مشهد '+D.chapters[target.ch][0],loading:'eager'}),E('span',{class:'v545-passage-number',text:'البحر '+A(target.ch+1)+' / ٧'}));
  const crew=E('aside',{class:'v545-passage-crew'},E('img',{src:ART+'crew_full_'+guide.key+'.webp',alt:guide.name+' — '+guide.role,loading:'eager'}),E('div',{},E('span',{class:'t7-kicker',text:'من ذاكرة الطاقم'}),E('b',{text:guide.name}),E('p',{text:'«'+p.note+'»'})));
- const card=E('section',{class:'t7-paper v545-passage-card'},E('span',{class:'t7-kicker',text:'عبور حكائي'}),E('h2',{text:p.title}),E('p',{text:p.text}),crew,E('div',{class:'v545-passage-destination'},E('small',{text:'المحطة التالية'}),E('b',{text:target.name}),E('span',{text:p.action})),button('ابدأ الفصل الجديد',()=>open(passageTarget),'primary v545-passage-go'),button('تجاوز المشهد',()=>open(passageTarget),'v545-passage-skip'));
+ const continuePassage=()=>{if(!journeyEntry)return open(passageTarget);const begin=()=>open(passageTarget,true);if(window.mindlabJourneyHub?.beforeStation)return window.mindlabJourneyHub.beforeStation(target.id,begin,target.goal);begin();};
+ const card=E('section',{class:'t7-paper v545-passage-card'},E('span',{class:'t7-kicker',text:'عبور حكائي'}),E('h2',{text:p.title}),E('p',{text:p.text}),crew,E('div',{class:'v545-passage-destination'},E('small',{text:'المحطة التالية'}),E('b',{text:target.name}),E('span',{text:p.action})),button('ابدأ الفصل الجديد',continuePassage,'primary v545-passage-go'),button('تجاوز المشهد',continuePassage,'v545-passage-skip'));
  v.append(E('div',{class:'t7-story-layout v545-passage-layout'},art,card));}
 
 /* ---------- story → puzzle → reward ---------- */

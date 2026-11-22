@@ -102,9 +102,8 @@ async def main(a):
         for i in range(21):
             n0 = len(errs)
             sid = await page.evaluate(f'()=>T7.data.stations[{i}].id')
-            if not await page.locator('.v5-intro-go').count():
-                problems.append(f'station {i+1}: story page not shown'); break
-            await page.click('.v5-intro-go'); await dismiss_opening(page); await page.wait_for_timeout(300)
+            if not await page.locator('.t7-puzzle-layout[data-station-id="'+sid+'"]').count():
+                problems.append(f'station {i+1}: native board not shown after triple-hero story opening'); break
             need = await page.evaluate(f"()=>[].concat(T7.data.stations[{i}].needs||[])")
             if need:
                 gate = await page.locator('.v5-gate').count()
@@ -136,7 +135,14 @@ async def main(a):
                 break
             await page.get_by_role('button', name='إلى المحطة التالية').click(); await page.wait_for_timeout(450)
             if await page.locator('.v545-passage-go').count():
-                passages += 1; await page.click('.v545-passage-go'); await page.wait_for_timeout(350)
+                passages += 1
+                await page.click('.v545-passage-go')
+                await dismiss_opening(page,wait=1600)
+            else:
+                await page.locator('#mlj-unified-hub').wait_for(state='visible')
+                await page.locator(f'#mlj-unified-hub .ml-folder-station[data-station-id="sea7_{i+1}"]').click()
+                await close_transition(page)
+                await dismiss_opening(page,wait=1600)
             if len(errs) > n0: problems.append(f'station {i+1} errors: {errs[n0:][:2]}')
         x = await page.evaluate('()=>{const x=T7.state();return {done:Object.keys(x.done).sort(),bonus:Object.keys(x.bonus).sort(),rewards:[...x.rewards].sort(),tools:x.v5.tools}}')
         log['journey'] = {'done': len(x['done']), 'secrets': x['bonus'], 'seals': x['rewards'], 'passages': passages, 'tools': x['tools']}
