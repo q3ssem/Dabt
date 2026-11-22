@@ -87,7 +87,8 @@ async def enter_stage(page,stage,from_previous=False):
         for attempt in range(4):
             try:
                 await js(page,"()=>mindlabJourneyHub.openChapters('side')")
-                button=page.locator(f'#mlj-unified-hub .ml-folder-station[data-station-id="{await js(page,"i=>ML10.stages[i].id",stage)}"]')
+                sid=await js(page,"i=>ML10.stages[i].id",stage)
+                button=page.locator(f'#mlj-unified-hub .ml-folder-station[data-station-id="{sid}"]')
                 await button.wait_for(state="visible",timeout=3500)
                 await check(await button.get_attribute('disabled',timeout=3500) is None,
                             f"stage {stage+1} visible card is enabled")

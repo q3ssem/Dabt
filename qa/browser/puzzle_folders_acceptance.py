@@ -186,22 +186,16 @@ async def run():
             assert await page.locator('#mlj-unified-hub .ml-folder-stations .ml-folder-station').count()==24,'side journey count wrong'
             await page.locator('#mlj-close-atlas').click()
             assert await page.locator('#mlj-unified-hub').is_hidden()
-            # The redesigned library must not delete the illustrated campaign atlases.
-            await page.evaluate("()=>mindlabJourneyHub.returnToMap('seven_seas')")
-            map_btn=page.locator('#mlj-unified-hub .ml-folder-original-map')
-            assert await map_btn.count()==1,'official chapter atlas link missing'
-            await map_btn.click()
-            assert await page.locator('#v-puz .t7-station').count()==21,'original seven-seas atlas was removed'
-            await page.evaluate("()=>T7.hub()")
-            await page.evaluate("()=>mindlabJourneyHub.returnToMap('palace')")
-            await page.locator('#mlj-unified-hub .ml-folder-original-map').click()
-            assert await page.locator('#mlj-palace-map .mlj-palace-station').count()==19,'original palace atlas was removed'
-            await page.locator('#mlj-palace-map .mlj-palace-close').click()
-            await page.evaluate("()=>mindlabJourneyHub.returnToMap('atheran')")
-            await page.locator('#mlj-unified-hub .ml-folder-original-map').click()
-            assert await page.locator('#v-puz.ah-view').count()==1,'original Atheran atlas was removed'
-            assert 'مقفلة' in (await page.locator('#v-puz .ah-top').inner_text()),'Atheran atlas lost its native palace gate'
-            await page.evaluate("()=>ATHERAN_CAMPAIGN.back()")
+            # World-navigation atlases are intentionally removed. Native gates stay active.
+            await page.evaluate("()=>mindlabJourneyHub.openChapters('seven_seas')")
+            assert await page.locator('#mlj-unified-hub .ml-folder-station').count()==21,'seven seas station list unavailable'
+            assert await page.locator('#mlj-unified-hub .ml-folder-original-map,#mlj-palace-map,#v-puz .t7-atlas').count()==0,'retired atlas rendered'
+            await page.evaluate("()=>mindlabJourneyHub.openChapters('palace')")
+            assert await page.locator('#mlj-unified-hub .ml-folder-station').count()==19,'palace station list unavailable'
+            await page.evaluate("()=>mindlabJourneyHub.openChapters('atheran')")
+            assert await page.locator('#mlj-unified-hub .ml-folder-station').count()==21,'Atheran station list unavailable'
+            assert await page.locator('#mlj-unified-hub .ml-folder-station').first.is_disabled(),'Atheran original Palace completion gate must remain'
+            await page.locator('#mlj-close-atlas').click()
             assert not await page.evaluate("()=>document.documentElement.scrollWidth>innerWidth+3"),'horizontal overflow'
             assert not errors,errors[:5]
             stats.append({'width':width,'library_categories':count,'category_names':names,'movement_puzzles':n,
