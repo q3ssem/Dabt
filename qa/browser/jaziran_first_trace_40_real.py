@@ -32,8 +32,12 @@ async def click(page,selector):
 
 async def open_game(page,gid):
     await ev(page,"id=>startRun([id])",gid)
-    await page.locator('#stage #go').wait_for(state='visible',timeout=20000)
-    await click(page,'#stage #go')
+    # Optional first-trace puzzles may open their actual board immediately,
+    # unlike regular games with a separate #go introduction.
+    await page.wait_for_timeout(180)
+    starter=page.locator('#stage #go')
+    if await starter.count() and await starter.first.is_visible():
+        await click(page,'#stage #go')
     await dismiss_opening(page,wait=800)
     try:await page.wait_for_function("()=>!document.querySelector('#stage .cd')",timeout=12000)
     except Exception:pass
