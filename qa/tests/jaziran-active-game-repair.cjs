@@ -40,6 +40,14 @@ for(let lv=1;lv<=8;lv++){
       'glyph position valid '+lv);
   }
 }
+// Two- and three-step hint language must describe the particular mirror,
+ // not repeat an indistinguishable generic "I flipped a mirror" message.
+const laser=src.slice(src.indexOf('function runLaser()'),src.indexOf('function runSoko()'));
+const palace=src.slice(src.indexOf('function runPMirror()'),src.indexOf('function runPGarden()'));
+assert(laser.includes('return k===2?')&&laser.includes('XAR(i+1)'),
+  'laser hints explain different repaired mirrors');
+assert(palace.includes('return k===2')&&palace.includes('XAR(i+1)'),
+  'palace mirror hints explain different repaired mirrors');
 const style=fs.readFileSync('ds/board-polish.css','utf8');
 for(const id of ['pz_xbridge','pz_abridge','pz_xcave','pz_pclock'])
   assert(style.includes('data-la-game="'+id+'"'),'image fit repair missing '+id);
