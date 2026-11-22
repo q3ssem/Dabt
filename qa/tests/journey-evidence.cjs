@@ -72,11 +72,16 @@ assert.equal(api.evidenceVisibleFiles().length,4,'optional names file appears on
 assert.equal(api.getEvidenceSnapshot('invalid'),null);
 assert.equal(JSON.parse(state.get('treasureV3')).done.sea7_0,true);
 // The notebook never silently invents a puzzle or leaks a retired one.
-const liveIds = new Set(JSON.parse(fs.readFileSync('legacy/inventory.json','utf8')).puzzles.map(p=>p.id));
+const liveInventory = JSON.parse(fs.readFileSync('legacy/inventory.json','utf8')).puzzles;
+const liveIds = new Set(liveInventory.map(p=>p.id));
+const canonicalNames = new Map(liveInventory.map(p=>[p.id,p.name]));
 for (const fileId of ['measurement','testimony','traces','people']) {
   const sourceIds = api.getEvidenceSnapshot(fileId).sources.map(s=>s.id);
   assert.equal(new Set(sourceIds).size,sourceIds.length,'all dossier sources distinct by puzzle ID: '+fileId);
-  for (const sourceId of sourceIds) assert(liveIds.has(sourceId),'notebook source must exist in live inventory: '+sourceId);
+  for (const source of api.getEvidenceSnapshot(fileId).sources) {
+    assert(liveIds.has(source.id),'notebook source must exist in live inventory: '+source.id);
+    assert.equal(source.name,canonicalNames.get(source.id),'source label matches approved library title: '+source.id);
+  }
 }
 assert(!src.includes("['pz_stat'") && !src.includes("['pz_xbottle'"),'retired puzzle IDs must not return to the notebook');
 const allKeys=[...state.keys()];
