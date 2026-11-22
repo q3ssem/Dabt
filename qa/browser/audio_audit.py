@@ -89,7 +89,10 @@ async def probe(pg):
     n = await poke(pg); await pg.wait_for_timeout(400)
     a1 = await pg.evaluate("()=>({...window.__au,ev:window.__ev.length})")
     ev = await pg.evaluate(f"()=>window.__ev.slice({a0['ev']})")
-    await pg.wait_for_timeout(1200)
+    # The final tap can legitimately award a puzzle win: its scheduled
+    # victory animation creates an audio node after the input. Only measure
+    # idle sound *after* that completion window, not during the win sequence.
+    await pg.wait_for_timeout(3200)
     a1b = await pg.evaluate("()=>({...window.__au})")
     await pg.wait_for_timeout(2000)
     a2 = await pg.evaluate("()=>({...window.__au})")
