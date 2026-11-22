@@ -536,8 +536,10 @@
     }
     function dismiss() {
       modal.remove();
-      if (previous?.isConnected && typeof previous.focus === 'function')
-        previous.focus({ preventScroll: true });
+      const target=previous?.isConnected && previous.getClientRects().length
+        ? previous : document.querySelector('#mlj-journey-entry');
+      if(target?.isConnected && typeof target.focus==='function')
+        target.focus({preventScroll:true});
     }
     closeBtn.onclick = dismiss;
     saveBtn.onclick = () => {
@@ -618,8 +620,10 @@
     }
     function dismiss() {
       modal.remove();
-      if (previous?.isConnected && typeof previous.focus === 'function')
-        previous.focus({preventScroll:true});
+      const target=previous?.isConnected && previous.getClientRects().length
+        ? previous : document.querySelector('#mlj-journey-entry');
+      if(target?.isConnected && typeof target.focus==='function')
+        target.focus({preventScroll:true});
     }
     inspection.onclick=() => {
       result.textContent=scene.inspectResult;
