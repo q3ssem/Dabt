@@ -235,10 +235,48 @@ async def run():
         await page.locator('.fit-sheet-card .fit-sh-story').wait_for(state='visible',timeout=7000)
         await page.locator('.fit-sheet-card .fit-sh-go').click()
         if SHOTS: await page.screenshot(path=str(SHOTS/"side-lighthouse-light-390.png"))
+        # Small iPhones (320 CSS px) and current large iPhones (430 CSS px):
+        # all four chapter toolbar icons must remain reachable without
+        # overhanging the viewport. This also catches title/button collisions.
+        mobile_sizes=[(320,760),(430,932)]
+        for width,height in mobile_sizes:
+            await page.set_viewport_size({"width":width,"height":height})
+            await page.evaluate("()=>T7.open(0,true)")
+            await page.locator('#v-puz.t7 .t7-tools .fit-pinfo').wait_for(state='visible',timeout=10000)
+            sea_mobile=await page.evaluate("""()=>{
+              const all=[...document.querySelectorAll('#v-puz.t7 .t7-tools button')];
+              const title=document.querySelector('#v-puz.t7 .t7-top h1')?.getBoundingClientRect();
+              const icons=all.map(x=>x.getBoundingClientRect());
+              const intersect=(a,b)=>Math.min(a.right,b.right)>Math.max(a.left,b.left)+2&&
+                Math.min(a.bottom,b.bottom)>Math.max(a.top,b.top)+2;
+              return {icons:icons.length,
+                bounded:icons.every(r=>r.left>=-2&&r.right<=innerWidth+2),
+                titleCollision:!!title&&icons.some(r=>intersect(title,r)),
+                overflow:document.documentElement.scrollWidth>innerWidth+3};
+            }""")
+            assert sea_mobile["icons"]==4 and sea_mobile["bounded"],f"Sea toolbar does not fit {width}px: {sea_mobile}"
+            assert not sea_mobile["titleCollision"] and not sea_mobile["overflow"],f"Sea title collides on {width}px: {sea_mobile}"
+            if SHOTS: await page.screenshot(path=str(SHOTS/f"treasure-sea1-light-{width}.png"))
+            await page.evaluate("()=>ML10.startStage(0)")
+            await page.locator('#v-puz .ex10-top-right .fit-pinfo').wait_for(state='visible',timeout=10000)
+            side_mobile=await page.evaluate("""()=>{
+              const all=[...document.querySelectorAll('#v-puz .ex10-game-top button')];
+              const heading=document.querySelector('#v-puz .ex10-game-top>div:first-child')?.getBoundingClientRect();
+              const icons=all.map(x=>x.getBoundingClientRect());
+              const intersect=(a,b)=>Math.min(a.right,b.right)>Math.max(a.left,b.left)+2&&
+                Math.min(a.bottom,b.bottom)>Math.max(a.top,b.top)+2;
+              return {icons:icons.length,
+                bounded:icons.every(r=>r.left>=-2&&r.right<=innerWidth+2),
+                titleCollision:!!heading&&icons.some(r=>intersect(heading,r)),
+                overflow:document.documentElement.scrollWidth>innerWidth+3};
+            }""")
+            assert side_mobile["icons"]>=2 and side_mobile["bounded"],f"Side toolbar does not fit {width}px: {side_mobile}"
+            assert not side_mobile["titleCollision"] and not side_mobile["overflow"],f"Side title collides on {width}px: {side_mobile}"
+            if SHOTS: await page.screenshot(path=str(SHOTS/f"side-lighthouse-light-{width}.png"))
         assert not errors,errors[:5]
         print("BOARD_VISUAL_ACCEPTANCE="+json.dumps({
           "engine":ENGINE,"panels":len(rows)+3,"themes":["light","dark"],
-          "widths":[320,390],"picker_levels":rows[0]["pickerButtons"],
+          "widths":[320,390,430],"picker_levels":rows[0]["pickerButtons"],
           "close_contrast":[row["button"]["contrast"] for row in rows],
           "hud_icon_counts":[len(row["hudIcons"]) for row in rows],"errors":errors
         },ensure_ascii=False),flush=True)
