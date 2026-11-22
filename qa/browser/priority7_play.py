@@ -19,7 +19,7 @@ async def start(pg, gid, lv, seed):
     if await pg.locator('.mpc[data-m=main]').count() and await pg.locator('.mpc[data-m=main]').is_visible(): await pg.click('.mpc[data-m=main]')
     # with a level: a replay (fixed level + seed, records no progress); without: the player's own next stage (records progress)
     await pg.evaluate("([g, lv, s]) => { startRun([g]); if (lv) RUN.replay = { id: g, lv, seed: s } }", [gid, lv, seed]); await pg.wait_for_timeout(300)
-    if await pg.locator('#stage #go').count(): await pg.click('#stage #go')
+    if await pg.locator('#stage #go').count() and await pg.locator('#stage #go').first.is_visible(): await pg.click('#stage #go')
     await dismiss_opening(pg, 1500)
     await pg.wait_for_timeout(2300)
 async def result(pg, t=6000):
