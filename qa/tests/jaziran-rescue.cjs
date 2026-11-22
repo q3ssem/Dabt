@@ -7,7 +7,7 @@ const storage=new Map([
   ['mindlab:journey:evidence-ledger:v1','{"version":1,"files":{"measurement":{"seal":{"at":1}}}}']
 ]);
 const writes=[];
-const native={open:false,a:{done:{},sw:{},swd:{}}};
+const native={open:false,done:0,a:{done:{},sw:{},swd:{}}};
 const storageAPI={getItem:k=>storage.get(k)||null,setItem(k,v){writes.push(k);storage.set(k,String(v));}};
 const window={ATHERAN_CAMPAIGN:{summary:()=>native}};
 vm.runInNewContext(text,{window,localStorage:storageAPI,Date,console});
@@ -22,6 +22,8 @@ assert.equal(m.simulate(correct,'B',2).reason,'locked');
 assert.equal(m.decide('teach').reason,'locked');
 // Native pz_aheart win and campaign opening, no optional secret world, are enough.
 native.open=true;native.a.done.pz_aheart=1;
+assert.equal(m.state().unlocked,false,'out-of-order heart victory never opens rescue');
+native.done=21;
 assert.equal(m.state().unlocked,true);
 assert.equal(m.state().completed,false);
 assert.equal(m.simulate({measure:0,time:0,age:2},'B',2).reason,'measure');
