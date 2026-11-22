@@ -112,9 +112,14 @@ async def probe_hints_and_reset(page):
     # A hint is permitted to solve a puzzle (laser mirrors do this on the
     # last correction). Its result screen intentionally locks restart.
     # Report the auto-solve, not a broken reset button.
+    # Some authored engines finalize after a 600 ms success animation. Wait
+    # for their genuine win callback, or the test can click restart during
+    # a terminal transition and mislabel the game as unresettable.
+    await page.wait_for_timeout(720)
     result['solvedByHint']=await page.evaluate("""()=>{
       return !!document.querySelector('#pzb.solved') ||
-        document.querySelector('#stage')?.dataset.expState==='solved';
+        document.querySelector('#stage')?.dataset.expState==='solved' ||
+        document.querySelector('#play')?.classList.contains('win');
     }""")
     reset=page.locator('#pzr')
     if not result['solvedByHint'] and await reset.count() and await reset.is_visible():
@@ -203,7 +208,9 @@ async def run():
                  'hintGaps':[{'id':r['id'],'levels':len(r.get('hintProbe',{}).get('levels',[])),
                               'issues':r.get('hintProbe',{}).get('issues',[])}
                    for r in results if r.get('hintProbe',{}).get('available') and
-                     (len(r.get('hintProbe',{}).get('levels',[]))<3 or r.get('hintProbe',{}).get('issues'))],
+                     ((len(r.get('hintProbe',{}).get('levels',[]))<3
+                       and not r.get('hintProbe',{}).get('solvedByHint')) or
+                       r.get('hintProbe',{}).get('issues'))],
                  'smallTargets':{r['id']:max((d.get('smallTouchTargets') or 0 for d in r['cases']),default=0)
                    for r in results},
                  'cases':results}
