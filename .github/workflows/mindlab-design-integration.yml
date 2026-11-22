@@ -38,6 +38,7 @@ jobs:
           python qa/browser/journey_evidence.py http://127.0.0.1:8765/ chromium /tmp/mindlab-visuals
           python qa/browser/jaziran_evidence_seals.py http://127.0.0.1:8765/ chromium /tmp/mindlab-visuals
           python qa/browser/jaziran_story_scenes.py http://127.0.0.1:8765/ chromium /tmp/mindlab-visuals
+          python qa/browser/jaziran_rescue.py http://127.0.0.1:8765/ chromium /tmp/mindlab-visuals
       - name: Validate board CSS parsing
         run: |
           python - <<'PY'
@@ -46,9 +47,12 @@ jobs:
           sheet=tinycss2.parse_stylesheet(text,skip_comments=True,skip_whitespace=True)
           text2=open('ui/journey-hub.css',encoding='utf-8').read()
           sheet2=tinycss2.parse_stylesheet(text2,skip_comments=True,skip_whitespace=True)
+          text3=open('ui/jaziran-rescue.css',encoding='utf-8').read()
+          sheet3=tinycss2.parse_stylesheet(text3,skip_comments=True,skip_whitespace=True)
           errors=[node.message for node in sheet if node.type=='error']
           assert not errors,errors
           assert not [node.message for node in sheet2 if node.type=='error'],'journey stylesheet has syntax errors'
+          assert not [node.message for node in sheet3 if node.type=='error'],'rescue stylesheet has syntax errors'
           print('BOARD_POLISH_CSS=passed',len(sheet),'rules')
           PY
       - uses: actions/upload-artifact@v4
@@ -87,6 +91,7 @@ jobs:
           python qa/browser/journey_evidence.py http://127.0.0.1:8767/ webkit /tmp/mindlab-webkit-visuals
           python qa/browser/jaziran_evidence_seals.py http://127.0.0.1:8767/ webkit /tmp/mindlab-webkit-visuals
           python qa/browser/jaziran_story_scenes.py http://127.0.0.1:8767/ webkit /tmp/mindlab-webkit-visuals
+          python qa/browser/jaziran_rescue.py http://127.0.0.1:8767/ webkit /tmp/mindlab-webkit-visuals
       - uses: actions/upload-artifact@v4
         if: always()
         with:
