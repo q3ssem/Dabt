@@ -398,9 +398,11 @@
       target.replaceChildren();
       const header = document.createElement('strong');
       header.textContent = 'التحقق من قرينة: ' + src.name;
+      const observation = document.createElement('p');
+      observation.textContent = 'ملاحظة من وثيقة القصة: ' + src.clue;
       const intro = document.createElement('p');
-      intro.textContent = 'سؤال مراجعة من القصة، بعد إنجاز اللغز الأصلي: ' + src.challenge.question;
-      target.append(header, intro);
+      intro.textContent = 'بعد إنجاز اللغز الأصلي، راجع الملاحظة ثم أجب: ' + src.challenge.question;
+      target.append(header, observation, intro);
       const actions = document.createElement('div');
       actions.className = 'mlj-evidence-options';
       src.challenge.choices.forEach((label, index) => {
