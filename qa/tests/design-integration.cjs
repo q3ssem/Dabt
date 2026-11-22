@@ -57,9 +57,9 @@ ok(exists('ui/designs_art/journey/v3/chapters/ch2_mirror_palace.webp'),'illustra
 /* Runtime acceptance for navigation is exercised in Chromium/WebKit; this
    build gate rejects abandoned map launchers and checks the canonical counts. */
 const stationScript=read('ui/designs_art/journey/v3/stations.js');
-const stationData=JSON.parse(stationScript.slice(stationScript.indexOf(' = ')+3).trim().replace(/;\\s*$/,''));
+const stationData=JSON.parse(stationScript.slice(stationScript.indexOf(' = ')+3).trim().replace(/;\s*$/,''));
 const storyScript=read('ui/journey-story-data.js');
-const storyData=JSON.parse(storyScript.slice(storyScript.indexOf(' = ')+3).trim().replace(/;\\s*$/,''));
+const storyData=JSON.parse(storyScript.slice(storyScript.indexOf(' = ')+3).trim().replace(/;\s*$/,''));
 new vm.Script(hubJs,{filename:'ui/journey-hub.js'});
 for(const [id,n] of [['seven_seas',21],['palace',19],['atheran',21],['side',24]])
  ok(stationData.stations.filter(s=>s.chapter===id).length===n,'map-free chapter stage count '+id);
