@@ -15,7 +15,9 @@ async def open_journal(page):
     await page.wait_for_function("()=>window.mindlabPlayLayers?.ready===true && !!window.mindlabJourneyHub",timeout=45000)
     await page.locator('#mlj-journey-entry').wait_for(state='visible',timeout=20000)
     await page.locator('#mlj-journey-entry').click()
-    await page.locator('.mlj-v3-extras summary').click()
+    extras=page.locator('.mlj-v3-extras')
+    if not await extras.evaluate('(el)=>el.open'):
+        await extras.locator('summary').click()
 
 async def run():
     assert ENGINE in ('chromium','webkit')
