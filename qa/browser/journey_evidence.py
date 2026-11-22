@@ -58,10 +58,12 @@ async def run():
             assert await page.evaluate("()=>document.documentElement.scrollWidth<=innerWidth+5"),f'horizontal overflow at {width}'
             if SHOTS and width==320: await page.screenshot(path=str(SHOTS/f'evidence-{ENGINE}-light-320.png'))
         await page.evaluate("()=>document.documentElement.dataset.skin='dark'")
-        assert await page.evaluate("""()=>{
-            const x=getComputedStyle(document.querySelector('#mlj-evidence-note'));
-            return x.backgroundColor!=='rgb(255, 255, 255)' && x.color!=='rgb(32, 50, 46)';
-        }"""),'dark notebook colors not applied'
+        dark_colors=await page.evaluate("""()=>{
+            const area=document.querySelector('#mlj-evidence-note'),x=getComputedStyle(area);
+            return {background:x.backgroundColor,color:x.color,theme:document.documentElement.dataset.skin};
+        }""")
+        print('EVIDENCE_DARK_COLORS='+json.dumps(dark_colors,ensure_ascii=False),flush=True)
+        assert dark_colors['background']!='rgb(255, 255, 255)' and dark_colors['color']!='rgb(32, 50, 46)',f"dark notebook colors not applied: {dark_colors}"
         if SHOTS: await page.screenshot(path=str(SHOTS/f'evidence-{ENGINE}-dark-430.png'))
         await page.keyboard.press('Escape')
         await page.locator('#mlj-evidence-modal').wait_for(state='detached',timeout=4000)
