@@ -22,11 +22,31 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Run complete project unit and regression suite
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install CSS-generation validator dependency
+        run: python -m pip install tinycss2
+      - name: Run each existing Node regression and report all failures
         shell: bash
         run: |
           set -euo pipefail
-          npm test
+          python - <<'PY'
+          import json, subprocess, shlex, sys
+          commands=json.load(open('package.json'))['scripts']['test'].split(' && ')
+          bad=[]
+          for command in commands:
+              result=subprocess.run(shlex.split(command),capture_output=True,text=True)
+              if result.returncode:
+                  bad.append(command)
+                  print('FAILED:',command,flush=True)
+                  print((result.stdout+'\n'+result.stderr)[-4000:],flush=True)
+              else: print('PASS:',command,flush=True)
+          print(f'NODE_REGRESSION={len(commands)-len(bad)}/{len(commands)}; failures={bad}',flush=True)
+          sys.exit(1 if bad else 0)
+          PY
+      - name: All authored levels and reference integrity
+        run: |
           npm run test:authored-stages
           npm run test:references
 
