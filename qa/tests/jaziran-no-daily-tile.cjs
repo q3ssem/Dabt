@@ -17,6 +17,6 @@ assert(tide.includes('minmax(44px,1fr)'),'Hour controls must retain a 44 px touc
 assert(tide.includes('overflow-x:auto'),'Hour strip must scroll horizontally on narrow screens');
 assert(offline.includes('"ui/tide-scroll.css"'),'Tide sheet must be available in offline full download');
 assert(sw.includes("'ui/tide-scroll.css'"),'Tide sheet must be in offline installation shell');
-assert(sw.includes("PATCH='brain-touch-32'"),'Cached app must refresh after the new responsive stylesheet');
+assert(sw.includes("PATCH='brain-touch-33'"),'Cached app must refresh after the new responsive stylesheet');
 
 console.log('Daily square removed; treasure card, library puzzle rotation, campaign navigation preserved');
