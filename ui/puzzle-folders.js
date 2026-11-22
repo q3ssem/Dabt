@@ -83,7 +83,14 @@
     });
     host.append(head,grid);
   }
-  LA.libraryInto = function(host) { render(host); };
+  LA.libraryInto = function(host) {
+    // The direct-library screen already contains its own header/back action.
+    // Keep that navigation rather than wiping the entire #v-puz element.
+    if (host.id === 'v-puz') {
+      const section = el('section','ml-folder-direct');
+      host.append(section);render(section);
+    } else render(host);
+  };
   // Expose a read-only state getter for QA, not a completion bypass.
   LA.folderStatus = () => sections().map(([name,games]) => ({
     name,items:games.map((g,i)=>({id:g.id,open:available(games,i),done:wins(g.id)>0}))
