@@ -53,7 +53,7 @@
       // are not a gate. Keep the legacy all-secrets path for old completed saves.
       returned = !!atlas && (
         (atlas.done === 21 && atlas.cleared === 5) ||
-        (!!atlas.a?.done?.pz_aheart && !!window.MindlabRescue?.state()?.completed)
+        (atlas.done === 21 && !!atlas.a?.done?.pz_aheart && !!window.MindlabRescue?.state()?.completed)
       );
     } catch (_) {}
     const thresholds = {departure: 0, coral_light: 3, mist_bells: 6, oasis_water: 9,
