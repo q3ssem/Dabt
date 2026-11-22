@@ -1,3 +1,4 @@
+const {scenePath}=require('./scene-aliases.cjs');
 'use strict';
 // Preserve the user's independent side journey while locating genuine duplication.
 // Same material/prop or mechanic family is NOT by itself a duplicate playable puzzle.
@@ -17,7 +18,7 @@ for(const key of ['id','name','scene','objective','story'])
 const source=JSON.parse(story.slice(story.indexOf(' = ')+3).trim().replace(/;\s*$/,''));
 assert.deepEqual(stages.map(x=>x.id),source.expeditionStations.map(x=>x.stageId));
 for(const s of stages){
-  assert(fs.existsSync('expedition10/art/scenes/'+s.scene),'missing side scene '+s.id);
+  assert(fs.existsSync(scenePath(s.scene)),'missing side scene '+s.id);
   assert(s.objective.length>=20,'side stage needs its own playable goal '+s.id);
   assert(s.story.length>=40,'side stage needs distinct narrative '+s.id);
 }

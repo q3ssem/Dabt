@@ -1,3 +1,4 @@
+const {scenePath}=require('./scene-aliases.cjs');
 const fs=require('fs'),path=require('path'),assert=require('assert');
 const root=path.resolve(__dirname,'../..');
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
@@ -11,8 +12,9 @@ const uiApp=fs.readFileSync(path.join(root,'ui/app.js'),'utf8');
 const wired=n=>html.includes(n)||uiApp.includes("'"+n+"'");
 assert(wired('expedition10/style.css')&&wired('expedition10/logic.js')&&wired('expedition10/app.js'),'adventure chapter scripts and stylesheet are wired after existing engines');
 assert(offline.includes('expedition10/art/world-map.webp'),'world map is precached');
-for(const f of ['roaa.webp','noha.webp','ward.webp'])assert(offline.includes('expedition10/art/crew/'+f),'main character asset precached: '+f);
-for(let i=1;i<=25;i++){if(i===15)continue;const f=`${String(i).padStart(2,'0')}-`;const scene=fs.readdirSync(path.join(root,'expedition10/art/scenes')).find(x=>x.startsWith(f));assert(scene,'stage scene exists: '+f);assert(offline.includes('expedition10/art/scenes/'+scene),'stage scene is included in Offline Precache: '+scene);}
+for(const f of ['treasure/art/story5/crew_full_rawaa.webp','treasure/art/story5/crew_full_nuha.webp','treasure/art/story5/crew_full_ward.webp'])assert(offline.includes(f),'canonical heroine precached: '+f);
+const sceneNames=[...app.matchAll(/scene:'([^']+\.webp)'/g)].map(m=>m[1]);
+for(let i=1;i<=25;i++){if(i===15)continue;const prefix=String(i).padStart(2,'0')+'-';const name=sceneNames.find(x=>x.startsWith(prefix));assert(name,'stage scene declared: '+prefix);const rel=scenePath(name);assert(fs.existsSync(path.join(root,rel)),'stage image exists: '+rel);assert(offline.includes(rel),'stage scene precached: '+rel);}
 assert(app.includes("const SAVE_KEY='mindlab:expedition10:v1'"),'experimental chapter retains its isolated save namespace and existing first-ten progress');
 assert(!/S\.st\.[^;]*ml10/.test(app),'new chapter does not write into legacy campaign state');
 assert.strictEqual((app.match(/id:'ml10_\d\d'/g)||[]).length,24,'exactly twenty-four active stages are registered');

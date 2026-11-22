@@ -1,3 +1,4 @@
+const {scenePath}=require('./scene-aliases.cjs');
 const fs=require('fs'),path=require('path'),assert=require('assert');
 const root=path.resolve(__dirname,'../..');
 const html=fs.readFileSync(path.join(root,'index.html'),'utf8');
@@ -13,12 +14,15 @@ assert(wired('expedition10/style.css')&&wired('expedition10/logic.js')&&wired('e
 assert.strictEqual(pkg.version,'5.5.29','package version is 5.5.28');
 assert(sw.includes("const VERSION='5.5.29'"),'service worker cache version is 5.5.28');
 assert(offline.includes('expedition10/art/world-map.webp'),'world map is precached');
-for(const f of ['roaa.webp','noha.webp','ward.webp'])assert(offline.includes('expedition10/art/crew/'+f),'main heroine asset precached: '+f);
+for(const f of ['treasure/art/story5/crew_full_rawaa.webp','treasure/art/story5/crew_full_nuha.webp','treasure/art/story5/crew_full_ward.webp'])assert(offline.includes(f),'canonical heroine precached: '+f);
+const sceneNames=[...app.matchAll(/scene:'([^']+\.webp)'/g)].map(m=>m[1]);
 for(let i=1;i<=25;i++){if(i===15)continue;
   const prefix=String(i).padStart(2,'0')+'-';
-  const scene=fs.readdirSync(path.join(root,'expedition10/art/scenes')).find(x=>x.startsWith(prefix));
-  assert(scene,'stage scene exists '+prefix);
-  assert(offline.includes('expedition10/art/scenes/'+scene),'stage scene precached '+scene);
+  const scene=sceneNames.find(x=>x.startsWith(prefix));
+  assert(scene,'stage scene declared '+prefix);
+  const rel=scenePath(scene);
+  assert(fs.existsSync(path.join(root,rel)),'stage scene exists '+rel);
+  assert(offline.includes(rel),'stage scene precached '+rel);
 }
 assert.strictEqual((app.match(/id:'ml10_\d\d'/g)||[]).length,24,'exactly twenty-five stages are registered');
 assert(app.includes("const SAVE_KEY='mindlab:expedition10:v1'"),'the existing isolated save namespace is retained for backward-compatible progress');
