@@ -286,7 +286,11 @@
     const el = P && $(P.zoom, $(P.ready).closest('#v-puz') || document);
     document.documentElement.classList.toggle('fit-page', !!P);
     PAGES.forEach(p => document.documentElement.classList.toggle('fit-' + p.key, p === P));
-    if (!P) { page = pageEl = null; return; }
+    if (!P) {
+      document.querySelectorAll('.fit-pbubble').forEach(node => node.remove());
+      page = pageEl = null;
+      return;
+    }
     const fresh = el !== pageEl; page = P; pageEl = el;
     const tools = $(P.tools);
     if (tools && !$('.fit-info', tools) && ((P.rule && $(P.rule)) || (P.story && $(P.story)))) {
@@ -295,13 +299,13 @@
     if (fresh) {
       if (window.scrollY) window.scrollTo(0, 0); if (document.body.scrollTop) document.body.scrollTop = 0;
       pageSchedule(); setTimeout(pageSchedule, 150); setTimeout(pageSchedule, 700);
+      // The full-width automatic rule bubble covered clues and survived a
+      // page-to-page transition for up to five seconds. The rules already
+      // remain available through the accessible information control above.
+      // Never put a transient instruction panel over an active board.
+      document.querySelectorAll('.fit-pbubble').forEach(node => node.remove());
       const id = P.id(), r = P.rule && txt($(P.rule));
-      if (r && !seen()[id]) { markSeen(id); setTimeout(() => {
-        const b = document.createElement('div'); b.className = 'fit-bubble fit-pbubble'; b.innerHTML = `<span>${I_INFO}</span><p>${r}</p>`;
-        b.style.setProperty('--fit-bt', `${Math.max(8, Math.round(el.getBoundingClientRect().top))}px`); document.body.append(b);
-        const off = () => { b.classList.add('gone'); setTimeout(() => b.remove(), 300); document.removeEventListener('pointerdown', off, true); };
-        setTimeout(() => document.addEventListener('pointerdown', off, true), 50); setTimeout(off, 5000);
-      }, 200); }
+      if (r && !seen()[id]) markSeen(id);
     } else pageSchedule();
   }
   function pageWatch() {
