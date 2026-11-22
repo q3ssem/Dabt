@@ -1711,9 +1711,9 @@ html[data-look="sketch"][data-skbg="mint"][data-skbg]{--bg:#E2EFE2;--panel1:#F3F
 .aars{display:flex;flex-direction:column;text-align:start;color:#3A2616}.aars b{font:700 12.5px 'Aref Ruqaa',serif}.aars small{font:600 10px Tajawal;opacity:.8}
 .aarb{min-height:38px;padding:4px;border-radius:9px;border:1.6px dashed rgba(58,38,22,.5);background:rgba(255,248,226,.55);font:700 12px Tajawal;color:#8E7B60}
 .aarb.set{border-style:solid;border-color:#3A2616;color:#3A2616;background:#F6E9C6}.aarb.f.set{background:#E6EEF0}
-.aptc{display:grid;grid-template-columns:repeat(24,1fr);gap:1px;height:130px;margin:8px 0 2px;padding:2px;border-bottom:2px solid #3A2616}
+.aptc{display:grid;grid-template-columns:repeat(24,minmax(44px,1fr));gap:3px;height:140px;margin:8px 0 2px;padding:2px 3px 8px;border-bottom:2px solid #3A2616;max-width:100%;overflow-x:auto;overflow-y:hidden;overscroll-behavior-x:contain;scroll-snap-type:x proximity;-webkit-overflow-scrolling:touch}
 .aptf{display:grid;grid-template-columns:repeat(auto-fit,minmax(112px,1fr));gap:5px;margin:7px 0;padding:7px;border:1px solid rgba(58,38,22,.25);border-radius:9px;background:rgba(255,248,226,.68);color:#3A2616;font:600 10.5px/1.55 Tajawal}.aptfs{display:grid;gap:2px;padding:5px;border-radius:7px;border:1px solid rgba(58,38,22,.25);background:rgba(255,248,226,.55)}.aptfs.ok{border-color:#5E8A4E;background:rgba(94,138,78,.12)}.aptfs.no{border-color:#9B2B1F;background:rgba(155,43,31,.1)}.aptfs strong{font:700 11px Tajawal}.aptfs.ok strong{color:#47744B}.aptfs.no strong{color:#9B2B1F}
-.aptb{display:flex;flex-direction:column;justify-content:flex-end;align-items:stretch;padding:0;border:0;background:none;min-width:0}
+.aptb{display:flex;flex-direction:column;justify-content:flex-end;align-items:stretch;padding:0;border:0;background:none;min-width:44px;scroll-snap-align:center;touch-action:manipulation}
 .aptb i{display:flex;align-items:flex-start;justify-content:center;font:700 8.5px/1.4 Tajawal;font-style:normal;color:#F4E9CC;background:linear-gradient(#7FAFC0,#3D6E80);border-radius:3px 3px 0 0;min-height:12px;transition:background .2s}
 .aptb small{font:600 7.5px Tajawal;color:#3A2616;margin-top:2px}.aptb.hid i{background:repeating-linear-gradient(45deg,rgba(58,38,22,.12) 0 4px,transparent 4px 8px);color:#9B2B1F;border:1px dashed #9B2B1F}
 .aptb.sel i{background:linear-gradient(#F2C553,#B8902E);color:#3A2616}
@@ -4097,7 +4097,6 @@ function pzDailyType(){const r=seeded(+dayKey().replace(/-/g,'')+7);const all=['
 function renderPuz(){const p=pzState(),solvedR=Object.keys(p.rid).length,dt=pzDailyType(),dDone=p.daily===dayKey();
   $('#v-puz').innerHTML=`<div class="top"><div class="hello"><span class="eyebrow">مدينة الألغاز</span><h1>الألغاز</h1></div><div class="pzwallet">${COIN}<b class="num">${p.pts}</b><small>${pzRank(p.pts)}</small></div></div>
   <section class="card pzstory"><p>وصلت إلى مدينة غريبة كل أبوابها مقفلة بألغاز. كل لغز تحله يعطيك عملات، وكل 5 ألغاز تفتح لك حيًّا جديدًا من القصة.</p></section>
-  <button class="card due pzdaily${dDone?' done':''}" id="pzday" style="--c:${GM[dt].col[0]}">${icoBox(GM[dt])}<span><b>لغز اليوم: ${GM[dt].name}</b><small>${dDone?'حللته اليوم ✓ تعال بكرة للغز جديد':'عملات مضاعفة ×2'}</small></span><span class="go">‹</span></button>
   ${xHubHTML()}
   ${zHubHTML()}
   ${pHubHTML()}
@@ -4105,7 +4104,7 @@ function renderPuz(){const p=pzState(),solvedR=Object.keys(p.rid).length,dt=pzDa
   <section class="gsec"><div class="sec-h"><h2>ألغاز لا تنتهي</h2><span>تتولد من جديد كل مرة، وتصعب مع الفوز</span></div><div class="pzgrid">${PZ_TYPES.map(id=>{const g=GM[id],lv=id==='tol'?clamp(S.st.lv.tol||1,1,5):pzLv(id);return`<button class="pzcard" data-g="${id}" style="--c:${g.col[0]}">${icoBox(g)}<b>${g.name}</b><small>المستوى ${lv} من ${pzMax(id)}${p.n[id]?` · حللت ${p.n[id]}`:''}</small></button>`}).join('')}</div></section>`;
   $('#v-puz').querySelectorAll('[data-g]').forEach(b=>b.onclick=()=>startRun([b.dataset.g]));
   $('#v-puz').querySelectorAll('[data-rid]').forEach(b=>b.onclick=()=>startRun(['pz_rid'],null,{rid:+b.dataset.rid}));
-  $('#pzday').onclick=()=>startRun([dt],null,dDone?{}:{daily:true});pzMapBind();artFill($('#v-puz'));
+  pzMapBind();artFill($('#v-puz'));
 }
 
 /* ================= v22: profile type (main / kid / TV), saved per device ================= */
@@ -7878,8 +7877,8 @@ function aptMake(lv){
 function aptForecast(P,start){if(!Number.isInteger(start)||start<P.w0||start>=P.w0+P.Pd)return[];return P.need.map((need,i)=>{const hour=start+i,sourceHour=P.hide<24&&hour>=P.hide?hour%P.Pd:hour,tide=P.h[sourceHour];return{i,hour,sourceHour,tide,need,ok:tide>=need,repeated:sourceHour!==hour}})}
 function runAPort(){return pzPlay('pz_aport',api=>{
   const P=aptMake(api.lv),K=P.K;let sel=-1,miss=0,busy=false;const mx=Math.max(...P.h,...P.need)+1;
-  api.body.innerHTML=board70Sheet('aport',`${xHead(board70Image('aport','gauge'),'ميناء ما وراء المد')}<ol class="xnote"><li>السفينة تقطع كل ممر ضحل في ساعة، بالترتيب.</li><li>كل ممر يحتاج أن يكون ارتفاع المد عنده لا يقل عن الرقم المكتوب، في الساعة التي تمر فيها.</li>${P.hide<24?`<li>جدول المد تمزق بعد الساعة ${XAR(P.hide-1)}. المد يعيد نفسه كل ${arN(P.Pd,AN.hr)}.</li>`:''}<li>بوابة الميناء تُفتح من الساعة ${XAR(P.w0)} إلى الساعة ${XAR(P.w0+P.Pd-1)} فقط. اختر ساعة الإبحار.</li></ol>
-   <div class="aptc ltr" id="aptc">${P.h.map((v,x)=>`<button class="aptb ${x>=P.hide?'hid':''} ${x<P.w0||x>=P.w0+P.Pd?'shut':''}" data-h="${x}"><i style="height:${x>=P.hide?100:v*100/mx}%">${x>=P.hide?'؟':XAR(v)}</i><small>${XAR(x)}</small></button>`).join('')}</div>
+  api.body.innerHTML=board70Sheet('aport',`${xHead(board70Image('aport','gauge'),'ميناء ما وراء المد')}<ol class="xnote"><li>السفينة تقطع كل ممر ضحل في ساعة، بالترتيب.</li><li>كل ممر يحتاج أن يكون ارتفاع المد عنده لا يقل عن الرقم المكتوب، في الساعة التي تمر فيها.</li>${P.hide<24?`<li>جدول المد تمزق بعد الساعة ${XAR(P.hide-1)}. المد يعيد نفسه كل ${arN(P.Pd,AN.hr)}.</li>`:''}<li>بوابة الميناء تُفتح من الساعة ${XAR(P.w0)} إلى الساعة ${XAR(P.w0+P.Pd-1)} فقط. مرّر جدول المد أفقيًا، ثم اختر ساعة الإبحار.</li></ol>
+   <div class="aptc ltr" id="aptc" role="group" aria-label="ساعات المد، مرر أفقيًا لاختيار ساعة الإبحار">${P.h.map((v,x)=>`<button class="aptb ${x>=P.hide?'hid':''} ${x<P.w0||x>=P.w0+P.Pd?'shut':''}" data-h="${x}"><i style="height:${x>=P.hide?100:v*100/mx}%">${x>=P.hide?'؟':XAR(v)}</i><small>${XAR(x)}</small></button>`).join('')}</div>
    <div class="aptr">${P.need.map((v,i)=>`<span>${board70Image('aport','wave')}<b>الممر ${XAR(i+1)}</b><small>يحتاج ${XAR(v)}</small></span>`).join('')}</div>
    <div class="aptf" id="aptf" aria-live="polite">اختر ساعة الإبحار لمعاينة مرور السفينة ممرًا بعد ممر.</div>
    <div class="xkbtns"><button class="go-btn xsm" id="aptgo">أبحر</button></div>`);
@@ -9624,7 +9623,7 @@ function tripCardHTML(){let voy=1,done=0,total=0,thumb='';
 {const _rp=renderPuz;renderPuz=function(){_rp();const v=$('#v-puz');if(!v)return;v.classList.toggle('trip',PZ_TRIP);
   if(PZ_TRIP){v.insertAdjacentHTML('afterbegin',`<div class="triph"><button class="tripback" id="tripback" aria-label="رجوع للألغاز"><svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.6" stroke-linecap="round" stroke-linejoin="round"><path d="M9 5l7 7-7 7"/></svg></button><div><span class="eyebrow">مدينة الألغاز</span><h1>رحلة جزيرة الكنز</h1></div></div>`);
     $('#tripback').onclick=()=>{PZ_TRIP=false;renderPuz();window.scrollTo(0,0)}}
-  else{const d=$('#pzday');if(d)d.insertAdjacentHTML('afterend',tripCardHTML());const g=$('#tripgo');if(g)g.onclick=()=>{PZ_TRIP=true;renderPuz();window.scrollTo(0,0)}}}}
+  else{const anchor=v.querySelector('.pzstory')||v.querySelector('.pzwallet');if(anchor)anchor.insertAdjacentHTML('afterend',tripCardHTML());else v.insertAdjacentHTML('afterbegin',tripCardHTML());const g=$('#tripgo');if(g)g.onclick=()=>{PZ_TRIP=true;renderPuz();window.scrollTo(0,0)}}}}
 
 /* ================= v61: every island station is three stages ================= */
 function txStageOf(id){try{const t=txState(),st=txList(t)[t.prog];if(!st||st.id!==id)return null;const mx=pzMax(id),k=(t.stage||0)+1,L=[Math.max(1,Math.round(mx*.25)),Math.max(2,Math.round(mx*.6)),mx];return{k,lv:L[k-1]}}catch(e){return null}}

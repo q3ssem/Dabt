@@ -74,7 +74,7 @@ async def turn_to(pg, i, want, D, label):
 async def nothing_open(pg):
     return await pg.evaluate("() => !document.querySelector('.pl-door.open') && [...document.querySelectorAll('.pl-dimg')].every(i => /door_closed/.test(i.src))")
 async def overflow(pg):
-    return await pg.evaluate("() => { const W = document.documentElement.clientWidth; return [...document.querySelectorAll('#stage *')].filter(e => { const b = e.getBoundingClientRect(); return b.width && (b.right > W + 1 || b.left < -1) && getComputedStyle(e).position !== 'fixed' }).map(e => e.className.baseVal ?? e.className).slice(0, 4) }")
+    return await pg.evaluate("() => { const W = document.documentElement.clientWidth; return [...document.querySelectorAll('#stage *')].filter(e => { const b = e.getBoundingClientRect(); return b.width && (b.right > W + 1 || b.left < -1) && getComputedStyle(e).position !== 'fixed' }).map(e => ({tag:e.tagName,id:e.id,cls:e.className.baseVal??e.className,left:Math.round(e.getBoundingClientRect().left),right:Math.round(e.getBoundingClientRect().right),width:Math.round(e.getBoundingClientRect().width)})).slice(0, 4) }")
 async def clipped(pg):
     return await pg.evaluate("() => [...document.querySelectorAll('.pl-sthead b, .pl-face, .pl-rule small, .pl-lead')].filter(e => e.scrollWidth > e.clientWidth + 2).length")
 

@@ -41,42 +41,46 @@ async def solve(page,gid):
         return len(P['solution'])
     if gid=='pz_xcave':
         order=await page.evaluate("()=>__test.pz.P.ord")
-        for i in order:await tap(page,f'#pzb .xct[data-i="{i}"]')
+        for i in order:await tap(page,f'#xcw .xct[data-i="{i}"]')
         return len(order)
     if gid=='pz_ymap':
-        P=await page.evaluate("()=>({cur:__test.pz.P.cur,rot:__test.pz.P.rot})")
+        P=await page.evaluate("()=>{const p=__test.pz.P;return {cur:p.cur,rot:p.rot,n:p.n}}")
         state=[dict(x) for x in P['cur']]
         actions=0
-        # Reorder all tiles by native select-then-select swaps.
+        # Sort-and-orient each tile in a single swap; otherwise selecting a new
+        # piece after rotating adds two gratuitous swaps per tile and can exceed
+        # the game's original, intentionally limited move budget.
         for i in range(len(state)):
-            if state[i]['t']==i:continue
-            j=next(k for k in range(i+1,len(state)) if state[k]['t']==i)
-            await tap(page,f'#ymg button[data-i="{i}"]')
-            await tap(page,f'#ymg button[data-i="{j}"]')
-            state[i],state[j]=state[j],state[i]
-            actions+=2
-        # Same tile twice selects and rotates one 90 degree step.
-        # When a tile remains selected, two swaps change focus without
-        # changing the final permutation. Every such move costs game budget.
-        selected=None
-        for i,tile in enumerate(state):
-            n=(4-tile['r'])%4
-            if not n:continue
-            if selected is not None and selected!=i:
-                await tap(page,f'#ymg button[data-i="{i}"]')
-                await tap(page,f'#ymg button[data-i="{selected}"]')
-                await tap(page,f'#ymg button[data-i="{i}"]')
-                await tap(page,f'#ymg button[data-i="{i}"]')
-                actions+=4
-                selected=None
-            if selected is None:
-                await tap(page,f'#ymg button[data-i="{i}"]')
-                selected=i
-            for _ in range(n):
+            if state[i]['t']!=i:
+                j=next(j for j in range(i+1,len(state)) if state[j]['t']==i)
+                await tap(page,f'#ymg button[data-i="{j}"]')
+                for _ in range((-state[j]['r'])%4):
+                    assert P['rot'],'rotation requested on non-rotating level'
+                    await tap(page,f'#ymg button[data-i="{j}"]')
+                    actions+=1
                 await tap(page,f'#ymg button[data-i="{i}"]')
                 actions+=1
-            tile['r']=0
+                state[i],state[j]=state[j],state[i]
+                state[i]['r']=0
+            elif state[i]['r']!=0:
+                assert P['rot']
+                await tap(page,f'#ymg button[data-i="{i}"]')
+                for _ in range((-state[i]['r'])%4):
+                    await tap(page,f'#ymg button[data-i="{i}"]')
+                    actions+=1
+                state[i]['r']=0
+                # Two reversible physical swaps clear the selected tile while
+                # leaving the layout and orientation unchanged.
+                if i!=len(state)-1:
+                    j=i+1
+                    await tap(page,f'#ymg button[data-i="{j}"]')
+                    await tap(page,f'#ymg button[data-i="{i}"]')
+                    await tap(page,f'#ymg button[data-i="{j}"]')
+                    actions+=2
         assert all(x['t']==i and x['r']==0 for i,x in enumerate(state))
+        # If the final tile had to be rotated, the rotation itself already wins.
+        assert actions<=P['n']**2*(4 if P['rot'] else 2)+6,\
+            f'player action plan exceeds existing budget: {actions}'
         return actions
     raise AssertionError(gid)
 

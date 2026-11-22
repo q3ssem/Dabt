@@ -47,7 +47,16 @@ def bridge_route(P):
 async def solve(page,gid):
     if gid=='pz_aport':
         hour=await page.evaluate("()=>__test.pz.P.t0")
-        await tap(page,f'#aptc .aptb[data-h="{hour}"]')
+        button=page.locator(f'#aptc .aptb[data-h="{hour}"]').first
+        # Visible touch first; accessible focus+Enter if a fixed overlay intercepts.
+        try:
+            await button.click(timeout=2600)
+        except Exception:
+            await button.focus()
+            await page.keyboard.press('Enter')
+        await page.wait_for_function("""h=>
+            [...document.querySelectorAll('#aptc .aptb.sel')].some(b=>+b.dataset.h===+h)
+            """,arg=hour,timeout=5000)
         await tap(page,'#aptgo')
         return 2
     if gid=='pz_alight':

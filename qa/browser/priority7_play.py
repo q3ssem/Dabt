@@ -55,23 +55,33 @@ async def finish(pg, lab, go, gid, persist):
 
 async def acity(pg, w, lv, mode):
     persist = lv is None
-    lab = f'pz_acity {w} lv{lv or "-own"} {mode}'; await start(pg, 'pz_acity', lv, 70 + (lv or 0))
-    P = await pg.evaluate("() => { const P = window.__test.pz.P; return { n: P.n, gone: P.gone, al: P.al, any: P.req.some(r => r.or) } }")
-    ok(await pg.evaluate("(n) => document.querySelectorAll('#actweb .mk-sp').length === n", P['n']), f'{lab}: {P["n"]} species drawn from actMake')
-    ok(await pg.evaluate("() => [...document.querySelectorAll('#actweb .mk-sp image')].filter(e => /motion[/]art[/]|designs_art[/]priority7[/]/.test(e.getAttribute('href') || '')).length === document.querySelectorAll('#actweb .mk-sp').length"), f'{lab}: every species is its picture')
-    if P['any']: ok(await pg.evaluate("() => document.querySelectorAll('#actweb .ae.any').length > 0 && document.querySelectorAll('#actweb .ae.all').length > 0"), f'{lab}: «all» and «any one» lines both drawn')
-    lit = P['al'].index(True); await tap(pg, f'#actweb [data-sp="{lit}"]')
-    ok(await pg.evaluate("() => window.__test.pz.state().sel") == -1, f'{lab}: a lit species cannot be the first to vanish')
-    wrong = next((i for i, a in enumerate(P['al']) if not a and i != P['gone']), None)
+    lab = f'pz_acity {w} lv{lv or "-own"} {mode}'
+    await start(pg, 'pz_acity', lv, 70+(lv or 0))
+    P = await pg.evaluate("()=>{const p=__test.pz.P;return {n:p.n,gone:p.gone,al:p.al,any:p.req.some(r=>r.or)}}")
+    ok(await pg.evaluate("(n)=>document.querySelectorAll('.actg button[data-i]').length===n",P['n']),
+       f'{lab}: all {P["n"]} species visible in the current illustrated board')
+    ok(await pg.evaluate("()=>[...document.querySelectorAll('.actg button[data-i]')].every(b=>!!b.querySelector('img[src*=\"boards-70/acity/\"]'))"),
+       f'{lab}: every species uses a real painted raster')
+    if P['any']:
+        ok(await pg.evaluate("()=>[...document.querySelectorAll('.aclues li')].some(b=>b.textContent.includes(' أو '))"),
+           f'{lab}: alternative dependence is visibly described')
+    lit=P['al'].index(True)
+    await tap(pg,f'.actg [data-i="{lit}"]')
+    ok(await pg.evaluate("()=>document.querySelectorAll('.actg button.sel').length===0"),
+       f'{lab}: a living species cannot be selected as vanished')
+    wrong=next((i for i,a in enumerate(P['al']) if not a and i!=P['gone']),None)
     if wrong is not None:
-        await tap(pg, f'#actweb [data-sp="{wrong}"]'); await pg.wait_for_timeout(250)
-        ok(await pg.evaluate("() => !!document.querySelector('#actweb .mk-sp.pulse')"), f'{lab}: the dimming spreads on simulation')
-        ok(await pg.evaluate("() => document.querySelector('#actsim').classList.contains('bad') && !!document.querySelector('#actweb .mk-sp.mis')"), f'{lab}: a wrong hypothesis rings the species that disagree')
-        await tap(pg, '#acmode'); ok(await pg.evaluate("() => window.__test.pz.state().view") == 'scene', f'{lab}: the mode button switches to the scene')
-        await tap(pg, '#actgo'); ok(await result(pg, 800) is None, f'{lab}: wrong first species refused')
-    await tap(pg, f'#actweb [data-sp="{P["gone"]}"]'); await pg.wait_for_timeout(300)
-    ok(await pg.evaluate("() => document.querySelector('#actsim').classList.contains('good')"), f'{lab}: the right hypothesis matches the scene')
-    await finish(pg, lab, '#actgo', 'pz_acity', persist)
+        await tap(pg,f'.actg [data-i="{wrong}"]')
+        await tap(pg,'#acttest')
+        ok(await pg.evaluate("()=>/لا تطابق/.test(document.querySelector('#actaudit').textContent)"),
+           f'{lab}: wrong disappearance fails simulation with explanation')
+        await tap(pg,'#actgo')
+        ok(await result(pg,800) is None,f'{lab}: wrong first species rejected')
+    await tap(pg,f'.actg [data-i="{P["gone"]}"]')
+    await tap(pg,'#acttest')
+    ok(await pg.evaluate("()=>/تطابق كامل/.test(document.querySelector('#actaudit').textContent)"),
+       f'{lab}: right hypothesis reproduces the species cascade')
+    await finish(pg,lab,'#actgo','pz_acity',persist)
 
 async def pobs(pg, w, lv, mode):
     lab = f'pz_pobs {w} lv{lv or "-own"} {mode}'; await start(pg, 'pz_pobs', lv, 460 + (lv or 0))
@@ -155,19 +165,31 @@ async def aarch(pg, w, lv, mode):
     await finish(pg, lab, '#aargo', 'pz_aarch', persist)
 
 async def alayer(pg, w, lv, mode):
-    persist = lv is None
-    lab = f'pz_alayer {w} lv{lv or "-own"} {mode}'; await start(pg, 'pz_alayer', lv, 700 + (lv or 0)); mv = drag if mode == 'drag' else tapmove
-    order = await pg.evaluate("() => { const P = window.__test.pz.P; return P.ev.map(e => P.items.indexOf(e)) }"); N = len(order)
-    ok(await pg.evaluate("() => /ناقص/.test(document.querySelector('#alystat').textContent)"), f'{lab}: time line starts incomplete')
-    wrong = order[:]; wrong[0], wrong[1] = wrong[1], wrong[0]
-    for q, j in enumerate(wrong):
-        await mv(pg, f'[data-tray="t"] [data-tok="{j}"]', f'.mk-slot.tl[data-slot="{q}"]')
-        if q == 1: ok(await pg.evaluate("() => document.querySelectorAll('#alynums .aly-num').length === 2"), f'{lab}: the section numbers the placed cards as you go')
-    ok(await pg.evaluate("() => /مكتمل/.test(document.querySelector('#alystat').textContent)"), f'{lab}: complete when every card is placed')
-    await tap(pg, '#alygo'); ok(await result(pg, 800) is None and await pg.evaluate("() => !!document.querySelector('.mk-slot.tl.mk-wrong')"), f'{lab}: wrong order refused, first error marked')
-    await mv(pg, f'.mk-slot.tl[data-slot="1"] [data-tok="{order[0]}"]', '.mk-slot.tl[data-slot="0"]')
-    ok(await pg.evaluate("() => window.__test.pz.state()") == order, f'{lab}: two cards swapped by hand')
-    await finish(pg, lab, '#alygo', 'pz_alayer', persist)
+    persist=lv is None
+    lab=f'pz_alayer {w} lv{lv or "-own"} {mode}'
+    await start(pg,'pz_alayer',lv,700+(lv or 0))
+    order=await pg.evaluate("()=>{const p=__test.pz.P;return p.ev.map(e=>p.items.indexOf(e))}")
+    N=len(order)
+    ok(await pg.evaluate("()=>document.querySelectorAll('#alyt button[data-j]').length"),
+       f'{lab}: geological event cards are available to tap')
+    wrong=order[:];wrong[0],wrong[1]=wrong[1],wrong[0]
+    for q,i in enumerate(wrong):
+        await tap(pg,f'#alyt button[data-j="{i}"]')
+        if q==1:
+            ok(await pg.evaluate("()=>document.querySelectorAll('#alyo span').length===2"),
+               f'{lab}: timeline numbers the placed cards')
+    ok(await pg.evaluate("(n)=>document.querySelectorAll('#alyo span').length===n",N),
+       f'{lab}: all geological events are in timeline')
+    await tap(pg,'#alygo')
+    ok(await result(pg,800) is None and await pg.evaluate("()=>document.querySelector('#stage').textContent.includes('أول خطأ')"),
+       f'{lab}: wrong geological chronology rejected')
+    await tap(pg,'#alyz')
+    ok(await pg.evaluate("()=>document.querySelectorAll('#alyo span').length===0"),
+       f'{lab}: explicit clear action empties the timeline')
+    for i in order:await tap(pg,f'#alyt button[data-j="{i}"]')
+    ok(await pg.evaluate("(n)=>document.querySelectorAll('#alyo span').length===n",N),
+       f'{lab}: reconstructed chronology has all events')
+    await finish(pg,lab,'#alygo','pz_alayer',persist)
 
 async def arelic(pg, w, lv, mode):
     persist = lv is None

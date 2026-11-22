@@ -1,0 +1,12 @@
+const assert=require('node:assert/strict'),fs=require('node:fs'),path=require('node:path');
+const root=path.join(__dirname,'../..');
+const index=fs.readFileSync(path.join(root,'index.html'),'utf8');
+const campaign=fs.readFileSync(path.join(root,'atheran/campaign/campaign.js'),'utf8');
+assert(!index.includes('id="pzday"'),'deprecated daily square must be absent');
+assert(!index.includes("$('#pzday')"),'daily square must have no dead event listener');
+assert(index.includes('function tripCardHTML()'),'main treasure journey card must remain');
+assert(index.includes("v.querySelector('.pzstory')"),'journey card must have a real insertion anchor');
+assert(index.includes('pzDailyType'),'daily puzzle's content rotation must not be deleted');
+assert(campaign.includes("const main = v.querySelector('.ah-launch')"),'official campaign still leads');
+assert(campaign.includes("const day = v.querySelector('#pzday')"),'legacy already-rendered day squares remain safely cleaned');
+console.log('Daily square removed; treasure card, library puzzle rotation, campaign navigation preserved');
