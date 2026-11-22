@@ -43,7 +43,27 @@ async def main():
                         if not await pg.locator('#stage .cd').count(): break
                         await pg.wait_for_timeout(100)
                     await pg.wait_for_timeout(500)
-                    await pg.evaluate("""async()=>{const els=[...document.querySelectorAll('#stage button, #stage [data-i], #stage .cell')].filter(e=>e.getBoundingClientRect().width>4&&e.id!=='pzq').slice(0,6);for(const e of els){e.dispatchEvent(new MouseEvent('click',{bubbles:true}));await new Promise(r=>setTimeout(r,80));}}""")
+                    # Use the browser's actual hit-testing, scrolling and pointer events.
+                    # Dispatching MouseEvent from page.evaluate bypasses occlusion and
+                    # is not proof that a child can touch a game control.
+                    controls = pg.locator('#stage button:not([disabled]), #stage [role="button"], #stage [data-i], #stage .cell')
+                    native_taps = 0
+                    for i in range(min(await controls.count(), 20)):
+                        if native_taps >= 3: break
+                        target = controls.nth(i)
+                        if await target.get_attribute('id') == 'pzq': continue
+                        if not await target.is_visible(): continue
+                        box = await target.bounding_box()
+                        if not box or box['width'] < 6 or box['height'] < 6: continue
+                        try:
+                            await target.click(timeout=1300)
+                            native_taps += 1
+                            await pg.wait_for_timeout(90)
+                        except Exception:
+                            # A covered or non-interactive tile is not evidence
+                            # of real touch acceptance; try another target.
+                            continue
+                    ok(native_taps > 0, f'{lab}: at least one real Playwright tap accepted')
                     wide = await pg.evaluate("()=>document.documentElement.scrollWidth-innerWidth")
                     ok(wide <= 1, f'{lab}: nothing wider than the screen ({wide}px)')
                     broken = await pg.evaluate("()=>[...document.querySelectorAll('#play img')].filter(i=>i.complete&&i.getAttribute('src')&&i.naturalWidth===0).map(i=>i.getAttribute('src')).slice(0,3)")
