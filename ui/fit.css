@@ -371,3 +371,14 @@ html[data-skin="dark"] .fit-sh-magnify[aria-pressed="true"] {
 #play.fit #pzb.fit-large :is(.pl-rot,.pdseq button) {
   min-width:44px!important;
 }
+
+/* Batch 3: eight-column dig grid needs a larger touch surface at 320px.
+   This is opt-in only: the natural-size board scrolls within #pzb, so the
+   interactive square is never shrunk or obscured by global page overflow. */
+#play[data-la-game="pz_tdig"].fit #pzb.fit-large .xbg {
+  min-width:352px!important;
+}
+#play[data-la-game="pz_tdig"].fit #pzb.fit-large .xbg button.xc {
+  min-width:44px!important;
+  min-height:44px!important;
+}
