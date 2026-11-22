@@ -197,6 +197,12 @@ async def run():
                     await page.set_viewport_size({'width':width,'height':height})
                     await page.wait_for_timeout(180)
                     data=await page.evaluate(MEASURE)
+                    # A mobile WebKit layout can settle one frame after viewport resize.
+                    # Reprobe *without* manually calling the app fitter; persistent
+                    # clipping must be a CI failure rather than a diagnostic-only note.
+                    if not data.get('boardBottomVisible',True):
+                        await page.wait_for_timeout(350)
+                        data=await page.evaluate(MEASURE)
                     data['viewport']=[width,height]
                     run['cases'].append(data)
                 run['hintProbe']=await probe_hints_and_reset(page)
@@ -211,6 +217,8 @@ async def run():
                         run['issues'].append(f"{d['viewport'][0]}:broken_image")
                     if d.get('stretchedWithoutFit'):
                         run['issues'].append(f"{d['viewport'][0]}:distorted_image")
+                    if not d.get('boardBottomVisible',True):
+                        run['issues'].append(f"{d['viewport'][0]}:board_clipped_without_scroll")
                 if run['pageErrors']:
                     run['issues'].append('javascript_error')
                 if (run['issues'] or index==0 or
