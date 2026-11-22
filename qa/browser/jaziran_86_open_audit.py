@@ -201,7 +201,8 @@ async def run():
                     # Reprobe *without* manually calling the app fitter; persistent
                     # clipping must be a CI failure rather than a diagnostic-only note.
                     if not data.get('boardBottomVisible',True):
-                        await page.wait_for_timeout(350)
+                        # Permit one bounded WebKit viewport-pulse tick and layout paint.
+                        await page.wait_for_timeout(700)
                         data=await page.evaluate(MEASURE)
                     data['viewport']=[width,height]
                     run['cases'].append(data)
