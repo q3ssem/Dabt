@@ -66,7 +66,7 @@ async def main():
         await page.evaluate("()=>tab('puz')")
         await page.wait_for_function("()=>!!window.mindlabPlayLayers?.ready",timeout=45000)
         results=[]
-        for gid in ('pz_zroute','pz_wlog','pz_zcode','pz_pliar','pz_pjail','pz_aheart'):
+        for gid in ('pz_zroute','pz_wlog','pz_zcode','pz_pliar','pz_pjail','pz_aheart','pz_tdig'):
             await launch(page,gid)
             saved=await page.evaluate("""()=>JSON.stringify({
               original:localStorage.getItem('miran:v2'),
@@ -119,6 +119,12 @@ async def main():
                 assert await controls.count()>=2,'native heart undo/retry controls missing'
                 sizes=[await controls.nth(i).bounding_box() for i in range(min(2,await controls.count()))]
                 assert all(box and box['height']>=44 for box in sizes),sizes
+            if gid=='pz_tdig':
+                cells=page.locator('#pzb .xbg button.xc')
+                assert await cells.count()>=24,'native dig tiles not found'
+                bounds=[await cells.nth(i).bounding_box() for i in range(min(6,await cells.count()))]
+                assert all(box and box['width']>=44 and box['height']>=44 for box in bounds),bounds
+                await cells.first.click(timeout=4000)
             if OUT:await page.screenshot(path=str(OUT/f'jaziran-magnify-{ENGINE}-{gid}-320.png'))
             await toggle(page,False)
             restored=await measure(page)
@@ -132,7 +138,7 @@ async def main():
             await page.evaluate("()=>closePlay()")
             await page.wait_for_timeout(110)
         assert not errors,errors[:5]
-        print('JAZIRAN_MAGNIFY='+json.dumps({'engine':ENGINE,'checked':6,'viewport':'320x640',
+        print('JAZIRAN_MAGNIFY='+json.dumps({'engine':ENGINE,'checked':7,'viewport':'320x640',
           'native_scrolled':True,'keyboard_wlog':True,'slider_zroute':True,'cipher_zcode':True,
           'native_save_unchanged':True,'errors':errors},ensure_ascii=False),flush=True)
         await browser.close()
