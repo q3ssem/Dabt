@@ -94,3 +94,13 @@ test('Driver failure never leaves a false active game',async()=>{
   assert.match(root.children[0].children[0].textContent,/تعذر/);
   await host.destroy();
 });
+
+test('GameRegistry preserves exact legacy underscore IDs without rewriting save keys',()=>{
+ const registry=new GameRegistry();
+ const ids=['pz_river','dx_k_letters','sea7_0','ml10_01','k_mem','statue-360'];
+ for(const id of ids)registry.register({id,renderer:'dom',load:async()=>({mount:()=>({dispose(){}})})});
+ assert.deepEqual(registry.list().map(x=>x.id),ids);
+ for(const id of ['PZ_RIVER','pz river','a/../b','_pz_river','x?y'])
+  assert.throws(()=>registry.register({id,renderer:'dom',load:()=>({})}),/Game ID/);
+ assert.throws(()=>registry.register({id:'pz_river',renderer:'dom',load:()=>({})}),/Duplicate/);
+});

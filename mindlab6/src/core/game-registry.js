@@ -1,12 +1,13 @@
 // Registry for future independent game modules. No engine, asset, or save side effects.
-const ID = /^[a-z][a-z0-9-]{1,79}$/;
+// Preserve V5 IDs such as pz_river, dx_k_letters, sea7_0 and ml10_01.
+const ID = /^[a-z][a-z0-9_-]{1,79}$/;
 const RENDERERS = new Set(['dom', '2d', '3d']);
 export class GameRegistry {
   #entries = new Map();
 
   register(descriptor) {
     if (!descriptor || !ID.test(descriptor.id ?? '')) {
-      throw new TypeError('Game ID must be 2–80 lowercase kebab-case characters');
+      throw new TypeError('Game ID must be 2–80 lowercase alphanumeric, underscore or hyphen characters');
     }
     if (!RENDERERS.has(descriptor.renderer)) {
       throw new TypeError('Unsupported renderer: ' + descriptor.renderer);
