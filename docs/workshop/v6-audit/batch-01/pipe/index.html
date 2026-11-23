@@ -1,0 +1,40 @@
+<!doctype html>
+<html lang="ar" dir="rtl">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, viewport-fit=cover">
+  <title>الأنابيب · مختبر العقل</title>
+  <link rel="stylesheet" href="style.css">
+  <script src="logic.js" defer></script>
+  <script src="play.js" defer></script>
+</head>
+<body>
+  <main>
+    <header>
+      <div><h1>الأنابيب</h1><p id="stage-name"></p></div>
+      <button id="theme" type="button" aria-pressed="false">الوضع الداكن</button>
+    </header>
+    <section id="entry">
+      <p>وصل الماء إلى البيوت، ثم اضبط الكمية التي تصل إلى كل بيت.</p>
+      <button id="start" class="primary" type="button">ابدأ</button>
+    </section>
+    <section id="play" hidden aria-label="لوحة الأنابيب">
+      <div class="scene">
+        <img class="hero" src="../../../../../treasure/art/story5/crew_full_nuha.webp" alt="نهى" draggable="false">
+        <div class="opening"><p id="intro"></p><p id="rule"></p></div>
+        <div id="board"></div>
+      </div>
+      <p id="status" role="status" aria-atomic="true"></p>
+      <p id="hint-panel" role="status" aria-atomic="true"></p>
+      <nav aria-label="أدوات اللعب">
+        <button id="back" type="button">رجوع</button>
+        <button id="hint" type="button">تلميح</button>
+        <button id="undo" type="button" disabled>تراجع</button>
+        <button id="reset" type="button">إعادة</button>
+        <button id="check" class="primary" type="button" hidden>جرّب الضخ</button>
+        <button id="next" class="primary" type="button" hidden>المرحلة التالية</button>
+      </nav>
+    </section>
+  </main>
+</body>
+</html>

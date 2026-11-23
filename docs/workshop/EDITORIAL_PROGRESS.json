@@ -280,5 +280,34 @@
       "browser_or_device_verified": false
     }
   ],
-  "session_batch_size": 8
+  "session_batch_size": 8,
+  "v6_audit": {
+    "status": "in-progress",
+    "batch_size": 8,
+    "total_indexed_ids": 86,
+    "appearance_index": "docs/workshop/v6-audit/appearances.json",
+    "batches": [
+      {
+        "id": "01",
+        "cards": [
+          "pz_pgarden",
+          "pz_pipe",
+          "pz_river",
+          "pz_flow",
+          "pz_rush",
+          "pz_tan",
+          "pz_untangle",
+          "pz_ice"
+        ],
+        "prototype_ids": [
+          "pz_pipe"
+        ],
+        "status": "logic-tested-and-design-drafted",
+        "delivery": "docs/workshop/v6-audit/batch-01/README.md",
+        "visual_phone_test": "blocked-in-executor",
+        "ready_for_migration": []
+      }
+    ],
+    "next_action": "Re-audit eight more from the source index, including individual story riddle questions. Verify integrated flow and physical mobile play before migration approval."
+  }
 }
