@@ -65,8 +65,22 @@
       "path": "research/experiments/EXP-0002-statue360-engines/README.md",
       "source_commit": "81d9046e9cd3eae240f5603461aa73a53d5fbef4",
       "hypothesis": "محرك ويب 3D يحرك GLB بلمس 360° وWebGL2 fallback دون تضخيم 2D",
-      "results": null,
-      "next": "تحقق CI من بناء التجربتين، ثم اختبر iPhone Safari/Android Chrome على GLB موحد ومقارنة عادلة مع Babylon"
+      "results": {
+        "phase": "measurement-harness-only",
+        "record": "research/experiments/EXP-0002-statue360-engines/measurement-template.json",
+        "frame_metrics_module": "src/engines/bench/frame-metrics.js",
+        "node_ci": {
+          "run": 45123446430,
+          "sha": "5a6003c4e0e4b755195de09ef753e6b20366beb6",
+          "status": "success",
+          "tests": "38/38"
+        },
+        "iphone_fps": null,
+        "android_fps": null,
+        "glb_approved": false,
+        "engine_decision": null
+      },
+      "next": "Acquire one approved stylized GLB, run identical PlayCanvas/Babylon scenes on physical iPhone and Android, then record metrics with provenance"
     }
   ]
 }
