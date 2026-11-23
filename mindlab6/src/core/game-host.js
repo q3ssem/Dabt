@@ -1,3 +1,5 @@
+import { ResourceScope } from './resource-scope.js';
+
 // Engine-neutral game lifetime. Drivers are loaded only when a game is opened.
 // Driver contract: { mount({ element, signal, id, renderer }): Promise<session> | session }
 // Session contract: { dispose(): Promise<void>|void, pause?(), resume?() }.
@@ -9,18 +11,30 @@ async function disposeSession(session) {
   throw new TypeError('A mounted game must return a disposable session');
 }
 
+async function disposeMounted(mounted) {
+  if (!mounted) return;
+  const errors = [];
+  try { await disposeSession(mounted.session); }
+  catch (error) { errors.push(error); }
+  try { await mounted.resources?.dispose(); }
+  catch (error) { errors.push(error); }
+  if (errors.length === 1) throw errors[0];
+  if (errors.length > 1) throw new AggregateError(errors, 'Game cleanup failures');
+}
+
 export class GameHost {
   #registry;
   #element;
   #document;
   #onError;
+  #services;
   #epoch = 0;
   #abort = null;
   #current = null;
   #destroyed = false;
   #onVisibility;
 
-  constructor({ registry, element, onError = () => {} }) {
+  constructor({ registry, element, onError = () => {}, services = {} }) {
     if (!registry || typeof registry.get !== 'function') throw new TypeError('Registry required');
     if (!element || !element.ownerDocument || typeof element.replaceChildren !== 'function') {
       throw new TypeError('Host element must be attached to a DOM Document');
@@ -29,6 +43,8 @@ export class GameHost {
     this.#element = element;
     this.#document = element.ownerDocument;
     this.#onError = onError;
+    if (!services || typeof services !== 'object' || Array.isArray(services)) throw new TypeError('Services must be an object');
+    this.#services = Object.freeze({ ...services });
     this.#onVisibility = () => {
       const action = this.#document.hidden ? this.pause() : this.resume();
       Promise.resolve(action).catch(this.#onError);
@@ -50,7 +66,7 @@ export class GameHost {
     const previous = this.#current;
     this.#current = null;
     if (previous) {
-      try { await disposeSession(previous.session); }
+      try { await disposeMounted(previous); }
       catch (error) { this.#onError(error); }
       if (epoch !== this.#epoch) return false;
     }
@@ -62,30 +78,45 @@ export class GameHost {
     slot.setAttribute('data-renderer', entry.renderer);
     this.#element.replaceChildren(slot);
 
+    let resources = null;
     try {
       const driver = await entry.load();
       if (controller.signal.aborted || epoch !== this.#epoch) return false;
       if (!driver || typeof driver.mount !== 'function') {
         throw new TypeError('Game driver requires mount(context)');
       }
+      resources = new ResourceScope();
       const session = await driver.mount(Object.freeze({
         element: slot,
         signal: controller.signal,
         id,
         renderer: entry.renderer,
+        resources,
+        services: this.#services,
       }));
       if (controller.signal.aborted || epoch !== this.#epoch) {
-        try { await disposeSession(session); }
+        try { await disposeMounted({ session, resources }); }
         catch (error) { this.#onError(error); }
         return false;
       }
       if (!session || (typeof session !== 'function' && typeof session.dispose !== 'function')) {
         throw new TypeError('Game driver must return a disposable session');
       }
-      this.#current = { id, session, paused: false };
+      this.#current = { id, session, resources, paused: false };
       if (this.#document.hidden) await this.pause();
-      return true;
+      return !controller.signal.aborted && epoch === this.#epoch;
     } catch (error) {
+      // A failed mount may already have registered listeners, GPU buffers or timers.
+      // Release the scope even when the driver never returned a valid session.
+      if (this.#current?.resources === resources) {
+        const failed = this.#current;
+        this.#current = null;
+        try { await disposeMounted(failed); }
+        catch (cleanupError) { this.#onError(cleanupError); }
+      } else if (resources && !resources.closed) {
+        try { await resources.dispose(); }
+        catch (cleanupError) { this.#onError(cleanupError); }
+      }
       if (controller.signal.aborted || epoch !== this.#epoch) return false;
       const message = this.#document.createElement('p');
       message.textContent = 'تعذر تشغيل اللعبة. يمكن إعادة المحاولة.';
@@ -116,7 +147,7 @@ export class GameHost {
     this.#current = null;
     this.#element.replaceChildren();
     if (previous) {
-      try { await disposeSession(previous.session); }
+      try { await disposeMounted(previous); }
       catch (error) { this.#onError(error); }
     }
   }
