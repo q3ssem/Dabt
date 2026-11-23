@@ -38,7 +38,8 @@
     "visual-art-only-candidates-40-brain-and-26-child",
     "v5-static-registry-identities-42-brain-declarations-26-kid-ids",
     "v5-candidate-asset-existence-258-of-258",
-    "registry-accepts-v5-underscored-game-ids"
+    "registry-accepts-v5-underscored-game-ids",
+    "EXP-0002-engine-neutral-frame-metrics-sampler-tested"
   ],
   "current_experiment": "EXP-0001",
   "next_action": "EXP-0001: verify dynamic GM routes and save/audio/hint per ID; preserve 40 shared story-library engine IDs as single drivers with route context",
@@ -78,7 +79,8 @@
     "prototype_3d_engine_installed": true,
     "production_3d_engine_approved": false,
     "resource_scope": "per-driver, LIFO cleanup and event listeners",
-    "service_ports": "injected shape only; no save/audio/progression/router adapters wired"
+    "service_ports": "injected shape only; no save/audio/progression/router adapters wired",
+    "frame_benchmark": "frame-metrics.js; deterministic 60fps/jank tests, no real device measurement"
   },
   "main_v5_inspection": {
     "pr": 23,
@@ -99,12 +101,12 @@
     "main_pages_run": 45116575084,
     "main_build": "success",
     "pages": "success",
-    "v6_verified_commit": "6617628e2117ab170d7b50194662183f34615ee8",
-    "v6_ci_run": 45122882059,
+    "v6_verified_commit": "5a6003c4e0e4b755195de09ef753e6b20366beb6",
+    "v6_ci_run": 45123446430,
     "v6_ci": "success",
-    "node_tests": "25/25",
+    "node_tests": "38/38",
     "production_js_bytes": 2236,
-    "lab_js_bytes": 3380492,
+    "lab_js_bytes": 3380517,
     "iphone_real_device": "not-tested",
     "npm_ci": "passed-45120352609",
     "inventory_test_status": "passed 45121337898 (pinned V5 catalog, candidate labels, chapter order)",
@@ -112,7 +114,10 @@
     "resource_scope_tests": "passed 45121337898 (cleanup/order/mount failure/injected ports)",
     "source_boundary": "V6_BOUNDARY_PASS (55 allowed files, old V5 app untouched)",
     "new_asset_snapshot_tests": "pending CI on latest HEAD",
-    "asset_source_existence": "258/258 verified by 45122798148; runtime load pending"
+    "asset_source_existence": "258/258 verified by 45122798148; runtime load pending",
+    "babylon_same_glb_comparison": "not-tested",
+    "gh_pages_source": "main unchanged",
+    "note": "CI passed on prior SHA; docs-only follow-up SHA needs own workflow validation"
   },
   "inventory": {
     "phase": "evidence-seeded",
