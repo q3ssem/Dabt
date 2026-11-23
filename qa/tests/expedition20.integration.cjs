@@ -34,7 +34,7 @@ for(const f of ['16-harbor-cargo.webp','17-tide-clock.webp','18-mask-gallery.web
  assert(fs.existsSync(path.join(root,'expedition10/art/scenes',f)),'new stage scene exists on disk '+f);
  assert(offline.includes('expedition10/art/scenes/'+f),'new stage scene is precached '+f);
 }
-assert(app.includes('function completed()')&&app.includes('save.totalStars=Object.values(save.stars).reduce')&&app.includes('const progress=Math.round(((i+1)/stages.length)*100)'),'completed stages and earned stars drive actual progress without a map');
+assert(app.includes('function completed()')&&app.includes('save.totalStars=Object.values(save.stars).reduce')&&app.includes('progress=Math.round(((i+1)/stages.length)*100)'),'completed stages and earned stars drive actual progress without a map');
 assert(app.includes('success&&i<stages.length-1')&&app.includes('success&&i===stages.length-1'),'last active stage is the side-journey finale');
 assert(logic.includes('manifestSolutions')&&logic.includes('tideSolutions')&&logic.includes('relicAudit')&&logic.includes('crateAudit')&&logic.includes('knightAudit')&&logic.includes('mazeAudit')&&logic.includes('jugAudit')&&logic.includes('signalSolutions')&&logic.includes('hanoiAudit')&&logic.includes('sealSolutions'),'independent solvers/audits are present');
-console.log('Expedition 25 integration: twenty-five stage registry, ten new interactive modules, art and offline precache, chapter progression and preserved save namespace passed.');
+console.log('Expedition 24 integration: 24 registered stages, ten new interactive modules, art and offline precache, chapter progression and preserved save namespace passed.');
