@@ -1,4 +1,4 @@
-"""Batch 3: opt-in larger touch surfaces for dense game boards.
+"""Mobile-native touch surfaces and reversible magnification for dense game boards.
 Checks real native interactions after magnification, in both WebKit/Chromium.
 This is not a solver test of every puzzle or every level.
 Usage: python qa/browser/jaziran_magnify.py URL chromium|webkit [shots_dir]
@@ -73,7 +73,15 @@ async def main():
               seas:localStorage.getItem('treasureV3'),
               side:localStorage.getItem('mindlab:expedition10:v1')})""")
             normal=await measure(page)
-            assert not normal['large'],f'{gid}: new mode cannot be default'
+            auto_large={'pz_tdig','pz_pliar','pz_pjail'}
+            if gid in auto_large:
+                assert normal['large'] and normal['zoom']=='1.00',f'{gid}: dense phone board must start at native touch size: {normal}'
+                # Preserve the player's right to return to the compact presentation.
+                await toggle(page,False)
+                normal=await measure(page)
+                assert not normal['large'],f'{gid}: compact opt-out did not work'
+            else:
+                assert not normal['large'],f'{gid}: only reviewed dense boards use the new default'
             await toggle(page,True)
             big=await measure(page)
             assert big['large'] and big['scroll'] and big['zoom']=='1.00',f'{gid}: failed to enable native-size scroll: {big}'
@@ -134,7 +142,7 @@ async def main():
               seas:localStorage.getItem('treasureV3'),
               side:localStorage.getItem('mindlab:expedition10:v1')})""")
             assert saved==native,'presentation changes must not mutate native player save'
-            results.append({'id':gid,'small':normal,'large':big,'restored':restored})
+            results.append({'id':gid,'autoLarge':gid in auto_large,'small':normal,'large':big,'restored':restored})
             await page.evaluate("()=>closePlay()")
             await page.wait_for_timeout(110)
         assert not errors,errors[:5]
