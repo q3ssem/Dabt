@@ -15,8 +15,8 @@ vm.runInContext(read('offline-manifest.js'),manifestContext);
 const offline=manifestContext.self.MINDLAB_OFFLINE_FILES;
 const checks=[];
 function ok(condition,message){assert.ok(condition,message);checks.push(message);}
-ok(pkg.version==='5.5.29','package release is 5.5.28');
-ok(sw.includes("const VERSION='5.5.29'"),'service worker cache uses 5.5.28');
+ok(pkg.version==='5.5.30','package release is 5.5.28');
+ok(sw.includes("const VERSION='5.5.30'"),'service worker cache uses 5.5.28');
 ok(app.includes("const SAVE_KEY='mindlab:expedition10:v1'"),'expedition save namespace preserved');
 ok(!/localStorage\.setItem\(['"]miran:v2/.test(app),'expedition module does not write to miran:v2');
 ok(app.includes('function poseForMood(mood)'),'mood-to-pose mapping exists');
