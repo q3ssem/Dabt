@@ -33,7 +33,9 @@
     "bundle-isolation-gate",
     "committed-npm-v3-lockfile-and-clean-npm-ci-ci",
     "evidence-seeded-86-library-puzzles-85-story-stations",
-    "v5-main-static-and-ci-post-merge-audit"
+    "v5-main-static-and-ci-post-merge-audit",
+    "resource-scope-per-game-lifecycle-and-injected-service-ports",
+    "visual-art-only-candidates-40-brain-and-26-child"
   ],
   "current_experiment": "EXP-0001",
   "next_action": "EXP-0001: map 40 brain and 26 child games; trace runtime, asset, audio, save and tests before migration",
@@ -70,7 +72,9 @@
     "actual_3d_engine_installed": false,
     "versioned_dependencies_declared": true,
     "prototype_3d_engine_installed": true,
-    "production_3d_engine_approved": false
+    "production_3d_engine_approved": false,
+    "resource_scope": "per-driver, LIFO cleanup and event listeners",
+    "service_ports": "injected shape only; no save/audio/progression/router adapters wired"
   },
   "main_v5_inspection": {
     "pr": 23,
@@ -100,7 +104,8 @@
     "iphone_real_device": "not-tested",
     "npm_ci": "passed-45120352609",
     "inventory_test_status": "pending CI on newer HEAD",
-    "main_http_live": "not-verified"
+    "main_http_live": "not-verified",
+    "resource_scope_tests": "pending final CI"
   },
   "inventory": {
     "phase": "evidence-seeded",
@@ -111,6 +116,10 @@
     "child_game_entries_complete": false,
     "verified_runtime_dependencies": false,
     "save_key_mapping_complete": false,
-    "allowed_to_migrate": false
+    "allowed_to_migrate": false,
+    "brain_visual_candidates": 40,
+    "child_visual_name_candidates": 26,
+    "actual_brain_engine_ids_verified": false,
+    "actual_child_engine_ids_verified": false
   }
 }
