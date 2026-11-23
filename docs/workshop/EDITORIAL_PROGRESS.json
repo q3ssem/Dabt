@@ -324,8 +324,62 @@
         "delivery": "docs/workshop/v6-audit/batch-02/README.md",
         "visual_phone_test": "pending-integration",
         "ready_for_migration": []
+      },
+      {
+        "id": "03",
+        "cards": [
+          "pz_tpath",
+          "pz_xreef",
+          "pz_xbridge",
+          "pz_xcave",
+          "pz_xloot",
+          "pz_tmap",
+          "pz_tdig",
+          "pz_xlock"
+        ],
+        "status": "logic-reviewed-and-design-drafted",
+        "delivery": "docs/workshop/v6-audit/batch-03/README.md",
+        "logic_witnesses": "docs/workshop/v6-audit/verify-03-05.cjs",
+        "visual_phone_test": "pending-integration",
+        "ready_for_migration": []
+      },
+      {
+        "id": "04",
+        "cards": [
+          "pz_ybell",
+          "pz_ymap",
+          "pz_yhold",
+          "pz_ytide",
+          "pz_ydoor",
+          "pz_zcomp",
+          "pz_zroute",
+          "pz_zcur"
+        ],
+        "status": "logic-reviewed-and-design-drafted",
+        "delivery": "docs/workshop/v6-audit/batch-04/README.md",
+        "logic_witnesses": "docs/workshop/v6-audit/verify-03-05.cjs",
+        "visual_phone_test": "pending-integration",
+        "ready_for_migration": []
+      },
+      {
+        "id": "05",
+        "cards": [
+          "pz_zcode",
+          "pz_zharp",
+          "pz_zshadow",
+          "pz_znim",
+          "pz_zstars",
+          "pz_zthrone",
+          "pz_plock",
+          "pz_pliar"
+        ],
+        "status": "logic-reviewed-and-design-drafted",
+        "delivery": "docs/workshop/v6-audit/batch-05/README.md",
+        "logic_witnesses": "docs/workshop/v6-audit/verify-03-05.cjs",
+        "visual_phone_test": "pending-integration",
+        "ready_for_migration": []
       }
     ],
-    "next_action": "Re-audit eight more from the source index, starting with pirate and wreck routes. Verify integrated flow and physical mobile play before migration approval."
+    "next_action": "Re-audit batch 06 from the remaining source IDs. Integrate and test on physical phones before marking any card ready for migration."
   }
 }
