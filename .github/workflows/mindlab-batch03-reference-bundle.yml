@@ -1,0 +1,73 @@
+name: MindLab Batch03 Reference Bundle
+on:
+  push:
+    branches: [work/mindlab-puzzle-editorial-20261123]
+    paths: [.github/workflows/mindlab-batch03-reference-bundle.yml]
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: work/mindlab-puzzle-editorial-20261123
+          path: editorial
+          persist-credentials: false
+      - uses: actions/checkout@v4
+        with:
+          ref: main
+          path: baseline
+          persist-credentials: false
+      - name: Assemble and audit references
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          import json, hashlib, zipfile
+          from pathlib import Path
+          editorial=Path('editorial'); base=Path('baseline')
+          required=[
+            (editorial,'docs/workshop/v6-audit/batch-02/README.md'),
+            (editorial,'docs/workshop/v6-audit/batch-02/riddles.json'),
+            (base,'motion/stages60/boards.json'),
+            (base,'motion/lab10.js')
+          ]
+          assets=[
+            'motion/revised/ice-igloo.webp','motion/revised/ice-penguin.webp',
+            'motion/revised/ice-rock.webp','motion/revised/ice-scene.webp',
+            'motion/revised/tan-scene.webp','motion/revised/untangle-scene.webp',
+            'ui/designs_art/priority7/prop_tangram.png'
+          ]
+          rid=base/'ui/designs_art/four_puzzles/pz_rid'
+          assert rid.is_dir(),'Missing pz_rid art directory'
+          assets += [str(p.relative_to(base)) for p in rid.rglob('*') if p.is_file()]
+          optional_existing=['motion/art10/rid_apple_drawn.webp','motion/art10/rid_crate_closed.webp']+[f'motion/art10/tan_tile_{i}_{color}.webp' for i,color in enumerate(['coral','teal','gold','sage','plum','amber','navy','crimson'])]
+          assets+=optional_existing
+          for root,rel in required:
+            p=root/rel
+            assert p.is_file() and p.stat().st_size>0, f'Missing required {p}'
+            if rel.endswith(('.json','.md')): p.read_text(encoding='utf-8')
+          for rel in assets:
+            assert (base/rel).is_file(),f'Missing listed asset {rel}'
+          entries=[(root/rel,rel,'editorial' if root==editorial else 'main') for root,rel in required]
+          entries += [(base/rel,rel,'main') for rel in sorted(set(assets))]
+          inventory=[{'path':rel,'source_branch':branch,'bytes':p.stat().st_size,'sha256':hashlib.sha256(p.read_bytes()).hexdigest()} for p,rel,branch in entries]
+          expected_but_not_found=['tan-wood-surface','rope-knot','penguin-idle']
+          missing_named=[x for x in expected_but_not_found if not any(x in p.name for p in base.rglob('*') if p.is_file())]
+          manifest={'puzzles':['pz_tan','pz_untangle','pz_ice','pz_rid'],'source_commit_refs':{'editorial':'work/mindlab-puzzle-editorial-20261123','assets':'main'},'inventory':inventory,'not_found_under_exact_candidate_names':missing_named,'notes':['The named candidates are not proof that no equivalent asset exists.','The visual direction for new assets requires approval against puzzle cards; do not invent engine behavior.','Gemini already has DESIGN_QUEUE.json, batch-01 README and heroine assets.']}
+          output='MindLab_Gemini_Batch03_References.zip'
+          with zipfile.ZipFile(output,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as z:
+            for p,rel,_ in entries:z.write(p,rel)
+            z.writestr('BATCH03_REFERENCE_MANIFEST.json',json.dumps(manifest,ensure_ascii=False,indent=2))
+          with zipfile.ZipFile(output) as z:
+            assert z.testzip() is None
+            assert len(z.namelist())==len(entries)+1
+          print('BATCH03_OK',len(entries),'files, missing candidate names:',missing_named)
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: MindLab_Gemini_Batch03_References
+          path: MindLab_Gemini_Batch03_References.zip
+          if-no-files-found: error
+          retention-days: 14
