@@ -52,7 +52,8 @@
     "browser-on-mobile-after-core-migration",
     "no-regression-against-source-v5",
     "EXP-0002-playcanvas-vs-babylon-actual-iphone-and-android",
-    "npm-run-verify-includes-typecheck-two-builds-bundle-weight"
+    "npm-run-verify-includes-typecheck-two-builds-bundle-weight",
+    "EXP-0001 inventory tests against pinned main SHA (passed 25/25 CI on 5a40f835)"
   ],
   "blockers": [
     "dependency-inventory-partial-no-runtime-callgraph-or-brain-child-registries-yet",
@@ -95,17 +96,18 @@
     "main_pages_run": 45116575084,
     "main_build": "success",
     "pages": "success",
-    "v6_verified_commit": "a0ea318e1e23292e126257f6932e6306351f6555",
-    "v6_ci_run": 45120352609,
-    "v6_ci": "success (npm ci, prior 14 tests; added inventory tests awaiting CI)",
-    "node_tests": "14/14",
+    "v6_verified_commit": "5a40f8359cfd046229c66509ab35d7f241146556",
+    "v6_ci_run": 45121337898,
+    "v6_ci": "success",
+    "node_tests": "25/25",
     "production_js_bytes": 2236,
-    "lab_js_bytes": 3379093,
+    "lab_js_bytes": 3380492,
     "iphone_real_device": "not-tested",
     "npm_ci": "passed-45120352609",
-    "inventory_test_status": "pending CI on newer HEAD",
+    "inventory_test_status": "passed 45121337898 (pinned V5 catalog, candidate labels, chapter order)",
     "main_http_live": "not-verified",
-    "resource_scope_tests": "pending final CI"
+    "resource_scope_tests": "passed 45121337898 (cleanup/order/mount failure/injected ports)",
+    "source_boundary": "V6_BOUNDARY_PASS (55 allowed files, old V5 app untouched)"
   },
   "inventory": {
     "phase": "evidence-seeded",
