@@ -1,0 +1,135 @@
+name: MindLab Batch04 Reference Bundle
+
+on:
+  push:
+    branches:
+      - work/mindlab-puzzle-editorial-20261123
+    paths:
+      - .github/workflows/mindlab-batch04-reference-bundle.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout editorial references
+        uses: actions/checkout@v4
+        with:
+          ref: work/mindlab-puzzle-editorial-20261123
+          path: editorial
+          persist-credentials: false
+      - name: Checkout baseline engine and assets
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: baseline
+          persist-credentials: false
+      - name: Assemble audited Batch04 bundle
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json, hashlib, zipfile, re
+          editorial=Path('editorial')
+          baseline=Path('baseline')
+          mandatory=[
+            (editorial,'docs/workshop/gemini-design/DESIGN_QUEUE.json','work/mindlab-puzzle-editorial-20261123'),
+            (editorial,'docs/workshop/v6-audit/batch-02/README.md','work/mindlab-puzzle-editorial-20261123'),
+            (editorial,'docs/workshop/v6-audit/appearances.json','work/mindlab-puzzle-editorial-20261123'),
+            (baseline,'index.html','main'),
+            (baseline,'motion/lab10.js','main')
+          ]
+          optional=[(baseline,'motion/lab10.css','main'),(editorial,'docs/workshop/v6-audit/batch-02/verify.cjs','work/mindlab-puzzle-editorial-20261123')]
+          asset_roots=['motion/art10','motion/revised','motion/logic-revised','ui/designs_art']
+          patterns=[
+            re.compile(r'(^|/)(grid|sudo|tent|binary)(/|_|-|\.|$)',re.I),
+            re.compile(r'(^|/)(ledger|sun|moon|camp)(/|_|-|\.|$)',re.I),
+          ]
+          # Include whole puzzle-specific directories; preserve relative paths.
+          puzzle_dirs=['motion/logic-revised/grid','motion/logic-revised/sudo','motion/logic-revised/tent','motion/logic-revised/binary','ui/designs_art/work_review/pz_grid']
+          assets=set()
+          for d in puzzle_dirs:
+            folder=baseline/d
+            if folder.is_dir():
+              assets.update(str(p.relative_to(baseline)) for p in folder.rglob('*') if p.is_file())
+          for root in asset_roots:
+            folder=baseline/root
+            if not folder.is_dir(): continue
+            for p in folder.rglob('*'):
+              if not p.is_file(): continue
+              rel=str(p.relative_to(baseline))
+              if any(pattern.search(rel) for pattern in patterns):
+                assets.add(rel)
+          # Also include semantically relevant prop/rune assets that are not puzzle-prefixed.
+          assets.update(rel for rel in [
+            'ui/designs_art/priority7/prop_sun.png',
+            'ui/designs_art/priority7/prop_moon.png',
+            'ui/designs_art/priority7/rune_moon.png',
+            'ui/designs_art/priority7/prop_tent.png',
+            'ui/designs_art/priority7/padlock.png',
+          ] if (baseline/rel).is_file())
+          required_assets=[
+            'motion/logic-revised/sudo/circle.webp',
+            'motion/logic-revised/sudo/square.webp',
+            'motion/logic-revised/sudo/triangle.webp',
+            'motion/logic-revised/sudo/diamond.webp',
+            'motion/logic-revised/sudo/hexagon.webp',
+            'motion/logic-revised/sudo/star.webp',
+            'motion/art10/tent_tree.webp',
+            'motion/art10/tent_tent.webp',
+            'motion/art10/tent_grass.webp'
+          ]
+          entries=[]
+          missing=[]
+          for root,rel,branch in mandatory:
+            f=root/rel
+            if not f.is_file() or not f.stat().st_size: raise SystemExit(f'MISSING REQUIRED: {branch}:{rel}')
+            entries.append((f,rel,branch))
+          for root,rel,branch in optional:
+            f=root/rel
+            if f.is_file(): entries.append((f,rel,branch))
+            else: missing.append({'path':rel,'branch':branch,'status':'not_found_optional'})
+          for rel in required_assets:
+            if not (baseline/rel).is_file(): raise SystemExit(f'MISSING REQUIRED ASSET: {rel}')
+            assets.add(rel)
+          for rel in sorted(assets):
+            entries.append((baseline/rel,rel,'main'))
+          for root,rel,_ in entries:
+            if rel.endswith(('.json','.md','.js','.css','.html','.cjs')):
+              root.read_text(encoding='utf-8')
+          queue=json.loads((editorial/'docs/workshop/gemini-design/DESIGN_QUEUE.json').read_text(encoding='utf-8'))
+          indexed={p['id'] for p in queue['puzzles']}
+          ids=['pz_grid','pz_sudo','pz_tent','pz_binary']
+          assert all(x in indexed for x in ids),'Queue missing Batch04 puzzle'
+          # Report exact requested candidate names that are absent; absence does not prohibit new drawings.
+          candidates=['camp-*.webp','tent-scene.webp','grid-ledger.webp','binary-lock.webp']
+          for candidate in candidates:
+            stem=candidate.replace('*','')
+            if not any(stem in p for p in assets):
+              missing.append({'candidate':candidate,'status':'not_found_by_candidate_name','note':'Other compatible original assets may exist'})
+          seen=set()
+          inventory=[]
+          for f,rel,branch in entries:
+            assert rel not in seen, f'Duplicate path {rel}'
+            seen.add(rel)
+            inventory.append({'path':rel,'source_branch':branch,'size_bytes':f.stat().st_size,'sha256':hashlib.sha256(f.read_bytes()).hexdigest()})
+          manifest={'batch':'04','puzzles':ids,'source_branches':{'editorial':'work/mindlab-puzzle-editorial-20261123','engine_assets':'main'},'inventory':inventory,'missing_or_unmatched_candidates':missing,'asset_selection':'Puzzle-specific directories and matching original asset names; not an assertion that all indirect runtime dependencies were discovered','notes':['No heroine assets duplicated.','Any newly drawn asset must follow the editorial card dimensions.','Engine and device tests not executed by this packaging job.']}
+          output='MindLab_Gemini_Batch04_References.zip'
+          with zipfile.ZipFile(output,'w',zipfile.ZIP_DEFLATED,compresslevel=6) as z:
+            for f,rel,_ in entries:z.write(f,rel)
+            z.writestr('BATCH04_REFERENCE_MANIFEST.json',json.dumps(manifest,ensure_ascii=False,indent=2))
+          with zipfile.ZipFile(output) as z:
+            assert z.testzip() is None
+            assert len(z.namelist())==len(entries)+1
+          print('BATCH04_BUNDLE_OK',len(entries),'files',len(assets),'assets',len(missing),'optional/candidate gaps')
+          PY
+      - name: Upload verified ZIP
+        uses: actions/upload-artifact@v4
+        with:
+          name: MindLab_Gemini_Batch04_References
+          path: MindLab_Gemini_Batch04_References.zip
+          if-no-files-found: error
+          retention-days: 14
