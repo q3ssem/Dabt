@@ -1,0 +1,15 @@
+{
+  "coordinate_space": "safe-area-content",
+  "design_unit": "pt",
+  "platforms": ["iPhone", "iPad"],
+  "minimum_touch_target_pt": [44, 44],
+  "review_png_scale_required": 1,
+  "review_png_scale_optional": 2,
+  "frames": [
+    {"id": "iphone-portrait-compact", "size_pt": [320, 550], "png_px_1x": [320, 550], "png_px_2x": [640, 1100]},
+    {"id": "iphone-portrait", "size_pt": [390, 730], "png_px_1x": [390, 730], "png_px_2x": [780, 1460]},
+    {"id": "iphone-landscape", "size_pt": [680, 310], "png_px_1x": [680, 310], "png_px_2x": [1360, 620]},
+    {"id": "ipad-portrait", "size_pt": [744, 1000], "png_px_1x": [744, 1000], "png_px_2x": [1488, 2000]},
+    {"id": "ipad-landscape", "size_pt": [1180, 770], "png_px_1x": [1180, 770], "png_px_2x": [2360, 1540]}
+  ]
+}
