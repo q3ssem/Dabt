@@ -306,8 +306,26 @@
         "delivery": "docs/workshop/v6-audit/batch-01/README.md",
         "visual_phone_test": "blocked-in-executor",
         "ready_for_migration": []
+      },
+      {
+        "id": "02",
+        "cards": [
+          "pz_rid",
+          "pz_grid",
+          "pz_sudo",
+          "pz_tent",
+          "pz_binary",
+          "pz_door",
+          "pz_pclock",
+          "pz_plib"
+        ],
+        "riddle_questions_reviewed": 32,
+        "status": "logic-reviewed-and-design-drafted",
+        "delivery": "docs/workshop/v6-audit/batch-02/README.md",
+        "visual_phone_test": "pending-integration",
+        "ready_for_migration": []
       }
     ],
-    "next_action": "Re-audit eight more from the source index, including individual story riddle questions. Verify integrated flow and physical mobile play before migration approval."
+    "next_action": "Re-audit eight more from the source index, starting with pirate and wreck routes. Verify integrated flow and physical mobile play before migration approval."
   }
 }
