@@ -1,0 +1,49 @@
+name: MindLab 6 — clean foundation and research continuity
+
+on:
+  push:
+    branches:
+      - prototype/mindlab-6-foundation-20261123
+    paths:
+      - 'mindlab6/**'
+      - '.github/workflows/mindlab6-foundation.yml'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mindlab6-foundation-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  workspace:
+    name: Research registry, handoff and app skeleton
+    runs-on: ubuntu-latest
+    timeout-minutes: 10
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - name: Validate independent project files
+        run: |
+          cd mindlab6
+          node --check src/app.js
+          node --check tools/check-workspace.mjs
+          node --check tools/new-experiment.mjs
+          npm test
+          npm run check:workspace
+          npm run experiment:new -- "اختبار الترقيم" probe-only --dry-run
+      - name: Reject changes to the protected v5 app on this foundation branch
+        shell: bash
+        run: |
+          python - <<'PY'
+          import subprocess
+          base="81d9046e9cd3eae240f5603461aa73a53d5fbef4"
+          diff=subprocess.check_output(['git','diff','--name-only',base,'HEAD'],text=True).splitlines()
+          bad=[name for name in diff if not (name.startswith('mindlab6/') or name=='.github/workflows/mindlab6-foundation.yml')]
+          if bad:
+              raise SystemExit("Unexpected changes outside MindLab 6: "+repr(bad))
+          print(f"V6_BOUNDARY_PASS: {len(diff)} allowed files, old app untouched")
+          PY
