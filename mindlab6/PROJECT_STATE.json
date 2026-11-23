@@ -30,10 +30,13 @@
     "separated-lightweight-web-build-and-isolated-engine-lab",
     "prototype-playcanvas-360-touch-keyboard-renderer",
     "prototype-pixi-2d-application-driver",
-    "bundle-isolation-gate"
+    "bundle-isolation-gate",
+    "committed-npm-v3-lockfile-and-clean-npm-ci-ci",
+    "evidence-seeded-86-library-puzzles-85-story-stations",
+    "v5-main-static-and-ci-post-merge-audit"
   ],
   "current_experiment": "EXP-0001",
-  "next_action": "create-and-commit-reproducible-lockfile-then-EXP-0001-inventory; Work edits puzzle content on separate branch",
+  "next_action": "EXP-0001: map 40 brain and 26 child games; trace runtime, asset, audio, save and tests before migration",
   "content_status": {
     "brain_games_migrated": 0,
     "puzzles_migrated": 0,
@@ -50,12 +53,11 @@
     "npm-run-verify-includes-typecheck-two-builds-bundle-weight"
   ],
   "blockers": [
-    "dependency-inventory-not-done",
+    "dependency-inventory-partial-no-runtime-callgraph-or-brain-child-registries-yet",
     "no-engine-ports",
     "no-save-migration",
     "real-phone-360-engine-benchmark-not-run",
-    "real-device-safari-and-3d-fps-not-verified",
-    "no-committed-package-lock-yet"
+    "real-device-safari-and-3d-fps-not-verified"
   ],
   "notes": "The prototype includes separate lazy 2D/3D demos, but does NOT include an approved 3D statue art asset, GLB puzzle, migrated game, or benchmark. Work puzzle difficulty revisions are assigned to a separate conversation and cannot land in this branch automatically.",
   "engine_architecture": {
@@ -66,12 +68,15 @@
     "alternate_3d": "Babylon9",
     "bundler": "Vite8.3.8 TypeScript7.0.2 declared",
     "actual_3d_engine_installed": false,
-    "versioned_dependencies_declared": true
+    "versioned_dependencies_declared": true,
+    "prototype_3d_engine_installed": true,
+    "production_3d_engine_approved": false
   },
   "main_v5_inspection": {
     "pr": 23,
     "merge_commit": "7327fdc6c6f36deaf63a2b20a7b6db9a315ad446",
-    "site_and_real_iphone_acceptance": "pending"
+    "site_and_real_iphone_acceptance": "CI and deployment passed; live HTTPS/manual Safari pending",
+    "report": "handoff/V5_5530_POST_MERGE_AUDIT.md"
   },
   "handoff": {
     "engineering_path": "handoff/NEXT_CHAT_ENGINEERING.md",
@@ -86,12 +91,26 @@
     "main_pages_run": 45116575084,
     "main_build": "success",
     "pages": "success",
-    "v6_verified_commit": "f633f17041869f0707317ea235a9e92459de3a69",
-    "v6_ci_run": 45117482759,
-    "v6_ci": "success",
+    "v6_verified_commit": "a0ea318e1e23292e126257f6932e6306351f6555",
+    "v6_ci_run": 45120352609,
+    "v6_ci": "success (npm ci, prior 14 tests; added inventory tests awaiting CI)",
     "node_tests": "14/14",
     "production_js_bytes": 2236,
     "lab_js_bytes": 3379093,
-    "iphone_real_device": "not-tested"
+    "iphone_real_device": "not-tested",
+    "npm_ci": "passed-45120352609",
+    "inventory_test_status": "pending CI on newer HEAD",
+    "main_http_live": "not-verified"
+  },
+  "inventory": {
+    "phase": "evidence-seeded",
+    "source_commit": "7327fdc6c6f36deaf63a2b20a7b6db9a315ad446",
+    "library_entries": 86,
+    "story_entries": 85,
+    "brain_game_entries_complete": false,
+    "child_game_entries_complete": false,
+    "verified_runtime_dependencies": false,
+    "save_key_mapping_complete": false,
+    "allowed_to_migrate": false
   }
 }
