@@ -32,6 +32,6 @@ assert(app.includes('ex10-stage-prop')&&app.includes('ex10-game-scene'),'stage-s
 for(const fn of ['gamePipes','gameIce','gameNim','gameShadows'])assert(app.includes('function '+fn+'('),'interactive stage implementation exists: '+fn);
 assert(logic.includes('function pipeOrientations()')&&logic.includes('function iceAudit()')&&logic.includes('function nimWinningMoves(')&&logic.includes('function shadowSolutions()')&&logic.includes('function cipherSolutions()'),'independent solvers and audits exist for stages 11–15');
 assert(sw.includes("const VERSION='5.5.30'"),'service worker cache version advanced');
-assert(pkg.version==='5.5.29','package version advanced');
+assert(pkg.version==='5.5.30','package version advanced');
 for(const f of ['treasure/art/story5/ch3_s2_piece_stone.webp','treasure/art/story5/tool_lens.webp','treasure/art/story5/ch1_secret_letter.webp'])assert(offline.includes(f),'stage prop is included in Offline Precache: '+f);
 console.log('Expedition 25 integration: 24 active scene assets, 3 main heroine assets, independent save, new solvers and offline precache passed.');
