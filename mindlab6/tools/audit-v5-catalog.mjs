@@ -79,7 +79,9 @@ const report={schema_version:1,source_commit:REF,status:'static-source-registrat
  limitations:['V5 browser registry not executed or verified','No per-game save/asset schema proof','No gameplay code migrated'],brain,kids};
 const path='research/experiments/EXP-0001-dependency-inventory/results/parsed-source-registry.json';
 mkdirSync(dirname(path),{recursive:true});
-const output=JSON.stringify(report,null,2)+'\n';writeFileSync(path,output);
+const output=JSON.stringify(report,null,2)+'\n';
+if(process.argv.includes('--json')){process.stdout.write(output);process.exit(0);}
+writeFileSync(path,output);
 console.log('V5_REGISTRY_SUMMARY '+JSON.stringify({counts:report.counts,duplicates:report.duplicates,
  unresolved,brainIds:brain.map(x=>x.id),kidIds:kids.map(x=>x.id)}));
 const b64=Buffer.from(output).toString('base64');
