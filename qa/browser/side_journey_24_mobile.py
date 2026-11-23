@@ -30,7 +30,7 @@ MEASURE=r"""() => {
   const objective=root.querySelector('.ex10-objective');
   const main=root.querySelector('.ex10-game-content');
   const hint=root.querySelector('[data-ex10="hint"]');
-  const map=root.querySelector('[data-ex10="map2"]');
+  const stations=root.querySelector('[data-ex10="stations2"]');
   return {id:root.dataset.stageId,state:root.querySelector('.ex10-game-scene')?.dataset.state,
     sceneBadge:root.querySelector('.ex10-game-scene .ex10-state-badge')?.getAttribute('aria-label'),
     skin:document.documentElement.dataset.skin, viewport:[innerWidth,innerHeight],
@@ -40,7 +40,7 @@ MEASURE=r"""() => {
     heroImageState:imgs.map(i=>({src:i.getAttribute('src'),ready:i.complete&&i.naturalWidth>0,
       alternative:!!i.getAttribute('alt')?.trim()})),
     controls:root.querySelectorAll('button:not([disabled])').length,
-    hintSize:hint?box(hint):null,mapSize:map?box(map):null,
+    hintSize:hint?box(hint):null,stationsSize:stations?box(stations):null,
     overflow:document.documentElement.scrollWidth>innerWidth+3,
     contentText:(main?.textContent||'').trim().slice(0,160)};
 }"""
@@ -112,13 +112,13 @@ async def main():
           if any(not x["ready"] or not x["alternative"] for x in info.get("heroImageState",[])):
             row["issues"].append(f"{width}:hero_image_missing")
           if info.get("controls",0)<3:row["issues"].append(f"{width}:too_few_controls")
-          for key in ("hintSize","mapSize"):
+          for key in ("hintSize","stationsSize"):
             b=info.get(key)
             if not b or min(b["w"],b["h"])<40:
               row["issues"].append(f"{width}:{key}_touch_target_too_small")
           # Verify that the last navigation control is visible and actually
           # tappable after scrolling, not just present below a clipped panel.
-          action=page.locator('#v-puz .ex10-game-shell [data-ex10="map2"]')
+          action=page.locator('#v-puz .ex10-game-shell [data-ex10="stations2"]')
           try:
             await action.scroll_into_view_if_needed(timeout=3500)
             reachable=await action.evaluate("""e=>{
