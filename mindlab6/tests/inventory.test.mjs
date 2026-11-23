@@ -88,8 +88,8 @@ test('40 brain / 26 kid illustration candidates match source, without asserting 
     assert.ok(match, 'Missing visual catalog in source');
     return [...match[1].matchAll(/'([^']+)'/g)].map(x => x[1]);
   };
-  const brain = extract(/const ML_GAME_ART = (\\[[\\s\\S]*?\\]);/);
-  const kids = extract(/const KID_ART = (\\[[\\s\\S]*?\\]);/);
+  const brain = extract(/const ML_GAME_ART = (\[[\s\S]*?\]);/);
+  const kids = extract(/const KID_ART = (\[[\s\S]*?\]);/);
   assert.equal(data.status, 'art-registry-candidates-only');
   assert.equal(brain.length, 40);
   assert.equal(kids.length, 26);
