@@ -8,14 +8,23 @@
       "id": "EXP-0001",
       "slug": "dependency-inventory",
       "title": "جرد تبعيات ألعاب وخرائط محتوى 5.5.30",
-      "status": "planned",
-      "started": null,
+      "status": "in-progress",
+      "started": "2026-11-23",
       "completed": null,
       "path": "research/experiments/EXP-0001-dependency-inventory/README.md",
       "source_commit": "81d9046e9cd3eae240f5603461aa73a53d5fbef4",
       "hypothesis": "يمكن نقل المحركات الفعالة منفصلة عن الواجهات القديمة بعد إثبات التبعيات",
-      "results": null,
-      "next": "ابن جدول التبعيات وأثبت أي مسار مستخدم قبل التصنيف"
+      "results": {
+        "phase": "catalog-and-evidence-seed",
+        "source_ref": "7327fdc6c6f36deaf63a2b20a7b6db9a315ad446",
+        "library_puzzles": 86,
+        "retired_ids": 2,
+        "story_stations": 85,
+        "evidence_file": "research/experiments/EXP-0001-dependency-inventory/results/dependency-inventory.json",
+        "migration_approved": false,
+        "unresolved": "runtime/live dependency, per-ID save/hint/asset and 40/26 game inventory"
+      },
+      "next": "Map 40 brain games and 26 child games; trace engine call graph, save schema, tests, assets and audio; preserve old code"
     },
     {
       "id": "EXP-0002",
