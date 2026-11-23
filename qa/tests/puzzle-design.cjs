@@ -27,8 +27,8 @@ ok(layer.includes('state.game && state.game !== id'), 'observers are released wh
 ok(app.includes('loadPuzzleDesign558') && app.includes('ui/puzzle-design.js'), 'presentation layer is loaded additively');
 ok(css.includes('#play[data-ml-puzzle="logic"]') && css.includes('#play[data-ml-puzzle="river"]'), 'both mobile game themes have dedicated responsive styles');
 ok(manifest.includes('"ui/puzzle-design.js"'), 'presentation layer is included in offline cache');
-ok(sw.includes("const VERSION='5.5.29'"), 'service-worker cache is versioned 5.5.28');
-ok(pkg.version === '5.5.29', 'package version is 5.5.28');
+ok(sw.includes("const VERSION='5.5.30'"), 'service-worker cache is versioned 5.5.28');
+ok(pkg.version === '5.5.30', 'package version is 5.5.28');
 ok(html.includes("id:'pz_grid'") && html.includes("id:'pz_river'"), 'both original puzzle registrations remain in the core');
 ok(!html.includes('puzzle-design.js'), 'historical index.html remains untouched by the new presentation layer');
 
