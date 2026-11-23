@@ -26,8 +26,10 @@ for (const file of new Set(images)) assert.ok(fs.existsSync(file), 'art file ' +
 assert.ok(app.includes("'motion/expedition-art.css'"));
 assert.ok(realm.self.MINDLAB_OFFLINE_FILES.includes('motion/expedition-art.css'));
 const groups = realm.self.MINDLAB_EXPEDITION_ART;
-const scope = new Set([...Object.keys(groups), 'pz_river']);
-assert.equal(scope.size, Object.keys(groups).length + 1, 'puzzle groups across the two art passes');
+const scope = new Set(Object.keys(groups));
+assert.ok(Array.isArray(groups.pz_river) && groups.pz_river.some(file => file.endsWith('/river-day.webp')),
+  'current authored river art belongs to the canonical per-puzzle cache registry');
+assert.equal(scope.size, Object.keys(groups).length, 'puzzle art registry has one entry per game');
 for (const group of Object.values(groups)) {
   assert.equal(group.length, new Set(group).size, 'no duplicate URLs within a puzzle');
   for (const file of group) assert.ok(fs.existsSync(file));
