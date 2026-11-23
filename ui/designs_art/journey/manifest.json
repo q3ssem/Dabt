@@ -22,8 +22,6 @@
       "id": "seven_seas",
       "name": "حكايات البحار السبعة",
       "order": 1,
-      "x": 0.23,
-      "y": 0.72,
       "stations": [
         {
           "station": 1,
@@ -157,8 +155,6 @@
       "id": "palace",
       "name": "قصر المرايا",
       "order": 2,
-      "x": 0.33,
-      "y": 0.43,
       "stations": [
         {
           "puzzle_id": "pz_plock",
@@ -242,8 +238,6 @@
       "id": "atheran",
       "name": "أَثْرَان · أطلس المجهول",
       "order": 3,
-      "x": 0.23,
-      "y": 0.15,
       "stations": [
         {
           "puzzle_id": "pz_aarch",
@@ -335,8 +329,6 @@
       "id": "side",
       "name": "رحلة أسرار أَثْرَان",
       "order": null,
-      "x": 0.79,
-      "y": 0.38,
       "save_key": "mindlab:expedition10:v1",
       "stations": [
         {
