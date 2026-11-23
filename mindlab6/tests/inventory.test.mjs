@@ -78,3 +78,22 @@ test('No source import, save key mutation or port occurs in inventory records', 
   assert.ok(inventory.library_puzzles.every(p => p.save_keys.length === 0));
   assert.ok(inventory.library_puzzles.every(p => p.engine_files.every(f => !f.startsWith('mindlab6/src/'))));
 });
+
+test('40 brain / 26 kid illustration candidates match source, without asserting game IDs for children', () => {
+  const data = JSON.parse(fs.readFileSync(path.join(root,
+    'research/experiments/EXP-0001-dependency-inventory/results/brain-kids-art-candidates.json'), 'utf8'));
+  const app = show('ui/app.js');
+  const extract = re => {
+    const match = app.match(re);
+    assert.ok(match, 'Missing visual catalog in source');
+    return [...match[1].matchAll(/'([^']+)'/g)].map(x => x[1]);
+  };
+  const brain = extract(/const ML_GAME_ART = (\\[[\\s\\S]*?\\]);/);
+  const kids = extract(/const KID_ART = (\\[[\\s\\S]*?\\]);/);
+  assert.equal(data.status, 'art-registry-candidates-only');
+  assert.equal(brain.length, 40);
+  assert.equal(kids.length, 26);
+  assert.deepEqual(data.brain_visual_id_candidates.map(x => x.id), brain);
+  assert.deepEqual(data.kid_visual_name_candidates.map(x => x.name), kids);
+  assert.ok(data.kid_visual_name_candidates.every(x => x.id === null));
+});
