@@ -504,6 +504,37 @@
       }
     ],
     "next_action": "Review iPhone/iPad-only handoff. Integrate independently and validate physical iPhone and iPad before migration approval.",
-    "audited_unique_ids": 86
+    "audited_unique_ids": 86,
+    "calibration_preflight": {
+      "date": "2026-11-23",
+      "report": "docs/workshop/gemini-design/reviews/2026-11-23-calibration-preflight.md",
+      "baseline_branch_head": "5afbbab26b51d28dd1cc29424d7aa7246908a989",
+      "ids": [
+        "pz_pdragon",
+        "pz_pclock",
+        "pz_pgarden",
+        "pz_plast"
+      ],
+      "scope": "verified existing editorial cards, two reference composite WebP boards, existing artwork dimensions and alpha flags, and documented logical witness cases; no new Gemini export supplied",
+      "inspected_reference_images": [
+        "docs/workshop/v6-audit/batch-12/iphone.webp",
+        "docs/workshop/v6-audit/batch-12/ipad.webp"
+      ],
+      "statuses": {
+        "pz_pdragon": "requires-clue-and-atlas-export-verification",
+        "pz_pclock": "requires-pivot-and-preview-export-verification",
+        "pz_pgarden": "engine-zero-mismatch-review-and-visual-exports-pending",
+        "pz_plast": "transparent-original-and-interaction-spec-pending"
+      },
+      "run_tests_this_session": false,
+      "physical_device_test": false,
+      "final_design_exports_verified": 0,
+      "ready_for_migration": [],
+      "engineering_only": [
+        "pz_pgarden: undefined-vs-zero in win-check",
+        "pz_pclock: guard first-sync semantics distinct from standalone",
+        "pz_pdragon: cross-family ambiguity must retain needed clue"
+      ]
+    }
   }
 }
