@@ -33,7 +33,7 @@
     "bundle-isolation-gate"
   ],
   "current_experiment": "EXP-0001",
-  "next_action": "verify-ci-build-and-prepare-lockfile-then-source-dependency-inventory-EXP-0001",
+  "next_action": "create-and-commit-reproducible-lockfile-then-EXP-0001-inventory; Work edits puzzle content on separate branch",
   "content_status": {
     "brain_games_migrated": 0,
     "puzzles_migrated": 0,
@@ -55,7 +55,7 @@
     "no-save-migration",
     "real-phone-360-engine-benchmark-not-run",
     "real-device-safari-and-3d-fps-not-verified",
-    "lockfile-pending"
+    "no-committed-package-lock-yet"
   ],
   "notes": "The prototype includes separate lazy 2D/3D demos, but does NOT include an approved 3D statue art asset, GLB puzzle, migrated game, or benchmark. Work puzzle difficulty revisions are assigned to a separate conversation and cannot land in this branch automatically.",
   "engine_architecture": {
@@ -72,5 +72,26 @@
     "pr": 23,
     "merge_commit": "7327fdc6c6f36deaf63a2b20a7b6db9a315ad446",
     "site_and_real_iphone_acceptance": "pending"
+  },
+  "handoff": {
+    "engineering_path": "handoff/NEXT_CHAT_ENGINEERING.md",
+    "editorial_path": "handoff/NEXT_CHAT_WORK.md",
+    "work_branch": "work/mindlab-puzzle-editorial-20261123",
+    "work_ledger": "docs/workshop/EDITORIAL_PROGRESS.json"
+  },
+  "last_verified": {
+    "date": "2026-11-23",
+    "main_commit": "7327fdc6c6f36deaf63a2b20a7b6db9a315ad446",
+    "main_build_run": 45116578722,
+    "main_pages_run": 45116575084,
+    "main_build": "success",
+    "pages": "success",
+    "v6_verified_commit": "f633f17041869f0707317ea235a9e92459de3a69",
+    "v6_ci_run": 45117482759,
+    "v6_ci": "success",
+    "node_tests": "14/14",
+    "production_js_bytes": 2236,
+    "lab_js_bytes": 3379093,
+    "iphone_real_device": "not-tested"
   }
 }
