@@ -22,7 +22,11 @@
         "story_stations": 85,
         "evidence_file": "research/experiments/EXP-0001-dependency-inventory/results/dependency-inventory.json",
         "migration_approved": false,
-        "unresolved": "runtime/live dependency, per-ID save/hint/asset and 40/26 game inventory"
+        "unresolved": "runtime/live dependency, per-ID save/hint/asset and 40/26 game inventory",
+        "brain_visual_candidates": 40,
+        "child_visual_name_candidates": 26,
+        "visual_candidates_file": "research/experiments/EXP-0001-dependency-inventory/results/brain-kids-art-candidates.json",
+        "visual_candidate_warning": "neither confirms engine registration or child IDs"
       },
       "next": "Map 40 brain games and 26 child games; trace engine call graph, save schema, tests, assets and audio; preserve old code"
     },
