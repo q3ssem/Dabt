@@ -28,14 +28,15 @@ jobs:
       - uses: actions/setup-node@v4
         with:
           node-version: '22'
-      - name: Validate independent project files
+      - name: Install pinned dependencies for isolated engine lab
+        run: |
+          cd mindlab6
+          npm install --ignore-scripts --no-audit --no-fund
+      - name: Type-check, test and build isolated browser bundles
         run: |
           cd mindlab6
           node --check src/app.js
-          node --check tools/check-workspace.mjs
-          node --check tools/new-experiment.mjs
-          npm test
-          npm run check:workspace
+          npm run verify
           npm run experiment:new -- "اختبار الترقيم" probe-only --dry-run
       - name: Reject changes to the protected v5 app on this foundation branch
         shell: bash
