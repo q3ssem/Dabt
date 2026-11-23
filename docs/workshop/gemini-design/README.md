@@ -2,6 +2,8 @@
 
 سلّم تصاميم اللعب والأصول لأجهزة **iPhone وiPad فقط**. المشروع [q3ssem/Dabt](https://github.com/q3ssem/Dabt)، والعمل في [فرع الورشة](https://github.com/q3ssem/Dabt/tree/work/mindlab-puzzle-editorial-20261123). هذه الحزمة مبنية على [تدقيق الورشة المثبّت](https://github.com/q3ssem/Dabt/tree/2ca630e4db7faa7f757400b57e1ec8580a6b0e02/docs/workshop/v6-audit) و[قواعد 5.5.30 المثبّتة](https://github.com/q3ssem/Dabt/tree/7327fdc6c6f36deaf63a2b20a7b6db9a315ad446).
 
+[الملف الموحّد الجاهز للإرسال لجمناي](MINDLAB_GEMINI.md).
+
 ابدأ من [البرومبت الجاهز](GEMINI_PROMPT.md). أخرج دفعة صغيرة مكتملة يمكن إعادة فحصها قبل تكرار القرار البصري على بقية الألغاز. حزمة المدخلات كاملة هنا وفي المسارات المرتبطة بالمستودع. المواصفات التي تسمي أصلًا جديدًا لا تعني أن الأصل رُسم بالفعل.
 
 ## ملفات العمل بالترتيب
