@@ -1,0 +1,21 @@
+{
+  "schema_version": 1,
+  "updated": "2026-11-23",
+  "id_format": "EXP-0000",
+  "current": "EXP-0001",
+  "experiments": [
+    {
+      "id": "EXP-0001",
+      "slug": "dependency-inventory",
+      "title": "جرد تبعيات ألعاب وخرائط محتوى 5.5.30",
+      "status": "planned",
+      "started": null,
+      "completed": null,
+      "path": "research/experiments/EXP-0001-dependency-inventory/README.md",
+      "source_commit": "81d9046e9cd3eae240f5603461aa73a53d5fbef4",
+      "hypothesis": "يمكن نقل المحركات الفعالة منفصلة عن الواجهات القديمة بعد إثبات التبعيات",
+      "results": null,
+      "next": "ابن جدول التبعيات وأثبت أي مسار مستخدم قبل التصنيف"
+    }
+  ]
+}

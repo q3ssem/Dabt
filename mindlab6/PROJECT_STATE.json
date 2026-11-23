@@ -1,0 +1,47 @@
+{
+  "schema_version": 1,
+  "project": "mindlab6",
+  "date": "2026-11-23",
+  "repository": "q3ssem/Dabt",
+  "branch": "prototype/mindlab-6-foundation-20261123",
+  "root": "mindlab6/",
+  "phase": "foundation",
+  "release_status": "prototype-not-published",
+  "source_baseline": {
+    "version": "5.5.30",
+    "commit": "81d9046e9cd3eae240f5603461aa73a53d5fbef4",
+    "read_only": true
+  },
+  "boundaries": {
+    "main_untouched": true,
+    "old_app_untouched": true,
+    "experiments_excluded_from_production": true
+  },
+  "completed": [
+    "clean-v6-folder-scaffold",
+    "research-experiment-registry-and-template",
+    "cross-chat-handoff-files",
+    "minimal-rtl-ui-skeleton"
+  ],
+  "current_experiment": "EXP-0001",
+  "next_action": "inventory-source-dependencies-without-copying-code",
+  "content_status": {
+    "brain_games_migrated": 0,
+    "puzzles_migrated": 0,
+    "story_stations_migrated": 0,
+    "child_games_migrated": 0,
+    "save_migration_verified": false
+  },
+  "required_checks": [
+    "npm test",
+    "verify-registry-ids",
+    "browser-on-mobile-after-core-migration",
+    "no-regression-against-source-v5"
+  ],
+  "blockers": [
+    "dependency-inventory-not-done",
+    "no-engine-ports",
+    "no-save-migration"
+  ],
+  "notes": "All content numbers are migration targets, not actual 6.0 features."
+}

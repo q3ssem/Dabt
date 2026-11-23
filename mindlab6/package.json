@@ -1,0 +1,11 @@
+{
+  "name":"mindlab6-foundation",
+  "version":"0.0.1",
+  "private":true,
+  "type":"module",
+  "description":"Isolated project foundation; gameplay engines not migrated",
+  "scripts":{
+    "test":"node --test tests/*.test.mjs",
+    "check:workspace":"node tools/check-workspace.mjs"
+  }
+}
