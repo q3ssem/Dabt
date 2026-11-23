@@ -25,10 +25,15 @@
     "engine-neutral-gamehost-with-lazy-load-and-disposal",
     "browser-gpu-capability-probe",
     "provisional-web-engine-research-adr",
-    "360-statue-competitive-benchmark-spec"
+    "360-statue-competitive-benchmark-spec",
+    "pinned-vite8-ts7-playcanvas2-pixijs8-dependency-set",
+    "separated-lightweight-web-build-and-isolated-engine-lab",
+    "prototype-playcanvas-360-touch-keyboard-renderer",
+    "prototype-pixi-2d-application-driver",
+    "bundle-isolation-gate"
   ],
   "current_experiment": "EXP-0001",
-  "next_action": "inventory-source-dependencies-without-copying-code",
+  "next_action": "verify-ci-build-and-prepare-lockfile-then-source-dependency-inventory-EXP-0001",
   "content_status": {
     "brain_games_migrated": 0,
     "puzzles_migrated": 0,
@@ -41,22 +46,31 @@
     "verify-registry-ids",
     "browser-on-mobile-after-core-migration",
     "no-regression-against-source-v5",
-    "EXP-0002-playcanvas-vs-babylon-actual-iphone-and-android"
+    "EXP-0002-playcanvas-vs-babylon-actual-iphone-and-android",
+    "npm-run-verify-includes-typecheck-two-builds-bundle-weight"
   ],
   "blockers": [
     "dependency-inventory-not-done",
     "no-engine-ports",
     "no-save-migration",
-    "real-phone-360-engine-benchmark-not-run"
+    "real-phone-360-engine-benchmark-not-run",
+    "real-device-safari-and-3d-fps-not-verified",
+    "lockfile-pending"
   ],
-  "notes": "Foundation only. Runtime utilities and tests exist; actual 3D engines, 360 demo and content migration have not been installed or implemented.",
+  "notes": "The prototype includes separate lazy 2D/3D demos, but does NOT include an approved 3D statue art asset, GLB puzzle, migrated game, or benchmark. Work puzzle difficulty revisions are assigned to a separate conversation and cannot land in this branch automatically.",
   "engine_architecture": {
     "core": "engine-agnostic-dom-lifecycle",
     "default_2d": "native-html-css",
-    "optional_2d": "PixiJS8-after-game-need",
-    "preferred_3d": "PlayCanvas2.24-provisional",
+    "optional_2d": "PixiJS8.23.0 isolated demo",
+    "preferred_3d": "PlayCanvas2.24.2 in isolated demo; not final benchmark winner",
     "alternate_3d": "Babylon9",
-    "bundler": "Vite8.3-and-TypeScript-strict-proposed-not-installed",
-    "actual_3d_engine_installed": false
+    "bundler": "Vite8.3.8 TypeScript7.0.2 declared",
+    "actual_3d_engine_installed": false,
+    "versioned_dependencies_declared": true
+  },
+  "main_v5_inspection": {
+    "pr": 23,
+    "merge_commit": "7327fdc6c6f36deaf63a2b20a7b6db9a315ad446",
+    "site_and_real_iphone_acceptance": "pending"
   }
 }

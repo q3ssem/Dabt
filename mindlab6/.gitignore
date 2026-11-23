@@ -1,5 +1,7 @@
 node_modules/
 dist/
+dist-lab/
+.vite/
 coverage/
 *.log
 .env

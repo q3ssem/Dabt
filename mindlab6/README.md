@@ -19,12 +19,23 @@
 - `research/experiments/EXP-0002-statue360-engines/`: بروتوكول اختبار التماثيل 360°؛ **لم ينفذ بعد**.
 - `tools/`: التحقق من الفهارس والتوثيق.
 
+## بناء الويب والمحركات المعزولة
+
+حزم النموذج: **Vite 8.3.8 + TypeScript 7.0.2**، و**PlayCanvas 2.24.2** لمشهد ثلاثي الأبعاد مؤقت، و**PixiJS 8.23.0** لمشهد 2D مؤقت. الحزم معرفة بإصدارات محددة في `package.json`، مع CI لتنزيلها وتجميعها.
+
+- `npm run build` ينتج `dist/` للتطبيق الخفيف دون مكتبات المحركات.
+- `npm run build:lab` ينتج `dist-lab/` للمعمل المنفصل `lab.html`.
+- `npm run verify` يختبر النواة، وTypeScript، وبناء المسارين، ومنع تسريب 3D والأبحاث في التطبيق الأساسي.
+- النماذج الإجرائية ليست ألغازًا معتمدة. لا GLB فني ولا نتائج FPS/بطارية أو اختبار iPhone فعلي حتى الآن.
+
 ## تشغيل النواة
 ```bash
 cd mindlab6
-npm test
-python3 -m http.server 8766
-# افتح http://localhost:8766/
+npm install
+npm run verify
+npm run dev
+# افتح http://localhost:5173/
+# للمعمل فقط: npm run dev:lab ثم افتح http://localhost:5173/lab.html
 ```
 
 شاشة النواة الحالية **معاينة للهيكل فقط**؛ أرقام المحتوى أهداف نقل من المصدر، وليست ألعابًا قابلة للعب حاليًا.
