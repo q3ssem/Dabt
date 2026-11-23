@@ -3,7 +3,7 @@
 ## 2026-11-23 — استئناف الهندسة: قفل التبعيات وبداية EXP-0001
 - راجعنا `main@7327fdc6` و`prototype@2434ed90` وCI لكلا الفرعين. لم يُمس `main` ولا فرع Work.
 - أُضيف lockfile npm v3 مستخرج من سجل تثبيت GitHub Actions، بـ83 حزمة؛ وCI صار يستخدم `npm ci`. نجح التشغيل على `a0ea318e`: https://github.com/q3ssem/Dabt/actions/runs/45120352609 .
-- بدأت EXP-0001 بملف `research/experiments/EXP-0001-dependency-inventory/results/dependency-inventory.json`: 86 مكتبة + 85 قصة، مع أدلة جزئية ومعلومات مسارات مرشحة فقط. لم يُنقل أي كود أو ملف من V5.
+- بدأت EXP-0001 بملف `research/experiments/EXP-0001-dependency-inventory/results/dependency-inventory.json`: 86 مكتبة + 85 قصة، مع أدلة جزئية ومعلومات مسارات مرشحة فقط. لم يُنقل أي كود أو ملف من V5. نجح CI على `5a40f835` بعد إضافة الجرد وإدارة الموارد: 25/25 اختبار، نوع TypeScript، بناءين، وعزل V5: https://github.com/q3ssem/Dabt/actions/runs/45121337898 .
 - أضيف `tests/inventory.test.mjs` للتحقق من ID والفصول مقابل SHA المثبت؛ يحتاج تحقق CI للرأس النهائي.
 - تقرير `handoff/V5_5530_POST_MERGE_AUDIT.md` يفصل بين CI/WebKit والنشر وبين اختبار HTTPS التفاعلي وSafari الآيفون الحقيقي غير المنفذ.
 - استخرجنا قائمة رسومات 40 لعبة وقائمة أسماء رسوم 26 لعبة طفل إلى ملف منفصل مع التحذير بأنها ليست معرّفات محركات مثبتة. أضيف ResourceScope ولُقّح GameHost بمنافذ الخدمات المعزولة؛ لا كتابة حفظ ولا نقل كود.
