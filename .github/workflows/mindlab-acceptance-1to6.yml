@@ -1,4 +1,4 @@
-name: MindLab 5.5.29 acceptance stages 1-6 (cleanup deferred)
+name: MindLab 5.5.30 acceptance stages 1-6 (review branch)
 
 on:
   push:
