@@ -10,31 +10,30 @@
     "release": "5.5.30",
     "read_only": true
   },
-  "status": "batch-04-editorial-reviewed",
+  "status": "batch-05-editorial-reviewed",
   "owner": "Work — puzzle narrative, difficulty, editorial QA",
   "other_owner": "MindLab6 engineering — engines/migration only",
   "scope": "existing puzzle texts, mechanics review, progressive hints and difficulty; no from-scratch replacement",
   "completed_puzzles": [],
   "current_batch": {
-    "id": "batch-04",
+    "id": "batch-05",
     "status": "editorial-reviewed-runtime-pending",
-    "delivery": "docs/workshop/batch-04/README.md",
+    "delivery": "docs/workshop/batch-05/README.md",
     "editorial_reviewed": [
-      "pz_grid",
-      "pz_sudo",
-      "pz_tent",
-      "pz_door",
-      "pz_binary",
-      "pz_tpath",
-      "pz_xreef",
-      "pz_xbridge"
+      "pz_xcave",
+      "pz_xloot",
+      "pz_tmap",
+      "pz_tdig",
+      "pz_xlock",
+      "pz_yhold",
+      "pz_ytide",
+      "pz_ydoor"
     ],
-    "logic_verification": "node docs/workshop/batch-04/verify.cjs",
+    "logic_verification": "node docs/workshop/batch-05/verify.cjs",
     "source_cases_verified": 24,
-    "browser_or_device_verified": false,
-    "new_original_puzzles": 0
+    "browser_or_device_verified": false
   },
-  "next_action": "Review eight further puzzles beginning with pz_xcave, pz_xloot, pz_tmap, pz_tdig and pz_xlock, with three more from the source index.",
+  "next_action": "Continue with the next eight visible puzzles in the source index, starting at pz_zcomp.",
   "hard_rules": [
     "do-not-edit-main",
     "do-not-edit-mindlab6-engineering-branch",
@@ -131,6 +130,25 @@
         "pz_ice"
       ],
       "logic_verification": "node qa/tests/authored-stages.cjs; node qa/tests/display-audio.cjs; node docs/workshop/batch-01/verify.cjs",
+      "browser_or_device_verified": false,
+      "new_original_puzzles": 0
+    },
+    {
+      "id": "batch-04",
+      "status": "editorial-reviewed-runtime-pending",
+      "delivery": "docs/workshop/batch-04/README.md",
+      "editorial_reviewed": [
+        "pz_grid",
+        "pz_sudo",
+        "pz_tent",
+        "pz_door",
+        "pz_binary",
+        "pz_tpath",
+        "pz_xreef",
+        "pz_xbridge"
+      ],
+      "logic_verification": "node docs/workshop/batch-04/verify.cjs",
+      "source_cases_verified": 24,
       "browser_or_device_verified": false,
       "new_original_puzzles": 0
     }
