@@ -1,6 +1,6 @@
 # Render drivers (lazy loaded, behind GameHost)
 
-This directory reserves **adapters**, not engine binaries. No third-party renderer is installed or shipped in the core yet.
+This directory reserves **adapters**, not engine binaries. PixiJS 8.23.0 and PlayCanvas 2.24.2 are installed only as isolated lab prototypes; the core/default browser build does not import them. No production 3D renderer is selected.
 
 ## Provisional engine allocation
 - HTML/CSS/DOM: controls, RTL reading, tables, the home page and many logic puzzles.
@@ -21,6 +21,6 @@ await host.open('demo-statue'); // only now load 3D engine chunk
 await host.close(); // free the scene, canvas, texture/geometry and controls
 ```
 
-Driver `mount({element, signal, id, renderer})` returns `{dispose(), pause?(), resume?()}`.
+Driver `mount({element, signal, id, renderer, resources, services})` returns `{dispose(), pause?(), resume?()}`.
 Renderers do **not** own save schema, player identity, scoring, audio policy, progression or global routing.
 Host handles cancellation and tab visibility. Drivers must resize their own canvas, track GPU context/device loss, and release resources upon disposal. WebGPU availability is not proof of a working adapter.
