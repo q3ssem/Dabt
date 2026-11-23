@@ -6,6 +6,7 @@
   "description":"Isolated project foundation; gameplay engines not migrated",
   "scripts":{
     "test":"node --test tests/*.test.mjs",
-    "check:workspace":"node tools/check-workspace.mjs"
+    "check:workspace":"node tools/check-workspace.mjs",
+    "experiment:new":"node tools/new-experiment.mjs"
   }
 }
