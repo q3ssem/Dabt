@@ -75,7 +75,7 @@ async def run():
             sea:T7.state().done, palace:pState().done, atheran:aState().done,
             side:localStorage.getItem('mindlab:expedition10:v1'), coins:S.st.coins||null
         })""")
-        await open_route(page,'إخلاء أَثْرَان · جرّب الخريطة المفتوحة')
+        await open_route(page,'إخلاء أَثْرَان · أكمل القرار الأخير')
         assert await page.locator('.mljr-anchors .mljr-anchor').count()==3
         assert await page.locator('.mljr-map-options button').count()==3
         assert await page.locator('.mljr-time-options button').count()==4
@@ -148,7 +148,7 @@ async def run():
         await page.locator('#mljr-close').click()
         await page.reload(wait_until='domcontentloaded',timeout=45000)
         if await picker.count() and await picker.is_visible():await picker.click()
-        await open_route(page,'طريق الإخلاء · الخريطة والقرار الأخير')
+        await open_route(page,'طريق الإخلاء · القرار الأخير')
         assert await page.locator('.mljr-success').is_visible(),'success does not survive reload'
         assert await page.evaluate("()=>MindlabRescue.state().decision")=='teach'
         assert await page.evaluate("()=>MindlabRescue.state().completedAt")==completed
