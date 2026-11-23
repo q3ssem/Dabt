@@ -1,0 +1,64 @@
+name: MindLab 7 - real browser map-free acceptance
+
+on:
+  push:
+    branches:
+      - review/mindlab7-final-closure-20261123
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mindlab7-browser-acceptance
+  cancel-in-progress: true
+
+jobs:
+  browser-regression:
+    name: ${{ matrix.case }} / ${{ matrix.browser }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+        case: [side-mobile, side-solutions, atheran-rescue, offline-quick]
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: review/mindlab7-final-closure-20261123
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install real browser
+        run: |
+          python -m pip install playwright
+          python -m playwright install --with-deps "${{ matrix.browser }}"
+      - name: Launch isolated test server and run map-free journey acceptance
+        shell: bash
+        env:
+          ENGINE: ${{ matrix.browser }}
+          CASE: ${{ matrix.case }}
+        run: |
+          set -euo pipefail
+          mkdir -p "/tmp/mindlab7/${CASE}-${ENGINE}"
+          python -m http.server 8830 --bind 127.0.0.1 > /tmp/mindlab7-http.log 2>&1 &
+          sleep 2
+          case "${CASE}" in
+            side-mobile)
+              python -u qa/browser/side_journey_24_mobile.py http://127.0.0.1:8830/ "${ENGINE}" "/tmp/mindlab7/${CASE}-${ENGINE}" ;;
+            side-solutions)
+              python -u qa/browser/side_journey_24_solve.py http://127.0.0.1:8830/ "${ENGINE}" "/tmp/mindlab7/${CASE}-${ENGINE}" ;;
+            atheran-rescue)
+              python -u qa/browser/jaziran_rescue.py http://127.0.0.1:8830/ "${ENGINE}" "/tmp/mindlab7/${CASE}-${ENGINE}" ;;
+            offline-quick)
+              python -u qa/browser/phase3_acceptance.py http://127.0.0.1:8830/ "${ENGINE}" quick ;;
+          esac
+      - name: Keep visual evidence
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: mindlab7-${{ matrix.case }}-${{ matrix.browser }}
+          path: /tmp/mindlab7/${{ matrix.case }}-${{ matrix.browser }}/*
+          if-no-files-found: ignore
+          retention-days: 14
