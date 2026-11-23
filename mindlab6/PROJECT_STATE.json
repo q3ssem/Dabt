@@ -35,10 +35,13 @@
     "evidence-seeded-86-library-puzzles-85-story-stations",
     "v5-main-static-and-ci-post-merge-audit",
     "resource-scope-per-game-lifecycle-and-injected-service-ports",
-    "visual-art-only-candidates-40-brain-and-26-child"
+    "visual-art-only-candidates-40-brain-and-26-child",
+    "v5-static-registry-identities-42-brain-declarations-26-kid-ids",
+    "v5-candidate-asset-existence-258-of-258",
+    "registry-accepts-v5-underscored-game-ids"
   ],
   "current_experiment": "EXP-0001",
-  "next_action": "EXP-0001: map 40 brain and 26 child games; trace runtime, asset, audio, save and tests before migration",
+  "next_action": "EXP-0001: trace runtime GM/G/KID_GAMES initialization and each game save, sound, hint, unlock and test; do not port code yet",
   "content_status": {
     "brain_games_migrated": 0,
     "puzzles_migrated": 0,
@@ -56,7 +59,7 @@
     "EXP-0001 inventory tests against pinned main SHA (passed 25/25 CI on 5a40f835)"
   ],
   "blockers": [
-    "dependency-inventory-partial-no-runtime-callgraph-or-brain-child-registries-yet",
+    "static-register-ids-and-art-proven-but-runtime-save-hint-audio-and-tests-unverified",
     "no-engine-ports",
     "no-save-migration",
     "real-phone-360-engine-benchmark-not-run",
@@ -96,8 +99,8 @@
     "main_pages_run": 45116575084,
     "main_build": "success",
     "pages": "success",
-    "v6_verified_commit": "5a40f8359cfd046229c66509ab35d7f241146556",
-    "v6_ci_run": 45121337898,
+    "v6_verified_commit": "6617628e2117ab170d7b50194662183f34615ee8",
+    "v6_ci_run": 45122882059,
     "v6_ci": "success",
     "node_tests": "25/25",
     "production_js_bytes": 2236,
@@ -107,7 +110,9 @@
     "inventory_test_status": "passed 45121337898 (pinned V5 catalog, candidate labels, chapter order)",
     "main_http_live": "not-verified",
     "resource_scope_tests": "passed 45121337898 (cleanup/order/mount failure/injected ports)",
-    "source_boundary": "V6_BOUNDARY_PASS (55 allowed files, old V5 app untouched)"
+    "source_boundary": "V6_BOUNDARY_PASS (55 allowed files, old V5 app untouched)",
+    "new_asset_snapshot_tests": "pending CI on latest HEAD",
+    "asset_source_existence": "258/258 verified by 45122798148; runtime load pending"
   },
   "inventory": {
     "phase": "evidence-seeded",
@@ -122,6 +127,16 @@
     "brain_visual_candidates": 40,
     "child_visual_name_candidates": 26,
     "actual_brain_engine_ids_verified": false,
-    "actual_child_engine_ids_verified": false
+    "actual_child_engine_ids_verified": false,
+    "static_brain_declarations": 42,
+    "ui_brain_art_matched_ids": 40,
+    "brain_special_ids": [
+      "delay",
+      "tol"
+    ],
+    "static_child_ids": 26,
+    "assets_present_at_source_commit": 258,
+    "live_runtime_dependencies_verified": false,
+    "browser_asset_loading_verified": false
   }
 }
