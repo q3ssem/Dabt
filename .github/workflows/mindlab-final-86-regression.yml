@@ -2,7 +2,7 @@ name: MindLab 86-puzzle release regression (independent review)
 
 on:
   push:
-    branches: [review/mindlab-final-closure-20261123, review/mindlab-cleanup-integration-20261123]
+    branches: [review/mindlab-final-closure-20261123, review/mindlab-cleanup-integration-20261123, review/mindlab7-final-closure-20261123]
   workflow_dispatch:
 
 permissions:
