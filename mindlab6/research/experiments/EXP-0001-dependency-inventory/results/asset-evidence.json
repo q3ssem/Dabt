@@ -1,0 +1,1832 @@
+{
+  "schema_version": 1,
+  "source_commit": "7327fdc6c6f36deaf63a2b20a7b6db9a315ad446",
+  "status": "source-blob-only-not-proven-runtime-used",
+  "total_candidates": 258,
+  "counts": {
+    "exists-at-source-sha": 258
+  },
+  "by_kind": {
+    "library-puzzle": {
+      "exists-at-source-sha": 168
+    },
+    "story-station": {
+      "exists-at-source-sha": 24
+    },
+    "brain-art": {
+      "exists-at-source-sha": 40
+    },
+    "kid-art-name": {
+      "exists-at-source-sha": 26
+    }
+  },
+  "note": "Missing candidate does not prove the actual game broken; some routes use alternative assets. Never delete V5 files using this report.",
+  "candidates": [
+    {
+      "kind": "library-puzzle",
+      "id": "pz_rid",
+      "path": "motion/logic-revised/rid/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_rid",
+      "path": "ui/art/library-painted/pz_rid.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_river",
+      "path": "motion/adventure35/river-day.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_river",
+      "path": "motion/art10/river_boat.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_rush",
+      "path": "ui/designs_art/four_puzzles/pz_rush/bg_dock_grid_6x6.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_rush",
+      "path": "motion/art10/rush_car_red_2x1.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_lock",
+      "path": "treasure/art/story5/ch1_s3_scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_lock",
+      "path": "expedition10/art/props/01-lighthouse-lock.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pipe",
+      "path": "ui/designs_art/four_puzzles/pz_pipe/bg_village_hillside.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pipe",
+      "path": "motion/art10/pipe_house.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_grid",
+      "path": "motion/logic-revised/grid/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_grid",
+      "path": "ui/art/library-painted/pz_grid.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_scale",
+      "path": "treasure/art/story5/ch3_s2_scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_scale",
+      "path": "expedition10/art/props/04-pirate-balance.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_laser",
+      "path": "treasure/art/story5/ch2_s3_scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_laser",
+      "path": "motion/shared-raster/laser-target.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_soko",
+      "path": "expedition10/art/scenes/16-harbor-cargo.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_soko",
+      "path": "motion/shared-raster/crate.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_sudo",
+      "path": "motion/logic-revised/sudo/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_sudo",
+      "path": "ui/art/library-painted/pz_sudo.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_flow",
+      "path": "motion/revised/flow-scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_flow",
+      "path": "ui/art/library-painted/pz_flow.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_tan",
+      "path": "motion/revised/tan-scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_tan",
+      "path": "ui/art/library-painted/pz_tan.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_tent",
+      "path": "motion/logic-revised/tent/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_tent",
+      "path": "ui/art/library-painted/pz_tent.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_door",
+      "path": "motion/logic-revised/door/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_door",
+      "path": "ui/art/library-painted/pz_door.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_lights",
+      "path": "expedition10/art/scenes/21-lantern-maze.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_lights",
+      "path": "motion/shared-raster/lamp-on.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_untangle",
+      "path": "motion/revised/untangle-scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_untangle",
+      "path": "ui/art/library-painted/pz_untangle.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_stroke",
+      "path": "treasure/art/story5/ch2_s2_scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_stroke",
+      "path": "motion/shared-raster/map.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_binary",
+      "path": "motion/logic-revised/binary/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_binary",
+      "path": "ui/art/library-painted/pz_binary.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_ice",
+      "path": "motion/revised/ice-scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_ice",
+      "path": "ui/art/library-painted/pz_ice.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_tpath",
+      "path": "ui/designs_art/work_review/pz_tpath/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_tpath",
+      "path": "ui/art/library-painted/pz_tpath.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_xreef",
+      "path": "ui/designs_art/work_review/pz_xreef/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_xreef",
+      "path": "ui/art/library-painted/pz_xreef.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_xbridge",
+      "path": "ui/designs_art/work_review/pz_xbridge/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_xbridge",
+      "path": "ui/art/library-painted/pz_xbridge.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_xcave",
+      "path": "ui/designs_art/work_review/pz_xcave/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_xcave",
+      "path": "ui/art/library-painted/pz_xcave.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_xloot",
+      "path": "motion/pirate-revised/loot/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_xloot",
+      "path": "ui/art/library-painted/pz_xloot.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_tmap",
+      "path": "ui/designs_art/work_review/pz_tmap/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_tmap",
+      "path": "ui/art/library-painted/pz_tmap.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_tdig",
+      "path": "ui/designs_art/work_review/pz_tdig/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_tdig",
+      "path": "ui/art/library-painted/pz_tdig.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_xlock",
+      "path": "ui/designs_art/work_review/pz_xlock/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_xlock",
+      "path": "ui/art/library-painted/pz_xlock.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_ybell",
+      "path": "expedition10/art/scenes/17-tide-clock.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_ybell",
+      "path": "motion/shared-raster/bell.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_ymap",
+      "path": "treasure/art/story5/ch6_s3_scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_ymap",
+      "path": "motion/shared-raster/map.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_yhold",
+      "path": "motion/pirate-revised/hold/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_yhold",
+      "path": "ui/art/library-painted/pz_yhold.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_ytide",
+      "path": "ui/designs_art/work_review/pz_ytide/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_ytide",
+      "path": "ui/art/library-painted/pz_ytide.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_ydoor",
+      "path": "motion/pirate-revised/temple/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_ydoor",
+      "path": "ui/art/library-painted/pz_ydoor.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_zcomp",
+      "path": "motion/pirate-revised/compass/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_zcomp",
+      "path": "ui/art/library-painted/pz_zcomp.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_zroute",
+      "path": "ui/designs_art/work_review/pz_zroute/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_zroute",
+      "path": "ui/art/library-painted/pz_zroute.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_zcur",
+      "path": "ui/designs_art/work_review/pz_zcur/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_zcur",
+      "path": "ui/art/library-painted/pz_zcur.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_zcode",
+      "path": "motion/pirate-revised/captain/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_zcode",
+      "path": "ui/art/library-painted/pz_zcode.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_zharp",
+      "path": "ui/designs_art/work_review/pz_zharp/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_zharp",
+      "path": "ui/art/library-painted/pz_zharp.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_zshadow",
+      "path": "ui/designs_art/work_review/pz_zshadow/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_zshadow",
+      "path": "ui/art/library-painted/pz_zshadow.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_znim",
+      "path": "motion/pirate-revised/dragon/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_znim",
+      "path": "ui/art/library-painted/pz_znim.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_zstars",
+      "path": "motion/pirate-revised/constellation/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_zstars",
+      "path": "ui/art/library-painted/pz_zstars.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_zthrone",
+      "path": "motion/pirate-revised/throne/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_zthrone",
+      "path": "ui/art/library-painted/pz_zthrone.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_plock",
+      "path": "ui/designs_art/work_review/pz_plock/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_plock",
+      "path": "ui/art/library-painted/pz_plock.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pliar",
+      "path": "ui/art/library-painted/pz_pliar.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pclock",
+      "path": "ui/designs_art/work_review/pz_pclock/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pclock",
+      "path": "ui/art/library-painted/pz_pclock.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pboss1",
+      "path": "ui/art/library-painted/pz_pboss1.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_plib",
+      "path": "motion/revised/diary/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_plib",
+      "path": "ui/art/library-painted/pz_plib.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pmirror",
+      "path": "motion/revised/mirrors/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pmirror",
+      "path": "ui/art/library-painted/pz_pmirror.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pgarden",
+      "path": "ui/designs_art/work_review/pz_pgarden/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pgarden",
+      "path": "ui/art/library-painted/pz_pgarden.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pqueen",
+      "path": "ui/designs_art/work_review/pz_pqueen/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pqueen",
+      "path": "ui/art/library-painted/pz_pqueen.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_parm",
+      "path": "ui/designs_art/work_review/pz_parm/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_parm",
+      "path": "ui/art/library-painted/pz_parm.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pjail",
+      "path": "motion/revised/boards-70/pjail/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pjail",
+      "path": "ui/art/library-painted/pz_pjail.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pobs",
+      "path": "ui/designs_art/work_review/pz_pobs/observatory--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pobs",
+      "path": "ui/art/library-painted/pz_pobs.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_peng",
+      "path": "ui/art/library-painted/pz_peng.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pmaze",
+      "path": "ui/designs_art/work_review/pz_pmaze/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pmaze",
+      "path": "ui/art/library-painted/pz_pmaze.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pcrypt",
+      "path": "ui/designs_art/work_review/pz_pcrypt/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pcrypt",
+      "path": "ui/art/library-painted/pz_pcrypt.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pvalve",
+      "path": "ui/designs_art/work_review/pz_pvalve/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pvalve",
+      "path": "ui/art/library-painted/pz_pvalve.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_plast",
+      "path": "ui/art/library-painted/pz_plast.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pdragon",
+      "path": "motion/revised/dragons/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pdragon",
+      "path": "ui/art/library-painted/pz_pdragon.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_phall",
+      "path": "ui/designs_art/work_review/pz_phall/environment--light.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_phall",
+      "path": "ui/art/library-painted/pz_phall.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pheart",
+      "path": "motion/revised/boards-70/pheart/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_pheart",
+      "path": "ui/art/library-painted/pz_pheart.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aarch",
+      "path": "atheran/assets/stations/pz_aarch/pz_aarch_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aarch",
+      "path": "ui/art/library-painted/pz_aarch.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aport",
+      "path": "atheran/assets/stations/pz_aport/pz_aport_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aport",
+      "path": "ui/art/library-painted/pz_aport.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_alight",
+      "path": "atheran/assets/stations/pz_alight/pz_alight_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_alight",
+      "path": "ui/art/library-painted/pz_alight.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_acur",
+      "path": "atheran/assets/stations/pz_acur/pz_acur_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_acur",
+      "path": "ui/art/library-painted/pz_acur.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_ashell",
+      "path": "atheran/assets/stations/pz_ashell/pz_ashell_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_ashell",
+      "path": "ui/art/library-painted/pz_ashell.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aroot",
+      "path": "atheran/assets/stations/pz_aroot/pz_aroot_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aroot",
+      "path": "ui/art/library-painted/pz_aroot.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aring",
+      "path": "atheran/assets/stations/pz_aring/pz_aring_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aring",
+      "path": "ui/art/library-painted/pz_aring.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_ashade",
+      "path": "atheran/assets/stations/pz_ashade/pz_ashade_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_ashade",
+      "path": "ui/art/library-painted/pz_ashade.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aswarm",
+      "path": "atheran/assets/stations/pz_aswarm/pz_aswarm_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aswarm",
+      "path": "ui/art/library-painted/pz_aswarm.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aecho",
+      "path": "atheran/assets/stations/pz_aecho/pz_aecho_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aecho",
+      "path": "ui/art/library-painted/pz_aecho.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_avsong",
+      "path": "atheran/assets/stations/pz_avsong/pz_avsong_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_avsong",
+      "path": "ui/art/library-painted/pz_avsong.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_agiant",
+      "path": "atheran/assets/stations/pz_agiant/pz_agiant_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_agiant",
+      "path": "ui/art/library-painted/pz_agiant.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aherd",
+      "path": "atheran/assets/stations/pz_aherd/pz_aherd_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aherd",
+      "path": "ui/art/library-painted/pz_aherd.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_abridge",
+      "path": "atheran/assets/stations/pz_abridge/pz_abridge_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_abridge",
+      "path": "ui/art/library-painted/pz_abridge.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_asilent",
+      "path": "atheran/assets/stations/pz_asilent/pz_asilent_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_asilent",
+      "path": "ui/art/library-painted/pz_asilent.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_alayer",
+      "path": "atheran/assets/stations/pz_alayer/pz_alayer_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_alayer",
+      "path": "ui/art/library-painted/pz_alayer.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_acity",
+      "path": "atheran/assets/stations/pz_acity/pz_acity_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_acity",
+      "path": "ui/art/library-painted/pz_acity.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_asong",
+      "path": "atheran/assets/stations/pz_asong/pz_asong_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_asong",
+      "path": "ui/art/library-painted/pz_asong.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aflow",
+      "path": "atheran/assets/stations/pz_aflow/pz_aflow_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aflow",
+      "path": "ui/art/library-painted/pz_aflow.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_arelic",
+      "path": "atheran/assets/stations/pz_arelic/pz_arelic_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_arelic",
+      "path": "ui/art/library-painted/pz_arelic.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aheart",
+      "path": "atheran/assets/stations/pz_aheart/pz_aheart_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_aheart",
+      "path": "ui/art/library-painted/pz_aheart.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_wbone",
+      "path": "atheran/assets/secret_worlds/pz_wbone/pz_wbone_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_wbone",
+      "path": "ui/art/library-painted/pz_wbone.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_wspore",
+      "path": "atheran/assets/secret_worlds/pz_wspore/pz_wspore_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_wspore",
+      "path": "ui/art/library-painted/pz_wspore.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_wlog",
+      "path": "atheran/assets/secret_worlds/pz_wlog/pz_wlog_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_wlog",
+      "path": "ui/art/library-painted/pz_wlog.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_wlake",
+      "path": "atheran/assets/secret_worlds/pz_wlake/pz_wlake_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_wlake",
+      "path": "ui/art/library-painted/pz_wlake.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_wfirst",
+      "path": "atheran/assets/secret_worlds/pz_wfirst/pz_wfirst_bg.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "library-puzzle",
+      "id": "pz_wfirst",
+      "path": "ui/art/library-painted/pz_wfirst.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_01",
+      "path": "treasure/art/story5/ch1_s3_scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_02",
+      "path": "treasure/art/story5/ch3_s3_scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_03",
+      "path": "treasure/art/story5/ch2_s2_scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_04",
+      "path": "treasure/art/story5/ch3_s2_scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_05",
+      "path": "treasure/art/story5/ch2_s3_scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_06",
+      "path": "treasure/art/story5/ch4_s3_scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_07",
+      "path": "treasure/art/story5/ch5_s2_scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_08",
+      "path": "treasure/art/story5/ch6_s3_scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_09",
+      "path": "treasure/art/story5/ch7_s2_scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_10",
+      "path": "treasure/art/story5/ch7_s3_scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_11",
+      "path": "expedition10/art/scenes/11-pipes.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_12",
+      "path": "treasure/art/story5/ch4_s2_scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_13",
+      "path": "treasure/art/story5/ch6_s2_scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_14",
+      "path": "expedition10/art/scenes/14-shadows.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_16",
+      "path": "expedition10/art/scenes/16-harbor-cargo.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_17",
+      "path": "expedition10/art/scenes/17-tide-clock.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_18",
+      "path": "expedition10/art/scenes/18-mask-gallery.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_19",
+      "path": "expedition10/art/scenes/19-wind-lab.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_20",
+      "path": "expedition10/art/scenes/20-guardian-gate.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_21",
+      "path": "expedition10/art/scenes/21-lantern-maze.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_22",
+      "path": "expedition10/art/scenes/22-waterworks.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_23",
+      "path": "expedition10/art/scenes/23-signal-towers.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_24",
+      "path": "expedition10/art/scenes/24-disk-temple.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "story-station",
+      "id": "ml10_25",
+      "path": "expedition10/art/scenes/25-fivefold-seal.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "dual",
+      "path": "ui/art/games/dual.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "juggle",
+      "path": "ui/art/games/juggle.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "crash",
+      "path": "ui/art/games/crash.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "loci",
+      "path": "ui/art/games/loci.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "faces",
+      "path": "ui/art/games/faces.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "cards",
+      "path": "ui/art/games/cards.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "mylist",
+      "path": "ui/art/games/mylist.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "pm",
+      "path": "ui/art/games/pm.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "piano",
+      "path": "ui/art/games/piano.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "scene",
+      "path": "ui/art/games/scene.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "symspan",
+      "path": "ui/art/games/symspan.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "revspan",
+      "path": "ui/art/games/revspan.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "dx_cargo",
+      "path": "ui/art/games/dx_cargo.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "dx_memory",
+      "path": "ui/art/games/dx_memory.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "mmap",
+      "path": "ui/art/games/mmap.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "compass",
+      "path": "ui/art/games/compass.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "nav",
+      "path": "ui/art/games/nav.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "fold",
+      "path": "ui/art/games/fold.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "dx_pack",
+      "path": "ui/art/games/dx_pack.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "dx_turn",
+      "path": "ui/art/games/dx_turn.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "matrix",
+      "path": "ui/art/games/matrix.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "series",
+      "path": "ui/art/games/series.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "xw",
+      "path": "ui/art/games/xw.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "deduce",
+      "path": "ui/art/games/deduce.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "dx_route",
+      "path": "ui/art/games/dx_route.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "dx_balance",
+      "path": "ui/art/games/dx_balance.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "dx_order",
+      "path": "ui/art/games/dx_order.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "hawk",
+      "path": "ui/art/games/hawk.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "glance",
+      "path": "ui/art/games/glance.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "dd",
+      "path": "ui/art/games/dd.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "dx_signal",
+      "path": "ui/art/games/dx_signal.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "racer",
+      "path": "ui/art/games/racer.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "steps",
+      "path": "ui/art/games/steps.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "radar",
+      "path": "ui/art/games/radar.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "mot",
+      "path": "ui/art/games/mot.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "brake",
+      "path": "ui/art/games/brake.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "dx_search",
+      "path": "ui/art/games/dx_search.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "conf",
+      "path": "ui/art/games/conf.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "sw",
+      "path": "ui/art/games/sw.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "brain-art",
+      "id": "dx_sort",
+      "path": "ui/art/games/dx_sort.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "بطاقات الذاكرة",
+      "path": "ui/art/kid_01.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "وش تغيّر؟",
+      "path": "ui/art/kid_02.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "كمّل النمط",
+      "path": "ui/art/kid_03.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "اتبع الضوء",
+      "path": "ui/art/kid_04.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "ظل الشكل",
+      "path": "ui/art/kid_05.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "موقف السيارات",
+      "path": "ui/art/kid_06.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "نفس الحيوان؟",
+      "path": "ui/art/kid_07.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "الصورة الناقصة",
+      "path": "ui/art/kid_08.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "الرسم بالمربعات",
+      "path": "ui/art/kid_09.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "خريطة الكنز",
+      "path": "ui/art/kid_10.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "فقاعات الألوان",
+      "path": "ui/art/kid_11.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "وين الكرة؟",
+      "path": "ui/art/kid_12.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "المرآة السحرية",
+      "path": "ui/art/kid_13.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "لا تلمس الذئب!",
+      "path": "ui/art/kid_14.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "حديقة الحروف",
+      "path": "ui/art/kid_15.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "ورشة الكلمات",
+      "path": "ui/art/kid_16.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "متجري الصغير",
+      "path": "ui/art/kid_17.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "قطار الأرقام",
+      "path": "ui/art/kid_18.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "قصة النبتة",
+      "path": "ui/art/kid_19.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "البنّاء الصغير",
+      "path": "ui/art/kid_20.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "جسر الأصدقاء",
+      "path": "ui/art/kid_21.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "بيت الحيوان",
+      "path": "ui/art/kid_22.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "رحلة قطرة",
+      "path": "ui/art/kid_23.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "قلبي يفهم",
+      "path": "ui/art/kid_24.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "ميزان الفريق",
+      "path": "ui/art/kid_25.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    },
+    {
+      "kind": "kid-art-name",
+      "id": "بوصلة الأصدقاء",
+      "path": "ui/art/kid_26.webp",
+      "existence": "exists-at-source-sha",
+      "reason": null
+    }
+  ]
+}
