@@ -2,7 +2,7 @@ name: MindLab folder navigation and sequential unlock acceptance
 
 on:
   push:
-    branches: [feature/mindlab-puzzle-folders-20261122, review/mindlab-cleanup-integration-20261123]
+    branches: [feature/mindlab-puzzle-folders-20261122, review/mindlab-cleanup-integration-20261123, review/mindlab7-final-closure-20261123]
   pull_request:
     branches: [review/mindlab-acceptance-1to6-20261122, feature/mindlab-puzzle-folders-20261122]
   workflow_dispatch:
