@@ -215,14 +215,29 @@
     'كلب': 'ui/designs_art/river_stage2/passengers/dog_bank.png',
     'قط': 'ui/designs_art/river_stage2/passengers/cat_bank.png',
     'فأر': 'ui/designs_art/river_stage2/passengers/mouse_bank.png',
-    'مزارع': riverArt + '02_boat_and_farmer/farmer_go.png',
+    'مجدف': riverArt + '02_boat_and_farmer/farmer_go.png',
     'سمكة': 'treasure/art/story5/ch1_s2_piece_fish.webp',
     'صندوق': 'expedition10/art/props/16-cargo-chest.webp',
     'فانوس': 'motion/art/prop_biolantern.webp',
     'حبل': 'treasure/art/story5/tool_rope.webp',
     'ماء': 'expedition10/art/props/22-water-jugs.webp',
-    'زاد': 'motion/pirate-revised/loot/sack.webp'
+    'زاد': 'motion/pirate-revised/loot/sack.webp',
+    'علف': riverArt + '03_passengers/grass_bank.png',
+    'حطب': 'motion/pirate-revised/bridge/plank.webp',
+    'حاجز': 'motion/pirate-revised/bridge/plank.webp',
+    'لوح-أ': 'motion/pirate-revised/bridge/plank.webp',
+    'لوح-ب': 'motion/pirate-revised/bridge/plank.webp',
+    'سلة': 'motion/pirate-revised/loot/sack.webp',
+    'كيس الحبوب': 'motion/pirate-revised/loot/sack.webp',
+    'نصف-أ': 'motion/pirate-revised/loot/sack.webp',
+    'نصف-ب': 'motion/pirate-revised/loot/sack.webp',
+    'مفتاح': 'watercolor/art/icons54/key.webp',
+    'عجلة': 'watercolor/art/icons54/wheel.webp'
   };
+
+  const ward = 'expedition10/art/crew/poses/ward-curious.webp';
+  const classicSprites = { 'ذئب': 'wolf', 'خروف': 'sheep', 'توأم': 'sheep', 'صغير': 'sheep', 'عشب': 'grass' };
+  const showName = name => name.replace(/المزارع|مزارع/g, 'ورد');
 
   function river(api, frame) {
     const board = api.authored.board;
@@ -230,6 +245,7 @@
     let state = rules.initial;
     let crossings = 0;
     let busy = false;
+    let boatBank = state.bank;
     let selected = new Set();
     const minimum = rules.best(state).crossings;
     const sound = sfx.roundScene?.();
@@ -240,19 +256,21 @@
       : ['ضفة البداية', 'ضفة الوصول', 'المرسى الثالث'];
     const icon = (src, cls = '') => `<img src="${src}" class="${cls}" alt="" draggable="false">`;
     const holder = frame(api, { id: 'authored-river', layout: 'information',
-      lead: esc(board.title), top: `<details class="ml-river-rules"><summary>قواعد المرحلة</summary>
-        <p>${esc(board.description)} اختر الحمولة ثم اضغط وجهتك.</p><ul>
-        ${rules.names.map((name, i) => `<li>${esc(name)} ← ${labels[rules.goal[i]]}</li>`).join('')}</ul></details>` });
+      lead: esc(showName(board.title)), top: `<details class="ml-river-rules"><summary>قواعد المرحلة</summary>
+        <p>${esc(showName(board.description))} المس الراكب على الضفة ليصعد، أو المسه في القارب ليعود. اختر وجهتك للإبحار.</p><ul>
+        ${rules.names.map((name, i) => `<li>${esc(showName(name))} ← ${labels[rules.goal[i]]}</li>`).join('')}</ul></details>` });
     const panel = holder.querySelector('#lbb');
-    panel.innerHTML = `<div class="ml-river-board" data-docks="${rules.places.length}">
+    panel.innerHTML = `<div class="ml-river-scene"><div class="ml-river-board" data-docks="${rules.places.length}" data-walking="${Boolean(board.walking)}">
       <div class="ml-river-places"></div>
-      <div class="ml-river-vessel" aria-hidden="true">
+      <div class="ml-river-vessel" data-heading="right">
         <div class="ml-river-rig">
           ${icon(riverArt + '04_effects/fx_wake_go.png', 'ml-river-wake')}
           ${icon(riverArt + '02_boat_and_farmer/boat_hull_go.png', 'ml-river-hull')}
           <div class="ml-river-seats"></div>
+          <img class="ml-river-captain" alt="">
+          ${icon(riverArt + '02_boat_and_farmer/boat_oar_go.png', 'ml-river-oar')}
         </div>
-      </div></div>
+      </div></div></div>
       <div class="ml-river-controls">
         <small class="ml-river-cargo" aria-live="polite"></small>
         <div class="ml-river-actions"></div>
@@ -263,48 +281,78 @@
     const cargoStatus = panel.querySelector('.ml-river-cargo');
     const actions = panel.querySelector('.ml-river-actions');
     const seats = vessel.querySelector('.ml-river-seats');
-    const dock = bank => [34, 66, 50, 42, 58][bank];
-    const portrait = name => portraits[name] || portraits[name.split(' ')[0]];
-    let boardingFlight;
+    const captainSprite = vessel.querySelector('.ml-river-captain');
+    const docks = [30, 70, 50];
+    const portrait = (name, pose) => {
+      const sprite = classicSprites[name];
+      if (sprite && pose) return riverArt + '03_passengers/' + sprite + '_' + pose + '.png';
+      if (name === 'مزارع') return ward;
+      return portraits[name];
+    };
+    const passenger = (name, pose) => {
+      const src = portrait(name, pose);
+      return src ? icon(src) : `<span class="ml-river-token" aria-hidden="true">${esc(showName(name))}</span>`;
+    };
+    const findSprite = (location, name) => Array.from(location.querySelectorAll('[data-river-item]'))
+      .find(button => button.dataset.riverItem === name)?.firstElementChild;
+    const activeCaptain = () => rules.names[state.captain] === 'مجدف' ? portraits['مجدف'] : ward;
+
+    function transfer(name, aboard) {
+      if (busy || api.ended) return;
+      const onLand = state.bank !== boatBank;
+      if (!aboard) {
+        const nextWeight = rules.groups(state).reduce((weight, group) =>
+          weight + (selected.has(group.name) || group.name === name ? group.weight : 0), 0);
+        if (nextWeight > board.capacity) {
+          api.msg(onLand ? 'الحمولة أكبر مما يمكنك حمله.' : 'لا يتّسع القارب لهذا الراكب مع الحمولة الحالية.');
+          return;
+        }
+      }
+      const from = findSprite(aboard && !onLand ? seats : banks, name)?.getBoundingClientRect();
+      if (aboard) selected.delete(name);
+      else selected.add(name);
+      sound?.play(aboard ? 'river.unboard' : 'river.board');
+      if (onLand) { draw(); return; }
+      busy = !reduced.matches;
+      draw();
+      const target = findSprite(aboard ? banks : seats, name);
+      hop(name, from, target, () => {
+        busy = false;
+        draw();
+        [...panel.querySelectorAll('[data-river-item]')]
+          .find(button => button.dataset.riverItem === name && !button.disabled)?.focus({ preventScroll: true });
+      });
+    }
 
     function draw() {
       const focused = document.activeElement?.dataset.riverItem;
       const groups = rules.groups(state);
       const cargo = groups.filter(group => selected.has(group.name));
-      banks.innerHTML = rules.places.map(bank => `<section class="ml-river-place" data-current="${bank === state.bank}">
-        <h4>${labels[bank]}</h4><div>${groups.filter(group => state.loc[group.indices[0]] === bank).map(group =>
-          `<button type="button" data-river-item="${esc(group.name)}" aria-pressed="${selected.has(group.name)}"
-              ${busy || bank !== state.bank ? 'disabled' : ''}>
-              ${portrait(group.name) ? icon(portrait(group.name)) : `<span class="ml-river-token" aria-hidden="true">${esc(group.name)}</span>`}<span>${esc(group.name)}</span>
-            </button>`).join('')}</div></section>`).join('');
-      banks.querySelectorAll('button').forEach(button => {
-        const name = button.dataset.riverItem;
-        button.onclick = () => {
-          if (busy || api.ended) return;
-          const unloaded = selected.delete(name);
-          if (!unloaded) selected.add(name);
-          sound?.play(unloaded ? 'river.unboard' : 'river.board');
-          const item = button.querySelector('img, .ml-river-token');
-          const start = (unloaded ? Array.from(seats.children).find(seat => seat.dataset.cargoName === name) : item)?.getBoundingClientRect();
-          draw();
-          const target = Array.from(banks.querySelectorAll('[data-river-item]'))
-            .find(itemButton => itemButton.dataset.riverItem === name)?.querySelector('img, .ml-river-token');
-          const seated = Array.from(seats.children).find(item => item.dataset.cargoName === name);
-          hop(item, start, unloaded ? target : seated);
-        };
-        if (focused === name && !button.disabled) button.focus({ preventScroll: true });
-      });
-      seats.innerHTML = cargo.map(({ name }) => {
-        const src = portrait(name);
-        return src ? `<img src="${src}" alt="" data-cargo-name="${esc(name)}">`
-          : `<span class="ml-river-seat-token" data-cargo-name="${esc(name)}">${esc(name)}</span>`;
-      }).join('');
-      vessel.style.setProperty('--dock', dock(state.bank) + '%');
+      const onLand = state.bank !== boatBank;
+      const captainName = showName(rules.names[state.captain] || 'ورد');
+      function piece(group, aboard, disabled) {
+        const { name } = group, label = showName(name);
+        return `<button type="button" data-river-item="${esc(name)}" aria-label="${esc(label)}"
+                 title="${esc(label)}" aria-pressed="${aboard}" ${disabled ? 'disabled' : ''}>
+          ${passenger(name, aboard ? 'seated' : undefined)}<span class="ml-river-piece-name">${esc(label)}</span></button>`;
+      }
+      banks.innerHTML = rules.places.map(bank => `<section class="ml-river-place" data-bank="${bank}" data-current="${bank === state.bank}">
+        <h4>${labels[bank]}</h4><div>${groups.filter(group => state.loc[group.indices[0]] === bank &&
+          (onLand || !selected.has(group.name))).map(group => piece(group, onLand && selected.has(group.name),
+            busy || bank !== state.bank)).join('')}
+          ${onLand && bank === state.bank ? icon(activeCaptain(), 'ml-river-land-captain') : ''}</div></section>`).join('');
+      seats.innerHTML = onLand ? '' : cargo.map(group => piece(group, true, busy)).join('');
+      for (const button of panel.querySelectorAll('[data-river-item]')) {
+        const { riverItem } = button.dataset;
+        button.onclick = () => transfer(riverItem, selected.has(riverItem));
+        if (focused === riverItem && !button.disabled) button.focus({ preventScroll: true });
+      }
+      placeVessel(boatBank);
+      captainSprite.hidden = onLand;
+      captainSprite.src = activeCaptain();
       const weight = cargo.reduce((sum, group) => sum + group.weight, 0);
-      vessel.style.setProperty('--tilt', Math.min(8, weight * 2) + 'deg');
-      const captain = state.captain >= 0 ? ' · القائد: ' + rules.names[state.captain] : '';
       const tide = board.tide ? ' · ' + (state.phase ? 'جزر' : 'مد') : '';
-      cargoStatus.textContent = `الحمولة ${XAR(weight)} / ${XAR(board.capacity)} · الرحلات ${XAR(crossings)}${captain}${tide}`;
+      cargoStatus.textContent = `الحمولة ${XAR(weight)} / ${XAR(board.capacity)} · الرحلات ${XAR(crossings)} · القائد: ${captainName}${tide}`;
       const choices = rules.edges.filter(([from]) => from === state.bank);
       const operations = rules.operations(state);
       actions.replaceChildren();
@@ -331,38 +379,45 @@
         const walk = rules.walking(...edge);
         button((walk ? 'سر إلى ' : 'أبحر إلى ') + labels[edge[1]], () => move(edge, cargo), edge[1], walk);
       });
-      operations.forEach(operation => button(operation.label, () => {
+      operations.forEach(operation => button(showName(operation.label), () => {
         if (busy || api.ended) return;
         state = operation.state;
         selected.clear();
-        api.msg(esc(operation.label));
+        api.msg(esc(showName(operation.label)));
         draw();
         check();
       }));
     }
 
-    function hop(item, start, landing) {
-      if (!item || !start || !landing || reduced.matches) return;
+    function hop(name, start, landing, done, walk = false) {
+      if (!start || !landing || reduced.matches) { done(); return; }
       const host = scene.getBoundingClientRect();
       const end = landing.getBoundingClientRect();
-      const clone = item.cloneNode(true);
-      boardingFlight?.remove();
-      boardingFlight = clone;
+      const clone = landing.cloneNode(true);
+      const src = portrait(name, walk ? undefined : 'boarding');
+      if (clone.tagName === 'IMG' && src) clone.src = src;
       clone.className = 'ml-river-hop';
       Object.assign(clone.style, {
         left: start.left - host.left + 'px', top: start.top - host.top + 'px',
         width: start.width + 'px', height: start.height + 'px'
       });
       scene.append(clone);
-      const dx = end.left - start.left;
-      const dy = end.top - start.top;
+      const dx = end.left + end.width / 2 - start.left - start.width / 2;
+      const dy = end.bottom - start.bottom;
+      const arc = walk ? 5 : Math.min(30, 13 + Math.abs(dx) * .17);
       landing.style.visibility = 'hidden';
       const flight = clone.animate([
         { transform: 'translate(0,0)' },
-        { transform: `translate(${dx / 2}px,${dy / 2 - 19}px) scale(1.12)` },
+        { transform: `translate(${dx * .48}px,${dy * .48 - arc}px)` },
         { transform: `translate(${dx}px,${dy}px) scale(${end.width / start.width})` }
-      ], { duration: 280, easing: 'ease-out' });
-      flight.onfinish = () => { clone.remove(); landing.style.visibility = ''; };
+      ], { duration: walk ? 260 : 320, easing: 'ease-in-out' });
+      const finish = () => {
+        clone.remove();
+        landing.style.visibility = '';
+        if (scene.isConnected) done();
+      };
+      flight.onfinish = finish;
+      flight.oncancel = finish;
     }
 
     function check() {
@@ -372,36 +427,57 @@
       api.win(`أنهيت المرحلة في ${XAR(crossings)} رحلات. أقل حل: ${XAR(minimum)}.`);
     }
 
+    function placeVessel(bank) {
+      vessel.style.setProperty('--dock', docks[bank] + '%');
+      vessel.style.setProperty('--waterline', bank === 2 ? '48%' : '65%');
+    }
+
     function move(edge, cargo) {
       if (busy || api.ended) return;
       const action = rules.travel(state, edge, cargo);
       if (action.error) {
         api.wrong({ feedback: false });
-        api.msg(esc(action.error));
+        api.msg(esc(showName(action.error)));
         sound?.play('river.unboard');
         return;
       }
       busy = true;
       draw();
       if (!action.walk) {
-        vessel.style.setProperty('--dock', dock(edge[1]) + '%');
-        vessel.dataset.heading = dock(edge[1]) > dock(edge[0]) ? 'right' : 'left';
+        placeVessel(edge[1]);
+        vessel.dataset.heading = docks[edge[1]] > docks[edge[0]] ? 'right' : 'left';
         scene.classList.add('sailing');
         sound?.play('river.cross');
       }
       later(() => {
         if (!scene.isConnected) return;
+        const starts = cargo.map(({ name }) => {
+          const sprite = findSprite(seats, name) || findSprite(banks, name);
+          return [name, sprite?.getBoundingClientRect()];
+        });
         if (!action.walk) {
           crossings++;
+          boatBank = edge[1];
           sound?.play('river.dock');
         }
         state = action.state;
         scene.classList.remove('sailing');
         selected = new Set();
-        busy = false;
         draw();
-        api.msg('موقعك: ' + labels[state.bank]);
-        check();
+        function arrived() {
+          busy = false;
+          draw();
+          api.msg('موقعك: ' + labels[state.bank]);
+          check();
+        }
+        if (!starts.length || reduced.matches) { arrived(); return; }
+        if (!action.walk) sound?.play('river.unboard');
+        let pending = starts.length;
+        for (const [name, rect] of starts) {
+          hop(name, rect, findSprite(banks, name), () => {
+            if (--pending === 0) arrived();
+          }, action.walk);
+        }
       }, reduced.matches || action.walk ? 0 : crossingTime);
     }
 
@@ -411,9 +487,9 @@
       hint() {
         const action = rules.best(state)?.first;
         if (!action) return 'من هذا الوضع لا يوجد حل. أعد المرحلة من البداية.';
-        if (!action.edge) return esc(action.label);
+        if (!action.edge) return esc(showName(action.label));
         const destination = labels[action.edge[1]];
-        const cargo = action.cargo.map(group => group.name).join(' و');
+        const cargo = action.cargo.map(group => showName(group.name)).join(' و');
         return `${action.walk ? 'سر' : 'أبحر'} إلى ${destination}${cargo ? ' ومعك ' + esc(cargo) : ' بلا حمولة'}.`;
       },
       reveal: () => `أقل حل للمرحلة: ${XAR(minimum)} رحلات.`

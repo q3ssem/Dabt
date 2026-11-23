@@ -11,88 +11,197 @@
   grid-template-rows: minmax(0,1fr) auto;
   height: calc(var(--fit-room, 66dvh) - 8px);
 }
-.lb[data-lb="authored-river"] .ml-river-rules { display: none; }
+.lb[data-lb="authored-river"] { position: relative; }
+.lb[data-lb="authored-river"] .ml-river-rules {
+  position: absolute;
+  z-index: 5;
+  inset: 6px 6px auto auto;
+  max-width: min(83%, 280px);
+  padding: 3px 8px;
+  border-radius: 9px;
+  color: #34291e;
+  background: #fff4dc;
+  font-size: .75rem;
+}
+.ml-river-rules p, .ml-river-rules ul { margin-block: 5px; }
+.ml-river-rules ul { padding-inline-start: 16px; }
+.ml-river-scene { container-type: size; display: grid; place-items: center; min-height: 0; }
 .ml-river-board {
   position: relative;
   isolation: isolate;
   container-type: inline-size;
-  width: 100%;
+  width: min(100cqw, 100cqh);
   min-height: 0;
-  height: 100%;
+  aspect-ratio: 1;
   direction: ltr;
+  background: #78b9ce;
 }
 .ml-river-board::before {
   content: "";
   position: absolute;
   z-index: -1;
   inset: 0;
-  background: #78b9ce url(../adventure35/river-day.webp) center / 100% 100% no-repeat;
+  background: url(../adventure35/river-day.webp) center / 100% 100% no-repeat;
 }
 html[data-skin="dark"] .ml-river-board::before { filter: brightness(.73) saturate(.86); }
-.ml-river-places { position: absolute; z-index: 2; inset: 39% 3% auto; display: grid; grid-template-columns: 31% 31%; justify-content: space-between; }
-.ml-river-board:not([data-docks="2"]) .ml-river-places { grid-template-columns: repeat(3, minmax(0, 1fr)); gap: 4px; inset-block-start: 24%; }
-.ml-river-place { direction: rtl; text-align: center; }
-.ml-river-place h4 { display: inline-block; margin: 0; padding: 1px 5px; color: #34291e; background: #fff2ceee; font-size: .72rem; border-radius: 18px; }
+.ml-river-places { position: absolute; z-index: 2; inset: 0; pointer-events: none; }
+.ml-river-place {
+  position: absolute;
+  bottom: 40%;
+  left: 1%;
+  width: 29%;
+  direction: rtl;
+  text-align: center;
+  display: flex;
+  flex-direction: column-reverse;
+  align-items: center;
+}
+.ml-river-place[data-bank="1"] { left: auto; right: 1%; }
+.ml-river-place[data-bank="2"] {
+  left: 36%;
+  bottom: 64%;
+  width: 28%;
+  background: linear-gradient(#99a458, #b0a36d 70%, #887449);
+  border-radius: 40% 35% 23% 26%;
+}
+.ml-river-board[data-walking="true"] .ml-river-place[data-bank="2"] {
+  left: auto;
+  right: 1%;
+  bottom: 63%;
+  background: transparent;
+}
+.ml-river-place:is([data-bank="3"], [data-bank="4"]) {
+  left: auto;
+  right: 1%;
+  bottom: 81%;
+  background: #706448e8;
+  border: 1px solid #c8ae6f;
+  border-radius: 10px;
+}
+.ml-river-place[data-bank="4"] { right: 32%; }
+.ml-river-place h4 {
+  margin: 0;
+  padding: 1px 5px;
+  color: #34291e;
+  background: #fff2ceee;
+  font-size: .66rem;
+  border-radius: 18px;
+}
 .ml-river-place[data-current="true"] h4 { color: #fff6dc; background: #214f45; }
-.ml-river-place > div { display: flex; justify-content: center; flex-wrap: wrap; }
-.ml-river-place button {
+.ml-river-place > div { display: flex; justify-content: center; flex-wrap: wrap; width: 100%; }
+.ml-river-board [data-river-item] {
+  position: relative;
   display: grid;
-  place-items: center;
+  place-items: end center;
   min-width: 44px;
   min-height: 44px;
   border: 0;
-  padding: 1px;
+  padding: 0;
+  color: #fff6de;
   background: transparent;
   box-shadow: none;
-  color: #fff6de;
-  font-size: .64rem;
-  font-weight: 800;
-  text-shadow: 0 1px 2px #171807, 0 0 4px #171807, 0 0 5px #171807;
 }
-.ml-river-place button[aria-pressed="true"] img { opacity: .36; }
-.ml-river-place button:disabled { opacity: .82; }
-.ml-river-place button:focus-visible { outline: 2px solid #193d32; border-radius: 40%; }
-.ml-river-place img { width: clamp(24px, 10cqw, 46px); height: clamp(27px, 9cqw, 42px); object-fit: contain; filter: drop-shadow(0 2px 2px #1718078a); }
-.ml-river-token { color: #f3d19a; font-size: 18px; }
+.ml-river-board [data-river-item]:not(:disabled) { pointer-events: auto; }
+.ml-river-board [data-river-item]:disabled { opacity: 1; }
+.ml-river-board [data-river-item]:focus-visible { outline: 2px solid #fff2ce; border-radius: 40%; }
+.ml-river-piece-name {
+  position: absolute;
+  inset-block-end: -2px;
+  inset-inline: 0;
+  text-align: center;
+  font-size: .59rem;
+  font-weight: 800;
+  color: #fff6de;
+  text-shadow: 0 1px 2px #171807, 0 0 5px #171807;
+  pointer-events: none;
+}
+.ml-river-place img {
+  width: clamp(42px, 13cqw, 68px);
+  height: clamp(42px, 13cqw, 68px);
+  object-fit: contain;
+  object-position: center bottom;
+  filter: drop-shadow(0 2px 2px #1718079c);
+}
+.ml-river-place [aria-pressed="true"]::after {
+  content: "";
+  position: absolute;
+  inset: 1px;
+  border: 1px dashed #ffe398;
+  border-radius: 35%;
+  pointer-events: none;
+}
+.ml-river-token {
+  align-self: center;
+  color: #fff2ca;
+  background: #5b412b;
+  border: 1px solid #ba8f4a;
+  padding: 3px;
+  border-radius: 5px;
+  max-width: 100%;
+  font-size: .67rem;
+}
+.ml-river-token + .ml-river-piece-name { display: none; }
 .ml-river-vessel {
   position: absolute;
-  z-index: 1;
+  z-index: 3;
   pointer-events: none;
-  width: clamp(72px, 29%, 156px);
+  width: clamp(108px, 35%, 178px);
   top: 65%;
-  left: var(--dock, 34%);
-  transform: translate(-50%, -22%);
+  left: var(--dock, 30%);
+  transform: translate(-50%, -50%);
   transition: left .78s cubic-bezier(.4,.05,.24,1);
 }
-.ml-river-rig { position: relative; rotate: var(--tilt, 0deg); transition: rotate .2s ease; }
-.ml-river-hull { position: relative; display: block; width: 100%; }
-.ml-river-wake { position: absolute; inset: 37% 20% auto auto; width: 88%; opacity: 0; }
+.ml-river-board[data-docks="3"] .ml-river-vessel { top: var(--waterline, 65%); transition-property: left, top; }
+.ml-river-rig { position: relative; }
+.ml-river-hull { position: relative; display: block; width: 100%; transform: rotate(28deg); }
+.ml-river-vessel[data-heading="left"] .ml-river-hull { transform: scaleX(-1) rotate(28deg); }
+.ml-river-wake { position: absolute; inset: 36% 20% auto auto; width: 88%; opacity: 0; }
 .ml-river-vessel[data-heading="left"] .ml-river-wake { inset-inline: 20% auto; scale: -1 1; }
-.ml-river-seats { position: absolute; inset: -16% 16% 34%; display: flex; align-items: end; justify-content: center; }
-.ml-river-seats img { width: min(100%, 31px); min-width: 0; height: 100%; object-fit: contain; object-position: bottom; }
-.ml-river-hop { position: absolute; object-fit: contain; pointer-events: none; z-index: 3; }
-.sailing .ml-river-rig { animation: ml-river-rock .78s ease-in-out; }
+.ml-river-captain {
+  position: absolute;
+  inset-inline-start: 52%;
+  bottom: 48%;
+  width: 31%;
+  height: 55%;
+  object-fit: contain;
+  object-position: center bottom;
+  clip-path: inset(0 0 18% 0);
+  transform: translateY(18%);
+}
+.ml-river-oar {
+  position: absolute;
+  width: 68%;
+  right: 15%;
+  bottom: 12%;
+  transform: rotate(13deg);
+  transform-origin: 60% 49%;
+}
+.ml-river-vessel[data-heading="left"] .ml-river-captain { inset-inline-start: 17%; scale: -1 1; }
+.ml-river-vessel[data-heading="left"] .ml-river-oar { right: auto; left: 15%; scale: -1 1; }
+.ml-river-seats { position: absolute; z-index: 1; inset: auto 42% 42% 13%; display: flex; justify-content: center; }
+.ml-river-vessel[data-heading="left"] .ml-river-seats { inset-inline: 42% 13%; }
+.ml-river-seats button { min-width: 0 !important; flex: 1 1 44px; }
+.ml-river-seats img { width: 100%; min-width: 0; height: 44px; object-fit: contain; object-position: bottom; }
+.ml-river-hop { position: absolute; object-fit: contain; object-position: center bottom; transform-origin: center bottom; pointer-events: none; z-index: 4; }
+.sailing .ml-river-oar { animation: ml-river-row .39s ease-in-out 2; }
 .sailing .ml-river-wake { animation: ml-river-wake .78s ease both; }
-@keyframes ml-river-rock { 30% { transform: translateY(-3px) rotate(-3deg); } 72% { transform: translateY(1px) rotate(2deg); } }
+@keyframes ml-river-row { 50% { transform: rotate(-21deg) translateY(2px); } }
 @keyframes ml-river-wake { 24%, 70% { opacity: .85; } }
 .ml-river-controls { text-align: center; }
 .ml-river-cargo { display: block; padding: 3px 6px; }
 .ml-river-actions { display: flex; flex-wrap: wrap; gap: 3px; justify-content: center; }
 .ml-river-actions button { min-height: 44px; padding: 3px 7px; }
 .ml-river-actions [data-river-travel] { display: inline-grid; justify-items: center; align-content: center; }
-.ml-river-actions img { width: 32px; height: 22px; object-fit: contain; }
+.ml-river-actions img { width: 32px; height: 22px; object-fit: contain; transform: rotate(22deg); }
 .ml-river-actions small { font-size: .69rem; }
 @media (max-height: 470px) and (orientation: landscape) {
-  .ml-river-places { inset-block-start: 29%; }
-  .ml-river-vessel { width: clamp(70px, 19%, 117px); }
+  .ml-river-vessel { width: clamp(86px, 22%, 135px); }
+  .ml-river-place img { width: 40px; height: 40px; }
+  .ml-river-place:has(button:nth-child(3)) { width: 96px; }
+  .ml-river-place[data-bank="0"]:has(button:nth-child(3)) { right: 73%; left: auto; }
+  .ml-river-place[data-bank="1"]:has(button:nth-child(3)) { left: 73%; right: auto; }
 }
 @media (prefers-reduced-motion: reduce) {
-  .ml-river-vessel, .ml-river-rig { transition: none; }
-  .sailing :is(.ml-river-rig,.ml-river-wake) { animation: none; }
+  .ml-river-vessel { transition: none; }
+  .sailing :is(.ml-river-oar,.ml-river-wake) { animation: none; }
 }
-
-/* Side journey Phase 2: keep unselectable remote river-bank cargo from intercepting a tap. */
-.ml-river-place[data-current="false"]{pointer-events:none}
-.ml-river-place[data-current="true"]{position:relative;z-index:3}
-.ml-river-place button{max-width:100%;overflow-wrap:anywhere}
-.ml-river-place .ml-river-token{display:inline-block;max-width:100%;white-space:normal;font-size:clamp(12px,3.5cqw,16px);line-height:1.2}

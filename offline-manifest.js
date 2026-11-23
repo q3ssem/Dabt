@@ -177,11 +177,15 @@ self.MINDLAB_OFFLINE_FILES.push("motion/pirate-painted.js", "motion/pirate-paint
 
 self.MINDLAB_OFFLINE_FILES.push("motion/adventure35.css","motion/adventure35/river-day.webp","motion/adventure35/cipher.webp");
 
-// Fixed challenge tracks for the three featured puzzles.
+// Fixed challenge tracks and their shared river props.
 self.MINDLAB_OFFLINE_FILES.push(
   "motion/stages60/play.js",
   "motion/stages60/play.css",
-  "motion/stages60/boards.json"
+  "motion/stages60/boards.json",
+  "treasure/art/story5/ch1_s2_piece_fish.webp",
+  "treasure/art/story5/tool_rope.webp",
+  "motion/pirate-revised/loot/sack.webp",
+  "motion/pirate-revised/bridge/plank.webp"
 );
 
 self.MINDLAB_OFFLINE_FILES.push(

@@ -10,12 +10,57 @@
     "release": "5.5.30",
     "read_only": true
   },
-  "status": "batch-01-ready-for-review",
+  "status": "batch-02-movement-implemented-browser-pending",
   "owner": "Work — puzzle narrative, difficulty, editorial QA",
   "other_owner": "MindLab6 engineering — engines/migration only",
   "scope": "existing puzzle texts, mechanics review, progressive hints and difficulty; no from-scratch replacement",
   "completed_puzzles": [],
   "current_batch": {
+    "id": "batch-02",
+    "delivery": "docs/workshop/batch-02/README.md",
+    "status": "river-presentation-and-movement-audit",
+    "implemented": [
+      {
+        "id": "pz_river",
+        "scope": "20 authored stages",
+        "logic_verification": "node qa/tests/authored-stages.cjs",
+        "visual_verification": "blocked: Chromium cannot create a Unix socket in the executor"
+      },
+      {
+        "id": "pz_flow",
+        "scope": "straight swipe and pointer lifecycle",
+        "logic_verification": "node qa/tests/authored-stages.cjs; movement-stage boards retain coverage",
+        "visual_verification": "browser regression authored; not run in the executor"
+      }
+    ],
+    "reviewed": [
+      "pz_ice",
+      "pz_flow",
+      "pz_tan",
+      "pz_untangle",
+      "pz_rush",
+      "pz_pipe"
+    ],
+    "new_original_puzzles": 0
+  },
+  "next_action": "Continue implementation and verification in the authored movement family using the batch-02 cases. Recheck river touch and art on a browser-capable environment.",
+  "hard_rules": [
+    "do-not-edit-main",
+    "do-not-edit-mindlab6-engineering-branch",
+    "keep-original-puzzle-ids",
+    "preserve-saves-and-chapter-gates",
+    "record-logic-validation-before-changing-solutions",
+    "no-historical-map-reintroduction",
+    "update-editorial-progress-after-each-batch"
+  ],
+  "deliverables": [
+    "source-index-with-IDs",
+    "3-exemplar-puzzle-edit-packets",
+    "quality-gate-results",
+    "review-ready-batch-artifacts",
+    "handoff-to-engineering"
+  ],
+  "previous_batch": {
     "id": "batch-01",
     "status": "verified-editorial-drafts",
     "index": "docs/workshop/EDITORIAL_SOURCE_INDEX.json",
@@ -53,22 +98,5 @@
       }
     ],
     "new_original_puzzles": 0
-  },
-  "next_action": "Review sample cards and engine boundaries, then continue a 5–10 puzzle movement batch. Keep completed_puzzles for accepted IDs.",
-  "hard_rules": [
-    "do-not-edit-main",
-    "do-not-edit-mindlab6-engineering-branch",
-    "keep-original-puzzle-ids",
-    "preserve-saves-and-chapter-gates",
-    "record-logic-validation-before-changing-solutions",
-    "no-historical-map-reintroduction",
-    "update-editorial-progress-after-each-batch"
-  ],
-  "deliverables": [
-    "source-index-with-IDs",
-    "3-exemplar-puzzle-edit-packets",
-    "quality-gate-results",
-    "review-ready-batch-artifacts",
-    "handoff-to-engineering"
-  ]
+  }
 }

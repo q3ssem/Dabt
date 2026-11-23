@@ -524,8 +524,8 @@
         ['▲', 'مثلث'], ['●', 'دائرة'], ['♥', 'قلب'], ['■', 'مربع']
       ];
       const P = api.authored?.board || flMake(api.lv);
-      const n = P.n, K = P.ends.length, paths = P.ends.map(() => []), endOf = new Map(); P.ends.forEach(([a, b], k) => { endOf.set(a, k); endOf.set(b, k); }); let cur = -1, drag = false; const lockK = new Set();
-      frame(api, { id: 'flow', lead: 'وصّل كل رمزين متطابقين بخط متصل واملأ اللوحة كلها. الخطوط لا تتقاطع.' });
+      const n = P.n, K = P.ends.length, paths = P.ends.map(() => []), endOf = new Map(); P.ends.forEach(([a, b], k) => { endOf.set(a, k); endOf.set(b, k); }); let cur = -1, pointer = null; const lockK = new Set();
+      frame(api, { id: 'flow', lead: 'صِل كل رمزين متطابقين وغطِّ كل الخانات. إذا مرّ خطك على خط سابق قابل للتعديل، يُمحى الجزء المتبقي من الخط السابق.' });
       $('#lbb').innerHTML = `<div class="fl10" id="fl10" style="--n:${n}">${Array.from({ length: n * n }, (_, i) => {
         const e = endOf.get(i);
         const mark = marks[e];
@@ -570,10 +570,38 @@
       const finishes = c => cur >= 0 && endOf.get(c) === cur && !done(cur) &&
         c !== paths[cur][0] && adj(paths[cur].at(-1), c);
       const cellAt = e => { const el = document.elementFromPoint(e.clientX, e.clientY), b = el && el.closest && el.closest('.fl10-c'); return b && G.contains(b) ? +b.dataset.i : null; };
-      G.addEventListener('pointerdown', e => { const c = cellAt(e); if (c == null || api.ended) return; e.preventDefault(); if (finishes(c)) touch(c); else if (start(c)) { drag = true; draw(); } else if (cur >= 0) touch(c); });
-      G.addEventListener('pointermove', e => { if (!drag) return; const c = cellAt(e); if (c != null) touch(c); });
-      G.addEventListener('pointercancel', () => { drag = false; });
-      const up = () => { drag = false; }; document.addEventListener('pointerup', up); if (typeof cleanup !== 'undefined' && cleanup.push) cleanup.push(() => document.removeEventListener('pointerup', up));
+      G.addEventListener('pointerdown', e => {
+        const c = cellAt(e);
+        if (pointer !== null || c == null || api.ended || e.button !== 0) return;
+        e.preventDefault();
+        if (finishes(c)) touch(c);
+        else if (start(c)) {
+          pointer = e.pointerId;
+          G.setPointerCapture(pointer);
+          draw();
+        } else if (cur >= 0) touch(c);
+      });
+      G.addEventListener('pointermove', e => {
+        if (pointer !== e.pointerId || api.ended) return;
+        const c = cellAt(e);
+        if (c == null) return;
+        const last = paths[cur].at(-1);
+        if (last === c) return;
+        // A fast straight swipe may skip pointer events over intermediate cells.
+        const stride = Math.floor(last / n) === Math.floor(c / n) ? 1 : last % n === c % n ? n : 0;
+        if (!stride) return; // A diagonal sample cannot tell which corner the player intended.
+        const increment = stride * Math.sign(c - last);
+        for (let next = last + increment; ; next += increment) {
+          touch(next);
+          if (paths[cur].at(-1) !== next || next === c || api.ended) break;
+        }
+      });
+      function stopDrag(e) {
+        if (pointer === e.pointerId) pointer = null;
+      }
+      for (const event of ['pointerup', 'pointercancel', 'lostpointercapture']) {
+        G.addEventListener(event, stopDrag);
+      }
       G.addEventListener('click', e => { if (e.detail !== 0 || api.ended) return; const b = e.target.closest('.fl10-c'); if (!b) return; const c = +b.dataset.i; if (finishes(c)) touch(c); else if (endOf.has(c) || owner(c) >= 0 && owner(c) !== cur) { start(c); draw(); } else touch(c); });
       draw(); pzHook({ P, paths, start, touch, draw });
       return { hint: k => { if (k === 1) return 'ابدأ بالأزواج التي رموزها على الحواف أو قريبة من بعض، والأطول اتركه للأخير.'; const c = [...Array(K).keys()].filter(k => !done(k) || paths[k].join() !== P.segs[k].join()).filter(k => !lockK.has(k)); if (!c.length) return null;
