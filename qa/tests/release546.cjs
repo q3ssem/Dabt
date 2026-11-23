@@ -8,7 +8,7 @@ assert(app.includes("function openFinale(){const openModal=document.querySelecto
 assert(app.includes("if(x.done['sea7_20'])d.append"),'completed oath is preserved in the trip notebook');
 assert(app.includes('إعادة مشاهدة خاتمة الجد')&&read('ui/journey-hub.js').includes("label:'رسالة الجد',open:()=>T7.openFinaleFromJourney()"),'gated finale replay survives in journal and chapter extras');
 assert(app.includes('CREW_INFO.forEach(c=>crew.append'),'the original seven crew members appear in the finale');
-assert(css.includes('.v546-seal-grid')&&css.includes('@media(max-width:760px){.v546-memory'),'seal memory has a responsive layout');
+assert(css.includes('.v546-seal-grid')&&css.includes('.v546-memory{padding:11px}')&&css.includes('.v546-seal-grid{grid-template-columns:repeat(2,minmax(0,1fr))'),'seal memory stacks two cards per row on mobile');
 assert(read('sw.js').includes("const VERSION='"+JSON.parse(read('package.json')).version+"'"),'service worker cache version updated');
 assert(read('index.html').includes('miran:v2'),'existing save key remains');
 assert.equal((data.match(/id:'sea7_'/g)||[]).length,1,'station IDs remain generated from fixed indices');
