@@ -87,7 +87,7 @@ export async function mountPlayCanvasSmoke({
     };
     const stone = material(0xb2a088), ink = material(0x385b65), gold = material(0xc4a252);
     const mesh = (
-      label: string, type: string, x: number, y: number, z: number,
+      label: string, type: 'box' | 'cylinder' | 'sphere', x: number, y: number, z: number,
       sx: number, sy: number, sz: number, mat: import('playcanvas').StandardMaterial
     ): void => {
       const part = new pc.Entity(label);
