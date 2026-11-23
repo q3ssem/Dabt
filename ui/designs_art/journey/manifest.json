@@ -1264,6 +1264,6 @@
     "miran:v2",
     "mindlab:expedition10:v1"
   ],
-  "unlock_status": "not implemented; preserve real save and existing gates at integration",
-  "station_mapping_note": "Seven-seas station story titles retained; mapping to actual level engines must be verified after Claude delivery"
+  "unlock_status": "Historical design metadata only. Runtime gates are T7.unlocked, ML10.unlocked and ATHERAN_CAMPAIGN.canOpenStation; this manifest is not navigation code.",
+  "station_mapping_note": "Canonical playable chapter and station routing is in ui/designs_art/journey/v3/stations.js; verify that live registry, not this creative manifest, before changing gameplay."
 }
