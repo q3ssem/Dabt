@@ -47,8 +47,17 @@
   // Mobile WebKit can miss a resize event after an in-place viewport-height change.
   // Probe dimensions only while a puzzle is mounted; no work outside gameplay.
   let viewportProbe = null, viewportKey = '';
-  // Optional, session-only enlarged board. Native saves, zoom defaults and gameplay stay unchanged.
-  let largeView = false;
+  // Session-only readable-board preference for exceptionally dense phone puzzles.
+  // Start at natural size, scrolling inside the board; keep a one-tap return to
+  // the original fit-to-screen layout in the existing information sheet.
+  const DENSE_TOUCH_GAMES = new Set(['pz_tdig','pz_pliar','pz_pjail','pz_wfirst']);
+  let largeView = false, largeViewForGame = null;
+  function syncLargeTouchDefault() {
+    const id = gid();
+    if (id === largeViewForGame) return; // Preserve the player's selection within a puzzle.
+    largeViewForGame = id;
+    largeView = !!(id && DENSE_TOUCH_GAMES.has(id) && window.innerWidth <= 430 && window.innerHeight > window.innerWidth);
+  }
   const layoutObserver = typeof ResizeObserver === 'function' ? new ResizeObserver(() => schedule()) : null;
 
   function sheetHTML() {
@@ -220,7 +229,7 @@
   function fit() {
     raf = 0; if (!body || !body.isConnected || fitting || framed()) return; fitting = true;
     try {
-      gardenAmounts(); compactHud();
+      syncLargeTouchDefault(); gardenAmounts(); compactHud();
       const pl = $('#play'); if (pl) pl.scrollTop = 0;
       const bounds = pl.querySelector('.pin').getBoundingClientRect();
       const safe = parseFloat(getComputedStyle(pl.querySelector('.pin')).paddingBottom) || 0;
