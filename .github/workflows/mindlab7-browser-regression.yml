@@ -22,7 +22,7 @@ jobs:
       fail-fast: false
       matrix:
         browser: [chromium, webkit]
-        case: [side-mobile, side-solutions, atheran-rescue, offline-quick]
+        case: [side-mobile, side-solutions, atheran-rescue, offline-quick, dense-touch]
     steps:
       - uses: actions/checkout@v4
         with:
@@ -53,6 +53,8 @@ jobs:
               python -u qa/browser/jaziran_rescue.py http://127.0.0.1:8830/ "${ENGINE}" "/tmp/mindlab7/${CASE}-${ENGINE}" ;;
             offline-quick)
               python -u qa/browser/phase3_acceptance.py http://127.0.0.1:8830/ "${ENGINE}" quick ;;
+            dense-touch)
+              python -u qa/browser/phone_touch_dense.py http://127.0.0.1:8830/ "${ENGINE}" ;;
           esac
       - name: Keep visual evidence
         if: always()
