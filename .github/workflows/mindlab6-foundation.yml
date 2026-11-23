@@ -38,6 +38,10 @@ jobs:
           node --check src/app.js
           npm run verify
           npm run experiment:new -- "اختبار الترقيم" probe-only --dry-run
+      - name: Diagnose pinned V5 game registries without executing game code
+        run: |
+          cd mindlab6
+          node tools/probe-source.mjs
       - name: Reject changes to the protected v5 app on this foundation branch
         shell: bash
         run: |
