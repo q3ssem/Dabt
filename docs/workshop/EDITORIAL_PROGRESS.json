@@ -10,30 +10,28 @@
     "release": "5.5.30",
     "read_only": true
   },
-  "status": "batch-05-editorial-reviewed",
+  "status": "batch-10-editorial-reviewed",
   "owner": "Work — puzzle narrative, difficulty, editorial QA",
   "other_owner": "MindLab6 engineering — engines/migration only",
   "scope": "existing puzzle texts, mechanics review, progressive hints and difficulty; no from-scratch replacement",
   "completed_puzzles": [],
   "current_batch": {
-    "id": "batch-05",
+    "id": "batch-10",
+    "delivery": "docs/workshop/batch-10/README.md",
     "status": "editorial-reviewed-runtime-pending",
-    "delivery": "docs/workshop/batch-05/README.md",
     "editorial_reviewed": [
-      "pz_xcave",
-      "pz_xloot",
-      "pz_tmap",
-      "pz_tdig",
-      "pz_xlock",
-      "pz_yhold",
-      "pz_ytide",
-      "pz_ydoor"
+      "pz_ashell",
+      "pz_aroot",
+      "pz_aring",
+      "pz_ashade",
+      "pz_aswarm",
+      "pz_aecho",
+      "pz_avsong",
+      "pz_agiant"
     ],
-    "logic_verification": "node docs/workshop/batch-05/verify.cjs",
-    "source_cases_verified": 24,
     "browser_or_device_verified": false
   },
-  "next_action": "Continue with the next eight visible puzzles in the source index, starting at pz_zcomp.",
+  "next_action": "Continue the indexed editorial review from pz_aherd. Track final runtime adoption separately.",
   "hard_rules": [
     "do-not-edit-main",
     "do-not-edit-mindlab6-engineering-branch",
@@ -151,6 +149,88 @@
       "source_cases_verified": 24,
       "browser_or_device_verified": false,
       "new_original_puzzles": 0
+    },
+    {
+      "id": "batch-05",
+      "status": "editorial-reviewed-runtime-pending",
+      "delivery": "docs/workshop/batch-05/README.md",
+      "editorial_reviewed": [
+        "pz_xcave",
+        "pz_xloot",
+        "pz_tmap",
+        "pz_tdig",
+        "pz_xlock",
+        "pz_yhold",
+        "pz_ytide",
+        "pz_ydoor"
+      ],
+      "logic_verification": "node docs/workshop/batch-05/verify.cjs",
+      "source_cases_verified": 24,
+      "browser_or_device_verified": false
+    },
+    {
+      "id": "batch-06",
+      "delivery": "docs/workshop/batch-06/README.md",
+      "status": "editorial-reviewed-runtime-pending",
+      "editorial_reviewed": [
+        "pz_zcomp",
+        "pz_zroute",
+        "pz_zcur",
+        "pz_zcode",
+        "pz_zharp",
+        "pz_zshadow",
+        "pz_znim",
+        "pz_zstars"
+      ],
+      "browser_or_device_verified": false
+    },
+    {
+      "id": "batch-07",
+      "delivery": "docs/workshop/batch-07/README.md",
+      "status": "editorial-reviewed-runtime-pending",
+      "editorial_reviewed": [
+        "pz_zthrone",
+        "pz_plock",
+        "pz_pliar",
+        "pz_pclock",
+        "pz_pboss1",
+        "pz_plib",
+        "pz_pmirror",
+        "pz_pgarden"
+      ],
+      "browser_or_device_verified": false
+    },
+    {
+      "id": "batch-08",
+      "delivery": "docs/workshop/batch-08/README.md",
+      "status": "editorial-reviewed-runtime-pending",
+      "editorial_reviewed": [
+        "pz_pqueen",
+        "pz_parm",
+        "pz_pjail",
+        "pz_pobs",
+        "pz_peng",
+        "pz_pmaze",
+        "pz_pcrypt",
+        "pz_pvalve"
+      ],
+      "browser_or_device_verified": false
+    },
+    {
+      "id": "batch-09",
+      "delivery": "docs/workshop/batch-09/README.md",
+      "status": "editorial-reviewed-runtime-pending",
+      "editorial_reviewed": [
+        "pz_plast",
+        "pz_pdragon",
+        "pz_phall",
+        "pz_pheart",
+        "pz_aarch",
+        "pz_aport",
+        "pz_alight",
+        "pz_acur"
+      ],
+      "browser_or_device_verified": false
     }
   ],
   "session_batch_size": 8
