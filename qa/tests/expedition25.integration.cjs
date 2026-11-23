@@ -10,8 +10,8 @@ const uiApp=fs.readFileSync(path.join(root,'ui/app.js'),'utf8');
 // perf-cleanup: the side journey is wired as an on-demand bundle in ui/app.js (window.mindlabSide) instead of start-up tags.
 const wired=n=>html.includes(n)||uiApp.includes("'"+n+"'");
 assert(wired('expedition10/style.css')&&wired('expedition10/logic.js')&&wired('expedition10/app.js'),'expedition module remains wired into the application');
-assert.strictEqual(pkg.version,'5.5.29','package is 5.5.28');
-assert(sw.includes("const VERSION='5.5.29'"),'service worker cache is versioned 5.5.28');
+assert.strictEqual(pkg.version,'5.5.30','package is 5.5.28');
+assert(sw.includes("const VERSION='5.5.30'"),'service worker cache is versioned 5.5.28');
 assert.strictEqual((app.match(/id:'ml10_\d\d'/g)||[]).length,24,'exactly twenty-five stages are registered');
 assert(app.includes("const SAVE_KEY='mindlab:expedition10:v1'"),'the same independent save namespace is retained');
 assert(app.includes('من ٢٤')&&app.includes('/ ٧٢'),'progress display covers 25 stages and 75 stars');
