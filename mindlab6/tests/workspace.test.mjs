@@ -33,6 +33,12 @@ test('Foundation does not claim migrated games',()=>{
   );
   assert.ok(read('index.html').includes('لم نُدخل'));
 });
+test('Experiment generator allocates a safe next number without changing files',()=>{
+  const registryBefore=read('research/REGISTRY.json');
+  const out=execFileSync(process.execPath,[new URL('../tools/new-experiment.mjs',import.meta.url).pathname,'اختبار توليد الأبحاث','preview-only','--dry-run'],{encoding:'utf8'});
+  assert.match(out,/DRY_RUN EXP-0002/);
+  assert.equal(read('research/REGISTRY.json'),registryBefore);
+});
 test('Workspace checks pass independently',()=>{
   const out=execFileSync(process.execPath,[new URL('../tools/check-workspace.mjs',import.meta.url).pathname],{encoding:'utf8'});
   assert.match(out,/workspace PASS/);
