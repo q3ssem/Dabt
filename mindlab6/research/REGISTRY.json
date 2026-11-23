@@ -26,7 +26,14 @@
         "brain_visual_candidates": 40,
         "child_visual_name_candidates": 26,
         "visual_candidates_file": "research/experiments/EXP-0001-dependency-inventory/results/brain-kids-art-candidates.json",
-        "visual_candidate_warning": "neither confirms engine registration or child IDs"
+        "visual_candidate_warning": "neither confirms engine registration or child IDs",
+        "node_ci": {
+          "commit": "5a40f8359cfd046229c66509ab35d7f241146556",
+          "run": 45121337898,
+          "status": "success",
+          "tests": "25/25",
+          "note": "catalog and source match, not on-device play or live per-ID reachability"
+        }
       },
       "next": "Map 40 brain games and 26 child games; trace engine call graph, save schema, tests, assets and audio; preserve old code"
     },
