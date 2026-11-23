@@ -15,7 +15,7 @@
       "source_commit": "81d9046e9cd3eae240f5603461aa73a53d5fbef4",
       "hypothesis": "يمكن نقل المحركات الفعالة منفصلة عن الواجهات القديمة بعد إثبات التبعيات",
       "results": {
-        "phase": "catalog-and-evidence-seed",
+        "phase": "static-register-ids-and-asset-blobs",
         "source_ref": "7327fdc6c6f36deaf63a2b20a7b6db9a315ad446",
         "library_puzzles": 86,
         "retired_ids": 2,
@@ -33,9 +33,20 @@
           "status": "success",
           "tests": "25/25",
           "note": "catalog and source match, not on-device play or live per-ID reachability"
-        }
+        },
+        "static_brain_declarations": 42,
+        "standard_ui_art_brain_ids": 40,
+        "special_brain_ids": [
+          "delay",
+          "tol"
+        ],
+        "static_child_ids": 26,
+        "static_registry_report": "research/experiments/EXP-0001-dependency-inventory/results/parsed-source-registry.json",
+        "asset_evidence_report": "research/experiments/EXP-0001-dependency-inventory/results/asset-evidence.json",
+        "asset_paths_present": 258,
+        "runtime_certified": false
       },
-      "next": "Map 40 brain games and 26 child games; trace engine call graph, save schema, tests, assets and audio; preserve old code"
+      "next": "Trace every actual GM/child run binding, save schema, hints, audio, test coverage and dynamic loading"
     },
     {
       "id": "EXP-0002",
