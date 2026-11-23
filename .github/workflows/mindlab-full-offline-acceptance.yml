@@ -1,0 +1,49 @@
+name: MindLab full offline pack + old-save acceptance (release candidate)
+
+on:
+  # Recheck the new folder bundle's SW generation and manifest before release.
+  push:
+    branches: [review/mindlab-puzzle-folders-safety-20261122, review/mindlab-cleanup-integration-20261123, review/mindlab7-final-closure-20261123]
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/mindlab-full-offline-acceptance.yml'
+      - 'qa/browser/phase3_acceptance.py'
+      - 'pwa.js'
+      - 'sw.js'
+      - 'offline-manifest.js'
+      - 'ui/jaziran-rescue.css'
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: mindlab-full-offline-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  full-offline:
+    name: Full PWA download and offline reload (${{ matrix.browser }})
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        browser: [chromium, webkit]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - run: python -m playwright install --with-deps chromium webkit
+      - name: Download entire optional offline pack, disconnect, reload, and preserve save
+        env:
+          BROWSER: ${{ matrix.browser }}
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m http.server 8830 --bind 127.0.0.1 >/tmp/mindlab-offline-http.log 2>&1 &
+          sleep 2
+          python -u qa/browser/phase3_acceptance.py http://127.0.0.1:8830/ "$BROWSER" full

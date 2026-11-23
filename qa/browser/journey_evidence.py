@@ -69,7 +69,7 @@ async def run():
         if SHOTS: await page.screenshot(path=str(SHOTS/f'evidence-{ENGINE}-dark-430.png'))
         await page.keyboard.press('Escape')
         await page.locator('#mlj-evidence-modal').wait_for(state='detached',timeout=4000)
-        assert await page.evaluate("()=>document.activeElement?.textContent==='ملفات الأدلة والملاحظات'"),'focus not restored to journal action'
+        assert await page.evaluate("()=>document.activeElement?.id==='mlj-journey-entry'"),'focus not restored to visible journey entry'
         after=await page.evaluate("()=>({sea:window.T7?.state().done,atlas:window.ATHERAN_CAMPAIGN?.summary()?.a?.done||{}})")
         assert initial==after,'notebook changed campaign progress'
         await page.reload(wait_until='domcontentloaded',timeout=30000)

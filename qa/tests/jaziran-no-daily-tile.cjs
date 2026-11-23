@@ -7,8 +7,8 @@ assert(!index.includes("$('#pzday')"),'daily square must have no dead event list
 assert(index.includes('function tripCardHTML()'),'main treasure journey card must remain');
 assert(index.includes("v.querySelector('.pzstory')"),'journey card must have a real insertion anchor');
 assert(index.includes('pzDailyType'),"daily puzzle content rotation must not be deleted");
-assert(campaign.includes("const main = v.querySelector('.ah-launch')"),'official campaign still leads');
-assert(campaign.includes("const day = v.querySelector('#pzday')"),'legacy already-rendered day squares remain safely cleaned');
+assert(campaign.includes("function journeyActions()")&&campaign.includes("const s = summary()"),'official campaign actions remain accessible through chapter folders');
+assert(campaign.includes("const day = v.querySelector('#pzday'); if (day) day.remove();"),'legacy day-square DOM is removed, never inserted');
 const tide=fs.readFileSync(path.join(root,'ui/tide-scroll.css'),'utf8');
 const offline=fs.readFileSync(path.join(root,'offline-manifest.js'),'utf8');
 const sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');
@@ -17,6 +17,6 @@ assert(tide.includes('minmax(44px,1fr)'),'Hour controls must retain a 44 px touc
 assert(tide.includes('overflow-x:auto'),'Hour strip must scroll horizontally on narrow screens');
 assert(offline.includes('"ui/tide-scroll.css"'),'Tide sheet must be available in offline full download');
 assert(sw.includes("'ui/tide-scroll.css'"),'Tide sheet must be in offline installation shell');
-assert(sw.includes("PATCH='brain-touch-32'"),'Cached app must refresh after the new responsive stylesheet');
+assert(sw.includes("const VERSION='"+JSON.parse(fs.readFileSync(path.join(root,'package.json'),'utf8')).version+"'") && /PATCH='[^']+'/.test(sw),'cache identity tracks current release');
 
 console.log('Daily square removed; treasure card, library puzzle rotation, campaign navigation preserved');

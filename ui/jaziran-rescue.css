@@ -4,6 +4,11 @@
   width: min(100%, 650px); max-height: min(90dvh, 920px); overflow-y: auto;
   overscroll-behavior: contain; gap: 12px;
 }
+/* The rescue finale is taller than a phone screen. In the inherited flex
+   modal, default flex-shrink:1 compressed paragraphs and the success panel,
+   causing the status text to overlap the victory heading at 320–390px.
+   Keep natural block heights and scroll the card instead of crushing content. */
+.mljr-card > * { flex: 0 0 auto; }
 .mljr-card h2,.mljr-card h3,.mljr-card p,.mljr-card fieldset { margin: 0; }
 .mljr-card .mlj-head small { display: block; margin-bottom: 3px; }
 .mljr-heroes { display: grid; grid-template-columns: repeat(3,minmax(0,1fr)); gap: 8px; }

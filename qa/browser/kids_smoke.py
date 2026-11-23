@@ -28,7 +28,10 @@ async def main():
             await pg.goto(URL); await pg.wait_for_timeout(1200)
             if await pg.locator('.mpc[data-m=kid]').count(): await pg.click('.mpc[data-m=kid]'); await pg.wait_for_timeout(500)
             await pg.evaluate("()=>{const k=kidSt();if(!k.list.length){k.list.push({id:'qa1',name:'تجربة',av:'🦁',age:7});k.active='qa1';S.save();}}")
-            await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=20000)
+            # The play bundle is intentionally lazy-loaded after the profile picker.
+            # Await the public loader, rather than treating an idle home screen as hung.
+            await pg.evaluate("async()=>{if(window.mindlabPlayLayers && !window.mindlabPlayLayers.ready) await window.mindlabPlayLayers.start()}")
+            await pg.wait_for_function("()=>!window.mindlabPlayLayers||window.mindlabPlayLayers.ready", timeout=45000)
             ids = await pg.evaluate("()=>KID_GAMES.map(g=>typeof g==='string'?g:g.id).filter(id=>GM[id])")
             ok(len(ids) >= 20, f'{w}: kid games listed ({len(ids)})')
             for g in ids:
@@ -43,7 +46,91 @@ async def main():
                         if not await pg.locator('#stage .cd').count(): break
                         await pg.wait_for_timeout(100)
                     await pg.wait_for_timeout(500)
-                    await pg.evaluate("""async()=>{const els=[...document.querySelectorAll('#stage button, #stage [data-i], #stage .cell')].filter(e=>e.getBoundingClientRect().width>4&&e.id!=='pzq').slice(0,6);for(const e of els){e.dispatchEvent(new MouseEvent('click',{bubbles:true}));await new Promise(r=>setTimeout(r,80));}}""")
+                    # Some child games show an intentional memory preview,
+                    # while bubble targets move into the tank asynchronously.
+                    # Wait until a *gameplay* target can really be hit, instead
+                    # of inventing DOM events or counting the tutorial as input.
+                    if g == 'k_diff':
+                        await pg.locator('#stage .kopt').first.wait_for(
+                            state='visible', timeout=10000)
+                    elif g == 'k_bubble':
+                        await pg.wait_for_function("""() => {
+                          const tank=document.querySelector('#kbt');
+                          if(!tank)return false;
+                          const t=tank.getBoundingClientRect();
+                          return [...tank.querySelectorAll('.kbubble')].some(e=>{
+                            const r=e.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
+                            const hit=document.elementFromPoint(x,y);
+                            return x>=t.left+2&&x<t.right-2&&y>=t.top+2&&y<t.bottom-2&&
+                              x>=1&&x<innerWidth-1&&y>=1&&y<innerHeight-1&&
+                              (hit===e||e.contains(hit));
+                          });
+                        }""",timeout=20000)
+                    # Use the browser's actual hit-testing, scrolling and pointer events.
+                    # Dispatching MouseEvent from page.evaluate bypasses occlusion and
+                    # is not proof that a child can touch a game control.
+                    controls = pg.locator(
+                        '#stage button:not([disabled]):not(#go):not(#pzq):not(#pzh):not(#pzr):not(#quit), '
+                        '#stage [role="button"], #stage [data-i], #stage .cell, #stage canvas'
+                    )
+                    native_taps = 0
+                    if g == 'k_bubble':
+                        # A bubble moves continuously. Playwright locator.click()
+                        # can resolve a stale bubble after another becomes hittable;
+                        # use a *real touchscreen tap at a freshly hit-tested point*.
+                        # A DOM class change confirms the game received the touch.
+                        for _ in range(8):
+                            point = await pg.evaluate("""() => {
+                              const tank=document.querySelector('#kbt');
+                              if(!tank)return null;
+                              const t=tank.getBoundingClientRect();
+                              for(const e of tank.querySelectorAll('.kbubble')){
+                                const r=e.getBoundingClientRect(),x=r.left+r.width/2,y=r.top+r.height/2;
+                                const hit=document.elementFromPoint(x,y);
+                                if(x>=t.left+3&&x<t.right-3&&y>=t.top+3&&y<t.bottom-3&&
+                                   x>=3&&x<innerWidth-3&&y>=3&&y<innerHeight-3&&
+                                   (hit===e||e.contains(hit)))return {x,y};
+                              }
+                              return null;
+                            }""")
+                            if not point:
+                                await pg.wait_for_timeout(160)
+                                continue
+                            await pg.touchscreen.tap(point['x'],point['y'])
+                            await pg.wait_for_timeout(110)
+                            registered = await pg.evaluate(
+                                "() => !!document.querySelector('#kbt .kbubble.pop, #kbt .kbubble.nope')")
+                            if registered:
+                                native_taps = 1
+                                break
+                    for i in range(min(await controls.count(), 20)):
+                        if native_taps >= 1: break
+                        target = controls.nth(i)
+                        try:
+                            if await target.get_attribute('id', timeout=1300) == 'pzq': continue
+                            if not await target.is_visible(): continue
+                            box = await target.bounding_box()
+                            if not box or box['width'] < 6 or box['height'] < 6: continue
+                            await target.click(timeout=1300)
+                            native_taps += 1
+                            await pg.wait_for_timeout(90)
+                        except Exception:
+                            # A covered or non-interactive tile is not evidence
+                            # of real touch acceptance; try another target.
+                            continue
+                    if native_taps == 0:
+                        diagnosis = await pg.evaluate("""() => {
+                          const st=document.querySelector('#stage'),board=document.querySelector('#pzb');
+                          const visible=e=>!!e.getClientRects().length;
+                          return {stageChildren:st?.children.length||0,boardPresent:!!board,
+                            boardElements:board?.querySelectorAll('*').length||0,
+                            buttons:[...st.querySelectorAll('button')].filter(visible).slice(0,12).map(e=>({
+                              id:e.id,cls:String(e.className).slice(0,70),text:e.textContent.trim().slice(0,35)})),
+                            html:st?.innerHTML.slice(0,600)};
+                        }""")
+                        print('KID_TAP_DIAG='+json.dumps({'game':g,'width':w,'diagnosis':diagnosis},
+                              ensure_ascii=False),flush=True)
+                    ok(native_taps > 0, f'{lab}: at least one real Playwright tap accepted')
                     wide = await pg.evaluate("()=>document.documentElement.scrollWidth-innerWidth")
                     ok(wide <= 1, f'{lab}: nothing wider than the screen ({wide}px)')
                     broken = await pg.evaluate("()=>[...document.querySelectorAll('#play img')].filter(i=>i.complete&&i.getAttribute('src')&&i.naturalWidth===0).map(i=>i.getAttribute('src')).slice(0,3)")

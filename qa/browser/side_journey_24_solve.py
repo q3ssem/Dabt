@@ -58,7 +58,7 @@ async def boot(page):
     await page.evaluate("()=>tab('puz')")
     await page.wait_for_function("()=>window.mindlabPlayLayers?.ready===true",timeout=45000)
     await page.evaluate("async()=>await window.mindlabSide.start()")
-    await page.wait_for_function("()=>!!window.ML10?.renderMap && !!window.ML10Logic",timeout=30000)
+    await page.wait_for_function("()=>!!window.ML10?.openStations && !!window.ML10Logic",timeout=30000)
     # Settle the deferred puzzle-tab redraw before showing a side map.
     await page.wait_for_timeout(850)
 
@@ -86,10 +86,11 @@ async def enter_stage(page,stage,from_previous=False):
                     f"stage {stage+1} actually unlocked through prior wins")
         for attempt in range(4):
             try:
-                await js(page,"()=>ML10.renderMap()")
-                button=page.locator(f'#v-puz .ex10-level-card[data-ex10-node="{stage}"]')
+                await js(page,"()=>mindlabJourneyHub.openChapters('side')")
+                sid=await js(page,"i=>ML10.stages[i].id",stage)
+                button=page.locator(f'#mlj-unified-hub .ml-folder-station[data-station-id="{sid}"]')
                 await button.wait_for(state="visible",timeout=3500)
-                await check(await button.get_attribute('aria-disabled',timeout=3500) is None,
+                await check(await button.get_attribute('disabled',timeout=3500) is None,
                             f"stage {stage+1} visible card is enabled")
                 await button.click(timeout=5000)
                 break
@@ -307,8 +308,8 @@ async def run():
             catalog=await js(page,"()=>ML10.stages.map(s=>({id:s.id,name:s.name}))")
             await check(len(catalog)==24,"24 unique stations exist")
             await check(len(set(x["id"] for x in catalog))==24,"all station IDs unique")
-            await js(page,"()=>ML10.renderMap()")
-            await check(await page.locator('#v-puz .ex10-level-card.locked').count()==23,
+            await js(page,"()=>mindlabJourneyHub.openChapters('side')")
+            await check(await page.locator('#mlj-unified-hub .ml-folder-station.locked').count()==23,
                 "fresh player sees 23 locked future stages")
             official=await js(page,"()=>JSON.stringify({sea:T7.state().done,palace:pState().done,atheran:ATHERAN_CAMPAIGN.summary().a.done})")
             await enter_stage(page,0)
@@ -383,7 +384,7 @@ async def run():
             # Replay stages: first improves 2 -> 3, second improves 1 -> 3.
             # 24 wins must stay 24; earned stars, not total replay counts,
             # are retained as each stage's maximum.
-            await click(page,'[data-ex10="map"]')
+            await js(page,"()=>mindlabJourneyHub.openChapters('side')")
             for i in (0,1):
                 await enter_stage(page,i)
                 await solve(page,i)
@@ -393,7 +394,7 @@ async def run():
                 expected=70 if i==0 else 72
                 await check(state["totalStars"]==expected and state["stars"][catalog[i]["id"]]==3,
                     f"replay {i+1} upgrades best to three stars without duplicate rewards")
-                await click(page,'[data-ex10="map"]')
+                await js(page,"()=>mindlabJourneyHub.openChapters('side')")
             await page.reload(wait_until="load")
             await boot_after_reload(page)
             final=await js(page,"()=>ML10.state()")
@@ -429,8 +430,8 @@ async def boot_after_reload(page):
     await page.evaluate("async()=>await window.mindlabPlayLayers.start()")
     await page.wait_for_function("()=>window.mindlabPlayLayers?.ready===true",timeout=45000)
     await page.evaluate("async()=>await window.mindlabSide.start()")
-    await page.wait_for_function("()=>!!window.ML10?.renderMap",timeout=30000)
-    await page.evaluate("()=>ML10.renderMap()")
+    await page.wait_for_function("()=>!!window.ML10?.openStations",timeout=30000)
+    await page.evaluate("()=>mindlabJourneyHub.openChapters('side')")
 
 if __name__ == '__main__':
     asyncio.run(run())

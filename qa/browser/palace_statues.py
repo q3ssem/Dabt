@@ -137,6 +137,27 @@ async def door_case(pg, w, kind):
     ok(await nothing_open(pg), f'{lab}: nothing open before the winning «ثبّت»')
     await tap(pg, '#plgo'); ok(await result(pg) is True, f'{lab}: right key + all directions wins')
 
+async def solve_door_native(pg, label):
+    """Read the board as a witness, but enter every move via visible player controls.
+
+    No __test setter, check/win hook, DOM event dispatch, or injected progress.
+    The player drags the key, turns each statue and presses the native check button.
+    """
+    P = await pg.evaluate("""() => {
+      const p = window.__test.pz.P;
+      return {n:p.n, t:p.t, directions:window.__test.pz.target(p.t)};
+    }""")
+    await drag(pg, '.pl-tray [data-tok="key"]', f'.pl-door[data-door="{P["t"]}"]')
+    ok((await state(pg))['keyAt'] == P['t'], f'{label}: key moved by mouse drag')
+    for i, direction in enumerate(P['directions']):
+        ok(await turn_to(pg, i, direction, P['n'], label),
+           f'{label}: statue {i + 1} moved through visible controls')
+    ok((await state(pg))['dir'] == P['directions'],
+       f'{label}: controls reached the generated solution')
+    ok(await nothing_open(pg), f'{label}: no door opens before the check')
+    await tap(pg, '#plgo')
+    return await result(pg) is True
+
 async def pliar(pg, w, lv):
     lab = f'pz_pliar@{w}'
     st0 = await pg.evaluate("() => JSON.stringify([txStageOf('pz_pliar'), pState().done.pz_pliar || 0])")
@@ -180,12 +201,23 @@ async def main():
                 ok(sorted(g['rules']) == sorted(['one', 'onef', 'two', 'lady', 'none', 'mix']), 'drMake: all six rules occur', sorted(g['rules']))
                 ok(sorted(g['kinds']) == sorted(['here', 'nothere', 'at', 'notat', 'side', 'either', 'liar', 'true']), 'drMake: all eight inscription kinds occur', sorted(g['kinds']))
                 ok([g['n'][str(l)] if str(l) in g['n'] else g['n'][l] for l in range(1, 9)] == [3, 3, 3, 4, 4, 4, 5, 5], 'drMake: door counts per level unchanged', g['n'])
-                # every level renders and wins through the board (hook moves, real «ثبّت» click)
+                # Every generated level must be solved by real drag/taps; no test hook setter.
                 for lv in range(1, 9):
                     await start(pg, 'pz_door', lv, 40 + lv)
                     n = await pg.evaluate("() => window.__test.pz.P.n")
                     ok(await pg.evaluate("(n) => document.querySelectorAll('.pl-door').length === n", n), f'pz_door lv{lv}: board drawn')
-                    await pg.evaluate("() => window.__test.pz.set()"); await tap(pg, '#plgo'); ok(await result(pg) is True, f'pz_door lv{lv}: solved board wins')
+                    ok(await solve_door_native(pg, f'pz_door lv{lv}'),
+                       f'pz_door lv{lv}: player drag/taps win without solver injection')
+                # Independently verify a non-replay win writes a persistent award.
+                prior = await pg.evaluate("() => JSON.parse(localStorage.getItem('miran:v2')||'{}').puz?.n?.pz_door||0")
+                await start(pg, 'pz_door')
+                ok(await solve_door_native(pg, 'pz_door regular session'),
+                   'pz_door regular session: physical controls win')
+                await pg.wait_for_timeout(650)
+                current = await pg.evaluate("() => JSON.parse(localStorage.getItem('miran:v2')||'{}').puz?.n?.pz_door||0")
+                ok(current == prior + 1,
+                   'pz_door: native win counted exactly once in persistent progress',
+                   [prior, current])
             for kind in ('regression', 'mixed', 'mix'): await door_case(pg, w, kind)
             lv0 = await pg.evaluate("() => pzLv('pz_door')")
             await pg.reload(); await pg.wait_for_timeout(2000); await pg.evaluate("async()=>{const p=document.querySelector('.mpc[data-m=main]');if(p&&p.getClientRects().length)p.click();tab('puz');await mindlabPlayLayers.start()}"); await pg.wait_for_function("()=>window.mindlabPlayLayers?.ready===true", timeout=45000); ok(await pg.evaluate("() => pzLv('pz_door')") == lv0, f'pz_door@{w}: level kept after reload')

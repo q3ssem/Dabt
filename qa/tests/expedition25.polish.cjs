@@ -15,8 +15,8 @@ vm.runInContext(read('offline-manifest.js'),manifestContext);
 const offline=manifestContext.self.MINDLAB_OFFLINE_FILES;
 const checks=[];
 function ok(condition,message){assert.ok(condition,message);checks.push(message);}
-ok(pkg.version==='5.5.29','package release is 5.5.28');
-ok(sw.includes("const VERSION='5.5.29'"),'service worker cache uses 5.5.28');
+ok(pkg.version==='5.5.30','package release is 5.5.28');
+ok(sw.includes("const VERSION='5.5.30'"),'service worker cache uses 5.5.28');
 ok(app.includes("const SAVE_KEY='mindlab:expedition10:v1'"),'expedition save namespace preserved');
 ok(!/localStorage\.setItem\(['"]miran:v2/.test(app),'expedition module does not write to miran:v2');
 ok(app.includes('function poseForMood(mood)'),'mood-to-pose mapping exists');
@@ -37,5 +37,5 @@ ok(idMatches.length===24,'24 active stage identifiers remain in source');
 ok(new Set(idMatches).size===24,'all 24 stage identifiers remain unique');
 const sceneMatches=[...app.matchAll(/scene:'([^']+\.webp)'/g)].map(m=>m[1]);
 ok(sceneMatches.length===24,'24 unique stage scene references remain in registry');
-for(const scene of new Set(sceneMatches)){ok(fs.existsSync(path.join(root,'expedition10/art/scenes',scene)),`stage art exists: ${scene}`);}
+for(const scene of new Set(sceneMatches)){const rel=scene.includes('/')?scene:'expedition10/art/scenes/'+scene;ok(fs.existsSync(path.join(root,rel)),`stage art exists: ${rel}`);}
 console.log(JSON.stringify({status:'passed',checks:checks.length,version:pkg.version,poseAssets:poses.length,stageIDs:idMatches.length,scenes:new Set(sceneMatches).size},null,2));

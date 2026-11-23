@@ -129,7 +129,7 @@
       return r;
     };
   }
-  // a region opened: play the transition when the atlas is shown next
+  // A region unlock transition belongs to the chapter view, not a deleted navigation atlas.
   function regionTransition() { const k = sessionStorage.getItem('ah-region-transition'); if (k == null) return; sessionStorage.removeItem('ah-region-transition'); vfx('vfx_region_transition', { cls: 'ah-vfx-screen', ms: 1300 }); }
   if (typeof aSwOpen === 'function') {
     const sw0 = aSwOpen;
@@ -153,7 +153,6 @@
   function frames() {
     FRAME($('.ah-launch'), 'ui_athran_campaign_cover');
     FRAME($('#v-puz.ah-view .ah-top'), 'ui_athran_campaign_cover');
-    FRAME($('#v-puz.ah-view .amapw'), 'ui_world_map_frame');
     document.querySelectorAll('.xvaultm .xpin').forEach(p => {
       if (p.querySelector('#afin')) FRAME(p, 'ui_epilogue_frame');
       else if (p.querySelector('.atrl')) FRAME(p, 'ui_relics_screen_frame');
@@ -197,35 +196,8 @@
     };
   }
 
-  /* ------------------------------------------------------------------ atlas: keep the 18 map stations tappable on narrow phones
-     Station buttons sit at the story coordinates. Below ~400 px some neighbours (e.g. 9 and 18) share pixels, so a tap
-     could open the wrong station. Spread overlapping buttons just enough to separate them (display only, the stored
-     coordinates are untouched) and move each map marker with its button. */
-  function spreadMap() {
-    const btns = [...document.querySelectorAll('#v-puz .ahub .amst')]; if (btns.length < 2) return;
-    const box = btns[0].offsetParent; if (!box) return;
-    const W = box.clientWidth, H = box.clientHeight; if (!W || !H) return;
-    const marks = [...document.querySelectorAll('#v-puz .ah-map-marker')];
-    const D = btns[0].offsetWidth + 2, P = btns.map(b => { b.dataset.ahX = b.dataset.ahX || b.style.left; b.dataset.ahY = b.dataset.ahY || b.style.top;
-      return { b, x: parseFloat(b.dataset.ahX) / 100 * W, y: parseFloat(b.dataset.ahY) / 100 * H }; });
-    for (let it = 0; it < 60; it++) {
-      let moved = false;
-      for (let i = 0; i < P.length; i++) for (let j = i + 1; j < P.length; j++) {
-        const a = P[i], c = P[j], dx = c.x - a.x, dy = c.y - a.y, gap = Math.max(Math.abs(dx), Math.abs(dy));
-        if (gap >= D) continue;
-        moved = true; const push = (D - gap) / 2 + .5;
-        if (Math.abs(dx) >= Math.abs(dy)) { const sx = dx >= 0 ? 1 : -1; a.x -= sx * push; c.x += sx * push; }
-        else { const sy = dy >= 0 ? 1 : -1; a.y -= sy * push; c.y += sy * push; }
-      }
-      P.forEach(q => { q.x = Math.min(W - D / 2, Math.max(D / 2, q.x)); q.y = Math.min(H - D / 2, Math.max(D / 2, q.y)); });
-      if (!moved) break;
-    }
-    P.forEach((q, k) => { const l = (q.x / W * 100).toFixed(2) + '%', t = (q.y / H * 100).toFixed(2) + '%'; q.b.style.left = l; q.b.style.top = t; if (marks[k]) { marks[k].style.left = l; marks[k].style.top = t; } });
-  }
-  addEventListener('resize', () => requestAnimationFrame(spreadMap));
-
   /* ------------------------------------------------------------------ offline: a station started online stays playable offline
-     The 546 images (≈128 MB) are not precached. When a station opens, its own images (three stage backgrounds, piece
+     The 535 retained images are not precached. When a station opens, its own images (three stage backgrounds, piece
      states, effects) are fetched once in the background; the service worker keeps them, so the next stages and replays
      work without a connection. Shared effects and the frames are small and cached at install. */
   const warmed = {};
@@ -251,11 +223,11 @@
       .observe(play, { childList: true, subtree: true, attributes: true, attributeFilter: ['class', 'data-la-game', 'hidden', 'fill', 'stroke', 'opacity'] });
   }
   new MutationObserver(schedule).observe(document.body, { childList: true });
-  const vp = $('#v-puz'); if (vp) new MutationObserver(() => { schedule(); if (vp.classList.contains('ah-view')) { regionTransition(); requestAnimationFrame(spreadMap); setTimeout(spreadMap, 400); setTimeout(spreadMap, 1200); } }).observe(vp, { childList: true });
+  const vp = $('#v-puz'); if (vp) new MutationObserver(() => { schedule(); if (vp.classList.contains('ah-view')) regionTransition(); }).observe(vp, { childList: true });
   // bird notes and silent-water answers have no pressed/answered class of their own: mark the press briefly and
   // remember the last answered piece, so "wrong"/"correct" land on the piece the player actually chose
   const press = b => { b.parentElement && b.parentElement.querySelectorAll('.ah-last').forEach(x => x !== b && x.classList.remove('ah-last')); b.classList.add('ah-pressed', 'ah-last'); setTimeout(() => { b.classList.remove('ah-pressed'); schedule(); }, 350); schedule(); };
   document.addEventListener('click', e => { const b = e.target.closest && e.target.closest('#pzb[data-ah-pieces="pz_avsong"] [data-v],#pzb[data-ah-pieces="pz_asilent"] [data-o]'); if (b) press(b); }, true);
   schedule();
-  window.ATHRAN_BINDINGS = { PIECES, vfx, paint, frames, stateOf, spreadMap };
+  window.ATHRAN_BINDINGS = { PIECES, vfx, paint, frames, stateOf };
 })();

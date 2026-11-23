@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "scope": "design only; no application changes",
+  "scope": "Map-free chapter navigation; scene transition and puzzle art assets remain unchanged",
   "journey_title": "رحلة الكنز",
   "chapter_order": [
     "seven_seas",
@@ -8,7 +8,6 @@
     "atheran"
   ],
   "side_branch": "side",
-  "map": "art/journey_map.png",
   "seas": [
     "من أعاد الضوء؟",
     "أصوات خلف الضباب",
@@ -23,8 +22,6 @@
       "id": "seven_seas",
       "name": "حكايات البحار السبعة",
       "order": 1,
-      "x": 0.23,
-      "y": 0.72,
       "stations": [
         {
           "station": 1,
@@ -158,8 +155,6 @@
       "id": "palace",
       "name": "قصر المرايا",
       "order": 2,
-      "x": 0.33,
-      "y": 0.43,
       "stations": [
         {
           "puzzle_id": "pz_plock",
@@ -243,8 +238,6 @@
       "id": "atheran",
       "name": "أَثْرَان · أطلس المجهول",
       "order": 3,
-      "x": 0.23,
-      "y": 0.15,
       "stations": [
         {
           "puzzle_id": "pz_aarch",
@@ -336,8 +329,6 @@
       "id": "side",
       "name": "رحلة أسرار أَثْرَان",
       "order": null,
-      "x": 0.79,
-      "y": 0.38,
       "save_key": "mindlab:expedition10:v1",
       "stations": [
         {
@@ -1273,6 +1264,6 @@
     "miran:v2",
     "mindlab:expedition10:v1"
   ],
-  "unlock_status": "not implemented; preserve real save and existing gates at integration",
-  "station_mapping_note": "Seven-seas station story titles retained; mapping to actual level engines must be verified after Claude delivery"
+  "unlock_status": "Historical design metadata only. Runtime gates are T7.unlocked, ML10.unlocked and ATHERAN_CAMPAIGN.canOpenStation; this manifest is not navigation code.",
+  "station_mapping_note": "Canonical playable chapter and station routing is in ui/designs_art/journey/v3/stations.js; verify that live registry, not this creative manifest, before changing gameplay."
 }

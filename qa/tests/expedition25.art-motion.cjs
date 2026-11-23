@@ -11,8 +11,8 @@ const ctx={self:{}};vm.createContext(ctx);vm.runInContext(read('offline-manifest
 const offline=ctx.self.MINDLAB_OFFLINE_FILES||[],warm=ctx.self.MINDLAB_JOURNEY_ART||[];
 const allOffline=new Set([...offline,...warm]);
 const checks=[];const ok=(v,m)=>{assert.ok(v,m);checks.push(m);};
-ok(pkg.version==='5.5.29','package is 5.5.28');
-ok(sw.includes("const VERSION='5.5.29'"),'service-worker cache is 5.5.28');
+ok(pkg.version==='5.5.30','package is 5.5.28');
+ok(sw.includes("const VERSION='5.5.30'"),'service-worker cache is 5.5.28');
 ok(app.includes("const SAVE_KEY='mindlab:expedition10:v1'"),'expedition save namespace is unchanged');
 ok(!/localStorage\.setItem\(['"]miran:v2/.test(app),'legacy miran:v2 is not written');
 const block=app.match(/const expeditionPropFiles=\[([\s\S]*?)\];/);

@@ -1,5 +1,5 @@
 'use strict';
-/* 5.5.12 — bespoke hand-inked SVG atlas art and a discovery-led Atheran field journal.
+/* 5.5.30 — illustrated puzzle art and a discovery-led Atheran field journal, without an atlas.
    Presentation/story index only: puzzle engines, generators, scoring, progression and saved keys stay authoritative. */
 (function(){
 const W=window.Watercolor;if(!W)return;
@@ -74,10 +74,8 @@ W.atheranOpenJournal=openJournal;
 const oldCards=W.cards;
 W.cards=function(){oldCards.apply(this,arguments);const cards=[...document.querySelectorAll('.t7-classic'),...document.querySelectorAll('.la-library-card')];cards.forEach(card=>{const id=card.dataset.puzzleId||card.dataset.legacyPuzzle;if(!art[id]||card.dataset.atheranInk===id)return;const box=card.querySelector('.la-library-image')||card.querySelector('.wc-game-icon');if(box){box.innerHTML=art[id];box.classList.add('atheran-ink-box');card.dataset.atheranInk=id;}});};
 function journalCount(){const a=aState();return story().filter(p=>a.done?.[p.id]).length+secrets().filter(p=>a.sw?.[p.key]).length;}
-const hub0=window.aHubHTML;
-if(typeof hub0==='function')window.aHubHTML=function(){let html=hub0.apply(this,arguments);const label=`دفتر أَثْرَان · ${journalCount()}/26`;return html.replace('<div class="abtns">',`<div class="abtns"><button class="xvault atheran-journal-open" id="atheran-journal" aria-haspopup="dialog">${label}</button>`);};
-const bind0=window.txBind;
-if(typeof bind0==='function')window.txBind=function(){bind0.apply(this,arguments);const b=document.querySelector('#v-puz #atheran-journal');if(b)b.onclick=openJournal;};
+// Chapter folders expose this same field journal; keep the in-puzzle journal too.
+window.MINDLAB_ATHERAN_JOURNAL={open:openJournal,count:journalCount};
 function addStoryToPlay(){
  const g=W.current(),id=g&&g.id,p=story().find(x=>x.id===id),secret=p?null:secrets().find(x=>x.id===id);if(!p&&!secret)return;
  const sheet=document.querySelector('#play .xsheet');if(!sheet||sheet.dataset.atheranStory===id)return;const pin=sheet.querySelector('.xpin');if(!pin)return;

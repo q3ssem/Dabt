@@ -5,6 +5,7 @@ const read = file => fs.readFileSync(file, 'utf8');
 const gone = [
   'docs/SCENE_ASSET_SPEC_AR.md',
   'qa/source_http_4_2.json',
+  'qa/assets_4_2.json', 'qa/npm_test_4_2.txt', 'qa/browser/result_4_2.txt',
   'ui/designs_art/work_review/pz_river/river-base--light.webp',
   'ui/designs_art/work_review/pz_river/river-base--dark-corrected.webp',
   'hasad/data.js', 'hasad/engine.js', 'hasad/game.js', 'hasad/style.css',
@@ -53,7 +54,7 @@ assert.ok(!read('qa/browser/design10_play.py').includes('pz_stat'), 'deleted des
 assert.ok(!read('qa/browser/motion_batch_fixes.py').includes('pz_xbottle'), 'deleted bottle replay removed');
 
 // The cache generation must have moved past the generation that still held the deleted assets.
-assert.ok(read('sw.js').includes("PATCH='brain-touch-32'"), 'cache generation must change after switching to deferred assets');
+assert.ok(read('sw.js').includes("const VERSION='"+require('../../package.json').version+"'") && read('sw.js').includes("PATCH='map-free-2'"), 'cache generation includes the current release and retired-map cleanup');
 const pwa = read('pwa.js');
 assert.ok(pwa.includes('window.mindlabOffline.prepareAll = function prepareAll()'), 'offline bulk download must be opt-in');
 assert.ok(pwa.includes('window.mindlabOffline.clearOptionalCaches'), 'optional image cache cleanup available');
@@ -66,7 +67,7 @@ assert.ok(swSource.includes('++imageWrites % 32 === 0'), 'image eviction scan is
 
 const runtime = read('sw.js');
 const startUi = read('ui/app.js');
-assert.ok(runtime.includes("PATCH='brain-touch-32'"), 'second-stage cache generation');
+assert.ok(runtime.includes("PATCH='map-free-2'"), 'reviewed cache generation differs from pre-cleanup builds');
 const shell = runtime.slice(runtime.indexOf('const shell = ['), runtime.indexOf('];', runtime.indexOf('const shell = ['))+2);
 const listed = [...shell.matchAll(/'([^']+)'/g)].map(m=>m[1]);
 assert.equal(listed.length,19,'core shell includes 11 startup resources and 8 assessment dependencies');
@@ -84,4 +85,97 @@ assert.ok(!read('qa/browser/perf_bench.py').includes('pz_stat,pz_'), 'retired st
 assert.ok(openings.includes("treasure/art/story5/crew_full_"),'lightweight heroine intro art retained');
 assert.ok(hub.includes('إغلاق القواعد') && openings.includes('إغلاق القواعد'),'rules can be dismissed in both journeys');
 assert.ok(JSON.parse(read('package.json')).scripts.test.includes('node qa/tests/journey-transitions.cjs'), 'journey integrity gate must run in npm test');
+// Preserve the actual, dynamically generated gameplay art. In wreck-painted.js
+// the filename is assembled from the puzzle state, not present as a full literal.
+const wreckSource = read('motion/wreck-painted.js');
+assert.ok(wreckSource.includes("sprite('hold/' + type)") &&
+          wreckSource.includes("sprite(scene + '/player')"),
+          'wrecker dynamically resolves its hold scene and interactive sprites');
+for (const asset of ['scene','player','barrel','door','hatch','key','lever'])
+  assert.ok(fs.existsSync('motion/pirate-revised/hold/'+asset+'.webp'),
+    'retain active dynamically selected wreck illustration '+asset);
+
+// All work_review images are active. Two large visual layers plus corrections
+// reference them via CSS and must never be swept based on directory naming.
+const reviewRoot='ui/designs_art/work_review';
+const reviewFiles=[];
+function walkReview(dir){
+  for(const ent of fs.readdirSync(dir,{withFileTypes:true})){
+    const name=dir+'/'+ent.name;
+    if(ent.isDirectory()) walkReview(name);
+    else if(/\.(?:png|webp)$/.test(ent.name)) reviewFiles.push(name);
+  }
+}
+walkReview(reviewRoot);
+const paintedCSS=['motion/expedition-art.css','motion/correction-art.css',
+                  'motion/lab10.css','motion/adventure35.css'].map(read).join('\n');
+assert.equal(reviewFiles.length,372,'review artwork remains complete after safe cleanup');
+for(const asset of reviewFiles)
+  assert.ok(paintedCSS.includes(asset),'active painted asset must have a CSS consumer: '+asset);
+
+
+// Assets consolidated across campaign and side journey have identical Git
+// object hashes. The side journey must reuse the canonical campaign files
+// rather than keep another 15 full image copies.
+const expeditionSource=read('expedition10/app.js');
+const duplicates=[
+  ['01-lighthouse.webp','ch1_s3_scene.webp'],
+  ['02-river.webp','ch3_s3_scene.webp'],
+  ['03-map.webp','ch2_s2_scene.webp'],
+  ['04-balance.webp','ch3_s2_scene.webp'],
+  ['05-crystal.webp','ch2_s3_scene.webp'],
+  ['06-mirror.webp','ch4_s3_scene.webp'],
+  ['07-hourglass.webp','ch5_s2_scene.webp'],
+  ['08-islands.webp','ch6_s3_scene.webp'],
+  ['09-library.webp','ch7_s2_scene.webp'],
+  ['10-heart.webp','ch7_s3_scene.webp'],
+  ['12-ice.webp','ch4_s2_scene.webp'],
+  ['13-dragon.webp','ch6_s2_scene.webp']
+];
+for(const [oldName,sharedName] of duplicates){
+  const former='expedition10/art/scenes/'+oldName;
+  const canonical='treasure/art/story5/'+sharedName;
+  assert.ok(!fs.existsSync(former),'retired duplicated side art returned '+former);
+  assert.ok(fs.existsSync(canonical),'campaign art must remain available '+canonical);
+  assert.ok(expeditionSource.includes("scene:'"+canonical+"'"),'side stage points to shared image '+canonical);
+  assert.ok(manifest.includes('"'+canonical+'"'),'offline pack contains shared image '+canonical);
+}
+for(const [oldName,sharedName] of [['roaa','rawaa'],['noha','nuha'],['ward','ward']]){
+  const former='expedition10/art/crew/'+oldName+'.webp';
+  const canonical='treasure/art/story5/crew_full_'+sharedName+'.webp';
+  assert.ok(!fs.existsSync(former),'retired copied heroine '+former);
+  assert.ok(fs.existsSync(canonical),'shared heroine still exists '+canonical);
+  assert.ok(expeditionSource.includes("src:'"+canonical+"'"),'side journey uses canonical heroine '+canonical);
+  assert.ok(manifest.includes('"'+canonical+'"'),'offline pack includes shared heroine '+canonical);
+}
+assert.ok(expeditionSource.includes("const scenePaths=st=>st.scene.includes('/')?st.scene:SC+st.scene;"),
+  'scene path resolver handles both original short names and shared full paths');
+
+// Scan production code and asset metadata, not just the side-journey module:
+// the same background can also appear in a library card or story thumbnail.
+// This protects against deleting an image while a secondary view still loads it.
+const staleScenePaths=duplicates.map(([oldName])=>'expedition10/art/scenes/'+oldName);
+const staleCrewPaths=['roaa','noha','ward'].map(name=>'expedition10/art/crew/'+name+'.webp');
+const retiredPaths=[...staleScenePaths,...staleCrewPaths];
+const runtimeFiles=['index.html','offline-manifest.js','sw.js','pwa.js'];
+function walkRuntime(dir){
+  for(const ent of fs.readdirSync(dir,{withFileTypes:true})){
+    const name=dir+'/'+ent.name;
+    if(ent.isDirectory()) walkRuntime(name);
+    else if(/\.(?:js|css|json|html|csv|webmanifest)$/.test(ent.name)) runtimeFiles.push(name);
+  }
+}
+for(const dir of ['ui','motion','expedition10','treasure','atheran','legacy',
+                  'watercolor','ds','audio','upgrade','assessment','tv'])
+  if(fs.existsSync(dir)) walkRuntime(dir);
+const staleReferences=[];
+for(const path of runtimeFiles){
+  const source=read(path);
+  for(const stale of retiredPaths) if(source.includes(stale))
+    staleReferences.push(path+' -> '+stale);
+}
+assert.deepEqual(staleReferences,[],
+  'retired duplicate art cannot remain referenced by production views');
+
+
 console.log('MindLab cleanup passed: 78 lightweight puzzle records, 86 library intros, '+map.stations.length+' journey stations; retired assets absent.');

@@ -10,7 +10,7 @@ assert(app.includes('function renderPassage()')&&app.includes("passage:renderPas
 assert(app.includes("button('تجاوز المشهد'"),'passage can be skipped');
 assert(app.includes("button('ابدأ الفصل الجديد'"),'passage has a clear destination action');
 assert(app.includes("crew_full_'+guide.key+'.webp"),'uses original crew full-body artwork');
-assert(css.includes('.v545-passage-layout')&&css.includes('@media(max-width:760px){.v545-passage-layout'),'responsive passage layout exists');
+assert(css.includes('.v545-passage-layout')&&css.includes('.v545-passage-layout{grid-template-columns:1fr!important}'),'passage layout has responsive single-column fallback');
 assert.equal((data.match(/id:'sea7_'/g)||[]).length,1,'station IDs remain generated from fixed indices');
 assert(read('index.html').includes('miran:v2'),'existing save key remains');
 assert(read('sw.js').includes("const VERSION='"+JSON.parse(read('package.json')).version+"'"),'service worker cache version updated');

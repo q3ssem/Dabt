@@ -24,7 +24,7 @@ function boot(seed){
  return{c:context,nodes,buttons,click,byid,aria};
 }
 const t=boot(),c=t.c,D=c.TreasureData,L=c.TreasureLogic;
-c.T7.map();ok(t.nodes().filter(n=>n.className.includes('t7-station ')).length===21,'21 map nodes');
+c.T7.map();c.T7.render();ok(t.nodes().some(n=>n.className==='v5-hubcard'),'official journey card remains available without retired atlas');ok(D.stations.length===21,'all 21 native sea stations remain');
 c.T7.open(1);ok(!t.nodes().some(n=>n.className==='t7-dialog'),'locked cannot open');
 
 
@@ -57,7 +57,7 @@ function drive(s){drive.sel=null;const work=()=>c.T7.state().work[s.id];if(s.var
 function playV5(s){c.T7.open(s.i);
  ok(t.nodes().filter(n=>n.className==='t7-hero-intro').length===1,'single illustrated opening '+s.id);
  t.click('قواعد المحطة');ok(!!t.byid('v5-board'),'5.0 board '+s.id);
- for(const action of ['الخريطة','دفتر الرحلة','الكنوز']){
+ for(const action of ['المحطات','دفتر الرحلة','الكنوز']){
   const matches=t.buttons().filter(n=>n.textContent===action);
   ok(matches.length===1&&matches[0].attrs['aria-label']===action,'single accessible toolbar action '+action+' '+s.id);
  }
@@ -78,6 +78,6 @@ function playV5(s){c.T7.open(s.i);
  if(s.needs)for(const nd of [].concat(s.needs))ok(c.T7.state().v5.tools[nd]==='used','tool marked used '+nd);if(s.gives)ok(!!c.T7.state().v5.tools[s.gives],'tool earned '+s.gives);}
 for(const s of D.stations)playV5(s);
 ok(Object.keys(c.T7.state().done).length===21,'all 21 complete');ok(c.T7.state().rewards.length===7,'7 rewards earned');
-const restored=boot(JSON.parse(c.persisted));ok(Object.keys(restored.c.T7.state().done).length===21,'reload keeps completion');ok(restored.c.S.st.hist[0].pts===77,'legacy results preserved');ok(restored.c.S.st.tx.prog===5,'legacy journey preserved');restored.c.T7.map();restored.click('الكنوز');ok(restored.nodes().filter(n=>n.className==='t7-treasure earned').length===7,'treasure cabinet');restored.click('إغلاق');restored.click('دفتر الرحلة');ok(restored.nodes().filter(n=>n.tag==='article'&&n.className==='v5-page').length===28,'notebook all clues (5.0: 21 station pages + 7 secrets)');
+const restored=boot(JSON.parse(c.persisted));ok(Object.keys(restored.c.T7.state().done).length===21,'reload keeps completion');ok(restored.c.S.st.hist[0].pts===77,'legacy results preserved');ok(restored.c.S.st.tx.prog===5,'legacy journey preserved');restored.c.T7.openJournal('treasures');ok(restored.nodes().filter(n=>n.className==='t7-treasure earned').length===7,'treasure cabinet');restored.click('إغلاق');restored.c.T7.openJournal('notebook');ok(restored.nodes().filter(n=>n.tag==='article'&&n.className.startsWith('v5-page')).length===29,'notebook preserves 21 station pages, 7 secrets, and the gated finale');
 const remote=JSON.parse(c.persisted);delete remote.treasureV3.done.sea7_0;remote.treasureV3.updatedAt=Date.now()+100;restored.c.S.merge(remote);ok(Object.keys(restored.c.T7.state().done).length===21,'cloud merge preserves local completed nodes');const malformed=JSON.parse(JSON.stringify(remote));malformed.treasureV3.work.sea7_0=[999];restored.c.S.merge(malformed);ok(Object.keys(restored.c.T7.state().done).length===21,'invalid remote cannot overwrite progress');
 console.log(JSON.stringify({status:'passed',assertions:total,stations:21,renderer:'in-memory DOM; no visual browser test'},null,2));

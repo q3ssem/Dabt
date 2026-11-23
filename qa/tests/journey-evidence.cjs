@@ -37,7 +37,7 @@ assert.equal(api.getEvidenceDraft('testimony'),'');
 assert.equal(JSON.parse(state.get('treasureV3')).done.sea7_0,true,'official save untouched');
 assert.equal(JSON.parse(state.get('atheranCampaign')).done.pz_aarch,true,'Atheran save untouched');
 assert.equal(JSON.parse(state.get('mindlab:transitions:seen:v1')).departure,true,'transition save untouched');
-assert(src.includes('id="mlj-open-evidence"'),'legacy map exposes notebook');
+assert(src.includes("label:'ملفات الأدلة والملاحظات',open:openEvidenceBook"),'chapter extras expose the evidence notebook without a navigation map');
 assert(src.includes('ملفات الأدلة والملاحظات'),'V3 map exposes notebook without crowding footer');
 assert(src.includes('دفتر الأدلة') && src.includes('القياس والاتجاه') && src.includes('الساعة والشهادة') && src.includes('العمر والأثر'),'three authored files');
 assert(src.includes('btn.setAttribute') && src.includes("'aria-pressed'"),'tab state is announced');

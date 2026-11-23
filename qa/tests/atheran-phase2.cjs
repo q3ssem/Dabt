@@ -8,8 +8,8 @@ let n = 0; const ok = (v, m) => { assert.ok(v, m); n++; };
 const html = read('index.html'), pkg = JSON.parse(read('package.json')), sw = read('sw.js'), man = read('offline-manifest.js');
 
 // release + offline
-ok(pkg.version === '5.5.29', 'package 5.5.28');
-ok(sw.includes("const VERSION='5.5.29'"), 'service worker cache 5.5.28');
+ok(pkg.version === '5.5.30', 'package 5.5.28');
+ok(sw.includes("const VERSION='5.5.30'"), 'service worker cache 5.5.28');
 ['atheran/campaign/story.js', 'atheran/campaign/campaign.js', 'atheran/campaign/campaign.css'].forEach(f => { ok(fs.existsSync(f), f + ' exists'); ok(man.includes(`"${f}"`), f + ' cached offline'); });
 const ui = read('ui/app.js');
 const campaignScripts = [...(ui.match(/const scripts = \[([\s\S]*?)\];/)?.[1] || '').matchAll(/'([^']+)'/g)].map(match => match[1]);
@@ -69,17 +69,13 @@ ok(pat.length === 6, 'six audited 5.5.28 hint patches');
 pat.forEach(p => ok(html.split(p.after).length - 1 === 1 && (p.after.includes(p.before) || !html.includes(p.before)), 'hint patch applied once: ' + p.reason.slice(0, 50)));
 ok(!html.includes('بـ${XAR(i)} خطوة') && !html.includes('تبقى ${XAR(best.c)} خانات'), 'broken number phrases gone');
 
-// expedition: tap, map, contrast, PNG, side-journey labels
+// Side journey: retire world-map navigation, preserve usable station folders and actual playable map puzzle.
 const exc = read('expedition10/style.css'), exa = read('expedition10/app.js');
-ok(exc.includes('.ex10 button.ex10-node:active{transform:translate(-50%,-50%) scale(.94)}'), 'node keeps its centre when pressed');
-ok(!/<div class="ex10-map-legend">[^<]*<\/div><\/div><div class="ex10-map-footer">/.test(exa) && exa.includes('</div><div class="ex10-map-legend">'), 'route legend sits below the map');
-const pos = JSON.parse(exa.match(/return(\[\[21,64\][^;]+);\}/)[1]);
-ok(pos.length === 24, '24 active map positions after retiring bottle stage');
-[[256, 320, 30], [296, 370, 34], [326, 408, 38], [366, 458, 38], [718, 439, 46]].forEach(([W, H, s]) => {
-  const p = pos.map(([x, y]) => [x * W / 100, y * H / 100]);
-  p.forEach(([x, y], i) => ok(x - s / 2 >= 0 && x + s / 2 <= W && y - s / 2 >= 0 && y + s / 2 <= H, `node ${i + 1} inside a ${W}px map`));
-  for (let i = 0; i < p.length; i++) for (let j = i + 1; j < p.length; j++) ok(!(Math.abs(p[i][0] - p[j][0]) < s && Math.abs(p[i][1] - p[j][1]) < s), `nodes ${i + 1}/${j + 1} apart at ${W}px`);
-});
+ok(exa.includes('function openStations()') && exa.includes("mindlabJourneyHub?.openChapters?.('side')"), 'side journey returns through chapter folders');
+ok(!exa.includes('function renderMap()') && !exc.includes('expedition10/art/world-map.webp'), 'retired navigation atlas absent');
+ok((exa.match(/id:'ml10_\d{2}'/g)||[]).length===24, 'exactly 24 active side-stage IDs persist');
+ok(exa.includes('data-ex10="stations2"') && exa.includes('function gameMap(i)'), 'station navigation and playable map puzzle survive');
+
 ok(!fs.readdirSync('expedition10/art/crew/poses').some(f => f.endsWith('.png')), 'unused PNG poses removed');
 ok(fs.readdirSync('expedition10/art/crew/poses').filter(f => f.endsWith('.webp')).length === 15, 'all 15 WebP poses kept');
 ok(!exa.includes('الفصل الأول ·') && exa.includes('رحلة جانبية'), 'expedition labelled as a side journey');

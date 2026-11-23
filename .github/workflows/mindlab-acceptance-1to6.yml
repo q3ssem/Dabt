@@ -1,0 +1,135 @@
+name: MindLab 5.5.30 acceptance stages 1-6 (review branch)
+
+on:
+  push:
+    branches: [review/mindlab-puzzle-folders-safety-20261122, review/mindlab-cleanup-integration-20261123, review/mindlab7-final-closure-20261123]
+  pull_request:
+    branches: [main]
+    paths:
+      - '.github/workflows/mindlab-acceptance-1to6.yml'
+      - 'qa/browser/palace_statues.py'
+      - 'qa/browser/kids_smoke.py'
+      - 'docs/ACCEPTANCE_1TO6_2026-11-22_AR.md'
+      - 'ui/**'
+      - 'motion/**'
+      - 'audio/**'
+      - 'atheran/**'
+      - 'treasure/**'
+      - 'expedition10/**'
+      - 'index.html'
+      - 'sw.js'
+      - 'pwa.js'
+  workflow_dispatch:
+
+concurrency:
+  group: mindlab-acceptance-1to6-${{ github.ref }}
+  cancel-in-progress: true
+
+permissions:
+  contents: read
+
+jobs:
+  browser-phases:
+    name: "Stage ${{ matrix.stage }} / ${{ matrix.browser }}"
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    strategy:
+      fail-fast: false
+      matrix:
+        stage: [door, visual, story, kids, offline]
+        browser: [chromium, webkit]
+    env:
+      STAGE: ${{ matrix.stage }}
+      BROWSER: ${{ matrix.browser }}
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - run: python -m playwright install --with-deps chromium webkit
+      - name: Run physical browser controls on version under review
+        shell: bash
+        run: |
+          set -euo pipefail
+          mkdir -p /tmp/acceptance
+          python -m http.server 8830 --bind 127.0.0.1 >/tmp/acceptance-server.log 2>&1 &
+          sleep 2
+          case "$STAGE" in
+            door)
+              ENGINE="$BROWSER" python qa/browser/palace_statues.py http://127.0.0.1:8830/
+              ;;
+            visual)
+              python qa/browser/board_visual_polish.py http://127.0.0.1:8830/ "$BROWSER" /tmp/acceptance
+              python qa/browser/jaziran_magnify.py http://127.0.0.1:8830/ "$BROWSER" /tmp/acceptance
+              ;;
+            story)
+              python qa/browser/jaziran_story_scenes.py http://127.0.0.1:8830/ "$BROWSER" /tmp/acceptance
+              python qa/browser/jaziran_rescue.py http://127.0.0.1:8830/ "$BROWSER" /tmp/acceptance
+              ;;
+            kids)
+              ENGINE="$BROWSER" python qa/browser/kids_smoke.py http://127.0.0.1:8830/
+              python qa/browser/brain_game_board_audit.py http://127.0.0.1:8830/ "$BROWSER" /tmp/acceptance
+              ;;
+            offline)
+              python qa/browser/phase3_acceptance.py http://127.0.0.1:8830/ "$BROWSER" quick
+              ;;
+          esac
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: acceptance-${{ matrix.stage }}-${{ matrix.browser }}
+          path: /tmp/acceptance
+          if-no-files-found: ignore
+          retention-days: 14
+
+  audio-events:
+    name: "Stage 4 / audio event and mute state"
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - run: python -m playwright install --with-deps chromium
+      - name: Validate sound event discipline (not an iPhone listening test)
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m http.server 8830 --bind 127.0.0.1 >/tmp/acceptance-server.log 2>&1 &
+          sleep 2
+          python qa/browser/audio_audit.py http://127.0.0.1:8830/ /tmp/acceptance-audio.json pz_river,pz_door,pz_pmirror,pz_aheart
+          python qa/browser/silent_switch.py http://127.0.0.1:8830/
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: acceptance-audio-events
+          path: /tmp/acceptance-audio.json
+          if-no-files-found: ignore
+          retention-days: 14
+
+  legacy-save:
+    name: "Stage 6 / old player save migration"
+    runs-on: ubuntu-latest
+    timeout-minutes: 25
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/checkout@v4
+        with:
+          ref: backup/mindlab-main-before-cleanup-20261122
+          path: acceptance-old
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright
+      - run: python -m playwright install --with-deps chromium
+      - name: Preserve historical progress from saved 5.5.28 baseline
+        shell: bash
+        run: |
+          set -euo pipefail
+          python -m http.server 8830 --bind 127.0.0.1 >/tmp/acceptance-new.log 2>&1 &
+          python -m http.server 8831 --bind 127.0.0.1 --directory acceptance-old >/tmp/acceptance-old.log 2>&1 &
+          sleep 2
+          python qa/browser/oldsave_compat.py http://127.0.0.1:8830/ http://127.0.0.1:8831/

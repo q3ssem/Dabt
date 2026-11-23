@@ -5,8 +5,8 @@ const root = path.resolve(__dirname, '../..');
 const base = path.join(root, 'atheran', 'assets');
 const manifest = JSON.parse(fs.readFileSync(path.join(base, 'asset_inventory_master.json'), 'utf8'));
 const assert = (v, m) => { if (!v) throw new Error(m); };
-assert(manifest.completed_count === 546, 'manifest count must be 546');
-assert(manifest.completed_assets.length === 546, 'completed asset record count mismatch');
+assert(manifest.completed_count === 535, 'manifest count must be 535');
+assert(manifest.completed_assets.length === 535, 'completed asset record count mismatch');
 const ids = new Set(), paths = new Set();
 for (const a of manifest.completed_assets) {
   assert(!ids.has(a.asset_id), `duplicate asset_id: ${a.asset_id}`); ids.add(a.asset_id);
@@ -17,18 +17,18 @@ for (const a of manifest.completed_assets) {
   assert(digest === a.sha256, `SHA-256 mismatch: ${a.relative_path}`);
 }
 const runtime = fs.readFileSync(path.join(root,'atheran','runtime','assets-runtime.js'),'utf8');
-for (const hook of ['MINDLAB_ATHRAN_ASSETS','map_layer_01_bg','map_layer_04_markers_base','ah-station-map-markers','puzzleState','puzzleStates','regionParts','secretWorld','aStation','aScene','aRegionInfo','aTraces','aSwList','aSwOpen','aFinale','aFinalePanels','stationBackground','characterPose','spriteSheet']) assert(runtime.includes(hook), `missing runtime integration hook ${hook}`);
+for (const hook of ['MINDLAB_ATHRAN_ASSETS','puzzleState','puzzleStates','regionParts','secretWorld','aStation','aScene','aRegionInfo','aTraces','aSwList','aSwOpen','aFinale','aFinalePanels','stationBackground','characterPose','spriteSheet']) assert(runtime.includes(hook), `missing runtime integration hook ${hook}`);
 const app = fs.readFileSync(path.join(root,'ui','app.js'),'utf8');
 const runtimeIndex = app.indexOf("'atheran/runtime/assets-runtime.js'");
 assert(runtimeIndex >= 0 && app.indexOf("'atheran/campaign/story.js'") > runtimeIndex, 'assets runtime must load before campaign scripts');
 assert(runtime.includes("const puzzle=id=>byPuzzle[id]||byStation[id]||[]"), 'puzzle asset lookup must support station-index fallback');
 assert(runtime.includes("wrap('aFinale'"), 'finale art must bind to finale open action');
 assert(!runtime.includes('finalObs.observe(document.body'), 'finale observer must not watch the entire document');
-assert(!runtime.includes('finalObs.observe(document.body'), 'finale observer must not watch the entire document');
-assert(!runtime.includes("'map_layer_08_relic_pins','map_layer_09_fog_shadows'"), '96px relic pin artwork must not be stretched as a full map layer');
+assert(!runtime.includes("wrap('aHubHTML'")&&!runtime.includes('map_layer_01_bg'), 'retired world-map renderer and asset records must be absent');
 assert(runtime.includes("puzzle(id)||byStation[id]") || runtime.includes('byPuzzle[id]||byStation[id]'), 'puzzle lookup must support both puzzle_id and station_id');
 const campaign = fs.readFileSync(path.join(root,'atheran','campaign','campaign.js'),'utf8');
-assert(campaign.includes('heroSrc(k)'), 'campaign header should use approved hero assets');
+assert(!campaign.includes('legacyOpen')&&!campaign.includes('aHubHTML('),'Atheran no longer renders old navigation atlas');
+assert(fs.readFileSync(path.join(root,'ui','journey-hub.js'),'utf8').includes('mlj-station-crew'),'story opening retains hand-painted protagonists');
 const counts = manifest.completed_assets.reduce((o,a)=>(o[a.asset_type]=(o[a.asset_type]||0)+1,o),{});
 assert(counts.puzzle_piece_state === 80, '80 puzzle-state sprites must be indexed');
 assert(counts.station_stage_bg === 63, '63 stage backgrounds must be indexed');

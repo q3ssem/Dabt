@@ -22,7 +22,7 @@ for (const fragment of [
 
 assert.ok(app.includes("'ui/fullscreen-puzzles.css', 'ds/board-polish.css'"), 'Board style should follow all other puzzle layers');
 assert.ok(offline.includes('self.MINDLAB_OFFLINE_FILES.push("ds/board-polish.css", "ui/jaziran-puzzle-accents.css")'), 'Board polish and per-game accents must be available offline');
-assert.ok(sw.includes("PATCH='brain-touch-32'"), 'Update PWA cache identity when visual assets change');
+assert.ok(sw.includes("const VERSION='"+require('../../package.json').version+"'") && sw.includes("PATCH='map-free-2'"), 'PWA cache identity includes the reviewed release and map-free asset generation');
 assert.ok(!/#[a-zA-Z0-9_-]*board\s*\*\s*\{/.test(style), 'Never blindly recolor game pieces');
 assert.ok(!/\#pzb\s*\*\s*\{/.test(style), 'Never change all puzzle content at once');
 

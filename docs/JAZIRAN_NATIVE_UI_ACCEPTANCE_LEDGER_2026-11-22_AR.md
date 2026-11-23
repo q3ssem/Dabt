@@ -1,131 +1,138 @@
-# سجل أدلة القبول باللعب الفعلي — MindLab (الدفعة الثانية)
+# سجل القبول الحديث — 86 لغزًا بمدخلات واجهة اللاعب
 
-**تاريخ الجرد:** 22 نوفمبر 2026 · **مرجع GitHub قبل هذا التقرير:** `84956b23c964bc9e7f985893a55bf5907137bbfc` · [PR #10](https://github.com/q3ssem/Dabt/pull/10) (مسودة غير مدمجة).  
-**حالة المستند:** جرد فجوات القبول؛ لا يدّعي أن الألغاز الـ86 قابلة للاعتماد النهائي.
+**تحديث:** 22 نوفمبر 2026. المرجع الحالي عند بدء الورشة: `main` = `d27d189`، وطلب القبول قيد المراجعة [PR #15](https://github.com/q3ssem/Dabt/pull/15). **هذا المستند يحدّث سجلًا أقدم كان يثبت 15/86 فقط عند رأس فرع سابق؛ لا يجوز إبقاء الرقم التاريخي بوصفه الحالة النهائية لجميع الاختبارات اللاحقة.**
 
-## قاعدة الإثبات
+## مستوى الإثبات وحدوده
 
-- **الفحص البصري:** فتح ألغاز 86/86 على Chromium وWebKit في 3 أحجام (516 حالة عرض) [تشغيل 45016127788](https://github.com/q3ssem/Dabt/actions/runs/45016127788). يثبت الفتح والواجهة، **لا** يثبت نجاح الحل.
-- **الفوز الفعلي:** يثبت فقط إذا سارت إجراءات Playwright على أزرار/سحب واجهة اللاعب، ثم ظهر فوز المحرك الأصلي، وتقدم حفظه؛ المنطق أو الحل المرجعي يمكن *قراءته للتخطيط* لا استدعاؤه لتجاوز اللعبة.
-- **الفحوص الداخلية:** [Engine witness](https://github.com/q3ssem/Dabt/actions/runs/45016127725) يستدعي واجهات تشخيصية أحيانًا، ولذلك لا يُحتسب فوزًا فعليًا. نجاح وظيفة CI يعني اكتمال مهمة التشخيص حتى لو أبلغت عن ألغاز بلا شهود فوز.
-- **قيود الاعتراف:** لا يثبت أي فحص متصفح سطح مكتب اختبار Safari على جهاز iPhone حقيقي، ولا التباين والصوت والاستجابة الحسية لكل الألغاز.
+- جُمعت أدلة الاختبارات الفعلية التي نجحت على فرع المراجعة ذي الرأس `5daa2a09` في [PR #13](https://github.com/q3ssem/Dabt/pull/13)، حيث نجحت **19/19 مجموعة GitHub Actions**. تتبع الاختبارات حلول الألغاز بإدخال اللاعب إلى الأزرار والسحب، لا باستدعاء دوال الفوز.
+- **86/86 معرفًا فعالًا لديه دليل فوز آلي في متصفح محاكى**، بربط كل معرّف باختبار مُسمّى وتحقّق من انتهاء الاختبار بنجاح. هذا يعادل **تغطية أسماء الألغاز**، ولا يعني إثبات جميع حالات التصميم العشوائية، ولا كل وضعيات الهاتف، ولا كل مستويات جميع الألغاز.
+- الاستثناء الذي تم كشفه: اختبار `pz_door` السابق استخدم `__test.pz.set()` في حالة كل مستوى؛ أُزيل التجاوز في PR #15، ونجح اختباره على [تشغيل 45050387532](https://github.com/q3ssem/Dabt/actions/runs/45050387532): **280/280 فحصًا لكل من Chromium وWebKit**، مع حل اللوحات بالسحب والتدوير وثبوت الحفظ في الجلسة العادية.
+- اختبار أبواب القصر صار يختبر كل مستوى عبر مدخلات اللاعب؛ لا تستخدم تقارير `witness` التي تستدعي دوال الحل الداخلية باعتبارها قبولًا فرديًا.
+- *مهم*: أغلب روابط الأدلة تعود إلى فرع PR #13 المختبر وليس إلى نسخة منشورة بعد PR #15؛ ولذلك يتطلب قبول المرشح النهائي نجاح اختبارات الانحدار على آخر Commit وألا يكون قد تغير محرك اللعب، فضلًا عن اختبار Safari على iPhone فعلي.
 
-## التغطية الحالية المثبتة في أحدث مجموعة تشغيلات للفرع
+## سجل المعرّفات والدليل المباشر
 
-| القسم | ألغاز فعالة | ثبت لها فوز بمدخلات لاعب | يحتاج دليلًا مماثلًا |
-|---|---:|---:|---:|
-| التدريب | 19 | 10 | 9 |
-| البحار السبعة | 22 | 0 | 22 |
-| قصر المرايا | 19 | 0 | 19 |
-| أَثْران | 21 | 0 | 21 |
-| موطن الأثر الأول | 5 | 5 | 0 |
-| **الإجمالي** | **86** | **15** | **71** |
+### التدريب — 19 لغزًا
 
-اختبارات اللاعب التي تم ربطها: [9 ألغاز تدريبية](https://github.com/q3ssem/Dabt/actions/runs/45016127725)، [ثلاث سلاسل × 20 مستوى](https://github.com/q3ssem/Dabt/actions/runs/45016127830)، [خمسة ألغاز × 8 مستويات](https://github.com/q3ssem/Dabt/actions/runs/45016127744). **أُزيل تداخل** `pz_pipe` و`pz_ice` الموجودين في الاختبار التدريبي وسلاسل المستويات، لذلك عدد المعرفات الفريدة 15 لا 17. تتكرر السيناريوهات على محركي Chromium وWebKit؛ لا يُضاعف ذلك عدد الألغاز.
+| معرّف اللغز | اختبار مدخلات اللاعب الناجح |
+|---|---|
+| `pz_rid` | [Actions #45046123255](https://github.com/q3ssem/Dabt/actions/runs/45046123255) |
+| `pz_river` | [Actions #45046123141](https://github.com/q3ssem/Dabt/actions/runs/45046123141) |
+| `pz_rush` | [Actions #45046123038](https://github.com/q3ssem/Dabt/actions/runs/45046123038) |
+| `pz_lock` | [Actions #45046122982](https://github.com/q3ssem/Dabt/actions/runs/45046122982) |
+| `pz_pipe` | [Actions #45046122982](https://github.com/q3ssem/Dabt/actions/runs/45046122982) |
+| `pz_grid` | [Actions #45046123255](https://github.com/q3ssem/Dabt/actions/runs/45046123255) |
+| `pz_scale` | [Actions #45046123038](https://github.com/q3ssem/Dabt/actions/runs/45046123038) |
+| `pz_laser` | [Actions #45046122982](https://github.com/q3ssem/Dabt/actions/runs/45046122982) |
+| `pz_soko` | [Actions #45046122982](https://github.com/q3ssem/Dabt/actions/runs/45046122982) |
+| `pz_sudo` | [Actions #45046122982](https://github.com/q3ssem/Dabt/actions/runs/45046122982) |
+| `pz_flow` | [Actions #45046123038](https://github.com/q3ssem/Dabt/actions/runs/45046123038) |
+| `pz_tan` | [Actions #45046123038](https://github.com/q3ssem/Dabt/actions/runs/45046123038) |
+| `pz_tent` | [Actions #45046123255](https://github.com/q3ssem/Dabt/actions/runs/45046123255) |
+| `pz_door` | [Actions #45050387532](https://github.com/q3ssem/Dabt/actions/runs/45050387532) |
+| `pz_lights` | [Actions #45046122982](https://github.com/q3ssem/Dabt/actions/runs/45046122982) |
+| `pz_untangle` | [Actions #45046123038](https://github.com/q3ssem/Dabt/actions/runs/45046123038) |
+| `pz_stroke` | [Actions #45046122982](https://github.com/q3ssem/Dabt/actions/runs/45046122982) |
+| `pz_binary` | [Actions #45046122982](https://github.com/q3ssem/Dabt/actions/runs/45046122982) |
+| `pz_ice` | [Actions #45046122982](https://github.com/q3ssem/Dabt/actions/runs/45046122982) |
 
-هذه الأرقام مبنية على وظائف القبول الصريحة المتحقَّق من سجلاتها على رأس الفرع المذكور، ولا تُنفي وجود اختبارات تاريخية أخرى أو حلول غير موصولة ببوابة القبول. لإضافة لغز إلى خانة الفوز الفعلي تُراجع نتيجة التشغيل الدقيقة الخاصة بمعرّفه، لا مجرد اسم الوظيفة.
+### البحار السبعة — 22 لغزًا
 
-## السجل لكل لغز
+| معرّف اللغز | اختبار مدخلات اللاعب الناجح |
+|---|---|
+| `pz_tpath` | [Actions #45046123187](https://github.com/q3ssem/Dabt/actions/runs/45046123187) |
+| `pz_xreef` | [Actions #45046123187](https://github.com/q3ssem/Dabt/actions/runs/45046123187) |
+| `pz_xbridge` | [Actions #45046123187](https://github.com/q3ssem/Dabt/actions/runs/45046123187) |
+| `pz_xcave` | [Actions #45046123187](https://github.com/q3ssem/Dabt/actions/runs/45046123187) |
+| `pz_xloot` | [Actions #45046123112](https://github.com/q3ssem/Dabt/actions/runs/45046123112) |
+| `pz_tmap` | [Actions #45046123112](https://github.com/q3ssem/Dabt/actions/runs/45046123112) |
+| `pz_tdig` | [Actions #45046123112](https://github.com/q3ssem/Dabt/actions/runs/45046123112) |
+| `pz_xlock` | [Actions #45046123112](https://github.com/q3ssem/Dabt/actions/runs/45046123112) |
+| `pz_ybell` | [Actions #45046123112](https://github.com/q3ssem/Dabt/actions/runs/45046123112) |
+| `pz_ymap` | [Actions #45046123187](https://github.com/q3ssem/Dabt/actions/runs/45046123187) |
+| `pz_yhold` | [Actions #45046123112](https://github.com/q3ssem/Dabt/actions/runs/45046123112) |
+| `pz_ytide` | [Actions #45046123112](https://github.com/q3ssem/Dabt/actions/runs/45046123112) |
+| `pz_ydoor` | [Actions #45046123112](https://github.com/q3ssem/Dabt/actions/runs/45046123112) |
+| `pz_zcomp` | [Actions #45046123112](https://github.com/q3ssem/Dabt/actions/runs/45046123112) |
+| `pz_zroute` | [Actions #45046123112](https://github.com/q3ssem/Dabt/actions/runs/45046123112) |
+| `pz_zcur` | [Actions #45046123055](https://github.com/q3ssem/Dabt/actions/runs/45046123055) |
+| `pz_zcode` | [Actions #45046123055](https://github.com/q3ssem/Dabt/actions/runs/45046123055) |
+| `pz_zharp` | [Actions #45046123055](https://github.com/q3ssem/Dabt/actions/runs/45046123055) |
+| `pz_zshadow` | [Actions #45046123055](https://github.com/q3ssem/Dabt/actions/runs/45046123055) |
+| `pz_znim` | [Actions #45046123112](https://github.com/q3ssem/Dabt/actions/runs/45046123112) |
+| `pz_zstars` | [Actions #45046123055](https://github.com/q3ssem/Dabt/actions/runs/45046123055) |
+| `pz_zthrone` | [Actions #45046123055](https://github.com/q3ssem/Dabt/actions/runs/45046123055) |
 
-| المعرّف | القسم | مستوى الدليل الحالي | دليل اللعب الفعلي |
-|---|---|---|---|
-| `pz_rid` | التدريب | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_river` | التدريب | فوز فعلًا عبر عناصر واجهة اللاعب | [20 مرحلة](https://github.com/q3ssem/Dabt/actions/runs/45016127830) |
-| `pz_rush` | التدريب | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_lock` | التدريب | فوز فعلًا عبر عناصر واجهة اللاعب | [لمس تدريبي](https://github.com/q3ssem/Dabt/actions/runs/45016127725) |
-| `pz_pipe` | التدريب | فوز فعلًا عبر عناصر واجهة اللاعب | [لمس تدريبي](https://github.com/q3ssem/Dabt/actions/runs/45016127725) + [20 مرحلة](https://github.com/q3ssem/Dabt/actions/runs/45016127830) |
-| `pz_grid` | التدريب | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_scale` | التدريب | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_laser` | التدريب | فوز فعلًا عبر عناصر واجهة اللاعب | [لمس تدريبي](https://github.com/q3ssem/Dabt/actions/runs/45016127725) |
-| `pz_soko` | التدريب | فوز فعلًا عبر عناصر واجهة اللاعب | [لمس تدريبي](https://github.com/q3ssem/Dabt/actions/runs/45016127725) |
-| `pz_sudo` | التدريب | فوز فعلًا عبر عناصر واجهة اللاعب | [لمس تدريبي](https://github.com/q3ssem/Dabt/actions/runs/45016127725) |
-| `pz_flow` | التدريب | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_tan` | التدريب | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_tent` | التدريب | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_door` | التدريب | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_lights` | التدريب | فوز فعلًا عبر عناصر واجهة اللاعب | [لمس تدريبي](https://github.com/q3ssem/Dabt/actions/runs/45016127725) |
-| `pz_untangle` | التدريب | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_stroke` | التدريب | فوز فعلًا عبر عناصر واجهة اللاعب | [لمس تدريبي](https://github.com/q3ssem/Dabt/actions/runs/45016127725) |
-| `pz_binary` | التدريب | فوز فعلًا عبر عناصر واجهة اللاعب | [لمس تدريبي](https://github.com/q3ssem/Dabt/actions/runs/45016127725) |
-| `pz_ice` | التدريب | فوز فعلًا عبر عناصر واجهة اللاعب | [لمس تدريبي](https://github.com/q3ssem/Dabt/actions/runs/45016127725) + [20 مرحلة](https://github.com/q3ssem/Dabt/actions/runs/45016127830) |
-| `pz_tpath` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_xreef` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_xbridge` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_xcave` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_xloot` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_tmap` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_tdig` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_xlock` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_ybell` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_ymap` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_yhold` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_ytide` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_ydoor` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_zcomp` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_zroute` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_zcur` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_zcode` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_zharp` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_zshadow` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_znim` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_zstars` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_zthrone` | البحار السبعة | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_plock` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_pliar` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_pclock` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_pboss1` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_plib` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_pmirror` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_pgarden` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_pqueen` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_parm` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_pjail` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_pobs` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_peng` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_pmaze` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_pcrypt` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_pvalve` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_plast` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_pdragon` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_phall` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_pheart` | قصر المرايا | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_aarch` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_aport` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_alight` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_acur` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_ashell` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_aroot` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_aring` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_ashade` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_aswarm` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_aecho` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_avsong` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_agiant` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_aherd` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_abridge` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_asilent` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_alayer` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_acity` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_asong` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_aflow` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_arelic` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_aheart` | أَثْران | فتح/عرض فقط في التشغيلات المرجعية | — |
-| `pz_wbone` | موطن الأثر الأول | فوز فعلًا عبر عناصر واجهة اللاعب | [40 مستوى/5 محركات](https://github.com/q3ssem/Dabt/actions/runs/45016127744) |
-| `pz_wspore` | موطن الأثر الأول | فوز فعلًا عبر عناصر واجهة اللاعب | [40 مستوى/5 محركات](https://github.com/q3ssem/Dabt/actions/runs/45016127744) |
-| `pz_wlog` | موطن الأثر الأول | فوز فعلًا عبر عناصر واجهة اللاعب | [40 مستوى/5 محركات](https://github.com/q3ssem/Dabt/actions/runs/45016127744) |
-| `pz_wlake` | موطن الأثر الأول | فوز فعلًا عبر عناصر واجهة اللاعب | [40 مستوى/5 محركات](https://github.com/q3ssem/Dabt/actions/runs/45016127744) |
-| `pz_wfirst` | موطن الأثر الأول | فوز فعلًا عبر عناصر واجهة اللاعب | [40 مستوى/5 محركات](https://github.com/q3ssem/Dabt/actions/runs/45016127744) |
+### قصر المرايا — 19 لغزًا
 
-## العوائق المعروفة / الأولويات
+| معرّف اللغز | اختبار مدخلات اللاعب الناجح |
+|---|---|
+| `pz_plock` | [Actions #45046123087](https://github.com/q3ssem/Dabt/actions/runs/45046123087) |
+| `pz_pliar` | [Actions #45046123452](https://github.com/q3ssem/Dabt/actions/runs/45046123452) |
+| `pz_pclock` | [Actions #45046123087](https://github.com/q3ssem/Dabt/actions/runs/45046123087) |
+| `pz_pboss1` | [Actions #45046122996](https://github.com/q3ssem/Dabt/actions/runs/45046122996) |
+| `pz_plib` | [Actions #45046123087](https://github.com/q3ssem/Dabt/actions/runs/45046123087) |
+| `pz_pmirror` | [Actions #45046123087](https://github.com/q3ssem/Dabt/actions/runs/45046123087) |
+| `pz_pgarden` | [Actions #45046123087](https://github.com/q3ssem/Dabt/actions/runs/45046123087) |
+| `pz_pqueen` | [Actions #45046123048](https://github.com/q3ssem/Dabt/actions/runs/45046123048) |
+| `pz_parm` | [Actions #45046122996](https://github.com/q3ssem/Dabt/actions/runs/45046122996) |
+| `pz_pjail` | [Actions #45046122996](https://github.com/q3ssem/Dabt/actions/runs/45046122996) |
+| `pz_pobs` | [Actions #45046123452](https://github.com/q3ssem/Dabt/actions/runs/45046123452) |
+| `pz_peng` | [Actions #45046123048](https://github.com/q3ssem/Dabt/actions/runs/45046123048) |
+| `pz_pmaze` | [Actions #45046123087](https://github.com/q3ssem/Dabt/actions/runs/45046123087) |
+| `pz_pcrypt` | [Actions #45046123087](https://github.com/q3ssem/Dabt/actions/runs/45046123087) |
+| `pz_pvalve` | [Actions #45046123087](https://github.com/q3ssem/Dabt/actions/runs/45046123087) |
+| `pz_plast` | [Actions #45046123048](https://github.com/q3ssem/Dabt/actions/runs/45046123048) |
+| `pz_pdragon` | [Actions #45046123087](https://github.com/q3ssem/Dabt/actions/runs/45046123087) |
+| `pz_phall` | [Actions #45046123048](https://github.com/q3ssem/Dabt/actions/runs/45046123048) |
+| `pz_pheart` | [Actions #45046122996](https://github.com/q3ssem/Dabt/actions/runs/45046122996) |
 
-1. **P1 — 71 معرّفًا بلا دليل حل واجهة في أحدث حزمة:** يجب إنشاء اختبارات فعلية مستقلة للأقسام المتبقية، خصوصًا البحار السبعة وقصر المرايا وأَثْران، والتمييز بين اختبار حل المستوى الأول وبين كامل المستويات.
-2. **P1 — اللمس:** كشف [فحص 86](https://github.com/q3ssem/Dabt/actions/runs/45016127788) أهداف لمس صغيرة في شبكات محددة. من الأولويات `pz_zcode`, `pz_tdig`, `pz_tpath`, `pz_tmap`, `pz_pdragon`, `pz_aheart`. التكبير الاختياري موجود، لكنه لا يكفي لاعتبار جميع الأزرار 44px.
-3. **P1 — التلميحات والتراجع:** يجري اختبار ظهور ثلاث درجات عند التوفر، لكن لم يُثبت بعد جودتها التعليمية أو حل كل لغز عقب التلميح والتراجع وإعادة المحاولة.
-4. **P1 — القبول الميداني:** Safari/iPhone فعلي، سماع SFX والحركة مع الصامت، فحص 320/390/430 والتكبير الفعلي، صورتان لكل لغز وتحليل التشوه والتداخل.
-5. **P2 — استكمال المقارنة القصصية والتكرار الفعلي:** يختبر استقلال الميكانيك والحلول، لا اختلاف الاسم والصور وحده.
+### أَثْران — 21 لغزًا
 
-## شروط تحديث السجل
+| معرّف اللغز | اختبار مدخلات اللاعب الناجح |
+|---|---|
+| `pz_aarch` | [Actions #45046123452](https://github.com/q3ssem/Dabt/actions/runs/45046123452) |
+| `pz_aport` | [Actions #45046123082](https://github.com/q3ssem/Dabt/actions/runs/45046123082) |
+| `pz_alight` | [Actions #45046123082](https://github.com/q3ssem/Dabt/actions/runs/45046123082) |
+| `pz_acur` | [Actions #45046122996](https://github.com/q3ssem/Dabt/actions/runs/45046122996) |
+| `pz_ashell` | [Actions #45046122996](https://github.com/q3ssem/Dabt/actions/runs/45046122996) |
+| `pz_aroot` | [Actions #45046123082](https://github.com/q3ssem/Dabt/actions/runs/45046123082) |
+| `pz_aring` | [Actions #45046123082](https://github.com/q3ssem/Dabt/actions/runs/45046123082) |
+| `pz_ashade` | [Actions #45046123082](https://github.com/q3ssem/Dabt/actions/runs/45046123082) |
+| `pz_aswarm` | [Actions #45046123082](https://github.com/q3ssem/Dabt/actions/runs/45046123082) |
+| `pz_aecho` | [Actions #45046123082](https://github.com/q3ssem/Dabt/actions/runs/45046123082) |
+| `pz_avsong` | [Actions #45046122996](https://github.com/q3ssem/Dabt/actions/runs/45046122996) |
+| `pz_agiant` | [Actions #45046123082](https://github.com/q3ssem/Dabt/actions/runs/45046123082) |
+| `pz_aherd` | [Actions #45046123082](https://github.com/q3ssem/Dabt/actions/runs/45046123082) |
+| `pz_abridge` | [Actions #45046123082](https://github.com/q3ssem/Dabt/actions/runs/45046123082) |
+| `pz_asilent` | [Actions #45046123082](https://github.com/q3ssem/Dabt/actions/runs/45046123082) |
+| `pz_alayer` | [Actions #45046123452](https://github.com/q3ssem/Dabt/actions/runs/45046123452) |
+| `pz_acity` | [Actions #45046123452](https://github.com/q3ssem/Dabt/actions/runs/45046123452) |
+| `pz_asong` | [Actions #45046123082](https://github.com/q3ssem/Dabt/actions/runs/45046123082) |
+| `pz_aflow` | [Actions #45046123082](https://github.com/q3ssem/Dabt/actions/runs/45046123082) |
+| `pz_arelic` | [Actions #45046123452](https://github.com/q3ssem/Dabt/actions/runs/45046123452) |
+| `pz_aheart` | [Actions #45046123082](https://github.com/q3ssem/Dabt/actions/runs/45046123082) |
 
-لا ينقل أي سطر من «فتح/عرض» إلى «فوز» إلا بعد توثيق: المعرّف، المستوى/البذرة، نوع الإدخال الفعلي، انتصار المحرك الأصلي، بيانات الحفظ قبل/بعد، نتيجة إعادة التحميل، نتائج Chromium وWebKit، ورابط سجل/Artifact محدد. لا تُحتسب `__test.pz.set/check/solve` أو تغييرات LocalStorage المباشرة وسيلة فوز.
+### موطن الأثر الأول — 5 لغزًا
 
-**قرار الدفعة:** مستمرة، غير مغلقة للقبول النهائي. لا دمج ولا نشر دون موافقة صاحب المشروع، وتظل الاختبارات الناجحة محفوظة دون إعادتها بلا سبب.
+| معرّف اللغز | اختبار مدخلات اللاعب الناجح |
+|---|---|
+| `pz_wbone` | [Actions #45046123164](https://github.com/q3ssem/Dabt/actions/runs/45046123164) |
+| `pz_wspore` | [Actions #45046123164](https://github.com/q3ssem/Dabt/actions/runs/45046123164) |
+| `pz_wlog` | [Actions #45046123164](https://github.com/q3ssem/Dabt/actions/runs/45046123164) |
+| `pz_wlake` | [Actions #45046123164](https://github.com/q3ssem/Dabt/actions/runs/45046123164) |
+| `pz_wfirst` | [Actions #45046123164](https://github.com/q3ssem/Dabt/actions/runs/45046123164) |
+
+## الرحلة الجانبية مستقلة عن الـ86
+
+24 محطة مختلفة `ml10_01..ml10_25` مع غياب `ml10_15`. سجّل [Actions #45046123218](https://github.com/q3ssem/Dabt/actions/runs/45046123218) نجاح 24 حلًا عبر واجهات التحكم، و72 نجمة إجمالية، مع عدم تغيير الحفظ الرسمي وفق سجلات الاختبار. إثبات حل المحطة مباشرة يختلف عن فحص فتحها حسب تقدم القصة.
+
+## بوابات القبول غير المغلقة
+
+1. تأكيد 86/86 بعد أي تغيير حقيقي للمحركات أو الصور ذات المراجع الديناميكية؛ لا تنقل نتائج فرع قديم إلى نسخة جديدة إذا تغيّر المنطق.
+2. أدلة التعافي من الانقطاع، حفظ التقدم بعد إعادة التحميل، وكل مستوى من المستويات التي تتطلب ذلك (تختلف التغطية حسب اختبار كل معرّف).
+3. مراجعة الواجهات في الثيمين، وأهداف اللمس على 320/390/430، والصوت والموسيقى والتفاعل الميداني.
+4. **Safari على iPhone فعلي، وموقع النشر النهائي:** غير مثبتين بهذه التشغيلات؛ يبقيان حاجزي قبول.
+5. لا دمج لطلبات التنظيف #13 و#14 قبل إغلاق مراحل القبول الست وموافقة صاحب المشروع.
+
+**نتيجة قابلة للتدقيق:** تغطية الفوز الآلي لأسماء الألغاز **86 من 86** في اختبارات المتصفح المرجعية؛ القبول النهائي للإصدار **غير مكتمل**.

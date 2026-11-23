@@ -16,11 +16,12 @@ const stage=JSON.parse(read('ui/designs_art/river_stage1/anchors_manifest.json')
 const riverJs=read('motion/lab10.js'),riverCss=read('motion/lab10.css'),hubJs=read('ui/journey-hub.js'),hubCss=read('ui/journey-hub.css'),load=read('ui/app.js');
 ok(openings.puzzles.length===78&&new Set(openings.puzzles.map(x=>x.puzzle_id)).size===78,'78 current puzzle opening records');
 ok(journey.chapters.length===4,'four journey choices');
+ok(journey.chapters.every(c=>!('x' in c)&&!('y' in c)),'retired navigation coordinates removed from the design manifest; sprite transition crops are independent');
 for(const [id,n] of [['seven_seas',21],['palace',19],['atheran',21],['side',24]]){
   const c=journey.chapters.find(c=>c.id===id);
   ok(c&&c.stations.length===n,'chapter stations '+id);
 }
-ok(exists('ui/designs_art/journey/journey_map.png'),'illustrated unified journey map');
+ok(exists('ui/designs_art/journey/v3/chapters/ch1_seven_seas.webp'),'illustrated chapter selector');
 ok(exists('ui/designs_art/journey/transitions_atlas.png'),'illustrated journey transitions');
 ok(exists('ui/art/series_mirrors.webp'),'Palace chapter artwork');
 ok(board.priority7.length>=50,'priority art bindings are registered');
@@ -52,40 +53,25 @@ for(const animal of ['wolf','sheep','grass'])
     ok(exists('ui/designs_art/river_stage1/03_passengers/'+animal+'_'+pose+'.png'),'passenger '+animal+'_'+pose);
   }
 ok(exists('motion/adventure35/river-day.webp'),'current river painting');
-ok(hubCss.includes('.mlj-palace-station')&&hubCss.includes('art/series_mirrors.webp'),'illustrated Palace map has responsive station links');
+ok(exists('ui/designs_art/journey/v3/chapters/ch2_mirror_palace.webp'),'illustrated Palace chapter selector');
 
-/* Exercise actual chapter routing with a small DOM; no static name-only guesses. */
-const called=[];
-class Node {
-  constructor(tag){this.tag=tag;this.dataset={};this.children=[];this.isConnected=false;this.events={};}
-  set innerHTML(s){this.markup=s;if(s.includes('mlj-palace-stations')){this.slots=new Node('div');this.closeButton=new Node('button');}}
-  querySelector(q){if(q==='.mlj-palace-stations')return this.slots;if(q==='.mlj-palace-close')return this.closeButton;return null;}
-  querySelectorAll(q){if(q==='[data-mlj-puzzle]')return this.slots.children;if(q.startsWith('button:'))return [this.closeButton,...this.slots.children];return [];}
-  setAttribute(k,v){this[k]=v;}
-  append(...items){this.children.push(...items);items.forEach(x=>x.isConnected=true);}
-  addEventListener(k,fn){this.events[k]=fn;}
-  focus(){this.focused=true;}
-  remove(){this.isConnected=false;doc.dialog=null;}
-}
-const tile={dataset:{legacyPuzzle:'pz_p0'},click(){called.push('puzzle');}};
-const doc={readyState:'loading',activeElement:{isConnected:false},dialog:null,
-  addEventListener(){},createElement:t=>new Node(t),
-  querySelector:q=>q==='#mlj-palace-map'?doc.dialog:null,
-  querySelectorAll:q=>q==='#v-puz [data-legacy-puzzle]'?[tile]:[],
-  body:{append(modal){doc.dialog=modal;modal.isConnected=true;}}};
-const win={LA:{librarySections:()=>[['قصر المرايا',Array.from({length:19},(_,i)=>({id:'pz_p'+i,name:'لغز '+(i+1)}))]]},
-  T7:{map:()=>called.push('seven_seas')},
-  ATHERAN_CAMPAIGN:{open:()=>called.push('atheran')},
-  ML10:{renderMap:()=>called.push('side')}};
-vm.runInNewContext(hubJs,{window:win,document:doc,LA:win.LA,T7:win.T7,console,showIntro(){},closePlay(){}});
-ok(typeof win.mindlabJourneyHub.openChapter==='function','chapter map dispatcher exposed for real interactions');
-win.mindlabJourneyHub.openChapter('seven_seas');
-win.mindlabJourneyHub.openChapter('atheran');
-win.mindlabJourneyHub.openChapter('side');
-ok(called.join(',')==='seven_seas,atheran,side','three available campaigns invoke their real playable maps');
-win.mindlabJourneyHub.openChapter('palace');
-ok(doc.dialog&&doc.dialog.slots.children.length===19,'Palace click opens modal with 19 original library stations');
-doc.dialog.slots.children[0].onclick();
-ok(called.at(-1)==='puzzle','Palace station launches existing puzzle engine via its library tile');
-ok(!doc.dialog,'Palace closes its map before starting the puzzle');
-console.log(JSON.stringify({status:'passed',checks,openings:78,chapters:4,palaceStations:19,priorityArt:board.priority7.length},null,2));
+/* Runtime acceptance for navigation is exercised in Chromium/WebKit; this
+   build gate rejects abandoned map launchers and checks the canonical counts. */
+const stationScript=read('ui/designs_art/journey/v3/stations.js');
+const stationData=JSON.parse(stationScript.slice(stationScript.indexOf(' = ')+3).trim().replace(/;\s*$/,''));
+const storyScript=read('ui/journey-story-data.js');
+const storyData=JSON.parse(storyScript.slice(storyScript.indexOf(' = ')+3).trim().replace(/;\s*$/,''));
+new vm.Script(hubJs,{filename:'ui/journey-hub.js'});
+for(const [id,n] of [['seven_seas',21],['palace',19],['atheran',21],['side',24]])
+ ok(stationData.stations.filter(s=>s.chapter===id).length===n,'map-free chapter stage count '+id);
+ok(stationData.stations.every(s=>!('x' in s)&&!('y' in s)&&!('clusterGroup' in s)),'obsolete map coordinates are removed');
+ok(!('clusters' in stationData)&&!('viewports' in stationData),'map-only clusters/viewports removed');
+ok(!('mapImage' in storyData),'narrative retains no world-map dependency');
+ok(storyData.chapterOrder.join(',')==='seven_seas,palace,atheran','official chapter story order');
+ok(hubJs.includes('function mountStationFolders()')&&hubJs.includes('function openChapters('),'one functional folder navigation');
+ok(!/function (?:openPalaceMap|mountLegacyHub|mountUnifiedHub)/.test(hubJs),'legacy map controllers deleted');
+ok(!/mlj-v3-pin|mlj-palace-map|world_map_vertical/.test(hubJs),'no map pins or assets rendered');
+ok(hubJs.includes("(id==='side'?sideGrid:grid).append(b)"),'side journey visibly separated');
+ok(hubJs.includes('canOpenStation(i)')&&hubJs.includes('ML10?.unlocked(i)')&&hubJs.includes('T7?.unlocked(i)'),'native Atheran/side/sea locks still enforced');
+ok(!hubCss.includes('.mlj-palace-station')&&!hubCss.includes('world_map_vertical'),'retired Palace and world atlas styles absent');
+console.log(JSON.stringify({status:'passed',checks,openings:78,chapters:4,stations:85,priorityArt:board.priority7.length},null,2));
