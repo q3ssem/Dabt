@@ -1,0 +1,442 @@
+{
+  "schema_version": 1,
+  "status": "art-registry-candidates-only",
+  "source": {
+    "repository": "q3ssem/Dabt",
+    "commit": "7327fdc6c6f36deaf63a2b20a7b6db9a315ad446",
+    "file": "ui/app.js",
+    "brain_expression": "ML_GAME_ART",
+    "kid_expression": "KID_ART"
+  },
+  "warnings": [
+    "ML_GAME_ART contains art IDs, not proof of active registrations in G/GM",
+    "KID_ART contains display names, not actual KID_GAMES IDs; never invent IDs from names",
+    "Live code paths, save keys, SFX and tests still untraced"
+  ],
+  "brain_visual_id_candidates": [
+    {
+      "id": "dual",
+      "art_candidate": "ui/art/games/dual.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "juggle",
+      "art_candidate": "ui/art/games/juggle.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "crash",
+      "art_candidate": "ui/art/games/crash.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "loci",
+      "art_candidate": "ui/art/games/loci.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "faces",
+      "art_candidate": "ui/art/games/faces.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "cards",
+      "art_candidate": "ui/art/games/cards.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "mylist",
+      "art_candidate": "ui/art/games/mylist.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "pm",
+      "art_candidate": "ui/art/games/pm.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "piano",
+      "art_candidate": "ui/art/games/piano.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "scene",
+      "art_candidate": "ui/art/games/scene.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "symspan",
+      "art_candidate": "ui/art/games/symspan.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "revspan",
+      "art_candidate": "ui/art/games/revspan.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "dx_cargo",
+      "art_candidate": "ui/art/games/dx_cargo.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "dx_memory",
+      "art_candidate": "ui/art/games/dx_memory.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "mmap",
+      "art_candidate": "ui/art/games/mmap.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "compass",
+      "art_candidate": "ui/art/games/compass.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "nav",
+      "art_candidate": "ui/art/games/nav.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "fold",
+      "art_candidate": "ui/art/games/fold.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "dx_pack",
+      "art_candidate": "ui/art/games/dx_pack.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "dx_turn",
+      "art_candidate": "ui/art/games/dx_turn.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "matrix",
+      "art_candidate": "ui/art/games/matrix.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "series",
+      "art_candidate": "ui/art/games/series.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "xw",
+      "art_candidate": "ui/art/games/xw.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "deduce",
+      "art_candidate": "ui/art/games/deduce.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "dx_route",
+      "art_candidate": "ui/art/games/dx_route.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "dx_balance",
+      "art_candidate": "ui/art/games/dx_balance.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "dx_order",
+      "art_candidate": "ui/art/games/dx_order.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "hawk",
+      "art_candidate": "ui/art/games/hawk.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "glance",
+      "art_candidate": "ui/art/games/glance.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "dd",
+      "art_candidate": "ui/art/games/dd.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "dx_signal",
+      "art_candidate": "ui/art/games/dx_signal.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "racer",
+      "art_candidate": "ui/art/games/racer.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "steps",
+      "art_candidate": "ui/art/games/steps.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "radar",
+      "art_candidate": "ui/art/games/radar.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "mot",
+      "art_candidate": "ui/art/games/mot.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "brake",
+      "art_candidate": "ui/art/games/brake.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "dx_search",
+      "art_candidate": "ui/art/games/dx_search.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "conf",
+      "art_candidate": "ui/art/games/conf.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "sw",
+      "art_candidate": "ui/art/games/sw.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "id": "dx_sort",
+      "art_candidate": "ui/art/games/dx_sort.webp",
+      "evidence": "ui/app.js ML_GAME_ART",
+      "verification": "registry-unverified"
+    }
+  ],
+  "kid_visual_name_candidates": [
+    {
+      "name": "بطاقات الذاكرة",
+      "art_candidate": "ui/art/kid_01.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "وش تغيّر؟",
+      "art_candidate": "ui/art/kid_02.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "كمّل النمط",
+      "art_candidate": "ui/art/kid_03.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "اتبع الضوء",
+      "art_candidate": "ui/art/kid_04.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "ظل الشكل",
+      "art_candidate": "ui/art/kid_05.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "موقف السيارات",
+      "art_candidate": "ui/art/kid_06.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "نفس الحيوان؟",
+      "art_candidate": "ui/art/kid_07.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "الصورة الناقصة",
+      "art_candidate": "ui/art/kid_08.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "الرسم بالمربعات",
+      "art_candidate": "ui/art/kid_09.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "خريطة الكنز",
+      "art_candidate": "ui/art/kid_10.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "فقاعات الألوان",
+      "art_candidate": "ui/art/kid_11.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "وين الكرة؟",
+      "art_candidate": "ui/art/kid_12.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "المرآة السحرية",
+      "art_candidate": "ui/art/kid_13.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "لا تلمس الذئب!",
+      "art_candidate": "ui/art/kid_14.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "حديقة الحروف",
+      "art_candidate": "ui/art/kid_15.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "ورشة الكلمات",
+      "art_candidate": "ui/art/kid_16.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "متجري الصغير",
+      "art_candidate": "ui/art/kid_17.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "قطار الأرقام",
+      "art_candidate": "ui/art/kid_18.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "قصة النبتة",
+      "art_candidate": "ui/art/kid_19.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "البنّاء الصغير",
+      "art_candidate": "ui/art/kid_20.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "جسر الأصدقاء",
+      "art_candidate": "ui/art/kid_21.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "بيت الحيوان",
+      "art_candidate": "ui/art/kid_22.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "رحلة قطرة",
+      "art_candidate": "ui/art/kid_23.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "قلبي يفهم",
+      "art_candidate": "ui/art/kid_24.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "ميزان الفريق",
+      "art_candidate": "ui/art/kid_25.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    },
+    {
+      "name": "بوصلة الأصدقاء",
+      "art_candidate": "ui/art/kid_26.webp",
+      "id": null,
+      "evidence": "ui/app.js KID_ART",
+      "verification": "registry-unverified"
+    }
+  ]
+}
