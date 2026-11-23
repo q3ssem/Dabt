@@ -41,7 +41,7 @@
     "registry-accepts-v5-underscored-game-ids"
   ],
   "current_experiment": "EXP-0001",
-  "next_action": "EXP-0001: trace runtime GM/G/KID_GAMES initialization and each game save, sound, hint, unlock and test; do not port code yet",
+  "next_action": "EXP-0001: verify dynamic GM routes and save/audio/hint per ID; preserve 40 shared story-library engine IDs as single drivers with route context",
   "content_status": {
     "brain_games_migrated": 0,
     "puzzles_migrated": 0,
@@ -137,6 +137,14 @@
     "static_child_ids": 26,
     "assets_present_at_source_commit": 258,
     "live_runtime_dependencies_verified": false,
-    "browser_asset_loading_verified": false
+    "browser_asset_loading_verified": false,
+    "distinct_content_engine_ids": 199,
+    "shared_library_story_engine_ids": 40,
+    "shared_by_chapter": {
+      "palace": 19,
+      "atheran": 21
+    },
+    "combined_entries_before_dedup": 239,
+    "route_context_rule": "story station is a route to its existing puzzle engine; do not duplicate registrations or rename IDs"
   }
 }
