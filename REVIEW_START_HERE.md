@@ -8,7 +8,7 @@
 
 هذه هي **بوابات القبول الأساسية لفرع المختبر ٧**. راجع النتائج على SHA واحد، ولا تخلط نجاح إصدار قديم بإصدار حالي:
 
-1. `.github/workflows/mindlab7-closure-verify.yml` — إعادة توليد الثيم الأبيض `ds/light-auto.css` بالأداة الأصلية، ثم اختبارات Node الكاملة (`npm test`، 58 فحصًا عند إنشاء هذه الوثيقة).
+1. `.github/workflows/mindlab7-closure-verify.yml` — إعادة توليد الثيم الأبيض `ds/light-auto.css` بالأداة الأصلية، ثم اختبارات Node الكاملة (`npm test`، 65 ملف اختبار Node موحّدًا في `npm test` (كانت 58 سابقًا، وأُضيفت السبعة المنفصلة بعد مراجعتها)).
 2. `.github/workflows/mindlab7-browser-regression.yml` — Chromium/WebKit، حل 24 مرحلة جانبية، العرض على الهاتف، قرار إخلاء أَثْران، الاختبار السريع دون اتصال، **واختبار 4 ألغاز كثيفة اللمس × 3 عروض هاتف**.
 3. `.github/workflows/mindlab-final-86-regression.yml` — 86 لغزًا في فصول المكتبة الخمسة على Chromium/WebKit، وتلميحاتها والمراجع والمحركات، إضافة إلى جرد 140 لوحة مؤلفة.
 
