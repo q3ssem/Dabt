@@ -10,27 +10,31 @@
     "release": "5.5.30",
     "read_only": true
   },
-  "status": "batch-03-movement-implemented-browser-pending",
+  "status": "batch-04-editorial-reviewed",
   "owner": "Work — puzzle narrative, difficulty, editorial QA",
   "other_owner": "MindLab6 engineering — engines/migration only",
   "scope": "existing puzzle texts, mechanics review, progressive hints and difficulty; no from-scratch replacement",
   "completed_puzzles": [],
   "current_batch": {
-    "id": "batch-03",
-    "status": "implemented-browser-pending",
-    "delivery": "docs/workshop/batch-03/README.md",
-    "implemented": [
-      "pz_pipe",
-      "pz_tan",
-      "pz_rush",
-      "pz_untangle",
-      "pz_ice"
+    "id": "batch-04",
+    "status": "editorial-reviewed-runtime-pending",
+    "delivery": "docs/workshop/batch-04/README.md",
+    "editorial_reviewed": [
+      "pz_grid",
+      "pz_sudo",
+      "pz_tent",
+      "pz_door",
+      "pz_binary",
+      "pz_tpath",
+      "pz_xreef",
+      "pz_xbridge"
     ],
-    "logic_verification": "node qa/tests/authored-stages.cjs; node qa/tests/display-audio.cjs; node docs/workshop/batch-01/verify.cjs",
+    "logic_verification": "node docs/workshop/batch-04/verify.cjs",
+    "source_cases_verified": 24,
     "browser_or_device_verified": false,
     "new_original_puzzles": 0
   },
-  "next_action": "Continue editorial batches from the source index and verify movement interaction on mobile.",
+  "next_action": "Review eight further puzzles beginning with pz_xcave, pz_xloot, pz_tmap, pz_tdig and pz_xlock, with three more from the source index.",
   "hard_rules": [
     "do-not-edit-main",
     "do-not-edit-mindlab6-engineering-branch",
@@ -114,6 +118,22 @@
         "pz_pipe"
       ],
       "new_original_puzzles": 0
+    },
+    {
+      "id": "batch-03",
+      "status": "implemented-browser-pending",
+      "delivery": "docs/workshop/batch-03/README.md",
+      "implemented": [
+        "pz_pipe",
+        "pz_tan",
+        "pz_rush",
+        "pz_untangle",
+        "pz_ice"
+      ],
+      "logic_verification": "node qa/tests/authored-stages.cjs; node qa/tests/display-audio.cjs; node docs/workshop/batch-01/verify.cjs",
+      "browser_or_device_verified": false,
+      "new_original_puzzles": 0
     }
-  ]
+  ],
+  "session_batch_size": 8
 }
