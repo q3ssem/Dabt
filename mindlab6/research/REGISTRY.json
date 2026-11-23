@@ -44,7 +44,14 @@
         "static_registry_report": "research/experiments/EXP-0001-dependency-inventory/results/parsed-source-registry.json",
         "asset_evidence_report": "research/experiments/EXP-0001-dependency-inventory/results/asset-evidence.json",
         "asset_paths_present": 258,
-        "runtime_certified": false
+        "runtime_certified": false,
+        "unique_content_ids": 199,
+        "total_categorized_rows": 239,
+        "shared_story_library_engine_ids": 40,
+        "shared_story_library_by_chapter": {
+          "palace": 19,
+          "atheran": 21
+        }
       },
       "next": "Trace every actual GM/child run binding, save schema, hints, audio, test coverage and dynamic loading"
     },
