@@ -10,28 +10,27 @@
     "release": "5.5.30",
     "read_only": true
   },
-  "status": "batch-10-editorial-reviewed",
+  "status": "batch-13-first-pass-complete-audit-pending",
   "owner": "Work — puzzle narrative, difficulty, editorial QA",
   "other_owner": "MindLab6 engineering — engines/migration only",
   "scope": "existing puzzle texts, mechanics review, progressive hints and difficulty; no from-scratch replacement",
   "completed_puzzles": [],
   "current_batch": {
-    "id": "batch-10",
-    "delivery": "docs/workshop/batch-10/README.md",
+    "id": "batch-13",
+    "delivery": "docs/workshop/batch-13/README.md",
     "status": "editorial-reviewed-runtime-pending",
     "editorial_reviewed": [
-      "pz_ashell",
-      "pz_aroot",
-      "pz_aring",
-      "pz_ashade",
-      "pz_aswarm",
-      "pz_aecho",
-      "pz_avsong",
-      "pz_agiant"
+      "pz_rid",
+      "pz_lock",
+      "pz_scale",
+      "pz_laser",
+      "pz_soko",
+      "pz_lights",
+      "pz_stroke"
     ],
     "browser_or_device_verified": false
   },
-  "next_action": "Continue the indexed editorial review from pz_aherd. Track final runtime adoption separately.",
+  "next_action": "Re-audit batches 01–13. Check wording against active rules, solve without answer keys, trial hints, then validate integrated mobile presentation.",
   "hard_rules": [
     "do-not-edit-main",
     "do-not-edit-mindlab6-engineering-branch",
@@ -229,6 +228,54 @@
         "pz_aport",
         "pz_alight",
         "pz_acur"
+      ],
+      "browser_or_device_verified": false
+    },
+    {
+      "id": "batch-10",
+      "delivery": "docs/workshop/batch-10/README.md",
+      "status": "editorial-reviewed-runtime-pending",
+      "editorial_reviewed": [
+        "pz_ashell",
+        "pz_aroot",
+        "pz_aring",
+        "pz_ashade",
+        "pz_aswarm",
+        "pz_aecho",
+        "pz_avsong",
+        "pz_agiant"
+      ],
+      "browser_or_device_verified": false
+    },
+    {
+      "id": "batch-11",
+      "delivery": "docs/workshop/batch-11/README.md",
+      "status": "editorial-reviewed-runtime-pending",
+      "editorial_reviewed": [
+        "pz_aherd",
+        "pz_abridge",
+        "pz_asilent",
+        "pz_alayer",
+        "pz_acity",
+        "pz_asong",
+        "pz_aflow",
+        "pz_arelic"
+      ],
+      "browser_or_device_verified": false
+    },
+    {
+      "id": "batch-12",
+      "delivery": "docs/workshop/batch-12/README.md",
+      "status": "editorial-reviewed-runtime-pending",
+      "editorial_reviewed": [
+        "pz_aheart",
+        "pz_wbone",
+        "pz_wspore",
+        "pz_wlog",
+        "pz_wlake",
+        "pz_wfirst",
+        "pz_ybell",
+        "pz_ymap"
       ],
       "browser_or_device_verified": false
     }
