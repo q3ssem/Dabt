@@ -8,7 +8,7 @@ assert(index.includes('function tripCardHTML()'),'main treasure journey card mus
 assert(index.includes("v.querySelector('.pzstory')"),'journey card must have a real insertion anchor');
 assert(index.includes('pzDailyType'),"daily puzzle content rotation must not be deleted");
 assert(campaign.includes("function journeyActions()")&&campaign.includes("const s = summary()"),'official campaign actions remain accessible through chapter folders');
-assert(!campaign.includes("v.querySelector('#pzday')"),'retired daily square is not used by Atheran campaign');
+assert(campaign.includes("const day = v.querySelector('#pzday'); if (day) day.remove();"),'legacy day-square DOM is removed, never inserted');
 const tide=fs.readFileSync(path.join(root,'ui/tide-scroll.css'),'utf8');
 const offline=fs.readFileSync(path.join(root,'offline-manifest.js'),'utf8');
 const sw=fs.readFileSync(path.join(root,'sw.js'),'utf8');
