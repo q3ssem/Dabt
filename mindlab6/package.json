@@ -1,12 +1,30 @@
 {
-  "name":"mindlab6-foundation",
-  "version":"0.0.1",
-  "private":true,
-  "type":"module",
-  "description":"Isolated project foundation; gameplay engines not migrated",
-  "scripts":{
-    "test":"node --test tests/*.test.mjs",
-    "check:workspace":"node tools/check-workspace.mjs",
-    "experiment:new":"node tools/new-experiment.mjs"
+  "name": "mindlab6-foundation",
+  "version": "0.0.2",
+  "private": true,
+  "type": "module",
+  "description": "Isolated V6 foundations, engine adapter smoke experiments and research continuity",
+  "scripts": {
+    "dev": "vite",
+    "dev:lab": "vite --mode lab",
+    "build": "vite build",
+    "build:lab": "vite build --mode lab",
+    "typecheck": "tsc --noEmit",
+    "test": "node --test tests/*.test.mjs",
+    "check:workspace": "node tools/check-workspace.mjs",
+    "check:bundles": "node tools/check-bundles.mjs",
+    "experiment:new": "node tools/new-experiment.mjs",
+    "verify": "npm test && npm run check:workspace && npm run typecheck && npm run build && npm run build:lab && npm run check:bundles"
+  },
+  "dependencies": {
+    "pixi.js": "8.23.0",
+    "playcanvas": "2.24.2"
+  },
+  "devDependencies": {
+    "typescript": "7.0.2",
+    "vite": "8.3.8"
+  },
+  "engines": {
+    "node": ">=22.12.0"
   }
 }
