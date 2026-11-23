@@ -282,7 +282,7 @@
   ],
   "session_batch_size": 8,
   "v6_audit": {
-    "status": "in-progress",
+    "status": "editorial-coverage-complete",
     "batch_size": 8,
     "total_indexed_ids": 86,
     "appearance_index": "docs/workshop/v6-audit/appearances.json",
@@ -378,8 +378,132 @@
         "logic_witnesses": "docs/workshop/v6-audit/verify-03-05.cjs",
         "visual_phone_test": "pending-integration",
         "ready_for_migration": []
+      },
+      {
+        "id": "06",
+        "cards": [
+          "pz_lock",
+          "pz_scale",
+          "pz_laser",
+          "pz_soko",
+          "pz_lights",
+          "pz_stroke",
+          "pz_pboss1",
+          "pz_pmirror"
+        ],
+        "delivery": "docs/workshop/v6-audit/batch-06/README.md",
+        "status": "editorial-review-and-sampled-logic-complete",
+        "visual_phone_test": "pending-integration",
+        "ready_for_migration": []
+      },
+      {
+        "id": "07",
+        "cards": [
+          "pz_pqueen",
+          "pz_parm",
+          "pz_pjail",
+          "pz_pobs",
+          "pz_peng",
+          "pz_pmaze",
+          "pz_pcrypt",
+          "pz_pvalve"
+        ],
+        "delivery": "docs/workshop/v6-audit/batch-07/README.md",
+        "status": "editorial-review-and-sampled-logic-complete",
+        "visual_phone_test": "pending-integration",
+        "ready_for_migration": []
+      },
+      {
+        "id": "08",
+        "cards": [
+          "pz_plast",
+          "pz_pdragon",
+          "pz_phall",
+          "pz_pheart",
+          "pz_aarch",
+          "pz_aport",
+          "pz_alight",
+          "pz_acur"
+        ],
+        "delivery": "docs/workshop/v6-audit/batch-08/README.md",
+        "status": "editorial-review-and-sampled-logic-complete",
+        "visual_phone_test": "pending-integration",
+        "ready_for_migration": []
+      },
+      {
+        "id": "09",
+        "cards": [
+          "pz_ashell",
+          "pz_aroot",
+          "pz_aring",
+          "pz_ashade",
+          "pz_aswarm",
+          "pz_aecho",
+          "pz_avsong",
+          "pz_agiant"
+        ],
+        "delivery": "docs/workshop/v6-audit/batch-09/README.md",
+        "status": "editorial-review-and-sampled-logic-complete",
+        "visual_phone_test": "pending-integration",
+        "ready_for_migration": []
+      },
+      {
+        "id": "10",
+        "cards": [
+          "pz_aherd",
+          "pz_abridge",
+          "pz_asilent",
+          "pz_alayer",
+          "pz_acity",
+          "pz_asong",
+          "pz_aflow",
+          "pz_arelic"
+        ],
+        "delivery": "docs/workshop/v6-audit/batch-10/README.md",
+        "status": "editorial-review-and-sampled-logic-complete",
+        "visual_phone_test": "pending-integration",
+        "ready_for_migration": []
+      },
+      {
+        "id": "11",
+        "cards": [
+          "pz_aheart",
+          "pz_wbone",
+          "pz_wspore",
+          "pz_wlog",
+          "pz_wlake",
+          "pz_wfirst"
+        ],
+        "delivery": "docs/workshop/v6-audit/batch-11/README.md",
+        "status": "editorial-review-and-sampled-logic-complete",
+        "visual_phone_test": "pending-integration",
+        "ready_for_migration": []
+      },
+      {
+        "id": "12",
+        "cards": [],
+        "rechecks": [
+          "pz_pdragon",
+          "pz_pclock",
+          "pz_pgarden",
+          "pz_plast"
+        ],
+        "delivery": "docs/workshop/v6-audit/batch-12/README.md",
+        "status": "apple-layout-and-screenshot-recheck",
+        "visual_phone_test": "pending-integration",
+        "ready_for_migration": []
+      },
+      {
+        "id": "13",
+        "cards": [],
+        "rechecks": [],
+        "delivery": "docs/workshop/v6-audit/batch-13/README.md",
+        "status": "handoff-and-acceptance",
+        "visual_phone_test": "pending-integration",
+        "ready_for_migration": []
       }
     ],
-    "next_action": "Re-audit batch 06 from the remaining source IDs. Integrate and test on physical phones before marking any card ready for migration."
+    "next_action": "Review iPhone/iPad-only handoff. Integrate independently and validate physical iPhone and iPad before migration approval.",
+    "audited_unique_ids": 86
   }
 }

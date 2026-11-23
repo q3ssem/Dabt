@@ -1,0 +1,942 @@
+[
+  {
+    "id": "pz_rid",
+    "title": "ألغاز القصة",
+    "audit_batch": "02",
+    "intervention": "إعادة تصميم",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_river",
+    "title": "عبور النهر",
+    "audit_batch": "01",
+    "intervention": "إعادة تصميم",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_rush",
+    "title": "موقف السيارات",
+    "audit_batch": "01",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_lock",
+    "title": "القفل السري",
+    "audit_batch": "06",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "hidden",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_pipe",
+    "title": "الأنابيب",
+    "audit_batch": "01",
+    "intervention": "إعادة تصميم",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_grid",
+    "title": "شبكة المنطق",
+    "audit_batch": "02",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_scale",
+    "title": "الميزان والقطعة المزيفة",
+    "audit_batch": "06",
+    "intervention": "إعادة تصميم",
+    "library_visibility": "hidden",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_laser",
+    "title": "الليزر والمرايا",
+    "audit_batch": "06",
+    "intervention": "إعادة تصميم",
+    "library_visibility": "hidden",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_soko",
+    "title": "صناديق المخزن",
+    "audit_batch": "06",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "hidden",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_sudo",
+    "title": "سودوكو الأشكال",
+    "audit_batch": "02",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_flow",
+    "title": "وصّل الألوان",
+    "audit_batch": "01",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_tan",
+    "title": "تانغرام المربعات",
+    "audit_batch": "01",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_tent",
+    "title": "الخيام والأشجار",
+    "audit_batch": "02",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_door",
+    "title": "أبواب القصر",
+    "audit_batch": "02",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_lights",
+    "title": "أطفئ الأنوار",
+    "audit_batch": "06",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "hidden",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_untangle",
+    "title": "فك التشابك",
+    "audit_batch": "01",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_stroke",
+    "title": "بخط واحد",
+    "audit_batch": "06",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "hidden",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_binary",
+    "title": "شمس وقمر",
+    "audit_batch": "02",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_ice",
+    "title": "الجليد المنزلق",
+    "audit_batch": "01",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_tpath",
+    "title": "خريطة القرصان",
+    "audit_batch": "03",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_xreef",
+    "title": "ممر الشعاب",
+    "audit_batch": "03",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_xbridge",
+    "title": "جسر الوادي",
+    "audit_batch": "03",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_xcave",
+    "title": "مشاعل الكهف",
+    "audit_batch": "03",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_xloot",
+    "title": "قسمة الغنيمة",
+    "audit_batch": "03",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_tmap",
+    "title": "أين دُفن الكنز؟",
+    "audit_batch": "03",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_tdig",
+    "title": "احفر بذكاء",
+    "audit_batch": "03",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_xlock",
+    "title": "قفل الصندوق",
+    "audit_batch": "03",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_ybell",
+    "title": "أجراس الحطام",
+    "audit_batch": "04",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "hidden",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_ymap",
+    "title": "الخريطة الممزقة",
+    "audit_batch": "04",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "hidden",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_yhold",
+    "title": "السفينة الغارقة",
+    "audit_batch": "04",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_ytide",
+    "title": "صخور المدّ",
+    "audit_batch": "04",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_ydoor",
+    "title": "باب المعبد",
+    "audit_batch": "04",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_zcomp",
+    "title": "بوصلة النجوم",
+    "audit_batch": "04",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_zroute",
+    "title": "الطريق الآمن",
+    "audit_batch": "04",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_zcur",
+    "title": "بوابات المرجان",
+    "audit_batch": "04",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_zcode",
+    "title": "سجلات القبطان",
+    "audit_batch": "05",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_zharp",
+    "title": "قيثارة الحورية",
+    "audit_batch": "05",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_zshadow",
+    "title": "ظلال الخندق",
+    "audit_batch": "05",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_znim",
+    "title": "لعبة التنين",
+    "audit_batch": "05",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_zstars",
+    "title": "كوكبة المعبد",
+    "audit_batch": "05",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "hidden",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_zthrone",
+    "title": "عرش المحيط",
+    "audit_batch": "05",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_plock",
+    "title": "أقفال البوابة",
+    "audit_batch": "05",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_plock"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_pliar",
+    "title": "التماثيل المتكلمة",
+    "audit_batch": "05",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_pliar"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_pclock",
+    "title": "برج الساعات",
+    "audit_batch": "02",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_pclock"
+    ],
+    "device_test": "pending",
+    "layout_review": "12"
+  },
+  {
+    "id": "pz_pboss1",
+    "title": "اختبار حارس البوابة",
+    "audit_batch": "06",
+    "intervention": "إعادة تصميم",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_pboss1"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_plib",
+    "title": "صفحات اليوميات",
+    "audit_batch": "02",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_plib"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_pmirror",
+    "title": "مرايا الألوان",
+    "audit_batch": "06",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_pmirror"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_pgarden",
+    "title": "قنوات الحديقة",
+    "audit_batch": "01",
+    "intervention": "إعادة تصميم",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_pgarden"
+    ],
+    "device_test": "pending",
+    "layout_review": "12"
+  },
+  {
+    "id": "pz_pqueen",
+    "title": "تحدي ملكة المرايا",
+    "audit_batch": "07",
+    "intervention": "إعادة تصميم",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_pqueen"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_parm",
+    "title": "تركيب الأدوات",
+    "audit_batch": "07",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_parm"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_pjail",
+    "title": "شهادات السجناء",
+    "audit_batch": "07",
+    "intervention": "إعادة تصميم",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_pjail"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_pobs",
+    "title": "الخريطتان الشفافتان",
+    "audit_batch": "07",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_pobs"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_peng",
+    "title": "اختبار مهندس الساعات",
+    "audit_batch": "07",
+    "intervention": "إعادة تصميم",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_peng"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_pmaze",
+    "title": "المتاهة الدوّارة",
+    "audit_batch": "07",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_pmaze"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_pcrypt",
+    "title": "النقش المخفي",
+    "audit_batch": "07",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_pcrypt"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_pvalve",
+    "title": "صمامات الأعماق",
+    "audit_batch": "07",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_pvalve"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_plast",
+    "title": "تحدي السجين الأخير",
+    "audit_batch": "08",
+    "intervention": "إعادة تصميم",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_plast"
+    ],
+    "device_test": "pending",
+    "layout_review": "12"
+  },
+  {
+    "id": "pz_pdragon",
+    "title": "لغة التنانين",
+    "audit_batch": "08",
+    "intervention": "إعادة تصميم",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_pdragon"
+    ],
+    "device_test": "pending",
+    "layout_review": "12"
+  },
+  {
+    "id": "pz_phall",
+    "title": "قاعة الملوك السبعة",
+    "audit_batch": "08",
+    "intervention": "إعادة تصميم",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_phall"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_pheart",
+    "title": "القلب الأخير",
+    "audit_batch": "08",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_pheart"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_aarch",
+    "title": "أرشيف الرحلات",
+    "audit_batch": "08",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_aarch"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_aport",
+    "title": "ميناء ما وراء المد",
+    "audit_batch": "08",
+    "intervention": "إعادة تصميم",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_aport"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_alight",
+    "title": "المنارة الأخيرة",
+    "audit_batch": "08",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_alight"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_acur",
+    "title": "حيث تعود الأشياء",
+    "audit_batch": "08",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_acur"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_ashell",
+    "title": "أغنية الأصداف",
+    "audit_batch": "09",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_ashell"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_aroot",
+    "title": "ممرات راعي الجذور",
+    "audit_batch": "09",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_aroot"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_aring",
+    "title": "شجرة الأسماء",
+    "audit_batch": "09",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_aring"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_ashade",
+    "title": "ساعة الظل",
+    "audit_batch": "09",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_ashade"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_aswarm",
+    "title": "سرب البياض",
+    "audit_batch": "09",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_aswarm"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_aecho",
+    "title": "مصدر الصوت",
+    "audit_batch": "09",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_aecho"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_avsong",
+    "title": "الوادي يغني",
+    "audit_batch": "09",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_avsong"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_agiant",
+    "title": "عادات العمالقة",
+    "audit_batch": "09",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_agiant"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_aherd",
+    "title": "عبور القطيع",
+    "audit_batch": "10",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_aherd"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_abridge",
+    "title": "جسور الضباب",
+    "audit_batch": "10",
+    "intervention": "إعادة تصميم",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_abridge"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_asilent",
+    "title": "الماء الصافي",
+    "audit_batch": "10",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_asilent"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_alayer",
+    "title": "طبقات الزمن",
+    "audit_batch": "10",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_alayer"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_acity",
+    "title": "المدينة الحية",
+    "audit_batch": "10",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_acity"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_asong",
+    "title": "أغاني الأعماق",
+    "audit_batch": "10",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_asong"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_aflow",
+    "title": "مفترقات التيار",
+    "audit_batch": "10",
+    "intervention": "إعادة تصميم",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_aflow"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_arelic",
+    "title": "أرشيف الآثار الأولى",
+    "audit_batch": "10",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_arelic"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_aheart",
+    "title": "قلب أَثْرَان",
+    "audit_batch": "11",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "in-folders",
+    "story_stations": [
+      "pz_aheart"
+    ],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_wbone",
+    "title": "وادي الهياكل",
+    "audit_batch": "11",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "discovery-gated",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_wspore",
+    "title": "حديقة الأبواغ",
+    "audit_batch": "11",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "discovery-gated",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_wlog",
+    "title": "السفينة التي لم تُبحر",
+    "audit_batch": "11",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "discovery-gated",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_wlake",
+    "title": "بحيرة السماء",
+    "audit_batch": "11",
+    "intervention": "إعادة توزيع",
+    "library_visibility": "discovery-gated",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  },
+  {
+    "id": "pz_wfirst",
+    "title": "موطن الأثر الأول",
+    "audit_batch": "11",
+    "intervention": "تحسين تفاعل",
+    "library_visibility": "discovery-gated",
+    "story_stations": [],
+    "device_test": "pending",
+    "layout_review": null
+  }
+]
