@@ -16,6 +16,7 @@ const stage=JSON.parse(read('ui/designs_art/river_stage1/anchors_manifest.json')
 const riverJs=read('motion/lab10.js'),riverCss=read('motion/lab10.css'),hubJs=read('ui/journey-hub.js'),hubCss=read('ui/journey-hub.css'),load=read('ui/app.js');
 ok(openings.puzzles.length===78&&new Set(openings.puzzles.map(x=>x.puzzle_id)).size===78,'78 current puzzle opening records');
 ok(journey.chapters.length===4,'four journey choices');
+ok(journey.chapters.every(c=>!('x' in c)&&!('y' in c)),'retired navigation coordinates removed from the design manifest; sprite transition crops are independent');
 for(const [id,n] of [['seven_seas',21],['palace',19],['atheran',21],['side',24]]){
   const c=journey.chapters.find(c=>c.id===id);
   ok(c&&c.stations.length===n,'chapter stations '+id);
