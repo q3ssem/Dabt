@@ -1,0 +1,54 @@
+{
+  "schema_version": 1,
+  "experiment": "EXP-0002",
+  "status": "unmeasured",
+  "source": "prototype/mindlab-6-foundation-20261123",
+  "scene": {
+    "glb_path": null,
+    "glb_sha256": null,
+    "approved_handpainted_art": false,
+    "identical_scene_verified": false
+  },
+  "engines": [
+    {
+      "name": "PlayCanvas",
+      "version": "2.24.2",
+      "role": "prototype-candidate"
+    },
+    {
+      "name": "Babylon.js",
+      "version": "9.x",
+      "role": "not-yet-installed-comparator"
+    }
+  ],
+  "required_devices": [
+    "iPhone Safari physical device",
+    "Android Chrome physical device"
+  ],
+  "shared_metrics": [
+    "sampleCount",
+    "averageFPS",
+    "onePercentLowFPS",
+    "p95FrameMs",
+    "p99FrameMs",
+    "jankFrames"
+  ],
+  "additional_metrics": [
+    "render_backend",
+    "device_model",
+    "browser_version",
+    "gpu_context_loss_recovery",
+    "touch_latency_ms",
+    "first_interactive_frame_ms",
+    "memory_mb",
+    "scene_bytes",
+    "temperature_notes"
+  ],
+  "measurements": [],
+  "decision": null,
+  "caveats": [
+    "FrameMetrics is a test utility only and has produced no phone measurements",
+    "WebKit CI is not equivalent to physical Safari",
+    "No GLB or production engine decision yet"
+  ]
+}
