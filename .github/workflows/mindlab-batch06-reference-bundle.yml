@@ -1,0 +1,222 @@
+name: MindLab Batch06 Reference Bundle
+on:
+  push:
+    branches:
+      - work/mindlab-puzzle-editorial-20261123
+    paths:
+      - .github/workflows/mindlab-batch06-reference-bundle.yml
+  workflow_dispatch:
+permissions:
+  contents: read
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    steps:
+      - name: Checkout workshop references
+        uses: actions/checkout@v4
+        with:
+          ref: work/mindlab-puzzle-editorial-20261123
+          path: editorial
+          persist-credentials: false
+      - name: Checkout pinned original engine
+        uses: actions/checkout@v4
+        with:
+          ref: 7327fdc6c6f36deaf63a2b20a7b6db9a315ad446
+          path: baseline
+          persist-credentials: false
+      - name: Assemble independently verified Batch06 references
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          import json, hashlib, zipfile, subprocess
+          
+          editorial = Path("editorial")
+          engine = Path("baseline")
+          work_branch = "work/mindlab-puzzle-editorial-20261123"
+          engine_branch = "main"
+          ids = ["pz_xbridge", "pz_xcave", "pz_xloot", "pz_tmap"]
+          
+          def revision(root):
+              return subprocess.check_output(["git", "-C", str(root), "rev-parse", "HEAD"], text=True).strip()
+          
+          required_editorial = [
+              "docs/workshop/gemini-design/DESIGN_QUEUE.json",
+              "docs/workshop/gemini-design/DEVICE_SIZES.json",
+              "docs/workshop/gemini-design/ART_REFERENCES.md",
+              "docs/workshop/gemini-design/MINDLAB_GEMINI.md",
+              "docs/workshop/gemini-design/GEMINI_PROMPT.md",
+              "docs/workshop/v6-audit/appearances.json",
+              "docs/workshop/v6-audit/batch-02/README.md",
+              "docs/workshop/v6-audit/batch-03/README.md",
+              "docs/workshop/v6-audit/batch-12/README.md",
+              "docs/workshop/v6-audit/batch-13/README.md",
+              "docs/workshop/EDITORIAL_SOURCE_INDEX.json",
+              "docs/workshop/EDITORIAL_QUALITY_GATE.md",
+              "docs/workshop/EDITORIAL_PROGRESS.json",
+          ]
+          required_engine = [
+              "index.html",
+              "motion/lab10.js",
+              "motion/lab10.css",
+              "motion/palace-motion.js",
+              "motion/pirate-painted.js",
+              "motion/pirate-painted.css",
+              "motion/pirate-routes.js",
+              "ui/designs_art/priority7/asset_manifest_exact.csv",
+              "ui/designs_art/characters/manifest.json",
+          ]
+          optional_engine = [
+              "motion/logic-revised/board.js",
+              "motion/logic-revised/board.css",
+              "motion/motion.css",
+              "motion/kit.js",
+              "motion/stages60/boards.json",
+              "ui/journey-story-data.js",
+              "treasure/data.js",
+          ]
+          asset_dirs = [
+              "motion/pirate-revised/bridge",
+              "motion/pirate-revised/cave",
+              "motion/pirate-revised/loot",
+              "motion/pirate-revised/map", 
+              "ui/designs_art/work_review/pz_xbridge",
+              "ui/designs_art/work_review/pz_xcave",
+              "ui/designs_art/work_review/pz_xloot",
+              "ui/designs_art/work_review/pz_tmap", 
+              "ui/designs_art/characters",
+          ]
+          required_asset_dirs = [
+              "motion/pirate-revised/bridge",
+              "motion/pirate-revised/cave",
+              "motion/pirate-revised/loot",
+              "motion/pirate-revised/map", 
+              "ui/designs_art/characters",
+          ]
+          asset_paths = [
+              "ui/designs_art/priority7/prop_torch.png",
+              "expedition10/art/props/04-pirate-balance.webp",
+              "ui/designs_art/priority7/chest_compass.png",
+              "ui/designs_art/priority7/chest_crystal.png",
+              "ui/designs_art/priority7/chest_pearl.png",
+              "ui/designs_art/priority7/chest_spice.png",
+              "ui/designs_art/priority7/treasure_gem.png",
+              "treasure/art/story5/ch3_s2_piece_balance_stand.webp",
+              "expedition10/art/props/03-torn-map.webp",
+              "ui/designs_art/priority7/prop_mapshovel.png",
+              "treasure/art/story5/ch3_s2_piece_balance_beam.webp",
+              "treasure/art/story5/ch3_s2_piece_balance_pan.webp",
+              "ui/designs_art/priority7/clue_prohibit.png",
+              "treasure/art/story5/crew_full_rawaa.webp",
+              "treasure/art/story5/crew_full_nuha.webp",
+              "treasure/art/story5/crew_full_ward.webp",
+              "treasure/art/story5/icon_journal.webp",
+              "motion/art10/intro_trio.webp",
+              "motion/art10/char_rawaa.webp",
+              "motion/art10/char_nuha.webp",
+              "motion/art10/char_ward.webp",
+          ]
+          entries = {}
+          missing = []
+          def add(root, rel, source_branch, required=True):
+              file = root / rel
+              if not file.is_file() or file.stat().st_size == 0:
+                  missing.append({"path": rel, "source_branch": source_branch, "severity": "required" if required else "optional", "reason": "not_found_or_empty"})
+                  if required:
+                      raise SystemExit("REQUIRED_REFERENCE_MISSING " + source_branch + ":" + rel)
+                  return
+              if rel in entries:
+                  if entries[rel][0] != file:
+                      raise SystemExit("DUPLICATE_PATH_CONFLICT " + rel)
+                  return
+              entries[rel] = (file, source_branch)
+          
+          for path in required_editorial:
+              add(editorial, path, work_branch)
+          for path in required_engine:
+              add(engine, path, engine_branch)
+          for path in optional_engine:
+              add(engine, path, engine_branch, False)
+          for directory in asset_dirs:
+              folder = engine / directory
+              if not folder.is_dir():
+                  missing.append({"path": directory, "source_branch": engine_branch, "severity": "required" if directory in required_asset_dirs else "optional", "reason": "directory_missing"})
+                  if directory in required_asset_dirs:
+                      raise SystemExit("REQUIRED_ASSET_DIRECTORY_MISSING " + directory)
+                  continue
+              items = [file for file in folder.rglob("*") if file.is_file()]
+              if not items and directory in required_asset_dirs:
+                  raise SystemExit("REQUIRED_ASSET_DIRECTORY_EMPTY " + directory)
+              for file in items:
+                  add(engine, str(file.relative_to(engine)), engine_branch)
+          for path in asset_paths:
+              add(engine, path, engine_branch, False)
+          
+          queue = json.loads((editorial / "docs/workshop/gemini-design/DESIGN_QUEUE.json").read_text("utf-8"))
+          actual_ids = [p["id"] for p in queue["puzzles"]]
+          assert len(actual_ids) == 86, "Unexpected queue size"
+          assert len(set(actual_ids)) == len(actual_ids), "Duplicate puzzle ID"
+          assert actual_ids[20:24] == ids, "Batch06 order changed"
+          assert queue["baseline_sha"] == revision(engine), "Engine ref differs from queue baseline"
+          assets = sorted(x for x in entries if x.lower().endswith((".png", ".webp", ".jpg", ".jpeg", ".svg")))
+          assert len(assets) > 15, "Insufficient original assets"
+          for rel, (file, _) in entries.items():
+              if rel.lower().endswith((".json", ".js", ".md", ".css", ".html", ".csv")):
+                  file.read_text(encoding="utf-8")
+          inventory = [{
+              "path": rel,
+              "source_branch": entries[rel][1],
+              "source_commit": revision(editorial) if entries[rel][1] == work_branch else revision(engine),
+              "bytes": entries[rel][0].stat().st_size,
+              "sha256": hashlib.sha256(entries[rel][0].read_bytes()).hexdigest(),
+          } for rel in sorted(entries)]
+          readme = """# MindLab 6.0 / Batch06 Reference Package
+          
+          Puzzles: pz_xbridge, pz_xcave, pz_xloot, pz_tmap.
+          The packaged files are ORIGINAL references, NOT the completed design deliverables.
+          Branch roles: editorial = workshop, baseline = production 5.5.30 (read-only).
+          No changes to game rules, solutions, unlocking, save keys, or story-station identity.
+          Design review only. ENGINE_NOT_EXECUTED; DEVICE_NOT_EXECUTED; AUDIO_SPEC_ONLY.
+          Use BATCH05_REFERENCE_MANIFEST.json for source paths, pinned commits and SHA-256.
+          Before drawing, compare the behavior in index.html with the audit cards.
+          All heroines appear together at puzzle start; hero sprites must be raster hand-drawn.
+          Default is light, secondary dark, 5 safe-area frames, 5 states, RTL, >=44pt touch.
+          Use precise interaction cues without leaking puzzle solutions.
+          """
+          manifest = {
+              "batch": "05",
+              "queue_range_zero_based": [20, 24],
+              "puzzles": [p for p in queue["puzzles"][20:24]],
+              "source_branches": {"editorial": work_branch, "engine_assets": engine_branch},
+              "source_commits": {"editorial": revision(editorial), "engine_assets": revision(engine)},
+              "items": inventory,
+              "missing_or_optional": missing,
+              "asset_count": len(assets),
+              "reference_file_count": len(entries),
+              "scope": "Original reference assets; indirect runtime references may need further inspection",
+              "status": {"design": "REFERENCES_ONLY", "engine": "ENGINE_NOT_EXECUTED", "device": "DEVICE_NOT_EXECUTED", "audio": "AUDIO_SPEC_ONLY"},
+          }
+          output = Path("MindLab_Gemini_Batch06_References.zip")
+          with zipfile.ZipFile(output, "w", zipfile.ZIP_DEFLATED, compresslevel=6) as archive:
+              for rel, (file, _) in sorted(entries.items()):
+                  archive.write(file, rel)
+              archive.writestr("BATCH05_REFERENCE_README.md", readme)
+              archive.writestr("BATCH05_REFERENCE_MANIFEST.json", json.dumps(manifest, ensure_ascii=False, indent=2))
+          with zipfile.ZipFile(output) as archive:
+              assert archive.testzip() is None, "Corrupt ZIP member"
+              assert len(archive.namelist()) == len(entries) + 2
+              assert len(set(archive.namelist())) == len(archive.namelist())
+              for item in inventory:
+                  assert hashlib.sha256(archive.read(item["path"])).hexdigest() == item["sha256"], item["path"]
+          print("BATCH05_BUNDLE_OK", len(entries), "source files;", len(assets), "original assets;", len(missing), "optional gaps")
+          print("SOURCE_COMMITS", manifest["source_commits"])
+          
+          PY
+      - name: Publish reference artifact
+        uses: actions/upload-artifact@v4
+        with:
+          name: MindLab_Gemini_Batch06_References
+          path: MindLab_Gemini_Batch06_References.zip
+          if-no-files-found: error
+          retention-days: 14
