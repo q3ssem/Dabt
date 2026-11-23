@@ -30,7 +30,7 @@
 - https://forum.playcanvas.com/t/engine-v2-24-0/42778
 - https://blogs.windows.com/windowsdeveloper/2026/03/26/announcing-babylon-js-9-0/
 - https://www.babylonjs.com/specifications/
-- https://webgpu-webgl-benchmarks (benchmark methodology not yet reproduced)
+- https://endel.github.io/webgpu-webgl-benchmarks/ (benchmark methodology not yet reproduced)
 - https://github.com/mvaligursky/web-engines-compare/blob/main/results/2026-10-01/README.md
 
 **خلاصة حتى الآن:** توصية بحثية فقط؛ لم يتم تثبيت أو تشغيل أي محرك 3D في 6.0 بعد.
