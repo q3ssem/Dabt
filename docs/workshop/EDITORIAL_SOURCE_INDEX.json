@@ -1,0 +1,1832 @@
+{
+  "source": "7327fdc6c6f36deaf63a2b20a7b6db9a315ad446",
+  "summaries": {
+    "registeredPuzzleIds": 86,
+    "folderIdsOnFreshSave": 72,
+    "hiddenFromFolders": [
+      "pz_lock",
+      "pz_scale",
+      "pz_laser",
+      "pz_soko",
+      "pz_lights",
+      "pz_stroke",
+      "pz_ybell",
+      "pz_ymap",
+      "pz_zstars"
+    ],
+    "discoveryGated": [
+      "pz_wbone",
+      "pz_wspore",
+      "pz_wlog",
+      "pz_wlake",
+      "pz_wfirst"
+    ],
+    "stations": 85,
+    "stationsSharingLibraryId": 40,
+    "unionOfIdentifiers": 131
+  },
+  "puzzles": [
+    {
+      "id": "pz_rid",
+      "name": "ألغاز القصة",
+      "sourceSection": "training",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 1,
+      "authoredStages": 0,
+      "registry": "index.html:4076",
+      "baselineTextHintsAnswerEngine": "index.html:3829 · runRiddle",
+      "runOverrides": [
+        "motion/lab10.js:58"
+      ]
+    },
+    {
+      "id": "pz_river",
+      "name": "عبور النهر",
+      "sourceSection": "training",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 7,
+      "authoredStages": 20,
+      "registry": "index.html:4077",
+      "baselineTextHintsAnswerEngine": "index.html:3850 · runRiver",
+      "runOverrides": [
+        "motion/lab10.js:183"
+      ],
+      "authoredData": "motion/stages60/boards.json · pz_river",
+      "entry": "ui/app.js · authoredIds → motion/stages60/play.js"
+    },
+    {
+      "id": "pz_rush",
+      "name": "موقف السيارات",
+      "sourceSection": "training",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 20,
+      "registry": "index.html:4078",
+      "baselineTextHintsAnswerEngine": "index.html:3943 · runRush",
+      "runOverrides": [
+        "motion/lab10.js:338"
+      ],
+      "authoredData": "motion/stages60/boards.json · pz_rush",
+      "entry": "ui/app.js · authoredIds → motion/stages60/play.js"
+    },
+    {
+      "id": "pz_lock",
+      "name": "القفل السري",
+      "sourceSection": "training",
+      "libraryVisibility": "hidden",
+      "nativeMaxLevel": 7,
+      "authoredStages": 0,
+      "registry": "index.html:4079",
+      "baselineTextHintsAnswerEngine": "index.html:3957 · runLock"
+    },
+    {
+      "id": "pz_pipe",
+      "name": "الأنابيب",
+      "sourceSection": "training",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 20,
+      "registry": "index.html:4080",
+      "baselineTextHintsAnswerEngine": "index.html:3980 · runPipes",
+      "runOverrides": [
+        "motion/lab10.js:360"
+      ],
+      "authoredData": "motion/stages60/boards.json · pz_pipe",
+      "entry": "ui/app.js · authoredIds → motion/stages60/play.js"
+    },
+    {
+      "id": "pz_grid",
+      "name": "شبكة المنطق",
+      "sourceSection": "training",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 7,
+      "authoredStages": 0,
+      "registry": "index.html:4081",
+      "baselineTextHintsAnswerEngine": "index.html:4012 · runGrid",
+      "runOverrides": [
+        "motion/lab10.js:405"
+      ]
+    },
+    {
+      "id": "pz_scale",
+      "name": "الميزان والقطعة المزيفة",
+      "sourceSection": "training",
+      "libraryVisibility": "hidden",
+      "nativeMaxLevel": 7,
+      "authoredStages": 0,
+      "registry": "index.html:4082",
+      "baselineTextHintsAnswerEngine": "index.html:4025 · runScale"
+    },
+    {
+      "id": "pz_laser",
+      "name": "الليزر والمرايا",
+      "sourceSection": "training",
+      "libraryVisibility": "hidden",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:4557",
+      "baselineTextHintsAnswerEngine": "index.html:4430 · runLaser"
+    },
+    {
+      "id": "pz_soko",
+      "name": "صناديق المخزن",
+      "sourceSection": "training",
+      "libraryVisibility": "hidden",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:4558",
+      "baselineTextHintsAnswerEngine": "index.html:4461 · runSoko"
+    },
+    {
+      "id": "pz_sudo",
+      "name": "سودوكو الأشكال",
+      "sourceSection": "training",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:4559",
+      "baselineTextHintsAnswerEngine": "index.html:4483 · runSudo",
+      "runOverrides": [
+        "motion/lab10.js:459"
+      ]
+    },
+    {
+      "id": "pz_flow",
+      "name": "وصّل الألوان",
+      "sourceSection": "training",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 20,
+      "registry": "index.html:4560",
+      "baselineTextHintsAnswerEngine": "index.html:4497 · runFlow",
+      "runOverrides": [
+        "motion/lab10.js:519"
+      ],
+      "authoredData": "motion/stages60/boards.json · pz_flow",
+      "entry": "ui/app.js · authoredIds → motion/stages60/play.js"
+    },
+    {
+      "id": "pz_tan",
+      "name": "تانغرام المربعات",
+      "sourceSection": "training",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 20,
+      "registry": "index.html:4561",
+      "baselineTextHintsAnswerEngine": "index.html:4520 · runTangram",
+      "runOverrides": [
+        "motion/lab10.js:588"
+      ],
+      "authoredData": "motion/stages60/boards.json · pz_tan",
+      "entry": "ui/app.js · authoredIds → motion/stages60/play.js"
+    },
+    {
+      "id": "pz_tent",
+      "name": "الخيام والأشجار",
+      "sourceSection": "training",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:4562",
+      "baselineTextHintsAnswerEngine": "index.html:4537 · runTents",
+      "runOverrides": [
+        "motion/lab10.js:635"
+      ]
+    },
+    {
+      "id": "pz_door",
+      "name": "أبواب القصر",
+      "sourceSection": "training",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:5058",
+      "baselineTextHintsAnswerEngine": "index.html:4868 · runDoors",
+      "runOverrides": [
+        "motion/palace-motion.js:201"
+      ]
+    },
+    {
+      "id": "pz_lights",
+      "name": "أطفئ الأنوار",
+      "sourceSection": "training",
+      "libraryVisibility": "hidden",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:5059",
+      "baselineTextHintsAnswerEngine": "index.html:4880 · runLights"
+    },
+    {
+      "id": "pz_untangle",
+      "name": "فك التشابك",
+      "sourceSection": "training",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 20,
+      "registry": "index.html:5060",
+      "baselineTextHintsAnswerEngine": "index.html:4892 · runUntangle",
+      "authoredData": "motion/stages60/boards.json · pz_untangle",
+      "entry": "ui/app.js · authoredIds → motion/stages60/play.js"
+    },
+    {
+      "id": "pz_stroke",
+      "name": "بخط واحد",
+      "sourceSection": "training",
+      "libraryVisibility": "hidden",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:5061",
+      "baselineTextHintsAnswerEngine": "index.html:4975 · runStroke"
+    },
+    {
+      "id": "pz_binary",
+      "name": "شمس وقمر",
+      "sourceSection": "training",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:5062",
+      "baselineTextHintsAnswerEngine": "index.html:4994 · runBinary"
+    },
+    {
+      "id": "pz_ice",
+      "name": "الجليد المنزلق",
+      "sourceSection": "training",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 20,
+      "registry": "index.html:5063",
+      "baselineTextHintsAnswerEngine": "index.html:5015 · runIce",
+      "authoredData": "motion/stages60/boards.json · pz_ice",
+      "entry": "ui/app.js · authoredIds → motion/stages60/play.js"
+    },
+    {
+      "id": "pz_tpath",
+      "name": "خريطة القرصان",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:5926",
+      "baselineTextHintsAnswerEngine": "index.html:5644 · runTPath"
+    },
+    {
+      "id": "pz_xreef",
+      "name": "ممر الشعاب",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:5927",
+      "baselineTextHintsAnswerEngine": "index.html:5684 · runXReef"
+    },
+    {
+      "id": "pz_xbridge",
+      "name": "جسر الوادي",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:5928",
+      "baselineTextHintsAnswerEngine": "index.html:5711 · runXBridge"
+    },
+    {
+      "id": "pz_xcave",
+      "name": "مشاعل الكهف",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:5929",
+      "baselineTextHintsAnswerEngine": "index.html:5751 · runXCave"
+    },
+    {
+      "id": "pz_xloot",
+      "name": "قسمة الغنيمة",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:5930",
+      "baselineTextHintsAnswerEngine": "index.html:5787 · runXLoot"
+    },
+    {
+      "id": "pz_tmap",
+      "name": "أين دُفن الكنز؟",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:5931",
+      "baselineTextHintsAnswerEngine": "index.html:5836 · runTMap"
+    },
+    {
+      "id": "pz_tdig",
+      "name": "احفر بذكاء",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:5932",
+      "baselineTextHintsAnswerEngine": "index.html:5871 · runTDig"
+    },
+    {
+      "id": "pz_xlock",
+      "name": "قفل الصندوق",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:5933",
+      "baselineTextHintsAnswerEngine": "index.html:5899 · runXLock"
+    },
+    {
+      "id": "pz_ybell",
+      "name": "أجراس الحطام",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "hidden",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6177",
+      "baselineTextHintsAnswerEngine": "index.html:6006 · runYBell"
+    },
+    {
+      "id": "pz_ymap",
+      "name": "الخريطة الممزقة",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "hidden",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6178",
+      "baselineTextHintsAnswerEngine": "index.html:6065 · runYMap"
+    },
+    {
+      "id": "pz_yhold",
+      "name": "السفينة الغارقة",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6179",
+      "baselineTextHintsAnswerEngine": "index.html:6097 · runYHold"
+    },
+    {
+      "id": "pz_ytide",
+      "name": "صخور المدّ",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6180",
+      "baselineTextHintsAnswerEngine": "index.html:6128 · runYTide"
+    },
+    {
+      "id": "pz_ydoor",
+      "name": "باب المعبد",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6181",
+      "baselineTextHintsAnswerEngine": "index.html:6158 · runYDoor"
+    },
+    {
+      "id": "pz_zcomp",
+      "name": "بوصلة النجوم",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6425",
+      "baselineTextHintsAnswerEngine": "index.html:6309 · runZComp"
+    },
+    {
+      "id": "pz_zroute",
+      "name": "الطريق الآمن",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6426",
+      "baselineTextHintsAnswerEngine": "index.html:6360 · runZRoute"
+    },
+    {
+      "id": "pz_zcur",
+      "name": "بوابات المرجان",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6427",
+      "baselineTextHintsAnswerEngine": "index.html:6404 · runZCur"
+    },
+    {
+      "id": "pz_zcode",
+      "name": "سجلات القبطان",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6519",
+      "baselineTextHintsAnswerEngine": "index.html:6467 · runZCode"
+    },
+    {
+      "id": "pz_zharp",
+      "name": "قيثارة الحورية",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6520",
+      "baselineTextHintsAnswerEngine": "index.html:6484 · runZHarp"
+    },
+    {
+      "id": "pz_zshadow",
+      "name": "ظلال الخندق",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6521",
+      "baselineTextHintsAnswerEngine": "index.html:6505 · runZShadow"
+    },
+    {
+      "id": "pz_znim",
+      "name": "لعبة التنين",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6637",
+      "baselineTextHintsAnswerEngine": "index.html:6545 · runZNim"
+    },
+    {
+      "id": "pz_zstars",
+      "name": "كوكبة المعبد",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "hidden",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6638",
+      "baselineTextHintsAnswerEngine": "index.html:6568 · runZStars"
+    },
+    {
+      "id": "pz_zthrone",
+      "name": "عرش المحيط",
+      "sourceSection": "seven_seas",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6639",
+      "baselineTextHintsAnswerEngine": "index.html:6621 · runZThrone"
+    },
+    {
+      "id": "pz_plock",
+      "name": "أقفال البوابة",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6889",
+      "baselineTextHintsAnswerEngine": "index.html:6745 · runPLock",
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_pliar",
+      "name": "التماثيل المتكلمة",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6890",
+      "baselineTextHintsAnswerEngine": "index.html:6807 · runPLiar",
+      "runOverrides": [
+        "motion/palace-motion.js:238"
+      ],
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_pclock",
+      "name": "برج الساعات",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6891",
+      "baselineTextHintsAnswerEngine": "index.html:6822 · runPClock",
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_pboss1",
+      "name": "اختبار حارس البوابة",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:6892",
+      "baselineTextHintsAnswerEngine": "index.html:6873 · runPBoss1",
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_plib",
+      "name": "صفحات اليوميات",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7174",
+      "baselineTextHintsAnswerEngine": "index.html:6914 · runPLib",
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_pmirror",
+      "name": "مرايا الألوان",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7175",
+      "baselineTextHintsAnswerEngine": "index.html:7003 · runPMirror",
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_pgarden",
+      "name": "قنوات الحديقة",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7176",
+      "baselineTextHintsAnswerEngine": "index.html:7085 · runPGarden",
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_pqueen",
+      "name": "تحدي ملكة المرايا",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7177",
+      "baselineTextHintsAnswerEngine": "index.html:7155 · runPQueen",
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_parm",
+      "name": "تركيب الأدوات",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7305",
+      "baselineTextHintsAnswerEngine": "index.html:7202 · runPArm",
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_pjail",
+      "name": "شهادات السجناء",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7306",
+      "baselineTextHintsAnswerEngine": "index.html:7231 · runPJail",
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_pobs",
+      "name": "الخريطتان الشفافتان",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7307",
+      "baselineTextHintsAnswerEngine": "index.html:7277 · runPObs",
+      "runOverrides": [
+        "motion/palace-motion.js:29"
+      ],
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_peng",
+      "name": "اختبار مهندس الساعات",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7308",
+      "baselineTextHintsAnswerEngine": "index.html:7291 · runPEng",
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_pmaze",
+      "name": "المتاهة الدوّارة",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7460",
+      "baselineTextHintsAnswerEngine": "index.html:7332 · runPMaze",
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_pcrypt",
+      "name": "النقش المخفي",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7461",
+      "baselineTextHintsAnswerEngine": "index.html:7364 · runPCrypt",
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_pvalve",
+      "name": "صمامات الأعماق",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7462",
+      "baselineTextHintsAnswerEngine": "index.html:7415 · runPValve",
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_plast",
+      "name": "تحدي السجين الأخير",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7463",
+      "baselineTextHintsAnswerEngine": "index.html:7448 · runPLast",
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_pdragon",
+      "name": "لغة التنانين",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7654",
+      "baselineTextHintsAnswerEngine": "index.html:7496 · runPDragon",
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_phall",
+      "name": "قاعة الملوك السبعة",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7655",
+      "baselineTextHintsAnswerEngine": "index.html:7513 · runPHall",
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_pheart",
+      "name": "القلب الأخير",
+      "sourceSection": "palace",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7656",
+      "baselineTextHintsAnswerEngine": "index.html:7602 · runPHeart",
+      "stationChapter": "palace"
+    },
+    {
+      "id": "pz_aarch",
+      "name": "أرشيف الرحلات",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7960",
+      "baselineTextHintsAnswerEngine": "index.html:7836 · runAArch",
+      "runOverrides": [
+        "motion/atheran-motion.js:16"
+      ],
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_aport",
+      "name": "ميناء ما وراء المد",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7961",
+      "baselineTextHintsAnswerEngine": "index.html:7878 · runAPort",
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_alight",
+      "name": "المنارة الأخيرة",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:7962",
+      "baselineTextHintsAnswerEngine": "index.html:7906 · runALight",
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_acur",
+      "name": "حيث تعود الأشياء",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:8314",
+      "baselineTextHintsAnswerEngine": "index.html:8053 · runACur",
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_ashell",
+      "name": "أغنية الأصداف",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:8315",
+      "baselineTextHintsAnswerEngine": "index.html:8097 · runAShell",
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_aroot",
+      "name": "ممرات راعي الجذور",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:8316",
+      "baselineTextHintsAnswerEngine": "index.html:8131 · runARoot",
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_aring",
+      "name": "شجرة الأسماء",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:8317",
+      "baselineTextHintsAnswerEngine": "index.html:8194 · runARing",
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_ashade",
+      "name": "ساعة الظل",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:8318",
+      "baselineTextHintsAnswerEngine": "index.html:8258 · runAShade",
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_aswarm",
+      "name": "سرب البياض",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:8319",
+      "baselineTextHintsAnswerEngine": "index.html:8295 · runASwarm",
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_aecho",
+      "name": "مصدر الصوت",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:8760",
+      "baselineTextHintsAnswerEngine": "index.html:8428 · runAEcho",
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_avsong",
+      "name": "الوادي يغني",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:8761",
+      "baselineTextHintsAnswerEngine": "index.html:8501 · runAVsong",
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_agiant",
+      "name": "عادات العمالقة",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:8762",
+      "baselineTextHintsAnswerEngine": "index.html:8546 · runAGiant",
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_aherd",
+      "name": "عبور القطيع",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:8763",
+      "baselineTextHintsAnswerEngine": "index.html:8592 · runAHerd",
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_abridge",
+      "name": "جسور الضباب",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:8764",
+      "baselineTextHintsAnswerEngine": "index.html:8694 · runABridge",
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_asilent",
+      "name": "الماء الصافي",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:8765",
+      "baselineTextHintsAnswerEngine": "index.html:8747 · runASilent",
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_alayer",
+      "name": "طبقات الزمن",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:8930",
+      "baselineTextHintsAnswerEngine": "index.html:8815 · runALayer",
+      "runOverrides": [
+        "motion/atheran-motion.js:99"
+      ],
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_acity",
+      "name": "المدينة الحية",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:8931",
+      "baselineTextHintsAnswerEngine": "index.html:8840 · runACity",
+      "runOverrides": [
+        "motion/atheran-motion.js:164"
+      ],
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_asong",
+      "name": "أغاني الأعماق",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:8932",
+      "baselineTextHintsAnswerEngine": "index.html:8865 · runASong",
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_aflow",
+      "name": "مفترقات التيار",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:8933",
+      "baselineTextHintsAnswerEngine": "index.html:8901 · runAFlow",
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_arelic",
+      "name": "أرشيف الآثار الأولى",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:9068",
+      "baselineTextHintsAnswerEngine": "index.html:8956 · runARelic",
+      "runOverrides": [
+        "motion/atheran-motion.js:235"
+      ],
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_aheart",
+      "name": "قلب أَثْرَان",
+      "sourceSection": "atheran",
+      "libraryVisibility": "in-folders",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:9069",
+      "baselineTextHintsAnswerEngine": "index.html:8984 · runAHeart",
+      "stationChapter": "atheran"
+    },
+    {
+      "id": "pz_wbone",
+      "name": "وادي الهياكل",
+      "sourceSection": "first_trace",
+      "libraryVisibility": "discovery-gated",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:9263",
+      "baselineTextHintsAnswerEngine": "index.html:9120 · runWBone"
+    },
+    {
+      "id": "pz_wspore",
+      "name": "حديقة الأبواغ",
+      "sourceSection": "first_trace",
+      "libraryVisibility": "discovery-gated",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:9264",
+      "baselineTextHintsAnswerEngine": "index.html:9144 · runWSpore"
+    },
+    {
+      "id": "pz_wlog",
+      "name": "السفينة التي لم تُبحر",
+      "sourceSection": "first_trace",
+      "libraryVisibility": "discovery-gated",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:9265",
+      "baselineTextHintsAnswerEngine": "index.html:9180 · runWLog"
+    },
+    {
+      "id": "pz_wlake",
+      "name": "بحيرة السماء",
+      "sourceSection": "first_trace",
+      "libraryVisibility": "discovery-gated",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:9266",
+      "baselineTextHintsAnswerEngine": "index.html:9212 · runWLake"
+    },
+    {
+      "id": "pz_wfirst",
+      "name": "موطن الأثر الأول",
+      "sourceSection": "first_trace",
+      "libraryVisibility": "discovery-gated",
+      "nativeMaxLevel": 8,
+      "authoredStages": 0,
+      "registry": "index.html:9267",
+      "baselineTextHintsAnswerEngine": "index.html:9232 · runWFirst"
+    }
+  ],
+  "stations": [
+    {
+      "id": "sea7_0",
+      "chapter": "seven_seas",
+      "order": 1,
+      "title": "صندوق المرجان",
+      "text": "ui/journey-story-data.js · treasureStations[0] + treasure/data.js · sea7_0",
+      "hintsAndBoard": "treasure/data.js · sea7_0",
+      "answerEngine": "treasure/logic.js · locks",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_1",
+      "chapter": "seven_seas",
+      "order": 2,
+      "title": "شفرة المخزن",
+      "text": "ui/journey-story-data.js · treasureStations[1] + treasure/data.js · sea7_1",
+      "hintsAndBoard": "treasure/data.js · sea7_1",
+      "answerEngine": "treasure/logic.js · cipher",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_2",
+      "chapter": "seven_seas",
+      "order": 3,
+      "title": "توجيه الشعاع",
+      "text": "ui/journey-story-data.js · treasureStations[2] + treasure/data.js · sea7_2",
+      "hintsAndBoard": "treasure/data.js · sea7_2",
+      "answerEngine": "treasure/logic.js · mirrors",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_3",
+      "chapter": "seven_seas",
+      "order": 4,
+      "title": "قصاصات الساحل",
+      "text": "ui/journey-story-data.js · treasureStations[3] + treasure/data.js · sea7_3",
+      "hintsAndBoard": "treasure/data.js · sea7_3",
+      "answerEngine": "treasure/logic.js · torn",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_4",
+      "chapter": "seven_seas",
+      "order": 5,
+      "title": "نداء القوارب",
+      "text": "ui/journey-story-data.js · treasureStations[4] + treasure/data.js · sea7_4",
+      "hintsAndBoard": "treasure/data.js · sea7_4",
+      "answerEngine": "treasure/logic.js · chime",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_5",
+      "chapter": "seven_seas",
+      "order": 6,
+      "title": "الطيور المترابطة",
+      "text": "ui/journey-story-data.js · treasureStations[5] + treasure/data.js · sea7_5",
+      "hintsAndBoard": "treasure/data.js · sea7_5",
+      "answerEngine": "treasure/logic.js · linked",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_6",
+      "chapter": "seven_seas",
+      "order": 7,
+      "title": "زورق المد",
+      "text": "ui/journey-story-data.js · treasureStations[6] + treasure/data.js · sea7_6",
+      "hintsAndBoard": "treasure/data.js · sea7_6",
+      "answerEngine": "treasure/logic.js · tide",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_7",
+      "chapter": "seven_seas",
+      "order": 8,
+      "title": "الحجر الأثقل",
+      "text": "ui/journey-story-data.js · treasureStations[7] + treasure/data.js · sea7_7",
+      "hintsAndBoard": "treasure/data.js · sea7_7",
+      "answerEngine": "treasure/logic.js · weigh",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_8",
+      "chapter": "seven_seas",
+      "order": 9,
+      "title": "شبكة الماء",
+      "text": "ui/journey-story-data.js · treasureStations[8] + treasure/data.js · sea7_8",
+      "hintsAndBoard": "treasure/data.js · sea7_8",
+      "answerEngine": "treasure/logic.js · valves",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_9",
+      "chapter": "seven_seas",
+      "order": 10,
+      "title": "الخريطة المنزلقة",
+      "text": "ui/journey-story-data.js · treasureStations[9] + treasure/data.js · sea7_9",
+      "hintsAndBoard": "treasure/data.js · sea7_9",
+      "answerEngine": "treasure/logic.js · slide",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_10",
+      "chapter": "seven_seas",
+      "order": 11,
+      "title": "جارات البلورة",
+      "text": "ui/journey-story-data.js · treasureStations[10] + treasure/data.js · sea7_10",
+      "hintsAndBoard": "treasure/data.js · sea7_10",
+      "answerEngine": "treasure/logic.js · lights",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_11",
+      "chapter": "seven_seas",
+      "order": 12,
+      "title": "موازين المعايرة",
+      "text": "ui/journey-story-data.js · treasureStations[11] + treasure/data.js · sea7_11",
+      "hintsAndBoard": "treasure/data.js · sea7_11",
+      "answerEngine": "treasure/logic.js · scales",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_12",
+      "chapter": "seven_seas",
+      "order": 13,
+      "title": "فك الأوتاد",
+      "text": "ui/journey-story-data.js · treasureStations[12] + treasure/data.js · sea7_12",
+      "hintsAndBoard": "treasure/data.js · sea7_12",
+      "answerEngine": "treasure/logic.js · ropes",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_13",
+      "chapter": "seven_seas",
+      "order": 14,
+      "title": "تعشيق التروس",
+      "text": "ui/journey-story-data.js · treasureStations[13] + treasure/data.js · sea7_13",
+      "hintsAndBoard": "treasure/data.js · sea7_13",
+      "answerEngine": "treasure/logic.js · gearfit",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_14",
+      "chapter": "seven_seas",
+      "order": 15,
+      "title": "منافذ الحرارة",
+      "text": "ui/journey-story-data.js · treasureStations[14] + treasure/data.js · sea7_14",
+      "hintsAndBoard": "treasure/data.js · sea7_14",
+      "answerEngine": "treasure/logic.js · drums",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_15",
+      "chapter": "seven_seas",
+      "order": 16,
+      "title": "دفع الحجارة",
+      "text": "ui/journey-story-data.js · treasureStations[15] + treasure/data.js · sea7_15",
+      "hintsAndBoard": "treasure/data.js · sea7_15",
+      "answerEngine": "treasure/logic.js · push",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_16",
+      "chapter": "seven_seas",
+      "order": 17,
+      "title": "الخط الواحد",
+      "text": "ui/journey-story-data.js · treasureStations[16] + treasure/data.js · sea7_16",
+      "hintsAndBoard": "treasure/data.js · sea7_16",
+      "answerEngine": "treasure/logic.js · stroke",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_17",
+      "chapter": "seven_seas",
+      "order": 18,
+      "title": "حلقات العهد",
+      "text": "ui/journey-story-data.js · treasureStations[17] + treasure/data.js · sea7_17",
+      "hintsAndBoard": "treasure/data.js · sea7_17",
+      "answerEngine": "treasure/logic.js · hanoi",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_18",
+      "chapter": "seven_seas",
+      "order": 19,
+      "title": "عبور المرسى",
+      "text": "ui/journey-story-data.js · treasureStations[18] + treasure/data.js · sea7_18",
+      "hintsAndBoard": "treasure/data.js · sea7_18",
+      "answerEngine": "treasure/logic.js · river",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_19",
+      "chapter": "seven_seas",
+      "order": 20,
+      "title": "قناة الزوارق",
+      "text": "ui/journey-story-data.js · treasureStations[19] + treasure/data.js · sea7_19",
+      "hintsAndBoard": "treasure/data.js · sea7_19",
+      "answerEngine": "treasure/logic.js · frogs",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "sea7_20",
+      "chapter": "seven_seas",
+      "order": 21,
+      "title": "باب الطريق الثامن",
+      "text": "ui/journey-story-data.js · treasureStations[20] + treasure/data.js · sea7_20",
+      "hintsAndBoard": "treasure/data.js · sea7_20",
+      "answerEngine": "treasure/logic.js · path",
+      "interaction": "treasure/app.js"
+    },
+    {
+      "id": "pz_plock",
+      "chapter": "palace",
+      "order": 1,
+      "title": "أقفال البوابة",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_plock + index.html · PW",
+      "answerEngine": "index.html:6745 · runPLock",
+      "hintsAndBoard": "index.html:6745 · runPLock",
+      "libraryPuzzleId": "pz_plock"
+    },
+    {
+      "id": "pz_pliar",
+      "chapter": "palace",
+      "order": 2,
+      "title": "التماثيل المتكلمة",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_pliar + index.html · PW",
+      "answerEngine": [
+        "motion/palace-motion.js:238"
+      ],
+      "hintsAndBoard": "index.html:6807 · runPLiar",
+      "libraryPuzzleId": "pz_pliar"
+    },
+    {
+      "id": "pz_pclock",
+      "chapter": "palace",
+      "order": 3,
+      "title": "برج الساعات",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_pclock + index.html · PW",
+      "answerEngine": "index.html:6822 · runPClock",
+      "hintsAndBoard": "index.html:6822 · runPClock",
+      "libraryPuzzleId": "pz_pclock"
+    },
+    {
+      "id": "pz_pboss1",
+      "chapter": "palace",
+      "order": 4,
+      "title": "اختبار حارس البوابة",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_pboss1 + index.html · PW",
+      "answerEngine": "index.html:6873 · runPBoss1",
+      "hintsAndBoard": "index.html:6873 · runPBoss1",
+      "libraryPuzzleId": "pz_pboss1"
+    },
+    {
+      "id": "pz_plib",
+      "chapter": "palace",
+      "order": 5,
+      "title": "صفحات اليوميات",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_plib + index.html · PW",
+      "answerEngine": "index.html:6914 · runPLib",
+      "hintsAndBoard": "index.html:6914 · runPLib",
+      "libraryPuzzleId": "pz_plib"
+    },
+    {
+      "id": "pz_pmirror",
+      "chapter": "palace",
+      "order": 6,
+      "title": "مرايا الألوان",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_pmirror + index.html · PW",
+      "answerEngine": "index.html:7003 · runPMirror",
+      "hintsAndBoard": "index.html:7003 · runPMirror",
+      "libraryPuzzleId": "pz_pmirror"
+    },
+    {
+      "id": "pz_pgarden",
+      "chapter": "palace",
+      "order": 7,
+      "title": "قنوات الحديقة",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_pgarden + index.html · PW",
+      "answerEngine": "index.html:7085 · runPGarden",
+      "hintsAndBoard": "index.html:7085 · runPGarden",
+      "libraryPuzzleId": "pz_pgarden"
+    },
+    {
+      "id": "pz_pqueen",
+      "chapter": "palace",
+      "order": 8,
+      "title": "تحدي ملكة المرايا",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_pqueen + index.html · PW",
+      "answerEngine": "index.html:7155 · runPQueen",
+      "hintsAndBoard": "index.html:7155 · runPQueen",
+      "libraryPuzzleId": "pz_pqueen"
+    },
+    {
+      "id": "pz_parm",
+      "chapter": "palace",
+      "order": 9,
+      "title": "تركيب الأدوات",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_parm + index.html · PW",
+      "answerEngine": "index.html:7202 · runPArm",
+      "hintsAndBoard": "index.html:7202 · runPArm",
+      "libraryPuzzleId": "pz_parm"
+    },
+    {
+      "id": "pz_pjail",
+      "chapter": "palace",
+      "order": 10,
+      "title": "شهادات السجناء",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_pjail + index.html · PW",
+      "answerEngine": "index.html:7231 · runPJail",
+      "hintsAndBoard": "index.html:7231 · runPJail",
+      "libraryPuzzleId": "pz_pjail"
+    },
+    {
+      "id": "pz_pobs",
+      "chapter": "palace",
+      "order": 11,
+      "title": "الخريطتان الشفافتان",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_pobs + index.html · PW",
+      "answerEngine": [
+        "motion/palace-motion.js:29"
+      ],
+      "hintsAndBoard": "index.html:7277 · runPObs",
+      "libraryPuzzleId": "pz_pobs"
+    },
+    {
+      "id": "pz_peng",
+      "chapter": "palace",
+      "order": 12,
+      "title": "اختبار مهندس الساعات",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_peng + index.html · PW",
+      "answerEngine": "index.html:7291 · runPEng",
+      "hintsAndBoard": "index.html:7291 · runPEng",
+      "libraryPuzzleId": "pz_peng"
+    },
+    {
+      "id": "pz_pmaze",
+      "chapter": "palace",
+      "order": 13,
+      "title": "المتاهة الدوّارة",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_pmaze + index.html · PW",
+      "answerEngine": "index.html:7332 · runPMaze",
+      "hintsAndBoard": "index.html:7332 · runPMaze",
+      "libraryPuzzleId": "pz_pmaze"
+    },
+    {
+      "id": "pz_pcrypt",
+      "chapter": "palace",
+      "order": 14,
+      "title": "النقش المخفي",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_pcrypt + index.html · PW",
+      "answerEngine": "index.html:7364 · runPCrypt",
+      "hintsAndBoard": "index.html:7364 · runPCrypt",
+      "libraryPuzzleId": "pz_pcrypt"
+    },
+    {
+      "id": "pz_pvalve",
+      "chapter": "palace",
+      "order": 15,
+      "title": "صمامات الأعماق",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_pvalve + index.html · PW",
+      "answerEngine": "index.html:7415 · runPValve",
+      "hintsAndBoard": "index.html:7415 · runPValve",
+      "libraryPuzzleId": "pz_pvalve"
+    },
+    {
+      "id": "pz_plast",
+      "chapter": "palace",
+      "order": 16,
+      "title": "تحدي السجين الأخير",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_plast + index.html · PW",
+      "answerEngine": "index.html:7448 · runPLast",
+      "hintsAndBoard": "index.html:7448 · runPLast",
+      "libraryPuzzleId": "pz_plast"
+    },
+    {
+      "id": "pz_pdragon",
+      "chapter": "palace",
+      "order": 17,
+      "title": "لغة التنانين",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_pdragon + index.html · PW",
+      "answerEngine": "index.html:7496 · runPDragon",
+      "hintsAndBoard": "index.html:7496 · runPDragon",
+      "libraryPuzzleId": "pz_pdragon"
+    },
+    {
+      "id": "pz_phall",
+      "chapter": "palace",
+      "order": 18,
+      "title": "قاعة الملوك السبعة",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_phall + index.html · PW",
+      "answerEngine": "index.html:7513 · runPHall",
+      "hintsAndBoard": "index.html:7513 · runPHall",
+      "libraryPuzzleId": "pz_phall"
+    },
+    {
+      "id": "pz_pheart",
+      "chapter": "palace",
+      "order": 19,
+      "title": "القلب الأخير",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_pheart + index.html · PW",
+      "answerEngine": "index.html:7602 · runPHeart",
+      "hintsAndBoard": "index.html:7602 · runPHeart",
+      "libraryPuzzleId": "pz_pheart"
+    },
+    {
+      "id": "pz_aarch",
+      "chapter": "atheran",
+      "order": 1,
+      "title": "أرشيف الرحلات",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_aarch + atheran/campaign/story.js",
+      "answerEngine": [
+        "motion/atheran-motion.js:16"
+      ],
+      "hintsAndBoard": "index.html:7836 · runAArch",
+      "libraryPuzzleId": "pz_aarch"
+    },
+    {
+      "id": "pz_aport",
+      "chapter": "atheran",
+      "order": 2,
+      "title": "ميناء ما وراء المد",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_aport + atheran/campaign/story.js",
+      "answerEngine": "index.html:7878 · runAPort",
+      "hintsAndBoard": "index.html:7878 · runAPort",
+      "libraryPuzzleId": "pz_aport"
+    },
+    {
+      "id": "pz_alight",
+      "chapter": "atheran",
+      "order": 3,
+      "title": "المنارة الأخيرة",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_alight + atheran/campaign/story.js",
+      "answerEngine": "index.html:7906 · runALight",
+      "hintsAndBoard": "index.html:7906 · runALight",
+      "libraryPuzzleId": "pz_alight"
+    },
+    {
+      "id": "pz_acur",
+      "chapter": "atheran",
+      "order": 4,
+      "title": "حيث تعود الأشياء",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_acur + atheran/campaign/story.js",
+      "answerEngine": "index.html:8053 · runACur",
+      "hintsAndBoard": "index.html:8053 · runACur",
+      "libraryPuzzleId": "pz_acur"
+    },
+    {
+      "id": "pz_ashell",
+      "chapter": "atheran",
+      "order": 5,
+      "title": "أغنية الأصداف",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_ashell + atheran/campaign/story.js",
+      "answerEngine": "index.html:8097 · runAShell",
+      "hintsAndBoard": "index.html:8097 · runAShell",
+      "libraryPuzzleId": "pz_ashell"
+    },
+    {
+      "id": "pz_aroot",
+      "chapter": "atheran",
+      "order": 6,
+      "title": "ممرات راعي الجذور",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_aroot + atheran/campaign/story.js",
+      "answerEngine": "index.html:8131 · runARoot",
+      "hintsAndBoard": "index.html:8131 · runARoot",
+      "libraryPuzzleId": "pz_aroot"
+    },
+    {
+      "id": "pz_aring",
+      "chapter": "atheran",
+      "order": 7,
+      "title": "شجرة الأسماء",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_aring + atheran/campaign/story.js",
+      "answerEngine": "index.html:8194 · runARing",
+      "hintsAndBoard": "index.html:8194 · runARing",
+      "libraryPuzzleId": "pz_aring"
+    },
+    {
+      "id": "pz_ashade",
+      "chapter": "atheran",
+      "order": 8,
+      "title": "ساعة الظل",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_ashade + atheran/campaign/story.js",
+      "answerEngine": "index.html:8258 · runAShade",
+      "hintsAndBoard": "index.html:8258 · runAShade",
+      "libraryPuzzleId": "pz_ashade"
+    },
+    {
+      "id": "pz_aswarm",
+      "chapter": "atheran",
+      "order": 9,
+      "title": "سرب البياض",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_aswarm + atheran/campaign/story.js",
+      "answerEngine": "index.html:8295 · runASwarm",
+      "hintsAndBoard": "index.html:8295 · runASwarm",
+      "libraryPuzzleId": "pz_aswarm"
+    },
+    {
+      "id": "pz_aecho",
+      "chapter": "atheran",
+      "order": 10,
+      "title": "مصدر الصوت",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_aecho + atheran/campaign/story.js",
+      "answerEngine": "index.html:8428 · runAEcho",
+      "hintsAndBoard": "index.html:8428 · runAEcho",
+      "libraryPuzzleId": "pz_aecho"
+    },
+    {
+      "id": "pz_avsong",
+      "chapter": "atheran",
+      "order": 11,
+      "title": "الوادي يغني",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_avsong + atheran/campaign/story.js",
+      "answerEngine": "index.html:8501 · runAVsong",
+      "hintsAndBoard": "index.html:8501 · runAVsong",
+      "libraryPuzzleId": "pz_avsong"
+    },
+    {
+      "id": "pz_agiant",
+      "chapter": "atheran",
+      "order": 12,
+      "title": "عادات العمالقة",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_agiant + atheran/campaign/story.js",
+      "answerEngine": "index.html:8546 · runAGiant",
+      "hintsAndBoard": "index.html:8546 · runAGiant",
+      "libraryPuzzleId": "pz_agiant"
+    },
+    {
+      "id": "pz_aherd",
+      "chapter": "atheran",
+      "order": 13,
+      "title": "عبور القطيع",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_aherd + atheran/campaign/story.js",
+      "answerEngine": "index.html:8592 · runAHerd",
+      "hintsAndBoard": "index.html:8592 · runAHerd",
+      "libraryPuzzleId": "pz_aherd"
+    },
+    {
+      "id": "pz_abridge",
+      "chapter": "atheran",
+      "order": 14,
+      "title": "جسور الضباب",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_abridge + atheran/campaign/story.js",
+      "answerEngine": "index.html:8694 · runABridge",
+      "hintsAndBoard": "index.html:8694 · runABridge",
+      "libraryPuzzleId": "pz_abridge"
+    },
+    {
+      "id": "pz_asilent",
+      "chapter": "atheran",
+      "order": 15,
+      "title": "الماء الصافي",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_asilent + atheran/campaign/story.js",
+      "answerEngine": "index.html:8747 · runASilent",
+      "hintsAndBoard": "index.html:8747 · runASilent",
+      "libraryPuzzleId": "pz_asilent"
+    },
+    {
+      "id": "pz_alayer",
+      "chapter": "atheran",
+      "order": 16,
+      "title": "طبقات الزمن",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_alayer + atheran/campaign/story.js",
+      "answerEngine": [
+        "motion/atheran-motion.js:99"
+      ],
+      "hintsAndBoard": "index.html:8815 · runALayer",
+      "libraryPuzzleId": "pz_alayer"
+    },
+    {
+      "id": "pz_acity",
+      "chapter": "atheran",
+      "order": 17,
+      "title": "المدينة الحية",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_acity + atheran/campaign/story.js",
+      "answerEngine": [
+        "motion/atheran-motion.js:164"
+      ],
+      "hintsAndBoard": "index.html:8840 · runACity",
+      "libraryPuzzleId": "pz_acity"
+    },
+    {
+      "id": "pz_asong",
+      "chapter": "atheran",
+      "order": 18,
+      "title": "أغاني الأعماق",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_asong + atheran/campaign/story.js",
+      "answerEngine": "index.html:8865 · runASong",
+      "hintsAndBoard": "index.html:8865 · runASong",
+      "libraryPuzzleId": "pz_asong"
+    },
+    {
+      "id": "pz_aflow",
+      "chapter": "atheran",
+      "order": 19,
+      "title": "مفترقات التيار",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_aflow + atheran/campaign/story.js",
+      "answerEngine": "index.html:8901 · runAFlow",
+      "hintsAndBoard": "index.html:8901 · runAFlow",
+      "libraryPuzzleId": "pz_aflow"
+    },
+    {
+      "id": "pz_arelic",
+      "chapter": "atheran",
+      "order": 20,
+      "title": "أرشيف الآثار الأولى",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_arelic + atheran/campaign/story.js",
+      "answerEngine": [
+        "motion/atheran-motion.js:235"
+      ],
+      "hintsAndBoard": "index.html:8956 · runARelic",
+      "libraryPuzzleId": "pz_arelic"
+    },
+    {
+      "id": "pz_aheart",
+      "chapter": "atheran",
+      "order": 21,
+      "title": "قلب أَثْرَان",
+      "text": "ui/designs_art/journey/v3/stations.js · pz_aheart + atheran/campaign/story.js",
+      "answerEngine": "index.html:8984 · runAHeart",
+      "hintsAndBoard": "index.html:8984 · runAHeart",
+      "libraryPuzzleId": "pz_aheart"
+    },
+    {
+      "id": "ml10_01",
+      "chapter": "side",
+      "order": 1,
+      "title": "قفل المنارة",
+      "text": "expedition10/app.js:10 + ui/journey-story-data.js · expeditionStations[0]",
+      "hintsAndBoard": "expedition10/app.js:10 · ml10_01",
+      "answerEngine": "expedition10/app.js:368 · gameCode + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_02",
+      "chapter": "side",
+      "order": 2,
+      "title": "معبر النهر",
+      "text": "expedition10/app.js:11 + ui/journey-story-data.js · expeditionStations[1]",
+      "hintsAndBoard": "expedition10/app.js:11 · ml10_02",
+      "answerEngine": "expedition10/app.js:371 · gameRiver + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_03",
+      "chapter": "side",
+      "order": 3,
+      "title": "الخريطة الممزقة",
+      "text": "expedition10/app.js:12 + ui/journey-story-data.js · expeditionStations[2]",
+      "hintsAndBoard": "expedition10/app.js:12 · ml10_03",
+      "answerEngine": "expedition10/app.js:376 · gameMap + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_04",
+      "chapter": "side",
+      "order": 4,
+      "title": "ميزان القراصنة",
+      "text": "expedition10/app.js:13 + ui/journey-story-data.js · expeditionStations[3]",
+      "hintsAndBoard": "expedition10/app.js:13 · ml10_04",
+      "answerEngine": "expedition10/app.js:379 · gameBalance + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_05",
+      "chapter": "side",
+      "order": 5,
+      "title": "ذاكرة البلورات",
+      "text": "expedition10/app.js:14 + ui/journey-story-data.js · expeditionStations[4]",
+      "hintsAndBoard": "expedition10/app.js:14 · ml10_05",
+      "answerEngine": "expedition10/app.js:386 · gameMemory + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_06",
+      "chapter": "side",
+      "order": 6,
+      "title": "مرايا الكهف",
+      "text": "expedition10/app.js:15 + ui/journey-story-data.js · expeditionStations[5]",
+      "hintsAndBoard": "expedition10/app.js:15 · ml10_06",
+      "answerEngine": "expedition10/app.js:390 · gameMirrors + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_07",
+      "chapter": "side",
+      "order": 7,
+      "title": "ساعة الرمل",
+      "text": "expedition10/app.js:16 + ui/journey-story-data.js · expeditionStations[6]",
+      "hintsAndBoard": "expedition10/app.js:16 · ml10_07",
+      "answerEngine": "expedition10/app.js:422 · gameTimed + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_08",
+      "chapter": "side",
+      "order": 8,
+      "title": "شبكة الجزر",
+      "text": "expedition10/app.js:17 + ui/journey-story-data.js · expeditionStations[7]",
+      "hintsAndBoard": "expedition10/app.js:17 · ml10_08",
+      "answerEngine": "expedition10/app.js:431 · gameIslands + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_09",
+      "chapter": "side",
+      "order": 9,
+      "title": "المكتبة المفقودة",
+      "text": "expedition10/app.js:18 + ui/journey-story-data.js · expeditionStations[8]",
+      "hintsAndBoard": "expedition10/app.js:18 · ml10_09",
+      "answerEngine": "expedition10/app.js:437 · gameArchiveGrid + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_10",
+      "chapter": "side",
+      "order": 10,
+      "title": "بوابة قلب أَثْران",
+      "text": "expedition10/app.js:19 + ui/journey-story-data.js · expeditionStations[9]",
+      "hintsAndBoard": "expedition10/app.js:19 · ml10_10",
+      "answerEngine": "expedition10/app.js:439 · gameStars + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_11",
+      "chapter": "side",
+      "order": 11,
+      "title": "أنابيب المد",
+      "text": "expedition10/app.js:20 + ui/journey-story-data.js · expeditionStations[10]",
+      "hintsAndBoard": "expedition10/app.js:20 · ml10_11",
+      "answerEngine": "expedition10/app.js:457 · gamePipes + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_12",
+      "chapter": "side",
+      "order": 12,
+      "title": "ممر الجليد",
+      "text": "expedition10/app.js:21 + ui/journey-story-data.js · expeditionStations[11]",
+      "hintsAndBoard": "expedition10/app.js:21 · ml10_12",
+      "answerEngine": "expedition10/app.js:475 · gameIce + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_13",
+      "chapter": "side",
+      "order": 13,
+      "title": "رهان حراشف التنين",
+      "text": "expedition10/app.js:22 + ui/journey-story-data.js · expeditionStations[12]",
+      "hintsAndBoard": "expedition10/app.js:22 · ml10_13",
+      "answerEngine": "expedition10/app.js:488 · gameNim + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_14",
+      "chapter": "side",
+      "order": 14,
+      "title": "مسرح الظلال",
+      "text": "expedition10/app.js:23 + ui/journey-story-data.js · expeditionStations[13]",
+      "hintsAndBoard": "expedition10/app.js:23 · ml10_14",
+      "answerEngine": "expedition10/app.js:501 · gameShadows + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_16",
+      "chapter": "side",
+      "order": 15,
+      "title": "سجل الحمولة",
+      "text": "expedition10/app.js:24 + ui/journey-story-data.js · expeditionStations[14]",
+      "hintsAndBoard": "expedition10/app.js:24 · ml10_16",
+      "answerEngine": "expedition10/app.js:511 · gameManifest + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_17",
+      "chapter": "side",
+      "order": 16,
+      "title": "ساعة المدّ",
+      "text": "expedition10/app.js:25 + ui/journey-story-data.js · expeditionStations[15]",
+      "hintsAndBoard": "expedition10/app.js:25 · ml10_17",
+      "answerEngine": "expedition10/app.js:521 · gameTideClock + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_18",
+      "chapter": "side",
+      "order": 17,
+      "title": "رقع رواق المرايا",
+      "text": "expedition10/app.js:26 + ui/journey-story-data.js · expeditionStations[16]",
+      "hintsAndBoard": "expedition10/app.js:26 · ml10_18",
+      "answerEngine": "expedition10/app.js:532 · gameRelics + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_19",
+      "chapter": "side",
+      "order": 18,
+      "title": "صندوق القبطان",
+      "text": "expedition10/app.js:27 + ui/journey-story-data.js · expeditionStations[17]",
+      "hintsAndBoard": "expedition10/app.js:27 · ml10_19",
+      "answerEngine": "expedition10/app.js:543 · gameCrate + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_20",
+      "chapter": "side",
+      "order": 19,
+      "title": "اختبار حارس الميناء",
+      "text": "expedition10/app.js:28 + ui/journey-story-data.js · expeditionStations[18]",
+      "hintsAndBoard": "expedition10/app.js:28 · ml10_20",
+      "answerEngine": "expedition10/app.js:556 · gameKnight + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_21",
+      "chapter": "side",
+      "order": 20,
+      "title": "متاهة الفوانيس",
+      "text": "expedition10/app.js:29 + ui/journey-story-data.js · expeditionStations[19]",
+      "hintsAndBoard": "expedition10/app.js:29 · ml10_21",
+      "answerEngine": "expedition10/app.js:567 · gameLanternMaze + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_22",
+      "chapter": "side",
+      "order": 21,
+      "title": "أحواض المعبد",
+      "text": "expedition10/app.js:30 + ui/journey-story-data.js · expeditionStations[20]",
+      "hintsAndBoard": "expedition10/app.js:30 · ml10_22",
+      "answerEngine": "expedition10/app.js:579 · gameWaterJugs + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_23",
+      "chapter": "side",
+      "order": 22,
+      "title": "أبراج الإشارة",
+      "text": "expedition10/app.js:31 + ui/journey-story-data.js · expeditionStations[21]",
+      "hintsAndBoard": "expedition10/app.js:31 · ml10_23",
+      "answerEngine": "expedition10/app.js:592 · gameSignalTowers + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_24",
+      "chapter": "side",
+      "order": 23,
+      "title": "أقراص الحارس",
+      "text": "expedition10/app.js:32 + ui/journey-story-data.js · expeditionStations[22]",
+      "hintsAndBoard": "expedition10/app.js:32 · ml10_24",
+      "answerEngine": "expedition10/app.js:603 · gameHanoi + expedition10/logic.js"
+    },
+    {
+      "id": "ml10_25",
+      "chapter": "side",
+      "order": 24,
+      "title": "الختم الخماسي",
+      "text": "expedition10/app.js:33 + ui/journey-story-data.js · expeditionStations[23]",
+      "hintsAndBoard": "expedition10/app.js:33 · ml10_25",
+      "answerEngine": "expedition10/app.js:615 · gameFivefoldSeal + expedition10/logic.js"
+    }
+  ]
+}

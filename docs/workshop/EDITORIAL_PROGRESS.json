@@ -10,13 +10,51 @@
     "release": "5.5.30",
     "read_only": true
   },
-  "status": "not-started",
+  "status": "batch-01-ready-for-review",
   "owner": "Work — puzzle narrative, difficulty, editorial QA",
   "other_owner": "MindLab6 engineering — engines/migration only",
   "scope": "existing puzzle texts, mechanics review, progressive hints and difficulty; no from-scratch replacement",
   "completed_puzzles": [],
-  "current_batch": null,
-  "next_action": "inspect live repository puzzle IDs and choose 3 distinct existing puzzles for first editorial prototypes",
+  "current_batch": {
+    "id": "batch-01",
+    "status": "verified-editorial-drafts",
+    "index": "docs/workshop/EDITORIAL_SOURCE_INDEX.json",
+    "delivery": "docs/workshop/batch-01/README.md",
+    "logic_verification": "node docs/workshop/batch-01/verify.cjs",
+    "browser_or_device_verified": false,
+    "puzzle_cards": [
+      {
+        "id": "pz_rush",
+        "delivery": "01-parking.md",
+        "status": "logic-verified",
+        "stages": [
+          1,
+          3,
+          18
+        ],
+        "change": "editorial and stage 1 starting layout proposal"
+      },
+      {
+        "id": "ml10_01",
+        "delivery": "02-lighthouse.md",
+        "status": "logic-verified",
+        "change": "editorial for original plus two isolated replay proposals"
+      },
+      {
+        "id": "pz_pipe",
+        "delivery": "03-pipes.md",
+        "status": "logic-verified",
+        "stages": [
+          1,
+          9,
+          20
+        ],
+        "change": "editorial and stage 1 fixed-piece proposal"
+      }
+    ],
+    "new_original_puzzles": 0
+  },
+  "next_action": "Review sample cards and engine boundaries, then continue a 5–10 puzzle movement batch. Keep completed_puzzles for accepted IDs.",
   "hard_rules": [
     "do-not-edit-main",
     "do-not-edit-mindlab6-engineering-branch",
