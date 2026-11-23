@@ -1,0 +1,87 @@
+name: MindLab Batch02 Reference Bundle
+
+on:
+  push:
+    branches:
+      - work/mindlab-puzzle-editorial-20261123
+    paths:
+      - .github/workflows/mindlab-batch02-reference-bundle.yml
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+jobs:
+  bundle:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout editorial
+        uses: actions/checkout@v4
+        with:
+          ref: work/mindlab-puzzle-editorial-20261123
+          path: editorial
+          persist-credentials: false
+      - name: Checkout main
+        uses: actions/checkout@v4
+        with:
+          ref: main
+          path: baseline
+          persist-credentials: false
+      - name: Checkout engineering registry
+        uses: actions/checkout@v4
+        with:
+          ref: prototype/mindlab-6-foundation-20261123
+          path: engineering
+          persist-credentials: false
+      - name: Assemble and verify UTF-8 ZIP
+        shell: bash
+        run: |
+          python3 - <<'PY'
+          from pathlib import Path
+          from zipfile import ZipFile, ZIP_DEFLATED
+          import json, hashlib
+          out = Path('MindLab_Gemini_Batch02.zip')
+          entries = [
+            ('editorial/docs/workshop/v6-audit/batch-01/README.md','docs/workshop/v6-audit/batch-01/README.md'),
+            ('editorial/docs/workshop/v6-audit/batch-01/pipe/index.html','docs/workshop/v6-audit/batch-01/pipe/index.html'),
+            ('editorial/docs/workshop/gemini-design/DESIGN_QUEUE.json','docs/workshop/gemini-design/DESIGN_QUEUE.json'),
+            ('engineering/mindlab6/research/REGISTRY.json','mindlab6/research/REGISTRY.json'),
+          ]
+          for prefix, rel in [('baseline/motion/art10','motion/art10'),('baseline/ui/designs_art/river_stage1','ui/designs_art/river_stage1')]:
+            folder=Path(prefix)
+            assert folder.is_dir(), f'Missing directory: {prefix}'
+            for f in sorted(folder.rglob('*')):
+              if f.is_file():
+                entries.append((str(f),str(Path(rel)/f.relative_to(folder))))
+          paths=[dst for _,dst in entries]
+          assert len(paths)==len(set(paths)), 'Duplicate archive paths'
+          art=[p for p in paths if p.startswith('motion/art10/') and p.lower().endswith('.webp')]
+          river=[p for p in paths if p.startswith('ui/designs_art/river_stage1/') and p.lower().endswith('.png')]
+          assert len(art)>=56, f'Unexpected art10 count {len(art)}'
+          assert len(river)>=25, f'Unexpected river PNG count {len(river)}'
+          assert 'ui/designs_art/river_stage1/anchors_manifest.json' in paths
+          for src,dst in entries:
+            f=Path(src)
+            assert f.is_file() and f.stat().st_size>0, f'Missing/empty: {src}'
+            if dst.endswith(('.md','.json','.html')):
+              f.read_text(encoding='utf-8')
+          queue=json.loads(Path('editorial/docs/workshop/gemini-design/DESIGN_QUEUE.json').read_text(encoding='utf-8'))
+          serialized=json.dumps(queue,ensure_ascii=False)
+          for id in ['pz_pipe','pz_river','pz_rush','pz_flow']:
+            assert id in serialized, f'Missing ID: {id}'
+          with ZipFile(out,'w',ZIP_DEFLATED,compresslevel=6) as z:
+            for src,dst in entries:
+              z.write(src,dst)
+            z.writestr('BATCH02_BUNDLE_MANIFEST.json',json.dumps({'puzzles':['pz_pipe','pz_river','pz_rush','pz_flow'],'source_branches':{'editorial':'work/mindlab-puzzle-editorial-20261123','baseline':'main','engineering':'prototype/mindlab-6-foundation-20261123'},'file_count':len(entries),'art10_webp':len(art),'river_png':len(river),'files':[{ 'path':dst,'sha256':hashlib.sha256(Path(src).read_bytes()).hexdigest()} for src,dst in entries]},ensure_ascii=False,indent=2))
+          with ZipFile(out) as z:
+            assert z.testzip() is None
+            assert len(z.namelist())==len(entries)+1
+          print(f'BUNDLE_OK files={len(entries)} art10_webp={len(art)} river_png={len(river)} size={out.stat().st_size}')
+          PY
+      - name: Upload complete reference bundle
+        uses: actions/upload-artifact@v4
+        with:
+          name: MindLab_Gemini_Batch02
+          path: MindLab_Gemini_Batch02.zip
+          if-no-files-found: error
+          retention-days: 14
