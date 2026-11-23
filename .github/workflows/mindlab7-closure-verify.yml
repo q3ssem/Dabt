@@ -45,6 +45,25 @@ jobs:
             git push origin HEAD:review/mindlab7-final-closure-20261123
           fi
           echo "TESTED_HEAD=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+      - name: Verify seven supplementary Node tests before canonicalization
+        shell: bash
+        run: |
+          set -uo pipefail
+          python - <<'PY'
+          import subprocess,sys
+          names=['audio-lifecycle','authored-stages','design-integration','display-audio','expedition-art','phone-readability','stage-gate-message']
+          failed=[]
+          for name in names:
+              proc=subprocess.run(['node',f'qa/tests/{name}.cjs'],capture_output=True,text=True)
+              if proc.returncode:
+                  failed.append(name)
+                  print('SUPPLEMENTARY_FAIL',name,flush=True)
+                  print((proc.stdout+'\\n'+proc.stderr)[-4000:],flush=True)
+              else:
+                  print('SUPPLEMENTARY_PASS',name,flush=True)
+          print(f'SUPPLEMENTARY_NODE={len(names)-len(failed)}/{len(names)}; failures={failed}',flush=True)
+          sys.exit(1 if failed else 0)
+          PY
       - name: Execute all native Node regressions without hiding failed tests
         shell: bash
         run: |
