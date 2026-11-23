@@ -384,7 +384,7 @@ async def run():
             # Replay stages: first improves 2 -> 3, second improves 1 -> 3.
             # 24 wins must stay 24; earned stars, not total replay counts,
             # are retained as each stage's maximum.
-            await click(page,'[data-ex10="map"]')
+            await js(page,"()=>mindlabJourneyHub.openChapters('side')")
             for i in (0,1):
                 await enter_stage(page,i)
                 await solve(page,i)
@@ -394,7 +394,7 @@ async def run():
                 expected=70 if i==0 else 72
                 await check(state["totalStars"]==expected and state["stars"][catalog[i]["id"]]==3,
                     f"replay {i+1} upgrades best to three stars without duplicate rewards")
-                await click(page,'[data-ex10="map"]')
+                await js(page,"()=>mindlabJourneyHub.openChapters('side')")
             await page.reload(wait_until="load")
             await boot_after_reload(page)
             final=await js(page,"()=>ML10.state()")

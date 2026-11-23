@@ -1,8 +1,8 @@
-name: MindLab 5.5.29 acceptance stages 1-6 (cleanup deferred)
+name: MindLab 5.5.30 acceptance stages 1-6 (review branch)
 
 on:
   push:
-    branches: [review/mindlab-puzzle-folders-safety-20261122, review/mindlab-cleanup-integration-20261123]
+    branches: [review/mindlab-puzzle-folders-safety-20261122, review/mindlab-cleanup-integration-20261123, review/mindlab7-final-closure-20261123]
   pull_request:
     branches: [main]
     paths:

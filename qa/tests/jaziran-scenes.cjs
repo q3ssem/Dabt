@@ -40,7 +40,7 @@ assert(hubSrc.includes("getEvidenceDraft(scene.observationFile).trim()"),'never 
 assert(hubSrc.includes("saveEvidenceDraft(scene.observationFile,scene.note)"),'only save with explicit user action');
 assert(hubSrc.includes("document.createTextNode(line)"),'speaker dialogue uses text nodes');
 assert(hubSrc.includes('motion/art10/char_ward.webp')&&hubSrc.includes('motion/art10/char_rawaa.webp')&&hubSrc.includes('motion/art10/char_nuha.webp'),'use existing hand-drawn heroines');
-assert(hubSrc.includes("jaziranSceneAvailable('palace_clock')")&&hubSrc.includes("id=\"mlj-open-jaziran\""),'journal exposes source scenes with gating');
+assert(hubSrc.includes("jaziranSceneAvailable('palace_clock')")&&hubSrc.includes("label:'ساعة القصر'"),'journal exposes source scenes with gating');
 assert(!dataSrc.includes('pz_xbottle'),'retired bottle puzzle must not be restored');
 assert.equal(saved.size,2,'opening a locked scene must not write state');
 const app=fs.readFileSync('ui/app.js','utf8');

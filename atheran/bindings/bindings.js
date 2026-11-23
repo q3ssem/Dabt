@@ -129,7 +129,7 @@
       return r;
     };
   }
-  // a region opened: play the transition when the atlas is shown next
+  // A region unlock transition belongs to the chapter view, not a deleted navigation atlas.
   function regionTransition() { const k = sessionStorage.getItem('ah-region-transition'); if (k == null) return; sessionStorage.removeItem('ah-region-transition'); vfx('vfx_region_transition', { cls: 'ah-vfx-screen', ms: 1300 }); }
   if (typeof aSwOpen === 'function') {
     const sw0 = aSwOpen;

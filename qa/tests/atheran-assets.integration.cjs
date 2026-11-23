@@ -24,7 +24,6 @@ assert(runtimeIndex >= 0 && app.indexOf("'atheran/campaign/story.js'") > runtime
 assert(runtime.includes("const puzzle=id=>byPuzzle[id]||byStation[id]||[]"), 'puzzle asset lookup must support station-index fallback');
 assert(runtime.includes("wrap('aFinale'"), 'finale art must bind to finale open action');
 assert(!runtime.includes('finalObs.observe(document.body'), 'finale observer must not watch the entire document');
-assert(!runtime.includes('finalObs.observe(document.body'), 'finale observer must not watch the entire document');
 assert(!runtime.includes("wrap('aHubHTML'")&&!runtime.includes('map_layer_01_bg'), 'retired world-map renderer and asset records must be absent');
 assert(runtime.includes("puzzle(id)||byStation[id]") || runtime.includes('byPuzzle[id]||byStation[id]'), 'puzzle lookup must support both puzzle_id and station_id');
 const campaign = fs.readFileSync(path.join(root,'atheran','campaign','campaign.js'),'utf8');

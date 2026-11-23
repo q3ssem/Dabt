@@ -25,7 +25,7 @@ for (const r of states) ok(reachable.has(r.asset_id), 'piece state bound: ' + r.
 ok(Object.keys(PIECES).length === 21, '21 stations have a piece binding');
 // frames
 const frames = inv.filter(r => r.asset_type === 'ui_frame');
-ok(frames.length === 14, '14 UI frames');
+ok(frames.length === 13 && !frames.some(f=>f.asset_id==='ui_world_map_frame'), '13 retained UI frames; retired world-map frame excluded');
 const man = fs.readFileSync('offline-manifest.js', 'utf8');
 for (const f of frames) {
   ok(src.includes(`'${f.asset_id}'`), 'frame bound to a screen: ' + f.asset_id);
@@ -41,7 +41,7 @@ for (const r of inv.filter(r => r.asset_type === 'puzzle_vfx')) ok(src.includes(
 ok(/relic_\$\{num\}_vfx/.test(src), 'relic VFX bound by relic number');
 ok(/relic_\$\{num\}_silhouette/.test(src) && /relic_\$\{num\}_icon/.test(src), 'relic strip: icon when found, silhouette when missing');
 for (let i = 1; i <= 14; i++) { const n2 = String(i).padStart(2, '0'); for (const k of ['icon', 'silhouette', 'vfx']) ok(!!byId[`relic_${n2}_${k}`], `relic_${n2}_${k} exists`); }
-ok(/function spreadMap/.test(src), 'atlas buttons are spread apart on narrow phones');
+ok(!/function spreadMap/.test(src), 'retired atlas navigation layout removed from puzzle bindings');
 // asset ids and files untouched
 for (const r of inv) {
   const p = path.join('atheran/assets', r.relative_path);
@@ -58,4 +58,4 @@ const viewport = fs.readFileSync('index.html', 'utf8').match(/<meta name="viewpo
 ok(viewport.includes('width=device-width'), 'native viewport width is retained');
 ok(!/meta\[name=viewport\]|DESIGN = 375/.test(app), 'app avoids overriding the viewport on rotation or resize');
 ok(/prefers-reduced-motion/.test(fs.readFileSync('atheran/bindings/bindings.css', 'utf8')), 'VFX respect reduced motion');
-console.log(`Atheran bindings: ${n} checks passed — 80/80 piece states, 14/14 frames, ${vfxIds.length} VFX ids, 546 assets unchanged.`);
+console.log(`Atheran bindings: ${n} checks passed — 80/80 piece states, 13/13 frames, ${vfxIds.length} VFX ids, 535 approved assets remain unchanged.`);

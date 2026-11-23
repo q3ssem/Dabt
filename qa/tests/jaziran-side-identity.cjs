@@ -26,8 +26,8 @@ assert(side.includes("mindlab:expedition10:v1"),'side progress remains separatel
 const riverBlock=side.slice(side.indexOf('function gameRiver(i)'),side.indexOf('function gameMap(i)'));
 assert(riverBlock.includes('data-route-next=')&&riverBlock.includes('b.onclick=()=>visit(b.dataset.routeNext)'),
   'River must offer tappable, legal next-node buttons using its actual move rules');
-assert(side.includes('النجوم ${ar(save.totalStars)} من ٧٢'),
-  'Side map maximum is 24 stages times 3 stars, not retired 75');
+assert(stages.length*3===72 && side.includes('save.totalStars=Object.values(save.stars).reduce') && side.includes('save.stars[id]=Math.max'),
+  '24 stages retain up to 72 earned stars in the native save without a navigation map');
 
 const activeScene=side.slice(side.indexOf('function commonGame('),side.indexOf('function bindCommon('));
 assert(activeScene.includes("data-state=\"${save.done[s.id]?'done':'open'}\""),

@@ -54,7 +54,7 @@ assert.ok(!read('qa/browser/design10_play.py').includes('pz_stat'), 'deleted des
 assert.ok(!read('qa/browser/motion_batch_fixes.py').includes('pz_xbottle'), 'deleted bottle replay removed');
 
 // The cache generation must have moved past the generation that still held the deleted assets.
-assert.ok(Number((read('sw.js').match(/PATCH='brain-touch-(\d+)'/) || [])[1]) >= 33, 'cache generation must change after switching to deferred assets');
+assert.ok(read('sw.js').includes("const VERSION='"+require('../../package.json').version+"'") && read('sw.js').includes("PATCH='map-free-2'"), 'cache generation includes the current release and retired-map cleanup');
 const pwa = read('pwa.js');
 assert.ok(pwa.includes('window.mindlabOffline.prepareAll = function prepareAll()'), 'offline bulk download must be opt-in');
 assert.ok(pwa.includes('window.mindlabOffline.clearOptionalCaches'), 'optional image cache cleanup available');
@@ -67,7 +67,7 @@ assert.ok(swSource.includes('++imageWrites % 32 === 0'), 'image eviction scan is
 
 const runtime = read('sw.js');
 const startUi = read('ui/app.js');
-assert.ok(Number((runtime.match(/PATCH='brain-touch-(\d+)'/) || [])[1]) >= 33, 'second-stage cache generation');
+assert.ok(runtime.includes("PATCH='map-free-2'"), 'reviewed cache generation differs from pre-cleanup builds');
 const shell = runtime.slice(runtime.indexOf('const shell = ['), runtime.indexOf('];', runtime.indexOf('const shell = ['))+2);
 const listed = [...shell.matchAll(/'([^']+)'/g)].map(m=>m[1]);
 assert.equal(listed.length,19,'core shell includes 11 startup resources and 8 assessment dependencies');

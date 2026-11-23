@@ -3,9 +3,10 @@ const fs=require('node:fs'),path=require('node:path'),assert=require('node:asser
 const root=path.resolve(__dirname,'../..');
 const read=p=>fs.readFileSync(path.join(root,p),'utf8');
 const app=read('treasure/app.js'),css=read('treasure/style.css'),data=read('treasure/data.js'),offline=read('offline-manifest.js');
-assert(app.includes('v544-chapter-overview'),'chapter overview rendered');
-assert(app.includes('c[1]')&&app.includes('c[2]')&&app.includes('c[3]'),'kingdom, island and seal shown');
-assert(app.includes('chapterDone/3*100'),'per-sea progress calculated from existing station completion');
+const hub=read('ui/journey-hub.js');
+assert(hub.includes('ml-folder-journey-categories')&&hub.includes("['seven_seas','البحار السبعة'"),'official sea chapter folder is available');
+assert(hub.includes('const completed=rows.filter(done).length'),'per-chapter progress uses native station completion');
+assert(app.includes('v5-hubcard')&&app.includes('D.stations.reduce'),'official treasure entry preserves station and star counters');
 assert(app.includes('v544-crew-debrief'),'crew debrief rendered on reward screen');
 assert(app.includes("crew_full_'+guide.key+'.webp"),'original full-body crew art reused');
 assert(css.includes('.v544-chapter-overview')&&css.includes('.v544-crew-debrief'),'new responsive styles exist');
