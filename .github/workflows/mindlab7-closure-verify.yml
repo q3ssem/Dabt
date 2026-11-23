@@ -1,0 +1,67 @@
+name: MindLab 7 - regenerate white theme and run native regressions
+
+on:
+  push:
+    branches:
+      - review/mindlab7-final-closure-20261123
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+concurrency:
+  group: mindlab7-closure-check
+  cancel-in-progress: true
+
+jobs:
+  regenerate-and-test:
+    name: Refresh generated CSS and run all Node regressions
+    runs-on: ubuntu-latest
+    timeout-minutes: 30
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          ref: review/mindlab7-final-closure-20261123
+          persist-credentials: true
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Install generated theme dependency
+        run: python -m pip install tinycss2
+      - name: Rebuild white theme from the canonical CSS sources
+        shell: bash
+        run: |
+          set -euo pipefail
+          python tools/build_light_theme.py
+          python tools/build_light_theme.py --check
+          if ! git diff --quiet -- ds/light-auto.css; then
+            git config user.name "github-actions[bot]"
+            git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+            git add ds/light-auto.css
+            git commit -m "build(mindlab7): regenerate white theme from current source CSS"
+            git push origin HEAD:review/mindlab7-final-closure-20261123
+          fi
+          echo "TESTED_HEAD=$(git rev-parse HEAD)" >> "$GITHUB_ENV"
+      - name: Execute all native Node regressions without hiding failed tests
+        shell: bash
+        run: |
+          set -uo pipefail
+          python - <<'PY'
+          import json, subprocess, shlex, sys
+          commands=json.load(open('package.json'))['scripts']['test'].split(' && ')
+          failed=[]
+          for command in commands:
+              result=subprocess.run(shlex.split(command),capture_output=True,text=True)
+              if result.returncode:
+                  failed.append(command)
+                  print('FAILED:',command,flush=True)
+                  print((result.stdout+'\n'+result.stderr)[-3500:],flush=True)
+              else:
+                  print('PASS:',command,flush=True)
+          print(f'MINDLAB7_TESTED_HEAD={subprocess.check_output(["git","rev-parse","HEAD"],text=True).strip()}',flush=True)
+          print(f'MINDLAB7_NODE_REGRESSION={len(commands)-len(failed)}/{len(commands)}; failures={failed}',flush=True)
+          sys.exit(1 if failed else 0)
+          PY
