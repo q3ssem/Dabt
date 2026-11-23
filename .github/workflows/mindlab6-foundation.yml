@@ -42,6 +42,7 @@ jobs:
         run: |
           cd mindlab6
           node tools/audit-v5-catalog.mjs
+          node tools/audit-v5-assets.mjs
       - name: Reject changes to the protected v5 app on this foundation branch
         shell: bash
         run: |
