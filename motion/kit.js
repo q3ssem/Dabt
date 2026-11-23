@@ -15,12 +15,15 @@
         bot = sc === document.scrollingElement || sc === document.documentElement ? innerHeight : sc.getBoundingClientRect().bottom, E = 64; let v = 0;
       if (last.y < top + E) v = -Math.ceil((top + E - last.y) / 5); else if (last.y > bot - E) v = Math.ceil((last.y - (bot - E)) / 5);
       if (v) { const before = sc.scrollTop; sc.scrollTop += v; if (sc.scrollTop !== before) { mark(last.x, last.y); auto = requestAnimationFrame(tick); } } };
-    const mark = (x, y) => { root.querySelectorAll('.mk-over').forEach(q => q.classList.remove('mk-over')); if (!drag || !drag.ghost) return; drag.ghost.style.visibility = 'hidden'; const t = target(x, y); drag.ghost.style.visibility = ''; if (t && root.contains(t)) t.classList.add('mk-over'); };
+    const mark = (x, y) => { root.querySelectorAll('.mk-over').forEach(q => q.classList.remove('mk-over')); if (!drag || !drag.ghost) return; drag.ghost.style.visibility = 'hidden'; const t = target(x, y); drag.ghost.style.visibility = ''; const destination = t && root.contains(t) ? t : null;
+      destination?.classList.add('mk-over');
+      opt.onHover?.(drag.tok.dataset.tok, destination?.dataset.slot ?? null);
+    };
     const clearSel = () => { root.querySelectorAll('.mk-sel').forEach(e => e.classList.remove('mk-sel')); root.classList.remove('mk-picking'); sel = null; };
     const target = (x, y) => { const el = document.elementFromPoint(x, y); return el && (el.closest('[data-slot]') || el.closest('[data-tray]')); };
     const place = (tok, dst) => { if (!dst || !root.contains(dst)) return false; const sid = dst.dataset.slot != null ? dst.dataset.slot : null; opt.drop(tok.dataset.tok, sid, tok, dst); return true; };
     root.addEventListener('pointerdown', e => {
-      const tok = e.target.closest('[data-tok]'); if (!tok || !root.contains(tok) || tok.getAttribute('aria-disabled') === 'true') return;
+      const tok = e.target.closest('[data-tok]'); if (drag || e.button !== 0 || !tok || !root.contains(tok) || tok.getAttribute('aria-disabled') === 'true') return;
       if (opt.canDrag && !opt.canDrag(tok)) return;
       drag = { tok, x: e.clientX, y: e.clientY, id: e.pointerId, moved: false, ghost: null };
     });
@@ -32,7 +35,7 @@
         drag.moved = true; clearSel();
         const r = drag.tok.getBoundingClientRect(), g = drag.tok.cloneNode(true);
         g.classList.add('mk-ghost'); g.removeAttribute('data-tok'); g.style.width = r.width + 'px'; g.style.height = r.height + 'px';
-        drag.ox = e.clientX - r.left; drag.oy = e.clientY - r.top; document.body.append(g); drag.ghost = g; drag.tok.classList.add('mk-lift');
+        drag.ox = drag.x - r.left; drag.oy = drag.y - r.top; document.body.append(g); drag.ghost = g; drag.tok.classList.add('mk-lift');
         try { root.setPointerCapture(e.pointerId); } catch (_) {}
       }
       e.preventDefault();
@@ -42,7 +45,8 @@
     const end = e => {
       if (!drag || (e && e.pointerId !== drag.id)) return;
       const d = drag; drag = null; last = null; if (auto) { cancelAnimationFrame(auto); auto = 0; } root.querySelectorAll('.mk-over').forEach(x => x.classList.remove('mk-over'));
-      if (d.moved) { d.tok.classList.remove('mk-lift'); if (d.ghost) d.ghost.remove(); if (e && e.type === 'pointerup') place(d.tok, target(e.clientX, e.clientY)); return; }
+      if (d.moved) { opt.onHover?.(d.tok.dataset.tok, null); d.tok.classList.remove('mk-lift'); if (d.ghost) d.ghost.remove(); if (e && e.type === 'pointerup') place(d.tok, target(e.clientX, e.clientY)); return; }
+      if (e?.type !== 'pointerup') return;
       // a tap: select the token, or place the selected token on a tapped slot
       if (sel === d.tok) { clearSel(); return; }
       // a piece is picked and the player taps a slot that already holds a piece: place (swap) instead of re-picking
@@ -50,7 +54,7 @@
       if (hold && root.contains(hold)) { const t = sel; clearSel(); place(t, hold); return; }
       clearSel(); sel = d.tok; d.tok.classList.add('mk-sel'); root.classList.add('mk-picking'); if (opt.onPick) opt.onPick(d.tok.dataset.tok);
     };
-    root.addEventListener('pointerup', end); root.addEventListener('pointercancel', end);
+    root.addEventListener('pointerup', end); root.addEventListener('pointercancel', end); root.addEventListener('lostpointercapture', end);
     root.addEventListener('click', e => {
       if (!sel || e.target.closest('[data-tok]')) return;
       const dst = e.target.closest('[data-slot]') || e.target.closest('[data-tray]'); if (!dst || !root.contains(dst)) return;

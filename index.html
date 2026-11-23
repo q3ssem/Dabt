@@ -3914,11 +3914,11 @@ function rushEngine(api,P,onWin,presentation){const vs=P.vs.map(v=>({...v}));let
   const place=(e,v)=>{e.style.left=(v.c*100/6)+'%';e.style.top=(v.r*100/6)+'%';e.style.width=(v.h?v.len:1)*100/6+'%';e.style.height=(v.h?1:v.len)*100/6+'%'};
   vs.forEach((v,i)=>{const e=document.createElement('button'),taxi=i&&v.len===2&&i%4===1;e.className='rhcar'+(i===0?' red':'')+(v.h?' h':' v');e.style.setProperty('--cc',i===0?'#FF3B5C':taxi?'#F6C23C':COLS[1+(i-1)%(COLS.length-1)]);e.dataset.i=i;e.setAttribute('aria-label',i===0?'السيارة الحمراء':'سيارة '+i);e.innerHTML=(presentation?.paintCar||carSVG)(v,i===0,i);place(e,v);B.appendChild(e);
     e.style.setProperty('--dl',(i*45)+'ms');
-    e.onpointerdown=ev=>{if(api.ended||done)return;ev.preventDefault();e.setPointerCapture(ev.pointerId);const r=B.getBoundingClientRect();drag={i,e,x0:ev.clientX,y0:ev.clientY,p0:v.h?v.c:v.r,cell:r.width/6,rg:range(i),moved:false};e.classList.add('drag')};
-    e.onpointermove=ev=>{if(!drag||drag.i!==i)return;const v=vs[i],d=(v.h?ev.clientX-drag.x0:ev.clientY-drag.y0)/drag.cell,raw=drag.p0+d,np=clamp(raw,drag.rg[0],drag.rg[1]);if(Math.abs(d)>.15)drag.moved=true;
+    e.onpointerdown=ev=>{if(api.ended||done||drag||ev.button!==0)return;ev.preventDefault();e.setPointerCapture(ev.pointerId);const r=B.getBoundingClientRect();drag={i,id:ev.pointerId,x0:ev.clientX,y0:ev.clientY,p0:v.h?v.c:v.r,cell:(v.h?r.width:r.height)/6,rg:range(i),moved:false};e.classList.add('drag')};
+    e.onpointermove=ev=>{if(!drag||drag.i!==i||drag.id!==ev.pointerId)return;const v=vs[i],d=(v.h?ev.clientX-drag.x0:ev.clientY-drag.y0)/drag.cell,raw=drag.p0+d,np=clamp(raw,drag.rg[0],drag.rg[1]);if(Math.abs(d)>.15)drag.moved=true;
       e.style[v.h?'left':'top']=(np*100/6)+'%';e.classList.toggle('press',raw<drag.rg[0]-.12||raw>drag.rg[1]+.12)};
-    e.onpointercancel=()=>{if(drag?.i!==i)return;drag=null;e.classList.remove('drag','press');place(e,v)};
-    e.onpointerup=ev=>{if(!drag||drag.i!==i)return;const v=vs[i],d=(v.h?ev.clientX-drag.x0:ev.clientY-drag.y0)/drag.cell,np=Math.round(clamp(drag.p0+d,drag.rg[0],drag.rg[1])),moved=drag.moved;drag=null;e.classList.remove('drag','press');
+    e.onpointercancel=e.onlostpointercapture=ev=>{if(drag?.i!==i||drag.id!==ev.pointerId)return;drag=null;e.classList.remove('drag','press');place(e,v)};
+    e.onpointerup=ev=>{if(!drag||drag.i!==i||drag.id!==ev.pointerId)return;const v=vs[i],d=(v.h?ev.clientX-drag.x0:ev.clientY-drag.y0)/drag.cell,np=Math.round(clamp(drag.p0+d,drag.rg[0],drag.rg[1])),moved=drag.moved;drag=null;e.classList.remove('drag','press');
       if(!moved){select(i);place(e,v);return}commit(i,np)}});
   function showMobility() {
     if (!presentation) return;
@@ -3933,7 +3933,7 @@ function rushEngine(api,P,onWin,presentation){const vs=P.vs.map(v=>({...v}));let
   function commit(i,np){const v=vs[i],old=v.h?v.c:v.r,e=carEl(i);if(v.h)v.c=np;else v.r=np;place(e,v);
     if(np!==old){moves++;showMobility();if(presentation){presentation.play('move',v);presentation.play('stop',v,.21)}else tone(420,.06,'triangle');puff(e,v,np-old);e.classList.remove('bump');void e.offsetWidth;e.classList.add('bump');api.msg(`الحركات: <b class="num">${moves}</b> · أقل حل: <b class="num">${P.min}</b>`);clearHint()}
     if(vs[0].c===4&&!done){done=true;const r=carEl(0);B.parentNode.classList.add('won');presentation?.play('gate');later(()=>{r.classList.add('out');if(presentation)presentation.play('exit');else tone(330,.4,'sawtooth',.03)},380);later(()=>onWin(moves),1200)}}
-  function nudge(d){if(sel<0||api.ended)return false;const v=vs[sel],[lo,hi]=range(sel),cur=v.h?v.c:v.r,np=clamp(cur+d,lo,hi);if(np!==cur)commit(sel,np);else{sfx.bad();const e=carEl(sel);e.classList.remove('shk');void e.offsetWidth;e.classList.add('shk')}return true}
+  function nudge(d){if(sel<0||api.ended||done||drag)return false;const v=vs[sel],[lo,hi]=range(sel),cur=v.h?v.c:v.r,np=clamp(cur+d,lo,hi);if(np!==cur)commit(sel,np);else{sfx.bad();const e=carEl(sel);e.classList.remove('shk');void e.offsetWidth;e.classList.add('shk')}return true}
   const clearHint=()=>B.querySelectorAll('.hint').forEach(c=>c.classList.remove('hint'));
   keyH=e=>{const m={ArrowRight:1,ArrowLeft:-1,ArrowDown:1,ArrowUp:-1}[e.key];if(m==null||sel<0)return;const v=vs[sel],hz=e.key==='ArrowRight'||e.key==='ArrowLeft';if(hz!==!!v.h)return;e.preventDefault();nudge(m)};
   pzHook({vs,commit,select,P});
@@ -4897,16 +4897,23 @@ function runUntangle(){return pzPlay('pz_untangle',api=>{
     ${pos.map((_,i)=>`<button type="button" class="unode" data-i="${i}" aria-label="نقطة ${i+1}"><img class="un-knot" src="motion/revised/node.webp" alt="" draggable="false"></button>`).join('')}
   </div>`;
   const board=$('#unsv'), nodes=[...board.querySelectorAll('.unode')], edges=[...board.querySelectorAll('.un-edge')];
-  function draw(){
-    const {c,bad}=unCross(P,pos);
+  function drawEdges(bad){
+    const width=board.clientWidth, height=board.clientHeight;
     P.e.forEach(([a,b],k)=>{
-      const [x,y]=pos[a], dx=pos[b][0]-x, dy=pos[b][1]-y, edge=edges[k];
+      const [x,y]=pos[a], dx=(pos[b][0]-x)*width/100, dy=(pos[b][1]-y)*height/100, edge=edges[k];
       edge.style.left=x+'%';
       edge.style.top=y+'%';
-      edge.style.width=Math.hypot(dx,dy)+'%';
+      edge.style.width=Math.hypot(dx,dy)+'px';
       edge.style.transform=`translateY(-50%) rotate(${Math.atan2(dy,dx)}rad)`;
-      edge.classList.toggle('bad',bad.has(k));
+      if(bad)edge.classList.toggle('bad',bad.has(k));
     });
+  }
+  const edgeSize=new ResizeObserver(()=>drawEdges());
+  edgeSize.observe(board);
+  cleanup.push(()=>edgeSize.disconnect());
+  function draw(){
+    const {c,bad}=unCross(P,pos);
+    drawEdges(bad);
     nodes.forEach((node,i)=>{
       node.style.left=pos[i][0]+'%';
       node.style.top=pos[i][1]+'%';
@@ -5050,7 +5057,7 @@ function runIce(){return pzPlay('pz_ice',api=>{
     if(swipe?.id===e.pointerId)swipe=null;
   }));
   put(pos);bindArrows(step);pzHook({P,step,pos:()=>pos});
-  return{hint:k=>{if(k===1)return'فكّر بالعكس: من أي اتجاه يمكن أن تصل إلى الكوخ وتتوقف عنده؟ وما الصخرة التي توقفك هناك؟';const s=icSolve(P,pos);if(!s||!s.length)return null;return`الحركة التالية: ${['للأعلى','لليمين','للأسفل','لليسار'][s[0]]}. باقي ${arN(s.length,AN.mv)}.`},
+  return{hint:k=>{if(k===1)return'ابدأ من الكوخ. ابحث عن خانة يمكنك الانزلاق منها إليه بخط مستقيم. إذا مرّ البطريق بالكوخ، يتوقّف فيه.';const s=icSolve(P,pos);if(!s||!s.length)return null;return`الحركة التالية: ${['للأعلى','لليمين','للأسفل','لليسار'][s[0]]}. باقي ${arN(s.length,AN.mv)}.`},
    reveal:()=>`أقل حل كان ${arN(P.min,AN.mv)}.`}})}
 
 /* ---------- registry ---------- */

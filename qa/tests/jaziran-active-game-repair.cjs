@@ -69,12 +69,14 @@ assert(style.includes('object-fit:cover!important')&&style.includes('object-fit:
 // Authored river multi-bank regression (stage 8+):
 // The output must show a cargo name, and a remote bank cannot steal its tap.
 const authoredRiver=fs.readFileSync('motion/stages60/play.js','utf8');
-assert(authoredRiver.includes('`<span class="ml-river-token" aria-hidden="true">${esc(group.name)}</span>`'),
+assert(authoredRiver.includes('`<span class="ml-river-token" aria-hidden="true">${esc(showName(name))}</span>`'),
   'draw real cargo names in non-illustrated river tokens');
-assert(!authoredRiver.includes("'"+'<span class="ml-river-token" aria-hidden="true">${esc(group.name)}</span>'+"'"),
+assert(!authoredRiver.includes("'"+'<span class="ml-river-token" aria-hidden="true">${esc(showName(name))}</span>'+"'"),
   'raw JavaScript template markup must not appear on the game board');
 const riverCss=fs.readFileSync('motion/stages60/play.css','utf8');
-assert(riverCss.includes('.ml-river-place[data-current="false"]{pointer-events:none}'),
+assert(authoredRiver.includes('busy || bank !== state.bank') &&
+  /\.ml-river-places\s*\{[^}]*pointer-events:\s*none/.test(riverCss) &&
+  /\[data-river-item\]:not\(:disabled\)\s*\{[^}]*pointer-events:\s*auto/.test(riverCss),
   'inactive river docks must not intercept cargo selection');
 
 console.log('JAZIRAN_ACTIVE_GAME_REPAIR=passed: retired cryptogram dependency removed; 160 valid caption puzzles; 4 painted aspect fixes');

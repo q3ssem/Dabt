@@ -1086,3 +1086,29 @@ html[data-skin="dark"] #pzb .board70 {
 .hall-letters{display:flex;flex-wrap:wrap;justify-content:center;gap:3px;padding:4px;color:#412d25}
 .hall-letters span{background:#eed9b4;border:1px solid #ad805c;border-radius:5px;padding:2px 4px}
 @media(prefers-reduced-motion:reduce){#phwheel img{transition:none}}
+
+/* Endpoints are placed in board coordinates so marks stay at the open joins. */
+.lb[data-lb="pipe"] .pp10-c.leak::after { content: none; }
+.pp10-open {
+  position: absolute;
+  inset: var(--port-y, 50%) auto auto var(--port-x, 50%);
+  width: clamp(6px, 24%, 13px);
+  aspect-ratio: 1;
+  border: 2px solid #fff5de;
+  border-radius: 50%;
+  background: #9c3d22;
+  box-shadow: 0 0 0 1px #442514;
+  translate: -50% -50%;
+  pointer-events: none;
+  z-index: 3;
+}
+.pp10-open.n { --port-y: 8%; }
+.pp10-open.e { --port-x: 92%; }
+.pp10-open.s { --port-y: 92%; }
+.pp10-open.w { --port-x: 8%; }
+.lb[data-lb="tan"] .tg10-c.tg-preview { box-shadow: inset 0 0 0 3px #217e74; }
+.lb[data-lb="tan"] .tg10-c.tg-preview-invalid {
+  box-shadow: inset 0 0 0 3px #ba534a;
+  outline: 1px dashed #fff0cf;
+  outline-offset: -5px;
+}

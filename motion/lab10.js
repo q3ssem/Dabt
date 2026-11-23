@@ -372,21 +372,26 @@
         </span>`;
       }
       const home = wet => `<img class="pp10-house${wet ? ' wet' : ''}" src="motion/revised/cottage-${wet ? 'wet' : 'dry'}.webp" alt="" draggable="false">`;
-      frame(api, { id: 'pipe', lead: 'اضغط القطعة لتدويرها ربع لفة. تتحقق اللعبة تلقائيًا عند الاكتمال.' });
+      frame(api, { id: 'pipe', lead: 'المس القطعة لتدورها ربع لفة. صِل كل القطع بالنبع، وأغلق الأطراف المفتوحة.' });
+      const portsMarkup = ['n', 'e', 's', 'w'].map(side =>
+        `<i class="pp10-open ${side}" aria-hidden="true" hidden></i>`).join('');
       $('#lbb').innerHTML = `<div class="pp10" id="pp10" style="--w:${P.w};--h:${P.h}">${base.map((m, i) => {
         const src = i === P.src, house = !src && deg(P.sol[i]) === 1;
-        return `<button class="pp10-c${src ? ' src' : ''}${house ? ' house' : ''}" data-i="${i}" aria-label="${src ? 'النبع' : house ? 'بيت' : 'أنبوب'}، الصف ${N(Math.floor(i/P.w)+1)}، العمود ${N(i%P.w+1)}"><span class="pp10-rot">${channel(m)}</span>${src ? piece('pipe', 'spring_source', 'pp10-spring') : house ? home(false) + home(true) + '<i class="pp10-intake" aria-hidden="true"></i>' : ''}${lock.has(i) ? '<img class="pp10-pin" src="ui/designs_art/priority7/padlock.png" alt="">' : ''}</button>`;
+        return `<button class="pp10-c${src ? ' src' : ''}${house ? ' house' : ''}" data-i="${i}" aria-label="${src ? 'النبع' : house ? 'بيت' : 'أنبوب'}، الصف ${N(Math.floor(i/P.w)+1)}، العمود ${N(i%P.w+1)}"><span class="pp10-rot">${channel(m)}</span>${src ? piece('pipe', 'spring_source', 'pp10-spring') : house ? home(false) + home(true) + '<i class="pp10-intake" aria-hidden="true"></i>' : ''}${portsMarkup}${lock.has(i) ? '<img class="pp10-pin" src="ui/designs_art/priority7/padlock.png" alt="">' : ''}</button>`;
       }).join('')}</div>`;
       const cells = [...$('#pp10').children];
       const ports = [[0, -1, 1, 4], [1, 0, 2, 8], [0, 1, 4, 1], [-1, 0, 8, 2]];
-      function hasLeak(i) {
+      function openPorts(i) {
         const x = i % P.w, y = Math.floor(i / P.w);
-        return ports.some(([dx, dy, bit, reciprocal]) => {
+        return ports.map(([dx, dy, bit, reciprocal]) => {
           const nx = x + dx, ny = y + dy;
           return (P.cur[i] & bit) && (nx < 0 || nx >= P.w || ny < 0 || ny >= P.h || !(P.cur[ny * P.w + nx] & reciprocal));
         });
       }
-      function draw() { const on = ppPowered(P); cells.forEach((b, i) => { b.querySelector('.pp10-rot').style.transform = `rotate(${turn[i] * 90}deg)`; b.classList.toggle('on', on.has(i)); b.classList.toggle('leak', on.has(i) && hasLeak(i)); b.classList.toggle('lock', lock.has(i));
+      function draw() { const on = ppPowered(P); cells.forEach((b, i) => { b.querySelector('.pp10-rot').style.transform = `rotate(${turn[i] * 90}deg)`; b.classList.toggle('on', on.has(i)); const open = openPorts(i);
+          b.classList.toggle('leak', on.has(i) && open.some(Boolean));
+          b.querySelectorAll('.pp10-open').forEach((marker, side) => { marker.hidden = !open[side]; });
+          b.classList.toggle('lock', lock.has(i));
           if (b.classList.contains('house')) b.style.setProperty('--intake-angle', Math.log2(P.cur[i]) * 90 + 'deg');
           b.setAttribute('aria-disabled', String(lock.has(i)));
         });
@@ -629,7 +634,10 @@
       let sel = 0;
       const root = frame(api, { id: 'tan', lead: 'غطِّ المحيط المنقّط كله بالقطع. اختر قطعة ودوّرها، ثم اسحبها أو اضغط الخانة التي يقع عليها مربعها المعلَّم.' });
       $('#lbb').innerHTML = `<div class="tg10" id="tg10" style="--n:${n}"></div><div class="tg10-ctl"><button type="button" id="tgf">قلب</button><button type="button" id="tgr">تدوير</button></div><div class="tg10-tray" id="tg10t" data-tray="tray"></div>`;
-      const cellsOf = p => p.at == null ? [] : p.shape.map(([x, y]) => [x + p.at[0] - p.shape[0][0], y + p.at[1] - p.shape[0][1]]);
+      const cellsOf = (p, at = p.at) => at == null ? [] :
+        p.shape.map(([x, y]) => [x + at[0] - p.shape[0][0], y + at[1] - p.shape[0][1]]);
+      const fits = (cells, occupied) => cells.every(([x, y]) =>
+        inb(x, y, n, n) && R.has(y * n + x) && !occupied.has(y * n + x));
       const occ = () => { const m = new Map(); pcs.forEach(p => cellsOf(p).forEach(([x, y]) => m.set(y * n + x, p.i))); return m; };
       function edgeClass(i, w, source, id) {
         const same = j => source.get(j) === id;
@@ -644,10 +652,26 @@
           return `<button class="mk-tok tg10-p${p.i === sel ? ' on' : ''}" data-tok="${p.i}" style="--w:${w}" aria-label="قطعة ${N(p.i + 1)}" aria-pressed="${p.i === sel}">${[...Array(w * h)].map((_, k) => `<i class="${S.has(k) ? 'f' + edgeClass(k, w, S, p.i) : ''}${k === p.shape[0][1] * w + p.shape[0][0] ? ' a' : ''}">${S.has(k) ? im(TILE[p.i % 8]) : ''}</i>`).join('')}</button>`; }).join('') : '<p class="tg10-empty">الصينية فارغة، تم تركيب كل القطع!</p>'; }
       function tap(i, k) { if (api.ended) return; const o = occ(); if (o.has(i) && k == null) { const p = pcs[o.get(i)]; if (p.lock) return; p.at = null; sel = p.i; draw(); return; }
         k ??= sel; const p = pcs[k]; if (!p || p.at != null) return; sel = k; p.at = [i % n, i / n | 0]; const cs = cellsOf(p);
-        if (cs.some(([x, y]) => !inb(x, y, n, n) || !R.has(y * n + x) || o.has(y * n + x))) { const bad = cs.filter(([x, y]) => inb(x, y, n, n)).map(([x, y]) => y * n + x); p.at = null; sfx.bad(); api.msg('القطعة لا تدخل هنا! جرّب تدويرها أو مكانًا آخر.'); draw(); bad.forEach(c => flash($('#tg10').querySelector(`[data-i="${c}"]`), 'lb-bad', 800)); return; }
+        if (!fits(cs, o)) { const bad = cs.filter(([x, y]) => inb(x, y, n, n)).map(([x, y]) => y * n + x); p.at = null; sfx.bad(); api.msg('القطعة لا تدخل هنا! جرّب تدويرها أو مكانًا آخر.'); draw(); bad.forEach(c => flash($('#tg10').querySelector(`[data-i="${c}"]`), 'lb-bad', 800)); return; }
         tone(480, .06, 'triangle'); const nx = pcs.find(q => q.at == null); if (nx) sel = nx.i; api.msg(''); draw(); if (pcs.every(q => q.at != null)) { $('#tg10').classList.add('won'); api.win(`ركّبت الشكل بـ ${N(pcs.length)} قطع كاملة، وفرغت الصينية.`); } }
-      const mk = MK.attach(root.querySelector('.lb-board'), { canDrag: () => !api.ended, onPick: id => { mk.clear(); sel = +id; tone(600, .03); draw(); },
-        drop: (id, slot) => { if (slot && slot[0] === 'c') tap(+slot.slice(1), +id); } });
+      const grid = $('#tg10');
+      function preview(id, slot) {
+        grid.querySelectorAll('.tg-preview, .tg-preview-invalid').forEach(cell =>
+          cell.classList.remove('tg-preview', 'tg-preview-invalid'));
+        if (slot == null || !slot.startsWith('c')) return;
+        const anchor = Number(slot.slice(1));
+        const footprint = cellsOf(pcs[id], [anchor % n, Math.floor(anchor / n)]);
+        const marker = fits(footprint, occ()) ? 'tg-preview' : 'tg-preview-invalid';
+        for (const [x, y] of footprint) {
+          if (inb(x, y, n, n)) grid.children[y * n + x].classList.add(marker);
+        }
+      }
+      const mk = MK.attach(root.querySelector('.lb-board'), {
+        canDrag: () => !api.ended,
+        onPick: id => { mk.clear(); sel = +id; tone(600, .03); draw(); },
+        onHover: preview,
+        drop: (id, slot) => { if (slot?.startsWith('c')) tap(+slot.slice(1), +id); }
+      });
       $('#tg10').addEventListener('click', e => { const b = e.target.closest('.tg10-c'); if (b) tap(+b.dataset.i); });
       $('#tgr').onclick = () => { const p = pcs[sel]; if (p && p.at == null) { p.shape = tgRot(p.shape); tone(520, .03); draw(); } };
       $('#tgf').onclick = () => { const p = pcs[sel]; if (p && p.at == null) { p.shape = tgFlip(p.shape); tone(520, .03); draw(); } };

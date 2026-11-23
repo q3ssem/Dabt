@@ -10,40 +10,27 @@
     "release": "5.5.30",
     "read_only": true
   },
-  "status": "batch-02-movement-implemented-browser-pending",
+  "status": "batch-03-movement-implemented-browser-pending",
   "owner": "Work — puzzle narrative, difficulty, editorial QA",
   "other_owner": "MindLab6 engineering — engines/migration only",
   "scope": "existing puzzle texts, mechanics review, progressive hints and difficulty; no from-scratch replacement",
   "completed_puzzles": [],
   "current_batch": {
-    "id": "batch-02",
-    "delivery": "docs/workshop/batch-02/README.md",
-    "status": "river-presentation-and-movement-audit",
+    "id": "batch-03",
+    "status": "implemented-browser-pending",
+    "delivery": "docs/workshop/batch-03/README.md",
     "implemented": [
-      {
-        "id": "pz_river",
-        "scope": "20 authored stages",
-        "logic_verification": "node qa/tests/authored-stages.cjs",
-        "visual_verification": "blocked: Chromium cannot create a Unix socket in the executor"
-      },
-      {
-        "id": "pz_flow",
-        "scope": "straight swipe and pointer lifecycle",
-        "logic_verification": "node qa/tests/authored-stages.cjs; movement-stage boards retain coverage",
-        "visual_verification": "browser regression authored; not run in the executor"
-      }
-    ],
-    "reviewed": [
-      "pz_ice",
-      "pz_flow",
+      "pz_pipe",
       "pz_tan",
-      "pz_untangle",
       "pz_rush",
-      "pz_pipe"
+      "pz_untangle",
+      "pz_ice"
     ],
+    "logic_verification": "node qa/tests/authored-stages.cjs; node qa/tests/display-audio.cjs; node docs/workshop/batch-01/verify.cjs",
+    "browser_or_device_verified": false,
     "new_original_puzzles": 0
   },
-  "next_action": "Continue implementation and verification in the authored movement family using the batch-02 cases. Recheck river touch and art on a browser-capable environment.",
+  "next_action": "Continue editorial batches from the source index and verify movement interaction on mobile.",
   "hard_rules": [
     "do-not-edit-main",
     "do-not-edit-mindlab6-engineering-branch",
@@ -60,43 +47,73 @@
     "review-ready-batch-artifacts",
     "handoff-to-engineering"
   ],
-  "previous_batch": {
-    "id": "batch-01",
-    "status": "verified-editorial-drafts",
-    "index": "docs/workshop/EDITORIAL_SOURCE_INDEX.json",
-    "delivery": "docs/workshop/batch-01/README.md",
-    "logic_verification": "node docs/workshop/batch-01/verify.cjs",
-    "browser_or_device_verified": false,
-    "puzzle_cards": [
-      {
-        "id": "pz_rush",
-        "delivery": "01-parking.md",
-        "status": "logic-verified",
-        "stages": [
-          1,
-          3,
-          18
-        ],
-        "change": "editorial and stage 1 starting layout proposal"
-      },
-      {
-        "id": "ml10_01",
-        "delivery": "02-lighthouse.md",
-        "status": "logic-verified",
-        "change": "editorial for original plus two isolated replay proposals"
-      },
-      {
-        "id": "pz_pipe",
-        "delivery": "03-pipes.md",
-        "status": "logic-verified",
-        "stages": [
-          1,
-          9,
-          20
-        ],
-        "change": "editorial and stage 1 fixed-piece proposal"
-      }
-    ],
-    "new_original_puzzles": 0
-  }
+  "batch_history": [
+    {
+      "id": "batch-01",
+      "status": "verified-editorial-drafts",
+      "index": "docs/workshop/EDITORIAL_SOURCE_INDEX.json",
+      "delivery": "docs/workshop/batch-01/README.md",
+      "logic_verification": "node docs/workshop/batch-01/verify.cjs",
+      "browser_or_device_verified": false,
+      "puzzle_cards": [
+        {
+          "id": "pz_rush",
+          "delivery": "01-parking.md",
+          "status": "logic-verified",
+          "stages": [
+            1,
+            3,
+            18
+          ],
+          "change": "editorial and stage 1 starting layout proposal"
+        },
+        {
+          "id": "ml10_01",
+          "delivery": "02-lighthouse.md",
+          "status": "logic-verified",
+          "change": "editorial for original plus two isolated replay proposals"
+        },
+        {
+          "id": "pz_pipe",
+          "delivery": "03-pipes.md",
+          "status": "logic-verified",
+          "stages": [
+            1,
+            9,
+            20
+          ],
+          "change": "editorial and stage 1 fixed-piece proposal"
+        }
+      ],
+      "new_original_puzzles": 0
+    },
+    {
+      "id": "batch-02",
+      "delivery": "docs/workshop/batch-02/README.md",
+      "status": "river-presentation-and-movement-audit",
+      "implemented": [
+        {
+          "id": "pz_river",
+          "scope": "20 authored stages",
+          "logic_verification": "node qa/tests/authored-stages.cjs",
+          "visual_verification": "blocked: Chromium cannot create a Unix socket in the executor"
+        },
+        {
+          "id": "pz_flow",
+          "scope": "straight swipe and pointer lifecycle",
+          "logic_verification": "node qa/tests/authored-stages.cjs; movement-stage boards retain coverage",
+          "visual_verification": "browser regression authored; not run in the executor"
+        }
+      ],
+      "reviewed": [
+        "pz_ice",
+        "pz_flow",
+        "pz_tan",
+        "pz_untangle",
+        "pz_rush",
+        "pz_pipe"
+      ],
+      "new_original_puzzles": 0
+    }
+  ]
 }

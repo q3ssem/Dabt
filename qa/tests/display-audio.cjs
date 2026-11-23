@@ -101,10 +101,13 @@ rushVM.rushEngine(api, { vs: [vehicle], min: 1 }, () => wins++, {
 assert.ok(api.body.innerHTML.includes('top:33.333333333333336%'));
 const car = rendered[0];
 assert.equal(car.innerHTML, 'review raster');
-const touch = x => ({ pointerId: 1, clientX: x, clientY: 0, preventDefault() {} });
+const touch = (x, pointerId = 1) => ({ button: 0, pointerId, clientX: x, clientY: 0, preventDefault() {} });
 car.onpointerdown(touch(0));
+car.onpointerdown(touch(104, 2));
+car.onpointerup(touch(104, 2));
+assert.equal(state.vs[0].c, 2, "a second finger cannot commit or replace the drag");
 car.onpointermove(touch(104));
-car.onpointercancel(touch(104));
+car.onlostpointercapture(touch(104));
 assert.equal(state.vs[0].c, 2, 'touch cancellation never commits a move');
 assert.equal(car.style.left, '33.333333333333336%');
 assert.ok(!played.length);
