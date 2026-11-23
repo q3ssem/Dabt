@@ -9,6 +9,14 @@
 - سجل كل تجربة في `REGISTRY.json` بمسارها وحالتها ومسؤوليتها ونتيجة الاختبار.
 - أسماء الحالات: `planned`، `in-progress`، `blocked`، `validated`، `rejected`، `archived`.
 
+## إنشاء تجربة جديدة برقم تلقائي
+من جذر `mindlab6/`:
+```bash
+npm run experiment:new -- "تجربة حجم اللمس" touch-targets --dry-run
+npm run experiment:new -- "تجربة حجم اللمس" touch-targets
+```
+ينشئ المولد مجلد `EXP-0002-touch-targets` وملفات `code/` و`data/` و`results/` ويسجله في `REGISTRY.json`، ولا يُبدّل التجربة النشطة تلقائيًا. إذا أصبحت التجربة مهمة الجلسة، حدّث `PROJECT_STATE.json` و`handoff/CURRENT_TASK.md` و`handoff/SESSION_LOG.md` صراحة.
+
 ## ملفات كل تجربة
 أنشئ مجلد `experiments/EXP-0002-descriptive-slug/` وضع فيه:
 `README.md` للفرضية وهدف التجربة ونتيجتها؛
