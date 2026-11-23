@@ -1,0 +1,36 @@
+{
+  "schema_version": 1,
+  "project": "mindlab-puzzle-editorial",
+  "date": "2026-11-23",
+  "repository": "q3ssem/Dabt",
+  "branch": "work/mindlab-puzzle-editorial-20261123",
+  "source": {
+    "branch": "main",
+    "sha": "7327fdc6c6f36deaf63a2b20a7b6db9a315ad446",
+    "release": "5.5.30",
+    "read_only": true
+  },
+  "status": "not-started",
+  "owner": "Work — puzzle narrative, difficulty, editorial QA",
+  "other_owner": "MindLab6 engineering — engines/migration only",
+  "scope": "existing puzzle texts, mechanics review, progressive hints and difficulty; no from-scratch replacement",
+  "completed_puzzles": [],
+  "current_batch": null,
+  "next_action": "inspect live repository puzzle IDs and choose 3 distinct existing puzzles for first editorial prototypes",
+  "hard_rules": [
+    "do-not-edit-main",
+    "do-not-edit-mindlab6-engineering-branch",
+    "keep-original-puzzle-ids",
+    "preserve-saves-and-chapter-gates",
+    "record-logic-validation-before-changing-solutions",
+    "no-historical-map-reintroduction",
+    "update-editorial-progress-after-each-batch"
+  ],
+  "deliverables": [
+    "source-index-with-IDs",
+    "3-exemplar-puzzle-edit-packets",
+    "quality-gate-results",
+    "review-ready-batch-artifacts",
+    "handoff-to-engineering"
+  ]
+}
