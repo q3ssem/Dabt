@@ -36,7 +36,9 @@ test('Foundation does not claim migrated games',()=>{
 test('Experiment generator allocates a safe next number without changing files',()=>{
   const registryBefore=read('research/REGISTRY.json');
   const out=execFileSync(process.execPath,[new URL('../tools/new-experiment.mjs',import.meta.url).pathname,'اختبار توليد الأبحاث','preview-only','--dry-run'],{encoding:'utf8'});
-  assert.match(out,/DRY_RUN EXP-0002/);
+  const r=JSON.parse(registryBefore);
+  const next=Math.max(...r.experiments.map(e=>Number(e.id.slice(4))))+1;
+  assert.ok(out.includes('DRY_RUN EXP-'+String(next).padStart(4,'0')));
   assert.equal(read('research/REGISTRY.json'),registryBefore);
 });
 test('Workspace checks pass independently',()=>{

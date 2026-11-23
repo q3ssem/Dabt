@@ -16,6 +16,19 @@
       "hypothesis": "يمكن نقل المحركات الفعالة منفصلة عن الواجهات القديمة بعد إثبات التبعيات",
       "results": null,
       "next": "ابن جدول التبعيات وأثبت أي مسار مستخدم قبل التصنيف"
+    },
+    {
+      "id": "EXP-0002",
+      "slug": "statue360-engines",
+      "title": "مقارنة PlayCanvas وBabylon لتمثال تفاعلي 360° على الويب والجوال",
+      "status": "planned",
+      "started": null,
+      "completed": null,
+      "path": "research/experiments/EXP-0002-statue360-engines/README.md",
+      "source_commit": "81d9046e9cd3eae240f5603461aa73a53d5fbef4",
+      "hypothesis": "محرك ويب 3D يحرك GLB بلمس 360° وWebGL2 fallback دون تضخيم 2D",
+      "results": null,
+      "next": "بعد جرد EXP-0001، ابن مشهدين متماثلين واختبر iPhone Safari وAndroid Chrome"
     }
   ]
 }

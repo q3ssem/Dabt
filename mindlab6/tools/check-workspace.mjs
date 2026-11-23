@@ -21,9 +21,17 @@ for(const file of ['START_HERE.md','handoff/CURRENT_TASK.md','handoff/SESSION_LO
 for(const key of ['brain_games_migrated','puzzles_migrated','story_stations_migrated','child_games_migrated']){
   if(!Number.isInteger(state.content_status[key])||state.content_status[key]<0)errors.push('Unverifiable content count: '+key);
 }
-const source=read('src/app.js');
-if(/from\s*['"][^'"]*research\/|import\s*\([^)]*research\//.test(source))
-  errors.push('Production code imports research workspace');
+function inspectProductionSources(dir){
+  for(const e of fs.readdirSync(new URL(dir,root),{withFileTypes:true})){
+    const relative=dir+e.name;
+    if(e.isDirectory()){inspectProductionSources(relative+'/');continue}
+    if(!/\.(js|mjs|ts)$/.test(e.name))continue;
+    const source=read(relative);
+    if(/from\s*['"][^'"]*research\/|import\s*\([^)]*research\//.test(source))
+      errors.push('Production code imports research workspace: '+relative);
+  }
+}
+inspectProductionSources('src/');
 if(!state.source_baseline.read_only||!state.boundaries.main_untouched)errors.push('Protected baseline flags missing');
 if(errors.length){console.error(errors.join('\n'));process.exitCode=1}
 else console.log('MindLab6 workspace PASS: '+ids.size+' indexed experiment(s), handoff present, isolated foundation, source pinned');

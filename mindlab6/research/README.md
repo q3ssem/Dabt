@@ -15,10 +15,10 @@
 npm run experiment:new -- "تجربة حجم اللمس" touch-targets --dry-run
 npm run experiment:new -- "تجربة حجم اللمس" touch-targets
 ```
-ينشئ المولد مجلد `EXP-0002-touch-targets` وملفات `code/` و`data/` و`results/` ويسجله في `REGISTRY.json`، ولا يُبدّل التجربة النشطة تلقائيًا. إذا أصبحت التجربة مهمة الجلسة، حدّث `PROJECT_STATE.json` و`handoff/CURRENT_TASK.md` و`handoff/SESSION_LOG.md` صراحة.
+ينشئ المولد مجلد `EXP-NNNN-touch-targets` برقم جديد فعلي (EXP-0002 محجوزة بالفعل لاختبار التماثيل) وملفات `code/` و`data/` و`results/` ويسجله في `REGISTRY.json`، ولا يُبدّل التجربة النشطة تلقائيًا. إذا أصبحت التجربة مهمة الجلسة، حدّث `PROJECT_STATE.json` و`handoff/CURRENT_TASK.md` و`handoff/SESSION_LOG.md` صراحة.
 
 ## ملفات كل تجربة
-أنشئ مجلد `experiments/EXP-0002-descriptive-slug/` وضع فيه:
+أنشئ مجلد `experiments/EXP-NNNN-descriptive-slug/` برقم غير مستخدم وضع فيه:
 `README.md` للفرضية وهدف التجربة ونتيجتها؛
 `code/` لبرمجيات الاختبار؛
 `data/` لمدخلات عامة/صناعية فقط؛

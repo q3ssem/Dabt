@@ -21,7 +21,11 @@
     "clean-v6-folder-scaffold",
     "research-experiment-registry-and-template",
     "cross-chat-handoff-files",
-    "minimal-rtl-ui-skeleton"
+    "minimal-rtl-ui-skeleton",
+    "engine-neutral-gamehost-with-lazy-load-and-disposal",
+    "browser-gpu-capability-probe",
+    "provisional-web-engine-research-adr",
+    "360-statue-competitive-benchmark-spec"
   ],
   "current_experiment": "EXP-0001",
   "next_action": "inventory-source-dependencies-without-copying-code",
@@ -36,12 +40,23 @@
     "npm test",
     "verify-registry-ids",
     "browser-on-mobile-after-core-migration",
-    "no-regression-against-source-v5"
+    "no-regression-against-source-v5",
+    "EXP-0002-playcanvas-vs-babylon-actual-iphone-and-android"
   ],
   "blockers": [
     "dependency-inventory-not-done",
     "no-engine-ports",
-    "no-save-migration"
+    "no-save-migration",
+    "real-phone-360-engine-benchmark-not-run"
   ],
-  "notes": "All content numbers are migration targets, not actual 6.0 features."
+  "notes": "Foundation only. Runtime utilities and tests exist; actual 3D engines, 360 demo and content migration have not been installed or implemented.",
+  "engine_architecture": {
+    "core": "engine-agnostic-dom-lifecycle",
+    "default_2d": "native-html-css",
+    "optional_2d": "PixiJS8-after-game-need",
+    "preferred_3d": "PlayCanvas2.24-provisional",
+    "alternate_3d": "Babylon9",
+    "bundler": "Vite8.3-and-TypeScript-strict-proposed-not-installed",
+    "actual_3d_engine_installed": false
+  }
 }
