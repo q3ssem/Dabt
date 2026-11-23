@@ -27,23 +27,23 @@
   function discoveredTransitions() {
     const data = window.__MINDLAB_JOURNEY_STORY;
     if (!data) return [];
-    let completed = 0, atlasOpen = false, returned = false;
+    let completed = 0, atheranUnlocked = false, returned = false;
     try {
       const sea = window.T7 && T7.state();
       const stations = window.T7 && T7.data.stations;
       while (stations && completed < stations.length && sea.done[stations[completed].id]) completed++;
-      const atlas = window.ATHERAN_CAMPAIGN && window.ATHERAN_CAMPAIGN.summary();
-      atlasOpen = !!atlas?.open;
+      const atheranProgress = window.ATHERAN_CAMPAIGN && window.ATHERAN_CAMPAIGN.summary();
+      atheranUnlocked = !!atheranProgress?.open;
       // Modern finale ends after the playable rescue; the five optional secret worlds
       // are not a gate. Keep the legacy all-secrets path for old completed saves.
-      returned = !!atlas && (
-        (atlas.done === 21 && atlas.cleared === 5) ||
-        (atlas.done === 21 && !!atlas.a?.done?.pz_aheart && !!window.MindlabRescue?.state()?.completed)
+      returned = !!atheranProgress && (
+        (atheranProgress.done === 21 && atheranProgress.cleared === 5) ||
+        (atheranProgress.done === 21 && !!atheranProgress.a?.done?.pz_aheart && !!window.MindlabRescue?.state()?.completed)
       );
     } catch (_) {}
     const thresholds = {departure: 0, coral_light: 3, mist_bells: 6, oasis_water: 9,
       ice_observatory: 12, wind_engine: 15, moon_vow: 18, eighth_route: 21, letter: 21, palace: 21};
-    return data.transitions.filter(t => t.id === 'atheran' ? atlasOpen :
+    return data.transitions.filter(t => t.id === 'atheran' ? atheranUnlocked :
       t.id === 'return' ? returned : Object.hasOwn(thresholds, t.id) && completed >= thresholds[t.id]);
   }
   function transitionSeen() {
