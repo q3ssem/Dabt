@@ -1,0 +1,137 @@
+name: TV 2.3.7 pressure 12000
+on:
+  push:
+    branches: ['work/tv-2.3.7-pressure-12000']
+    paths: ['tv/**', '.github/workflows/tv-pressure-12000.yml']
+permissions:
+  contents: read
+concurrency:
+  group: tv-pressure-12000-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [smoke, stress, themes, motion, reconnect, audit]
+    defaults:
+      run:
+        working-directory: tv
+    env:
+      QA_ROUNDS: '4'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify unchanged runtime and syntax
+        run: |
+          node --check shared/core.js
+          node --check tv/app.js
+          node --check remote/app.js
+          node --check shared/av.js
+          test "$(git hash-object shared/mq.js)" = 9c29ac960ecff369d56a4b6c8c704031d1c339d9
+          test "$(git hash-object tv/app.js)" = e146c408c17440fa30e270a589a91bc9f1b3fffa
+          test "$(git hash-object remote/app.js)" = 826b9a2d1d91b4e1b5878eaff77787246cfe1e79
+          test "$(git hash-object shared/av.js)" = d97d4f4a3d2046c707e936ede8e2c22c54419457
+          python -m py_compile tests/browser-${{ matrix.suite }}-237.py
+      - name: Install Playwright
+        run: python -m pip install playwright==${{ matrix.suite == 'reconnect' && '1.56.0' || '1.51.0' }}
+      - run: python -m playwright install --with-deps chromium
+        if: matrix.suite != 'audit'
+      - run: python tests/browser-${{ matrix.suite }}-237.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tv-gate-237-${{ matrix.suite }}
+          path: tv/tests/results/2.3.7-*/
+          if-no-files-found: warn
+  pressure:
+    needs: gate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    defaults:
+      run:
+        working-directory: tv
+    env:
+      QA_ROUNDS: '30'
+      QA_SHARD: ${{ matrix.shard }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact candidate and transport
+        run: |
+          test "$(git hash-object shared/mq.js)" = 9c29ac960ecff369d56a4b6c8c704031d1c339d9
+          test "$(git hash-object tv/app.js)" = e146c408c17440fa30e270a589a91bc9f1b3fffa
+          test "$(git hash-object remote/app.js)" = 826b9a2d1d91b4e1b5878eaff77787246cfe1e79
+          test "$(git hash-object shared/av.js)" = d97d4f4a3d2046c707e936ede8e2c22c54419457
+          node -e "if(require('./shared/core.js').VERSION!=='2.3.7')process.exit(1)"
+          python -m py_compile tests/browser-stress-237.py
+      - run: python -m pip install playwright==1.51.0
+      - run: python -m playwright install --with-deps chromium
+      - run: python tests/browser-stress-237.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tv-pressure-12000-shard-${{ matrix.shard }}
+          path: tv/tests/results/2.3.7-stress/
+          if-no-files-found: error
+  acceptance:
+    needs: [gate, pressure]
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require prerequisite suites
+        env:
+          GATE: ${{ needs.gate.result }}
+          PRESSURE: ${{ needs.pressure.result }}
+        run: |
+          test "$GATE" = success
+          test "$PRESSURE" = success
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: tv-pressure-12000-shard-*
+          path: results
+      - name: Verify 12000 distinct accepted answers
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          files=list(Path('results').rglob('stress-result.json'))
+          rows=[json.loads(f.read_text()) for f in files]
+          total=sum(r.get('answers',0) for r in rows)
+          assert len(rows)==20 and {r['shard'] for r in rows}==set(range(20))
+          for r in rows:
+              assert r['passed'] and r['answers']==600 and r['players']==20 and r['questions']==30
+              assert r['browserPhoneContexts']==20 and not r['pageErrors']
+              assert len(r['rounds'])==30 and {q['round'] for q in r['rounds']}==set(range(1,31))
+              assert all(q['answers']==20 for q in r['rounds'])
+          assert total==12000
+          report={'passed':True,'verifiedAnswers':total,'assertions':sum(r['assertions'] for r in rows),'games':20,'browserPhoneContexts':400,'rounds':600,'shards':rows,'physicalTV':False,'physicalPhone':False,'publicBrokers':False}
+          Path('acceptance-12000.json').write_text(json.dumps(report,indent=2))
+          print(json.dumps(report,ensure_ascii=False))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tv-12000-acceptance
+          path: acceptance-12000.json
+          if-no-files-found: error
