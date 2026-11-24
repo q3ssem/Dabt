@@ -1,0 +1,69 @@
+/* TV 2.3.1 — scoped layout layer; preserve legacy selectors and all controls. */
+:root{--tv-radius:18px;--tv-space:clamp(10px,1.1vw,26px);--tv-card:var(--surface);--tv-focus:var(--gold)}
+body{background:var(--bg);font-weight:500}
+#app{padding:2.3vh 3vw 1.4vh;gap:1.6vh}
+header .brand{font-size:calc(var(--fs)*1.12);gap:.6em}
+.brand small{font-size:.53em;margin-top:.25em}
+.header-tools{font-size:calc(var(--fs)*.70);gap:.8vw}
+.header-tools time{font-size:.9em;max-width:12em}
+header .chip{padding:.55em .8em}
+footer{font-size:calc(var(--fs)*.64)}
+button{border-radius:12px;background:var(--panel)}
+.primary{background:var(--accent);color:#1b1407;box-shadow:none}
+.panel,.home-card,.rank-row,.dialog,.pod{border-radius:var(--tv-radius);background:var(--tv-card);box-shadow:none}
+.focus:focus,.focus:focus-visible,input:focus,select:focus{outline:3px solid var(--tv-focus);outline-offset:3px;box-shadow:0 0 0 6px #e3bc6226;transform:none}
+.home-intro{padding:2vh 0 3vh;text-align:center}
+.home-intro h1{font-size:1.65rem;line-height:1.4}
+.home-intro .eyebrow{font-size:.72rem;margin-bottom:.3em}
+.home-cards{grid-template-columns:1fr 1.25fr 1fr;gap:var(--tv-space);min-height:36vh;align-items:stretch}
+.home-card{padding:1.3rem;min-width:0;justify-content:space-between;gap:.8rem;overflow-wrap:anywhere}
+.home-card.center,.home-card:nth-child(2){background:var(--panel);border-color:var(--accent)!important}
+.home-card strong{display:block;margin:0;font-size:1.28rem}
+.home-card p{font-size:.78rem;line-height:1.65;margin-top:.4em}
+.home-card .eyebrow{margin:0;font-size:.75rem}
+.home-card .symbol{width:2.4rem;height:2.4rem;border-radius:14px}
+.home-foot{justify-content:center;gap:1.4rem;margin-top:2vh;font-size:.72rem}
+.pagehead{gap:.65rem;margin-bottom:.7rem;min-width:0}
+.pagehead>div:first-child{min-width:0;overflow-wrap:anywhere}
+.pagehead h1{font-size:1.4rem;line-height:1.4}
+.pagehead p{margin-top:.3em}
+.pagehead .actions{gap:.35rem;justify-content:flex-end}
+.pagehead .actions button{font-size:.76rem;padding:.5em .75em}
+.split.lobby{grid-template-columns:1.35fr 1fr;gap:var(--tv-space)}
+.lobby .stack{gap:.6rem}
+.lobby .panel{min-width:0;padding:.8rem}
+.lobby .players{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:.35rem}
+.lobby .players>p{grid-column:1/-1}
+.lobby .player-chip{min-width:0;gap:.35rem;padding:.3em .45em;font-size:.74rem}
+.lobby .player-chip b{min-width:0;overflow:hidden;text-overflow:ellipsis;white-space:nowrap}
+.lobby .player-chip small{flex-shrink:0;font-size:.62em}
+.lobby .player-chip .av{width:1.2rem;height:1.2rem}
+.lobby .players-panel h2{font-size:1rem}
+.lobby .players-panel .large{font-size:1.35rem}
+.lobby .players-panel .large small{font-size:.55em}
+.lobby .join-row{gap:.6rem}
+.lobby .join-row>div{min-width:0}
+.lobby .join-row .qr{flex-shrink:0;width:min(20vh,15vw);border-radius:10px;padding:7px;box-shadow:none}
+.lobby .join-panel h2{margin-bottom:.5rem;font-size:1rem}
+.lobby .paircode{font-size:1.85rem}
+.lobby .url{font-size:.55rem;overflow-wrap:anywhere;line-height:1.4}
+.lobby .bank-panel .actions{gap:.3rem}
+.lobby .bank-panel .actions button{font-size:.7rem;padding:.4em .6em}
+.board{gap:.24rem;padding:.18rem .2rem;overflow:hidden}
+.board .rank-row{min-width:0;grid-template-columns:1.55em minmax(0,1fr) 4.1em 4.8em;gap:.35rem;padding:.26em .5em;border-radius:10px;min-height:0}
+.board-wide{display:grid;grid-auto-flow:column;grid-template-columns:repeat(2,minmax(0,1fr));grid-template-rows:repeat(var(--rank-rows),minmax(0,auto));column-gap:.7rem}
+.board-wide .rank-row{font-size:.72rem}
+.rank-name{gap:.35rem}
+.rank-name .av{width:1.25rem;height:1.25rem}
+.rank-row.lead{border-color:var(--accent)!important;background:var(--panel)}
+.rank-row .score,.rank-change{white-space:nowrap;font-variant-numeric:tabular-nums}
+.options{gap:var(--tv-space)}
+.option{border-radius:var(--tv-radius);min-width:0;box-shadow:inset 0 -3px 0 #0003}
+.option .badge{border-radius:8px}
+.question-title{line-height:1.45}
+.podium .pod{background:var(--surface)}
+.podium .pod.first{background:var(--panel);border-color:var(--accent)!important}
+.rest-grid{gap:.25rem .4rem}
+.rest{min-width:0;font-size:.74rem}
+@media(max-aspect-ratio:1/1){#app{height:auto;min-height:100vh}.home-cards,.split.lobby{grid-template-columns:1fr}.home-card{min-height:20vh}.board-wide{display:flex;flex-direction:column}.header-tools{flex-wrap:wrap}.rest-grid{grid-template-columns:repeat(2,minmax(0,1fr))}}
+@media(max-height:820px){.lobby .player-chip{padding:.2em .4em}.board .rank-row{padding:.18em .45em}.home-intro{padding:1vh 0 2vh}}
