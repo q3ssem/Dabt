@@ -1,0 +1,75 @@
+name: TV Chromium 3000-answer acceptance
+on:
+  push:
+    branches: ['qa/tv-2.2.1-browser']
+    paths: ['.github/workflows/tv-pressure-3000.yml']
+permissions:
+  contents: read
+concurrency:
+  group: tv-pressure-3000-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  pressure:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      max-parallel: 5
+      matrix:
+        shard: [0, 1, 2, 3, 4]
+    defaults:
+      run:
+        working-directory: tv
+    env:
+      QA_ROUNDS: '30'
+      QA_SHARD: ${{ matrix.shard }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact runtime
+        run: |
+          test "$(git hash-object shared/core.js)" = c6f72e19e5e8e5e2fc3eb86e554051db2b08df05
+          test "$(git hash-object shared/mq.js)" = 9c29ac960ecff369d56a4b6c8c704031d1c339d9
+          test "$(git hash-object tv/app.js)" = 8660fbd28089f821e2755bda055f00e3cd67522e
+          python -m py_compile tests/browser-stress-221.py
+      - run: python -m pip install playwright==1.51.0
+      - run: python -m playwright install --with-deps chromium
+      - run: python tests/browser-stress-221.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tv-pressure-3000-shard-${{ matrix.shard }}
+          path: tv/tests/results/stress-221/
+          if-no-files-found: error
+  acceptance:
+    needs: pressure
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: tv-pressure-3000-shard-*
+          path: results
+      - name: Enforce all 3000 answers and independent results
+        env:
+          MATRIX_RESULT: ${{ needs.pressure.result }}
+        run: |
+          python3 - <<'PY'
+          import json, os
+          from pathlib import Path
+          files=list(Path('results').rglob('stress-result.json'))
+          rows=[json.loads(x.read_text()) for x in files]
+          total=sum(x.get('answers',x.get('answersVerified',0)) for x in rows)
+          print(json.dumps({'shards':rows,'verifiedAnswers':total,'target':3000},ensure_ascii=False))
+          assert os.environ['MATRIX_RESULT']=='success', 'at least one shard failed'
+          assert len(rows)==5 and {x['shard'] for x in rows}==set(range(5))
+          assert all(x['passed'] and x['answers']==600 and x['players']==20 and x['questions']==30 for x in rows)
+          assert total==3000
+          PY

@@ -52,8 +52,8 @@ def layout(pg,w,h,name):
 # One simulated WSS broker isolates application capacity from external broker availability.
 import math, time
 out=root/'tests/results/stress-221'; out.mkdir(parents=True,exist_ok=True)
-N=22; P=20; BROKER='wss://qa.invalid/mqtt'
-seed=json.loads(subprocess.check_output(['node','-e',"""const D=require('./shared/core.js');const d=D.initial();d.room='654321';d.config=D.config({sound:false,music:'off',shuffle:false,motion:'off',speed:true,wager:true,brokers:['wss://qa.invalid/mqtt']});d.bank.name='اختبار الضغط';d.bank.questions=Array.from({length:22},(_,i)=>D.question({id:'stressq'+i,t:'السؤال '+(i+1),o:['أ','ب','ج','د'],a:i%4,s:60}));console.log(JSON.stringify(d))"""],cwd=root))
+N=int(os.environ.get('QA_ROUNDS','22')); P=20; SHARD=int(os.environ.get('QA_SHARD','0')); assert 3<=N<=120
+seed=json.loads(subprocess.check_output(['node','-e',"""const D=require('./shared/core.js');const d=D.initial();d.room='654321';d.config=D.config({sound:false,music:'off',shuffle:false,motion:'off',speed:true,wager:true});d.bank.name='اختبار الضغط';d.bank.questions=Array.from({length:Number(process.env.QA_ROUNDS||22)},(_,i)=>D.question({id:'stressq'+i,t:'السؤال '+(i+1),o:['أ','ب','ج','د'],a:i%4,s:60}));console.log(JSON.stringify(d))"""],cwd=root))
 started=time.monotonic(); checks=0; processed=0; witness=[]; stage='setup'; tv=None
 def check(condition,msg):
     global checks
@@ -85,15 +85,17 @@ try:
     with sync_playwright() as p:
         b=p.chromium.launch()
         ctx=b.new_context(viewport={'width':1920,'height':1080});setup(ctx,{'dabt:v2':seed});tv=ctx.new_page();monitor(tv)
-        tv.goto('http://127.0.0.1:8765/tv/index.html');tv.locator('#kahoot').click()
+        tv.goto('http://127.0.0.1:8765/?tv=1');tv.locator('#kahoot').wait_for();check(tv.locator('#version').inner_text()=='2.2.1','wrong version');tv.locator('#kahoot').click()
         phones=[]; contexts=[ctx]
         for i in range(P):
             stage=f'join-{i+1}'
             pid=f'stressphone{i}'
             c=b.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True);contexts.append(c)
-            setup(c,{'dabt:remote:v2':{'id':pid,'code':'654321','av':-1,'brokers':[BROKER]}})
-            ph=c.new_page();monitor(ph);ph.goto('http://127.0.0.1:8765/remote/remote.html')
-            ph.wait_for_function('window.DabtRemote && DabtRemote.snapshot()',timeout=30000)
+            setup(c,{'dabt:remote:v2':{'id':pid,'code':'654321','av':-1}})
+            ph=c.new_page();monitor(ph);ph.goto('http://127.0.0.1:8765/?remote=1')
+            try:ph.wait_for_function('window.DabtRemote && DabtRemote.snapshot()',timeout=30000)
+            except Exception:
+                ph.screenshot(path=out/f'join-failure-{i}.png');print('join diagnostic',ph.url,ph.locator('body').inner_text()[:2000],flush=True);raise
             ph.locator('[data-tab="quiz"]').click();ph.locator('#player-name').fill(f'لاعب {i+1}');ph.locator(f'[data-avatar="{i%12}"]').click();ph.locator('#join').click()
             tv.wait_for_function('id=>DabtTV.snapshot().session.players.some(p=>p.id===id)',arg=pid,timeout=30000)
             phones.append((pid,ph));print('joined',i+1,flush=True)
@@ -110,7 +112,7 @@ try:
                     amount=int(button.get_attribute('data-bet',timeout=15000));bets[pid]=amount;button.click(timeout=15000)
                 tv.wait_for_function("()=>Object.keys(DabtTV.snapshot().session.bets||{}).length===20",timeout=20000)
             phase('question',q)
-            planned={pid:(i+2*q)%4 for i,(pid,ph) in enumerate(phones)}
+            planned={pid:(i+2*q+SHARD)%4 for i,(pid,ph) in enumerate(phones)}
             for i,(pid,ph) in enumerate(phones):
                 ph.locator(f'[data-answer="{planned[pid]}"]').click(timeout=15000)
                 if i==0 and q in (0,1):
@@ -131,10 +133,10 @@ try:
         tv.reload();tv.wait_for_function('window.DabtTV && DabtTV.snapshot().archives.length===1')
         check(snapshot()['archives'][0]['rounds']==archived['rounds'],'archive changed on reload')
         check(not errors,errors)
-        result={'passed':True,'browser':b.version,'players':P,'browserPhoneContexts':P,'questions':N,'answers':processed,'assertions':checks,'rounds':witness,'seconds':round(time.monotonic()-started,2),'transport':'one simulated MQTT WebSocket broker','physicalTV':False,'physicalPhone':False,'publicBrokers':False,'pageErrors':errors}
+        result={'passed':True,'browser':b.version,'players':P,'browserPhoneContexts':P,'questions':N,'answers':processed,'assertions':checks,'rounds':witness,'seconds':round(time.monotonic()-started,2),'transport':'simulated MQTT WebSocket brokers','shard':SHARD,'physicalTV':False,'physicalPhone':False,'publicBrokers':False,'pageErrors':errors}
         (out/'stress-result.json').write_text(json.dumps(result,indent=2));print(json.dumps(result,indent=2),flush=True)
         b.close()
 except Exception:
-    result={'passed':False,'stage':stage,'playersRequested':P,'questionsRequested':N,'answersVerified':processed,'assertions':checks,'rounds':witness,'pageErrors':errors,'traceback':traceback.format_exc()}
+    result={'passed':False,'shard':SHARD,'stage':stage,'playersRequested':P,'questionsRequested':N,'answersVerified':processed,'assertions':checks,'rounds':witness,'pageErrors':errors,'traceback':traceback.format_exc()}
     (out/'stress-result.json').write_text(json.dumps(result,indent=2));print(json.dumps(result,indent=2),flush=True)
     raise
