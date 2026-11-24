@@ -1,0 +1,47 @@
+name: TV 2.3.2 UI acceptance
+on:
+  push:
+    branches: ['work/tv-2.3.2-ui']
+    paths: ['tv/**', '.github/workflows/tv-remote-232.yml']
+permissions:
+  contents: read
+jobs:
+  ui:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        test: [browser-smoke-232, browser-stress-232]
+    defaults:
+      run:
+        working-directory: tv
+    env:
+      QA_ROUNDS: '4'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify source and unchanged transport
+        run: |
+          node --check tv/app.js
+          node --check shared/core.js
+          test "$(git hash-object shared/mq.js)" = 9c29ac960ecff369d56a4b6c8c704031d1c339d9
+          test "$(git hash-object tv/app.js)" = f494df69d69a6178db00de3cab8d3ef019216e74
+          node --check remote/app.js
+          python -m py_compile tests/${{ matrix.test }}.py
+      - run: python -m pip install playwright==1.51.0
+      - run: python -m playwright install --with-deps chromium
+      - run: python tests/${{ matrix.test }}.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tv-ui-${{ matrix.test }}
+          path: tv/tests/results/2.3.2-*/
+          if-no-files-found: warn
