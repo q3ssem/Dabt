@@ -1,0 +1,44 @@
+name: TV isolated Chromium QA 2.2.1
+on:
+  push:
+    branches: ['qa/tv-2.2.1-browser']
+    paths: ['tv/**', '.github/workflows/tv-browser-qa.yml']
+permissions:
+  contents: read
+concurrency:
+  group: tv-isolated-qa-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  browser:
+    runs-on: ubuntu-latest
+    timeout-minutes: 15
+    defaults:
+      run:
+        working-directory: tv
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify runtime source
+        run: |
+          test "$(git hash-object shared/core.js)" = c6f72e19e5e8e5e2fc3eb86e554051db2b08df05
+          test "$(git hash-object shared/mq.js)" = 9c29ac960ecff369d56a4b6c8c704031d1c339d9
+          test "$(git hash-object tv/app.js)" = 8660fbd28089f821e2755bda055f00e3cd67522e
+          node --check shared/core.js
+          node --check shared/mq.js
+          node --check tv/app.js
+          node --check remote/app.js
+      - run: python -m pip install playwright==1.51.0
+      - run: python -m playwright install --with-deps chromium
+      - name: Chromium TV and phone smoke
+        run: python tests/browser-smoke-221.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tv-browser-results-${{ github.run_id }}
+          path: tv/tests/results/2.2.1/
+          if-no-files-found: warn
