@@ -1,0 +1,42 @@
+name: TV Chromium pressure 20 x 22
+on:
+  push:
+    branches: ['qa/tv-2.2.1-browser']
+    paths: ['tv/tests/browser-stress-221.py', '.github/workflows/tv-browser-stress.yml']
+permissions:
+  contents: read
+concurrency:
+  group: tv-browser-stress-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  stress:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    defaults:
+      run:
+        working-directory: tv
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact runtime and test syntax
+        run: |
+          test "$(git hash-object shared/core.js)" = c6f72e19e5e8e5e2fc3eb86e554051db2b08df05
+          test "$(git hash-object shared/mq.js)" = 9c29ac960ecff369d56a4b6c8c704031d1c339d9
+          test "$(git hash-object tv/app.js)" = 8660fbd28089f821e2755bda055f00e3cd67522e
+          python -m py_compile tests/browser-stress-221.py
+      - run: python -m pip install playwright==1.56.0
+      - run: python -m playwright install --with-deps chromium
+      - run: python tests/browser-stress-221.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tv-pressure-results-${{ github.run_id }}
+          path: tv/tests/results/stress-221/
+          if-no-files-found: warn
