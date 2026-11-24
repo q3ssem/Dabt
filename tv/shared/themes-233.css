@@ -27,3 +27,9 @@ body .pulse{animation-name:theme-leader}
 body[data-look=pearl] .symbol{background:var(--panel)}
 body[data-look=pearl] .answer.right,body[data-look=pearl] .option.right{box-shadow:0 0 0 3px var(--gold)}
 body[data-look=pearl] .qr{box-shadow:none}
+
+/* 2.3.4: one motion policy for both displays, independent of appearance. */
+body[data-motion=full] .pod.first{animation:pod .55s ease-out both}
+body[data-motion=reduced] *,body[data-motion=reduced] *::before,body[data-motion=reduced] *::after{animation-duration:.15s!important;animation-delay:0s!important;transition-duration:.12s!important}
+body[data-motion=off] *,body[data-motion=off] *::before,body[data-motion=off] *::after{animation:none!important;transition:none!important}
+@media(prefers-reduced-motion:reduce){body *{animation:none!important;transition:none!important}}
