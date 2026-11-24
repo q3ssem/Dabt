@@ -43,7 +43,7 @@ function DabtMusic(){
     blocked:function(){return !ac||ac.state!=='running'},
     start:function(th){if(!ctx())return;theme=((th|0)%TH.length+TH.length)%TH.length;if(on)return;on=true;hurry=false;step=0;next=ac.currentTime+.05;clearInterval(timer);timer=setInterval(sched,25);sched()},
     hurry:function(b){hurry=!!b},
-    stop:function(){on=false;clearInterval(timer)},
+    stop:function(){if(!on&&!timer)return;on=false;clearInterval(timer);timer=0},
     playing:function(){return on},
-    volume:function(v){if(master)master.gain.value=v}}
+    volume:function(v){if(master&&Math.abs(master.gain.value-v)>.0001)master.gain.value=v}}
 }
