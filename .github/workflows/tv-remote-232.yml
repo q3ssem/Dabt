@@ -1,7 +1,7 @@
 name: TV 2.3.2 UI acceptance
 on:
   push:
-    branches: ['work/tv-2.3.2-ui']
+    branches: ['work/tv-2.3.2-remote']
     paths: ['tv/**', '.github/workflows/tv-remote-232.yml']
 permissions:
   contents: read
