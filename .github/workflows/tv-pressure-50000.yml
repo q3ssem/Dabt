@@ -1,0 +1,115 @@
+name: TV 2.3.8 - 50000 answers in 500 games
+on:
+  push:
+    branches: ['qa/tv-2.3.8-pressure-50000']
+    paths: ['tv/tests/**', '.github/workflows/tv-pressure-50000.yml']
+permissions:
+  contents: read
+concurrency:
+  group: tv-pressure-50000-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  pilot:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        game: [0,1,2,3,4,55,155,305]
+    defaults:
+      run:
+        working-directory: tv
+    env:
+      QA_GAME: ${{ matrix.game }}
+      QA_PILOT: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact accepted runtime
+        run: |
+          test "$(git hash-object shared/core.js)" = b0a08f5d95bd34fc1ea46a78f29a0f1c62c1dbfa
+          test "$(git hash-object shared/mq.js)" = 9c29ac960ecff369d56a4b6c8c704031d1c339d9
+          test "$(git hash-object tv/app.js)" = e146c408c17440fa30e270a589a91bc9f1b3fffa
+          test "$(git hash-object remote/app.js)" = 65ff0b5262b9afc2bad464238013dfb5c8090320
+          test "$(git hash-object shared/av.js)" = d97d4f4a3d2046c707e936ede8e2c22c54419457
+          python -m py_compile tests/browser-pressure-50000.py tests/run-pressure-50000.py tests/aggregate-pressure-50000.py
+      - run: python -m pip install playwright==1.56.0
+      - run: python -m playwright install --with-deps chromium
+      - run: python tests/browser-pressure-50000.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tv-50000-pilot-${{ matrix.game }}
+          path: tv/tests/results/2.3.8/
+          if-no-files-found: error
+  pressure:
+    needs: pilot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        batch: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99]
+    defaults:
+      run:
+        working-directory: tv
+    env:
+      QA_BATCH: ${{ matrix.batch }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact accepted runtime
+        run: |
+          test "$(git hash-object shared/core.js)" = b0a08f5d95bd34fc1ea46a78f29a0f1c62c1dbfa
+          test "$(git hash-object shared/mq.js)" = 9c29ac960ecff369d56a4b6c8c704031d1c339d9
+          test "$(git hash-object tv/app.js)" = e146c408c17440fa30e270a589a91bc9f1b3fffa
+          test "$(git hash-object remote/app.js)" = 65ff0b5262b9afc2bad464238013dfb5c8090320
+          test "$(git hash-object shared/av.js)" = d97d4f4a3d2046c707e936ede8e2c22c54419457
+      - run: python -m pip install playwright==1.56.0
+      - run: python -m playwright install --with-deps chromium
+      - run: python tests/run-pressure-50000.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tv-50000-batch-${{ matrix.batch }}
+          path: tv/tests/results/2.3.8/
+          if-no-files-found: error
+  acceptance:
+    needs: [pilot, pressure]
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require every pilot and pressure batch
+        env:
+          PILOT: ${{ needs.pilot.result }}
+          PRESSURE: ${{ needs.pressure.result }}
+        run: |
+          test "$PILOT" = success
+          test "$PRESSURE" = success
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: tv-50000-batch-*
+          path: results
+      - run: python3 tv/tests/aggregate-pressure-50000.py results
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tv-50000-acceptance
+          path: acceptance-50000.json
+          if-no-files-found: error
