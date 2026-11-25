@@ -47,7 +47,7 @@ jobs:
       - name: Verify broker refresh lifecycle
         run: node tests/mq-refresh-2381.js
       - name: Install Playwright
-        run: python -m pip install playwright==${{ matrix.suite == 'reconnect' && '1.56.0' || '1.51.0' }}
+        run: python -m pip install playwright==${{ matrix.suite == 'reconnect' && '1.56.0' || '1.51.0' }} websockets==15.0.1
       - run: python -m playwright install --with-deps chromium
         if: matrix.suite != 'audit'
       - name: Reproduce legacy interaction bug before candidate test
@@ -181,7 +181,7 @@ jobs:
           test "$(git hash-object remote/app.js)" = c692838b050b255156dcc8fde68cc7330e727181
           test "$(git hash-object shared/av.js)" = d97d4f4a3d2046c707e936ede8e2c22c54419457
           python -m py_compile tests/browser-pressure-50000.py tests/run-pressure-50000.py tests/aggregate-pressure-50000.py
-      - run: python -m pip install playwright==1.56.0
+      - run: python -m pip install playwright==1.56.0 websockets==15.0.1
       - run: python -m playwright install --with-deps chromium
       - run: python tests/browser-pressure-50000.py
       - uses: actions/upload-artifact@v4
@@ -221,7 +221,7 @@ jobs:
           test "$(git hash-object tv/app.js)" = e146c408c17440fa30e270a589a91bc9f1b3fffa
           test "$(git hash-object remote/app.js)" = c692838b050b255156dcc8fde68cc7330e727181
           test "$(git hash-object shared/av.js)" = d97d4f4a3d2046c707e936ede8e2c22c54419457
-      - run: python -m pip install playwright==1.56.0
+      - run: python -m pip install playwright==1.56.0 websockets==15.0.1
       - run: python -m playwright install --with-deps chromium
       - run: python tests/run-pressure-50000.py
       - uses: actions/upload-artifact@v4

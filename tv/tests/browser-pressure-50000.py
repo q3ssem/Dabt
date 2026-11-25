@@ -3,6 +3,7 @@ import json, os, subprocess, mimetypes, traceback
 from pathlib import Path
 from urllib.parse import urlparse, unquote
 from playwright.sync_api import sync_playwright
+from qa_mqtt_brokers import LocalBrokers, BROKERS
 root=Path(__file__).resolve().parent.parent
 GAME=int(os.environ['QA_GAME']); PILOT=os.environ.get('QA_PILOT')=='1'
 assert 0<=GAME<500
@@ -21,55 +22,37 @@ def encode(topic,raw):
         d=n%128; n//=128; buf.append(d|(128 if n else 0))
         if not n: break
     return bytes([0x30,*buf])+body
-def route_ws(ws):
-    peer={'ws':ws,'subs':set(),'open':True,'broker':ws.url}; peers.append(peer)
-    ws.on_close(lambda *_:peer.update(open=False))
-    def msg(a):
-        if not isinstance(a,(bytes,bytearray)): return
-        a=bytes(a)
-        i=1; n=0; mul=1
-        while True:
-            b=a[i]; i+=1; n+=(b&127)*mul; mul*=128
-            if not b&128:break
-        body=a[i:i+n]; typ=a[0]>>4
-        if typ==1:ws.send(bytes([0x20,2,0,0]))
-        elif typ==8:
-            l=int.from_bytes(body[2:4],'big'); peer['subs'].add(body[4:4+l].decode()); ws.send(bytes([0x90,3,body[0],body[1],0]))
-        elif typ==12:ws.send(bytes([0xd0,0]))
-        elif typ==3:
-            l=int.from_bytes(body[:2],'big'); t=body[2:2+l].decode(); raw=body[2+l:]
-            if t.endswith('/tv') or '/phone/' in t:
-                try:
-                    # Parse the signed envelope, including JSON-string MQTT payloads.
-                    envelope=json.loads(bytes(raw).decode('utf-8'))
-                    if isinstance(envelope,str):envelope=json.loads(envelope)
-                    m=envelope['b']
-                    if isinstance(m,str):m=json.loads(m)
-                    rid=m.get('requestId')
-                    if t.endswith('/tv') and m.get('type')=='answer':
-                        p0=m['payload']
-                        faults['observedAnswerPackets']+=1
-                        entry=requests.setdefault(rid,{'device':m['device'],'qIndex':p0['qIndex'],'answer':p0['answer'],'count':0,'firstMs':time.monotonic()*1000})
-                        entry['count']+=1
-                        if MODE=='drop' and m['device']=='stressphone0' and p0['qIndex']==0:
-                            if entry['count']==1 and faults['droppedAnswerCopies']==0:
-                                faults['dropRequestId']=rid
-                            if rid==faults.get('dropRequestId'):
-                                if entry['count']<=3:
-                                    faults['droppedAnswerCopies']+=1
-                                    return
-                                if faults['retryAfterMs'] is None:
-                                    faults['retryAfterMs']=round(time.monotonic()*1000-entry['firstMs'])
-                    elif rid in requests and '/phone/' in t:
-                        replies[rid]={'ok':m.get('ok'),'error':m.get('error','')}
-                        if rid==faults.get('dropRequestId') and m.get('ok') is True:
-                            faults['dropAckConfirmed']=True
-                except (KeyError,ValueError,TypeError,AttributeError) as e:
-                    faults['decodeErrors']+=1
-                    if faults['decodeErrors']<=3:print('MQ decode diagnostic',t,type(e).__name__,str(e)[:160],flush=True)
-            for p in peers:
-                if p['open'] and p['broker']==peer['broker'] and t in p['subs']:p['ws'].send(encode(t,raw))
-    ws.on_message(msg)
+def observe_packet(t,raw,broker_url):
+    if t.endswith('/tv') or '/phone/' in t:
+        try:
+            # Parse the signed envelope, including JSON-string MQTT payloads.
+            envelope=json.loads(bytes(raw).decode('utf-8'))
+            if isinstance(envelope,str):envelope=json.loads(envelope)
+            m=envelope['b']
+            if isinstance(m,str):m=json.loads(m)
+            rid=m.get('requestId')
+            if t.endswith('/tv') and m.get('type')=='answer':
+                p0=m['payload']
+                faults['observedAnswerPackets']+=1
+                entry=requests.setdefault(rid,{'device':m['device'],'qIndex':p0['qIndex'],'answer':p0['answer'],'count':0,'firstMs':time.monotonic()*1000})
+                entry['count']+=1
+                if MODE=='drop' and m['device']=='stressphone0' and p0['qIndex']==0:
+                    if entry['count']==1 and faults['droppedAnswerCopies']==0:
+                        faults['dropRequestId']=rid
+                    if rid==faults.get('dropRequestId'):
+                        if entry['count']<=3:
+                            faults['droppedAnswerCopies']+=1
+                            return True
+                        if faults['retryAfterMs'] is None:
+                            faults['retryAfterMs']=round(time.monotonic()*1000-entry['firstMs'])
+            elif rid in requests and '/phone/' in t:
+                replies[rid]={'ok':m.get('ok'),'error':m.get('error','')}
+                if rid==faults.get('dropRequestId') and m.get('ok') is True:
+                    faults['dropAckConfirmed']=True
+        except (KeyError,ValueError,TypeError,AttributeError) as e:
+            faults['decodeErrors']+=1
+            if faults['decodeErrors']<=3:print('MQ decode diagnostic',t,type(e).__name__,str(e)[:160],flush=True)
+    return False
 def setup(ctx,seed):
     def route(r):
         u=urlparse(r.request.url)
@@ -78,7 +61,7 @@ def setup(ctx,seed):
         if f.is_dir():f=f/'index.html'
         if not f.is_file() or not f.is_relative_to(root):return r.fulfill(status=404,body='missing')
         r.fulfill(path=f,content_type=mimetypes.guess_type(f)[0] or 'application/octet-stream')
-    ctx.route('**/*',route); ctx.route_web_socket('wss://**',route_ws)
+    ctx.route('**/*',route); broker.install(ctx)
     ctx.add_init_script('if(!sessionStorage.seeded){for(const [k,v] of Object.entries('+json.dumps(seed,ensure_ascii=True)+'))localStorage.setItem(k,JSON.stringify(v));sessionStorage.seeded=1;}')
 def monitor(pg):pg.on('pageerror',lambda e:errors.append(str(e)))
 def layout(pg,w,h,name):
@@ -94,6 +77,8 @@ import math, time
 SHARD=GAME;os.environ['QA_ROUNDS']=str(N);os.environ['QA_LOOK']=LOOK;os.environ['QA_MOTION']=MOTION
 assert 3<=N<=120 and 5<=P<=20
 seed=json.loads(subprocess.check_output(['node','-e',"""const D=require('./shared/core.js');const d=D.initial();d.room=String(654000+Number(process.env.QA_GAME));d.config=D.config({sound:false,music:'off',shuffle:false,motion:process.env.QA_MOTION,look:process.env.QA_LOOK,speed:true,wager:true});d.bank.name='اختبار الضغط';d.bank.questions=Array.from({length:Number(process.env.QA_ROUNDS||22)},(_,i)=>D.question({id:'stressq'+i,t:'السؤال '+(i+1),o:['أ','ب','ج','د'],a:i%4,s:60}));console.log(JSON.stringify(d))"""],cwd=root))
+seed['config']['brokers']=BROKERS
+broker=LocalBrokers(observe_packet)
 started=time.monotonic(); checks=0; processed=0; witness=[]; stage='setup'; tv=None
 def check(condition,msg):
     global checks
@@ -131,7 +116,7 @@ try:
             stage=f'join-{i+1}'
             pid=f'stressphone{i}'
             c=b.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True);contexts.append(c)
-            setup(c,{'dabt:remote:v2':{'id':pid,'code':str(654000+GAME),'av':-1}})
+            setup(c,{'dabt:remote:v2':{'id':pid,'code':str(654000+GAME),'av':-1,'brokers':BROKERS}})
             c.add_init_script("""window.__qaAnswerEvents=[];for(const type of ['pointerdown','pointerup','click'])document.addEventListener(type,e=>{const b=e.target.closest&&e.target.closest('[data-answer]');if(b){const s=window.DabtRemote&&DabtRemote.snapshot();window.__qaAnswerEvents.push({type,answer:+b.dataset.answer,qIndex:s&&s.session&&s.session.qIndex,connected:b.isConnected,time:Date.now()});if(window.__qaAnswerEvents.length>120)window.__qaAnswerEvents.shift()}},true);""")
             ph=c.new_page();monitor(ph);ph.goto('http://127.0.0.1:8765/?remote=1')
             try:ph.wait_for_function('window.DabtRemote && DabtRemote.snapshot()',timeout=30000)
@@ -222,13 +207,14 @@ try:
         tv.reload();tv.wait_for_function('window.DabtTV && DabtTV.snapshot().archives.length===1')
         check(snapshot()['archives'][0]['rounds']==archived['rounds'],'archive changed on reload')
         check(not errors,errors)
+        broker.assert_clean()
         check(faults['decodeErrors']==0 and faults['observedAnswerPackets']>=P*N,'signed packet observation incomplete')
         if MODE=='drop':check(faults['droppedAnswerCopies']==3 and faults['dropAckConfirmed'] and faults['retryAfterMs'] is not None and faults['retryAfterMs']>=600,'retry after lost copies not proven')
         if MODE=='reload':check(faults['reloaded'],'reload scenario not executed')
         if MODE=='late':check(faults['lateElapsedMs'] is not None,'late answer missing')
         if MODE=='help':check(faults['help'] and faults['objection'],'help/objection scenario not executed')
         if MODE=='overlap':check(faults['overlap'],'overlap scenario not executed')
-        result={'passed':True,'game':GAME,'sessionId':sid,'profile':MODE,'look':LOOK,'motion':MOTION,'faults':faults,'heapSamples':heap,'browser':b.version,'players':P,'browserPhoneContexts':P,'questions':N,'answers':processed,'assertions':checks,'rounds':witness,'seconds':round(time.monotonic()-started,2),'transport':'simulated MQTT WebSocket brokers','shard':SHARD,'physicalTV':False,'physicalPhone':False,'publicBrokers':False,'pageErrors':errors}
+        result={'passed':True,'game':GAME,'sessionId':sid,'profile':MODE,'look':LOOK,'motion':MOTION,'faults':faults,'heapSamples':heap,'browser':b.version,'players':P,'browserPhoneContexts':P,'questions':N,'answers':processed,'assertions':checks,'rounds':witness,'seconds':round(time.monotonic()-started,2),'transport':'3 independent loopback WebSocket MQTT brokers','shard':SHARD,'physicalTV':False,'physicalPhone':False,'publicBrokers':False,'pageErrors':errors}
         (out/'stress-result.json').write_text(json.dumps(result,indent=2));print(json.dumps(result,indent=2),flush=True)
         b.close()
 except Exception:
