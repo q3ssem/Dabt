@@ -13,7 +13,7 @@ MOTION=['full','reduced','off'][GAME%3]
 OUTROOT=Path(os.environ.get('QA_OUTPUT',str(root/'tests/results/2.3.8')))
 out=OUTROOT/f'game-{GAME:03d}';out.mkdir(parents=True,exist_ok=True)
 keep_images=PILOT or GAME%5==0
-faults={'droppedAnswerCopies':0,'reloaded':False,'lateElapsedMs':None,'help':False,'objection':False,'overlap':False};heap=[]
+faults={'droppedAnswerCopies':0,'observedAnswerPackets':0,'retryAfterMs':None,'dropAckConfirmed':False,'decodeErrors':0,'reloaded':False,'lateElapsedMs':None,'help':False,'objection':False,'overlap':False};heap=[]
 peers=[]; errors=[]; layouts=[]; stage='startup'; requests={}; replies={}; failure_detail={}
 def encode(topic,raw):
     t=topic.encode(); body=len(t).to_bytes(2,'big')+t+raw; n=len(body); buf=[]
@@ -22,10 +22,11 @@ def encode(topic,raw):
         if not n: break
     return bytes([0x30,*buf])+body
 def route_ws(ws):
-    peer={'ws':ws,'subs':set(),'open':True}; peers.append(peer)
+    peer={'ws':ws,'subs':set(),'open':True,'broker':ws.url}; peers.append(peer)
     ws.on_close(lambda *_:peer.update(open=False))
     def msg(a):
-        if not isinstance(a,bytes): return
+        if not isinstance(a,(bytes,bytearray)): return
+        a=bytes(a)
         i=1; n=0; mul=1
         while True:
             b=a[i]; i+=1; n+=(b&127)*mul; mul*=128
@@ -39,17 +40,35 @@ def route_ws(ws):
             l=int.from_bytes(body[:2],'big'); t=body[2:2+l].decode(); raw=body[2+l:]
             if t.endswith('/tv') or '/phone/' in t:
                 try:
-                    m=json.loads(json.loads(raw)['b']); rid=m.get('requestId')
+                    # Parse the signed envelope, including JSON-string MQTT payloads.
+                    envelope=json.loads(bytes(raw).decode('utf-8'))
+                    if isinstance(envelope,str):envelope=json.loads(envelope)
+                    m=envelope['b']
+                    if isinstance(m,str):m=json.loads(m)
+                    rid=m.get('requestId')
                     if t.endswith('/tv') and m.get('type')=='answer':
-                        p0=m['payload']; entry=requests.setdefault(rid,{'device':m['device'],'qIndex':p0['qIndex'],'answer':p0['answer'],'count':0});entry['count']+=1
-                        if MODE=='drop' and m['device']=='stressphone0' and p0['qIndex']==0 and entry['count']<=3:
-                            faults['droppedAnswerCopies']+=1
-                            return
+                        p0=m['payload']
+                        faults['observedAnswerPackets']+=1
+                        entry=requests.setdefault(rid,{'device':m['device'],'qIndex':p0['qIndex'],'answer':p0['answer'],'count':0,'firstMs':time.monotonic()*1000})
+                        entry['count']+=1
+                        if MODE=='drop' and m['device']=='stressphone0' and p0['qIndex']==0:
+                            if entry['count']==1 and faults['droppedAnswerCopies']==0:
+                                faults['dropRequestId']=rid
+                            if rid==faults.get('dropRequestId'):
+                                if entry['count']<=3:
+                                    faults['droppedAnswerCopies']+=1
+                                    return
+                                if faults['retryAfterMs'] is None:
+                                    faults['retryAfterMs']=round(time.monotonic()*1000-entry['firstMs'])
                     elif rid in requests and '/phone/' in t:
                         replies[rid]={'ok':m.get('ok'),'error':m.get('error','')}
-                except (KeyError,ValueError,TypeError):pass
+                        if rid==faults.get('dropRequestId') and m.get('ok') is True:
+                            faults['dropAckConfirmed']=True
+                except (KeyError,ValueError,TypeError,AttributeError) as e:
+                    faults['decodeErrors']+=1
+                    if faults['decodeErrors']<=3:print('MQ decode diagnostic',t,type(e).__name__,str(e)[:160],flush=True)
             for p in peers:
-                if p['open'] and t in p['subs']:p['ws'].send(encode(t,raw))
+                if p['open'] and p['broker']==peer['broker'] and t in p['subs']:p['ws'].send(encode(t,raw))
     ws.on_message(msg)
 def setup(ctx,seed):
     def route(r):
@@ -106,7 +125,7 @@ try:
     with sync_playwright() as p:
         b=p.chromium.launch()
         ctx=b.new_context(viewport={'width':1920,'height':1080});setup(ctx,{'dabt:v2':seed});tv=ctx.new_page();monitor(tv)
-        tv.goto('http://127.0.0.1:8765/?tv=1');tv.locator('#kahoot').wait_for();check(tv.locator('#version').inner_text()=='2.3.7.1','wrong version');tv.locator('#kahoot').click()
+        tv.goto('http://127.0.0.1:8765/?tv=1');tv.locator('#kahoot').wait_for();check(tv.locator('#version').inner_text()=='2.3.8.1','wrong version');tv.locator('#kahoot').click()
         phones=[]; contexts=[ctx]
         for i in range(P):
             stage=f'join-{i+1}'
@@ -201,7 +220,8 @@ try:
         tv.reload();tv.wait_for_function('window.DabtTV && DabtTV.snapshot().archives.length===1')
         check(snapshot()['archives'][0]['rounds']==archived['rounds'],'archive changed on reload')
         check(not errors,errors)
-        if MODE=='drop':check(faults['droppedAnswerCopies']==3 and any(x['device']=='stressphone0' and x['qIndex']==0 and x['count']>3 for x in requests.values()),'retry after lost copies not proven')
+        check(faults['decodeErrors']==0 and faults['observedAnswerPackets']>=P*N,'signed packet observation incomplete')
+        if MODE=='drop':check(faults['droppedAnswerCopies']==3 and faults['dropAckConfirmed'] and faults['retryAfterMs'] is not None and faults['retryAfterMs']>=600,'retry after lost copies not proven')
         if MODE=='reload':check(faults['reloaded'],'reload scenario not executed')
         if MODE=='late':check(faults['lateElapsedMs'] is not None,'late answer missing')
         if MODE=='help':check(faults['help'] and faults['objection'],'help/objection scenario not executed')

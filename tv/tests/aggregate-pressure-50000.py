@@ -13,12 +13,13 @@ for r in rows:
     profile={0:'drop',1:'reload',2:'late',3:'help',4:'overlap'}.get(i%25,'standard')
     assert r['profile']==profile
     f=r['faults']
-    if profile=='drop':assert f['droppedAnswerCopies']==3
+    assert f['decodeErrors']==0 and f['observedAnswerPackets']>=p*n
+    if profile=='drop':assert f['droppedAnswerCopies']==3 and f['dropAckConfirmed'] and f['retryAfterMs']>=600
     if profile=='reload':assert f['reloaded']
     if profile=='late':assert 55000<=f['lateElapsedMs']<60000
     if profile=='help':assert f['help'] and f['objection']
     if profile=='overlap':assert f['overlap']
 total=sum(r['answers'] for r in rows)
 assert total==50000
-report={'passed':True,'runtimeVersion':'2.3.7.1','qaVersion':'2.3.8','games':len(rows),'answers':total,'rounds':sum(r['questions'] for r in rows),'browserPhoneContexts':sum(r['players'] for r in rows),'assertions':sum(r['assertions'] for r in rows),'profiles':{p:sum(r['profile']==p for r in rows) for p in ['standard','drop','reload','late','help','overlap']},'physicalTV':False,'physicalPhone':False,'publicBrokers':False}
+report={'passed':True,'runtimeVersion':'2.3.8.1','qaVersion':'2.3.8','games':len(rows),'answers':total,'rounds':sum(r['questions'] for r in rows),'browserPhoneContexts':sum(r['players'] for r in rows),'assertions':sum(r['assertions'] for r in rows),'profiles':{p:sum(r['profile']==p for r in rows) for p in ['standard','drop','reload','late','help','overlap']},'physicalTV':False,'physicalPhone':False,'publicBrokers':False}
 Path('acceptance-50000.json').write_text(json.dumps(report,indent=2));print(json.dumps(report))

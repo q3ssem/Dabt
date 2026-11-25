@@ -1,0 +1,257 @@
+name: TV 2.3.8.1 - connection qualification and 50000
+on:
+  push:
+    branches: ['work/tv-2.3.8.1-connection']
+    paths: ['tv/**', '.github/workflows/tv-pressure-50000-2381.yml']
+permissions:
+  contents: read
+concurrency:
+  group: tv-pressure-50000-2381-${{ github.ref }}
+  cancel-in-progress: true
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [smoke, stress, themes, motion, reconnect, audit, race]
+    defaults:
+      run:
+        working-directory: tv
+    env:
+      QA_ROUNDS: '4'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify unchanged runtime and syntax
+        run: |
+          node --check shared/core.js
+          node --check tv/app.js
+          node --check remote/app.js
+          node --check shared/av.js
+          test "$(git hash-object shared/mq.js)" = 6e9d05f26ac29c6ee6f0fae24d51cd553b91be00
+          test "$(git hash-object tv/app.js)" = e146c408c17440fa30e270a589a91bc9f1b3fffa
+          test "$(git hash-object shared/core.js)" = 03d577f1eeb5cad8f09ea650917465685451e014
+          test "$(git hash-object remote/app.js)" = c692838b050b255156dcc8fde68cc7330e727181
+          test "$(git hash-object shared/av.js)" = d97d4f4a3d2046c707e936ede8e2c22c54419457
+          python -m py_compile tests/browser-${{ matrix.suite }}-2381.py
+      - name: Verify broker refresh lifecycle
+        run: node tests/mq-refresh-2381.js
+      - name: Install Playwright
+        run: python -m pip install playwright==${{ matrix.suite == 'reconnect' && '1.56.0' || '1.51.0' }}
+      - run: python -m playwright install --with-deps chromium
+        if: matrix.suite != 'audit'
+      - name: Reproduce legacy interaction bug before candidate test
+        if: matrix.suite == 'race'
+        run: |
+          cp remote/app.js /tmp/remote-candidate.js
+          trap 'cp /tmp/remote-candidate.js remote/app.js' EXIT
+          git show c5207e5c4f9d4f889476079a54f6380b3a312886:tv/remote/app.js > remote/app.js
+          QA_EXPECT_LEGACY=1 python tests/browser-race-2381.py
+      - run: python tests/browser-${{ matrix.suite }}-2381.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tv-gate-2381-${{ matrix.suite }}
+          path: tv/tests/results/2.3.8.1-*/
+          if-no-files-found: warn
+  requalify:
+    needs: gate
+    runs-on: ubuntu-24.04
+    timeout-minutes: 40
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        shard: [0, 1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 12, 13, 14, 15, 16, 17, 18, 19]
+    defaults:
+      run:
+        working-directory: tv
+    env:
+      QA_ROUNDS: '30'
+      QA_SHARD: ${{ matrix.shard }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+          fetch-depth: 0
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact candidate and transport
+        run: |
+          test "$(git hash-object shared/mq.js)" = 6e9d05f26ac29c6ee6f0fae24d51cd553b91be00
+          test "$(git hash-object tv/app.js)" = e146c408c17440fa30e270a589a91bc9f1b3fffa
+          test "$(git hash-object shared/core.js)" = 03d577f1eeb5cad8f09ea650917465685451e014
+          test "$(git hash-object remote/app.js)" = c692838b050b255156dcc8fde68cc7330e727181
+          test "$(git hash-object shared/av.js)" = d97d4f4a3d2046c707e936ede8e2c22c54419457
+          node -e "if(require('./shared/core.js').VERSION!=='2.3.8.1')process.exit(1)"
+          python -m py_compile tests/browser-stress-2381.py
+      - run: python -m pip install playwright==1.51.0
+      - run: python -m playwright install --with-deps chromium
+      - run: python tests/browser-stress-2381.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tv-2381-requalify-${{ matrix.shard }}
+          path: tv/tests/results/2.3.8.1-stress/
+          if-no-files-found: error
+  requalify_acceptance:
+    needs: [gate, requalify]
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require prerequisite suites
+        env:
+          GATE: ${{ needs.gate.result }}
+          PRESSURE: ${{ needs.requalify.result }}
+        run: |
+          test "$GATE" = success
+          test "$PRESSURE" = success
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: tv-2381-requalify-*
+          path: results
+      - name: Verify 12000 distinct accepted answers
+        run: |
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          files=list(Path('results').rglob('stress-result.json'))
+          rows=[json.loads(f.read_text()) for f in files]
+          total=sum(r.get('answers',0) for r in rows)
+          assert len(rows)==20 and {r['shard'] for r in rows}==set(range(20))
+          for r in rows:
+              assert r['passed'] and r['answers']==600 and r['players']==20 and r['questions']==30
+              assert r['browserPhoneContexts']==20 and not r['pageErrors']
+              assert len(r['rounds'])==30 and {q['round'] for q in r['rounds']}==set(range(1,31))
+              assert all(q['answers']==20 for q in r['rounds'])
+          assert total==12000
+          report={'passed':True,'verifiedAnswers':total,'assertions':sum(r['assertions'] for r in rows),'games':20,'browserPhoneContexts':400,'rounds':600,'shards':rows,'physicalTV':False,'physicalPhone':False,'publicBrokers':False}
+          Path('acceptance-12000.json').write_text(json.dumps(report,indent=2))
+          print(json.dumps(report,ensure_ascii=False))
+          PY
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tv-2381-requalify-acceptance
+          path: acceptance-12000.json
+          if-no-files-found: error
+  pilot:
+    needs: requalify_acceptance
+    runs-on: ubuntu-24.04
+    timeout-minutes: 30
+    strategy:
+      fail-fast: false
+      max-parallel: 8
+      matrix:
+        game: [0,1,2,3,4,55,155,305]
+    defaults:
+      run:
+        working-directory: tv
+    env:
+      QA_GAME: ${{ matrix.game }}
+      QA_PILOT: '1'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact candidate runtime
+        run: |
+          test "$(git hash-object shared/core.js)" = 03d577f1eeb5cad8f09ea650917465685451e014
+          test "$(git hash-object shared/mq.js)" = 6e9d05f26ac29c6ee6f0fae24d51cd553b91be00
+          test "$(git hash-object tv/app.js)" = e146c408c17440fa30e270a589a91bc9f1b3fffa
+          test "$(git hash-object remote/app.js)" = c692838b050b255156dcc8fde68cc7330e727181
+          test "$(git hash-object shared/av.js)" = d97d4f4a3d2046c707e936ede8e2c22c54419457
+          python -m py_compile tests/browser-pressure-50000.py tests/run-pressure-50000.py tests/aggregate-pressure-50000.py
+      - run: python -m pip install playwright==1.56.0
+      - run: python -m playwright install --with-deps chromium
+      - run: python tests/browser-pressure-50000.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tv-50000-pilot-${{ matrix.game }}
+          path: tv/tests/results/2.3.8/
+          if-no-files-found: error
+  pressure:
+    needs: pilot
+    runs-on: ubuntu-24.04
+    timeout-minutes: 120
+    strategy:
+      fail-fast: false
+      max-parallel: 10
+      matrix:
+        batch: [0,1,2,3,4,5,6,7,8,9,10,11,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33,34,35,36,37,38,39,40,41,42,43,44,45,46,47,48,49,50,51,52,53,54,55,56,57,58,59,60,61,62,63,64,65,66,67,68,69,70,71,72,73,74,75,76,77,78,79,80,81,82,83,84,85,86,87,88,89,90,91,92,93,94,95,96,97,98,99]
+    defaults:
+      run:
+        working-directory: tv
+    env:
+      QA_BATCH: ${{ matrix.batch }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify exact accepted runtime
+        run: |
+          test "$(git hash-object shared/core.js)" = 03d577f1eeb5cad8f09ea650917465685451e014
+          test "$(git hash-object shared/mq.js)" = 6e9d05f26ac29c6ee6f0fae24d51cd553b91be00
+          test "$(git hash-object tv/app.js)" = e146c408c17440fa30e270a589a91bc9f1b3fffa
+          test "$(git hash-object remote/app.js)" = c692838b050b255156dcc8fde68cc7330e727181
+          test "$(git hash-object shared/av.js)" = d97d4f4a3d2046c707e936ede8e2c22c54419457
+      - run: python -m pip install playwright==1.56.0
+      - run: python -m playwright install --with-deps chromium
+      - run: python tests/run-pressure-50000.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tv-50000-batch-${{ matrix.batch }}
+          path: tv/tests/results/2.3.8/
+          if-no-files-found: error
+  acceptance:
+    needs: [requalify_acceptance, pilot, pressure]
+    if: always()
+    runs-on: ubuntu-24.04
+    steps:
+      - name: Require every pilot and pressure batch
+        env:
+          REQUALIFY: ${{ needs.requalify_acceptance.result }}
+          PILOT: ${{ needs.pilot.result }}
+          PRESSURE: ${{ needs.pressure.result }}
+        run: |
+          test "$REQUALIFY" = success
+          test "$PILOT" = success
+          test "$PRESSURE" = success
+      - uses: actions/checkout@v4
+      - uses: actions/download-artifact@v4
+        with:
+          pattern: tv-50000-batch-*
+          path: results
+      - run: python3 tv/tests/aggregate-pressure-50000.py results
+      - uses: actions/upload-artifact@v4
+        with:
+          name: tv-50000-acceptance
+          path: acceptance-50000.json
+          if-no-files-found: error
