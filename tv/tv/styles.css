@@ -27,9 +27,6 @@ button{background:linear-gradient(180deg,#1C3260,var(--panel));border:1.5px soli
 .podium .score{color:var(--gold)}
 .countdown{color:var(--gold)}
 /* ثيمات الشاشة */
-body[data-look=ramadan]{--bg:#0d1630;--surface:#162245;--panel:#1d2c58;--line:#33467d;--accent:#f2c75c;--blue:#8fb6ff}
-body[data-look=eid]{--bg:#141a33;--surface:#1f2850;--panel:#283364;--line:#3e4b86;--accent:#ff9ec7;--blue:#ffd36b}
-body[data-look=friday]{--bg:#132420;--surface:#1b332d;--panel:#22413a;--line:#3a5d53;--accent:#7fe0a8;--blue:#f3c98b}
 body[data-look=ramadan] header .brand::after{content:"☾ ✦";color:var(--accent);margin-inline-start:.4em}
 body[data-look=eid] header .brand::after{content:"✦ عيدكم مبارك";color:var(--accent);font-size:.6em;margin-inline-start:.6em}
 body[data-look=friday] header .brand::after{content:"جمعة مباركة";color:var(--accent);font-size:.6em;margin-inline-start:.6em}

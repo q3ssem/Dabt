@@ -1,0 +1,35 @@
+/* Shared TV + remote appearance. Music theme is independent. */
+body{--bg:#0a1428;--surface:#122241;--panel:#182c52;--line:#635737;--line2:#394868;--text:#f5eedc;--muted:#aeb8d0;--accent:#e3bc62;--gold:#f2d58e;--blue:#7aa6ff;--bad:#ef879a;--on-accent:#1b1407;--good:#9ce8c2;--overlay:#06101de8;--focus:var(--gold);color-scheme:dark;background:var(--bg);color:var(--text)}
+body[data-look=pearl]{--bg:#f4f0e6;--surface:#fffdf8;--panel:#e9e2d3;--line:#9d907c;--line2:#c6bcaa;--text:#263247;--muted:#525e6f;--accent:#815c21;--gold:#74501b;--blue:#345ca1;--bad:#a12641;--on-accent:#fffdf8;--good:#21643d;--overlay:#243247aa;color-scheme:light}
+body[data-look=emerald]{--bg:#102c27;--surface:#193b34;--panel:#235347;--line:#62897b;--line2:#42695d;--text:#f1f5e9;--muted:#bdd2c8;--accent:#c9e4aa;--gold:#e6d6ac;--blue:#9acfe7;--bad:#ffa6b5;--on-accent:#102c27;--good:#a5e6bc}
+body[data-look=midnight]{--bg:#14151b;--surface:#20212c;--panel:#2c2e3c;--line:#696c87;--line2:#44475a;--text:#efedf7;--muted:#b9bed0;--accent:#b4b9f0;--gold:#cbd0ff;--blue:#a7ceff;--bad:#ffa3b7;--on-accent:#171a30;--good:#9ce8c2}
+body[data-look=ramadan]{--bg:#0d1630;--surface:#162245;--panel:#1d2c58;--line:#63749e;--line2:#40517a;--text:#f5eedc;--muted:#c2c9dd;--accent:#f2c75c;--gold:#ffe19b;--blue:#8fb6ff;--on-accent:#231b09}
+body[data-look=eid]{--bg:#141a33;--surface:#1f2850;--panel:#283364;--line:#6e79a6;--line2:#47527f;--text:#fff1f7;--muted:#c9cde3;--accent:#ff9ec7;--gold:#ffd36b;--blue:#accdff;--on-accent:#36162d}
+body[data-look=friday]{--bg:#132420;--surface:#1b332d;--panel:#22413a;--line:#688e80;--line2:#405f55;--text:#eff6e9;--muted:#bcd5c9;--accent:#7fe0a8;--gold:#f3c98b;--blue:#a3d3ff;--on-accent:#102a20}
+body button:not(.answer):not(.option){color:var(--text)}
+body button.primary,body #nav .active,body .tabs .active,body .dpad .ok,body #brand .logo,body #toast{background:var(--accent);color:var(--on-accent);border-color:var(--accent)}
+body button.danger{color:var(--bad)}
+body button:focus-visible,body .focus:focus,body input:focus,body select:focus,body textarea:focus{outline-color:var(--gold)}
+body .panel,body .dialog,body .home-card,body .rank-row,body .pod,body .question-row{background:var(--surface);border-color:var(--line)}
+body .home-card.center,body .rank-row.lead,body .podium .pod.first,body .chip,body .rest,body .avatar-grid button.on{background:var(--panel);border-color:var(--accent)}
+body .rank-row.me{border-color:var(--accent)}
+body .confirmed{color:var(--good)!important}
+body .pending,body .warn,body .note.warn,body .draft-warning,body .helps-line,body .said-prompt{color:var(--gold)!important}
+body .note,body .warn{background:var(--surface);border-color:var(--line)}
+body .champion,body .title-card{background:var(--panel);border-color:var(--line)}
+body .champion small,body .title-card small{color:var(--gold)}
+body #modal{background:var(--overlay)}
+body .answer.person,body .option.person{background:var(--panel);color:var(--text);border-color:var(--line)}
+body .option.person .count{color:var(--gold);background:var(--surface)}
+body .dpad button.pressed{background:var(--surface);color:var(--text)}
+body .pulse{animation-name:theme-leader}
+@keyframes theme-leader{50%{background:var(--panel)}}
+body[data-look=pearl] .symbol{background:var(--panel)}
+body[data-look=pearl] .answer.right,body[data-look=pearl] .option.right{box-shadow:0 0 0 3px var(--gold)}
+body[data-look=pearl] .qr{box-shadow:none}
+
+/* 2.3.4: one motion policy for both displays, independent of appearance. */
+body[data-motion=full] .pod.first{animation:pod .55s ease-out both}
+body[data-motion=reduced] *,body[data-motion=reduced] *::before,body[data-motion=reduced] *::after{animation-duration:.15s!important;animation-delay:0s!important;transition-duration:.12s!important}
+body[data-motion=off] *,body[data-motion=off] *::before,body[data-motion=off] *::after{animation:none!important;transition:none!important}
+@media(prefers-reduced-motion:reduce){body *{animation:none!important;transition:none!important}}
