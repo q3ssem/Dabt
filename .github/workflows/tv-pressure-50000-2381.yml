@@ -149,7 +149,7 @@ jobs:
           path: acceptance-12000.json
           if-no-files-found: error
   pilot:
-    needs: requalify_acceptance
+    needs: gate
     runs-on: ubuntu-24.04
     timeout-minutes: 30
     strategy:
@@ -191,7 +191,7 @@ jobs:
           path: tv/tests/results/2.3.8/
           if-no-files-found: error
   pressure:
-    needs: pilot
+    needs: [pilot, requalify_acceptance]
     runs-on: ubuntu-24.04
     timeout-minutes: 120
     strategy:

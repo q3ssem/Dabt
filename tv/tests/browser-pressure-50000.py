@@ -177,6 +177,8 @@ try:
                     if q==0 and MODE=='late' and i==P-1:
                         tv.wait_for_function("()=>{const s=DabtTV.snapshot().session;return s.phase==='question' && s.deadline-Date.now()<=4500 && s.deadline>Date.now()}",timeout=65000)
                     ph.locator(f'[data-answer="{planned[pid]}"]').click(timeout=15000)
+                if i==0 and q==0 and MODE=='drop':
+                    ph.evaluate("window.dispatchEvent(new Event('online'))")
                 if i==0 and q in (0,1):
                     tv.wait_for_function('id=>!!DabtTV.snapshot().session.answers[id]',arg=pid,timeout=10000)
                     check(rejected(ph,sid,q,(planned[pid]+1)%4),'duplicate answer accepted')

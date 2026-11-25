@@ -13,7 +13,7 @@ def encode(topic,raw):
         if not n: break
     return bytes([0x30,*buf])+body
 def route_ws(ws):
-    peer={'ws':ws,'subs':set(),'open':True}; peers.append(peer)
+    peer={'ws':ws,'subs':set(),'open':True,'broker':ws.url}; peers.append(peer)
     ws.on_close(lambda *_:peer.update(open=False))
     def msg(a):
         if not isinstance(a,bytes): return
@@ -29,7 +29,7 @@ def route_ws(ws):
         elif typ==3:
             l=int.from_bytes(body[:2],'big'); t=body[2:2+l].decode(); raw=body[2+l:]
             for p in peers:
-                if p['open'] and t in p['subs']:p['ws'].send(encode(t,raw))
+                if p['open'] and p['broker']==peer['broker'] and t in p['subs']:p['ws'].send(encode(t,raw))
     ws.on_message(msg)
 def setup(ctx,seed):
     def route(r):
@@ -55,11 +55,25 @@ with sync_playwright() as p:
     tc=b.new_context(viewport={'width':1280,'height':720});setup(tc,{'dabt:v2':seed});tv=tc.new_page();monitor(tv);tv.goto('http://127.0.0.1:8765/?tv=1')
     pc=b.new_context(viewport={'width':390,'height':844},is_mobile=True,has_touch=True);setup(pc,{'dabt:remote:v2':{'id':'recoverphone','code':'123456','av':-1}});ph=pc.new_page();monitor(ph);ph.goto('http://127.0.0.1:8765/?remote=1');ph.wait_for_function('window.DabtRemote && DabtRemote.snapshot()')
     old=ph.evaluate('DabtRemote.snapshot().instance');identity=ph.evaluate('DabtRemote.identity()');key=ph.evaluate('DabtRemote.pinnedKey()')
+    phone_topic='dabt/v2/123456/phone/recoverphone'
+    def phone_peers():return [x for x in peers if x['open'] and phone_topic in x['subs']]
+    for _ in range(40):
+        if len(phone_peers())==3:break
+        ph.wait_for_timeout(100)
+    initial=phone_peers();assert len(initial)==3
+    initial_count=len(peers);ph.evaluate("window.dispatchEvent(new Event('online'))");ph.wait_for_timeout(400)
+    assert len(peers)==initial_count and all(x['open'] for x in initial),'online event replaced a healthy socket'
+    lost=initial[0];lost['open']=False;lost['ws'].close(code=1001,reason='QA simulated broker loss');ph.evaluate("window.dispatchEvent(new Event('online'))")
+    for _ in range(100):
+        if len(phone_peers())==3 and any(x['broker']==lost['broker'] and x is not lost for x in phone_peers()):break
+        ph.wait_for_timeout(100)
+    assert len(phone_peers())==3 and all(x['open'] for x in initial[1:]),'healthy sockets not preserved'
+    assert ph.evaluate('DabtRemote.snapshot().instance')==old and ph.evaluate('DabtRemote.pinnedKey()')==key
     tv.evaluate('DabtTV.connect()')
     ph.wait_for_function('old=>DabtRemote.snapshot() && DabtRemote.snapshot().instance!==old',arg=old,timeout=30000)
     assert ph.evaluate('DabtRemote.identity()')==identity and ph.evaluate('DabtRemote.pinnedKey()')==key
     ph.reload();ph.wait_for_function('window.DabtRemote && DabtRemote.snapshot()')
     assert ph.evaluate('DabtRemote.identity()')==identity and ph.evaluate('DabtRemote.pinnedKey()')==key
     assert not errors,errors
-    (out/'reconnect-result.json').write_text(json.dumps({'passed':True,'identityPreserved':True,'pinPreserved':True,'pageErrors':errors}))
+    (out/'reconnect-result.json').write_text(json.dumps({'passed':True,'identityPreserved':True,'pinPreserved':True,'healthySocketsPreserved':True,'singleBrokerRecovered':True,'pageErrors':errors}))
     b.close()
