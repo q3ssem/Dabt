@@ -25,7 +25,7 @@ try:
         pg.goto(url+'tv/index.html?tv=1',wait_until='domcontentloaded')
         pg.wait_for_function("window.DabtTV && DabtTV.version==='2.4.7'")
         pg.wait_for_function("navigator.serviceWorker.controller!==null",timeout=30000)
-        keys=pg.evaluate("""async()=>{let c=await caches.open('majlis-tv-shell-2.4.7-r2');return (await c.keys()).map(r=>r.url)}""")
+        keys=pg.evaluate("""async()=>{let c=await caches.open('majlis-tv-shell-2.4.7-r3');return (await c.keys()).map(r=>r.url)}""")
         assert len(keys)==30,keys
         assert all(k.startswith(url) and '?' not in k for k in keys),keys
         pg.locator('#settings').click()

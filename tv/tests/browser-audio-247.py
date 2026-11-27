@@ -8,7 +8,7 @@ engine=os.environ.get('QA_ENGINE','chromium')
 class Handler(http.server.SimpleHTTPRequestHandler):
     def do_GET(self):
         if self.path=='/audio-test':
-            body=b'<html><body><button id="start">Start</button><button id="stop">Stop</button><script src="/shared/av.js"></script></body></html>'
+            body=b'<!doctype html><html><body><button id="start">Start</button><button id="stop">Stop</button><script src="/shared/av.js"></script></body></html>'
             self.send_response(200);self.send_header('Content-Type','text/html');self.send_header('Content-Length',str(len(body)));self.end_headers();self.wfile.write(body)
         else:super().do_GET()
     def log_message(self,*args):pass
@@ -25,9 +25,10 @@ try:
         page.evaluate("""()=>{
           const AC=window.AudioContext||window.webkitAudioContext;
           if(!AC)throw Error('Web Audio unavailable');
-          window.probe={nodes:0,buffers:0,contexts:0,events:[],resume:[]};
-          const osc=AC.prototype.createOscillator,buf=AC.prototype.createBuffer,resume=AC.prototype.resume;
-          AC.prototype.createOscillator=function(){probe.nodes++;return osc.apply(this,arguments)};
+          window.probe={nodes:0,buffers:0,contexts:0,events:[],resume:[],stops:0,frequencies:[]};
+          const osc=AC.prototype.createOscillator,buf=AC.prototype.createBuffer,resume=AC.prototype.resume,gain=AC.prototype.createGain;
+          AC.prototype.createOscillator=function(){probe.nodes++;const node=osc.apply(this,arguments),start=node.start,stop=node.stop;node.start=function(t){probe.frequencies.push({f:node.frequency.value,t});return start.apply(this,arguments)};node.stop=function(){probe.stops++;return stop.apply(this,arguments)};return node};
+          AC.prototype.createGain=function(){const g=gain.apply(this,arguments);if(!window.masterProbe)window.masterProbe=g;return g};
           AC.prototype.createBuffer=function(){probe.buffers++;return buf.apply(this,arguments)};
           AC.prototype.resume=function(){const c=this;return resume.apply(c,arguments).then(()=>{probe.resume.push(c.state)},e=>{probe.resume.push(String(e));throw e})};
           const Wrapped=function(){probe.contexts++;const c=new AC();window.audioProbeContext=c;c.addEventListener('statechange',()=>probe.events.push(c.state));return c};
@@ -47,8 +48,14 @@ try:
                 page.evaluate('(t)=>{music.start(t);music.hurry(true);music.volume(.1)}',theme)
                 page.wait_for_function('(n)=>probe.nodes>n',arg=prior)
                 assert page.evaluate('music.playing()')
+                assert abs(page.evaluate('masterProbe.gain.value')-.1)<.001
+            page.evaluate('music.volume(0)')
+            assert page.evaluate('masterProbe.gain.value')==0
+            page.evaluate('music.volume(.35)')
+            assert abs(page.evaluate('masterProbe.gain.value')-.35)<.001
             page.locator('#stop').click()
             assert not page.evaluate('music.playing()')
+            assert page.evaluate('masterProbe.gain.value')==0
             count=page.evaluate('probe.nodes')
             page.wait_for_timeout(300)
             assert page.evaluate('probe.nodes')==count
@@ -57,7 +64,7 @@ try:
             assert page.evaluate('probe.buffers===1 && probe.contexts===1')
             page.locator('#stop').click()
             assert not errors,errors
-            result={'passed':True,'engine':engine,'themes':3,'singleNoiseBuffer':True,'singleContext':True,'stopScheduling':True,'restart':True,'pageErrors':errors,'physicalAudioMeasured':False}
+            result={'passed':True,'engine':engine,'themes':3,'singleNoiseBuffer':True,'singleContext':True,'stopScheduling':True,'mutedGain':True,'volumeRestore':True,'restart':True,'pageErrors':errors,'physicalAudioMeasured':False}
             (out/f'{engine}.json').write_text(json.dumps(result));print(json.dumps(result))
         except Exception:
             state=page.evaluate("()=>({probe:window.probe,state:window.audioProbeContext&&audioProbeContext.state,currentTime:window.audioProbeContext&&audioProbeContext.currentTime,blocked:window.music&&music.blocked(),playing:window.music&&music.playing()})")

@@ -35,6 +35,17 @@ jobs:
             fi
           done
       - run: python -m playwright install --with-deps ${{ matrix.engine }}
+      - name: Provide real virtual audio output on Linux CI (not autoplay override)
+        run: |
+          sudo apt-get install -y pulseaudio pulseaudio-utils
+          pulseaudio --start --exit-idle-time=-1
+          pactl load-module module-null-sink sink_name=majlisqa
+          pactl set-default-sink majlisqa
+          pactl info
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check shared/av.js && node tests/audio-contract-247.js
       - run: python tests/browser-audio-247.py
       - uses: actions/upload-artifact@v4
         if: always()
