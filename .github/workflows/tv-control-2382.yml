@@ -1,0 +1,49 @@
+name: TV 2.3.8.2 control permission regression
+on:
+  push:
+    branches: ['fix/tv-2.3.8.2-control']
+    paths: ['tv/**', '.github/workflows/tv-control-2382.yml']
+permissions:
+  contents: read
+jobs:
+  gate:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 25
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [control, smoke, stress, themes, motion, reconnect, audit, race]
+    defaults:
+      run:
+        working-directory: tv
+    env:
+      QA_ROUNDS: '4'
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Check runtime syntax and transport
+        run: |
+          node --check shared/core.js
+          node --check shared/mq.js
+          node --check tv/app.js
+          node --check remote/app.js
+          test "$(git hash-object shared/mq.js)" = 6e9d05f26ac29c6ee6f0fae24d51cd553b91be00
+          node tests/mq-refresh-2381.js
+          python -m py_compile tests/browser-${{ matrix.suite }}-2382.py
+      - run: python -m pip install playwright==1.56.0 websockets==15.0.1
+      - run: python -m playwright install --with-deps chromium
+        if: matrix.suite != 'audit'
+      - run: python tests/browser-${{ matrix.suite }}-2382.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: tv-control-2382-${{ matrix.suite }}
+          path: tv/tests/results/2.3.8.2-*/
+          if-no-files-found: warn
