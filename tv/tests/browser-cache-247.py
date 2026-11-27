@@ -32,7 +32,14 @@ try:
         pg.wait_for_function("document.querySelector('#local-cache').textContent.includes('29')")
         pg.screenshot(path=out/f'{engine}-cache-status.png')
         saved=pg.evaluate("localStorage.getItem('dabt:v2')")
-        ctx.set_offline(True)
+        # Stop the real HTTP origin rather than using the WebKit offline emulator,
+        # which returned an internal error before the app could handle navigation.
+        # The same reload and fresh navigation assertions remain mandatory.
+        server.shutdown();server.server_close()
+        import socket
+        with socket.socket() as probe:
+            probe.settimeout(2)
+            assert probe.connect_ex(('127.0.0.1',server.server_port))!=0, 'HTTP origin still reachable'
         pg.reload(wait_until='domcontentloaded')
         pg.wait_for_function("window.DabtTV && DabtTV.version==='2.4.7'")
         assert pg.locator('#kahoot').is_visible()
@@ -46,7 +53,7 @@ try:
         phone.screenshot(path=out/f'{engine}-offline-remote.png')
         assert not errors,errors
         ctx.close();b.close()
-        result={'passed':True,'engine':engine,'assets':29,'offlineTV':True,'offlineRemote':True,'queryNotCached':True,'pageErrors':errors}
+        result={'passed':True,'engine':engine,'assets':29,'offlineTV':True,'offlineRemote':True,'queryNotCached':True,'realOriginStopped':True,'pageErrors':errors}
         (out/f'{engine}.json').write_text(json.dumps(result));print(json.dumps(result))
 finally:
     server.shutdown();server.server_close()
