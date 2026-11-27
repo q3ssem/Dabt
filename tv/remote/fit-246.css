@@ -9,3 +9,7 @@ button{touch-action:manipulation}
 .question-image{width:100%;height:auto;max-height:34dvh;object-fit:contain;display:block}
 .history-image{width:100%;max-height:220px;object-fit:contain}
 @media(orientation:landscape) and (max-height:500px){.answers:not(.people){grid-template-columns:repeat(4,minmax(0,1fr))}.answer:not(.person){aspect-ratio:1}.dpad{width:min(100%,220px,56dvh)}}
+
+#offline-question-history{width:100%;margin-top:10px;min-height:48px}
+.answer:not(.person) span{min-width:0;max-width:100%;overflow-wrap:anywhere}
+@supports not (height:1dvh){.dpad{width:min(100%,300px,56vh)}.question-image{max-height:34vh}}
