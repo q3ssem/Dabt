@@ -13,3 +13,9 @@
 #content>.panel:first-child h3{margin-bottom:4px}
 #content>.panel:first-child p{margin:4px 0}
 #quick-guide .guide-actions button{min-height:48px}
+
+.ready-check{margin:14px 0;padding:12px;border:1px solid var(--line);border-radius:14px;background:var(--surface)}
+.ready-check h3{font-size:16px;margin-bottom:10px}
+.ready-check button{width:100%;min-height:60px;font-size:18px}
+.ready-check[data-ready=yes] button{background:#16734d;border-color:#16734d;color:#fff}
+.ready-check p{margin:8px 0 0;font-size:13px}
