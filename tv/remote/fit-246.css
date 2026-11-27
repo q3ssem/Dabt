@@ -34,5 +34,5 @@ body[data-tab=quiz] .player-summary .stat-grid b{font-size:18px}
 .live-question .help-bar{margin:6px 0}
 .live-question #answer-status{margin:6px 0;min-height:34px}
 body[data-tab=quiz] .game-pause{margin:6px 0}
-@media(orientation:landscape) and (max-height:500px){.live-question .answers:not(.people){grid-template-columns:repeat(4,minmax(0,1fr));max-width:520px;margin-inline:auto}.live-question .answer:not(.person){min-height:44px}.live-question .question-image{height:22vh}}
+@media(orientation:landscape) and (max-height:500px){.live-question .answers:not(.people){grid-template-columns:repeat(4,minmax(0,1fr));max-width:520px;margin-inline:auto}.live-question .answer:not(.person){min-height:44px}.live-question .question-image{height:max(100px,22vh)}}
 @media(prefers-reduced-motion:reduce){.answer,.dpad button{transition:none!important}}
