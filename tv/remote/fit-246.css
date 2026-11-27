@@ -1,0 +1,11 @@
+html,body{max-width:100%;overflow-x:hidden;-webkit-text-size-adjust:100%;text-size-adjust:100%}
+*{box-sizing:border-box}main,#content,#connected-view,.panel,.question-row{min-width:0;max-width:100%}
+input:not([type=hidden]),textarea,select{font-size:16px!important;max-width:100%}
+button{touch-action:manipulation}
+.dpad{width:min(100%,300px,56dvh);height:auto;aspect-ratio:1;max-width:100%}
+.answers:not(.people){grid-template-columns:repeat(2,minmax(0,1fr));gap:8px}
+.answer:not(.person){aspect-ratio:1;min-height:0;height:auto;min-width:0;display:flex;flex-direction:column;justify-content:center;overflow-wrap:anywhere}
+.answer:not(.person) img{width:100%;height:auto;max-height:60%;object-fit:contain}
+.question-image{width:100%;height:auto;max-height:34dvh;object-fit:contain;display:block}
+.history-image{width:100%;max-height:220px;object-fit:contain}
+@media(orientation:landscape) and (max-height:500px){.answers:not(.people){grid-template-columns:repeat(4,minmax(0,1fr))}.answer:not(.person){aspect-ratio:1}.dpad{width:min(100%,220px,56dvh)}}
