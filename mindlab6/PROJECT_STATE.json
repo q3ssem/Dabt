@@ -157,7 +157,7 @@
     "branch": "integration/mindlab-6-apple-beta-wave15",
     "base_commit": "aa0cdbb6939162398d368559dd5769898bf5988c",
     "phase": "M02",
-    "status": "BLOCKED_EXECUTION_AFTER_MATERIALIZATION",
+    "status": "BLOCKED_EXECUTION_TRANSPORT_TOOL_PREPARED",
     "source_approval": "POST_CLEAN_APPROVAL_NOT_VERIFIED",
     "evidence": "results/wave15-intake-environment-20261127.json",
     "gates": {
@@ -170,6 +170,16 @@
       "M07": "NOT_EXECUTED",
       "EXP_0001": "OPEN_UNCHANGED"
     },
-    "next_action": "Restore execution without bulk materialization (e.g. original Work workspace or verified chunked transfer). Independently run the existing audit script against original bytes and ledger; check approved post-clean source; review allowlist and EXP-0001 before import. No runtime or device pass claimed."
+    "next_action": "Run transport fixture test and split from healthy independent workspace with original archive; join, run existing intake audit; preserve all approval gates.",
+    "transport": {
+      "tool": "tools/wave15-transport.py",
+      "test": "tools/test-wave15-transport.py",
+      "handoff": "handoff/WAVE15_TRANSPORT_RECOVERY.md",
+      "chunk_bytes": 33554432,
+      "expected_parts": 16,
+      "test_executed": false,
+      "split_executed": false,
+      "join_executed": false
+    }
   }
 }
