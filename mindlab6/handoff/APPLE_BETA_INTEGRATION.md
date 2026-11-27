@@ -21,3 +21,9 @@ Build explicit allowlist and dependency map. Preserve all 86 original puzzle IDs
 
 ## Gate 3: beta
 Separate origin and save namespace from production. Test build, asset load, offline, lifecycle, story, audio and persistence. White/dark, Arabic RTL, five agreed safe-area layouts. WebKit automation is not physical Safari. Actual iPhone and iPad portrait/landscape, touch, rotation, interruptions, audio, performance and offline re-entry are required. Publish only isolated beta after passing integration tests; main release requires explicit approval.
+
+## 2026-11-27 — M02 execution checkpoint
+- Initial Python and Container probes passed before materialization. GitHub connector read all four requested files and confirmed integration HEAD `aa0cdbb6939162398d368559dd5769898bf5988c`, main `640bba573114d83174b5ea04ef6364ca6c0b30c1`, editorial `bb42cdab9aa69beb49575e59a900ccf0defcc517`.
+- Native Library lists Wave15 archive (529241748 bytes) and cleanup ledger (2154513 bytes). Materialization returned matching sizes; subsequent Container and Python calls failed with `ClientError`, including a minimal echo. Direct Git transport also failed DNS resolution. Archive SHA, member integrity, ledger matching and runtime dependency checks are NOT RUN. Underlying failure cause not established.
+- No newer approved post-clean archive identified in native Library; cloud mounts not exhaustively searched. No import or publication. EXP-0001 remains open. Preserve all original gates.
+- Evidence: `results/wave15-intake-environment-20261127.json`. Next: restore executable access to original bytes and run the existing read-only audit before import. No physical Apple device tests.

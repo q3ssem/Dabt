@@ -151,5 +151,25 @@
     },
     "combined_entries_before_dedup": 239,
     "route_context_rule": "story station is a route to its existing puzzle engine; do not duplicate registrations or rename IDs"
+  },
+  "apple_beta_integration": {
+    "date": "2026-11-27",
+    "branch": "integration/mindlab-6-apple-beta-wave15",
+    "base_commit": "aa0cdbb6939162398d368559dd5769898bf5988c",
+    "phase": "M02",
+    "status": "BLOCKED_EXECUTION_AFTER_MATERIALIZATION",
+    "source_approval": "POST_CLEAN_APPROVAL_NOT_VERIFIED",
+    "evidence": "results/wave15-intake-environment-20261127.json",
+    "gates": {
+      "M01": "COMPLETE_PREEXISTING",
+      "M02": "BLOCKED",
+      "M03": "NOT_STARTED",
+      "M04": "NOT_STARTED",
+      "M05": "NOT_RUN",
+      "M06": "NOT_PUBLISHED",
+      "M07": "NOT_EXECUTED",
+      "EXP_0001": "OPEN_UNCHANGED"
+    },
+    "next_action": "Restore execution without bulk materialization (e.g. original Work workspace or verified chunked transfer). Independently run the existing audit script against original bytes and ledger; check approved post-clean source; review allowlist and EXP-0001 before import. No runtime or device pass claimed."
   }
 }

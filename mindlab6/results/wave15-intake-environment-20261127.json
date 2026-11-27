@@ -1,0 +1,56 @@
+{
+  "schema_version": 1,
+  "date": "2026-11-27",
+  "phase": "M02",
+  "status": "BLOCKED_EXECUTION_AFTER_MATERIALIZATION",
+  "base_commit": "aa0cdbb6939162398d368559dd5769898bf5988c",
+  "branch": "integration/mindlab-6-apple-beta-wave15",
+  "protected_refs": {
+    "main": "640bba573114d83174b5ea04ef6364ca6c0b30c1",
+    "editorial": "bb42cdab9aa69beb49575e59a900ccf0defcc517"
+  },
+  "pre_materialization": {
+    "container": "PASS: echo, pwd, ls, df, git --version, python --version",
+    "python": "PASS: temporary file read/write and SHA-256",
+    "probe_sha256": "501fc1f301576c751eb2a27e2fa3e6b2267e3d33245d1334926b26498a804abb",
+    "available_disk": "30G",
+    "git": "2.47.3",
+    "python_version": "3.13.5",
+    "node": "v22.16.0",
+    "npm": "10.9.2",
+    "git_direct": "FAIL: Could not resolve host: github.com",
+    "github_connector": "PASS: four requested handoff files and three branch refs read"
+  },
+  "archive": {
+    "name": "MindLab_FULL_CLOSURE_HANDOFF_Wave15.zip",
+    "library_bytes": 529241748,
+    "materialization_reported_bytes": 529241748,
+    "expected_sha256": "f704747cd849d420f5192d8b8e0c1c9048ee44a59c45abcfe5e3c03abaca3c6d",
+    "actual_sha256": null,
+    "materialization_reported_path": "/mnt/data/wave15-intake/MindLab_FULL_CLOSURE_HANDOFF_Wave15.zip",
+    "post_clean_approved_archive_found_in_native_library": false,
+    "post_clean_approval_verified": false
+  },
+  "ledger": {
+    "name": "MindLab_Cleanup_Ledger_Wave15.json",
+    "materialization_reported_bytes": 2154513,
+    "materialization_reported_path": "/mnt/data/wave15-intake/MindLab_Cleanup_Ledger_Wave15.json",
+    "content_independently_verified": false
+  },
+  "post_materialization": {
+    "container": "ClientError on ls/sha256sum and subsequent echo",
+    "python": "ClientError on os.listdir",
+    "causal_diagnosis": "Temporal association only; underlying cause unconfirmed"
+  },
+  "gates": {
+    "M01": "COMPLETE_PREEXISTING",
+    "M02": "BLOCKED",
+    "M03": "NOT_STARTED",
+    "M04": "NOT_STARTED",
+    "M05": "NOT_RUN",
+    "M06": "NOT_PUBLISHED",
+    "M07": "NOT_EXECUTED",
+    "EXP_0001": "OPEN_UNCHANGED"
+  },
+  "next_action": "Restore execution without bulk materialization (e.g. original Work workspace or verified chunked transfer). Independently run the existing audit script against original bytes and ledger; check approved post-clean source; review allowlist and EXP-0001 before import. No runtime or device pass claimed."
+}

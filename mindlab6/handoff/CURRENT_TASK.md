@@ -1,5 +1,8 @@
 # CURRENT_TASK — المهمة الفعلية الوحيدة
 
+## Apple Beta — checkpoint M02 (2026-11-27)
+**BLOCKED_EXECUTION_AFTER_MATERIALIZATION.** See `APPLE_BETA_INTEGRATION.md` and `../results/wave15-intake-environment-20261127.json`. Resume read-only archive audit; do not bypass EXP-0001 or import gate. The engineering task below remains open and unchanged.
+
 - **رقم المهمة:** V6-P1
 - **التجربة المرتبطة:** EXP-0001
 - **الحالة:** in-progress — فهرس 86 + 85، و42 تعريف عقل + 26 ID طفل، والأصول المرشحة 258/258؛ الاعتمادات الحية غير مكتملة
