@@ -1,0 +1,12 @@
+/* The original palettes remain unchanged. Logo sits in the existing RTL header, not over play targets. */
+.majlis-logo{display:block;object-fit:contain;flex-shrink:0;background:transparent;pointer-events:none}
+#app header .majlis-logo{width:clamp(48px,5.2vw,112px);height:clamp(43px,6.8vh,96px)}
+#app header .brand{gap:.45em;min-width:0;flex-shrink:0}
+#app .brand-copy{display:flex;flex-direction:column;align-items:flex-start;line-height:1.15;white-space:nowrap}
+#app .brand-copy small{margin-top:.3em}
+#app .header-tools{min-width:0;justify-content:flex-end}
+#brand .majlis-logo{width:48px;height:43px}
+#brand b{font-size:15px;white-space:nowrap}
+#status{min-width:0;overflow-wrap:anywhere}
+@media(max-height:820px){#app .brand-copy small{display:none}}
+@media(max-width:360px){#brand .majlis-logo{width:40px;height:36px}#brand b{font-size:13px}}
