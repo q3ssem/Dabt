@@ -1,0 +1,3 @@
+# Device and connection qualification
+
+No numeric pressure. Cancel only run 46036636840 using the workflow token if permitted; verify status. Exact deployed 2.3.9 runtime unchanged. Chromium, WebKit and Firefox with fresh storage, QR-equivalent link, Arabic manual code, wrong QR identity, reload, question author page, TV restart. Re-run pairing, permissions, reconnect, all-three outage. Public broker probe sends a single MQTT message on a random QA topic per broker (not an app room). Runner-only network observation, no physical device certification. No main mutation.

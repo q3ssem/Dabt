@@ -1,0 +1,104 @@
+name: Majlis TV focused connection and new devices (no pressure)
+on:
+  push:
+    branches: ['qa/majlis-connection-devices']
+permissions:
+  contents: read
+jobs:
+  stop_old_pressure:
+    runs-on: ubuntu-24.04
+    permissions:
+      actions: write
+    steps:
+      - name: Cancel only prior numeric pressure run if active
+        env:
+          GH_TOKEN: ${{ github.token }}
+        run: |
+          status=$(gh api repos/q3ssem/Dabt/actions/runs/46036636840 --jq .status)
+          if [ "$status" != completed ]; then
+            gh api --method POST repos/q3ssem/Dabt/actions/runs/46036636840/cancel
+          fi
+  devices:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit, firefox]
+    defaults:
+      run:
+        working-directory: tv
+    env:
+      QA_ENGINE: ${{ matrix.engine }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright==1.56.0 websockets==15.0.1
+      - run: python -m playwright install --with-deps ${{ matrix.engine }}
+      - run: python tests/browser-device-matrix-239.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: majlis-devices-${{ matrix.engine }}
+          path: tv/tests/results/2.3.9-device-matrix/
+          if-no-files-found: warn
+  faults:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 15
+    strategy:
+      fail-fast: false
+      matrix:
+        suite: [pairing, control, reconnect, outage]
+    defaults:
+      run:
+        working-directory: tv
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install playwright==1.56.0 websockets==15.0.1
+      - run: python -m playwright install --with-deps chromium
+      - run: python tests/browser-${{ matrix.suite }}-239.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: majlis-fault-${{ matrix.suite }}
+          path: tv/tests/results/2.3.9-*/
+          if-no-files-found: warn
+  public_broker_probe:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 5
+    defaults:
+      run:
+        working-directory: tv
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python -m pip install websockets==15.0.1
+      - run: python tests/public-broker-probe-239.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: majlis-public-broker-probe
+          path: tv/tests/results/2.3.9-public-probe/
+          if-no-files-found: warn
