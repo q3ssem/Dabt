@@ -1,0 +1,10 @@
+#quick-guide{border:1px solid var(--line);border-radius:16px;padding:10px 12px;background:var(--surface);margin:0 0 12px}
+.guide-head{display:flex;align-items:center;justify-content:space-between;gap:8px}.guide-head b{font-size:15px}.guide-head button{min-height:44px;padding:5px 10px}
+.guide-steps{list-style:none;margin:5px 0;padding:0;display:grid;gap:8px}.guide-steps li{display:flex;align-items:center;gap:10px;min-width:0}
+.step-num{display:grid;place-items:center;flex-shrink:0;width:28px;height:28px;border-radius:50%;border:1px solid var(--line);color:var(--muted);font-weight:bold;direction:ltr}
+.guide-steps li[data-step=done] .step-num{background:#16734d;color:white;border-color:#16734d}.guide-steps li[data-step=current] .step-num{background:var(--accent);color:var(--on-accent)}
+.guide-steps b{display:block;font-size:14px}.guide-steps small{display:block;font-size:12px;color:var(--muted);overflow-wrap:anywhere}
+.guide-actions{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:7px;margin-top:10px}.guide-actions button{min-height:44px;padding:8px 5px;font-size:13px;overflow-wrap:anywhere}
+#guide-identity,#guide-help{grid-column:1/-1}#device-assist-banner{width:100%;min-height:44px;margin:0 0 8px;background:var(--panel);border-color:var(--accent);font-weight:bold}
+#quick-guide[data-collapsed=true] .guide-steps,#quick-guide[data-collapsed=true] .guide-actions{display:none!important}
+.assist-row{padding:9px 0;border-bottom:1px solid var(--line);overflow-wrap:anywhere}.assist-row p{margin:5px 0;color:var(--muted);font-size:13px}.assist-row .actions{display:flex;flex-wrap:wrap;gap:8px}.assist-row button{min-height:44px}
