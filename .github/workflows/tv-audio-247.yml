@@ -1,0 +1,36 @@
+name: Majlis TV 2.4.7 focused audio verification (no pressure)
+on:
+  push:
+    branches: ['work/majlis-2.4.7-local-cache']
+    paths: ['tv/tests/browser-audio-247.py', 'tv/shared/av.js', '.github/workflows/tv-audio-247.yml']
+permissions:
+  contents: read
+jobs:
+  audio:
+    runs-on: ubuntu-24.04
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit, firefox]
+    timeout-minutes: 12
+    defaults:
+      run:
+        working-directory: tv
+    env:
+      QA_ENGINE: ${{ matrix.engine }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install playwright==1.56.0
+      - run: python -m playwright install --with-deps ${{ matrix.engine }}
+      - run: python tests/browser-audio-247.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: audio-247-${{ matrix.engine }}
+          path: tv/tests/results/2.4.7-audio/
+          if-no-files-found: warn
