@@ -69,6 +69,7 @@ with sync_playwright() as p:
     assert newcomer.locator('#guide-link').get_attribute('data-step')=='done'
     assert newcomer.locator('#guide-profile').get_attribute('data-step')=='current'
     assert newcomer.locator('#guide-write').is_disabled()
+    host.wait_for_function("document.querySelector('#device-assist-banner').textContent.includes('1 غير منضم')")
     newcomer.locator('#guide-identity').click();newcomer.locator('#guide-name').fill('Writer');newcomer.locator('#modal [data-avatar="2"]').click();newcomer.locator('#guide-save').click()
     assert newcomer.locator('#guide-profile').get_attribute('data-step')=='done'
     newcomer.locator('#guide-write').click();newcomer.locator('#new-question').wait_for()
@@ -93,6 +94,7 @@ with sync_playwright() as p:
     host.locator('#assist-refresh').click();host.locator('#join-device-guideguest').click();host.locator('#assist-name').fill('Assisted player');host.locator('#assist-avatar').select_option('3');host.locator('#assist-save').click()
     guest.wait_for_function("DabtRemote.snapshot().session.players.some(p=>p.id==='guideguest'&&p.name==='Assisted player'&&p.av===3)")
     assert guest.locator('#guide-profile').get_attribute('data-step')=='done'
+    guest.locator('.player-summary').wait_for()
     host.wait_for_function("DabtRemote.snapshot().assistPending===0")
     assert tv.evaluate("DabtTV.snapshot().session.players.filter(p=>p.id==='guideguest').length")==1
     assert host.evaluate("""async()=>{const l=await DabtRemote.request('deviceList',{});const d=l.connected.find(x=>x.id==='guideguest');try{await DabtRemote.request('deviceJoin',{target:d.id,fp:d.fp,sid:l.sid,name:'overwrite',av:0});return false}catch(e){return true}}""")
