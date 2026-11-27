@@ -38,8 +38,14 @@ jobs:
           node tests/mq-refresh-2381.js
           python -m py_compile tests/browser-${{ matrix.suite }}-2383.py
       - run: python -m pip install playwright==1.56.0 websockets==15.0.1
-      - run: python -m playwright install --with-deps chromium
+      - name: Install Chromium and dependencies (retry transient repository errors)
         if: matrix.suite != 'audit'
+        run: |
+          for attempt in 1 2 3; do
+            if python -m playwright install --with-deps chromium; then exit 0; fi
+            if [ "$attempt" -lt 3 ]; then sleep 10; fi
+          done
+          exit 1
       - run: python tests/browser-${{ matrix.suite }}-2383.py
       - uses: actions/upload-artifact@v4
         if: always()
