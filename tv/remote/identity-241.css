@@ -34,3 +34,11 @@
 .option-field.correct label:has(input[name=correct]){border:1px solid var(--accent)}
 @media(orientation:landscape) and (max-height:500px){.dpad{width:min(240px,100%)}#remote-top{position:static}}
 @media(max-width:360px){#nav button{font-size:12px}.choice-card{font-size:13px}.dpad button .r-icon{width:30px;height:30px}}
+
+#nav button{display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px}
+#nav .r-icon{width:21px;height:21px}
+.avatar-label{font-size:12px;line-height:1.2;overflow-wrap:anywhere}
+.avatar-grid button{gap:4px;min-height:72px}
+.answer-mark{width:30px;height:30px;color:white;flex-shrink:0}
+.answer{min-height:100px}
+@media(orientation:landscape) and (max-height:500px){.answer{min-height:84px}}
