@@ -1,0 +1,15 @@
+const assert=require('node:assert/strict'),D=require('../shared/core.js');
+const q=(id,t)=>D.question({id,t,o:['a','b','c','d'],a:0,s:20});
+const d=D.initial();const old=D.newSession(d.bank,d.config,100);
+old.questions=[q('a','Duplicate'),q('b','New question'),D.question({id:'s1',k:'said',t:'Private answer',p:'Personal question?',o:['A','B'],oid:['p1','p2'],oav:[0,1],a:0,s:20}),D.question({id:'s2',k:'said',t:'Other answer',p:'Personal question?',o:['A','B'],oid:['p1','p2'],oav:[0,1],a:1,s:20}),D.question({id:'w',k:'who',t:'Who?',o:['A','B'],oid:['p1','p2'],oav:[0,1],win:[0],s:20})];old.phase='final';d.archives=[old];
+d.bank.questions=[q('different','Duplicate')];d.session=D.newSession(d.bank,d.config,200);D.player(d.session,'current','Current',0);
+const source=JSON.stringify(d.archives),players=JSON.stringify(d.session.players),bid=d.bank.id;
+const templates=D.archiveTemplates(old);assert.equal(templates.length,4);assert.equal(templates[2].t,'Personal question?');assert.equal(templates[2].o.length,0);assert.equal(templates[3].oid,undefined);assert.equal(templates[3].win,undefined);
+assert.deepEqual(D.appendArchiveQuestions(d,old.id,bid,[0,1,2,3]),{added:3,skipped:1,total:4});
+assert.equal(JSON.stringify(d.archives),source);assert.equal(JSON.stringify(d.session.players),players);assert.equal(d.bank.id,bid);assert.deepEqual(d.session.questions,d.bank.questions);
+assert.deepEqual(D.appendArchiveQuestions(d,old.id,bid,[0,1,2,3]),{added:0,skipped:4,total:4});
+d.bank.locked=true;assert.throws(()=>D.appendArchiveQuestions(d,old.id,bid,[1]));d.bank.locked=false;
+assert.throws(()=>D.appendArchiveQuestions(d,old.id,'wrong-bank',[1]));
+d.session.phase='question';assert.throws(()=>D.appendArchiveQuestions(d,old.id,bid,[1]));d.session.phase='lobby';
+d.bank.questions=Array.from({length:120},(_,i)=>q('full'+i,'Full '+i));const before=JSON.stringify(d);assert.throws(()=>D.appendArchiveQuestions(d,old.id,bid,[1]));assert.equal(JSON.stringify(d),before);
+console.log('Archive append: dedup, dynamic question templates, lock, capacity, preserved data passed');
