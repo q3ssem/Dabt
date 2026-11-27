@@ -89,7 +89,8 @@ with sync_playwright() as p:
         layout(host,w,h,'square-'+str(w))
         box=host.locator('[data-answer="0"]').bounding_box()
         assert box and abs(box['width']-box['height'])<=3,box
-    assert host.locator('.question-image').evaluate('(e)=>getComputedStyle(e).objectFit==="contain"')
+    assert host.locator('.question-image').evaluate('(e)=>getComputedStyle(e).objectFit==="contain" && e.clientHeight>=100')
+    assert tv.locator('.question-image').evaluate('(e)=>e.clientHeight>=innerHeight*0.3')
     tvbox=tv.locator('.option').first.bounding_box();assert tvbox and abs(tvbox['width']-tvbox['height'])<=3,tvbox
     host.locator('[data-answer="0"]').click();guest.locator('[data-answer="0"]').click()
     tv.wait_for_function("DabtTV.snapshot().session.phase==='final'",timeout=30000)

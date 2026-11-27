@@ -17,3 +17,7 @@
 #main .options.three{grid-template-columns:repeat(3,minmax(0,1fr))}
 #main .options:not(.people) .option{width:min(100%,29vh);font-size:.88rem}
 #main.has-question-image .options:not(.people) .option{width:min(100%,21vh);font-size:.75rem}
+
+#main.has-question-image .question-image{height:34vh;width:90%;max-height:34vh;max-width:90%;object-fit:contain}
+#main .options:not(.people) .option img{width:90%;height:53%;max-height:53%;min-height:0;object-fit:contain}
+#main.has-question-image .options:not(.people) .option img{height:53%;max-height:53%}

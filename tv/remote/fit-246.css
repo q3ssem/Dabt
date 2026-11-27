@@ -13,3 +13,7 @@ button{touch-action:manipulation}
 #offline-question-history{width:100%;margin-top:10px;min-height:48px}
 .answer:not(.person) span{min-width:0;max-width:100%;overflow-wrap:anywhere}
 @supports not (height:1dvh){.dpad{width:min(100%,300px,56vh)}.question-image{max-height:34vh}}
+
+.question-image{height:clamp(160px,34vh,320px);height:clamp(160px,34dvh,320px);max-height:none;width:100%;object-fit:contain}
+.answer:not(.person) img{width:100%;height:56%;max-height:56%;min-height:0;object-fit:contain}
+@media(orientation:landscape) and (max-height:500px){.question-image{height:30vh}}
