@@ -26,6 +26,14 @@ jobs:
         with:
           python-version: '3.12'
       - run: pip install playwright==1.56.0
+      - name: Isolate unrelated Microsoft APT feed on disposable QA runner
+        run: |
+          for file in /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources; do
+            [ -f "$file" ] || continue
+            if grep -q 'packages.microsoft.com' "$file" && ! grep -Eq 'ubuntu.com|ubuntu-archive' "$file"; then
+              sudo mv "$file" "$file.disabled"
+            fi
+          done
       - run: python -m playwright install --with-deps ${{ matrix.engine }}
       - run: python tests/browser-audio-247.py
       - uses: actions/upload-artifact@v4

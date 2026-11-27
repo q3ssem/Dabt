@@ -72,6 +72,14 @@ jobs:
           python -m py_compile tests/browser-readiness-245.py
           python -m py_compile tests/browser-*-244.py
       - run: python -m pip install playwright==1.56.0 websockets==15.0.1
+      - name: Isolate unrelated Microsoft APT feed on disposable QA runner
+        run: |
+          for file in /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources; do
+            [ -f "$file" ] || continue
+            if grep -q 'packages.microsoft.com' "$file" && ! grep -Eq 'ubuntu.com|ubuntu-archive' "$file"; then
+              sudo mv "$file" "$file.disabled"
+            fi
+          done
       - if: matrix.suite != 'audit'
         run: python -m playwright install --with-deps ${{ matrix.engine }}
       - run: |
