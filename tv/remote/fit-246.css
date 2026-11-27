@@ -17,3 +17,22 @@ button{touch-action:manipulation}
 .question-image{height:clamp(160px,34vh,320px);height:clamp(160px,34dvh,320px);max-height:none;width:100%;object-fit:contain}
 .answer:not(.person) img{width:100%;height:56%;max-height:56%;min-height:0;object-fit:contain}
 @media(orientation:landscape) and (max-height:500px){.question-image{height:30vh}}
+
+/* 2.4.7: keep the question and answer controls ahead of secondary actions. */
+body[data-tab=quiz][data-phase=question] .session-bar,body[data-tab=quiz][data-phase=reveal] .session-bar{margin:0}
+body[data-tab=quiz][data-phase=question] #nav,body[data-tab=quiz][data-phase=reveal] #nav{margin-bottom:5px;padding:2px 0}
+body[data-tab=quiz][data-phase=question] .player-summary,body[data-tab=quiz][data-phase=reveal] .player-summary{padding:6px 8px;margin-bottom:6px;gap:4px}
+body[data-tab=quiz] .player-summary .stat-grid b{font-size:18px}
+.live-question{padding:10px;margin-bottom:6px}
+.live-question>.question-title{font-size:clamp(17px,5vw,23px);line-height:1.35;margin:3px 0}
+.live-question>.clock{font-size:26px;line-height:1.15;margin:5px 0}
+.live-question .answers:not(.people){gap:8px}
+.live-question .answer:not(.person){min-height:44px;aspect-ratio:1;gap:5px;padding:8px;border-radius:13px;font-size:clamp(14px,4vw,18px)}
+.live-question .answer-mark{width:24px;height:24px;flex-shrink:0}
+.live-question .answer:not(.person) span{line-height:1.25}
+.live-question .question-image{height:clamp(100px,25vh,260px);height:clamp(100px,25dvh,260px);margin:5px 0}
+.live-question .help-bar{margin:6px 0}
+.live-question #answer-status{margin:6px 0;min-height:34px}
+body[data-tab=quiz] .game-pause{margin:6px 0}
+@media(orientation:landscape) and (max-height:500px){.live-question .answers:not(.people){grid-template-columns:repeat(4,minmax(0,1fr));max-width:520px;margin-inline:auto}.live-question .answer:not(.person){min-height:44px}.live-question .question-image{height:22vh}}
+@media(prefers-reduced-motion:reduce){.answer,.dpad button{transition:none!important}}

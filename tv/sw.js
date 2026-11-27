@@ -1,6 +1,6 @@
 /* Majlis TV only: versioned, immutable app shell; never cache game traffic. */
 'use strict';
-const PREFIX='majlis-tv-shell-', CACHE=PREFIX+'2.4.7', ROOT=new URL(self.registration.scope);
+const PREFIX='majlis-tv-shell-', CACHE=PREFIX+'2.4.7-r2', ROOT=new URL(self.registration.scope);
 const ASSETS=["index.html","remote.html","tv/index.html","tv/remote.html","remote/remote.html","tv/styles.css","tv/layout-231.css","tv/roster-242.css","tv/game-246.css","tv/app.js","remote/styles.css","remote/layout-232.css","remote/guide-240.css","remote/identity-241.css","remote/simple-242.css","remote/fit-246.css","remote/app.js","shared/core.js","shared/av.js","shared/fit.js","shared/majlis-brand.css","shared/mq.js","shared/qr.js","shared/sec.js","shared/themes-233.css","shared/ui.js","shared/cache-247.js","vendor/nacl-fast.min.js","assets/majlis-corner.webp"];
 const urls=new Set(ASSETS.map(p=>new URL(p,ROOT).href));
 const marker=new URL('__majlis_shell_ready__',ROOT).href;
