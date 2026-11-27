@@ -1,0 +1,59 @@
+name: Majlis TV 2.4.0 guided device entry (no pressure)
+on:
+  push:
+    branches: ['work/majlis-2.4.0-guided-entry']
+permissions:
+  contents: read
+jobs:
+  checks:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    strategy:
+      fail-fast: false
+      matrix:
+        include:
+          - {suite: guided, engine: chromium}
+          - {suite: guided, engine: webkit}
+          - {suite: guided, engine: firefox}
+          - {suite: pairing, engine: chromium}
+          - {suite: control, engine: chromium}
+          - {suite: smoke, engine: chromium}
+          - {suite: themes, engine: chromium}
+          - {suite: motion, engine: chromium}
+          - {suite: reconnect, engine: chromium}
+          - {suite: audit, engine: chromium}
+          - {suite: race, engine: chromium}
+          - {suite: outage, engine: chromium}
+    defaults:
+      run:
+        working-directory: tv
+    env:
+      QA_ENGINE: ${{ matrix.engine }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - name: Verify syntax and transport
+        run: |
+          node --check shared/core.js
+          node --check tv/app.js
+          node --check remote/app.js
+          test "$(git hash-object shared/mq.js)" = 6e9d05f26ac29c6ee6f0fae24d51cd553b91be00
+          node tests/mq-refresh-2381.js
+          python -m py_compile tests/browser-*-240.py
+      - run: python -m pip install playwright==1.56.0 websockets==15.0.1
+      - if: matrix.suite != 'audit'
+        run: python -m playwright install --with-deps ${{ matrix.engine }}
+      - run: python tests/browser-${{ matrix.suite }}-240.py
+      - uses: actions/upload-artifact@v4
+        if: always()
+        with:
+          name: majlis-240-${{ matrix.suite }}-${{ matrix.engine }}
+          path: tv/tests/results/2.4.0-*/
+          if-no-files-found: warn
