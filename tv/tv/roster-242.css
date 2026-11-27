@@ -10,3 +10,7 @@
 .roster-chip[data-roster-state=offline] small{color:var(--bad)}
 .tv-assist-avatars{display:grid;grid-template-columns:repeat(4,minmax(0,1fr));gap:.3rem}
 .tv-assist-avatars button{display:flex;align-items:center;justify-content:center;gap:.3em;font-size:.65rem;padding:.4em;min-width:0}
+
+.roster-chip[data-roster-state=online][data-ready=no] small{color:var(--gold)}
+.roster-chip[data-ready=yes] small{color:#70d8aa}
+#ready-count{font-weight:700;font-size:.8rem}
