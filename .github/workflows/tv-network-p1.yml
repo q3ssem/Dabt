@@ -1,0 +1,36 @@
+name: Majlis Network 3.0 P1 browser QA (no pressure)
+on:
+  push:
+    branches: ['work/majlis-3.0-network-foundation']
+permissions:
+  contents: read
+jobs:
+  network:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit, firefox]
+    env:
+      QA_ENGINE: ${{ matrix.engine }}
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check tv/network/link.js && node --check tv/network/lab.js
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install playwright==1.56.0
+      - name: Isolate unrelated Microsoft APT feed
+        run: |
+          for file in /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources; do
+            [ -f "$file" ] || continue
+            if grep -q 'packages.microsoft.com' "$file" && ! grep -Eq 'ubuntu.com|ubuntu-archive' "$file"; then sudo mv "$file" "$file.disabled"; fi
+          done
+      - run: python -m playwright install --with-deps ${{ matrix.engine }}
+      - run: python tv/tests/network-p1.py
