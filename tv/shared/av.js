@@ -19,18 +19,21 @@ function avSVG(i,size){i=((i|0)%12+12)%12;return '<svg class="av" viewBox="0 0 6
 /* Quiz music: synthesised loops (no audio files), three themes, faster in the last seconds.
    Shared by the TV and the phones. Browsers only start sound after a tap or a key press on that device. */
 function DabtMusic(){
-  var ac=null,timer=0,on=false,theme=0,hurry=false,step=0,next=0,master=null,nb=null;
+  var ac=null,timer=0,on=false,theme=0,hurry=false,step=0,next=0,master=null,nb=null,level=.55,resuming=false,active=new Set();
   var TH=[
     {n:'نبض',bpm:112,root:[220,196,175,196],arp:[1,1.5,2,2.5,2,1.5,1.25,1.5],bass:'triangle',lead:'square'},
     {n:'رحلة',bpm:100,root:[196,207.65,174.6,196],arp:[1,1.0595,1.26,1.335,1.5,1.335,1.26,1.0595],bass:'sine',lead:'triangle'},
     {n:'مرح',bpm:128,root:[261.6,220,174.6,196],arp:[1,1.25,1.5,2,1.5,1.25,1.5,2],bass:'triangle',lead:'square'}];
-  function ctx(){if(!ac){var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;ac=new C();master=ac.createGain();master.gain.value=.55;master.connect(ac.destination)}if(ac.state==='suspended')ac.resume().catch(function(){});return ac}
-  function tone(f,t,d,type,v){var o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(master);o.onended=function(){o.disconnect();g.disconnect()};o.start(t);o.stop(t+d+.03)}
-  function kick(t){var o=ac.createOscillator(),g=ac.createGain();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(42,t+.12);g.gain.setValueAtTime(.22,t);g.gain.exponentialRampToValueAtTime(.0001,t+.16);o.connect(g);g.connect(master);o.onended=function(){o.disconnect();g.disconnect()};o.start(t);o.stop(t+.2)}
-  function hat(t,v){if(!nb){nb=ac.createBuffer(1,ac.sampleRate*.05,ac.sampleRate);var d=nb.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1}
-    var s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();s.buffer=nb;f.type='highpass';f.frequency.value=7000;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+.04);s.connect(f);f.connect(g);g.connect(master);s.onended=function(){s.disconnect();f.disconnect();g.disconnect()};s.start(t)}
-  function sched(){if(!on||!ac)return;var th=TH[theme],sp=60/(th.bpm*(hurry?1.35:1))/4;
-    if(next<ac.currentTime-.2)next=ac.currentTime+.03;while(next<ac.currentTime+.12){var k=step%16,bar=Math.floor(step/16)%4,r=th.root[bar]*(hurry?1.06:1),t=next;
+  function ctx(gesture){if(!ac||ac.state==='closed'){var C=window.AudioContext||window.webkitAudioContext;if(!C)return null;ac=new C();nb=null;resuming=false;master=ac.createGain();master.gain.value=on?level:0;master.connect(ac.destination)}if((ac.state==='suspended'||ac.state==='interrupted')&&(!resuming||gesture)){resuming=true;var c=ac;try{Promise.resolve(c.resume()).then(function(){if(ac===c)resuming=false},function(){if(ac===c)resuming=false})}catch(e){resuming=false}}return ac}
+  function track(node,parts){active.add(node);node.onended=function(){active.delete(node);parts.forEach(function(p){try{p.disconnect()}catch(e){}})}}
+  function silence(){active.forEach(function(node){try{node.stop()}catch(e){}try{node.disconnect()}catch(e){}});active.clear();if(master)master.gain.value=0}
+  function tone(f,t,d,type,v){var o=ac.createOscillator(),g=ac.createGain();o.type=type;o.frequency.setValueAtTime(f,t);g.gain.setValueAtTime(.0001,t);g.gain.exponentialRampToValueAtTime(v,t+.01);g.gain.exponentialRampToValueAtTime(.0001,t+d);o.connect(g);g.connect(master);track(o,[o,g]);o.start(t);o.stop(t+d+.03)}
+  function kick(t){var o=ac.createOscillator(),g=ac.createGain();o.frequency.setValueAtTime(140,t);o.frequency.exponentialRampToValueAtTime(42,t+.12);g.gain.setValueAtTime(.22,t);g.gain.exponentialRampToValueAtTime(.0001,t+.16);o.connect(g);g.connect(master);track(o,[o,g]);o.start(t);o.stop(t+.2)}
+  function warmNoise(){if(!nb){nb=ac.createBuffer(1,Math.floor(ac.sampleRate*.05),ac.sampleRate);var d=nb.getChannelData(0);for(var i=0;i<d.length;i++)d[i]=Math.random()*2-1}}
+  function hat(t,v){warmNoise();
+    var s=ac.createBufferSource(),f=ac.createBiquadFilter(),g=ac.createGain();s.buffer=nb;f.type='highpass';f.frequency.value=7000;g.gain.setValueAtTime(v,t);g.gain.exponentialRampToValueAtTime(.0001,t+.04);s.connect(f);f.connect(g);g.connect(master);track(s,[s,f,g]);s.start(t)}
+  function sched(){if(!on||!ac||ac.state!=='running')return;var th=TH[theme],sp=60/(th.bpm*(hurry?1.35:1))/4;
+    if(next<ac.currentTime)next=ac.currentTime+.03;while(next<ac.currentTime+.18){var k=step%16,bar=Math.floor(step/16)%4,r=th.root[bar]*(hurry?1.06:1),t=next;
       if(k%4===0)kick(t);
       if(k%2===1)hat(t,hurry?.05:.03);
       if(k%8===0)tone(r/2,t,sp*3.5,th.bass,.12);
@@ -39,11 +42,11 @@ function DabtMusic(){
       step++;next+=sp}}
   return {
     themes:TH.map(function(x){return x.n}),
-    unlock:function(){var c=ctx();return !!c&&c.state==='running'},
+    unlock:function(){var c=ctx(true);if(c)warmNoise();return !!c&&c.state==='running'},
     blocked:function(){return !ac||ac.state!=='running'},
-    start:function(th){if(!ctx())return;theme=((th|0)%TH.length+TH.length)%TH.length;if(on)return;on=true;hurry=false;step=0;next=ac.currentTime+.05;clearInterval(timer);timer=setInterval(sched,25);sched()},
+    start:function(th){if(!ctx(false))return;warmNoise();var chosen=((th|0)%TH.length+TH.length)%TH.length;if(on&&theme===chosen)return;if(on)silence();theme=chosen;on=true;hurry=false;step=0;next=ac.currentTime+.05;master.gain.value=level;clearInterval(timer);timer=setInterval(sched,25);sched()},
     hurry:function(b){hurry=!!b},
-    stop:function(){if(!on&&!timer)return;on=false;clearInterval(timer);timer=0},
+    stop:function(){if(!on&&!timer)return;on=false;clearInterval(timer);timer=0;silence()},
     playing:function(){return on},
-    volume:function(v){if(master&&Math.abs(master.gain.value-v)>.0001)master.gain.value=v}}
+    volume:function(v){level=Number.isFinite(v)?Math.max(0,Math.min(1,v)):0;if(master&&Math.abs(master.gain.value-(on?level:0))>.0001)master.gain.value=on?level:0}}
 }
