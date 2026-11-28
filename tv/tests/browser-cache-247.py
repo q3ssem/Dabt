@@ -25,11 +25,11 @@ try:
         pg.goto(url+'tv/index.html?tv=1',wait_until='domcontentloaded')
         pg.wait_for_function("window.DabtTV && DabtTV.version==='2.4.8'")
         pg.wait_for_function("navigator.serviceWorker.controller!==null",timeout=30000)
-        keys=pg.evaluate("""async()=>{let c=await caches.open('majlis-tv-shell-2.4.8-hisense-p2');return (await c.keys()).map(r=>r.url)}""")
-        assert len(keys)==33,keys
+        keys=pg.evaluate("""async()=>{let c=await caches.open('majlis-tv-shell-2.4.8-reports-p1');return (await c.keys()).map(r=>r.url)}""")
+        assert len(keys)==35,keys
         assert all(k.startswith(url) and '?' not in k for k in keys),keys
         pg.locator('#settings').click()
-        pg.wait_for_function("document.querySelector('#local-cache').textContent.includes('32')")
+        pg.wait_for_function("document.querySelector('#local-cache').textContent.includes('34')")
         pg.screenshot(path=out/f'{engine}-cache-status.png')
         saved=pg.evaluate("localStorage.getItem('dabt:v2')")
         # Stop the real HTTP origin rather than using the WebKit offline emulator,
@@ -53,7 +53,7 @@ try:
         phone.screenshot(path=out/f'{engine}-offline-remote.png')
         assert not errors,errors
         ctx.close();b.close()
-        result={'passed':True,'engine':engine,'assets':32,'offlineTV':True,'offlineRemote':True,'queryNotCached':True,'realOriginStopped':True,'pageErrors':errors}
+        result={'passed':True,'engine':engine,'assets':34,'offlineTV':True,'offlineRemote':True,'queryNotCached':True,'realOriginStopped':True,'pageErrors':errors}
         (out/f'{engine}.json').write_text(json.dumps(result));print(json.dumps(result))
 finally:
     server.shutdown();server.server_close()

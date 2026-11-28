@@ -1,0 +1,22 @@
+name: Majlis development reports P1 (no pressure)
+on:
+  push:
+    branches: ['work/majlis-3.0-development-reports']
+permissions:
+  contents: read
+jobs:
+  contract:
+    runs-on: ubuntu-24.04
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: |
+          node --check tv/tv/app.js
+          node --check tv/shared/telemetry.js
+          node tv/tests/telemetry.js
+          node tv/tests/cache-247.js
+          cmp tv/shared/telemetry-schema.js tv/server/telemetry/telemetry-schema.js
