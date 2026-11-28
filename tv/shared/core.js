@@ -1,6 +1,6 @@
 /* Dabt 2.0 — shared, deterministic quiz rules. No DOM or network dependencies. */
 (function(root,factory){var api=factory();if(typeof module==='object'&&module.exports)module.exports=api;else root.Dabt=api;})(typeof globalThis!=='undefined'?globalThis:this,function(){'use strict';
-var VERSION='2.4.5',KEY='dabt:v2',MAX_PLAYERS=20,MAX_QUESTIONS=120;
+var VERSION='2.4.5.1',KEY='dabt:v2',MAX_PLAYERS=20,MAX_QUESTIONS=120;
 function copy(v){return JSON.parse(JSON.stringify(v));}
 function uid(){var a=new Uint32Array(3);if(typeof crypto!=='undefined'&&crypto.getRandomValues){crypto.getRandomValues(a);return Array.from(a).map(function(n){return n.toString(36)}).join('');}return Date.now().toString(36)+Math.random().toString(36).slice(2);}
 function text(v,max){return typeof v==='string'?v.trim().slice(0,max):'';}
