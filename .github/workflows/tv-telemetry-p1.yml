@@ -18,6 +18,7 @@ jobs:
           node --check tv/tv/app.js
           node --check tv/shared/telemetry.js
           node tv/tests/telemetry.js
+          node tv/tests/telemetry-receiver.js
           node tv/tests/cache-247.js
           cmp tv/shared/telemetry-schema.js tv/server/telemetry/telemetry-schema.js
   browser:

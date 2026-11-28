@@ -1,0 +1,19 @@
+const assert=require('node:assert/strict'),S=require('../server/telemetry/telemetry-schema.js'),H=require('../server/telemetry/handler.js');
+(async()=>{const origin='https://q3ssem.github.io',token='ab'.repeat(32),v={schema:1,id:'c'.repeat(32),version:'2.4.8',events:[{kind:'connection',minute:0,a:1,b:2,c:3}]};let writes=0,mode='accepted';const h=H.createHandler({origin,schema:S,token:()=>token,store:async x=>{assert.deepEqual(x,v);writes++;if(mode==='throw')throw Error('storage');return mode}});
+function req(body=v,opts={}){const method=opts.method||'POST';return new Request('https://example.test/telemetry',{method,headers:{origin:opts.origin||origin,authorization:'Bearer '+(opts.token||token),'content-type':opts.type||'application/json'},body:method==='POST'?(typeof body==='string'?body:JSON.stringify(body)):undefined})}
+assert.equal((await h(req(v,{origin:'https://evil.test'}))).status,403);
+assert.equal((await h(req(v,{method:'OPTIONS'}))).status,204);
+assert.equal((await h(req(v,{method:'GET'}))).status,405);
+assert.equal((await h(req(v,{token:'cd'.repeat(32)}))).status,401);
+assert.equal((await h(req(v,{type:'text/plain'}))).status,415);
+assert.equal((await h(req('{bad'))).status,400);
+assert.equal((await h(req({...v,name:'private'}))).status,400);
+assert.equal((await h(req('a'.repeat(16001)))).status,413);
+assert.equal(writes,0);
+let r=await h(req());assert.equal(r.status,200);assert.deepEqual(await r.json(),{accepted:true,id:v.id});
+mode='duplicate';assert.equal((await h(req())).status,200);
+mode='rate_limited';assert.equal((await h(req())).status,429);
+mode='conflict';assert.equal((await h(req())).status,409);
+mode='throw';assert.equal((await h(req())).status,503);assert.equal(writes,5);
+console.log('PASS: receiver authorization, origin, method, CORS, content type, size, schema, receipt, duplicate, rate-limit, conflict, storage failure');
+})().catch(e=>{console.error(e);process.exitCode=1});
