@@ -15,5 +15,6 @@ mode='duplicate';assert.equal((await h(req())).status,200);
 mode='rate_limited';assert.equal((await h(req())).status,429);
 mode='conflict';assert.equal((await h(req())).status,409);
 mode='throw';assert.equal((await h(req())).status,503);assert.equal(writes,5);
+const h2=H.createHandler({origin,schema:S,authorize:async x=>x===token,store:async()=> 'accepted'});assert.equal((await h2(req(v,{token:'cd'.repeat(32)}))).status,401);assert.equal((await h2(req())).status,200);const h3=H.createHandler({origin,schema:S,authorize:async()=>{throw Error('db')},store:async()=>{throw Error('must not store')}});assert.equal((await h3(req())).status,503);
 console.log('PASS: receiver authorization, origin, method, CORS, content type, size, schema, receipt, duplicate, rate-limit, conflict, storage failure');
 })().catch(e=>{console.error(e);process.exitCode=1});

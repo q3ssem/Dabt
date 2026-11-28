@@ -6,7 +6,8 @@ function createHandler(opts){var origin=opts.origin,S=opts.schema,headers={'Acce
  return async function(req){if(req.headers.get('origin')!==origin)return response(403,{error:'origin'});
  if(req.method==='OPTIONS')return new Response(null,{status:204,headers:headers});
  if(req.method!=='POST')return response(405,{error:'method'});
- var expected=opts.token(),got=(req.headers.get('authorization')||'').replace(/^Bearer /,'');if(!/^[a-fA-F0-9]{64}$/.test(expected)||! /^[a-fA-F0-9]{64}$/.test(got)||!await equal(got,expected))return response(401,{error:'unauthorized'});
+ var got=(req.headers.get('authorization')||'').replace(/^Bearer /,'');if(!/^[a-fA-F0-9]{64}$/.test(got))return response(401,{error:'unauthorized'});
+ try{var allowed=opts.authorize?await opts.authorize(got):await (async function(){var expected=opts.token();return /^[a-fA-F0-9]{64}$/.test(expected)&&await equal(got,expected)})();if(!allowed)return response(401,{error:'unauthorized'})}catch(e){return response(503,{error:'authorization unavailable'})}
  if(!req.body||Number(req.headers.get('content-length')||0)>16000)return response(413,{error:'size'});
  if(!/^application\/json(?:\s*;|$)/i.test(req.headers.get('content-type')||''))return response(415,{error:'content type'});
  var v;try{var reader=req.body.getReader(),decoder=new TextDecoder('utf-8',{fatal:true}),size=0,raw='';while(true){var chunk=await reader.read();if(chunk.done)break;size+=chunk.value.length;if(size>16000){await reader.cancel();return response(413,{error:'size'})}raw+=decoder.decode(chunk.value,{stream:true})}raw+=decoder.decode();v=JSON.parse(raw)}catch(e){return response(400,{error:'invalid JSON'})}

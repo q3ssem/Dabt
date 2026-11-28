@@ -5,3 +5,6 @@ P2 browser verification uses two native loopback HTTP origins with CORS, replaci
 
 
 P3 adds receiver contract tests and read-reports.sql for authorized diagnostics. Database concurrency and RPC must still be verified on the dedicated cloud project.
+
+
+P4: dedicated project prylddivpvcsyfsqoifv, Mumbai, zero quoted monthly creation cost. Storage and private key migrations applied; token verification uses SHA-256 digest via service-role-only RPC, because direct secret configuration was unavailable. No plaintext key in source; use private-key.sql rotation instructions. TV default URL set; manual preview and send only. No publication of TV branch. Network latency and physical Hisense not measured. Cloud storage quota/retention are not guarantees of permanent free service.
