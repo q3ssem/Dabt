@@ -62,7 +62,7 @@ try:
         b=p.chromium.launch(**({'executable_path':os.environ['DABT_CHROMIUM_PATH']} if os.environ.get('DABT_CHROMIUM_PATH') else {}))
         ctx=b.new_context(viewport={'width':1920,'height':1080});setup(ctx,{'dabt:v2':seed});tv=ctx.new_page();monitor(tv)
         try:
-            stage='home';tv.goto('http://127.0.0.1:8765/?tv=1');tv.locator('#kahoot').wait_for();assert tv.locator('#version').inner_text()=='2.4.7'
+            stage='home';tv.goto('http://127.0.0.1:8765/?tv=1');tv.locator('#kahoot').wait_for();assert tv.locator('#version').inner_text()=='2.4.8'
             for w,h in [(1280,720),(1920,1080),(3840,2160)]:layout(tv,w,h,'home')
             tv.locator('#kahoot').focus();tv.keyboard.press('ArrowRight');assert tv.locator('#settings').evaluate('(e)=>document.activeElement===e');tv.keyboard.press('ArrowLeft');assert tv.locator('#kahoot').evaluate('(e)=>document.activeElement===e');tv.keyboard.press('ArrowLeft');assert tv.locator('#history').evaluate('(e)=>document.activeElement===e')
             tv.set_viewport_size({'width':1920,'height':1080});tv.locator('#kahoot').click()

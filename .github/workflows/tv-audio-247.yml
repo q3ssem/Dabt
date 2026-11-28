@@ -1,8 +1,7 @@
-name: Majlis TV 2.4.7 focused audio verification (no pressure)
+name: Majlis TV 2.4.8 focused audio verification (no pressure)
 on:
   push:
-    branches: ['work/majlis-2.4.7-local-cache']
-    paths: ['tv/tests/browser-audio-247.py', 'tv/shared/av.js', '.github/workflows/tv-audio-247.yml']
+    branches: ['work/majlis-2.4.8-unified']
 permissions:
   contents: read
 jobs:

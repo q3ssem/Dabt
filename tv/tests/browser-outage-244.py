@@ -71,13 +71,24 @@ with sync_playwright() as p:
     broker.outage(True)
     for ph in phones:ph.wait_for_function("document.querySelector('#status').dataset.connection!=='online'",timeout=15000)
     tv.wait_for_function("document.querySelector('#connection').textContent.includes('غير متصل')")
-    tv.wait_for_timeout(2000);broker.outage(False)
+    tv.wait_for_function("DabtTV.snapshot().session.pausedAt>0 && DabtTV.snapshot().session.networkPause==='brokers'")
+    frozen=tv.evaluate('DabtTV.snapshot().session.deadline-DabtTV.snapshot().session.pausedAt')
+    for ph in phones:ph.locator('#question-retry').wait_for(state='visible')
+    phones[0].locator('#question-retry').click();tv.locator('#pause-reconnect').click()
+    tv.wait_for_timeout(2000)
+    assert tv.evaluate('DabtTV.snapshot().session.deadline-DabtTV.snapshot().session.pausedAt')==frozen
+    assert tv.locator('#resume').is_disabled()
+    broker.outage(False)
     for ph in phones:
         ph.evaluate("window.dispatchEvent(new Event('online'))")
         ph.wait_for_function("DabtRemote.pairingStatus()==='approved' && document.querySelector('#status').dataset.connection==='online'",timeout=25000)
         assert ph.evaluate('DabtRemote.snapshot().instance')==instance
     assert phones[0].evaluate('DabtRemote.pinnedKey()')==pin
     assert tv.evaluate('DabtTV.snapshot().keys')==keys
+    tv.locator('#resume').wait_for();tv.wait_for_function("!document.querySelector('#resume').disabled")
+    tv.locator('#resume').click()
+    tv.wait_for_function('!DabtTV.snapshot().session.pausedAt')
+    for ph in phones:ph.wait_for_function('!DabtRemote.snapshot().session.paused')
     phones[0].wait_for_function("DabtRemote.snapshot().session.received.includes('outagephone0')")
     for ph in phones[1:]:ph.locator('[data-answer="0"]').click()
     tv.wait_for_function("DabtTV.snapshot().session.rounds.length===1",timeout=15000)

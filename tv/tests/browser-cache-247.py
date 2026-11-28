@@ -23,13 +23,13 @@ try:
         errors=[]
         pg.on('pageerror',lambda e:errors.append(str(e)))
         pg.goto(url+'tv/index.html?tv=1',wait_until='domcontentloaded')
-        pg.wait_for_function("window.DabtTV && DabtTV.version==='2.4.7'")
+        pg.wait_for_function("window.DabtTV && DabtTV.version==='2.4.8'")
         pg.wait_for_function("navigator.serviceWorker.controller!==null",timeout=30000)
-        keys=pg.evaluate("""async()=>{let c=await caches.open('majlis-tv-shell-2.4.7-r3');return (await c.keys()).map(r=>r.url)}""")
-        assert len(keys)==30,keys
+        keys=pg.evaluate("""async()=>{let c=await caches.open('majlis-tv-shell-2.4.8-r1');return (await c.keys()).map(r=>r.url)}""")
+        assert len(keys)==32,keys
         assert all(k.startswith(url) and '?' not in k for k in keys),keys
         pg.locator('#settings').click()
-        pg.wait_for_function("document.querySelector('#local-cache').textContent.includes('29')")
+        pg.wait_for_function("document.querySelector('#local-cache').textContent.includes('31')")
         pg.screenshot(path=out/f'{engine}-cache-status.png')
         saved=pg.evaluate("localStorage.getItem('dabt:v2')")
         # Stop the real HTTP origin rather than using the WebKit offline emulator,
@@ -41,19 +41,19 @@ try:
             probe.settimeout(2)
             assert probe.connect_ex(('127.0.0.1',server.server_port))!=0, 'HTTP origin still reachable'
         pg.reload(wait_until='domcontentloaded')
-        pg.wait_for_function("window.DabtTV && DabtTV.version==='2.4.7'")
+        pg.wait_for_function("window.DabtTV && DabtTV.version==='2.4.8'")
         assert pg.locator('#kahoot').is_visible()
         assert pg.evaluate("JSON.parse(localStorage.getItem('dabt:v2')).room") == json.loads(saved)['room']
         pg.screenshot(path=out/f'{engine}-offline-tv.png')
         phone=ctx.new_page()
         phone.goto(url+'remote/remote.html?c=123456&p=345678',wait_until='domcontentloaded')
-        phone.wait_for_function("window.DabtRemote && DabtRemote.version==='2.4.7'")
+        phone.wait_for_function("window.DabtRemote && DabtRemote.version==='2.4.8'")
         assert phone.evaluate("location.search")=='?c=123456&p=345678'
         assert phone.locator('#status').is_visible()
         phone.screenshot(path=out/f'{engine}-offline-remote.png')
         assert not errors,errors
         ctx.close();b.close()
-        result={'passed':True,'engine':engine,'assets':29,'offlineTV':True,'offlineRemote':True,'queryNotCached':True,'realOriginStopped':True,'pageErrors':errors}
+        result={'passed':True,'engine':engine,'assets':31,'offlineTV':True,'offlineRemote':True,'queryNotCached':True,'realOriginStopped':True,'pageErrors':errors}
         (out/f'{engine}.json').write_text(json.dumps(result));print(json.dumps(result))
 finally:
     server.shutdown();server.server_close()

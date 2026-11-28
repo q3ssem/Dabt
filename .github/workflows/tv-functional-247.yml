@@ -1,7 +1,7 @@
-name: Majlis TV 2.4.7 functional and visual QA (no pressure)
+name: Majlis TV 2.4.8 unified functional and visual QA (no pressure)
 on:
   push:
-    branches: ['work/majlis-2.4.7-local-cache']
+    branches: ['work/majlis-2.4.8-unified']
 permissions:
   contents: read
 jobs:
@@ -12,6 +12,9 @@ jobs:
       fail-fast: false
       matrix:
         include:
+          - {suite: network-pause, engine: chromium}
+          - {suite: network-pause, engine: webkit}
+          - {suite: network-pause, engine: firefox}
           - {suite: cache, engine: chromium}
           - {suite: cache, engine: webkit}
           - {suite: family, engine: chromium}
@@ -61,6 +64,8 @@ jobs:
           node --check shared/av.js
           node --check shared/fit.js
           node tests/cache-247.js
+          node tests/network-probe-2451.js
+          node tests/network-guard-248.js
           node --check shared/core.js
           node --check tv/app.js
           node --check remote/app.js
@@ -83,7 +88,9 @@ jobs:
       - if: matrix.suite != 'audit'
         run: python -m playwright install --with-deps ${{ matrix.engine }}
       - run: |
-          if [ '${{ matrix.suite }}' = cache ] || [ '${{ matrix.suite }}' = smoke ]; then
+          if [ '${{ matrix.suite }}' = network-pause ]; then
+            python tests/browser-network-pause-248.py
+          elif [ '${{ matrix.suite }}' = cache ] || [ '${{ matrix.suite }}' = smoke ]; then
             python tests/browser-${{ matrix.suite }}-247.py
           elif [ '${{ matrix.suite }}' = family ]; then
             python tests/browser-family-246.py
