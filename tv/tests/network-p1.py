@@ -13,8 +13,8 @@ try:
   errors=[]
   for pg in [a,r]:
    pg.on('pageerror',lambda e:errors.append(str(e)))
-   pg.goto(f'http://127.0.0.1:{server.server_port}/network/README.md')
-   pg.add_script_tag(url=f'http://127.0.0.1:{server.server_port}/network/link.js')
+   pg.goto(f'http://127.0.0.1:{server.server_port}/network/index.html')
+   pg.wait_for_function('!!window.MajlisNetwork')
   invite=a.evaluate('MajlisNetwork.createInvite()')
   for pg,role in [(a,'host'),(r,'remote')]:
    pg.evaluate("""async ({invite,role})=>{window.inputs=[];window.wire=[];window.bus=new BroadcastChannel(invite.room);window.link=await MajlisNetwork.createLink({invite,role,send:s=>{wire.push(s);bus.postMessage(s);return true},onInput:m=>inputs.push(m)});bus.onmessage=e=>link.receive(e.data)}""",{'invite':invite,'role':role})
@@ -39,7 +39,7 @@ try:
   before=a.evaluate('inputs.length')
   # Tamper ciphertext and replay all previously sent messages.
   for raw in r.evaluate('wire.slice()'):
-   obj=json.loads(raw);obj['data']='00'+obj['data'][2:]
+   obj=json.loads(raw);obj['data']=('01' if obj['data'][:2]=='00' else '00')+obj['data'][2:]
    a.evaluate('s=>link.receive(s)',json.dumps(obj))
    a.evaluate('s=>link.receive(s)',raw)
   assert a.evaluate('inputs.length')==before
