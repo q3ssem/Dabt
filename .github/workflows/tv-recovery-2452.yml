@@ -1,0 +1,39 @@
+name: Majlis TV 2.4.5.2 connection recovery (no pressure)
+on:
+  push:
+    branches: ['work/majlis-2.4.5.2-recovery']
+permissions:
+  contents: read
+jobs:
+  recovery:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit, firefox]
+    env:
+      QA_ENGINE: ${{ matrix.engine }}
+    defaults:
+      run:
+        working-directory: tv
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check tv/app.js && node --check remote/app.js && node --check shared/core.js
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install playwright==1.56.0
+      - name: Isolate unrelated Microsoft APT feed
+        run: |
+          for file in /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources; do
+            [ -f "$file" ] || continue
+            if grep -q 'packages.microsoft.com' "$file" && ! grep -Eq 'ubuntu.com|ubuntu-archive' "$file"; then sudo mv "$file" "$file.disabled"; fi
+          done
+      - run: python -m playwright install --with-deps ${{ matrix.engine }}
+      - run: python tests/browser-recovery-2452.py
