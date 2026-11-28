@@ -1,0 +1,41 @@
+name: Majlis Hisense P2 device lab (no pressure)
+on:
+  push:
+    branches: ['work/majlis-3.0-hisense-lab']
+permissions:
+  contents: read
+jobs:
+  lab:
+    runs-on: ubuntu-24.04
+    timeout-minutes: 12
+    strategy:
+      fail-fast: false
+      matrix:
+        engine: [chromium, webkit, firefox]
+    env:
+      QA_ENGINE: ${{ matrix.engine }}
+    defaults:
+      run:
+        working-directory: tv
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '22'
+      - run: node --check shared/device-lab.js && node --check tv/app.js && node tests/device-lab.js && node tests/cache-247.js
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: pip install playwright==1.56.0 websockets==15.0.1
+      - name: Isolate unrelated Microsoft APT feed
+        run: |
+          for file in /etc/apt/sources.list.d/*.list /etc/apt/sources.list.d/*.sources; do
+            [ -f "$file" ] || continue
+            if grep -q 'packages.microsoft.com' "$file" && ! grep -Eq 'ubuntu.com|ubuntu-archive' "$file"; then sudo mv "$file" "$file.disabled"; fi
+          done
+      - run: python -m playwright install --with-deps ${{ matrix.engine }}
+      - run: python tests/browser-device-lab.py
+      - if: matrix.engine != 'firefox'
+        run: python tests/browser-cache-247.py

@@ -16,6 +16,6 @@ assert.equal(await read(req('shared/core.js','cors','POST')),undefined);
 assert.equal(await read(req('../index.html','navigate')),undefined);
 assert.equal(await read(req('https://fonts.googleapis.com/css2')),undefined);
 assert.equal(network.length,0);
-let reply,p;events.message({data:{type:'majlis-cache-status'},ports:[{postMessage(v){reply=v}}],waitUntil(x){p=x}});await p;assert.equal(reply.complete,true);assert.equal(reply.count,31);
+let reply,p;events.message({data:{type:'majlis-cache-status'},ports:[{postMessage(v){reply=v}}],waitUntil(x){p=x}});await p;assert.equal(reply.complete,true);assert.equal(reply.count,32);
 console.log('PASS: cache shell, version isolation, private query exclusion, request bypass, status');
 })().catch(e=>{console.error(e);process.exit(1)});
